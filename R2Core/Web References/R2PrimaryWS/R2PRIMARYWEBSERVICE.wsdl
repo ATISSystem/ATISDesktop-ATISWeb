@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerUsersChargeReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerUsersChargeReportResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerSoldRFIDCardsReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerSoldRFIDCardsReportResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerPresentCarsInParkingReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourTerraficCardType" type="s:short" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourViewCarImages" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerPresentCarsInParkingReportResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerBlackListFinancialReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerBlackListFinancialReportResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerCarEntranceReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTerraficCard" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourPelak" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourSerial" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourEntranceDateTimeSupport" type="s:short" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourViewCarImages" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerCarEntranceReportResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerTerraficCardsIdentityReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerTerraficCardsIdentityReportResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerBlackListReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourBlackListType" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerBlackListReportResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodGetCurrentDateTimeMilladi">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodGetCurrentDateTimeMilladiResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="WebMethodGetCurrentDateTimeMilladiResult" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodRegisteringHandyBills">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourTeadad" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourShamsiDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourTerafficCardType" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodRegisteringHandyBillsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodGetTotalRegisteredHandyBills">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="YourShamsiDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourTerafficCardType" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodGetTotalRegisteredHandyBillsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="WebMethodGetTotalRegisteredHandyBillsResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodDeleteRegisteredHandyBills">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="YourShamsiDate" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourTerafficCardType" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodDeleteRegisteredHandyBillsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerPersonnelEnterExitReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerPersonnelEnterExitReportResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodExistCar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="YourPelak" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourSerial" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodExistCarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="WebMethodExistCarResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerUsersChargeReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerUsersChargeReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerUsersChargeReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerUsersChargeReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerSoldRFIDCardsReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSoldRFIDCardsReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerSoldRFIDCardsReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSoldRFIDCardsReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerPresentCarsInParkingReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerPresentCarsInParkingReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerPresentCarsInParkingReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerPresentCarsInParkingReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerBlackListFinancialReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerBlackListFinancialReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerBlackListFinancialReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerBlackListFinancialReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerCarEntranceReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerCarEntranceReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerCarEntranceReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerCarEntranceReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerTerraficCardsIdentityReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerTerraficCardsIdentityReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerTerraficCardsIdentityReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerTerraficCardsIdentityReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerBlackListReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerBlackListReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerBlackListReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerBlackListReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodGetCurrentDateTimeMilladiSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodGetCurrentDateTimeMilladi" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodGetCurrentDateTimeMilladiSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodGetCurrentDateTimeMilladiResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodRegisteringHandyBillsSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodRegisteringHandyBills" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodRegisteringHandyBillsSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodRegisteringHandyBillsResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodGetTotalRegisteredHandyBillsSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodGetTotalRegisteredHandyBills" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodGetTotalRegisteredHandyBillsSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodGetTotalRegisteredHandyBillsResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodDeleteRegisteredHandyBillsSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodDeleteRegisteredHandyBills" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodDeleteRegisteredHandyBillsSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodDeleteRegisteredHandyBillsResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerPersonnelEnterExitReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerPersonnelEnterExitReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerPersonnelEnterExitReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerPersonnelEnterExitReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodExistCarSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodExistCar" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodExistCarSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodExistCarResponse" />
+  </wsdl:message>
+  <wsdl:portType name="R2PrimaryWebServiceSoap">
+    <wsdl:operation name="WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerUsersChargeReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerUsersChargeReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerUsersChargeReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerSoldRFIDCardsReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerSoldRFIDCardsReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerSoldRFIDCardsReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerPresentCarsInParkingReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerPresentCarsInParkingReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerPresentCarsInParkingReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerBlackListFinancialReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerBlackListFinancialReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerBlackListFinancialReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerCarEntranceReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerCarEntranceReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerCarEntranceReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerTerraficCardsIdentityReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerTerraficCardsIdentityReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerTerraficCardsIdentityReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerBlackListReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerBlackListReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerBlackListReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodGetCurrentDateTimeMilladi">
+      <wsdl:input message="tns:WebMethodGetCurrentDateTimeMilladiSoapIn" />
+      <wsdl:output message="tns:WebMethodGetCurrentDateTimeMilladiSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodRegisteringHandyBills">
+      <wsdl:input message="tns:WebMethodRegisteringHandyBillsSoapIn" />
+      <wsdl:output message="tns:WebMethodRegisteringHandyBillsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodGetTotalRegisteredHandyBills">
+      <wsdl:input message="tns:WebMethodGetTotalRegisteredHandyBillsSoapIn" />
+      <wsdl:output message="tns:WebMethodGetTotalRegisteredHandyBillsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodDeleteRegisteredHandyBills">
+      <wsdl:input message="tns:WebMethodDeleteRegisteredHandyBillsSoapIn" />
+      <wsdl:output message="tns:WebMethodDeleteRegisteredHandyBillsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerPersonnelEnterExitReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerPersonnelEnterExitReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerPersonnelEnterExitReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodExistCar">
+      <wsdl:input message="tns:WebMethodExistCarSoapIn" />
+      <wsdl:output message="tns:WebMethodExistCarSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="R2PrimaryWebServiceSoap" type="tns:R2PrimaryWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerUsersChargeReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerUsersChargeReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerSoldRFIDCardsReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerSoldRFIDCardsReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerPresentCarsInParkingReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerPresentCarsInParkingReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerBlackListFinancialReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerBlackListFinancialReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerCarEntranceReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerCarEntranceReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerTerraficCardsIdentityReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerTerraficCardsIdentityReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerBlackListReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerBlackListReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodGetCurrentDateTimeMilladi">
+      <soap:operation soapAction="http://tempuri.org/WebMethodGetCurrentDateTimeMilladi" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodRegisteringHandyBills">
+      <soap:operation soapAction="http://tempuri.org/WebMethodRegisteringHandyBills" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodGetTotalRegisteredHandyBills">
+      <soap:operation soapAction="http://tempuri.org/WebMethodGetTotalRegisteredHandyBills" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodDeleteRegisteredHandyBills">
+      <soap:operation soapAction="http://tempuri.org/WebMethodDeleteRegisteredHandyBills" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerPersonnelEnterExitReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerPersonnelEnterExitReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodExistCar">
+      <soap:operation soapAction="http://tempuri.org/WebMethodExistCar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="R2PrimaryWebServiceSoap12" type="tns:R2PrimaryWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerUsersChargeReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerUsersChargeReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerSoldRFIDCardsReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerSoldRFIDCardsReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerPresentCarsInParkingReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerPresentCarsInParkingReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerBlackListFinancialReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerBlackListFinancialReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerCarEntranceReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerCarEntranceReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerTerraficCardsIdentityReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerTerraficCardsIdentityReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerBlackListReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerBlackListReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodGetCurrentDateTimeMilladi">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodGetCurrentDateTimeMilladi" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodRegisteringHandyBills">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodRegisteringHandyBills" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodGetTotalRegisteredHandyBills">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodGetTotalRegisteredHandyBills" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodDeleteRegisteredHandyBills">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodDeleteRegisteredHandyBills" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerPersonnelEnterExitReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerPersonnelEnterExitReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodExistCar">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodExistCar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="R2PrimaryWebService">
+    <wsdl:port name="R2PrimaryWebServiceSoap" binding="tns:R2PrimaryWebServiceSoap">
+      <soap:address location="http://localhost:1696/R2PRIMARYWEBSERVICE.ASMX" />
+    </wsdl:port>
+    <wsdl:port name="R2PrimaryWebServiceSoap12" binding="tns:R2PrimaryWebServiceSoap12">
+      <soap12:address location="http://localhost:1696/R2PRIMARYWEBSERVICE.ASMX" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

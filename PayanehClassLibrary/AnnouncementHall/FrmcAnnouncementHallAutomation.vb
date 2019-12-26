@@ -1,0 +1,107 @@
+﻿
+Imports System.Reflection
+Imports System.Windows.Forms
+
+Imports PayanehClassLibrary.AnnouncementHallsManagement.AnnouncementHalls
+Imports PayanehClassLibrary.CarTruckNobatManagement
+Imports PayanehClassLibrary.CarTrucksManagement
+Imports PayanehClassLibrary.DataBaseManagement
+Imports PayanehClassLibrary.ProcessesManagement
+Imports R2Core.ExceptionManagement
+Imports R2Core.ProcessesManagement
+Imports R2CoreGUI
+Imports R2CoreParkingSystem.Cars
+Imports R2CoreParkingSystem.City
+Imports R2CoreParkingSystem.TrafficCardsManagement
+
+Public Class FrmcAnnouncementHallAutomation
+    Inherits FrmcGeneral
+
+
+
+#Region "General Properties"
+#End Region
+
+#Region "Subroutins And Functions"
+
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        InitializeSpecial()
+        FrmRefresh()
+    End Sub
+
+    Protected Overrides Sub SetNSSProcess()
+        Try
+            SetProcess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcAnnouncementHallAutomation))
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Public Sub FrmRefresh()
+        UcCarAndDriverPresenter.UCRefresh()
+    End Sub
+
+
+#End Region
+
+#Region "Events"
+#End Region
+
+#Region "Event Handlers"
+
+    Private Sub UcButtonTurnsCancellation_UCClickedEvent() Handles UcButtonTurnsCancellation.UCClickedEvent
+        Try
+            Cursor.Current = Cursors.WaitCursor
+            PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellation(UcLstViewerAllOfnEnterExitId.UCGetSelectedValue(), UcLstViewerAllOfnEnterExitId.UCGetSelectedAnnouncementHall, UcLstViewerAllOfnEnterExitId.UCGetSelectedAnnouncementHallSubGroup)
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ابطال گروهی نوبت ها انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+        Cursor.Current = Cursors.Default
+    End Sub
+
+    Private Sub UcCar_UCViewCarInformationCompleted(CarId As String) Handles UcCar.UCViewCarInformationCompleted
+        Try
+            UcViewerTankTreiler.UCViewTankTreilerStatus(PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(CarId))
+            UcMoneyWallet.UCRefresh()
+            UcCarAndDriverPresenter.UCRefresh()
+            UcucCarTruckNobatCollection.UCRefresh()
+            UcCarEnterExitStatus.UCRefresh()
+            Dim NSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(CarId))
+            UcCarAndDriverPresenter.UCSetCar(R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(NSSTerafficCard.CardId))
+            UcMoneyWallet.UCViewMoneyWalletOnlyCharge(NSSTerafficCard)
+            Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(CarId)
+            UcucCarTruckNobatCollection.UCViewCollection(NSSCarTruck)
+            UcCarEnterExitStatus.UCViewStatus(NSSTerafficCard)
+        Catch exx As GetNSSException
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "اطلاعات پایه کارت تردد و خودرو و روابط آن ها تکمیل نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch exxx As GetDataException
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "اطلاعات پایه کارت تردد و خودرو و روابط آن ها تکمیل نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+
+
+#End Region
+
+#Region "Override Methods"
+#End Region
+
+#Region "Abstract Methods"
+#End Region
+
+#Region "Implemented Members"
+#End Region
+
+
+
+
+
+End Class

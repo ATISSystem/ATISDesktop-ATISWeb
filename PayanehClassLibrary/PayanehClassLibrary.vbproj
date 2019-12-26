@@ -1,0 +1,914 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8BCFE2EF-2C83-4137-BAAF-87E380D41971}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>PayanehClassLibrary</RootNamespace>
+    <AssemblyName>PayanehClassLibrary</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>PayanehClassLibrary.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>PayanehClassLibrary.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AForge.Controls, Version=2.2.4.0, Culture=neutral, PublicKeyToken=a8ac264d1dc6b9d9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="AlphaGradientPanel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CustomControls\AlphaGradientPanel_src\AlphaGradientPanel\AlphaGradientPanel\bin\Debug\AlphaGradientPanel.dll</HintPath>
+    </Reference>
+    <Reference Include="Dermalog.AFIS.FingerCode3, Version=1.1.1204.19, Culture=neutral, PublicKeyToken=97cac07b8409e999, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.AFIS.FingerCode3.dll</HintPath>
+    </Reference>
+    <Reference Include="Dermalog.AFIS.FourprintSegmentation">
+      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.AFIS.FourprintSegmentation.dll</HintPath>
+    </Reference>
+    <Reference Include="Dermalog.AFIS.NFIQ, Version=2.0.1111.1, Culture=neutral, PublicKeyToken=c55ae690a9eb3838, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\R2CoreFingerPrint\bin\Debug\Dermalog.AFIS.NFIQ.dll</HintPath>
+    </Reference>
+    <Reference Include="Dermalog.Imaging.Capturing">
+      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.Imaging.Capturing.dll</HintPath>
+    </Reference>
+    <Reference Include="GroupBoxEx">
+      <HintPath>..\..\CustomControls\Custom GroupBox Class (GroupBoxEx)\VB\GroupBoxEx Demo\bin\Debug\GroupBoxEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Suprema.UFDatabase">
+      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFDatabase.dll</HintPath>
+    </Reference>
+    <Reference Include="Suprema.UFMatcher">
+      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFMatcher.dll</HintPath>
+    </Reference>
+    <Reference Include="Suprema.UFScanner">
+      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFScanner.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="TWS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\TWS System\TerminalsSolution\TWSClassLibrary\bin\Debug\TWS.dll</HintPath>
+    </Reference>
+    <Reference Include="UI.Glass.Panel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\UtilityAndPrograms\UI.Glass.Panel.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnnouncementHall Monitoring\FrmcAnnouncementHallMonitoringControlPanel.Designer.vb">
+      <DependentUpon>FrmcAnnouncementHallMonitoringControlPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHall Monitoring\FrmcAnnouncementHallMonitoringControlPanel.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AnnouncementHall Monitoring\UCAnnouncementHallMonitoringPersianTextMessageEditor.Designer.vb">
+      <DependentUpon>UCAnnouncementHallMonitoringPersianTextMessageEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHall Monitoring\UCAnnouncementHallMonitoringPersianTextMessageEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\FrmcChangeDriverTruckAndCarTruckNumberPlateComputerMessageProducer.Designer.vb">
+      <DependentUpon>FrmcChangeDriverTruckAndCarTruckNumberPlateComputerMessageProducer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\FrmcChangeDriverTruckAndCarTruckNumberPlateComputerMessageProducer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CarTruckLoad\UCSedimentalLoadControlPanel.Designer.vb">
+      <DependentUpon>UCSedimentalLoadControlPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckLoad\UCSedimentalLoadControlPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\FrmcTurnsComputerMessageProducer.Designer.vb">
+      <DependentUpon>FrmcTurnsComputerMessageProducer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\FrmcTurnsComputerMessageProducer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\Tank Treilers\UCChangeTankTreilerStatus.Designer.vb">
+      <DependentUpon>UCChangeTankTreilerStatus.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\Tank Treilers\UCChangeTankTreilerStatus.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCCarTruckNobat.Designer.vb">
+      <DependentUpon>UCCarTruckNobat.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCCarTruckNobat.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageEmergencyTurnRegisterRequestConfirmation.Designer.vb">
+      <DependentUpon>UCComputerMessageEmergencyTurnRegisterRequestConfirmation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageEmergencyTurnRegisterRequestConfirmation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageProducerEmergencyTurnRegisterRequest.Designer.vb">
+      <DependentUpon>UCComputerMessageProducerEmergencyTurnRegisterRequest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageProducerEmergencyTurnRegisterRequest.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageTurnPrint.Designer.vb">
+      <DependentUpon>UCComputerMessageTurnPrint.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageTurnPrint.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageProducerNoCostTurnPrintRequest.Designer.vb">
+      <DependentUpon>UCComputerMessageProducerNoCostTurnPrintRequest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageProducerNoCostTurnPrintRequest.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageProducerTurnPrintRequest.Designer.vb">
+      <DependentUpon>UCComputerMessageProducerTurnPrintRequest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageProducerTurnPrintRequest.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageProducerReplicaTurnPrintRequest.Designer.vb">
+      <DependentUpon>UCComputerMessageProducerReplicaTurnPrintRequest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageProducerReplicaTurnPrintRequest.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageProducerRealTimeTurnRegisterRequest.Designer.vb">
+      <DependentUpon>UCComputerMessageProducerRealTimeTurnRegisterRequest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageProducerRealTimeTurnRegisterRequest.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCLstViewerAllOfnEnterExitId.Designer.vb">
+      <DependentUpon>UCLstViewerAllOfnEnterExitId.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCLstViewerAllOfnEnterExitId.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCComputerMessageChangeCarTruckNumberPlate.Designer.vb">
+      <DependentUpon>UCComputerMessageChangeCarTruckNumberPlate.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCComputerMessageChangeCarTruckNumberPlate.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCComputerMessageProducerChangeCarTruckNumberPlate.Designer.vb">
+      <DependentUpon>UCComputerMessageProducerChangeCarTruckNumberPlate.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCComputerMessageProducerChangeCarTruckNumberPlate.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\Tank Treilers\UCTankTreilerManipulation.Designer.vb">
+      <DependentUpon>UCTankTreilerManipulation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\Tank Treilers\UCTankTreilerManipulation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\Tank Treilers\UCViewerTankTreiler.Designer.vb">
+      <DependentUpon>UCViewerTankTreiler.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\Tank Treilers\UCViewerTankTreiler.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration Management\FrmcClientConfigurations.Designer.vb">
+      <DependentUpon>FrmcClientConfigurations.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration Management\FrmcClientConfigurations.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration Management\FrmcPublicConfigurations.Designer.vb">
+      <DependentUpon>FrmcPublicConfigurations.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration Management\FrmcPublicConfigurations.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration Management\UCConfigurationOfPayanehCore.Designer.vb">
+      <DependentUpon>UCConfigurationOfPayanehCore.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration Management\UCConfigurationOfPayanehCore.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration Management\UCConfigurationOfTransportCompanies.Designer.vb">
+      <DependentUpon>UCConfigurationOfTransportCompanies.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration Management\UCConfigurationOfTransportCompanies.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcDriverTruckFingerPrintRegister.Designer.vb">
+      <DependentUpon>FrmcDriverTruckFingerPrintRegister.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcDriverTruckFingerPrintRegister.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcDriverTruckPresentDermalog.Designer.vb">
+      <DependentUpon>FrmcDriverTruckPresentDermalog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcDriverTruckPresentDermalog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AnnouncementHall\FrmcAnnouncementHallAutomation.Designer.vb">
+      <DependentUpon>FrmcAnnouncementHallAutomation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHall\FrmcAnnouncementHallAutomation.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCComputerMessageChangeDriverTruck.Designer.vb">
+      <DependentUpon>UCComputerMessageChangeDriverTruck.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCComputerMessageChangeDriverTruck.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCComputerMessageProducerChangeDriverTruck.Designer.vb">
+      <DependentUpon>UCComputerMessageProducerChangeDriverTruck.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCComputerMessageProducerChangeDriverTruck.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Personel Attendance\FrmcTransferPersonelFingerPrintsIntoClock4.Designer.vb">
+      <DependentUpon>FrmcTransferPersonelFingerPrintsIntoClock4.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Personel Attendance\FrmcTransferPersonelFingerPrintsIntoClock4.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CarTruck and DriverTruck Relation\FrmcCarAndDriversInformation.Designer.vb">
+      <DependentUpon>FrmcCarAndDriversInformation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruck and DriverTruck Relation\FrmcCarAndDriversInformation.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcIndigenousTrucksWithUNNativeLP.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcShowRmtoWebServiceInf.Designer.vb">
+      <DependentUpon>FrmcShowRmtoWebServiceInf.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcShowRmtoWebServiceInf.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\UCDriverTruckPresentCollection.Designer.vb">
+      <DependentUpon>UCDriverTruckPresentCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\UCDriverTruckPresentCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\UCDriverTruckSinglePresent.Designer.vb">
+      <DependentUpon>UCDriverTruckSinglePresent.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\UCDriverTruckSinglePresent.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnterExit\FrmcEnterExit.Designer.vb">
+      <DependentUpon>FrmcEnterExit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="EnterExit\FrmcEnterExit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\FrmcTurnRegisterRequest.Designer.vb">
+      <DependentUpon>FrmcTurnRegisterRequest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\FrmcTurnRegisterRequest.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="PayanehClassLibrary.vb" />
+    <Compile Include="Reports\FrmcAnnouncementHallsPerformanceGeneralStatisticsReport.Designer.vb">
+      <DependentUpon>FrmcAnnouncementHallsPerformanceGeneralStatisticsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcAnnouncementHallsPerformanceGeneralStatisticsReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FrmcAnnouncementHallsPerformanceReport.Designer.vb">
+      <DependentUpon>FrmcAnnouncementHallsPerformanceReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcAnnouncementHallsPerformanceReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FrmcCapacitorLoadsforAnnounceReport.Designer.vb">
+      <DependentUpon>FrmcCapacitorLoadsforAnnounceReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcCapacitorLoadsforAnnounceReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport.Designer.vb">
+      <DependentUpon>FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FrmcContractorCompanyFinancialReport.Designer.vb">
+      <DependentUpon>FrmcContractorCompanyFinancialReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcContractorCompanyFinancialReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FrmcDriverTruckLoadsReport.Designer.vb">
+      <DependentUpon>FrmcDriverTruckLoadsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcDriverTruckLoadsReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FrmcIndigenousTrucksWithUNNativeLPReport.Designer.vb">
+      <DependentUpon>FrmcIndigenousTrucksWithUNNativeLPReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcIndigenousTrucksWithUNNativeLPReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FrmcSedimentedLoadsReport.Designer.vb">
+      <DependentUpon>FrmcSedimentedLoadsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcSedimentedLoadsReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FrmcTransportPriceTarrifsReport.Designer.vb">
+      <DependentUpon>FrmcTransportPriceTarrifsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcTransportPriceTarrifsReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FrmcTravelLengthOfLoadTargetsReport.Designer.vb">
+      <DependentUpon>FrmcTravelLengthOfLoadTargetsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcTravelLengthOfLoadTargetsReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FrmcTruckDriversWaitingToGetLoadPermissionReport.Designer.vb">
+      <DependentUpon>FrmcTruckDriversWaitingToGetLoadPermissionReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcTruckDriversWaitingToGetLoadPermissionReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FrmcTruckersAssociationFinancialReport.Designer.vb">
+      <DependentUpon>FrmcTruckersAssociationFinancialReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcTruckersAssociationFinancialReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\FrmcTrucksAverageOfSleepDaysToGetLoadPermissionReport.Designer.vb">
+      <DependentUpon>FrmcTrucksAverageOfSleepDaysToGetLoadPermissionReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcTrucksAverageOfSleepDaysToGetLoadPermissionReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\UCAnnouncementHallsPerformanceGeneralStatisticsReport.Designer.vb">
+      <DependentUpon>UCAnnouncementHallsPerformanceGeneralStatisticsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCAnnouncementHallsPerformanceGeneralStatisticsReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCAnnouncementHallsPerformanceReport.Designer.vb">
+      <DependentUpon>UCAnnouncementHallsPerformanceReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCAnnouncementHallsPerformanceReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCCapacitorLoadsforAnnounceReport.Designer.vb">
+      <DependentUpon>UCCapacitorLoadsforAnnounceReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCCapacitorLoadsforAnnounceReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCContractorCompanyFinancialReport.Designer.vb">
+      <DependentUpon>UCContractorCompanyFinancialReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCContractorCompanyFinancialReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCDriverTruckLoadReport.Designer.vb">
+      <DependentUpon>UCDriverTruckLoadReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCDriverTruckLoadReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCIndigenousTrucksWithUNNativeLPReport.Designer.vb">
+      <DependentUpon>UCIndigenousTrucksWithUNNativeLPReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCIndigenousTrucksWithUNNativeLPReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCSedimentedLoadsReport.Designer.vb">
+      <DependentUpon>UCSedimentedLoadsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCSedimentedLoadsReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCTransportPriceTarrifsReport.Designer.vb">
+      <DependentUpon>UCTransportPriceTarrifsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCTransportPriceTarrifsReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCTravelLengthOfLoadTargetsReport.Designer.vb">
+      <DependentUpon>UCTravelLengthOfLoadTargetsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCTravelLengthOfLoadTargetsReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCTruckersAssociationFinacialReport.Designer.vb">
+      <DependentUpon>UCTruckersAssociationFinacialReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCTruckersAssociationFinacialReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCCarTruck.Designer.vb">
+      <DependentUpon>UCCarTruck.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCCarTruck.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCDriverTruck.Designer.vb">
+      <DependentUpon>UCDriverTruck.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCDriverTruck.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCTurnRegisterRequestConfirmation.Designer.vb">
+      <DependentUpon>UCTurnRegisterRequestConfirmation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCTurnRegisterRequestConfirmation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCUCCarTruckNobatCollection.Designer.vb">
+      <DependentUpon>UCUCCarTruckNobatCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCUCCarTruckNobatCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCTruckDriversWaitingToGetLoadPermissionReport.Designer.vb">
+      <DependentUpon>UCTruckDriversWaitingToGetLoadPermissionReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCTruckDriversWaitingToGetLoadPermissionReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCTrucksAverageOfSleepDaysToGetLoadPermissionReport.Designer.vb">
+      <DependentUpon>UCTrucksAverageOfSleepDaysToGetLoadPermissionReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCTrucksAverageOfSleepDaysToGetLoadPermissionReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Transport Companies\UCComputerMessageSedimentedLoadAllocationAndPermssion.Designer.vb">
+      <DependentUpon>UCComputerMessageSedimentedLoadAllocationAndPermssion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transport Companies\UCComputerMessageSedimentedLoadAllocationAndPermssion.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Transport Companies\UCResuscitationSedimentedLoadbynEstelamId.Designer.vb">
+      <DependentUpon>UCResuscitationSedimentedLoadbynEstelamId.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transport Companies\UCResuscitationSedimentedLoadbynEstelamId.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Transport Companies\UCSearcherTransportCompanies.Designer.vb">
+      <DependentUpon>UCSearcherTransportCompanies.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transport Companies\UCSearcherTransportCompanies.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TWS\TWSMClassAuthenticationManagement.vb" />
+    <Compile Include="TWS\UcSingleLogHolder.Designer.vb">
+      <DependentUpon>UcSingleLogHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TWS\UcSingleLogHolder.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TWS\UCTWSReport.Designer.vb">
+      <DependentUpon>UCTWSReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TWS\UCTWSReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Web References\PayanehWS\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\RmtoWS\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\TerminalsWebService\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AnnouncementHall Monitoring\FrmcAnnouncementHallMonitoringControlPanel.resx">
+      <DependentUpon>FrmcAnnouncementHallMonitoringControlPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnnouncementHall Monitoring\UCAnnouncementHallMonitoringPersianTextMessageEditor.resx">
+      <DependentUpon>UCAnnouncementHallMonitoringPersianTextMessageEditor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruck And DriverTruck\FrmcChangeDriverTruckAndCarTruckNumberPlateComputerMessageProducer.resx">
+      <DependentUpon>FrmcChangeDriverTruckAndCarTruckNumberPlateComputerMessageProducer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckLoad\UCSedimentalLoadControlPanel.resx">
+      <DependentUpon>UCSedimentalLoadControlPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\FrmcTurnsComputerMessageProducer.resx">
+      <DependentUpon>FrmcTurnsComputerMessageProducer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\Tank Treilers\UCChangeTankTreilerStatus.resx">
+      <DependentUpon>UCChangeTankTreilerStatus.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCCarTruckNobat.resx">
+      <DependentUpon>UCCarTruckNobat.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCComputerMessageEmergencyTurnRegisterRequestConfirmation.resx">
+      <DependentUpon>UCComputerMessageEmergencyTurnRegisterRequestConfirmation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCComputerMessageProducerEmergencyTurnRegisterRequest.resx">
+      <DependentUpon>UCComputerMessageProducerEmergencyTurnRegisterRequest.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCComputerMessageProducerNoCostTurnPrintRequest.resx">
+      <DependentUpon>UCComputerMessageProducerNoCostTurnPrintRequest.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCComputerMessageTurnPrint.resx">
+      <DependentUpon>UCComputerMessageTurnPrint.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCComputerMessageProducerTurnPrintRequest.resx">
+      <DependentUpon>UCComputerMessageProducerTurnPrintRequest.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCComputerMessageProducerRealTimeTurnRegisterRequest.resx">
+      <DependentUpon>UCComputerMessageProducerRealTimeTurnRegisterRequest.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCComputerMessageProducerReplicaTurnPrintRequest.resx">
+      <DependentUpon>UCComputerMessageProducerReplicaTurnPrintRequest.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCLstViewerAllOfnEnterExitId.resx">
+      <DependentUpon>UCLstViewerAllOfnEnterExitId.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruck And DriverTruck\UCComputerMessageChangeCarTruckNumberPlate.resx">
+      <DependentUpon>UCComputerMessageChangeCarTruckNumberPlate.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruck And DriverTruck\UCComputerMessageProducerChangeCarTruckNumberPlate.resx">
+      <DependentUpon>UCComputerMessageProducerChangeCarTruckNumberPlate.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\Tank Treilers\UCTankTreilerManipulation.resx">
+      <DependentUpon>UCTankTreilerManipulation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\Tank Treilers\UCViewerTankTreiler.resx">
+      <DependentUpon>UCViewerTankTreiler.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration Management\FrmcClientConfigurations.resx">
+      <DependentUpon>FrmcClientConfigurations.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration Management\FrmcPublicConfigurations.resx">
+      <DependentUpon>FrmcPublicConfigurations.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration Management\UCConfigurationOfPayanehCore.resx">
+      <DependentUpon>UCConfigurationOfPayanehCore.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration Management\UCConfigurationOfTransportCompanies.resx">
+      <DependentUpon>UCConfigurationOfTransportCompanies.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\FrmcDriverTruckFingerPrintRegister.resx">
+      <DependentUpon>FrmcDriverTruckFingerPrintRegister.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\FrmcDriverTruckPresentDermalog.resx">
+      <DependentUpon>FrmcDriverTruckPresentDermalog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnnouncementHall\FrmcAnnouncementHallAutomation.resx">
+      <DependentUpon>FrmcAnnouncementHallAutomation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruck And DriverTruck\UCComputerMessageChangeDriverTruck.resx">
+      <DependentUpon>UCComputerMessageChangeDriverTruck.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruck And DriverTruck\UCComputerMessageProducerChangeDriverTruck.resx">
+      <DependentUpon>UCComputerMessageProducerChangeDriverTruck.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Personel Attendance\FrmcTransferPersonelFingerPrintsIntoClock4.resx">
+      <DependentUpon>FrmcTransferPersonelFingerPrintsIntoClock4.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruck and DriverTruck Relation\FrmcCarAndDriversInformation.resx">
+      <DependentUpon>FrmcCarAndDriversInformation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\FrmcIndigenousTrucksWithUNNativeLP.resx">
+      <DependentUpon>FrmcIndigenousTrucksWithUNNativeLP.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\FrmcShowRmtoWebServiceInf.resx">
+      <DependentUpon>FrmcShowRmtoWebServiceInf.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\UCDriverTruckPresentCollection.resx">
+      <DependentUpon>UCDriverTruckPresentCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\UCDriverTruckSinglePresent.resx">
+      <DependentUpon>UCDriverTruckSinglePresent.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnterExit\FrmcEnterExit.resx">
+      <DependentUpon>FrmcEnterExit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\FrmcTurnRegisterRequest.resx">
+      <DependentUpon>FrmcTurnRegisterRequest.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcAnnouncementHallsPerformanceGeneralStatisticsReport.resx">
+      <DependentUpon>FrmcAnnouncementHallsPerformanceGeneralStatisticsReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcAnnouncementHallsPerformanceReport.resx">
+      <DependentUpon>FrmcAnnouncementHallsPerformanceReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcCapacitorLoadsforAnnounceReport.resx">
+      <DependentUpon>FrmcCapacitorLoadsforAnnounceReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport.resx">
+      <DependentUpon>FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcContractorCompanyFinancialReport.resx">
+      <DependentUpon>FrmcContractorCompanyFinancialReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcDriverTruckLoadsReport.resx">
+      <DependentUpon>FrmcDriverTruckLoadsReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcIndigenousTrucksWithUNNativeLPReport.resx">
+      <DependentUpon>FrmcIndigenousTrucksWithUNNativeLPReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcSedimentedLoadsReport.resx">
+      <DependentUpon>FrmcSedimentedLoadsReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcTransportPriceTarrifsReport.resx">
+      <DependentUpon>FrmcTransportPriceTarrifsReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcTravelLengthOfLoadTargetsReport.resx">
+      <DependentUpon>FrmcTravelLengthOfLoadTargetsReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcTruckDriversWaitingToGetLoadPermissionReport.resx">
+      <DependentUpon>FrmcTruckDriversWaitingToGetLoadPermissionReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcTruckersAssociationFinancialReport.resx">
+      <DependentUpon>FrmcTruckersAssociationFinancialReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcTrucksAverageOfSleepDaysToGetLoadPermissionReport.resx">
+      <DependentUpon>FrmcTrucksAverageOfSleepDaysToGetLoadPermissionReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCAnnouncementHallsPerformanceGeneralStatisticsReport.resx">
+      <DependentUpon>UCAnnouncementHallsPerformanceGeneralStatisticsReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCAnnouncementHallsPerformanceReport.resx">
+      <DependentUpon>UCAnnouncementHallsPerformanceReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCCapacitorLoadsforAnnounceReport.resx">
+      <DependentUpon>UCCapacitorLoadsforAnnounceReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCContractorCompanyFinancialReport.resx">
+      <DependentUpon>UCContractorCompanyFinancialReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCDriverTruckLoadReport.resx">
+      <DependentUpon>UCDriverTruckLoadReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCIndigenousTrucksWithUNNativeLPReport.resx">
+      <DependentUpon>UCIndigenousTrucksWithUNNativeLPReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCSedimentedLoadsReport.resx">
+      <DependentUpon>UCSedimentedLoadsReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCTransportPriceTarrifsReport.resx">
+      <DependentUpon>UCTransportPriceTarrifsReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCTravelLengthOfLoadTargetsReport.resx">
+      <DependentUpon>UCTravelLengthOfLoadTargetsReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCTruckersAssociationFinacialReport.resx">
+      <DependentUpon>UCTruckersAssociationFinacialReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruck And DriverTruck\UCCarTruck.resx">
+      <DependentUpon>UCCarTruck.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruck And DriverTruck\UCDriverTruck.resx">
+      <DependentUpon>UCDriverTruck.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCTurnRegisterRequestConfirmation.resx">
+      <DependentUpon>UCTurnRegisterRequestConfirmation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCUCCarTruckNobatCollection.resx">
+      <DependentUpon>UCUCCarTruckNobatCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCTruckDriversWaitingToGetLoadPermissionReport.resx">
+      <DependentUpon>UCTruckDriversWaitingToGetLoadPermissionReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCTrucksAverageOfSleepDaysToGetLoadPermissionReport.resx">
+      <DependentUpon>UCTrucksAverageOfSleepDaysToGetLoadPermissionReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transport Companies\UCComputerMessageSedimentedLoadAllocationAndPermssion.resx">
+      <DependentUpon>UCComputerMessageSedimentedLoadAllocationAndPermssion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transport Companies\UCResuscitationSedimentedLoadbynEstelamId.resx">
+      <DependentUpon>UCResuscitationSedimentedLoadbynEstelamId.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transport Companies\UCSearcherTransportCompanies.resx">
+      <DependentUpon>UCSearcherTransportCompanies.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TWS\UcSingleLogHolder.resx">
+      <DependentUpon>UcSingleLogHolder.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TWS\UCTWSReport.resx">
+      <DependentUpon>UCTWSReport.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\PayanehWS\PayanehWebService.wsdl" />
+    <None Include="Web References\PayanehWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\RmtoWS\PKG_RMTO_WS.wsdl" />
+    <None Include="Web References\RmtoWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\TerminalsWebService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\TerminalsWebService\SystemStatus.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\TerminalsWebService\TerminalsWebService.wsdl" />
+    <None Include="Web References\TerminalsWebService\TruckTrace.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\R2CoreGUI\R2CoreGUI.vbproj">
+      <Project>{d9aef791-83e7-4238-bb9c-de0c57e0ed37}</Project>
+      <Name>R2CoreGUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2CoreLPR\R2CoreLPR.vbproj">
+      <Project>{d3413023-d590-432c-8a6a-6bf2038624cf}</Project>
+      <Name>R2CoreLPR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2CoreParkingSystem\R2CoreParkingSystem.vbproj">
+      <Project>{68EE9753-9B39-4D0B-BFE5-0F941A5F183C}</Project>
+      <Name>R2CoreParkingSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2CoreTransportationAndLoadNotification\R2CoreTransportationAndLoadNotification.vbproj">
+      <Project>{ef77b294-2e31-4914-af7b-289a6a1bf8dc}</Project>
+      <Name>R2CoreTransportationAndLoadNotification</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2Core\R2Core.vbproj">
+      <Project>{b0651d1e-73a2-4e74-8483-6fbc60831969}</Project>
+      <Name>R2Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://37.255.209.4:2010/TerminalsWebService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\TerminalsWebService\</RelPath>
+      <UpdateFromURL>http://37.255.209.4:2010/TerminalsWebService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>PayanehClassLibrary_TerminalsWebService_TerminalsWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://LocalHost:10919/PayanehWebService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\PayanehWS\</RelPath>
+      <UpdateFromURL>http://LocalHost:10919/PayanehWebService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>PayanehClassLibrary_PayanehWS_PayanehWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://smartcard.rmto.ir:9090/orawsv/TR_PUBLIC_WS/PKG_RMTO_WS%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\RmtoWS\</RelPath>
+      <UpdateFromURL>http://smartcard.rmto.ir:9090/orawsv/TR_PUBLIC_WS/PKG_RMTO_WS%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>PayanehClassLibrary_RmtoWS_PKG_WEB_SERVICESService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewCarImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dowWREWRnload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SavariImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TruckImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\TerminalsWebService\TerminalsWebService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CarTruckLoad\EnterExit.sql" />
+    <None Include="Web References\PayanehWS\PayanehWebService.disco" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

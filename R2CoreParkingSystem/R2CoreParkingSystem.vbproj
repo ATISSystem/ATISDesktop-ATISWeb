@@ -1,0 +1,832 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{68EE9753-9B39-4D0B-BFE5-0F941A5F183C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>R2CoreParkingSystem</RootNamespace>
+    <AssemblyName>R2CoreParkingSystem</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>R2CoreParkingSystem.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>R2CoreParkingSystem.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AForge">
+      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Controls">
+      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Imaging">
+      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Neuro">
+      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Neuro.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video">
+      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video.DirectShow">
+      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Video.DirectShow.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Vision">
+      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Vision.dll</HintPath>
+    </Reference>
+    <Reference Include="AlphaGradientPanel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CustomControls\AlphaGradientPanel_src\AlphaGradientPanel\AlphaGradientPanel\bin\Debug\AlphaGradientPanel.dll</HintPath>
+    </Reference>
+    <Reference Include="AxInterop.MSFlexGridLib">
+      <HintPath>..\R2CoreGUI\bin\Debug\AxInterop.MSFlexGridLib.dll</HintPath>
+    </Reference>
+    <Reference Include="CButtonLib">
+      <HintPath>..\..\CustomControls\CButton-Code\CButton\CButton\bin\Debug\CButtonLib.dll</HintPath>
+    </Reference>
+    <Reference Include="gLabel, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CustomControls\glabel\gLabel Code\gLabel\bin\Debug\gLabel.dll</HintPath>
+    </Reference>
+    <Reference Include="GroupBoxEx, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CustomControls\Custom GroupBox Class (GroupBoxEx)\VB\GroupBoxEx Demo\bin\Debug\GroupBoxEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.ReportViewer.WinForms.10.0.40219.1\lib\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Suprema.UFDatabase">
+      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFDatabase.dll</HintPath>
+    </Reference>
+    <Reference Include="Suprema.UFMatcher">
+      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFMatcher.dll</HintPath>
+    </Reference>
+    <Reference Include="Suprema.UFScanner">
+      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFScanner.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="UI.Glass.Panel">
+      <HintPath>..\..\..\UtilityAndPrograms\UI.Glass.Panel.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Accounting\UCAccounting.Designer.vb">
+      <DependentUpon>UCAccounting.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Accounting\UCAccounting.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Accounting\UCAccountingCollection.Designer.vb">
+      <DependentUpon>UCAccountingCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Accounting\UCAccountingCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BlackList\FrmcBlackList.Designer.vb">
+      <DependentUpon>FrmcBlackList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BlackList\FrmcBlackList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BlackList\UCBlackList.Designer.vb">
+      <DependentUpon>UCBlackList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BlackList\UCBlackList.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BlackList\UCBlackListCompositBlackListViewer.Designer.vb">
+      <DependentUpon>UCBlackListCompositBlackListViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BlackList\UCBlackListCompositBlackListViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BlackList\UCUCBlackListCollection.Designer.vb">
+      <DependentUpon>UCUCBlackListCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BlackList\UCUCBlackListCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cars And Drivers\FrmcCars.Designer.vb">
+      <DependentUpon>FrmcCars.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Cars And Drivers\FrmcCars.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cars And Drivers\FrmcDrivers.Designer.vb">
+      <DependentUpon>FrmcDrivers.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Cars And Drivers\FrmcDrivers.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCar.Designer.vb">
+      <DependentUpon>UCCar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCarPresenter.Designer.vb">
+      <DependentUpon>UCCarPresenter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCarPresenter.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCmbCarType.Designer.vb">
+      <DependentUpon>UCCmbCarType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCmbCarType.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCmbCity.Designer.vb">
+      <DependentUpon>UCCmbCity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCmbCity.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCDriver.Designer.vb">
+      <DependentUpon>UCDriver.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCDriver.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCDriverImage.Designer.vb">
+      <DependentUpon>UCDriverImage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCDriverImage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Citys\FrmcLoadTargetsTravelLength.Designer.vb">
+      <DependentUpon>FrmcLoadTargetsTravelLength.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Citys\FrmcLoadTargetsTravelLength.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Citys\UCCity.Designer.vb">
+      <DependentUpon>UCCity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Citys\UCCity.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Citys\UCListBoxCitys.Designer.vb">
+      <DependentUpon>UCListBoxCitys.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Citys\UCListBoxCitys.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Citys\UCLoadTargetTravelLength.Designer.vb">
+      <DependentUpon>UCLoadTargetTravelLength.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Citys\UCLoadTargetTravelLength.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration Management\UCConfigurationOfComputersOfParkingCore.Designer.vb">
+      <DependentUpon>UCConfigurationOfComputersOfParkingCore.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration Management\UCConfigurationOfComputersOfParkingCore.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration Management\UCConfigurationOfParkingCore.Designer.vb">
+      <DependentUpon>UCConfigurationOfParkingCore.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration Management\UCConfigurationOfParkingCore.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnterExit\FrmcCarEnterExitReport.Designer.vb">
+      <DependentUpon>FrmcCarEnterExitReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="EnterExit\FrmcCarEnterExitReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EnterExit\FrmcRegisteringHandyBills.Designer.vb">
+      <DependentUpon>FrmcRegisteringHandyBills.vb</DependentUpon>
+    </Compile>
+    <Compile Include="EnterExit\FrmcRegisteringHandyBills.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EnterExit\UCEnterExit.Designer.vb">
+      <DependentUpon>UCEnterExit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="EnterExit\UCEnterExit.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnterExit\UCCarEnterExitStatus.Designer.vb">
+      <DependentUpon>UCCarEnterExitStatus.vb</DependentUpon>
+    </Compile>
+    <Compile Include="EnterExit\UCCarEnterExitStatus.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnterExit\UCRegisteringHandyBills.Designer.vb">
+      <DependentUpon>UCRegisteringHandyBills.vb</DependentUpon>
+    </Compile>
+    <Compile Include="EnterExit\UCRegisteringHandyBills.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnterExit\UCUCEnterExitCollection.Designer.vb">
+      <DependentUpon>UCUCEnterExitCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="EnterExit\UCUCEnterExitCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\FrmcMoneyWalletChargeSavabegh.Designer.vb">
+      <DependentUpon>FrmcMoneyWalletChargeSavabegh.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\FrmcMoneyWalletChargeSavabegh.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\FrmcUserChargeSavabegh.Designer.vb">
+      <DependentUpon>FrmcUserChargeSavabegh.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\FrmcUserChargeSavabegh.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\UCMoneyWalletCharge.Designer.vb">
+      <DependentUpon>UCMoneyWalletCharge.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\UCMoneyWalletCharge.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MoneyWallet\FrmcMoneyWalletAccounting.Designer.vb">
+      <DependentUpon>FrmcMoneyWalletAccounting.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWallet\FrmcMoneyWalletAccounting.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\FrmcMoneyWalletCharge.Designer.vb">
+      <DependentUpon>FrmcMoneyWalletCharge.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\FrmcMoneyWalletCharge.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\BlackLists\FrmcBlackListFinancialReport.Designer.vb">
+      <DependentUpon>FrmcBlackListFinancialReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BlackLists\FrmcBlackListFinancialReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\BlackLists\FrmcBlackListReport.Designer.vb">
+      <DependentUpon>FrmcBlackListReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BlackLists\FrmcBlackListReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\BlackLists\UCBlackListFinacialReport.Designer.vb">
+      <DependentUpon>UCBlackListFinacialReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BlackLists\UCBlackListFinacialReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\BlackLists\UCBlackListReport.Designer.vb">
+      <DependentUpon>UCBlackListReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BlackLists\UCBlackListReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\EnterExit\FrmcCarEntranceReport.Designer.vb">
+      <DependentUpon>FrmcCarEntranceReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\EnterExit\FrmcCarEntranceReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\EnterExit\FrmcParkingTotalEnteranceSeparationByTerraficCardReport.Designer.vb">
+      <DependentUpon>FrmcParkingTotalEnteranceSeparationByTerraficCardReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\EnterExit\FrmcParkingTotalEnteranceSeparationByTerraficCardReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\EnterExit\FrmcPresentCarsInParkingReport.Designer.vb">
+      <DependentUpon>FrmcPresentCarsInParkingReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\EnterExit\FrmcPresentCarsInParkingReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\EnterExit\UCCarEntranceReport.Designer.vb">
+      <DependentUpon>UCCarEntranceReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\EnterExit\UCCarEntranceReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\EnterExit\UCParkingTotalEnteranceSeparationByTerraficCardReport.Designer.vb">
+      <DependentUpon>UCParkingTotalEnteranceSeparationByTerraficCardReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\EnterExit\UCParkingTotalEnteranceSeparationByTerraficCardReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\EnterExit\UCPresentCarsInParkingReport.Designer.vb">
+      <DependentUpon>UCPresentCarsInParkingReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\EnterExit\UCPresentCarsInParkingReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\MoneyWalletChargeReports\FrmcMoneyWalletsCurrentChargeReport.Designer.vb">
+      <DependentUpon>FrmcMoneyWalletsCurrentChargeReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\MoneyWalletChargeReports\FrmcMoneyWalletsCurrentChargeReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\MoneyWalletChargeReports\FrmcUserChargeReport.Designer.vb">
+      <DependentUpon>FrmcUserChargeReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\MoneyWalletChargeReports\FrmcUserChargeReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\MoneyWalletChargeReports\UCMoneyWalletsCurrentChargeReport.Designer.vb">
+      <DependentUpon>UCMoneyWalletsCurrentChargeReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\MoneyWalletChargeReports\UCMoneyWalletsCurrentChargeReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\MoneyWalletChargeReports\UCUsersChargeReport.Designer.vb">
+      <DependentUpon>UCUsersChargeReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\MoneyWalletChargeReports\UCUsersChargeReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\RFIDCards\FrmcSoldRFIDCardsReport.Designer.vb">
+      <DependentUpon>FrmcSoldRFIDCardsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\RFIDCards\FrmcSoldRFIDCardsReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\RFIDCards\FrmcTerraficCardsIdentityReport.Designer.vb">
+      <DependentUpon>FrmcTerraficCardsIdentityReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\RFIDCards\FrmcTerraficCardsIdentityReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\RFIDCards\UCSoldRFIDCards.Designer.vb">
+      <DependentUpon>UCSoldRFIDCards.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\RFIDCards\UCSoldRFIDCards.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\RFIDCards\UCTerraficCardsIdentity.Designer.vb">
+      <DependentUpon>UCTerraficCardsIdentity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\RFIDCards\UCTerraficCardsIdentity.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrafficCard\FrmcTempExitTerafficCard.Designer.vb">
+      <DependentUpon>FrmcTempExitTerafficCard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TrafficCard\FrmcTempExitTerafficCard.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MoneyWallet\FrmcMoneyWalletReturnAmount.Designer.vb">
+      <DependentUpon>FrmcMoneyWalletReturnAmount.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWallet\FrmcMoneyWalletReturnAmount.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MoneyWallet\FrmcMoneyWalletTransferCharge.Designer.vb">
+      <DependentUpon>FrmcMoneyWalletTransferCharge.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWallet\FrmcMoneyWalletTransferCharge.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="R2CoreParkingSystem.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCarAndDriver.Designer.vb">
+      <DependentUpon>UCCarAndDriver.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCarAndDriver.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCarAndDriverPresenter.Designer.vb">
+      <DependentUpon>UCCarAndDriverPresenter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCarAndDriverPresenter.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCarAndTerafficCard.Designer.vb">
+      <DependentUpon>UCCarAndTerafficCard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCarAndTerafficCard.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrafficCard\FrmcTerafficCardEdit.Designer.vb">
+      <DependentUpon>FrmcTerafficCardEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TrafficCard\FrmcTerafficCardEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TrafficCard\FrmcTerafficCardInitialRegister.Designer.vb">
+      <DependentUpon>FrmcTerafficCardInitialRegister.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TrafficCard\FrmcTerafficCardInitialRegister.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TrafficCard\UCCmbTerafficCardType.Designer.vb">
+      <DependentUpon>UCCmbTerafficCardType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TrafficCard\UCCmbTerafficCardType.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrafficCard\UCCmbTerafficTempCardType.Designer.vb">
+      <DependentUpon>UCCmbTerafficTempCardType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TrafficCard\UCCmbTerafficTempCardType.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrafficCard\UCTerafficCardPresenter.Designer.vb">
+      <DependentUpon>UCTerafficCardPresenter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TrafficCard\UCTerafficCardPresenter.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrafficCard\UCTerafficCardViewerEditor.Designer.vb">
+      <DependentUpon>UCTerafficCardViewerEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TrafficCard\UCTerafficCardViewerEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCarImage.Designer.vb">
+      <DependentUpon>UCCarImage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Cars And Drivers\UCCarImage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MoneyWallet\UCMblghSelector.Designer.vb">
+      <DependentUpon>UCMblghSelector.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWallet\UCMblghSelector.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MoneyWallet\UCMoneyWallet.Designer.vb">
+      <DependentUpon>UCMoneyWallet.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWallet\UCMoneyWallet.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\UCMoneyWalletChargeSabegheh.Designer.vb">
+      <DependentUpon>UCMoneyWalletChargeSabegheh.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\UCMoneyWalletChargeSabegheh.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\UCMoneyWalletChargeSavabeghCollection.Designer.vb">
+      <DependentUpon>UCMoneyWalletChargeSavabeghCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\UCMoneyWalletChargeSavabeghCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrafficCard\UCTrafficCard.Designer.vb">
+      <DependentUpon>UCTrafficCard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TrafficCard\UCTrafficCard.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\UCUserChargeSabegheh.Designer.vb">
+      <DependentUpon>UCUserChargeSabegheh.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\UCUserChargeSabegheh.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\UCUserChargeSavabeghCollection.Designer.vb">
+      <DependentUpon>UCUserChargeSavabeghCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\UCUserChargeSavabeghCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Accounting\UCAccounting.resx">
+      <DependentUpon>UCAccounting.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accounting\UCAccountingCollection.resx">
+      <DependentUpon>UCAccountingCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlackList\FrmcBlackList.resx">
+      <DependentUpon>FrmcBlackList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlackList\UCBlackList.resx">
+      <DependentUpon>UCBlackList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlackList\UCBlackListCompositBlackListViewer.resx">
+      <DependentUpon>UCBlackListCompositBlackListViewer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlackList\UCUCBlackListCollection.resx">
+      <DependentUpon>UCUCBlackListCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cars And Drivers\FrmcCars.resx">
+      <DependentUpon>FrmcCars.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cars And Drivers\FrmcDrivers.resx">
+      <DependentUpon>FrmcDrivers.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cars And Drivers\UCCar.resx">
+      <DependentUpon>UCCar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cars And Drivers\UCCarPresenter.resx">
+      <DependentUpon>UCCarPresenter.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cars And Drivers\UCCmbCarType.resx">
+      <DependentUpon>UCCmbCarType.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cars And Drivers\UCCmbCity.resx">
+      <DependentUpon>UCCmbCity.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cars And Drivers\UCDriver.resx">
+      <DependentUpon>UCDriver.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cars And Drivers\UCDriverImage.resx">
+      <DependentUpon>UCDriverImage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Citys\FrmcLoadTargetsTravelLength.resx">
+      <DependentUpon>FrmcLoadTargetsTravelLength.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Citys\UCCity.resx">
+      <DependentUpon>UCCity.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Citys\UCListBoxCitys.resx">
+      <DependentUpon>UCListBoxCitys.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Citys\UCLoadTargetTravelLength.resx">
+      <DependentUpon>UCLoadTargetTravelLength.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration Management\UCConfigurationOfComputersOfParkingCore.resx">
+      <DependentUpon>UCConfigurationOfComputersOfParkingCore.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration Management\UCConfigurationOfParkingCore.resx">
+      <DependentUpon>UCConfigurationOfParkingCore.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnterExit\FrmcCarEnterExitReport.resx">
+      <DependentUpon>FrmcCarEnterExitReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnterExit\FrmcRegisteringHandyBills.resx">
+      <DependentUpon>FrmcRegisteringHandyBills.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnterExit\UCCarEnterExitStatus.resx">
+      <DependentUpon>UCCarEnterExitStatus.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnterExit\UCEnterExit.resx">
+      <DependentUpon>UCEnterExit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnterExit\UCRegisteringHandyBills.resx">
+      <DependentUpon>UCRegisteringHandyBills.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnterExit\UCUCEnterExitCollection.resx">
+      <DependentUpon>UCUCEnterExitCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWalletCharge\FrmcMoneyWalletChargeSavabegh.resx">
+      <DependentUpon>FrmcMoneyWalletChargeSavabegh.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWalletCharge\FrmcUserChargeSavabegh.resx">
+      <DependentUpon>FrmcUserChargeSavabegh.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWalletCharge\UCMoneyWalletCharge.resx">
+      <DependentUpon>UCMoneyWalletCharge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWallet\FrmcMoneyWalletAccounting.resx">
+      <DependentUpon>FrmcMoneyWalletAccounting.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWalletCharge\FrmcMoneyWalletCharge.resx">
+      <DependentUpon>FrmcMoneyWalletCharge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\BlackLists\FrmcBlackListFinancialReport.resx">
+      <DependentUpon>FrmcBlackListFinancialReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\BlackLists\FrmcBlackListReport.resx">
+      <DependentUpon>FrmcBlackListReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\BlackLists\UCBlackListFinacialReport.resx">
+      <DependentUpon>UCBlackListFinacialReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\BlackLists\UCBlackListReport.resx">
+      <DependentUpon>UCBlackListReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\EnterExit\FrmcCarEntranceReport.resx">
+      <DependentUpon>FrmcCarEntranceReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\EnterExit\FrmcParkingTotalEnteranceSeparationByTerraficCardReport.resx">
+      <DependentUpon>FrmcParkingTotalEnteranceSeparationByTerraficCardReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\EnterExit\FrmcPresentCarsInParkingReport.resx">
+      <DependentUpon>FrmcPresentCarsInParkingReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\EnterExit\UCCarEntranceReport.resx">
+      <DependentUpon>UCCarEntranceReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\EnterExit\UCParkingTotalEnteranceSeparationByTerraficCardReport.resx">
+      <DependentUpon>UCParkingTotalEnteranceSeparationByTerraficCardReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\EnterExit\UCPresentCarsInParkingReport.resx">
+      <DependentUpon>UCPresentCarsInParkingReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\MoneyWalletChargeReports\FrmcMoneyWalletsCurrentChargeReport.resx">
+      <DependentUpon>FrmcMoneyWalletsCurrentChargeReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\MoneyWalletChargeReports\FrmcUserChargeReport.resx">
+      <DependentUpon>FrmcUserChargeReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\MoneyWalletChargeReports\UCMoneyWalletsCurrentChargeReport.resx">
+      <DependentUpon>UCMoneyWalletsCurrentChargeReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\MoneyWalletChargeReports\UCUsersChargeReport.resx">
+      <DependentUpon>UCUsersChargeReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RFIDCards\FrmcSoldRFIDCardsReport.resx">
+      <DependentUpon>FrmcSoldRFIDCardsReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RFIDCards\FrmcTerraficCardsIdentityReport.resx">
+      <DependentUpon>FrmcTerraficCardsIdentityReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RFIDCards\UCSoldRFIDCards.resx">
+      <DependentUpon>UCSoldRFIDCards.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RFIDCards\UCTerraficCardsIdentity.resx">
+      <DependentUpon>UCTerraficCardsIdentity.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrafficCard\FrmcTempExitTerafficCard.resx">
+      <DependentUpon>FrmcTempExitTerafficCard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWallet\FrmcMoneyWalletReturnAmount.resx">
+      <DependentUpon>FrmcMoneyWalletReturnAmount.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWallet\FrmcMoneyWalletTransferCharge.resx">
+      <DependentUpon>FrmcMoneyWalletTransferCharge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cars And Drivers\UCCarAndDriver.resx">
+      <DependentUpon>UCCarAndDriver.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cars And Drivers\UCCarAndDriverPresenter.resx">
+      <DependentUpon>UCCarAndDriverPresenter.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrafficCard\FrmcTerafficCardEdit.resx">
+      <DependentUpon>FrmcTerafficCardEdit.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrafficCard\FrmcTerafficCardInitialRegister.resx">
+      <DependentUpon>FrmcTerafficCardInitialRegister.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrafficCard\UCCmbTerafficCardType.resx">
+      <DependentUpon>UCCmbTerafficCardType.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrafficCard\UCCmbTerafficTempCardType.resx">
+      <DependentUpon>UCCmbTerafficTempCardType.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrafficCard\UCTerafficCardPresenter.resx">
+      <DependentUpon>UCTerafficCardPresenter.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrafficCard\UCTerafficCardViewerEditor.resx">
+      <DependentUpon>UCTerafficCardViewerEditor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cars And Drivers\UCCarImage.resx">
+      <DependentUpon>UCCarImage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWallet\UCMblghSelector.resx">
+      <DependentUpon>UCMblghSelector.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWallet\UCMoneyWallet.resx">
+      <DependentUpon>UCMoneyWallet.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWalletCharge\UCMoneyWalletChargeSabegheh.resx">
+      <DependentUpon>UCMoneyWalletChargeSabegheh.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWalletCharge\UCMoneyWalletChargeSavabeghCollection.resx">
+      <DependentUpon>UCMoneyWalletChargeSavabeghCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrafficCard\UCTrafficCard.resx">
+      <DependentUpon>UCTrafficCard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWalletCharge\UCUserChargeSabegheh.resx">
+      <DependentUpon>UCUserChargeSabegheh.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWalletCharge\UCUserChargeSavabeghCollection.resx">
+      <DependentUpon>UCUserChargeSavabeghCollection.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\R2CoreGUI\R2CoreGUI.vbproj">
+      <Project>{D9AEF791-83E7-4238-BB9C-DE0C57E0ED37}</Project>
+      <Name>R2CoreGUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2CoreLPR\R2CoreLPR.vbproj">
+      <Project>{d3413023-d590-432c-8a6a-6bf2038624cf}</Project>
+      <Name>R2CoreLPR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2Core\R2Core.vbproj">
+      <Project>{b0651d1e-73a2-4e74-8483-6fbc60831969}</Project>
+      <Name>R2Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewCarImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SavariImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TruckImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dowWREWRnload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FrmExitPic.jpg" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

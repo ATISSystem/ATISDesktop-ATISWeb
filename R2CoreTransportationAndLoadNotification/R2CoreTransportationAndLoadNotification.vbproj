@@ -1,0 +1,718 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EF77B294-2E31-4914-AF7B-289A6A1BF8DC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>R2CoreTransportationAndLoadNotification</RootNamespace>
+    <AssemblyName>R2CoreTransportationAndLoadNotification</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>R2CoreTransportationAndLoadNotification.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>R2CoreTransportationAndLoadNotification.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AlphaGradientPanel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CustomControls\AlphaGradientPanel_src\AlphaGradientPanel\AlphaGradientPanel\bin\Debug\AlphaGradientPanel.dll</HintPath>
+    </Reference>
+    <Reference Include="CButtonLib, Version=3.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CustomControls\CButton-Code\CButton\CButton\bin\Debug\CButtonLib.dll</HintPath>
+    </Reference>
+    <Reference Include="GroupBoxEx, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CustomControls\Custom GroupBox Class (GroupBoxEx)\VB\GroupBoxEx Demo\bin\Debug\GroupBoxEx.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="TWS">
+      <HintPath>..\..\..\..\TWSSystem\TerminalsSolution\TerminalsSolution\TWSClassLibrary\bin\Debug\TWS.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnnouncementHalls\UCAnnouncementHall.Designer.vb">
+      <DependentUpon>UCAnnouncementHall.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCAnnouncementHall.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCAnnouncementHallAnnounceTimeType.Designer.vb">
+      <DependentUpon>UCAnnouncementHallAnnounceTimeType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCAnnouncementHallAnnounceTimeType.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCAnnouncementHallSelection.Designer.vb">
+      <DependentUpon>UCAnnouncementHallSelection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCAnnouncementHallSelection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCAnnouncementHallSubGroup.Designer.vb">
+      <DependentUpon>UCAnnouncementHallSubGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCAnnouncementHallSubGroup.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCUCAnnouncementHallAnnounceTimeTypeCollection.Designer.vb">
+      <DependentUpon>UCUCAnnouncementHallAnnounceTimeTypeCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCUCAnnouncementHallAnnounceTimeTypeCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCUCAnnouncementHallCollection.Designer.vb">
+      <DependentUpon>UCUCAnnouncementHallCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCUCAnnouncementHallCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCUCAnnouncementHallSubGroupCollection.Designer.vb">
+      <DependentUpon>UCUCAnnouncementHallSubGroupCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCUCAnnouncementHallSubGroupCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCViewerNSSAnnouncementHall.Designer.vb">
+      <DependentUpon>UCViewerNSSAnnouncementHall.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCViewerNSSAnnouncementHall.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCViewerNSSAnnouncementHallAnnounceTimeType.Designer.vb">
+      <DependentUpon>UCViewerNSSAnnouncementHallAnnounceTimeType.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCViewerNSSAnnouncementHallAnnounceTimeType.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCViewerNSSAnnouncementHallSubGroup.Designer.vb">
+      <DependentUpon>UCViewerNSSAnnouncementHallSubGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHalls\UCViewerNSSAnnouncementHallSubGroup.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration Management\UCConfigurationOfAnnouncementHalls.Designer.vb">
+      <DependentUpon>UCConfigurationOfAnnouncementHalls.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration Management\UCConfigurationOfAnnouncementHalls.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Allocations\FrmcLoadAllocations.Designer.vb">
+      <DependentUpon>FrmcLoadAllocations.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\FrmcLoadAllocations.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Load Allocations\UCLoadAllocation.Designer.vb">
+      <DependentUpon>UCLoadAllocation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\UCLoadAllocation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Allocations\UCLoadAllocationManipulationByLoadAllocations.Designer.vb">
+      <DependentUpon>UCLoadAllocationManipulationByLoadAllocations.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\UCLoadAllocationManipulationByLoadAllocations.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Allocations\UCLoadAllocationManipulationByLoadCapacitorLoads.Designer.vb">
+      <DependentUpon>UCLoadAllocationManipulationByLoadCapacitorLoads.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\UCLoadAllocationManipulationByLoadCapacitorLoads.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Allocations\UCLoadAllocationManipulation.Designer.vb">
+      <DependentUpon>UCLoadAllocationManipulation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\UCLoadAllocationManipulation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Allocations\UCLoadAllocationsAutomation.Designer.vb">
+      <DependentUpon>UCLoadAllocationsAutomation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\UCLoadAllocationsAutomation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Allocations\UCLoadAllocationStatus.Designer.vb">
+      <DependentUpon>UCLoadAllocationStatus.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\UCLoadAllocationStatus.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Allocations\UCUCLoadAllocationCollection.Designer.vb">
+      <DependentUpon>UCUCLoadAllocationCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\UCUCLoadAllocationCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Allocations\UCUCLoadAllocationCollectionAdvance.Designer.vb">
+      <DependentUpon>UCUCLoadAllocationCollectionAdvance.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\UCUCLoadAllocationCollectionAdvance.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Allocations\UCUCLoadAllocationStatusCollection.Designer.vb">
+      <DependentUpon>UCUCLoadAllocationStatusCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\UCUCLoadAllocationStatusCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Allocations\UCViewerNSSLoadAllocationExtended.Designer.vb">
+      <DependentUpon>UCViewerNSSLoadAllocationExtended.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\UCViewerNSSLoadAllocationExtended.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Allocations\UCViewerNSSLoadAllocationStatus.Designer.vb">
+      <DependentUpon>UCViewerNSSLoadAllocationStatus.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\UCViewerNSSLoadAllocationStatus.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Capacitor\FrmcLoadCapacitor.Designer.vb">
+      <DependentUpon>FrmcLoadCapacitor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\FrmcLoadCapacitor.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Load Capacitor\UCLoadCapacitorLoad.Designer.vb">
+      <DependentUpon>UCLoadCapacitorLoad.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\UCLoadCapacitorLoad.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Capacitor\Accounting\UCLoadCapacitorLoadAccounting.Designer.vb">
+      <DependentUpon>UCLoadCapacitorLoadAccounting.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\Accounting\UCLoadCapacitorLoadAccounting.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Capacitor\UCViewerCurrentLoadsStatistics.Designer.vb">
+      <DependentUpon>UCViewerCurrentLoadsStatistics.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\UCViewerCurrentLoadsStatistics.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Capacitor\UCUCLoadCapacitorLoadCollectionAdvance.Designer.vb">
+      <DependentUpon>UCUCLoadCapacitorLoadCollectionAdvance.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\UCUCLoadCapacitorLoadCollectionAdvance.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Capacitor\UCLoadCapacitorLoadManipulation.Designer.vb">
+      <DependentUpon>UCLoadCapacitorLoadManipulation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\UCLoadCapacitorLoadManipulation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Capacitor\Accounting\UCUCLoadCapacitorAccountingCollection.Designer.vb">
+      <DependentUpon>UCUCLoadCapacitorAccountingCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\Accounting\UCUCLoadCapacitorAccountingCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Capacitor\UCUCLoadCapacitorLoadCollection.Designer.vb">
+      <DependentUpon>UCUCLoadCapacitorLoadCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\UCUCLoadCapacitorLoadCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Capacitor\UCViewerCurrentLoadsStatisticsSummary.Designer.vb">
+      <DependentUpon>UCViewerCurrentLoadsStatisticsSummary.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\UCViewerCurrentLoadsStatisticsSummary.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Capacitor\UCViewerNSSLoadCapacitorLoadDataEntry.Designer.vb">
+      <DependentUpon>UCViewerNSSLoadCapacitorLoadDataEntry.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\UCViewerNSSLoadCapacitorLoadDataEntry.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Capacitor\UCViewerNSSLoadCapacitorLoadExtended.Designer.vb">
+      <DependentUpon>UCViewerNSSLoadCapacitorLoadExtended.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\UCViewerNSSLoadCapacitorLoadExtended.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Permissions\FrmcLoadPermissions.Designer.vb">
+      <DependentUpon>FrmcLoadPermissions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Permissions\FrmcLoadPermissions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Load Permissions\UCLoadPermission.Designer.vb">
+      <DependentUpon>UCLoadPermission.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Permissions\UCLoadPermission.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Permissions\UCLoadPermissionCancellation.Designer.vb">
+      <DependentUpon>UCLoadPermissionCancellation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Permissions\UCLoadPermissionCancellation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Permissions\UCLoadPermissionCancellationByLoadPermissions.Designer.vb">
+      <DependentUpon>UCLoadPermissionCancellationByLoadPermissions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Permissions\UCLoadPermissionCancellationByLoadPermissions.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Permissions\UCLoadPermissionLocationSelection.Designer.vb">
+      <DependentUpon>UCLoadPermissionLocationSelection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Permissions\UCLoadPermissionLocationSelection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Permissions\UCLoadPermissionStatus.Designer.vb">
+      <DependentUpon>UCLoadPermissionStatus.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Permissions\UCLoadPermissionStatus.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Permissions\UCUCLoadPermissionCollection.Designer.vb">
+      <DependentUpon>UCUCLoadPermissionCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Permissions\UCUCLoadPermissionCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Permissions\UCUCLoadPermissionCollectionAdvance.Designer.vb">
+      <DependentUpon>UCUCLoadPermissionCollectionAdvance.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Permissions\UCUCLoadPermissionCollectionAdvance.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Permissions\UCUCLoadPermissionStatusCollection.Designer.vb">
+      <DependentUpon>UCUCLoadPermissionStatusCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Permissions\UCUCLoadPermissionStatusCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Permissions\UCViewerNSSLoadPermissionExtended.Designer.vb">
+      <DependentUpon>UCViewerNSSLoadPermissionExtended.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Permissions\UCViewerNSSLoadPermissionExtended.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Permissions\UCViewerNSSLoadPermissionStatus.Designer.vb">
+      <DependentUpon>UCViewerNSSLoadPermissionStatus.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Permissions\UCViewerNSSLoadPermissionStatus.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Sources\UCLabelMabdaeBar.Designer.vb">
+      <DependentUpon>UCLabelMabdaeBar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Sources\UCLabelMabdaeBar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Sources\UCSearcherLoadSources.Designer.vb">
+      <DependentUpon>UCSearcherLoadSources.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Sources\UCSearcherLoadSources.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Targets\UCLabelMaghsadeBar.Designer.vb">
+      <DependentUpon>UCLabelMaghsadeBar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Targets\UCLabelMaghsadeBar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Load Targets\UCSearcherLoadTargets.Designer.vb">
+      <DependentUpon>UCSearcherLoadTargets.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Targets\UCSearcherLoadTargets.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Loader Types\UCLabelNoeBargir.Designer.vb">
+      <DependentUpon>UCLabelNoeBargir.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Loader Types\UCLabelNoeBargir.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Loader Types\UCSearcherLoaderTypes.Designer.vb">
+      <DependentUpon>UCSearcherLoaderTypes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Loader Types\UCSearcherLoaderTypes.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Goods\UCLabelNoeBar.Designer.vb">
+      <DependentUpon>UCLabelNoeBar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Goods\UCLabelNoeBar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Goods\UCSearcherGoods.Designer.vb">
+      <DependentUpon>UCSearcherGoods.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Goods\UCSearcherGoods.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="R2CoreTransportationAndLoadNotification.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Transport Companies\UCLabelSherkatHamloNaghl.Designer.vb">
+      <DependentUpon>UCLabelSherkatHamloNaghl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transport Companies\UCLabelSherkatHamloNaghl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Transport Companies\UCSearcherTransportCompanies.Designer.vb">
+      <DependentUpon>UCSearcherTransportCompanies.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transport Companies\UCSearcherTransportCompanies.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Transport Companies\UCTransportCompany.Designer.vb">
+      <DependentUpon>UCTransportCompany.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transport Companies\UCTransportCompany.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Transport Companies\UCUCTransportCompanyCollection.Designer.vb">
+      <DependentUpon>UCUCTransportCompanyCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transport Companies\UCUCTransportCompanyCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Transport Companies\UCViewerNSSTransportComapny.Designer.vb">
+      <DependentUpon>UCViewerNSSTransportComapny.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transport Companies\UCViewerNSSTransportComapny.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Turns\UCSequentialTurn.Designer.vb">
+      <DependentUpon>UCSequentialTurn.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Turns\UCSequentialTurn.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Turns\UCTurn.Designer.vb">
+      <DependentUpon>UCTurn.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Turns\UCTurn.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Turns\UCUCSequentialTurnCollection.Designer.vb">
+      <DependentUpon>UCUCSequentialTurnCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Turns\UCUCSequentialTurnCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Turns\UCViewerNSSSequentialTurn.Designer.vb">
+      <DependentUpon>UCViewerNSSSequentialTurn.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Turns\UCViewerNSSSequentialTurn.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Turns\UCViewerNSSTurnDataEntry.Designer.vb">
+      <DependentUpon>UCViewerNSSTurnDataEntry.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Turns\UCViewerNSSTurnDataEntry.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AnnouncementHalls\UCAnnouncementHall.resx">
+      <DependentUpon>UCAnnouncementHall.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnnouncementHalls\UCAnnouncementHallAnnounceTimeType.resx">
+      <DependentUpon>UCAnnouncementHallAnnounceTimeType.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnnouncementHalls\UCAnnouncementHallSelection.resx">
+      <DependentUpon>UCAnnouncementHallSelection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnnouncementHalls\UCAnnouncementHallSubGroup.resx">
+      <DependentUpon>UCAnnouncementHallSubGroup.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnnouncementHalls\UCUCAnnouncementHallAnnounceTimeTypeCollection.resx">
+      <DependentUpon>UCUCAnnouncementHallAnnounceTimeTypeCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnnouncementHalls\UCUCAnnouncementHallCollection.resx">
+      <DependentUpon>UCUCAnnouncementHallCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnnouncementHalls\UCUCAnnouncementHallSubGroupCollection.resx">
+      <DependentUpon>UCUCAnnouncementHallSubGroupCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnnouncementHalls\UCViewerNSSAnnouncementHall.resx">
+      <DependentUpon>UCViewerNSSAnnouncementHall.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnnouncementHalls\UCViewerNSSAnnouncementHallAnnounceTimeType.resx">
+      <DependentUpon>UCViewerNSSAnnouncementHallAnnounceTimeType.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnnouncementHalls\UCViewerNSSAnnouncementHallSubGroup.resx">
+      <DependentUpon>UCViewerNSSAnnouncementHallSubGroup.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuration Management\UCConfigurationOfAnnouncementHalls.resx">
+      <DependentUpon>UCConfigurationOfAnnouncementHalls.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\FrmcLoadAllocations.resx">
+      <DependentUpon>FrmcLoadAllocations.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\UCLoadAllocation.resx">
+      <DependentUpon>UCLoadAllocation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\UCLoadAllocationManipulationByLoadAllocations.resx">
+      <DependentUpon>UCLoadAllocationManipulationByLoadAllocations.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\UCLoadAllocationManipulationByLoadCapacitorLoads.resx">
+      <DependentUpon>UCLoadAllocationManipulationByLoadCapacitorLoads.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\UCLoadAllocationManipulation.resx">
+      <DependentUpon>UCLoadAllocationManipulation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\UCLoadAllocationsAutomation.resx">
+      <DependentUpon>UCLoadAllocationsAutomation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\UCLoadAllocationStatus.resx">
+      <DependentUpon>UCLoadAllocationStatus.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\UCUCLoadAllocationCollection.resx">
+      <DependentUpon>UCUCLoadAllocationCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\UCUCLoadAllocationCollectionAdvance.resx">
+      <DependentUpon>UCUCLoadAllocationCollectionAdvance.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\UCUCLoadAllocationStatusCollection.resx">
+      <DependentUpon>UCUCLoadAllocationStatusCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\UCViewerNSSLoadAllocationExtended.resx">
+      <DependentUpon>UCViewerNSSLoadAllocationExtended.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\UCViewerNSSLoadAllocationStatus.resx">
+      <DependentUpon>UCViewerNSSLoadAllocationStatus.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\FrmcLoadCapacitor.resx">
+      <DependentUpon>FrmcLoadCapacitor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\UCLoadCapacitorLoad.resx">
+      <DependentUpon>UCLoadCapacitorLoad.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\Accounting\UCLoadCapacitorLoadAccounting.resx">
+      <DependentUpon>UCLoadCapacitorLoadAccounting.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\UCLoadCapacitorLoadManipulation.resx">
+      <DependentUpon>UCLoadCapacitorLoadManipulation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\Accounting\UCUCLoadCapacitorAccountingCollection.resx">
+      <DependentUpon>UCUCLoadCapacitorAccountingCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\UCViewerCurrentLoadsStatistics.resx">
+      <DependentUpon>UCViewerCurrentLoadsStatistics.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\UCUCLoadCapacitorLoadCollection.resx">
+      <DependentUpon>UCUCLoadCapacitorLoadCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\UCUCLoadCapacitorLoadCollectionAdvance.resx">
+      <DependentUpon>UCUCLoadCapacitorLoadCollectionAdvance.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\UCViewerCurrentLoadsStatisticsSummary.resx">
+      <DependentUpon>UCViewerCurrentLoadsStatisticsSummary.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\UCViewerNSSLoadCapacitorLoadDataEntry.resx">
+      <DependentUpon>UCViewerNSSLoadCapacitorLoadDataEntry.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\UCViewerNSSLoadCapacitorLoadExtended.resx">
+      <DependentUpon>UCViewerNSSLoadCapacitorLoadExtended.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Permissions\FrmcLoadPermissions.resx">
+      <DependentUpon>FrmcLoadPermissions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Permissions\UCLoadPermission.resx">
+      <DependentUpon>UCLoadPermission.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Permissions\UCLoadPermissionCancellation.resx">
+      <DependentUpon>UCLoadPermissionCancellation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Permissions\UCLoadPermissionCancellationByLoadPermissions.resx">
+      <DependentUpon>UCLoadPermissionCancellationByLoadPermissions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Permissions\UCLoadPermissionLocationSelection.resx">
+      <DependentUpon>UCLoadPermissionLocationSelection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Permissions\UCLoadPermissionStatus.resx">
+      <DependentUpon>UCLoadPermissionStatus.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Permissions\UCUCLoadPermissionCollection.resx">
+      <DependentUpon>UCUCLoadPermissionCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Permissions\UCUCLoadPermissionCollectionAdvance.resx">
+      <DependentUpon>UCUCLoadPermissionCollectionAdvance.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Permissions\UCUCLoadPermissionStatusCollection.resx">
+      <DependentUpon>UCUCLoadPermissionStatusCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Permissions\UCViewerNSSLoadPermissionExtended.resx">
+      <DependentUpon>UCViewerNSSLoadPermissionExtended.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Permissions\UCViewerNSSLoadPermissionStatus.resx">
+      <DependentUpon>UCViewerNSSLoadPermissionStatus.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Sources\UCLabelMabdaeBar.resx">
+      <DependentUpon>UCLabelMabdaeBar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Sources\UCSearcherLoadSources.resx">
+      <DependentUpon>UCSearcherLoadSources.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Targets\UCLabelMaghsadeBar.resx">
+      <DependentUpon>UCLabelMaghsadeBar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Targets\UCSearcherLoadTargets.resx">
+      <DependentUpon>UCSearcherLoadTargets.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Loader Types\UCLabelNoeBargir.resx">
+      <DependentUpon>UCLabelNoeBargir.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Loader Types\UCSearcherLoaderTypes.resx">
+      <DependentUpon>UCSearcherLoaderTypes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Goods\UCLabelNoeBar.resx">
+      <DependentUpon>UCLabelNoeBar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Goods\UCSearcherGoods.resx">
+      <DependentUpon>UCSearcherGoods.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transport Companies\UCLabelSherkatHamloNaghl.resx">
+      <DependentUpon>UCLabelSherkatHamloNaghl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transport Companies\UCSearcherTransportCompanies.resx">
+      <DependentUpon>UCSearcherTransportCompanies.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transport Companies\UCTransportCompany.resx">
+      <DependentUpon>UCTransportCompany.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transport Companies\UCUCTransportCompanyCollection.resx">
+      <DependentUpon>UCUCTransportCompanyCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transport Companies\UCViewerNSSTransportComapny.resx">
+      <DependentUpon>UCViewerNSSTransportComapny.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Turns\UCSequentialTurn.resx">
+      <DependentUpon>UCSequentialTurn.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Turns\UCTurn.resx">
+      <DependentUpon>UCTurn.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Turns\UCUCSequentialTurnCollection.resx">
+      <DependentUpon>UCUCSequentialTurnCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Turns\UCViewerNSSSequentialTurn.resx">
+      <DependentUpon>UCViewerNSSSequentialTurn.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Turns\UCViewerNSSTurnDataEntry.resx">
+      <DependentUpon>UCViewerNSSTurnDataEntry.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\R2CoreGUI\R2CoreGUI.vbproj">
+      <Project>{d9aef791-83e7-4238-bb9c-de0c57e0ed37}</Project>
+      <Name>R2CoreGUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2CoreParkingSystem\R2CoreParkingSystem.vbproj">
+      <Project>{68ee9753-9b39-4d0b-bfe5-0f941a5f183c}</Project>
+      <Name>R2CoreParkingSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2Core\R2Core.vbproj">
+      <Project>{b0651d1e-73a2-4e74-8483-6fbc60831969}</Project>
+      <Name>R2Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\qrcode.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

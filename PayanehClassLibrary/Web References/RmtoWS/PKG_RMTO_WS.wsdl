@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://xmlns.oracle.com/orawsv/TR_PUBLIC_WS/PKG_RMTO_WS" name="PKG_RMTO_WS" targetNamespace="http://xmlns.oracle.com/orawsv/TR_PUBLIC_WS/PKG_RMTO_WS" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="http://xmlns.oracle.com/orawsv/TR_PUBLIC_WS/PKG_RMTO_WS">
+      <xsd:element name="SVARCHAR2-RMTO_WEB_SERVICESInput">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="IN_USERNAME-VARCHAR2-IN" type="xsd:string" />
+            <xsd:element name="IN_SERVICEID-NUMBER-IN" type="xsd:double" />
+            <xsd:element name="IN_PASSWORD-VARCHAR2-IN" type="xsd:string" />
+            <xsd:element name="IN_PARAM_9-VARCHAR2-IN" type="xsd:string" />
+            <xsd:element name="IN_PARAM_8-VARCHAR2-IN" type="xsd:string" />
+            <xsd:element name="IN_PARAM_7-VARCHAR2-IN" type="xsd:string" />
+            <xsd:element name="IN_PARAM_6-VARCHAR2-IN" type="xsd:string" />
+            <xsd:element name="IN_PARAM_5-VARCHAR2-IN" type="xsd:string" />
+            <xsd:element name="IN_PARAM_4-VARCHAR2-IN" type="xsd:string" />
+            <xsd:element name="IN_PARAM_3-VARCHAR2-IN" type="xsd:string" />
+            <xsd:element name="IN_PARAM_2-VARCHAR2-IN" type="xsd:string" />
+            <xsd:element name="IN_PARAM_10-VARCHAR2-IN" type="xsd:string" />
+            <xsd:element name="IN_PARAM_1-VARCHAR2-IN" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RMTO_WEB_SERVICESOutput">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="RETURN" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </types>
+  <message name="RMTO_WEB_SERVICESInputMessage">
+    <part name="parameters" element="tns:SVARCHAR2-RMTO_WEB_SERVICESInput" />
+  </message>
+  <message name="RMTO_WEB_SERVICESOutputMessage">
+    <part name="parameters" element="tns:RMTO_WEB_SERVICESOutput" />
+  </message>
+  <portType name="PKG_RMTO_WSPortType">
+    <operation name="RMTO_WEB_SERVICES">
+      <input message="tns:RMTO_WEB_SERVICESInputMessage" />
+      <output message="tns:RMTO_WEB_SERVICESOutputMessage" />
+    </operation>
+  </portType>
+  <binding name="PKG_RMTO_WSBinding" type="tns:PKG_RMTO_WSPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="RMTO_WEB_SERVICES">
+      <soap:operation soapAction="RMTO_WEB_SERVICES" />
+      <input>
+        <soap:body use="literal" parts="parameters" />
+      </input>
+      <output>
+        <soap:body use="literal" parts="parameters" />
+      </output>
+    </operation>
+  </binding>
+  <service name="PKG_RMTO_WSService">
+    <documentation>Oracle Web Service</documentation>
+    <port name="PKG_RMTO_WSPort" binding="tns:PKG_RMTO_WSBinding">
+      <soap:address location="http://smartcard.rmto.ir:9090/orawsv/TR_PUBLIC_WS/PKG_RMTO_WS" />
+    </port>
+  </service>
+</definitions>
