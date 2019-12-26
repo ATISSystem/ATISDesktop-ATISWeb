@@ -21,8 +21,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PayanehWebService", "Payane
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "R2PrimaryWebService", "R2PrimaryWebService\R2PrimaryWebService.vbproj", "{AF20E2D6-768E-4A2A-ACA0-ED4225B75340}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "R2PrimaryWebApplication", "R2PrimaryWebApplication\R2PrimaryWebApplication.vbproj", "{0ECA98D0-30FE-4309-AAA8-CA6BEEB1C779}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "R2PrimaryFileSharingWebService", "R2PrimaryFileSharingWebService\R2PrimaryFileSharingWebService.vbproj", "{ABB67D05-310B-4C0A-8638-D55362CF5C21}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "R2PrimaryAttendance", "R2PrimaryAttendance\R2PrimaryAttendance.vbproj", "{6ABD3F56-A554-45B2-898C-EED7C83A79CE}"
@@ -30,8 +28,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PayanehAnnouncementHallMonitoring", "PayanehAnnouncementHallMonitoring\PayanehAnnouncementHallMonitoring.vbproj", "{20E90416-E58C-4B67-A97A-08750A0E28A0}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PAKTCRemoteApplication", "PayanehAmirKabirTransportCompaniesRemoteApplication\PAKTCRemoteApplication.vbproj", "{A5E42059-3610-43C8-BC27-450224731BBC}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "R2PrimaryAutomaticJobs", "R2PrimaryAutomaticJobs\R2PrimaryAutomaticJobs.vbproj", "{7851C95E-A6AE-4E49-81FE-EA774EC51B41}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "R2CoreTransportationAndLoadNotification", "R2CoreTransportationAndLoadNotification\R2CoreTransportationAndLoadNotification.vbproj", "{EF77B294-2E31-4914-AF7B-289A6A1BF8DC}"
 EndProject
@@ -81,10 +77,6 @@ Global
 		{AF20E2D6-768E-4A2A-ACA0-ED4225B75340}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF20E2D6-768E-4A2A-ACA0-ED4225B75340}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF20E2D6-768E-4A2A-ACA0-ED4225B75340}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0ECA98D0-30FE-4309-AAA8-CA6BEEB1C779}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0ECA98D0-30FE-4309-AAA8-CA6BEEB1C779}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0ECA98D0-30FE-4309-AAA8-CA6BEEB1C779}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0ECA98D0-30FE-4309-AAA8-CA6BEEB1C779}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ABB67D05-310B-4C0A-8638-D55362CF5C21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ABB67D05-310B-4C0A-8638-D55362CF5C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABB67D05-310B-4C0A-8638-D55362CF5C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -101,10 +93,6 @@ Global
 		{A5E42059-3610-43C8-BC27-450224731BBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5E42059-3610-43C8-BC27-450224731BBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5E42059-3610-43C8-BC27-450224731BBC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7851C95E-A6AE-4E49-81FE-EA774EC51B41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7851C95E-A6AE-4E49-81FE-EA774EC51B41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7851C95E-A6AE-4E49-81FE-EA774EC51B41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7851C95E-A6AE-4E49-81FE-EA774EC51B41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF77B294-2E31-4914-AF7B-289A6A1BF8DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF77B294-2E31-4914-AF7B-289A6A1BF8DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF77B294-2E31-4914-AF7B-289A6A1BF8DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
