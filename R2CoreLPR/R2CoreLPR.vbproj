@@ -49,14 +49,17 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge.Imaging">
-      <HintPath>..\..\Image Proccessing\Aforge System\AForge.net\AForge.NET Framework-2.2.4\Release\AForge.Imaging.dll</HintPath>
+    <Reference Include="AForge.Imaging, Version=2.2.4.0, Culture=neutral, PublicKeyToken=ba8ddea9676ca48b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\AForge.Imaging.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Neuro">
-      <HintPath>..\..\Image Proccessing\Aforge System\AForge.net\AForge.NET Framework-2.2.4\Release\AForge.Neuro.dll</HintPath>
+    <Reference Include="AForge.Neuro, Version=2.2.4.0, Culture=neutral, PublicKeyToken=2094f4ea39731d4f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\AForge.Neuro.dll</HintPath>
     </Reference>
-    <Reference Include="OtsuDll">
-      <HintPath>..\OtsuDll\bin\Debug\OtsuDll.dll</HintPath>
+    <Reference Include="OtsuDll, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\OtsuDll.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

@@ -49,6 +49,9 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dermalog.AFIS.Drawing.Compression">
+      <HintPath>C:\ATISDesktopRefrences\Dermalog.AFIS.Drawing.Compression.dll</HintPath>
+    </Reference>
     <Reference Include="Dermalog.AFIS.FingerCode3, Version=1.1.1204.19, Culture=neutral, PublicKeyToken=97cac07b8409e999, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\ATISDesktopRefrences\Dermalog.AFIS.FingerCode3.dll</HintPath>

@@ -52,72 +52,33 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge">
-      <HintPath>..\..\..\Solutions\OldSince13961012\Image Proccessing\Lab And Dll\Aforge.Net\AForge.NET2.2.4\Release\AForge.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Controls, Version=2.2.4.0, Culture=neutral, PublicKeyToken=a8ac264d1dc6b9d9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Solutions\OldSince13961012\Image Proccessing\Lab And Dll\Aforge.Net\AForge.NET2.2.4\Release\AForge.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Imaging">
-      <HintPath>..\..\..\Solutions\OldSince13961012\Image Proccessing\Lab And Dll\Aforge.Net\AForge.NET2.2.4\Release\AForge.Imaging.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Neuro">
-      <HintPath>..\..\..\Solutions\OldSince13961012\Image Proccessing\Lab And Dll\Aforge.Net\AForge.NET2.2.4\Release\AForge.Neuro.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Video, Version=2.2.4.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Solutions\OldSince13961012\Image Proccessing\Lab And Dll\Aforge.Net\AForge.NET2.2.4\Release\AForge.Video.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Video.DirectShow, Version=2.2.4.1, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Solutions\OldSince13961012\Image Proccessing\Lab And Dll\Aforge.Net\AForge.NET2.2.4\Release\AForge.Video.DirectShow.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Video.FFMPEG, Version=2.2.4.0, Culture=neutral, PublicKeyToken=03563089b1be05dd, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Solutions\OldSince13961012\Image Proccessing\Lab And Dll\Aforge.Net\AForge.NET2.2.4\Release\AForge.Video.FFMPEG.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Vision, Version=2.2.4.0, Culture=neutral, PublicKeyToken=b612fa915eefaa06, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Solutions\OldSince13961012\Image Proccessing\Lab And Dll\Aforge.Net\AForge.NET2.2.4\Release\AForge.Vision.dll</HintPath>
-    </Reference>
     <Reference Include="AlphaGradientPanel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CustomControls\AlphaGradientPanel_src\AlphaGradientPanel\AlphaGradientPanel\bin\Debug\AlphaGradientPanel.dll</HintPath>
+      <HintPath>C:\ATISDesktopRefrences\AlphaGradientPanel.dll</HintPath>
     </Reference>
-    <Reference Include="AxInterop.MSFlexGridLib">
-      <HintPath>..\ParkingSystem\bin\AxInterop.MSFlexGridLib.dll</HintPath>
-    </Reference>
-    <Reference Include="AxInterop.WMPLib">
-      <HintPath>..\ParkingSystem\bin\AxInterop.WMPLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CButtonLib">
-      <HintPath>..\..\CustomControls\CButton-Code\CButton\CButton\bin\Debug\CButtonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CodeVendor.Controls">
-      <HintPath>..\..\CustomControls\thegrouper\TestHarness\bin\Debug\CodeVendor.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="Dermalog.AFIS.Drawing.Compression">
-      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.AFIS.Drawing.Compression.dll</HintPath>
+    <Reference Include="CButtonLib, Version=3.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\CButtonLib.dll</HintPath>
     </Reference>
     <Reference Include="Dermalog.AFIS.FingerCode3, Version=1.1.1204.19, Culture=neutral, PublicKeyToken=97cac07b8409e999, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.AFIS.FingerCode3.dll</HintPath>
+      <HintPath>C:\ATISDesktopRefrences\Dermalog.AFIS.FingerCode3.dll</HintPath>
     </Reference>
-    <Reference Include="Dermalog.AFIS.FourprintSegmentation">
-      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.AFIS.FourprintSegmentation.dll</HintPath>
+    <Reference Include="Dermalog.AFIS.FourprintSegmentation, Version=2.0.1004.2, Culture=neutral, PublicKeyToken=ef55bea453c09cea, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\Dermalog.AFIS.FourprintSegmentation.dll</HintPath>
     </Reference>
-    <Reference Include="Dermalog.AFIS.NFIQ">
-      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.AFIS.NFIQ.dll</HintPath>
+    <Reference Include="Dermalog.AFIS.NFIQ, Version=2.0.1111.1, Culture=neutral, PublicKeyToken=c55ae690a9eb3838, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\Dermalog.AFIS.NFIQ.dll</HintPath>
     </Reference>
-    <Reference Include="Dermalog.Imaging.Capturing">
-      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.Imaging.Capturing.dll</HintPath>
+    <Reference Include="Dermalog.Imaging.Capturing, Version=2.2.1322.13, Culture=neutral, PublicKeyToken=d215f80b62562526, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\Dermalog.Imaging.Capturing.dll</HintPath>
     </Reference>
-    <Reference Include="gLabel">
-      <HintPath>..\..\CustomControls\glabel\gLabel Code\gLabel\bin\Debug\gLabel.dll</HintPath>
-    </Reference>
-    <Reference Include="GroupBoxEx">
-      <HintPath>..\..\CustomControls\Custom GroupBox Class (GroupBoxEx)\VB\GroupBoxEx Demo\bin\Debug\GroupBoxEx.dll</HintPath>
+    <Reference Include="gLabel, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\gLabel.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ReportViewer.2015.Runtime.12.0.2.2402\lib\Microsoft.ReportViewer.Common.dll</HintPath>
@@ -127,24 +88,24 @@
       <HintPath>..\packages\Microsoft.ReportViewer.WinForms.v12.12.0.0.1\lib\Microsoft.ReportViewer.WinForms.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PersianDate">
-      <HintPath>..\..\CustomControls\PersianDate\PersianDate\PersianDate\PersianDate\bin\Debug\PersianDate.dll</HintPath>
+    <Reference Include="PersianDate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\PersianDate.dll</HintPath>
     </Reference>
     <Reference Include="R2CoreLPR">
       <HintPath>..\R2CoreLPRecognizer\bin\Debug\R2CoreLPR.dll</HintPath>
     </Reference>
-    <Reference Include="SMSCore">
-      <HintPath>..\..\..\..\SmsSystem\SmsSystem Solution\SMSClassLibrary\bin\Debug\SMSCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Suprema.UFDatabase">
-      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFDatabase.dll</HintPath>
+    <Reference Include="Suprema.UFDatabase, Version=3.5.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\Suprema.UFDatabase.dll</HintPath>
     </Reference>
     <Reference Include="Suprema.UFMatcher, Version=3.5.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFMatcher.dll</HintPath>
+      <HintPath>C:\ATISDesktopRefrences\Suprema.UFMatcher.dll</HintPath>
     </Reference>
-    <Reference Include="Suprema.UFScanner">
-      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFScanner.dll</HintPath>
+    <Reference Include="Suprema.UFScanner, Version=3.5.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\Suprema.UFScanner.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -157,11 +118,13 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="UI.Glass.Panel">
-      <HintPath>..\..\..\UtilityAndPrograms\UI.Glass.Panel.dll</HintPath>
+    <Reference Include="UI.Glass.Panel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\UI.Glass.Panel.dll</HintPath>
     </Reference>
-    <Reference Include="WindowsHookLib">
-      <HintPath>..\..\..\UtilityAndPrograms\WindowsHookLib\Windows Hook Library (Any CPU)\Windows Hook Library (Any CPU)\WindowsHookLib.dll</HintPath>
+    <Reference Include="WindowsHookLib, Version=1.1.1.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\WindowsHookLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

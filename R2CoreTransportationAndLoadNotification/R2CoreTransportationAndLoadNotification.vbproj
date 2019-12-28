@@ -46,15 +46,11 @@
   <ItemGroup>
     <Reference Include="AlphaGradientPanel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CustomControls\AlphaGradientPanel_src\AlphaGradientPanel\AlphaGradientPanel\bin\Debug\AlphaGradientPanel.dll</HintPath>
+      <HintPath>C:\ATISDesktopRefrences\AlphaGradientPanel.dll</HintPath>
     </Reference>
     <Reference Include="CButtonLib, Version=3.0.6.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CustomControls\CButton-Code\CButton\CButton\bin\Debug\CButtonLib.dll</HintPath>
-    </Reference>
-    <Reference Include="GroupBoxEx, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CustomControls\Custom GroupBox Class (GroupBoxEx)\VB\GroupBoxEx Demo\bin\Debug\GroupBoxEx.dll</HintPath>
+      <HintPath>C:\ATISDesktopRefrences\CButtonLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -68,8 +64,9 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="TWS">
-      <HintPath>..\..\..\..\TWSSystem\TerminalsSolution\TerminalsSolution\TWSClassLibrary\bin\Debug\TWS.dll</HintPath>
+    <Reference Include="TWS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\TWS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

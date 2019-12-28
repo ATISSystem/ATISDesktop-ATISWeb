@@ -48,43 +48,8 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge.Controls">
-      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Imaging">
-      <HintPath>..\..\..\Solutions\OldSince13961012\Image Proccessing\Lab And Dll\Aforge.Net\AForge.NET2.2.4\Release\AForge.Imaging.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Video">
-      <HintPath>..\..\..\Solutions\OldSince13961012\Image Proccessing\Lab And Dll\Aforge.Net\AForge.NET2.2.4\Release\AForge.Video.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Video.DirectShow">
-      <HintPath>..\..\..\Solutions\OldSince13961012\Image Proccessing\Lab And Dll\Aforge.Net\AForge.NET2.2.4\Release\AForge.Video.DirectShow.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Vision">
-      <HintPath>..\..\..\Solutions\OldSince13961012\Image Proccessing\Lab And Dll\Aforge.Net\AForge.NET2.2.4\Release\AForge.Vision.dll</HintPath>
-    </Reference>
-    <Reference Include="AxInterop.MSFlexGridLib">
-      <HintPath>..\R2CoreGUI\bin\Debug\AxInterop.MSFlexGridLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Dermalog.AFIS.FingerCode3, Version=1.1.1204.19, Culture=neutral, PublicKeyToken=97cac07b8409e999, processorArchitecture=MSIL" />
-    <Reference Include="Dermalog.AFIS.FourprintSegmentation">
-      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.AFIS.FourprintSegmentation.dll</HintPath>
-    </Reference>
-    <Reference Include="Dermalog.AFIS.NFIQ">
-      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.AFIS.NFIQ.dll</HintPath>
-    </Reference>
-    <Reference Include="Dermalog.Imaging.Capturing">
-      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.Imaging.Capturing.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="R2CoreLPR">
       <HintPath>..\R2CoreLPR\bin\Debug\R2CoreLPR.dll</HintPath>
-    </Reference>
-    <Reference Include="Suprema.UFMatcher">
-      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFMatcher.dll</HintPath>
-    </Reference>
-    <Reference Include="Suprema.UFScanner">
-      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFScanner.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -97,12 +62,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="UI.Glass.Panel">
-      <HintPath>..\..\..\UtilityAndPrograms\UI.Glass.Panel.dll</HintPath>
-    </Reference>
-    <Reference Include="WindowsHookLib">
-      <HintPath>..\..\..\UtilityAndPrograms\WindowsHookLib\Windows Hook Library (Any CPU)\Windows Hook Library (Any CPU)\WindowsHookLib.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />

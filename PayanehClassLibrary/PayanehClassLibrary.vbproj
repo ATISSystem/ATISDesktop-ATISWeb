@@ -44,39 +44,17 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge.Controls, Version=2.2.4.0, Culture=neutral, PublicKeyToken=a8ac264d1dc6b9d9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Controls.dll</HintPath>
-    </Reference>
     <Reference Include="AlphaGradientPanel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CustomControls\AlphaGradientPanel_src\AlphaGradientPanel\AlphaGradientPanel\bin\Debug\AlphaGradientPanel.dll</HintPath>
+      <HintPath>C:\ATISDesktopRefrences\AlphaGradientPanel.dll</HintPath>
     </Reference>
     <Reference Include="Dermalog.AFIS.FingerCode3, Version=1.1.1204.19, Culture=neutral, PublicKeyToken=97cac07b8409e999, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.AFIS.FingerCode3.dll</HintPath>
+      <HintPath>C:\ATISDesktopRefrences\Dermalog.AFIS.FingerCode3.dll</HintPath>
     </Reference>
-    <Reference Include="Dermalog.AFIS.FourprintSegmentation">
-      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.AFIS.FourprintSegmentation.dll</HintPath>
-    </Reference>
-    <Reference Include="Dermalog.AFIS.NFIQ, Version=2.0.1111.1, Culture=neutral, PublicKeyToken=c55ae690a9eb3838, processorArchitecture=MSIL">
+    <Reference Include="Dermalog.AFIS.FourprintSegmentation, Version=2.0.1004.2, Culture=neutral, PublicKeyToken=ef55bea453c09cea, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\R2CoreFingerPrint\bin\Debug\Dermalog.AFIS.NFIQ.dll</HintPath>
-    </Reference>
-    <Reference Include="Dermalog.Imaging.Capturing">
-      <HintPath>..\..\..\..\FingerPrint\Dernalog\Dermalog\ComponentSystem\.Net\v2.0\Dermalog.Imaging.Capturing.dll</HintPath>
-    </Reference>
-    <Reference Include="GroupBoxEx">
-      <HintPath>..\..\CustomControls\Custom GroupBox Class (GroupBoxEx)\VB\GroupBoxEx Demo\bin\Debug\GroupBoxEx.dll</HintPath>
-    </Reference>
-    <Reference Include="Suprema.UFDatabase">
-      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFDatabase.dll</HintPath>
-    </Reference>
-    <Reference Include="Suprema.UFMatcher">
-      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFMatcher.dll</HintPath>
-    </Reference>
-    <Reference Include="Suprema.UFScanner">
-      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFScanner.dll</HintPath>
+      <HintPath>C:\ATISDesktopRefrences\Dermalog.AFIS.FourprintSegmentation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -94,11 +72,11 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="TWS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\TWS System\TerminalsSolution\TWSClassLibrary\bin\Debug\TWS.dll</HintPath>
+      <HintPath>C:\ATISDesktopRefrences\TWS.dll</HintPath>
     </Reference>
     <Reference Include="UI.Glass.Panel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\UtilityAndPrograms\UI.Glass.Panel.dll</HintPath>
+      <HintPath>C:\ATISDesktopRefrences\UI.Glass.Panel.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

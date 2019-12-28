@@ -44,57 +44,48 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge">
-      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.dll</HintPath>
+    <Reference Include="AForge, Version=2.2.4.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\AForge.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Controls">
-      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Controls.dll</HintPath>
+    <Reference Include="AForge.Controls, Version=2.2.4.0, Culture=neutral, PublicKeyToken=a8ac264d1dc6b9d9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\AForge.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Imaging">
-      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Imaging.dll</HintPath>
+    <Reference Include="AForge.Imaging, Version=2.2.4.0, Culture=neutral, PublicKeyToken=ba8ddea9676ca48b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\AForge.Imaging.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Neuro">
-      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Neuro.dll</HintPath>
+    <Reference Include="AForge.Neuro, Version=2.2.4.0, Culture=neutral, PublicKeyToken=2094f4ea39731d4f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\AForge.Neuro.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Video">
-      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Video.dll</HintPath>
+    <Reference Include="AForge.Video, Version=2.2.4.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\AForge.Video.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Video.DirectShow">
-      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Video.DirectShow.dll</HintPath>
+    <Reference Include="AForge.Video.DirectShow, Version=2.2.4.1, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Vision">
-      <HintPath>..\..\..\ParkingSystem\ParkingSystem\bin\AForge.Vision.dll</HintPath>
+    <Reference Include="AForge.Video.FFMPEG">
+      <HintPath>C:\ATISDesktopRefrences\AForge.Video.FFMPEG.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Vision, Version=2.2.4.0, Culture=neutral, PublicKeyToken=b612fa915eefaa06, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\AForge.Vision.dll</HintPath>
     </Reference>
     <Reference Include="AlphaGradientPanel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CustomControls\AlphaGradientPanel_src\AlphaGradientPanel\AlphaGradientPanel\bin\Debug\AlphaGradientPanel.dll</HintPath>
+      <HintPath>C:\ATISDesktopRefrences\AlphaGradientPanel.dll</HintPath>
     </Reference>
-    <Reference Include="AxInterop.MSFlexGridLib">
-      <HintPath>..\R2CoreGUI\bin\Debug\AxInterop.MSFlexGridLib.dll</HintPath>
-    </Reference>
-    <Reference Include="CButtonLib">
-      <HintPath>..\..\CustomControls\CButton-Code\CButton\CButton\bin\Debug\CButtonLib.dll</HintPath>
+    <Reference Include="CButtonLib, Version=3.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\CButtonLib.dll</HintPath>
     </Reference>
     <Reference Include="gLabel, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CustomControls\glabel\gLabel Code\gLabel\bin\Debug\gLabel.dll</HintPath>
-    </Reference>
-    <Reference Include="GroupBoxEx, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CustomControls\Custom GroupBox Class (GroupBoxEx)\VB\GroupBoxEx Demo\bin\Debug\GroupBoxEx.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.ReportViewer.WinForms.10.0.40219.1\lib\Microsoft.ReportViewer.WinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Suprema.UFDatabase">
-      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFDatabase.dll</HintPath>
-    </Reference>
-    <Reference Include="Suprema.UFMatcher">
-      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFMatcher.dll</HintPath>
-    </Reference>
-    <Reference Include="Suprema.UFScanner">
-      <HintPath>C:\Program Files (x86)\Suprema\UFE35\bin\Suprema.UFScanner.dll</HintPath>
+      <HintPath>C:\ATISDesktopRefrences\gLabel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -108,9 +99,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="UI.Glass.Panel">
-      <HintPath>..\..\..\UtilityAndPrograms\UI.Glass.Panel.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
