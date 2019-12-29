@@ -824,10 +824,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://37.255.209.4:2010/TerminalsWebService.asmx">
+    <WebReferenceUrl Include="http://172.26.29.16:2010/TerminalsWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\TerminalsWebService\</RelPath>
-      <UpdateFromURL>http://37.255.209.4:2010/TerminalsWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://172.26.29.16:2010/TerminalsWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -835,10 +835,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>PayanehClassLibrary_TerminalsWebService_TerminalsWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://LocalHost:10919/PayanehWebService.asmx">
+    <WebReferenceUrl Include="http://172.26.29.16:2012/PayanehWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\PayanehWS\</RelPath>
-      <UpdateFromURL>http://LocalHost:10919/PayanehWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://172.26.29.16:2012/PayanehWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
