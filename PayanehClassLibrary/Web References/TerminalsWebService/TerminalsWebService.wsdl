@@ -904,10 +904,10 @@
   </wsdl:binding>
   <wsdl:service name="TerminalsWebService">
     <wsdl:port name="TerminalsWebServiceSoap" binding="tns:TerminalsWebServiceSoap">
-      <soap:address location="http://37.255.209.4:2010/TerminalsWebService.asmx" />
+      <soap:address location="http://172.26.29.16:2010/TerminalsWebService.asmx" />
     </wsdl:port>
     <wsdl:port name="TerminalsWebServiceSoap12" binding="tns:TerminalsWebServiceSoap12">
-      <soap12:address location="http://37.255.209.4:2010/TerminalsWebService.asmx" />
+      <soap12:address location="http://172.26.29.16:2010/TerminalsWebService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
