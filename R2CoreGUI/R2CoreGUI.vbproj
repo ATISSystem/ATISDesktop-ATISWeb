@@ -517,6 +517,24 @@
     <Compile Include="Logging Management\UCUCLogCollection.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="MonetarySupply\MonetaryCreditSupplySources\UCMonetaryCreditSupplySource.Designer.vb">
+      <DependentUpon>UCMonetaryCreditSupplySource.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MonetarySupply\MonetaryCreditSupplySources\UCMonetaryCreditSupplySource.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonetarySupply\MonetaryCreditSupplySources\UCUCMonetaryCreditSupplySourceCollection.Designer.vb">
+      <DependentUpon>UCUCMonetaryCreditSupplySourceCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MonetarySupply\MonetaryCreditSupplySources\UCUCMonetaryCreditSupplySourceCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonetarySupply\MonetaryCreditSupplySources\UCViewerNSSMonetaryCreditSupplySource.Designer.vb">
+      <DependentUpon>UCViewerNSSMonetaryCreditSupplySource.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MonetarySupply\MonetaryCreditSupplySources\UCViewerNSSMonetaryCreditSupplySource.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="PC Power Management\UCShutDown.Designer.vb">
       <DependentUpon>UCShutDown.vb</DependentUpon>
     </Compile>
@@ -800,6 +818,15 @@
     <EmbeddedResource Include="Logging Management\UCUCLogCollection.resx">
       <DependentUpon>UCUCLogCollection.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MonetarySupply\MonetaryCreditSupplySources\UCMonetaryCreditSupplySource.resx">
+      <DependentUpon>UCMonetaryCreditSupplySource.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonetarySupply\MonetaryCreditSupplySources\UCUCMonetaryCreditSupplySourceCollection.resx">
+      <DependentUpon>UCUCMonetaryCreditSupplySourceCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonetarySupply\MonetaryCreditSupplySources\UCViewerNSSMonetaryCreditSupplySource.resx">
+      <DependentUpon>UCViewerNSSMonetaryCreditSupplySource.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PC Power Management\UCShutDown.resx">
       <DependentUpon>UCShutDown.vb</DependentUpon>
     </EmbeddedResource>
@@ -885,6 +912,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Audio Video Management\" />
+    <Folder Include="MonetarySupply\MonetarySettingTools\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\catchalltheerrors.png" />

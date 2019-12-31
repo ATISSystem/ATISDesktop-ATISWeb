@@ -2101,6 +2101,9 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property InvalidRFIDCards As Int64 = 49
         Public Shared ReadOnly Property UCUCComputerMessageCollection As Int64 = 50
         Public Shared ReadOnly Property GovernmentVat As Int64 = 60
+        Public Shared ReadOnly Property MonetaryCreditSupplySources As Int64 = 65
+        Public Shared ReadOnly Property MonetarySettingTools As Int64 = 66
+        Public Shared ReadOnly Property AttachedPoses As Int64 = 67
 
 
 
