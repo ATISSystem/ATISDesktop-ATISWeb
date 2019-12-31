@@ -105,6 +105,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="R2ClassLibrary-Partial.vb" />
     <Compile Include="R2ClassLibrary.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

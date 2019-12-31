@@ -1,0 +1,5 @@
+﻿
+
+Namespace MonetaryProviding
+
+End Namespace

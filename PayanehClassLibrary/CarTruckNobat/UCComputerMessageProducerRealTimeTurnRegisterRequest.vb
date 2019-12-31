@@ -74,10 +74,12 @@ Public Class UCComputerMessageProducerRealTimeTurnRegisterRequest
 
         Try
             UcCarImage.UCViewCarEnterExitImage(UcCar.UCGetNSS())
+        Catch ex As Exception
+        End Try
+        Try
             UcDriverImage.UCViewDriverImage(PayanehClassLibrary.DriverTrucksManagement.PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(R2CoreParkingSystem.Cars.R2CoreParkingSystemMClassCars.GetnIdPersonFirst(CarId)).NSSDriver)
         Catch ex As Exception
         End Try
-
         UCSendIsActive = True
     End Sub
 

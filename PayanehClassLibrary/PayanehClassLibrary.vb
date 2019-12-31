@@ -1136,7 +1136,7 @@ Namespace TurnRegisterRequest
                 'کنترل موجودی کیف پول برای هزینه صدور نوبت - درصورتی که موجودی کافی نباشداکسپشن پرتاب می گردد 
                 If YourMoneyWalletInventoryControl Then If Not IsMoneyWalletInventoryIsEnoughForTurnRegistering(NSSTrafficCard) Then Throw New MoneyWalletCurrentChargeNotEnoughException
                 'ثبت درخواست صدور نوبت اضطراری
-                Dim TurnRegisterRequestId = R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.TurnRegisterRequestRegistering(New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(Nothing, TurnRegisterRequestTypes.Emergency, YourNSSTruck.NSSCar.nIdCar, R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.GetNSSTurnRegisterRequestType(TurnRegisterRequestTypes.Emergency).TRRTypeTitle  & " " & YourEmergencyTurnRegisterRequestNote, Nothing, Nothing, Nothing, Nothing), Nothing)
+                Dim TurnRegisterRequestId = R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.TurnRegisterRequestRegistering(New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(Nothing, TurnRegisterRequestTypes.Emergency, YourNSSTruck.NSSCar.nIdCar, R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.GetNSSTurnRegisterRequestType(TurnRegisterRequestTypes.Emergency).TRRTypeTitle & " " & YourEmergencyTurnRegisterRequestNote, Nothing, Nothing, Nothing, Nothing), Nothing)
                 'ارسال پیام تایید درخواست صدور نوبت اضطراری
                 Dim DataStruct As DataStruct = New DataStruct()
                 DataStruct.Data1 = YourNSSTruck.NSSCar.nIdCar
@@ -2823,7 +2823,11 @@ Namespace ReportsManagement
                     Dim nEstelamIdMax As Int64 = Ds.Tables(0).Select("", "nEstelamId Desc")(0)(0)
                     Dim nEstelamIdMin As Int64 = Ds.Tables(0).Select("", "nEstelamId Asc")(0)(0)
                     Dim DaLoadPermission As New SqlClient.SqlDataAdapter : Dim DsLoadPermission As New DataSet
-                    DaLoadPermission.SelectCommand = New SqlCommand("Select nEstelamId,StrExitDate,StrExitTime,StrDriverName from DBTransport.dbo.TbEnterExit Where nEstelamId>=" & nEstelamIdMin & " and nEstelamId<=" & nEstelamIdMax & " and bFlag=1 and bFlagDriver=1")
+                    DaLoadPermission.SelectCommand = New SqlCommand("
+                         Select LoadPermissions.nEstelamId,LoadPermissions.StrExitDate,LoadPermissions.StrExitTime,LoadPermissions.StrDriverName,Cars.strCarNo,Cars.strCarSerialNo 
+                         from DBTransport.dbo.TbEnterExit as LoadPermissions
+                         Inner Join dbtransport.dbo.TbCar as Cars On  LoadPermissions.strCardno=Cars.nIDCar 
+                         Where nEstelamId>=" & nEstelamIdMin & " and nEstelamId<=" & nEstelamIdMax & " and bFlag=1 and bFlagDriver=1")
                     DaLoadPermission.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
                     DaLoadPermission.Fill(DsLoadPermission)
 
@@ -2851,13 +2855,12 @@ Namespace ReportsManagement
                         For LoopPermissions As Int64 = 0 To LoadPermissions.Count() - 1
                             CompositStringDate = CompositStringDate & LoadPermissions(LoopPermissions)(1).trim & vbCrLf
                             CompositStringTime = CompositStringTime & LoadPermissions(LoopPermissions)(2).trim & vbCrLf
-                            CompositStringDriverName = CompositStringDriverName & LoadPermissions(LoopPermissions)(3).trim & vbCrLf
+                            Dim Truck As String = LoadPermissions(LoopPermissions)(4).trim + " - " + LoadPermissions(LoopPermissions)(5).trim
+                            CompositStringDriverName = CompositStringDriverName & LoadPermissions(LoopPermissions)(3).trim & " " & Truck & vbCrLf
                         Next
-
                         CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(nEstelamId,StrGoodName,StrCityName,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,StrCarName,StrExitDate,StrExitTime,StrDriverName) values(" & mynEstelamid & ",'" & myStrGoodName & "','" & myStrCityName & "'," & mynCarNumKol & ",'" & myCompanyName & "','" & myStrPriceSug & "','" & myStrDescription & "','" & myStrAddress & "','" & myStrBarname & "','" & mydDateElam & "','" & mydTimeElam & "','" & myStrCarName & "','" & CompositStringDate & "','" & CompositStringTime & "','" & CompositStringDriverName & "')"
                         CmdSql.ExecuteNonQuery()
                     Next
-
                 End If
 
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -3403,19 +3406,20 @@ Namespace ReportsManagement
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
             Try
+                Dim AnnouncementHall As String = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHall(YourAHId).AHTitle
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblSedimentedLoadsReport" : CmdSql.ExecuteNonQuery()
                 If YourSedimentedLoadReportType = SedimentedLoadsReportType.ByTransportCompanyTargetCity Then
                     CmdSql.CommandText = "
                   Insert Into R2PrimaryReports.dbo.TblSedimentedLoadsReport
-                   Select TargetCity.strCityName,TransportCompanies.strCompName,Sum(SedimentedAmount)  as SedimentedAmount from 
-                     (Select LoadCapacitor.nEstelamID,LoadCapacitor.nCompCode,LoadCapacitor.nCityCode,(LoadCapacitor.nCarNumKol-LoadPermissions.ReleasedAmount) as SedimentedAmount,LoadCapacitor.dDateElam from dbtransport.dbo.tbElam as LoadCapacitor
+                   Select TargetCity.strCityName,TransportCompanies.strCompName,Sum(SedimentedAmount)  as SedimentedAmount,Sum(AnnouncedAmount) as AnnouncedAmount,'" & AnnouncementHall & "','" & YourDate1.DateShamsiFull & "','" & YourDate2.DateShamsiFull & "' from 
+                     (Select LoadCapacitor.nEstelamID,LoadCapacitor.nCompCode,LoadCapacitor.nCityCode,(LoadCapacitor.nCarNumKol-LoadPermissions.ReleasedAmount) as SedimentedAmount,LoadCapacitor.nCarNumKol as AnnouncedAmount,LoadCapacitor.dDateElam from dbtransport.dbo.tbElam as LoadCapacitor
                        Inner Join (Select nEstelamID,Count(*) as ReleasedAmount from dbtransport.dbo.tbEnterExit as LoadPermissions Group By LoadPermissions.nEstelamID) as LoadPermissions On LoadCapacitor.nEstelamID=LoadPermissions.nEstelamID 
-                      Where LoadCapacitor.nCarNumKol>LoadPermissions.ReleasedAmount and LoadCapacitor.dDateElam>='" & YourDate1.DateShamsiFull & "' and LoadCapacitor.dDateElam<='" & YourDate2.DateShamsiFull & "' and LoadCapacitor.AHId=" & YourAHId & "
+                      Where LoadCapacitor.nCarNumKol>LoadPermissions.ReleasedAmount and LoadCapacitor.dDateElam>='" & YourDate1.DateShamsiFull & "' and LoadCapacitor.dDateElam<='" & YourDate2.DateShamsiFull & "' and LoadCapacitor.AHId=" & YourAHId & " and LoadCapacitor.LoadStatus<>4 and LoadCapacitor.LoadStatus<>3
                       Union
-                      Select LoadCapacitor.nEstelamID,LoadCapacitor.nCompCode,LoadCapacitor.nCityCode,LoadCapacitor.nCarNumKol as SedimentedAmount,LoadCapacitor.dDateElam from dbtransport.dbo.tbElam as LoadCapacitor
-                      Where isnull(LoadCapacitor.dDateExit,'')='' and LoadCapacitor.dDateElam>='" & YourDate1.DateShamsiFull & "' and LoadCapacitor.dDateElam<='" & YourDate2.DateShamsiFull & "' and LoadCapacitor.AHId=" & YourAHId & ") as DataBox
+                      Select LoadCapacitor.nEstelamID,LoadCapacitor.nCompCode,LoadCapacitor.nCityCode,LoadCapacitor.nCarNumKol as SedimentedAmount,LoadCapacitor.nCarNumKol as AnnouncedAmount,LoadCapacitor.dDateElam from dbtransport.dbo.tbElam as LoadCapacitor
+                      Where isnull(LoadCapacitor.dDateExit,'')='' and LoadCapacitor.dDateElam>='" & YourDate1.DateShamsiFull & "' and LoadCapacitor.dDateElam<='" & YourDate2.DateShamsiFull & "' and LoadCapacitor.AHId=" & YourAHId & " and LoadCapacitor.LoadStatus<>4 and LoadCapacitor.LoadStatus<>3) as DataBox
                    Inner Join dbtransport.dbo.tbCompany as TransportCompanies On DataBox.nCompCode=TransportCompanies.nCompCode
                    Inner Join dbtransport.dbo.tbCity as TargetCity On DataBox.nCityCode=TargetCity.nCityCode  
                    Group By strCompName,strCityName
@@ -3423,13 +3427,13 @@ Namespace ReportsManagement
                 ElseIf YourSedimentedLoadReportType = SedimentedLoadsReportType.ByTargetCity Then
                     CmdSql.CommandText = "
                   Insert Into R2PrimaryReports.dbo.TblSedimentedLoadsReport
-                   Select TargetCity.strCityName,'',Sum(SedimentedAmount)  as SedimentedAmount from 
-                     (Select LoadCapacitor.nEstelamID,LoadCapacitor.nCompCode,LoadCapacitor.nCityCode,(LoadCapacitor.nCarNumKol-LoadPermissions.ReleasedAmount) as SedimentedAmount,LoadCapacitor.dDateElam from dbtransport.dbo.tbElam as LoadCapacitor
+                   Select TargetCity.strCityName,'',Sum(SedimentedAmount)  as SedimentedAmount,Sum(AnnouncedAmount) as AnnouncedAmount,'" & AnnouncementHall & "','" & YourDate1.DateShamsiFull & "','" & YourDate2.DateShamsiFull & "' from 
+                     (Select LoadCapacitor.nEstelamID,LoadCapacitor.nCompCode,LoadCapacitor.nCityCode,(LoadCapacitor.nCarNumKol-LoadPermissions.ReleasedAmount) as SedimentedAmount,LoadCapacitor.nCarNumKol as AnnouncedAmount,LoadCapacitor.dDateElam from dbtransport.dbo.tbElam as LoadCapacitor
                        Inner Join (Select nEstelamID,Count(*) as ReleasedAmount from dbtransport.dbo.tbEnterExit as LoadPermissions Group By LoadPermissions.nEstelamID) as LoadPermissions On LoadCapacitor.nEstelamID=LoadPermissions.nEstelamID 
-                      Where LoadCapacitor.nCarNumKol>LoadPermissions.ReleasedAmount and LoadCapacitor.dDateElam>='" & YourDate1.DateShamsiFull & "' and LoadCapacitor.dDateElam<='" & YourDate2.DateShamsiFull & "' and LoadCapacitor.AHId=" & YourAHId & "
+                      Where LoadCapacitor.nCarNumKol>LoadPermissions.ReleasedAmount and LoadCapacitor.dDateElam>='" & YourDate1.DateShamsiFull & "' and LoadCapacitor.dDateElam<='" & YourDate2.DateShamsiFull & "' and LoadCapacitor.AHId=" & YourAHId & " and LoadCapacitor.LoadStatus<>4 and LoadCapacitor.LoadStatus<>3
                       Union
-                      Select LoadCapacitor.nEstelamID,LoadCapacitor.nCompCode,LoadCapacitor.nCityCode,LoadCapacitor.nCarNumKol as SedimentedAmount,LoadCapacitor.dDateElam from dbtransport.dbo.tbElam as LoadCapacitor
-                      Where isnull(LoadCapacitor.dDateExit,'')='' and LoadCapacitor.dDateElam>='" & YourDate1.DateShamsiFull & "' and LoadCapacitor.dDateElam<='" & YourDate2.DateShamsiFull & "' and LoadCapacitor.AHId=" & YourAHId & ") as DataBox
+                      Select LoadCapacitor.nEstelamID,LoadCapacitor.nCompCode,LoadCapacitor.nCityCode,LoadCapacitor.nCarNumKol as SedimentedAmount,LoadCapacitor.nCarNumKol as AnnouncedAmount,LoadCapacitor.dDateElam from dbtransport.dbo.tbElam as LoadCapacitor
+                      Where isnull(LoadCapacitor.dDateExit,'')='' and LoadCapacitor.dDateElam>='" & YourDate1.DateShamsiFull & "' and LoadCapacitor.dDateElam<='" & YourDate2.DateShamsiFull & "' and LoadCapacitor.AHId=" & YourAHId & " and LoadCapacitor.LoadStatus<>4 and LoadCapacitor.LoadStatus<>3) as DataBox
                    Inner Join dbtransport.dbo.tbCompany as TransportCompanies On DataBox.nCompCode=TransportCompanies.nCompCode
                    Inner Join dbtransport.dbo.tbCity as TargetCity On DataBox.nCityCode=TargetCity.nCityCode  
                    Group By StrCityName"

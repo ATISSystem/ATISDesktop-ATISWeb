@@ -3911,7 +3911,7 @@ Namespace LoadPermission
                     R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                           "Select LoadAllocation.LAId,LoadAllocation.nEstelamId,Cast(Substring(EnterExit.OtaghdarTurnNumber,7,20) as int) as TurnId,EnterExit.strExitDate,EnterExit.strExitTime
                                   ,TransportCompany.TCTitle,LoaderType.LoaderTypeTitle,Car.strCarNo as Truck,Car.strCarSerialNo as TruckSerial,Person.strPersonFullName
-	                              ,Driver.strDrivingLicenceNo,Product.strGoodName,CityTarget.strCityName as TargetCity,CitySource.strCityName as SourceCity,Elam.strPriceSug,Elam.strDescription,Elam.StrAddress,SoftwareUser.UserName,CityTarget.nDistance/25 as TravelLength
+	                              ,Driver.strDrivingLicenceNo,Product.strGoodName,CityTarget.strCityName as TargetCity,CitySource.strCityName as SourceCity,Elam.strPriceSug,Elam.strDescription,Elam.StrAddress,Elam.strBarName,SoftwareUser.UserName,CityTarget.nDistance/25 as TravelLength
                            from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocation
                                 Inner Join dbtransport.dbo.tbEnterExit as EnterExit On LoadAllocation.TurnId=EnterExit.nEnterExitId
                                 Inner Join dbtransport.dbo.tbElam as Elam On LoadAllocation.nEstelamId=Elam.nEstelamID
@@ -3941,7 +3941,7 @@ Namespace LoadPermission
                     LoadPermissionPrintingInf.TargetCity = DS.Tables(0).Rows(0).Item("TargetCity").trim
                     LoadPermissionPrintingInf.SourceCity = DS.Tables(0).Rows(0).Item("SourceCity").trim
                     LoadPermissionPrintingInf.TransportPrice = DS.Tables(0).Rows(0).Item("strPriceSug").trim
-                    LoadPermissionPrintingInf.LoadCapacitorLoadDescription = DS.Tables(0).Rows(0).Item("strDescription").trim & " " & DS.Tables(0).Rows(0).Item("StrAddress").trim
+                    LoadPermissionPrintingInf.LoadCapacitorLoadDescription = DS.Tables(0).Rows(0).Item("strDescription").trim & " " & DS.Tables(0).Rows(0).Item("StrAddress").trim & " " & DS.Tables(0).Rows(0).Item("StrBarName").trim
                     LoadPermissionPrintingInf.UserName = DS.Tables(0).Rows(0).Item("UserName").trim
                     LoadPermissionPrintingInf.OtherNote = DS.Tables(0).Rows(0).Item("TravelLength")
                     Return LoadPermissionPrintingInf
