@@ -68,14 +68,6 @@ Public Class UCMoneyWalletCharge
         UcLabelMblgh.UCValue = 0
     End Sub
 
-    Private Sub UCAddMblgh(YourMblgh As Int64)
-        Try
-            Dim myCurrentMblgh As Int64 = IIf(UcLabelMblgh.UCValue.Trim <> "", UcLabelMblgh.UCValue.Replace(",", ""), 0)
-            UcLabelMblgh.UCValue = R2CoreMClassPublicProcedures.ParseSignDigitToSignString(YourMblgh + myCurrentMblgh)
-        Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-        End Try
-    End Sub
 
     Public Sub UCPrepare(YourTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure)
         Try
@@ -134,57 +126,7 @@ Public Class UCMoneyWalletCharge
         End Try
     End Sub
 
-    Private Sub UcMblghSelector1000_UCClickedEvent() Handles UcMblghSelector1000.UCClickedEvent
-        Try
-            UCAddMblgh(10000)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
 
-    Private Sub UcMblghSelector10000_UCClickedEvent() Handles UcMblghSelector10000.UCClickedEvent
-        Try
-            UCAddMblgh(100000)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
-    Private Sub UcMblghSelector3000_UCClickedEvent() Handles UcMblghSelector3000.UCClickedEvent
-        Try
-            UCAddMblgh(30000)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
-    Private Sub UcMblghSelector500_UCClickedEvent() Handles UcMblghSelector500.UCClickedEvent
-        Try
-            UCAddMblgh(5000)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
-    Private Sub UcMblghSelector5000_UCClickedEvent() Handles UcMblghSelector5000.UCClickedEvent
-        Try
-            UCAddMblgh(50000)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
-    Private Sub UcMblghSelector6000_UCClickedEvent() Handles UcMblghSelector6000.UCClickedEvent
-        Try
-            UCAddMblgh(60000)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
-    Private Sub PicMblghZero_Click(sender As Object, e As EventArgs) Handles PicMblghZero.Click
-        UcLabelMblgh.UCValue = 0
-    End Sub
 
     Private Sub PicBeggar_Click(sender As Object, e As EventArgs) Handles PicBeggar.Click
         Try

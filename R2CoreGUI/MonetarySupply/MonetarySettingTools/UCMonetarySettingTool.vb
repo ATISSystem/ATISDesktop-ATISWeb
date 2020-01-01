@@ -4,14 +4,14 @@ Imports System.ComponentModel
 Imports System.Drawing
 Imports System.Reflection
 
-Imports R2Core.MonetaryCreditSupplySources
+Imports R2Core.MonetarySettingTools
 
 
-Public Class UCMonetaryCreditSupplySource
+Public Class UCMonetarySettingTool
     Inherits UCGeneral
 
-    Public Event UCNSSCurrentChanged(NSSCurrent As R2CoreStandardMonetaryCreditSupplySourceStructure)
-    Protected Event UCViewNSSRequested(NSSCurrent As R2CoreStandardMonetaryCreditSupplySourceStructure)
+    Public Event UCNSSCurrentChanged(NSSCurrent As R2CoreStandardMonetarySettingToolStructure)
+    Protected Event UCViewNSSRequested(NSSCurrent As R2CoreStandardMonetarySettingToolStructure)
     Protected Event UCChangeColorToActiveRequested()
     Protected Event UCChangeColorToUnActiveRequested()
     Protected Event UCViewNSSNothingRequested()
@@ -24,13 +24,13 @@ Public Class UCMonetaryCreditSupplySource
 
 #Region "General Properties"
 
-    Private _UCNSSCurrent As R2CoreStandardMonetaryCreditSupplySourceStructure = Nothing
+    Private _UCNSSCurrent As R2CoreStandardMonetarySettingToolStructure = Nothing
     <Browsable(False)>
-    Public Property UCNSSCurrent() As R2CoreStandardMonetaryCreditSupplySourceStructure
+    Public Property UCNSSCurrent() As R2CoreStandardMonetarySettingToolStructure
         Get
             Return _UCNSSCurrent
         End Get
-        Set(value As R2CoreStandardMonetaryCreditSupplySourceStructure)
+        Set(value As R2CoreStandardMonetarySettingToolStructure)
             _UCNSSCurrent = value
             If value Is Nothing Then
                 RaiseEvent UCViewNSSNothingRequested()
@@ -60,7 +60,7 @@ Public Class UCMonetaryCreditSupplySource
         End Try
     End Sub
 
-    Public Sub UCViewNSS(YourNSS As R2CoreStandardMonetaryCreditSupplySourceStructure)
+    Public Sub UCViewNSS(YourNSS As R2CoreStandardMonetarySettingToolStructure)
         Try
             UCNSSCurrent = YourNSS
             RaiseEvent UCViewNSSRequested(UCNSSCurrent)
@@ -69,9 +69,9 @@ Public Class UCMonetaryCreditSupplySource
         End Try
     End Sub
 
-    Public Sub UCViewNSS(YourMCSSId As Int64)
+    Public Sub UCViewNSS(YourMSTId As Int64)
         Try
-            UCNSSCurrent = R2CoreMonetaryCreditSupplySourcesManagement.GetNSSMonetaryCreditSupplySource(YourMCSSId)
+            UCNSSCurrent = R2CoreMonetarySettingToolsManagement.GetNSSMonetarySettingTool(YourMSTId)
             RaiseEvent UCViewNSSRequested(UCNSSCurrent)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -86,9 +86,9 @@ Public Class UCMonetaryCreditSupplySource
         RaiseEvent UCChangeColorToActiveRequested()
     End Sub
 
-    Public Sub UCActivationToken(YourNSS As R2CoreStandardMonetaryCreditSupplySourceStructure)
+    Public Sub UCActivationToken(YourNSS As R2CoreStandardMonetarySettingToolStructure)
         Try
-            If YourNSS.MCSSId = UCNSSCurrent.MCSSId Then Me.Enabled = YourNSS.Active
+            If YourNSS.MSTId = UCNSSCurrent.MSTId Then Me.Enabled = YourNSS.Active
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -110,6 +110,5 @@ Public Class UCMonetaryCreditSupplySource
 
 #Region "Implemented Members"
 #End Region
-
 
 End Class

@@ -268,6 +268,12 @@
     <Compile Include="EnterExit\UCUCEnterExitCollection.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="MonetarySupply\MonetarySettingTool ExitCarProcess Instrument\UCMonetarySettingToolExitCarProcessInstrument.Designer.vb">
+      <DependentUpon>UCMonetarySettingToolExitCarProcessInstrument.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MonetarySupply\MonetarySettingTool ExitCarProcess Instrument\UCMonetarySettingToolExitCarProcessInstrument.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="MoneyWalletCharge\FrmcMoneyWalletChargeSavabegh.Designer.vb">
       <DependentUpon>FrmcMoneyWalletChargeSavabegh.vb</DependentUpon>
     </Compile>
@@ -500,12 +506,6 @@
     <Compile Include="Cars And Drivers\UCCarImage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MoneyWallet\UCMblghSelector.Designer.vb">
-      <DependentUpon>UCMblghSelector.vb</DependentUpon>
-    </Compile>
-    <Compile Include="MoneyWallet\UCMblghSelector.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="MoneyWallet\UCMoneyWallet.Designer.vb">
       <DependentUpon>UCMoneyWallet.vb</DependentUpon>
     </Compile>
@@ -622,6 +622,9 @@
     <EmbeddedResource Include="EnterExit\UCUCEnterExitCollection.resx">
       <DependentUpon>UCUCEnterExitCollection.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MonetarySupply\MonetarySettingTool ExitCarProcess Instrument\UCMonetarySettingToolExitCarProcessInstrument.resx">
+      <DependentUpon>UCMonetarySettingToolExitCarProcessInstrument.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MoneyWalletCharge\FrmcMoneyWalletChargeSavabegh.resx">
       <DependentUpon>FrmcMoneyWalletChargeSavabegh.vb</DependentUpon>
     </EmbeddedResource>
@@ -732,9 +735,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cars And Drivers\UCCarImage.resx">
       <DependentUpon>UCCarImage.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MoneyWallet\UCMblghSelector.resx">
-      <DependentUpon>UCMblghSelector.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MoneyWallet\UCMoneyWallet.resx">
       <DependentUpon>UCMoneyWallet.vb</DependentUpon>

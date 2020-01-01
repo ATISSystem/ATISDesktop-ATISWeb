@@ -4,10 +4,10 @@ Imports System.Reflection
 Imports System.Windows.Forms
 
 Imports R2CoreGUI
-Imports R2Core.MonetaryCreditSupplySources
+Imports R2Core.MonetarySettingTools
 
 
-Public Class UCUCMonetaryCreditSupplySourceCollection
+Public Class UCUCMonetarySettingToolCollection
     Inherits UCGeneral
 
     Public Event UCCurrentNSSChangedEvent()
@@ -15,13 +15,13 @@ Public Class UCUCMonetaryCreditSupplySourceCollection
 
 #Region "General Properties"
 
-    Private _UCCurrentNSS As R2CoreStandardMonetaryCreditSupplySourceStructure = Nothing
+    Private _UCCurrentNSS As R2CoreStandardMonetarySettingToolStructure = Nothing
     <Browsable(False)>
-    Public Property UCCurrentNSS() As R2CoreStandardMonetaryCreditSupplySourceStructure
+    Public Property UCCurrentNSS() As R2CoreStandardMonetarySettingToolStructure
         Get
             Return _UCCurrentNSS
         End Get
-        Set(value As R2CoreStandardMonetaryCreditSupplySourceStructure)
+        Set(value As R2CoreStandardMonetarySettingToolStructure)
             _UCCurrentNSS = value
             If value IsNot Nothing Then If Not _UCIsFirstUse Then RaiseEvent UCCurrentNSSChangedEvent()
         End Set
@@ -42,14 +42,14 @@ Public Class UCUCMonetaryCreditSupplySourceCollection
         End Set
     End Property
 
-    Private _UCDefaultMCSSId As Int64 = R2CoreMonetaryCreditSupplySourcesManagement.GetThisComputerDefaultNSS(0).MCSSId
-    Public Property UCDefaultMCSSId() As Int64
+    Private _UCDefaultMSTId As Int64 = R2CoreMonetarySettingToolsManagement.GetThisComputerDefaultNSS(0).MSTId
+    Public Property UCDefaultMSTId() As Int64
         Get
-            Return _UCDefaultMCSSId
+            Return _UCDefaultMSTId
         End Get
         Set(value As Int64)
-            _UCDefaultMCSSId = value
-            UCActiveThisNSS(R2CoreMonetaryCreditSupplySourcesManagement.GetNSSMonetaryCreditSupplySource(value))
+            _UCDefaultMSTId = value
+            UCActiveThisNSS(R2CoreMonetarySettingToolsManagement.GetNSSMonetarySettingTool(value))
         End Set
     End Property
 
@@ -78,11 +78,11 @@ Public Class UCUCMonetaryCreditSupplySourceCollection
 
     Public Sub UCViewCollection()
         Try
-            Dim Lst As List(Of R2CoreStandardMonetaryCreditSupplySourceStructure) = R2CoreMonetaryCreditSupplySourcesManagement.GetMonetaryCreditSupplySources()
+            Dim Lst As List(Of R2CoreStandardMonetarySettingToolStructure) = R2CoreMonetarySettingToolsManagement.GetMonetarySettingTools()
             PnlUCs.SuspendLayout()
             PnlUCs.Controls.Clear()
             For Loopx As Int64 = Lst.Count - 1 To 0 Step -1
-                Dim UC As New UCViewerNSSMonetaryCreditSupplySource
+                Dim UC As New UCViewerNSSMonetarySettingTool
                 UC.UCViewNSS(Lst(Loopx))
                 UC.Dock = DockStyle.Right
                 AddHandler UC.UCClickedEvent, AddressOf UCs_UCClickedEvent
@@ -94,11 +94,11 @@ Public Class UCUCMonetaryCreditSupplySourceCollection
         End Try
     End Sub
 
-    Private Sub UCActiveThisNSS(YourNSS As R2CoreStandardMonetaryCreditSupplySourceStructure)
+    Private Sub UCActiveThisNSS(YourNSS As R2CoreStandardMonetarySettingToolStructure)
         Try
-            Dim OUC As UCViewerNSSMonetaryCreditSupplySource = Nothing
-            For Each UC As UCViewerNSSMonetaryCreditSupplySource In PnlUCs.Controls
-                If UC.UCNSSCurrent.MCSSId <> YourNSS.MCSSId Then
+            Dim OUC As UCViewerNSSMonetarySettingTool = Nothing
+            For Each UC As UCViewerNSSMonetarySettingTool In PnlUCs.Controls
+                If UC.UCNSSCurrent.MSTId <> YourNSS.MSTId Then
                     UC.UCShowUnActive()
                 Else
                     OUC = UC
@@ -111,7 +111,7 @@ Public Class UCUCMonetaryCreditSupplySourceCollection
         End Try
     End Sub
 
-    Public Sub UCSimulateThisNSS(YourNSS As R2CoreStandardMonetaryCreditSupplySourceStructure)
+    Public Sub UCSimulateThisNSS(YourNSS As R2CoreStandardMonetarySettingToolStructure)
         Try
             UCActiveThisNSS(YourNSS)
         Catch ex As Exception
@@ -121,10 +121,10 @@ Public Class UCUCMonetaryCreditSupplySourceCollection
 
     Public Sub UCPreparing(YourConfigurationIndex As Int64)
         Try
-            UCDefaultMCSSId = R2CoreMonetaryCreditSupplySourcesManagement.GetThisComputerDefaultNSS(YourConfigurationIndex).MCSSId
-            Dim Lst = R2CoreMonetaryCreditSupplySourcesManagement.GetThisComputerCollectionBitMap(YourConfigurationIndex)
+            UCDefaultMSTId = R2CoreMonetarySettingToolsManagement.GetThisComputerDefaultNSS(YourConfigurationIndex).MSTId
+            Dim Lst = R2CoreMonetarySettingToolsManagement.GetThisComputerCollectionBitMap(YourConfigurationIndex)
             For Loopx As Int16 = 0 To Lst.Count - 1
-                For Each UC As UCViewerNSSMonetaryCreditSupplySource In PnlUCs.Controls
+                For Each UC As UCViewerNSSMonetarySettingTool In PnlUCs.Controls
                     UC.UCActivationToken(Lst(Loopx))
                 Next
             Next
@@ -140,7 +140,7 @@ Public Class UCUCMonetaryCreditSupplySourceCollection
 
 #Region "Event Handlers"
 
-    Private Sub UCs_UCClickedEvent(SenderUC As UCMonetaryCreditSupplySource)
+    Private Sub UCs_UCClickedEvent(SenderUC As UCMonetarySettingTool)
         Try
             _UCIsFirstUse = False
             UCActiveThisNSS(SenderUC.UCNSSCurrent)

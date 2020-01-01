@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class UCUCMonetaryCreditSupplySourceCollection
+Partial Class UCUCMonetarySettingToolCollection
     Inherits UCGeneral
 
     'UserControl overrides dispose to clean up the component list.
@@ -23,33 +23,22 @@ Partial Class UCUCMonetaryCreditSupplySourceCollection
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.PnlMain = New System.Windows.Forms.Panel()
-        Me.PnlUCs = New System.Windows.Forms.Panel()
         Me.UcLabel = New R2CoreGUI.UCLabel()
+        Me.PnlUCs = New System.Windows.Forms.Panel()
         Me.PnlMain.SuspendLayout()
         Me.SuspendLayout()
         '
         'PnlMain
         '
         Me.PnlMain.BackColor = System.Drawing.Color.Black
-        Me.PnlMain.Controls.Add(Me.UcLabel)
         Me.PnlMain.Controls.Add(Me.PnlUCs)
+        Me.PnlMain.Controls.Add(Me.UcLabel)
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
         Me.PnlMain.Padding = New System.Windows.Forms.Padding(1)
         Me.PnlMain.Size = New System.Drawing.Size(447, 33)
         Me.PnlMain.TabIndex = 0
-        '
-        'PnlUCs
-        '
-        Me.PnlUCs.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.PnlUCs.BackColor = System.Drawing.Color.White
-        Me.PnlUCs.Location = New System.Drawing.Point(1, 1)
-        Me.PnlUCs.Name = "PnlUCs"
-        Me.PnlUCs.Size = New System.Drawing.Size(322, 31)
-        Me.PnlUCs.TabIndex = 0
         '
         'UcLabel
         '
@@ -61,20 +50,31 @@ Partial Class UCUCMonetaryCreditSupplySourceCollection
         Me.UcLabel.Name = "UcLabel"
         Me.UcLabel.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabel.Size = New System.Drawing.Size(122, 31)
-        Me.UcLabel.TabIndex = 0
+        Me.UcLabel.TabIndex = 1
         Me.UcLabel.UCBackColor = System.Drawing.Color.Transparent
         Me.UcLabel.UCFont = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabel.UCForeColor = System.Drawing.Color.Red
         Me.UcLabel.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.UcLabel.UCValue = "منابع تامین اعتبار"
+        Me.UcLabel.UCValue = "ابزارهای تنظیم مبلغ"
         '
-        'UCUCMonetaryCreditSupplySourceCollection
+        'PnlUCs
+        '
+        Me.PnlUCs.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PnlUCs.BackColor = System.Drawing.Color.White
+        Me.PnlUCs.Location = New System.Drawing.Point(1, 1)
+        Me.PnlUCs.Name = "PnlUCs"
+        Me.PnlUCs.Size = New System.Drawing.Size(322, 31)
+        Me.PnlUCs.TabIndex = 2
+        '
+        'UCUCMonetarySettingToolCollection
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
-        Me.Name = "UCUCMonetaryCreditSupplySourceCollection"
+        Me.Name = "UCUCMonetarySettingToolCollection"
         Me.Size = New System.Drawing.Size(447, 33)
         Me.PnlMain.ResumeLayout(False)
         Me.ResumeLayout(False)
@@ -82,6 +82,6 @@ Partial Class UCUCMonetaryCreditSupplySourceCollection
     End Sub
 
     Friend WithEvents PnlMain As Panel
-    Friend WithEvents PnlUCs As Panel
     Friend WithEvents UcLabel As UCLabel
+    Friend WithEvents PnlUCs As Panel
 End Class
