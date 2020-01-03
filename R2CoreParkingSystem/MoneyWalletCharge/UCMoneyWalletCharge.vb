@@ -22,11 +22,11 @@ Public Class UCMoneyWalletCharge
     Implements R2CoreRFIDCardRequester
 
     Private WithEvents _Timer As System.Windows.Forms.Timer = New Timer()
-    Public Event UCMoneyWalletChargedEvent(Mblgh As Int64)
+    Public Event UCMoneyWalletChargedEvent(Amount As Int64)
     Public Event UCMoneyWalletChargeUserCanceledEvent()
     Public Event UCMoneyWalletChargeRFIDCardReadedEvent(CardNo As String)
-    Private _NSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure = Nothing
-    Private ReadOnly _DateTime As R2DateTime = New R2DateTime()
+    Private _NSS As R2CoreParkingSystemStandardTrafficCardStructure = Nothing
+    Private _Amount As Int64
 
 
 #Region "General Properties"
@@ -38,6 +38,21 @@ Public Class UCMoneyWalletCharge
         End Get
         Set(value As Boolean)
             _UCLocalPrintFlagforUCPrintBillan = value
+        End Set
+    End Property
+
+    Private _UCMonetarySupplyConfigurationIndex As Int64 = 1
+    Public Property UCConfigurationIndex() As Int64
+        Get
+            Return _UCMonetarySupplyConfigurationIndex
+        End Get
+        Set(value As Int64)
+            Try
+                _UCMonetarySupplyConfigurationIndex = value
+                UcMonetarySupply.UCConfigurationIndex = value
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
         End Set
     End Property
 
@@ -64,16 +79,16 @@ Public Class UCMoneyWalletCharge
     End Sub
 
     Public Sub UCRefresh()
-        UcButtonCharge.UCEnable = True
-        UcLabelMblgh.UCValue = 0
+        UcMonetarySupply.UCEnable = True
     End Sub
 
-
-    Public Sub UCPrepare(YourTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure)
+    Public Sub UCPrepare(YourNSS As R2CoreParkingSystemStandardTrafficCardStructure, YourAmount As Int64)
         Try
             UCRefresh()
-            _NSSTrafficCard = YourTrafficCard
-            UcMoneyWallet.UCViewMoneyWalletOnlyCharge(_NSSTrafficCard)
+            _NSS = YourNSS
+            _Amount = YourAmount
+            UcMoneyWallet.UCViewMoneyWalletOnlyCharge(_NSS)
+            UcMonetarySupply.UCPrepare(YourAmount)
             _Timer.Enabled = True : _Timer.Start()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -97,52 +112,12 @@ Public Class UCMoneyWalletCharge
 #Region "Event Handlers"
 
     Private Sub _Timer_Tick(sender As Object, e As EventArgs) Handles _Timer.Tick
-        UcButtonCharge.UCEnable = False
-    End Sub
-
-    Private Sub UcButtonCharge_UCClickedEvent() Handles UcButtonCharge.UCClickedEvent
-        Try
-            UcButtonCharge.UCEnable = False
-            _Timer.Enabled = False : _Timer.Stop()
-            If UcLabelMblgh.UCValue <> "" And UcLabelMblgh.UCValue <> "0" Then
-                UcMoneyWallet.UCViewandActMoneyWalletNextStatus(_NSSTrafficCard, BagPayType.AddMoney, UcLabelMblgh.UCValue.Replace(",", ""), R2CoreParkingSystemAccountings.ChargeType)
-                R2CoreParkingSystemMClassMoneyWalletChargeManagement.SabtCharge(New R2StandardMoneyWalletChargeStructure(_NSSTrafficCard, UcMoneyWallet.UCGetMblgh, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, "", _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, 0, _DateTime.GetCurrentTime))
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "شارژ کیف پول انجاک گرفت" + vbCrLf + UcLabelMblgh.UCValue, _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
-                'چاپ رسید شارژ ابتدا برای کل کامپیوتر مطابق کانفیگ بررسی می شود
-                'سپس به صورت محلی نیز بررسی می شود
-                If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.MoneyWalletCharge, R2CoreMClassComputersManagement.GetNSSCurrentComputer().MId, 0) = True Then
-                    If UCLocalPrintFlagforUCPrintBillan = True Then
-                        UcMoneyWallet.UCPrintBillan(UCMoneyWallet.PrintType.Billan)
-                        R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "چاپ قبض شارژ کیف پول انجاک گرفت" + vbCrLf + UcLabelMblgh.UCValue, _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
-                    End If
-                End If
-
-                RaiseEvent UCMoneyWalletChargedEvent(UcMoneyWallet.UCGetMblgh)
-            Else
-                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "مبلغ شارژ نادرست است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-            End If
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
-
-
-    Private Sub PicBeggar_Click(sender As Object, e As EventArgs) Handles PicBeggar.Click
-        Try
-            Dim OKM As UInt64 = Math.Abs(UcMoneyWallet.UCGetReminderCharge)
-            If Strings.Right(Math.Abs(UcMoneyWallet.UCGetReminderCharge).ToString, 4) <> "0000" Then
-                OKM = 10000 - Strings.Right(Math.Abs(UcMoneyWallet.UCGetReminderCharge).ToString, 4)
-            End If
-            UcLabelMblgh.UCValue = R2Core.PublicProc.R2CoreMClassPublicProcedures.ParseSignDigitToSignString(OKM)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
+        UcMonetarySupply.UCEnable = False
     End Sub
 
     Private Sub PicPreapring_Click(sender As Object, e As EventArgs) Handles PicPreapring.Click
         Try
-            UCPrepare(_NSSTrafficCard)
+            UCPrepare(_NSS, _Amount)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -151,6 +126,48 @@ Public Class UCMoneyWalletCharge
     Private Sub PicExit_Click(sender As Object, e As EventArgs) Handles PicExit.Click
         RaiseEvent UCMoneyWalletChargeUserCanceledEvent()
     End Sub
+
+    Private Delegate Sub _UcMonetarySupply_UCMonetarySupplySuccessEventDelegate(TransactionId As Long, Amount As Long)
+    Private Sub UcMonetarySupply_UCMonetarySupplySuccessEvent(TransactionId As Long, Amount As Long) Handles UcMonetarySupply.UCMonetarySupplySuccessEvent
+        Try
+            If (UcMonetarySupply.InvokeRequired) Then
+                Dim myDelegate As _UcMonetarySupply_UCMonetarySupplySuccessEventDelegate = New _UcMonetarySupply_UCMonetarySupplySuccessEventDelegate(AddressOf UcMonetarySupply_UCMonetarySupplySuccessEvent)
+                Dim params() As Object = New Object() {TransactionId, Amount}
+                BeginInvoke(myDelegate, params)
+            Else
+                UcMonetarySupply.UCEnable = False
+                _Timer.Enabled = False : _Timer.Stop()
+                If Amount <> 0 Then
+                    UcMoneyWallet.UCViewandActMoneyWalletNextStatus(_NSS, BagPayType.AddMoney, Amount, R2CoreParkingSystemAccountings.ChargeType)
+                    R2CoreParkingSystemMClassMoneyWalletChargeManagement.SabtCharge(New R2StandardMoneyWalletChargeStructure(_NSS, UcMoneyWallet.UCGetMblgh, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, "", _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, 0, _DateTime.GetCurrentTime))
+                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "شارژ کیف پول انجام گرفت" + vbCrLf + Amount.ToString, _NSS.CardNo, TransactionId, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                    'چاپ رسید شارژ ابتدا برای کل کامپیوتر مطابق کانفیگ بررسی می شود
+                    'سپس به صورت محلی نیز بررسی می شود
+                    If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.MoneyWalletCharge, R2CoreMClassComputersManagement.GetNSSCurrentComputer().MId, 0) = True Then
+                        If UCLocalPrintFlagforUCPrintBillan = True Then
+                            UcMoneyWallet.UCPrintBillan(UCMoneyWallet.PrintType.Billan)
+                            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "چاپ قبض شارژ کیف پول انجام گرفت" + vbCrLf + Amount.ToString, _NSS.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                        End If
+                    End If
+                    RaiseEvent UCMoneyWalletChargedEvent(UcMoneyWallet.UCGetMblgh)
+                Else
+                    UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "مبلغ شارژ نادرست است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                End If
+            End If
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+
+    End Sub
+
+    Private Sub UcMonetarySupply_UCMonetarySupplyUnSuccessEvent(TransactionId As Long, Amount As Long) Handles UcMonetarySupply.UCMonetarySupplyUnSuccessEvent
+        Try
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "عدم موفقیت شارژ کیف پول", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
 
 
 #End Region
@@ -162,30 +179,25 @@ Public Class UCMoneyWalletCharge
 #End Region
 
 #Region "Implemented Members"
-
     Public Sub R2RFIDCardReaderStartToRead() Implements R2CoreRFIDCardRequester.R2RFIDCardReaderStartToRead
+        'Throw New NotImplementedException()
     End Sub
 
     Public Sub R2RFIDCardReaded(CardNo As String) Implements R2CoreRFIDCardRequester.R2RFIDCardReaded
         Try
-            UCPrepare(R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(CardNo))
-            RaiseEvent UCMoneyWalletChargeRFIDCardReadedEvent(CardNo)
-        Catch exx As GetNSSException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "کارت تردد قابل شناسایی نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+            UCPrepare(R2CoreParkingSystem.TrafficCardsManagement.R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(CardNo), 0)
         Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
-
-        Try
-            StartReading()
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "خطا در عملکرد دستگاه کارت خوان", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-
     End Sub
 
     Public Sub R2RFIDCardReaderWarning(MessageWarning As String) Implements R2CoreRFIDCardRequester.R2RFIDCardReaderWarning
+        Try
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
     End Sub
+
 
 #End Region
 

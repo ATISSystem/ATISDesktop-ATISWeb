@@ -51,10 +51,6 @@
     <ApplicationIcon>R2%28Ico%291397102727.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="R2Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\R2Core\bin\Debug\R2Core.dll</HintPath>
-    </Reference>
     <Reference Include="R2CoreLPR, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\R2CoreGUI\bin\Debug\R2CoreLPR.dll</HintPath>
@@ -157,6 +153,10 @@
     <ProjectReference Include="..\R2CoreTransportationAndLoadNotification\R2CoreTransportationAndLoadNotification.vbproj">
       <Project>{ef77b294-2e31-4914-af7b-289a6a1bf8dc}</Project>
       <Name>R2CoreTransportationAndLoadNotification</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2Core\R2Core.vbproj">
+      <Project>{b0651d1e-73a2-4e74-8483-6fbc60831969}</Project>
+      <Name>R2Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

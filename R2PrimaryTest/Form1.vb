@@ -42,7 +42,6 @@ Public Class Form1
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
 
@@ -177,10 +176,17 @@ Public Class Form1
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         Try
-            R2Core.UserManagement.R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser())
-            R2CoreTransportationAndLoadNotificationMClassLoadPermissionPrintingManagement.PrintLoadPermission(220)
-            'MessageBox.Show(R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, 2, 0))
 
+            R2Core.UserManagement.R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser())
+            ''R2CoreTransportationAndLoadNotificationMClassLoadPermissionPrintingManagement.PrintLoadPermission(220)
+            '''MessageBox.Show(R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, 2, 0))
+
+
+
+            Dim x As R2CoreParkingSystem.UCMoneyWalletCharge = New R2CoreParkingSystem.UCMoneyWalletCharge
+            x.Location = New Point(0, 0)
+            Me.Controls.Add(x)
+            x.BringToFront()
 
 
 
@@ -262,5 +268,9 @@ Public Class Form1
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
+    End Sub
+
+    Private Sub UcMonetarySupply1_UCMonetarySupplySuccessEvent(TransactionId As Long) 
+        MessageBox.Show(TransactionId)
     End Sub
 End Class

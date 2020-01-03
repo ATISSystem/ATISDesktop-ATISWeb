@@ -194,7 +194,7 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         Me.UcLabelHint.TabIndex = 6
         Me.UcLabelHint.UCBackColor = System.Drawing.Color.Transparent
         Me.UcLabelHint.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabelHint.UCForeColor = System.Drawing.Color.Red
+        Me.UcLabelHint.UCForeColor = System.Drawing.Color.LightGray
         Me.UcLabelHint.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.UcLabelHint.UCValue = "مبلغ :"
         '
@@ -212,7 +212,7 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         Me.UcLabelAmount.TabIndex = 7
         Me.UcLabelAmount.UCBackColor = System.Drawing.Color.Transparent
         Me.UcLabelAmount.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabelAmount.UCForeColor = System.Drawing.Color.Red
+        Me.UcLabelAmount.UCForeColor = System.Drawing.Color.Silver
         Me.UcLabelAmount.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.UcLabelAmount.UCValue = "0"
         '

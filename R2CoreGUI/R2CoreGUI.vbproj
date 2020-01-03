@@ -553,6 +553,12 @@
     <Compile Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolInstrument.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolInstrumentCollection.Designer.vb">
+      <DependentUpon>UCMonetarySettingToolInstrumentCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolInstrumentCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="MonetarySupply\MonetarySettingTools\UCUCMonetarySettingToolCollection.Designer.vb">
       <DependentUpon>UCUCMonetarySettingToolCollection.vb</DependentUpon>
     </Compile>
@@ -565,16 +571,22 @@
     <Compile Include="MonetarySupply\MonetarySettingTools\UCViewerNSSMonetarySettingTool.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MonetarySupply\MonetarySettingTool R2PrimaryWebService Instrument\UCMonetarySettingToolR2PrimaryWebServiceInstrument.Designer.vb">
+    <Compile Include="MonetarySupply\MonetarySettingTools\MonetarySettingTool R2PrimaryWebService Instrument\UCMonetarySettingToolR2PrimaryWebServiceInstrument.Designer.vb">
       <DependentUpon>UCMonetarySettingToolR2PrimaryWebServiceInstrument.vb</DependentUpon>
     </Compile>
-    <Compile Include="MonetarySupply\MonetarySettingTool R2PrimaryWebService Instrument\UCMonetarySettingToolR2PrimaryWebServiceInstrument.vb">
+    <Compile Include="MonetarySupply\MonetarySettingTools\MonetarySettingTool R2PrimaryWebService Instrument\UCMonetarySettingToolR2PrimaryWebServiceInstrument.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MonetarySupply\MonetarySettingTool UserPad Instrument\UCMonetarySettingToolUserPadInstrument.Designer.vb">
+    <Compile Include="MonetarySupply\MonetarySettingTools\MonetarySettingTool UserPad Instrument\UCMonetarySettingToolUserPadInstrument.Designer.vb">
       <DependentUpon>UCMonetarySettingToolUserPadInstrument.vb</DependentUpon>
     </Compile>
-    <Compile Include="MonetarySupply\MonetarySettingTool UserPad Instrument\UCMonetarySettingToolUserPadInstrument.vb">
+    <Compile Include="MonetarySupply\MonetarySettingTools\MonetarySettingTool UserPad Instrument\UCMonetarySettingToolUserPadInstrument.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonetarySupply\UCMonetarySupply.Designer.vb">
+      <DependentUpon>UCMonetarySupply.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MonetarySupply\UCMonetarySupply.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="PC Power Management\UCShutDown.Designer.vb">
@@ -872,7 +884,7 @@
     <EmbeddedResource Include="MonetarySupply\MonetaryCreditSupplySources\UCViewerNSSMonetaryCreditSupplySource.resx">
       <DependentUpon>UCViewerNSSMonetaryCreditSupplySource.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MonetarySupply\MonetarySettingTool R2PrimaryWebService Instrument\UCMonetarySettingToolR2PrimaryWebServiceInstrument.resx">
+    <EmbeddedResource Include="MonetarySupply\MonetarySettingTools\MonetarySettingTool R2PrimaryWebService Instrument\UCMonetarySettingToolR2PrimaryWebServiceInstrument.resx">
       <DependentUpon>UCMonetarySettingToolR2PrimaryWebServiceInstrument.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingTool.resx">
@@ -881,14 +893,20 @@
     <EmbeddedResource Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolInstrument.resx">
       <DependentUpon>UCMonetarySettingToolInstrument.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolInstrumentCollection.resx">
+      <DependentUpon>UCMonetarySettingToolInstrumentCollection.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MonetarySupply\MonetarySettingTools\UCUCMonetarySettingToolCollection.resx">
       <DependentUpon>UCUCMonetarySettingToolCollection.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MonetarySupply\MonetarySettingTools\UCViewerNSSMonetarySettingTool.resx">
       <DependentUpon>UCViewerNSSMonetarySettingTool.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MonetarySupply\MonetarySettingTool UserPad Instrument\UCMonetarySettingToolUserPadInstrument.resx">
+    <EmbeddedResource Include="MonetarySupply\MonetarySettingTools\MonetarySettingTool UserPad Instrument\UCMonetarySettingToolUserPadInstrument.resx">
       <DependentUpon>UCMonetarySettingToolUserPadInstrument.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonetarySupply\UCMonetarySupply.resx">
+      <DependentUpon>UCMonetarySupply.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PC Power Management\UCShutDown.resx">
       <DependentUpon>UCShutDown.vb</DependentUpon>

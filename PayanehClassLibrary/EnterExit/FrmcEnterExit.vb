@@ -275,7 +275,7 @@ Public Class FrmcEnterExit
                 If (R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.ChargeActiveOnThisLocation, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) = True) And (R2CoreMClassLoginManagement.CurrentUserNSS.UserCanCharge = True) Then
                     ChangeMenuStatus("PnlMoneyWalletCharge", False)
                     ''PnlMoneyWalletCharge.Enabled = False
-                    UcMoneyWalletCharge.UCPrepare(_NSSTrafficCard)
+                    UcMoneyWalletCharge.UCPrepare(_NSSTrafficCard, UcMoneyWallet.UCGetReminderCharge)
                     UcMoneyWalletCharge.BringToFront()
                     UcMoneyWalletCharge.Focus()
                     R2CoreParkingSystemMClassDriverMonitor.UpdateDriverMonitorInfForMaabar(New R2CoreParkingSystemDriverMonitorStructure(R2CoreMClassConfigurationManagement.GetComputerCode(), _NSSTrafficCard.CardId, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, myMblgh, UcMoneyWallet.UCGetReminderCharge, "كارت تردد شما فاقد شارژ مورد نياز است", 18, Color.Red, myLP, _DateTime.GetCurrentDateTimeMilladi))

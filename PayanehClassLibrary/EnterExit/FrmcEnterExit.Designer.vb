@@ -79,15 +79,15 @@ Partial Class FrmcEnterExit
         '
         'UcBlackListCompositBlackListViewer
         '
-        Me.UcBlackListCompositBlackListViewer.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcBlackListCompositBlackListViewer.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcBlackListCompositBlackListViewer.BackColor = System.Drawing.Color.Transparent
         Me.UcBlackListCompositBlackListViewer.Location = New System.Drawing.Point(15, 126)
         Me.UcBlackListCompositBlackListViewer.Name = "UcBlackListCompositBlackListViewer"
         Me.UcBlackListCompositBlackListViewer.Padding = New System.Windows.Forms.Padding(5)
         Me.UcBlackListCompositBlackListViewer.Size = New System.Drawing.Size(726, 125)
         Me.UcBlackListCompositBlackListViewer.TabIndex = 345
-        Me.UcBlackListCompositBlackListViewer.Visible = false
+        Me.UcBlackListCompositBlackListViewer.Visible = False
         '
         'UcCarPresenter
         '
@@ -109,18 +109,18 @@ Partial Class FrmcEnterExit
         '
         'UcTurnRegisterRequestConfirmation
         '
-        Me.UcTurnRegisterRequestConfirmation.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTurnRegisterRequestConfirmation.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTurnRegisterRequestConfirmation.BackColor = System.Drawing.Color.Transparent
         Me.UcTurnRegisterRequestConfirmation.Location = New System.Drawing.Point(507, 21)
         Me.UcTurnRegisterRequestConfirmation.Name = "UcTurnRegisterRequestConfirmation"
         Me.UcTurnRegisterRequestConfirmation.Padding = New System.Windows.Forms.Padding(3)
         Me.UcTurnRegisterRequestConfirmation.Size = New System.Drawing.Size(232, 62)
         Me.UcTurnRegisterRequestConfirmation.TabIndex = 341
-        Me.UcTurnRegisterRequestConfirmation.UCChkTruckNobat = true
+        Me.UcTurnRegisterRequestConfirmation.UCChkTruckNobat = True
         '
         'UcCarAndTrafficCard
         '
-        Me.UcCarAndTrafficCard.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcCarAndTrafficCard.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcCarAndTrafficCard.BackColor = System.Drawing.Color.Transparent
         Me.UcCarAndTrafficCard.Location = New System.Drawing.Point(757, 275)
         Me.UcCarAndTrafficCard.Name = "UcCarAndTrafficCard"
@@ -130,7 +130,7 @@ Partial Class FrmcEnterExit
         '
         'UcMoneyWallet
         '
-        Me.UcMoneyWallet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcMoneyWallet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcMoneyWallet.BackColor = System.Drawing.Color.Transparent
         Me.UcMoneyWallet.Location = New System.Drawing.Point(757, 3)
         Me.UcMoneyWallet.Name = "UcMoneyWallet"
@@ -139,9 +139,9 @@ Partial Class FrmcEnterExit
         '
         'UcCarImage
         '
-        Me.UcCarImage.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcCarImage.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcCarImage.BackColor = System.Drawing.Color.Transparent
         Me.UcCarImage.Location = New System.Drawing.Point(3, 3)
         Me.UcCarImage.Name = "UcCarImage"
@@ -150,22 +150,23 @@ Partial Class FrmcEnterExit
         '
         'UcMoneyWalletCharge
         '
-        Me.UcMoneyWalletCharge.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcMoneyWalletCharge.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcMoneyWalletCharge.BackColor = System.Drawing.Color.Transparent
         Me.UcMoneyWalletCharge.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcMoneyWalletCharge.Location = New System.Drawing.Point(34, 177)
+        Me.UcMoneyWalletCharge.Location = New System.Drawing.Point(34, 142)
         Me.UcMoneyWalletCharge.Name = "UcMoneyWalletCharge"
         Me.UcMoneyWalletCharge.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcMoneyWalletCharge.Size = New System.Drawing.Size(690, 315)
+        Me.UcMoneyWalletCharge.Size = New System.Drawing.Size(690, 350)
         Me.UcMoneyWalletCharge.TabIndex = 340
-        Me.UcMoneyWalletCharge.UCLocalPrintFlagforUCPrintBillan = false
+        Me.UcMoneyWalletCharge.UCConfigurationIndex = CType(0, Long)
+        Me.UcMoneyWalletCharge.UCLocalPrintFlagforUCPrintBillan = False
         '
         'PnlMoneyWalletChargeSavabegh
         '
-        Me.PnlMoneyWalletChargeSavabegh.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlMoneyWalletChargeSavabegh.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlMoneyWalletChargeSavabegh.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlMoneyWalletChargeSavabegh.Controls.Add(Me.UcTerafficCardPresenterPnlMoneyWalletChargeSavabegh)
         Me.PnlMoneyWalletChargeSavabegh.Controls.Add(Me.UcMoneyWalletChargeSavabeghCollection)
@@ -176,7 +177,7 @@ Partial Class FrmcEnterExit
         '
         'UcTerafficCardPresenterPnlMoneyWalletChargeSavabegh
         '
-        Me.UcTerafficCardPresenterPnlMoneyWalletChargeSavabegh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTerafficCardPresenterPnlMoneyWalletChargeSavabegh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTerafficCardPresenterPnlMoneyWalletChargeSavabegh.BackColor = System.Drawing.Color.Transparent
         Me.UcTerafficCardPresenterPnlMoneyWalletChargeSavabegh.Location = New System.Drawing.Point(612, 0)
         Me.UcTerafficCardPresenterPnlMoneyWalletChargeSavabegh.Name = "UcTerafficCardPresenterPnlMoneyWalletChargeSavabegh"
@@ -186,9 +187,9 @@ Partial Class FrmcEnterExit
         '
         'UcMoneyWalletChargeSavabeghCollection
         '
-        Me.UcMoneyWalletChargeSavabeghCollection.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcMoneyWalletChargeSavabeghCollection.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcMoneyWalletChargeSavabeghCollection.BackColor = System.Drawing.Color.Transparent
         Me.UcMoneyWalletChargeSavabeghCollection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.UcMoneyWalletChargeSavabeghCollection.Location = New System.Drawing.Point(30, 64)
@@ -199,9 +200,9 @@ Partial Class FrmcEnterExit
         '
         'PnlUserChargeSavabegh
         '
-        Me.PnlUserChargeSavabegh.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlUserChargeSavabegh.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlUserChargeSavabegh.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlUserChargeSavabegh.Controls.Add(Me.UcUserChargeSavabeghCollection)
         Me.PnlUserChargeSavabegh.Location = New System.Drawing.Point(5, 50)
@@ -211,9 +212,9 @@ Partial Class FrmcEnterExit
         '
         'UcUserChargeSavabeghCollection
         '
-        Me.UcUserChargeSavabeghCollection.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcUserChargeSavabeghCollection.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcUserChargeSavabeghCollection.BackColor = System.Drawing.Color.Transparent
         Me.UcUserChargeSavabeghCollection.Location = New System.Drawing.Point(30, 12)
         Me.UcUserChargeSavabeghCollection.Name = "UcUserChargeSavabeghCollection"
@@ -223,9 +224,9 @@ Partial Class FrmcEnterExit
         '
         'PnlAccounting
         '
-        Me.PnlAccounting.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlAccounting.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlAccounting.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlAccounting.Controls.Add(Me.UcAccountingCollection)
         Me.PnlAccounting.Location = New System.Drawing.Point(5, 50)
@@ -235,9 +236,9 @@ Partial Class FrmcEnterExit
         '
         'UcAccountingCollection
         '
-        Me.UcAccountingCollection.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcAccountingCollection.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcAccountingCollection.BackColor = System.Drawing.Color.Transparent
         Me.UcAccountingCollection.Location = New System.Drawing.Point(5, 12)
         Me.UcAccountingCollection.Name = "UcAccountingCollection"
@@ -247,9 +248,9 @@ Partial Class FrmcEnterExit
         '
         'PnlEnterExitReport
         '
-        Me.PnlEnterExitReport.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlEnterExitReport.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlEnterExitReport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlEnterExitReport.Controls.Add(Me.UcucEnterExitCollection)
         Me.PnlEnterExitReport.Location = New System.Drawing.Point(5, 50)
@@ -269,9 +270,9 @@ Partial Class FrmcEnterExit
         '
         'PnlMoneyWalletCharge
         '
-        Me.PnlMoneyWalletCharge.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlMoneyWalletCharge.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlMoneyWalletCharge.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlMoneyWalletCharge.Controls.Add(Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge)
         Me.PnlMoneyWalletCharge.Controls.Add(Me.UcMoneyWalletChargePnlMoneyWalletCharge)
@@ -282,9 +283,9 @@ Partial Class FrmcEnterExit
         '
         'UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge
         '
-        Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.BackColor = System.Drawing.Color.Transparent
         Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.Location = New System.Drawing.Point(9, 323)
@@ -295,8 +296,8 @@ Partial Class FrmcEnterExit
         '
         'UcMoneyWalletChargePnlMoneyWalletCharge
         '
-        Me.UcMoneyWalletChargePnlMoneyWalletCharge.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcMoneyWalletChargePnlMoneyWalletCharge.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcMoneyWalletChargePnlMoneyWalletCharge.BackColor = System.Drawing.Color.Transparent
         Me.UcMoneyWalletChargePnlMoneyWalletCharge.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.UcMoneyWalletChargePnlMoneyWalletCharge.Location = New System.Drawing.Point(9, 3)
@@ -304,7 +305,8 @@ Partial Class FrmcEnterExit
         Me.UcMoneyWalletChargePnlMoneyWalletCharge.Padding = New System.Windows.Forms.Padding(3)
         Me.UcMoneyWalletChargePnlMoneyWalletCharge.Size = New System.Drawing.Size(975, 314)
         Me.UcMoneyWalletChargePnlMoneyWalletCharge.TabIndex = 2
-        Me.UcMoneyWalletChargePnlMoneyWalletCharge.UCLocalPrintFlagforUCPrintBillan = true
+        Me.UcMoneyWalletChargePnlMoneyWalletCharge.UCConfigurationIndex = CType(1, Long)
+        Me.UcMoneyWalletChargePnlMoneyWalletCharge.UCLocalPrintFlagforUCPrintBillan = True
         '
         'FrmcEnterExit
         '
@@ -312,19 +314,19 @@ Partial Class FrmcEnterExit
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
         Me.Controls.Add(Me.PnlEnterExit)
-        Me.Controls.Add(Me.PnlMoneyWalletCharge)
         Me.Controls.Add(Me.PnlEnterExitReport)
         Me.Controls.Add(Me.PnlUserChargeSavabegh)
         Me.Controls.Add(Me.PnlAccounting)
         Me.Controls.Add(Me.PnlMoneyWalletChargeSavabegh)
+        Me.Controls.Add(Me.PnlMoneyWalletCharge)
         Me.Location = New System.Drawing.Point(0, 0)
         Me.Name = "FrmcEnterExit"
         Me.Text = "FrmcEnterExit2"
+        Me.Controls.SetChildIndex(Me.PnlMoneyWalletCharge, 0)
         Me.Controls.SetChildIndex(Me.PnlMoneyWalletChargeSavabegh, 0)
         Me.Controls.SetChildIndex(Me.PnlAccounting, 0)
         Me.Controls.SetChildIndex(Me.PnlUserChargeSavabegh, 0)
         Me.Controls.SetChildIndex(Me.PnlEnterExitReport, 0)
-        Me.Controls.SetChildIndex(Me.PnlMoneyWalletCharge, 0)
         Me.Controls.SetChildIndex(Me.PnlEnterExit, 0)
         Me.PnlEnterExit.ResumeLayout(false)
         Me.PnlMoneyWalletChargeSavabegh.ResumeLayout(false)

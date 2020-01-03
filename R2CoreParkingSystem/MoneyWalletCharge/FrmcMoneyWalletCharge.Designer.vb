@@ -80,7 +80,8 @@ Partial Class FrmcMoneyWalletCharge
         Me.UcMoneyWalletCharge.Padding = New System.Windows.Forms.Padding(3)
         Me.UcMoneyWalletCharge.Size = New System.Drawing.Size(975, 314)
         Me.UcMoneyWalletCharge.TabIndex = 0
-        Me.UcMoneyWalletCharge.UCLocalPrintFlagforUCPrintBillan = true
+        Me.UcMoneyWalletCharge.UCConfigurationIndex = CType(2, Long)
+        Me.UcMoneyWalletCharge.UCLocalPrintFlagforUCPrintBillan = True
         '
         'PnlUserChargeSavabegh
         '

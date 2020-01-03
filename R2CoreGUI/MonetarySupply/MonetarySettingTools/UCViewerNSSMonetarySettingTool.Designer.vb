@@ -55,7 +55,7 @@ Partial Class UCViewerNSSMonetarySettingTool
         Me.CButton.FillType = CButtonLib.CButton.eFillType.Solid
         Me.CButton.FocalPoints.CenterPtX = 0!
         Me.CButton.FocalPoints.CenterPtY = 0!
-        Me.CButton.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.CButton.Font = New System.Drawing.Font("B Homa", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButton.ForeColor = System.Drawing.Color.MidnightBlue
         Me.CButton.ImageIndex = 0
         Me.CButton.Location = New System.Drawing.Point(2, 2)

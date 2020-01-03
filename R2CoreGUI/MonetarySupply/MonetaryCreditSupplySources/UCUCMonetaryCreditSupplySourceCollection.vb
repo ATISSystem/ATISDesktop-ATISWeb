@@ -11,7 +11,6 @@ Public Class UCUCMonetaryCreditSupplySourceCollection
     Inherits UCGeneral
 
     Public Event UCCurrentNSSChangedEvent()
-    Private _UCIsFirstUse As Boolean = True
 
 #Region "General Properties"
 
@@ -23,7 +22,7 @@ Public Class UCUCMonetaryCreditSupplySourceCollection
         End Get
         Set(value As R2CoreStandardMonetaryCreditSupplySourceStructure)
             _UCCurrentNSS = value
-            If value IsNot Nothing Then If Not _UCIsFirstUse Then RaiseEvent UCCurrentNSSChangedEvent()
+            RaiseEvent UCCurrentNSSChangedEvent()
         End Set
     End Property
 
@@ -42,7 +41,7 @@ Public Class UCUCMonetaryCreditSupplySourceCollection
         End Set
     End Property
 
-    Private _UCDefaultMCSSId As Int64 = R2CoreMonetaryCreditSupplySourcesManagement.GetThisComputerDefaultNSS(0).MCSSId
+    Private _UCDefaultMCSSId As Int64 = 0
     Public Property UCDefaultMCSSId() As Int64
         Get
             Return _UCDefaultMCSSId
@@ -119,7 +118,7 @@ Public Class UCUCMonetaryCreditSupplySourceCollection
         End Try
     End Sub
 
-    Public Sub UCPreparing(YourConfigurationIndex As Int64)
+    Public Sub UCPrepare(YourConfigurationIndex As Int64)
         Try
             UCDefaultMCSSId = R2CoreMonetaryCreditSupplySourcesManagement.GetThisComputerDefaultNSS(YourConfigurationIndex).MCSSId
             Dim Lst = R2CoreMonetaryCreditSupplySourcesManagement.GetThisComputerCollectionBitMap(YourConfigurationIndex)
@@ -142,7 +141,6 @@ Public Class UCUCMonetaryCreditSupplySourceCollection
 
     Private Sub UCs_UCClickedEvent(SenderUC As UCMonetaryCreditSupplySource)
         Try
-            _UCIsFirstUse = False
             UCActiveThisNSS(SenderUC.UCNSSCurrent)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

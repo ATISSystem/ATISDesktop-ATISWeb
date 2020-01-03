@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,10 +20,8 @@ Partial Class Form1
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim R2CoreStandardMonetarySettingToolStructure1 As R2Core.MonetarySettingTools.R2CoreStandardMonetarySettingToolStructure = New R2Core.MonetarySettingTools.R2CoreStandardMonetarySettingToolStructure()
-        Dim R2CoreStandardMonetaryCreditSupplySourceStructure1 As R2Core.MonetaryCreditSupplySources.R2CoreStandardMonetaryCreditSupplySourceStructure = New R2Core.MonetaryCreditSupplySources.R2CoreStandardMonetaryCreditSupplySourceStructure()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.Button1 = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
@@ -47,8 +45,6 @@ Partial Class Form1
         Me.ListBox1 = New System.Windows.Forms.ListBox()
         Me.Button15 = New System.Windows.Forms.Button()
         Me.Button16 = New System.Windows.Forms.Button()
-        Me.UcucMonetarySettingToolCollection1 = New R2CoreGUI.UCUCMonetarySettingToolCollection()
-        Me.UcucMonetaryCreditSupplySourceCollection1 = New R2CoreGUI.UCUCMonetaryCreditSupplySourceCollection()
         Me.UcTurnRegisterRequestConfirmation = New PayanehClassLibrary.UCTurnRegisterRequestConfirmation()
         Me.UcPersianTextBoxSerial = New R2CoreGUI.UCPersianTextBox()
         Me.UcPersianTextBoxPelak = New R2CoreGUI.UCPersianTextBox()
@@ -252,48 +248,6 @@ Partial Class Form1
         Me.Button16.Text = "Button16"
         Me.Button16.UseVisualStyleBackColor = True
         '
-        'UcucMonetarySettingToolCollection1
-        '
-        Me.UcucMonetarySettingToolCollection1.BackColor = System.Drawing.Color.Transparent
-        Me.UcucMonetarySettingToolCollection1.Location = New System.Drawing.Point(109, 366)
-        Me.UcucMonetarySettingToolCollection1.Name = "UcucMonetarySettingToolCollection1"
-        Me.UcucMonetarySettingToolCollection1.Size = New System.Drawing.Size(463, 33)
-        Me.UcucMonetarySettingToolCollection1.TabIndex = 38
-        R2CoreStandardMonetarySettingToolStructure1.Active = True
-        R2CoreStandardMonetarySettingToolStructure1.AssemblyPath = ""
-        R2CoreStandardMonetarySettingToolStructure1.Deleted = False
-        R2CoreStandardMonetarySettingToolStructure1.MSTColor = System.Drawing.Color.Blue
-        R2CoreStandardMonetarySettingToolStructure1.MSTId = CType(2, Long)
-        R2CoreStandardMonetarySettingToolStructure1.MSTName = "ExitCarProcess"
-        R2CoreStandardMonetarySettingToolStructure1.MSTTitle = "فرآیند خروج خودرو"
-        R2CoreStandardMonetarySettingToolStructure1.OCode = "2"
-        R2CoreStandardMonetarySettingToolStructure1.OName = "ExitCarProcess"
-        R2CoreStandardMonetarySettingToolStructure1.ViewFlag = True
-        Me.UcucMonetarySettingToolCollection1.UCCurrentNSS = R2CoreStandardMonetarySettingToolStructure1
-        Me.UcucMonetarySettingToolCollection1.UCDefaultMSTId = CType(2, Long)
-        Me.UcucMonetarySettingToolCollection1.UCViewBorder = True
-        '
-        'UcucMonetaryCreditSupplySourceCollection1
-        '
-        Me.UcucMonetaryCreditSupplySourceCollection1.BackColor = System.Drawing.Color.Transparent
-        Me.UcucMonetaryCreditSupplySourceCollection1.Location = New System.Drawing.Point(109, 327)
-        Me.UcucMonetaryCreditSupplySourceCollection1.Name = "UcucMonetaryCreditSupplySourceCollection1"
-        Me.UcucMonetaryCreditSupplySourceCollection1.Size = New System.Drawing.Size(463, 33)
-        Me.UcucMonetaryCreditSupplySourceCollection1.TabIndex = 37
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.Active = True
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.AssemblyPath = ""
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.Deleted = False
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.MCSSColor = System.Drawing.Color.Orange
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.MCSSId = CType(1, Long)
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.MCSSName = "Cash"
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.MCSSTitle = "وجه نقد"
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.OCode = "1"
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.OName = "Cash"
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.ViewFlag = True
-        Me.UcucMonetaryCreditSupplySourceCollection1.UCCurrentNSS = R2CoreStandardMonetaryCreditSupplySourceStructure1
-        Me.UcucMonetaryCreditSupplySourceCollection1.UCDefaultMCSSId = CType(1, Long)
-        Me.UcucMonetaryCreditSupplySourceCollection1.UCViewBorder = True
-        '
         'UcTurnRegisterRequestConfirmation
         '
         Me.UcTurnRegisterRequestConfirmation.BackColor = System.Drawing.Color.Transparent
@@ -370,6 +324,7 @@ Partial Class Form1
         Me.UcMoney1.UCBackColor = System.Drawing.Color.White
         Me.UcMoney1.UCBorder = True
         Me.UcMoney1.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcMoney1.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcMoney1.UCForeColor = System.Drawing.Color.Black
         Me.UcMoney1.UCValue = ""
         '
@@ -439,8 +394,6 @@ Partial Class Form1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(997, 594)
-        Me.Controls.Add(Me.UcucMonetarySettingToolCollection1)
-        Me.Controls.Add(Me.UcucMonetaryCreditSupplySourceCollection1)
         Me.Controls.Add(Me.Button16)
         Me.Controls.Add(Me.UcTurnRegisterRequestConfirmation)
         Me.Controls.Add(Me.Button15)
@@ -471,13 +424,13 @@ Partial Class Form1
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button1)
-        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Form1"
         Me.Text = "Form1"
-        Me.ResumeLayout(false)
-        Me.PerformLayout
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
 
-End Sub
+    End Sub
     Friend WithEvents Button1 As Button
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Button2 As Button
@@ -508,6 +461,4 @@ End Sub
     Friend WithEvents Button15 As Button
     Friend WithEvents UcTurnRegisterRequestConfirmation As PayanehClassLibrary.UCTurnRegisterRequestConfirmation
     Friend WithEvents Button16 As Button
-    Friend WithEvents UcucMonetaryCreditSupplySourceCollection1 As R2CoreGUI.UCUCMonetaryCreditSupplySourceCollection
-    Friend WithEvents UcucMonetarySettingToolCollection1 As R2CoreGUI.UCUCMonetarySettingToolCollection
 End Class

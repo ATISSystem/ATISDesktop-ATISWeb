@@ -48,7 +48,7 @@ Partial Class UCUCMonetarySettingToolCollection
         Me.PnlUCs.BackColor = System.Drawing.Color.White
         Me.PnlUCs.Location = New System.Drawing.Point(1, 1)
         Me.PnlUCs.Name = "PnlUCs"
-        Me.PnlUCs.Size = New System.Drawing.Size(362, 31)
+        Me.PnlUCs.Size = New System.Drawing.Size(363, 31)
         Me.PnlUCs.TabIndex = 2
         '
         'UcLabel
@@ -64,7 +64,7 @@ Partial Class UCUCMonetarySettingToolCollection
         Me.UcLabel.TabIndex = 1
         Me.UcLabel.UCBackColor = System.Drawing.Color.Transparent
         Me.UcLabel.UCFont = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabel.UCForeColor = System.Drawing.Color.Red
+        Me.UcLabel.UCForeColor = System.Drawing.Color.Silver
         Me.UcLabel.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabel.UCValue = "تنظیم مبلغ"
         '

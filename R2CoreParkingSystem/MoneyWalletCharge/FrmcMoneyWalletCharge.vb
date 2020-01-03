@@ -60,7 +60,7 @@ Public Class FrmcMoneyWalletCharge
     Private Sub FrmMoneyWalletCharge__RFIDCardReadedEvent(CardNo As String) Handles Me._RFIDCardReadedEvent
         Try
             _NSSTrafficCard = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(CardNo)
-            UcMoneyWalletCharge.UCPrepare(_NSSTrafficCard)
+            UcMoneyWalletCharge.UCPrepare(_NSSTrafficCard, 0)
             UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.UCViewChargeSavabegh(_NSSTrafficCard)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

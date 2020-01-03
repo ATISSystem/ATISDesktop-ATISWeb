@@ -108,6 +108,18 @@ Public Class UCMoney
         End Get
     End Property
 
+    Private _UCFont As Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+    <Browsable(True)>
+    Public Property UCFont() As Font
+        Get
+            Return _UCFont
+        End Get
+        Set(value As Font)
+            _UCFont = value
+            TxtMoney.Font = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Subroutins And Functions"

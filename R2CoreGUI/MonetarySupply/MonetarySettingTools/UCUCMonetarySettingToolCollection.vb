@@ -11,7 +11,6 @@ Public Class UCUCMonetarySettingToolCollection
     Inherits UCGeneral
 
     Public Event UCCurrentNSSChangedEvent()
-    Private _UCIsFirstUse As Boolean = True
 
 #Region "General Properties"
 
@@ -23,7 +22,7 @@ Public Class UCUCMonetarySettingToolCollection
         End Get
         Set(value As R2CoreStandardMonetarySettingToolStructure)
             _UCCurrentNSS = value
-            If value IsNot Nothing Then If Not _UCIsFirstUse Then RaiseEvent UCCurrentNSSChangedEvent()
+            RaiseEvent UCCurrentNSSChangedEvent()
         End Set
     End Property
 
@@ -119,7 +118,7 @@ Public Class UCUCMonetarySettingToolCollection
         End Try
     End Sub
 
-    Public Sub UCPreparing(YourConfigurationIndex As Int64)
+    Public Sub UCPrepare(YourConfigurationIndex As Int64)
         Try
             UCDefaultMSTId = R2CoreMonetarySettingToolsManagement.GetThisComputerDefaultNSS(YourConfigurationIndex).MSTId
             Dim Lst = R2CoreMonetarySettingToolsManagement.GetThisComputerCollectionBitMap(YourConfigurationIndex)
@@ -142,7 +141,6 @@ Public Class UCUCMonetarySettingToolCollection
 
     Private Sub UCs_UCClickedEvent(SenderUC As UCMonetarySettingTool)
         Try
-            _UCIsFirstUse = False
             UCActiveThisNSS(SenderUC.UCNSSCurrent)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
