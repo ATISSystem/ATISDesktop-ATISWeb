@@ -42,7 +42,7 @@ Public Class UCViewerNSSMonetarySettingTool
 
 
     Private Sub CButton_TextChanged(sender As Object, e As EventArgs) Handles CButton.TextChanged
-        Me.Size = New Size(TextRenderer.MeasureText(CButton.Text, CButton.Font).Width + 20, Me.Height)
+        'Me.Size = New Size(TextRenderer.MeasureText(CButton.Text, CButton.Font).Width + 20, Me.Height)
     End Sub
 
     Private Sub CButton_Click(sender As Object, e As EventArgs) Handles CButton.Click
@@ -57,6 +57,7 @@ Public Class UCViewerNSSMonetarySettingTool
     Private Sub UCViewerNSSMonetarySettingTool_UCViewNSSRequested(NSSCurrent As R2CoreStandardMonetarySettingToolStructure) Handles Me.UCViewNSSRequested
         Try
             CButton.Text = UCNSSCurrent.MSTTitle
+            Me.Size = New Size(TextRenderer.MeasureText(CButton.Text, CButton.Font).Width + 20, Me.Height)
             CButton.Visible = True
             UCChangeColor(UCNSSCurrent.MSTColor, UCActiveForeColor)
         Catch ex As Exception

@@ -23,8 +23,8 @@ Partial Class UCUCMonetaryCreditSupplySourceCollection
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.PnlMain = New System.Windows.Forms.Panel()
-        Me.PnlUCs = New System.Windows.Forms.Panel()
         Me.UcLabel = New R2CoreGUI.UCLabel()
+        Me.PnlUCs = New System.Windows.Forms.Panel()
         Me.PnlMain.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -40,6 +40,23 @@ Partial Class UCUCMonetaryCreditSupplySourceCollection
         Me.PnlMain.Size = New System.Drawing.Size(447, 33)
         Me.PnlMain.TabIndex = 0
         '
+        'UcLabel
+        '
+        Me.UcLabel._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel.BackColor = System.Drawing.Color.White
+        Me.UcLabel.Dock = System.Windows.Forms.DockStyle.Right
+        Me.UcLabel.Location = New System.Drawing.Point(362, 1)
+        Me.UcLabel.Name = "UcLabel"
+        Me.UcLabel.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel.Size = New System.Drawing.Size(84, 31)
+        Me.UcLabel.TabIndex = 0
+        Me.UcLabel.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabel.UCFont = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel.UCForeColor = System.Drawing.Color.Red
+        Me.UcLabel.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcLabel.UCValue = "تامین اعتبار"
+        '
         'PnlUCs
         '
         Me.PnlUCs.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -48,25 +65,8 @@ Partial Class UCUCMonetaryCreditSupplySourceCollection
         Me.PnlUCs.BackColor = System.Drawing.Color.White
         Me.PnlUCs.Location = New System.Drawing.Point(1, 1)
         Me.PnlUCs.Name = "PnlUCs"
-        Me.PnlUCs.Size = New System.Drawing.Size(322, 31)
+        Me.PnlUCs.Size = New System.Drawing.Size(360, 31)
         Me.PnlUCs.TabIndex = 0
-        '
-        'UcLabel
-        '
-        Me.UcLabel._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabel._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabel.BackColor = System.Drawing.Color.White
-        Me.UcLabel.Dock = System.Windows.Forms.DockStyle.Right
-        Me.UcLabel.Location = New System.Drawing.Point(324, 1)
-        Me.UcLabel.Name = "UcLabel"
-        Me.UcLabel.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabel.Size = New System.Drawing.Size(122, 31)
-        Me.UcLabel.TabIndex = 0
-        Me.UcLabel.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel.UCFont = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabel.UCForeColor = System.Drawing.Color.Red
-        Me.UcLabel.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.UcLabel.UCValue = "منابع تامین اعتبار"
         '
         'UCUCMonetaryCreditSupplySourceCollection
         '

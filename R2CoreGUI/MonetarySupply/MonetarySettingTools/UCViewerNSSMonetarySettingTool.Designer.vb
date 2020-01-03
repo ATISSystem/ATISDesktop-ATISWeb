@@ -46,10 +46,10 @@ Partial Class UCViewerNSSMonetarySettingTool
         CBlendItems1.iPoint = New Single() {0!, 1.0!}
         Me.CButton.ColorFillBlend = CBlendItems1
         Me.CButton.ColorFillSolid = System.Drawing.Color.White
-        Me.CButton.Corners.LowerLeft = 4
-        Me.CButton.Corners.UpperRight = 4
+        Me.CButton.Corners.LowerLeft = 8
+        Me.CButton.Corners.UpperRight = 8
         Me.CButton.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.CButton.DesignerSelected = False
+        Me.CButton.DesignerSelected = True
         Me.CButton.DimFactorHover = 55
         Me.CButton.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CButton.FillType = CButtonLib.CButton.eFillType.Solid
