@@ -43,7 +43,7 @@ Public Class UCMonetarySettingToolUserPadInstrument
     Public Sub UCRefresh()
         Try
             UcLabelAmount.UCValue = 0
-            UCAmountChanged(0)
+            OnAmountChanged(0)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -52,7 +52,7 @@ Public Class UCMonetarySettingToolUserPadInstrument
     Private Sub UCToChangeAmount(YourAmount As Int64)
         Try
             UCAddMblgh(YourAmount)
-            UCAmountChanged(UcLabelAmount.UCValue)
+            OnAmountChanged(UcLabelAmount.UCValue)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

@@ -13,6 +13,9 @@ Imports R2Core.MonetaryCreditSupplySources
 
 Namespace MonetarySupply
 
+    ' On All of Location of Code Where UCMonetarySupply Used so ConfigurationIndex must be set to UCConfigurationIndex Property
+    ' For Example UCMoneyWalletCharge has ConfigurationIndex Property so send it to UCMonetarySupply
+
     Public Class R2CoreMonetarySupply
 
         Public Event MonetarySupplySuccessEvent(TransactionId As Int64, Amount As Int64)
@@ -27,7 +30,7 @@ Namespace MonetarySupply
             End Try
         End Sub
 
-        Private Sub MonetaryCreditSupplySourceInstance_MonetaryCreditSupplySuccessEvent(TransactionId As Int64, Amount As Int64) Handles _MonetaryCreditSupplySource.MonetaryCreditSupplySuccessEvent
+        Private Sub _MonetaryCreditSupplySource_MonetaryCreditSupplySuccessEvent(TransactionId As Int64, Amount As Int64) Handles _MonetaryCreditSupplySource.MonetaryCreditSupplySuccessEvent
             Try
                 RaiseEvent MonetarySupplySuccessEvent(TransactionId, Amount)
             Catch ex As Exception
@@ -35,7 +38,7 @@ Namespace MonetarySupply
             End Try
         End Sub
 
-        Private Sub MonetaryCreditSupplySourceInstance_MonetaryCreditSupplyUnSuccessEvent(TransactionId As Int64, Amount As Int64) Handles _MonetaryCreditSupplySource.MonetaryCreditSupplyUnSuccessEvent
+        Private Sub _MonetaryCreditSupplySource_MonetaryCreditSupplyUnSuccessEvent(TransactionId As Int64, Amount As Int64) Handles _MonetaryCreditSupplySource.MonetaryCreditSupplyUnSuccessEvent
             Try
                 RaiseEvent MonetarySupplyUnSuccessEvent(TransactionId, Amount)
             Catch ex As Exception
@@ -49,6 +52,11 @@ Namespace MonetarySupply
 End Namespace
 
 Namespace MonetaryCreditSupplySources
+
+    ' When new MonetaryCreditSupplySource must to add to ApplicationDomain then 
+    ' 1-R2primary.dbo.TblMonetaryCreditSupplySources
+    ' 2-R2Primary.dbo.TblConfigurationOfComputers for 65 Config
+    ' 3-Developmnet of Classes - Inheritance of R2CoreMonetaryCreditSupplySource
 
     Public MustInherit Class R2CoreMonetaryCreditSupplySources
         Public Shared ReadOnly Property None As Int64 = 0
@@ -116,7 +124,7 @@ Namespace MonetaryCreditSupplySources
         Public Shared Function GetMonetaryCreditSupplySources() As List(Of R2CoreStandardMonetaryCreditSupplySourceStructure)
             Try
                 Dim DS As DataSet
-                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources as MCSSs Where MCSSs.ViewFlag=1 and Active=1 and Deleted=0 ", 3600, DS)
+                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where ViewFlag=1 and Active=1 and Deleted=0 ", 3600, DS)
                 Dim Lst As New List(Of R2CoreStandardMonetaryCreditSupplySourceStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                     Lst.Add(New R2CoreStandardMonetaryCreditSupplySourceStructure(DS.Tables(0).Rows(Loopx).Item("MCSSId"), DS.Tables(0).Rows(Loopx).Item("MCSSName").trim, DS.Tables(0).Rows(Loopx).Item("MCSSTitle").trim, Color.FromName(DS.Tables(0).Rows(Loopx).Item("MCSSColor").trim), DS.Tables(0).Rows(Loopx).Item("AssemblyPath").trim, DS.Tables(0).Rows(Loopx).Item("AssemblyDll").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
@@ -197,15 +205,110 @@ Namespace MonetaryCreditSupplySources
 
     End Class
 
+    Namespace Cash
+
+        Public Class R2CoreCash
+            Inherits MonetaryCreditSupplySources.R2CoreMonetaryCreditSupplySource
+
+            Private WithEvents _Timer As New System.Timers.Timer
+
+            Public Sub New(YourAmount As Int64)
+                MyBase.New(YourAmount)
+                Try
+                    _Timer.Interval = 2000
+                    _Timer.Enabled = True
+                    _Timer.Start()
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+            Private Sub _Timer_Elapsed(sender As Object, e As ElapsedEventArgs) Handles _Timer.Elapsed
+                Try
+                    _Timer.Stop()
+                    _Timer.Enabled = False
+                    _Timer = Nothing
+                    OnMonetaryCreditSupplySuccess(_Amount, _Amount)
+                Catch ex As Exception
+                    MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+        End Class
+
+    End Namespace
+
+    Namespace Pos
+
+        Namespace PCPos
+
+            Public Class R2CorePCPos
+                Inherits MonetaryCreditSupplySources.R2CoreMonetaryCreditSupplySource
+
+
+                Public Sub New(YourAmount As Int64)
+                    MyBase.New(YourAmount)
+                    Try
+
+                        OnMonetaryCreditSupplySuccess(Nothing, _Amount)
+                    Catch ex As Exception
+                        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                    End Try
+                End Sub
+
+            End Class
+
+
+
+        End Namespace
+
+    End Namespace
+
+    Namespace Bank
+
+        Public Class R2CoreBank
+            Inherits MonetaryCreditSupplySources.R2CoreMonetaryCreditSupplySource
+
+            Private WithEvents _Timer As New System.Timers.Timer
+
+            Public Sub New(YourAmount As Int64)
+                MyBase.New(YourAmount)
+                Try
+                    _Timer.Interval = 6000
+                    _Timer.Enabled = True
+                    _Timer.Start()
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+            Private Sub _Timer_Elapsed(sender As Object, e As ElapsedEventArgs) Handles _Timer.Elapsed
+                Try
+                    _Timer.Stop()
+                    _Timer.Enabled = False
+                    _Timer = Nothing
+                    OnMonetaryCreditSupplySuccess(_Amount, _Amount)
+                Catch ex As Exception
+                    MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+        End Class
+
+    End Namespace
 
 End Namespace
 
 Namespace MonetarySettingTools
 
+    'When new MonetarySettingTool must to add to ApplicationDomain then 
+    ' 1-R2primary.dbo.TblMonetarySettingTools
+    ' 2-R2Primary.dbo.TblConfigurationOfComputers for 66 Config
+    ' 3-Developmnet of Classes - Inheritance of UCMonetarySettingToolInstrument
+
     Public MustInherit Class R2CoreMonetarySettingTools
         Public Shared ReadOnly Property None As Int64 = 0
         Public Shared ReadOnly Property UserPad As Int64 = 1
-        Public Shared ReadOnly Property ExitCarProcess As Int64 = 2
         Public Shared ReadOnly Property R2PrimaryWebService As Int64 = 3
     End Class
 
@@ -321,94 +424,3 @@ Namespace MonetarySettingTools
 
 End Namespace
 
-Namespace Cash
-
-    Public Class R2CoreCash
-        Inherits MonetaryCreditSupplySources.R2CoreMonetaryCreditSupplySource
-
-        Private WithEvents _Timer As New System.Timers.Timer
-
-        Public Sub New(YourAmount As Int64)
-            MyBase.New(YourAmount)
-            Try
-                _Timer.Interval = 2000
-                _Timer.Enabled = True
-                _Timer.Start()
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Private Sub _Timer_Elapsed(sender As Object, e As ElapsedEventArgs) Handles _Timer.Elapsed
-            Try
-                _Timer.Stop()
-                _Timer.Enabled = False
-                _Timer = Nothing
-                OnMonetaryCreditSupplySuccess(Nothing, _Amount)
-            Catch ex As Exception
-                MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-    End Class
-
-End Namespace
-
-Namespace Pos
-
-    Namespace PCPos
-
-        Public Class R2CorePCPos
-            Inherits MonetaryCreditSupplySources.R2CoreMonetaryCreditSupplySource
-
-
-            Public Sub New(YourAmount As Int64)
-                MyBase.New(YourAmount)
-                Try
-
-                    OnMonetaryCreditSupplySuccess(Nothing, _Amount)
-                Catch ex As Exception
-                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-                End Try
-            End Sub
-
-        End Class
-
-
-
-    End Namespace
-
-End Namespace
-
-Namespace Bank
-
-    Public Class R2CoreBank
-        Inherits MonetaryCreditSupplySources.R2CoreMonetaryCreditSupplySource
-
-        Private WithEvents _Timer As New System.Timers.Timer
-
-        Public Sub New(YourAmount As Int64)
-            MyBase.New(YourAmount)
-            Try
-                _Timer.Interval = 6000
-                _Timer.Enabled = True
-                _Timer.Start()
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Private Sub _Timer_Elapsed(sender As Object, e As ElapsedEventArgs) Handles _Timer.Elapsed
-            Try
-                _Timer.Stop()
-                _Timer.Enabled = False
-                _Timer = Nothing
-                OnMonetaryCreditSupplySuccess(Nothing, _Amount)
-            Catch ex As Exception
-                MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-    End Class
-
-End Namespace

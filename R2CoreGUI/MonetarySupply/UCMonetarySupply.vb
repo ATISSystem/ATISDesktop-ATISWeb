@@ -63,7 +63,6 @@ Public Class UCMonetarySupply
     Public Overrides Sub DisposeResources()
     End Sub
 
-
     Private Sub UCInternalPrepare(YourAmount As Int64)
         Try
             UcucMonetaryCreditSupplySourceCollection.UCPrepare(UCConfigurationIndex)

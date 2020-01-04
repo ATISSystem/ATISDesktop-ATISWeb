@@ -268,10 +268,10 @@
     <Compile Include="EnterExit\UCUCEnterExitCollection.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MonetarySupply\MonetarySettingTool ExitCarProcess Instrument\UCMonetarySettingToolExitCarProcessInstrument.Designer.vb">
+    <Compile Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolExitCarProcessInstrument.Designer.vb">
       <DependentUpon>UCMonetarySettingToolExitCarProcessInstrument.vb</DependentUpon>
     </Compile>
-    <Compile Include="MonetarySupply\MonetarySettingTool ExitCarProcess Instrument\UCMonetarySettingToolExitCarProcessInstrument.vb">
+    <Compile Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolExitCarProcessInstrument.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="MoneyWalletCharge\FrmcMoneyWalletChargeSavabegh.Designer.vb">
@@ -622,7 +622,7 @@
     <EmbeddedResource Include="EnterExit\UCUCEnterExitCollection.resx">
       <DependentUpon>UCUCEnterExitCollection.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MonetarySupply\MonetarySettingTool ExitCarProcess Instrument\UCMonetarySettingToolExitCarProcessInstrument.resx">
+    <EmbeddedResource Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolExitCarProcessInstrument.resx">
       <DependentUpon>UCMonetarySettingToolExitCarProcessInstrument.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MoneyWalletCharge\FrmcMoneyWalletChargeSavabegh.resx">

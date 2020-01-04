@@ -66,7 +66,12 @@ Public Class UCMonetarySettingToolInstrumentCollection
     Private Sub UcButtonSpecial_UCClickedEvent() Handles UcButtonSpecial.UCClickedEvent
         Try
             UcButtonSpecial.UCEnable = False
-            If UcAmount.UCValueMoney > 0 Then RaiseEvent UCAmountChanged(UcAmount.UCValueMoney)
+            If UcAmount.UCValueMoney > 0 Then
+                RaiseEvent UCAmountChanged(UcAmount.UCValueMoney)
+            Else
+                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "مبلغ مورد نظر نادرست است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                UcButtonSpecial.UCEnable = True
+            End If
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

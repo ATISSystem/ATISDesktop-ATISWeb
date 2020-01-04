@@ -24,6 +24,7 @@ Imports R2Core.FileShareRawGroupsManagement
 Imports R2Core.LoggingManagement
 Imports R2Core.ProcessesManagement
 Imports R2Core.R2PrimaryFileSharingWS
+Imports R2Core.MonetarySettingTools
 Imports R2CoreGUI
 Imports R2CoreLPR.ConfigurationManagement
 Imports R2CoreLPR.LicensePlateManagement
@@ -3943,3 +3944,11 @@ Namespace ReportsManagement
 
 End Namespace
 
+Namespace MonetarySettingTools
+
+    Public MustInherit Class R2CoreParkingSystemMonetarySettingTools
+        Inherits R2CoreMonetarySettingTools
+        Public Shared ReadOnly Property ExitCarProcess As Int64 = 2
+    End Class
+
+End Namespace

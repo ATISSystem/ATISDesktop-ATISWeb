@@ -1,9 +1,9 @@
 ﻿
 Imports System.Reflection
 Imports System.Windows.Forms
+
 Imports R2Core.ComputersManagement
 Imports R2Core.ConfigurationManagement
-
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.ExceptionManagement
 Imports R2Core.LoggingManagement
@@ -31,15 +31,7 @@ Public Class UCMoneyWalletCharge
 
 #Region "General Properties"
 
-    Private _UCLocalPrintFlagforUCPrintBillan As Boolean = False
-    Public Property UCLocalPrintFlagforUCPrintBillan() As Boolean
-        Get
-            Return _UCLocalPrintFlagforUCPrintBillan
-        End Get
-        Set(value As Boolean)
-            _UCLocalPrintFlagforUCPrintBillan = value
-        End Set
-    End Property
+    Public Property UCLocalPrintFlagforUCPrintBillan() As Boolean = False
 
     Private _UCMonetarySupplyConfigurationIndex As Int64 = 1
     Public Property UCConfigurationIndex() As Int64
@@ -140,7 +132,7 @@ Public Class UCMoneyWalletCharge
                 If Amount <> 0 Then
                     UcMoneyWallet.UCViewandActMoneyWalletNextStatus(_NSS, BagPayType.AddMoney, Amount, R2CoreParkingSystemAccountings.ChargeType)
                     R2CoreParkingSystemMClassMoneyWalletChargeManagement.SabtCharge(New R2StandardMoneyWalletChargeStructure(_NSS, UcMoneyWallet.UCGetMblgh, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, "", _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, 0, _DateTime.GetCurrentTime))
-                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "شارژ کیف پول انجام گرفت" + vbCrLf + Amount.ToString, _NSS.CardNo, TransactionId, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "شارژ کیف پول انجام گرفت" + vbCrLf + Amount.ToString, _NSS.CardNo, IIf(Object.Equals(TransactionId, Nothing), String.Empty, TransactionId), 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                     'چاپ رسید شارژ ابتدا برای کل کامپیوتر مطابق کانفیگ بررسی می شود
                     'سپس به صورت محلی نیز بررسی می شود
                     If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.MoneyWalletCharge, R2CoreMClassComputersManagement.GetNSSCurrentComputer().MId, 0) = True Then
@@ -185,7 +177,7 @@ Public Class UCMoneyWalletCharge
 
     Public Sub R2RFIDCardReaded(CardNo As String) Implements R2CoreRFIDCardRequester.R2RFIDCardReaded
         Try
-            UCPrepare(R2CoreParkingSystem.TrafficCardsManagement.R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(CardNo), 0)
+            UCPrepare(R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(CardNo), 0)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

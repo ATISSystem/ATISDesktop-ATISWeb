@@ -24,7 +24,7 @@ Public Class UCMonetarySettingToolInstrument
 
 #Region "Events"
 
-    Protected Sub UCAmountChanged(Amount As Int64)
+    Protected Sub OnAmountChanged(Amount As Int64)
         Try
             RaiseEvent UCAmountChangedEvent(Amount)
         Catch ex As Exception
