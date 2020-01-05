@@ -31,8 +31,6 @@ Public Class FrmcMainMenu
             Me.Height = My.Computer.Screen.WorkingArea.Height - 10
             LblTopApplicationDomainPersianTitle.Text = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 1)
             LblTopApplicationDomainEnglishTiltle.Text = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 2)
-            LblMiddleInnerApplicationDomainTitle.Text = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 0)
-            LblMiddleOuterApplicationDomainTitle.Text = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 0)
             LblBottom0ApplicationDomainTitle.Text = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 0)
             LblBottom1ApplicationDomainTitle.Text = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 1)
             LblBottomSystemTitle.Text = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SystemDisplayTitle, 0)
@@ -98,10 +96,36 @@ Public Class FrmcMainMenu
         Me.WindowState = FormWindowState.Minimized
     End Sub
 
-    
+    Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
+        Try
+            MyBase.OnPaint(e)
+            Dim FontDesign As Font = New System.Drawing.Font("IranNastaliq", 72.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+            Dim BrushDesign As Brush
+            Dim TextDesign As String = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 0)
+            Dim TextShadowColor As Color = Color.FromName(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.FirstPageColor, 0))
+            Dim TextForeColor As Color = Color.FromName(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.FirstPageColor, 1))
 
+            'PnlUserLogin
+            Dim GraphicsDesign As Graphics = PnlUserLogin.CreateGraphics
+            'Shadom Text on PnlUserLogin
+            BrushDesign = New Drawing.SolidBrush(TextShadowColor)
+            GraphicsDesign.DrawString(TextDesign, FontDesign, BrushDesign, 10, 30)
+            'Main Text on PnlUserLogin
+            BrushDesign = New Drawing.SolidBrush(TextForeColor)
+            GraphicsDesign.DrawString(TextDesign, FontDesign, BrushDesign, 8, 28)
 
-
+            'PnlMiddle
+            GraphicsDesign = PnlMiddle.CreateGraphics
+            'Shadom Text on PnlMiddle
+            BrushDesign = New Drawing.SolidBrush(TextShadowColor)
+            GraphicsDesign.DrawString(TextDesign, FontDesign, BrushDesign, -278, -58)
+            'Main Text on PnlMiddle
+            BrushDesign = New Drawing.SolidBrush(TextForeColor)
+            GraphicsDesign.DrawString(TextDesign, FontDesign, BrushDesign, -280, -60)
+        Catch ex As Exception
+            MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
 
 
 

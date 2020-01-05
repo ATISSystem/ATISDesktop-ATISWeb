@@ -183,13 +183,15 @@ Public Class Form1
 
 
 
-            Dim x As R2CoreParkingSystem.UCMoneyWalletCharge = New R2CoreParkingSystem.UCMoneyWalletCharge
-            x.Location = New Point(0, 0)
-            Me.Controls.Add(x)
-            x.BringToFront()
+            'Dim x As R2CoreParkingSystem.UCMoneyWalletCharge = New R2CoreParkingSystem.UCMoneyWalletCharge
+            'x.Location = New Point(0, 0)
+            'Me.Controls.Add(x)
+            'x.BringToFront()
 
 
 
+            Dim GraphicsDesginer As Graphics = Me.CreateGraphics()
+            GraphicsDesginer.DrawString("پایانه امیرکبیر", New System.Drawing.Font("IranNastaliq", 72.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte)), New SolidBrush(Color.Black), 0, 0, New StringFormat(StringFormatFlags.DirectionRightToLeft))
 
 
         Catch ex As Exception
@@ -262,8 +264,14 @@ Public Class Form1
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
         Try
-            Dim x As New FrmcMessageDialog
-            x.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + "1125" & vbCrLf & "شماره نوبت :" + "965235", String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me,false )
+            Dim myGraphics As Graphics = Me.CreateGraphics
+            Dim myFont As Font
+            Dim myBrush As Brush
+            myBrush = New Drawing.SolidBrush(Color.DarkOrchid)
+            myFont = New System.Drawing.Font("Verdana", 20, FontStyle.Underline)
+            myGraphics.DrawString("Visual Basic 2013", myFont, myBrush, 10, 10)
+            'Dim x As New FrmcMessageDialog
+            'x.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + "1125" & vbCrLf & "شماره نوبت :" + "965235", String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me,false )
 
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -273,4 +281,14 @@ Public Class Form1
     Private Sub UcMonetarySupply1_UCMonetarySupplySuccessEvent(TransactionId As Long) 
         MessageBox.Show(TransactionId)
     End Sub
+
+    Private Sub Form1_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint
+
+    End Sub
+    Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
+        Dim GraphicsDesginer As Graphics = Me.CreateGraphics()
+        e.Graphics.DrawString("پایانه امیرکبیر", New System.Drawing.Font("IranNastaliq", 72.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte)), New SolidBrush(Color.Black), 0, 0, New StringFormat(StringFormatFlags.DirectionRightToLeft))
+
+    End Sub
+
 End Class

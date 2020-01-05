@@ -51,7 +51,7 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(394, 121)
+        Me.PnlMain.Size = New System.Drawing.Size(455, 166)
         Me.PnlMain.TabIndex = 0
         '
         'PicMblghZero
@@ -59,7 +59,7 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         Me.PicMblghZero.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.PicMblghZero.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PicMblghZero.Image = CType(resources.GetObject("PicMblghZero.Image"), System.Drawing.Image)
-        Me.PicMblghZero.Location = New System.Drawing.Point(7, 101)
+        Me.PicMblghZero.Location = New System.Drawing.Point(8, 146)
         Me.PicMblghZero.Name = "PicMblghZero"
         Me.PicMblghZero.Size = New System.Drawing.Size(19, 15)
         Me.PicMblghZero.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -70,10 +70,10 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         '
         Me.UcMblghSelector5000.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcMblghSelector5000.BackColor = System.Drawing.Color.Transparent
-        Me.UcMblghSelector5000.Location = New System.Drawing.Point(261, 50)
+        Me.UcMblghSelector5000.Location = New System.Drawing.Point(301, 70)
         Me.UcMblghSelector5000.Name = "UcMblghSelector5000"
         Me.UcMblghSelector5000.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcMblghSelector5000.Size = New System.Drawing.Size(129, 48)
+        Me.UcMblghSelector5000.Size = New System.Drawing.Size(150, 70)
         Me.UcMblghSelector5000.TabIndex = 5
         Me.UcMblghSelector5000.UCBackColor = System.Drawing.Color.Coral
         Me.UcMblghSelector5000.UCBackColorDisable = System.Drawing.Color.Gray
@@ -89,10 +89,10 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         '
         Me.UcMblghSelector6000.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcMblghSelector6000.BackColor = System.Drawing.Color.Transparent
-        Me.UcMblghSelector6000.Location = New System.Drawing.Point(133, 50)
+        Me.UcMblghSelector6000.Location = New System.Drawing.Point(153, 70)
         Me.UcMblghSelector6000.Name = "UcMblghSelector6000"
         Me.UcMblghSelector6000.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcMblghSelector6000.Size = New System.Drawing.Size(129, 48)
+        Me.UcMblghSelector6000.Size = New System.Drawing.Size(150, 70)
         Me.UcMblghSelector6000.TabIndex = 4
         Me.UcMblghSelector6000.UCBackColor = System.Drawing.Color.OrangeRed
         Me.UcMblghSelector6000.UCBackColorDisable = System.Drawing.Color.Gray
@@ -108,10 +108,10 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         '
         Me.UcMblghSelector10000.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcMblghSelector10000.BackColor = System.Drawing.Color.Transparent
-        Me.UcMblghSelector10000.Location = New System.Drawing.Point(4, 50)
+        Me.UcMblghSelector10000.Location = New System.Drawing.Point(5, 70)
         Me.UcMblghSelector10000.Name = "UcMblghSelector10000"
         Me.UcMblghSelector10000.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcMblghSelector10000.Size = New System.Drawing.Size(129, 48)
+        Me.UcMblghSelector10000.Size = New System.Drawing.Size(150, 70)
         Me.UcMblghSelector10000.TabIndex = 3
         Me.UcMblghSelector10000.UCBackColor = System.Drawing.Color.Red
         Me.UcMblghSelector10000.UCBackColorDisable = System.Drawing.Color.Gray
@@ -127,10 +127,10 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         '
         Me.UcMblghSelector500.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcMblghSelector500.BackColor = System.Drawing.Color.Transparent
-        Me.UcMblghSelector500.Location = New System.Drawing.Point(261, 3)
+        Me.UcMblghSelector500.Location = New System.Drawing.Point(301, 2)
         Me.UcMblghSelector500.Name = "UcMblghSelector500"
         Me.UcMblghSelector500.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcMblghSelector500.Size = New System.Drawing.Size(129, 48)
+        Me.UcMblghSelector500.Size = New System.Drawing.Size(150, 70)
         Me.UcMblghSelector500.TabIndex = 2
         Me.UcMblghSelector500.UCBackColor = System.Drawing.Color.LimeGreen
         Me.UcMblghSelector500.UCBackColorDisable = System.Drawing.Color.Gray
@@ -146,10 +146,10 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         '
         Me.UcMblghSelector1000.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcMblghSelector1000.BackColor = System.Drawing.Color.Transparent
-        Me.UcMblghSelector1000.Location = New System.Drawing.Point(133, 3)
+        Me.UcMblghSelector1000.Location = New System.Drawing.Point(153, 2)
         Me.UcMblghSelector1000.Name = "UcMblghSelector1000"
         Me.UcMblghSelector1000.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcMblghSelector1000.Size = New System.Drawing.Size(129, 48)
+        Me.UcMblghSelector1000.Size = New System.Drawing.Size(150, 70)
         Me.UcMblghSelector1000.TabIndex = 1
         Me.UcMblghSelector1000.UCBackColor = System.Drawing.Color.ForestGreen
         Me.UcMblghSelector1000.UCBackColorDisable = System.Drawing.Color.Gray
@@ -165,10 +165,10 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         '
         Me.UcMblghSelector3000.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcMblghSelector3000.BackColor = System.Drawing.Color.Transparent
-        Me.UcMblghSelector3000.Location = New System.Drawing.Point(4, 3)
+        Me.UcMblghSelector3000.Location = New System.Drawing.Point(5, 2)
         Me.UcMblghSelector3000.Name = "UcMblghSelector3000"
         Me.UcMblghSelector3000.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcMblghSelector3000.Size = New System.Drawing.Size(129, 48)
+        Me.UcMblghSelector3000.Size = New System.Drawing.Size(150, 70)
         Me.UcMblghSelector3000.TabIndex = 0
         Me.UcMblghSelector3000.UCBackColor = System.Drawing.Color.DodgerBlue
         Me.UcMblghSelector3000.UCBackColorDisable = System.Drawing.Color.Gray
@@ -186,7 +186,7 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         Me.UcLabelHint._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelHint.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcLabelHint.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelHint.Location = New System.Drawing.Point(349, 91)
+        Me.UcLabelHint.Location = New System.Drawing.Point(395, 132)
         Me.UcLabelHint.Name = "UcLabelHint"
         Me.UcLabelHint.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelHint.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -204,7 +204,7 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         Me.UcLabelAmount._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelAmount.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcLabelAmount.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelAmount.Location = New System.Drawing.Point(261, 91)
+        Me.UcLabelAmount.Location = New System.Drawing.Point(307, 132)
         Me.UcLabelAmount.Name = "UcLabelAmount"
         Me.UcLabelAmount.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelAmount.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -223,7 +223,7 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCMonetarySettingToolUserPadInstrument"
-        Me.Size = New System.Drawing.Size(394, 121)
+        Me.Size = New System.Drawing.Size(455, 166)
         Me.PnlMain.ResumeLayout(False)
         CType(Me.PicMblghZero, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)

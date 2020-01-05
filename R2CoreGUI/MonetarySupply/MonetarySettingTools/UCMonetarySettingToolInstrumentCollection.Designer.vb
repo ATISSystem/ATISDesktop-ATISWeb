@@ -26,8 +26,9 @@ Partial Class UCMonetarySettingToolInstrumentCollection
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.UcucMonetarySettingToolCollection = New R2CoreGUI.UCUCMonetarySettingToolCollection()
         Me.UcAmount = New R2CoreGUI.UCMoney()
-        Me.UcButtonSpecial = New R2CoreGUI.UCButtonSpecial()
         Me.PnlMonetarySettingToolInstrumentHolder = New System.Windows.Forms.Panel()
+        Me.UcLabel1 = New R2CoreGUI.UCLabel()
+        Me.UcButtonSpecial = New R2CoreGUI.UCButtonSpecial()
         Me.PnlMain.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -35,12 +36,13 @@ Partial Class UCMonetarySettingToolInstrumentCollection
         '
         Me.PnlMain.Controls.Add(Me.UcucMonetarySettingToolCollection)
         Me.PnlMain.Controls.Add(Me.UcAmount)
-        Me.PnlMain.Controls.Add(Me.UcButtonSpecial)
         Me.PnlMain.Controls.Add(Me.PnlMonetarySettingToolInstrumentHolder)
+        Me.PnlMain.Controls.Add(Me.UcLabel1)
+        Me.PnlMain.Controls.Add(Me.UcButtonSpecial)
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(391, 182)
+        Me.PnlMain.Size = New System.Drawing.Size(501, 195)
         Me.PnlMain.TabIndex = 0
         '
         'UcucMonetarySettingToolCollection
@@ -48,9 +50,9 @@ Partial Class UCMonetarySettingToolInstrumentCollection
         Me.UcucMonetarySettingToolCollection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcucMonetarySettingToolCollection.BackColor = System.Drawing.Color.Transparent
-        Me.UcucMonetarySettingToolCollection.Location = New System.Drawing.Point(0, 147)
+        Me.UcucMonetarySettingToolCollection.Location = New System.Drawing.Point(0, 160)
         Me.UcucMonetarySettingToolCollection.Name = "UcucMonetarySettingToolCollection"
-        Me.UcucMonetarySettingToolCollection.Size = New System.Drawing.Size(390, 33)
+        Me.UcucMonetarySettingToolCollection.Size = New System.Drawing.Size(500, 33)
         Me.UcucMonetarySettingToolCollection.TabIndex = 0
         R2CoreStandardMonetarySettingToolStructure1.Active = True
         R2CoreStandardMonetarySettingToolStructure1.AssemblyDll = "R2CoreGUI.Dll"
@@ -69,8 +71,7 @@ Partial Class UCMonetarySettingToolInstrumentCollection
         '
         'UcAmount
         '
-        Me.UcAmount.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.UcAmount.Location = New System.Drawing.Point(257, 100)
+        Me.UcAmount.Location = New System.Drawing.Point(11, 41)
         Me.UcAmount.Name = "UcAmount"
         Me.UcAmount.Size = New System.Drawing.Size(103, 32)
         Me.UcAmount.TabIndex = 5
@@ -80,11 +81,36 @@ Partial Class UCMonetarySettingToolInstrumentCollection
         Me.UcAmount.UCFont = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcAmount.UCForeColor = System.Drawing.Color.Black
         '
+        'PnlMonetarySettingToolInstrumentHolder
+        '
+        Me.PnlMonetarySettingToolInstrumentHolder.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PnlMonetarySettingToolInstrumentHolder.Location = New System.Drawing.Point(120, 2)
+        Me.PnlMonetarySettingToolInstrumentHolder.Name = "PnlMonetarySettingToolInstrumentHolder"
+        Me.PnlMonetarySettingToolInstrumentHolder.Size = New System.Drawing.Size(378, 152)
+        Me.PnlMonetarySettingToolInstrumentHolder.TabIndex = 1
+        '
+        'UcLabel1
+        '
+        Me.UcLabel1._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabel1.Location = New System.Drawing.Point(30, 9)
+        Me.UcLabel1.Name = "UcLabel1"
+        Me.UcLabel1.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel1.Size = New System.Drawing.Size(62, 32)
+        Me.UcLabel1.TabIndex = 7
+        Me.UcLabel1.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabel1.UCFont = New System.Drawing.Font("IRMehr", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel1.UCForeColor = System.Drawing.Color.Silver
+        Me.UcLabel1.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcLabel1.UCValue = "مبلغ"
+        '
         'UcButtonSpecial
         '
-        Me.UcButtonSpecial.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.UcButtonSpecial.BackColor = System.Drawing.Color.Black
-        Me.UcButtonSpecial.Location = New System.Drawing.Point(140, 89)
+        Me.UcButtonSpecial.Location = New System.Drawing.Point(3, 74)
         Me.UcButtonSpecial.Name = "UcButtonSpecial"
         Me.UcButtonSpecial.Padding = New System.Windows.Forms.Padding(2)
         Me.UcButtonSpecial.Size = New System.Drawing.Size(111, 54)
@@ -96,16 +122,6 @@ Partial Class UCMonetarySettingToolInstrumentCollection
         Me.UcButtonSpecial.UCForeColor = System.Drawing.Color.Black
         Me.UcButtonSpecial.UCValue = "تایید"
         '
-        'PnlMonetarySettingToolInstrumentHolder
-        '
-        Me.PnlMonetarySettingToolInstrumentHolder.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.PnlMonetarySettingToolInstrumentHolder.Location = New System.Drawing.Point(3, 2)
-        Me.PnlMonetarySettingToolInstrumentHolder.Name = "PnlMonetarySettingToolInstrumentHolder"
-        Me.PnlMonetarySettingToolInstrumentHolder.Size = New System.Drawing.Size(385, 77)
-        Me.PnlMonetarySettingToolInstrumentHolder.TabIndex = 1
-        '
         'UCMonetarySettingToolInstrumentCollection
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -113,7 +129,7 @@ Partial Class UCMonetarySettingToolInstrumentCollection
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCMonetarySettingToolInstrumentCollection"
-        Me.Size = New System.Drawing.Size(391, 182)
+        Me.Size = New System.Drawing.Size(501, 195)
         Me.PnlMain.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -124,4 +140,5 @@ Partial Class UCMonetarySettingToolInstrumentCollection
     Friend WithEvents UcucMonetarySettingToolCollection As UCUCMonetarySettingToolCollection
     Friend WithEvents UcAmount As UCMoney
     Friend WithEvents UcButtonSpecial As UCButtonSpecial
+    Friend WithEvents UcLabel1 As UCLabel
 End Class
