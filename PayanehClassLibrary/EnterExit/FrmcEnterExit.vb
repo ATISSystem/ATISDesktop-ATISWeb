@@ -275,7 +275,7 @@ Public Class FrmcEnterExit
                 If (R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.ChargeActiveOnThisLocation, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) = True) And (R2CoreMClassLoginManagement.CurrentUserNSS.UserCanCharge = True) Then
                     ChangeMenuStatus("PnlMoneyWalletCharge", False)
                     ''PnlMoneyWalletCharge.Enabled = False
-                    UcMoneyWalletCharge.UCPrepare(_NSSTrafficCard, UcMoneyWallet.UCGetReminderCharge)
+                    UcMoneyWalletCharge.UCPrepare(_NSSTrafficCard, Math.Abs(UcMoneyWallet.UCGetReminderCharge))
                     UcMoneyWalletCharge.BringToFront()
                     UcMoneyWalletCharge.Focus()
                     R2CoreParkingSystemMClassDriverMonitor.UpdateDriverMonitorInfForMaabar(New R2CoreParkingSystemDriverMonitorStructure(R2CoreMClassConfigurationManagement.GetComputerCode(), _NSSTrafficCard.CardId, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, myMblgh, UcMoneyWallet.UCGetReminderCharge, "كارت تردد شما فاقد شارژ مورد نياز است", 18, Color.Red, myLP, _DateTime.GetCurrentDateTimeMilladi))
@@ -437,6 +437,7 @@ Public Class FrmcEnterExit
     Private Sub UcMoneyWalletChargePnlMoneyWalletCharge_UCMoneyWalletChargedEvent(Mblgh As Long) Handles UcMoneyWalletChargePnlMoneyWalletCharge.UCMoneyWalletChargedEvent
         Try
             UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.UCViewChargeSavabegh(_NSSTrafficCard)
+            UcMoneyWalletChargePnlMoneyWalletCharge.StartReading()
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

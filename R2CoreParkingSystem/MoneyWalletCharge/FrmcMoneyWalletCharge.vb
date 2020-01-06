@@ -23,7 +23,12 @@ Public Class FrmcMoneyWalletCharge
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        InitializeSpecial()
+        Try
+            InitializeSpecial()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+
     End Sub
 
     Protected Overrides Sub SetNSSProcess()

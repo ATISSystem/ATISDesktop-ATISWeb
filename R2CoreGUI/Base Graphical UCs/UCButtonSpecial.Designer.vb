@@ -43,6 +43,7 @@ Partial Class UCButtonSpecial
         'Button
         '
         Me.Button.BackColor = System.Drawing.Color.White
+        Me.Button.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Button.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button.Font = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
