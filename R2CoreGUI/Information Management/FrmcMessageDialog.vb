@@ -1,7 +1,6 @@
 ﻿
 
 Imports System.Reflection
-Imports System.ComponentModel
 
 Imports R2Core.BaseStandardClass
 Imports R2Core.ComputersManagement
@@ -10,17 +9,10 @@ Imports R2Core.PublicProc
 
 Public Class FrmcMessageDialog
 
-    Private WithEvents _BackGroundWorker As BackgroundWorker
+    Private WithEvents FrmTimer As System.Windows.Forms.Timer = New System.Windows.Forms.Timer
+
 
 #Region "General Properties"
-
-    Private Property _DialogColorType As DialogColorType = DialogColorType.None
-    Private Property _Message As String = String.Empty
-    Private Property _Hint As String = String.Empty
-    Private Property _MessageType As MessageType = MessageType.ErrorMessage
-    Private Property _MessageImage As R2CoreImage = Nothing
-    Private Property _Sender As Object = Nothing
-    Private Property _ForceToDisappearMessage As Boolean = True
 
     Public Shared ReadOnly Property GetTimerInterval As Int64
         Get
@@ -55,11 +47,7 @@ Public Class FrmcMessageDialog
         InitializeComponent()
         ' Add any initialization after the InitializeComponent() call.
         Try
-            _BackGroundWorker = New BackgroundWorker()
-            '_BackGroundWorker.WorkerSupportsCancellation = True
-            _BackGroundWorker.WorkerReportsProgress = True
-
-            'FrmTimer.Interval = R2CoreMClassConfigurationOfComputersManagement.GetConfigInt32(R2CoreConfigurations.FrmcDialogMessage, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) * 1000
+            FrmTimer.Interval = R2CoreMClassConfigurationOfComputersManagement.GetConfigInt32(R2CoreConfigurations.FrmcDialogMessage, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) * 1000
             If Me.DesignMode Then Me.TopMost = False Else Me.TopMost = True
             'Me.Visible = False
         Catch ex As Exception
@@ -68,21 +56,49 @@ Public Class FrmcMessageDialog
 
     End Sub
 
-    Public Sub ViewDialogMessage(YourDialogColorType As DialogColorType, ByVal YourMessage As String, ByVal YourHint As String, ByVal YourMessageType As MessageType, ByRef YourMessageImage As R2CoreImage, ByVal YourSender As Object, Optional YourForceToDisappearMessage As Boolean = True)
+    Private Delegate Sub _ViewDialogMessage(YourDialogColorType As DialogColorType, ByVal YourMessage As String, ByVal YourHint As String, ByVal YourMessageType As MessageType, ByRef YourMessageImage As R2CoreImage, ByVal Sender As Object, ForceToDisappearMessage As Boolean)
+    Public Sub ViewDialogMessage(YourDialogColorType As DialogColorType, ByVal YourMessage As String, ByVal YourHint As String, ByVal YourMessageType As MessageType, ByRef YourMessageImage As R2CoreImage, ByVal Sender As Object, Optional ForceToDisappearMessage As Boolean = True)
         Try
-            _DialogColorType = YourDialogColorType
-            _Message = YourMessage
-            _Hint = YourHint
-            _MessageType = YourMessageType
-            _MessageImage = YourMessageImage
-            _Sender = YourSender
-            _ForceToDisappearMessage = YourForceToDisappearMessage
-            Visible = True
-            Show()
 
-            _BackGroundWorker.RunWorkerAsync()
+            If (LblMessage.InvokeRequired) Then
+                Dim myDelegate As _ViewDialogMessage = New _ViewDialogMessage(AddressOf ViewDialogMessage)
+                Dim params() As Object = New Object() {YourDialogColorType, YourMessage, YourHint, YourMessageType, YourMessageImage, Sender, ForceToDisappearMessage}
+                BeginInvoke(myDelegate, params)
+            Else
+                LblMessage.Text = YourMessage
+                Me.Visible = True
+                Me.Show()
+                Me.BringToFront()
+            End If
+            'If Me.DesignMode Then Exit Sub
+            'Dim MasterColor As Color = GetColor(YourDialogColorType)
+            '''LblMessage.Text = Split(YourMessage, vbCrLf)(Split(YourMessage, vbCrLf).Length - 1)
+            '''LblMessage.Text = Split(YourMessage, ControlChars.CrLf)(Split(YourMessage, ControlChars.CrLf).Length - 1)
+            'LblMessage.Text = YourMessage
+            'If Not (YourMessageImage Is Nothing) Then
+            '    PictureBoxMessage.Image = YourMessageImage.GetImage()
+            'Else
+            '    PictureBoxMessage.Image = Nothing
+            'End If
+
+            'PnlMain.Colors(1).Color = MasterColor
+
+            'LblHint.Text = YourHint
+            'If YourMessageType = MessageType.PersianMessage Then
+            '    LblMessage.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 6), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+            '    LblHint.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 7), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+            'ElseIf YourMessageType = MessageType.ErrorMessage Then
+            '    LblMessage.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 8), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+            '    LblHint.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 9), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+            'End If
+            'If ForceToDisappearMessage Then
+            '    FrmTimer.Enabled = True
+            '    FrmTimer.Start()
+            'End If
+            'Me.Visible = True
+            'Me.Show()
         Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            MessageBox.Show(Me, "FrmcMessageDialog.ViewDialogMessage" + vbCrLf + ex.Message, "بروز خطا در واسط اعلان و اطلاع رسانی - فضا نام اطلاع رسانی")
         End Try
     End Sub
 
@@ -113,12 +129,18 @@ Public Class FrmcMessageDialog
 
 #Region "Event Handlers"
 
+    Private Sub FrmTimer_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles FrmTimer.Tick
+        FrmTimer.Stop()
+        Me.Visible = False
+        Me.Hide()
+    End Sub
+
     Private Sub FrmcMessageDialog_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        _BackGroundWorker.Dispose()
+        FrmTimer.Dispose()
     End Sub
 
     Private Sub LblMessage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LblMessage.Click
-        _ForceToDisappearMessage = False
+        FrmTimer.Stop()
     End Sub
 
     Private Sub PicExit_Click(sender As Object, e As EventArgs) Handles PicExit.Click
@@ -126,64 +148,19 @@ Public Class FrmcMessageDialog
         Me.Hide()
     End Sub
 
-    Private Sub _BackGroundWorker_DoWork(sender As Object, e As DoWorkEventArgs) Handles _BackGroundWorker.DoWork
-        Try
-            For i As Integer = 1 To 10
-                If (_BackGroundWorker.CancellationPending) Then
-                    e.Cancel = True
-                    Exit For
-                End If
-
-                System.Threading.Thread.Sleep(1000)
-
-                _BackGroundWorker.ReportProgress(i * 10)
-            Next i
 
 
-        Catch ex As Exception
-            MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-        End Try
-    End Sub
 
-    Private Sub _BackGroundWorker_ProgressChanged(sender As Object, e As ProgressChangedEventArgs) Handles _BackGroundWorker.ProgressChanged
 
-    End Sub
 
-    Private Sub _BackGroundWorker_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles _BackGroundWorker.RunWorkerCompleted
-        Try
 
-            'If Me.DesignMode Then _BackGroundWorker.CancelAsync()
-            LblMessage.Text = _Message
-            'If Not (_MessageImage Is Nothing) Then
-            '    PictureBoxMessage.Image = _MessageImage.GetImage()
-            'Else
-            '    PictureBoxMessage.Image = Nothing
-            'End If
-            'Dim MasterColor As Color = GetColor(_DialogColorType)
-            'PnlMain.Colors(1).Color = MasterColor
-            'LblHint.Text = _Hint
-            'If _MessageType = MessageType.PersianMessage Then
-            '    LblMessage.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 6), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-            '    LblHint.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 7), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-            'ElseIf _MessageType = MessageType.ErrorMessage Then
-            '    LblMessage.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 8), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-            '    LblHint.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 9), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-            'End If
-            Visible = True
-            Show()
-        Catch ex As Exception
-            MessageBox.Show(ex.Message)
-        End Try
-        'Visible = True
-        'Show()
 
-        'Threading.Thread.Sleep(GetTimerInterval)
-        'If _ForceToDisappearMessage Then
-        '    Me.Visible = False
-        '    Me.Hide()
-        'End If
 
-    End Sub
+
+
+
+
+
 
 #End Region
 

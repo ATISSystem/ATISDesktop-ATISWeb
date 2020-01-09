@@ -92,6 +92,7 @@ Public Class UCMonetarySupply
     Private Sub UcMonetarySettingToolInstrumentCollection_UCAmountChanged(Amount As Long) Handles UcMonetarySettingToolInstrumentCollection.UCAmountChanged
         Try
             _MonetarySupply = New R2CoreMonetarySupply(UcucMonetaryCreditSupplySourceCollection.UCCurrentNSS, Amount)
+            _MonetarySupply.Initialize()
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

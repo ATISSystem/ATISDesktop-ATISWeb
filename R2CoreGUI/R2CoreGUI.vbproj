@@ -468,6 +468,12 @@
     <Compile Include="HumanResources Management\Personnel Management\UCPersonnelEnterExitReport.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Information Management\FrmcMessageDialog.Designer.vb">
+      <DependentUpon>FrmcMessageDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Information Management\FrmcMessageDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Information Management\FrmcPrint.Designer.vb">
       <DependentUpon>FrmcPrint.vb</DependentUpon>
     </Compile>
@@ -498,12 +504,6 @@
     </Compile>
     <Compile Include="GUI Management\UCCollectionofUCActiveForm.vb">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Information Management\FrmcMessageDialog.Designer.vb">
-      <DependentUpon>FrmcMessageDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Information Management\FrmcMessageDialog.vb">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Logging Management\UCLog.Designer.vb">
       <DependentUpon>UCLog.vb</DependentUpon>
@@ -848,6 +848,9 @@
     <EmbeddedResource Include="HumanResources Management\Personnel Management\UCPersonnelEnterExitReport.resx">
       <DependentUpon>UCPersonnelEnterExitReport.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Information Management\FrmcMessageDialog.resx">
+      <DependentUpon>FrmcMessageDialog.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Information Management\FrmcPrint.resx">
       <DependentUpon>FrmcPrint.vb</DependentUpon>
     </EmbeddedResource>
@@ -862,9 +865,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI Management\UCCollectionofUCActiveForm.resx">
       <DependentUpon>UCCollectionofUCActiveForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Information Management\FrmcMessageDialog.resx">
-      <DependentUpon>FrmcMessageDialog.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Logging Management\UCLog.resx">
       <DependentUpon>UCLog.vb</DependentUpon>
