@@ -291,4 +291,8 @@ Public Class Form1
 
     End Sub
 
+    Private Sub Button17_Click(sender As Object, e As EventArgs) Handles Button17.Click
+        Dim x As New R2CoreGUI.FrmcMessageDialog
+        x.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "123", "1234", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
+    End Sub
 End Class

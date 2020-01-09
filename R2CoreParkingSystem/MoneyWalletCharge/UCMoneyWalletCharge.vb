@@ -154,7 +154,10 @@ Public Class UCMoneyWalletCharge
 
     Private Sub UcMonetarySupply_UCMonetarySupplyUnSuccessEvent(TransactionId As Long, Amount As Long) Handles UcMonetarySupply.UCMonetarySupplyUnSuccessEvent
         Try
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "عدم موفقیت شارژ کیف پول", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+            Dim x As New R2CoreGUI.FrmcMessageDialog
+            x.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "123", "1234", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
+
+            'UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "عدم موفقیت شارژ کیف پول", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

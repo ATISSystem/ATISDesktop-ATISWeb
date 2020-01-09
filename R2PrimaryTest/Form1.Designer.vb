@@ -53,6 +53,7 @@ Partial Class Form1
         Me.UcNumber1 = New R2CoreGUI.UCNumber()
         Me.UcTextBox1 = New R2CoreGUI.UCTextBox()
         Me.UcPersianTextBox1 = New R2CoreGUI.UCPersianTextBox()
+        Me.Button17 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Button1
@@ -326,7 +327,6 @@ Partial Class Form1
         Me.UcMoney1.UCBorderColor = System.Drawing.Color.DarkGray
         Me.UcMoney1.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcMoney1.UCForeColor = System.Drawing.Color.Black
-        Me.UcMoney1.UCValue = ""
         '
         'UcNumber1
         '
@@ -388,12 +388,22 @@ Partial Class Form1
         Me.UcPersianTextBox1.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.UcPersianTextBox1.UCValue = "rfwrwer"
         '
+        'Button17
+        '
+        Me.Button17.Location = New System.Drawing.Point(12, 549)
+        Me.Button17.Name = "Button17"
+        Me.Button17.Size = New System.Drawing.Size(75, 23)
+        Me.Button17.TabIndex = 37
+        Me.Button17.Text = "Button17"
+        Me.Button17.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(997, 594)
+        Me.Controls.Add(Me.Button17)
         Me.Controls.Add(Me.Button16)
         Me.Controls.Add(Me.UcTurnRegisterRequestConfirmation)
         Me.Controls.Add(Me.Button15)
@@ -461,4 +471,5 @@ Partial Class Form1
     Friend WithEvents Button15 As Button
     Friend WithEvents UcTurnRegisterRequestConfirmation As PayanehClassLibrary.UCTurnRegisterRequestConfirmation
     Friend WithEvents Button16 As Button
+    Friend WithEvents Button17 As Button
 End Class

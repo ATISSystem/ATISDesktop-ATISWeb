@@ -138,8 +138,8 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         Me.UcMblghSelector500.UCEnable = True
         Me.UcMblghSelector500.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcMblghSelector500.UCForeColor = System.Drawing.Color.White
-        Me.UcMblghSelector500.UCMblgh = CType(5000, Long)
-        Me.UcMblghSelector500.UCValue = "500تومان"
+        Me.UcMblghSelector500.UCMblgh = CType(1000, Long)
+        Me.UcMblghSelector500.UCValue = "100 تومان"
         Me.UcMblghSelector500.UCViewString = "تومان"
         '
         'UcMblghSelector1000
