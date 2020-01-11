@@ -37,7 +37,7 @@ Partial Class UCMonetarySupply
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(2, 2)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(398, 201)
+        Me.PnlMain.Size = New System.Drawing.Size(475, 266)
         Me.PnlMain.TabIndex = 0
         '
         'UcucMonetaryCreditSupplySourceCollection
@@ -47,13 +47,13 @@ Partial Class UCMonetarySupply
         Me.UcucMonetaryCreditSupplySourceCollection.BackColor = System.Drawing.Color.Transparent
         Me.UcucMonetaryCreditSupplySourceCollection.Location = New System.Drawing.Point(2, 2)
         Me.UcucMonetaryCreditSupplySourceCollection.Name = "UcucMonetaryCreditSupplySourceCollection"
-        Me.UcucMonetaryCreditSupplySourceCollection.Size = New System.Drawing.Size(394, 33)
+        Me.UcucMonetaryCreditSupplySourceCollection.Size = New System.Drawing.Size(471, 33)
         Me.UcucMonetaryCreditSupplySourceCollection.TabIndex = 0
         R2CoreStandardMonetaryCreditSupplySourceStructure1.Active = True
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.AssemblyDll = ""
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.AssemblyPath = ""
+        R2CoreStandardMonetaryCreditSupplySourceStructure1.AssemblyDll = "R2Core.Dll"
+        R2CoreStandardMonetaryCreditSupplySourceStructure1.AssemblyPath = "R2Core.MonetaryCreditSupplySources.Cash.R2CoreCash"
         R2CoreStandardMonetaryCreditSupplySourceStructure1.Deleted = False
-        R2CoreStandardMonetaryCreditSupplySourceStructure1.MCSSColor = System.Drawing.Color.Orange
+        R2CoreStandardMonetaryCreditSupplySourceStructure1.MCSSColor = System.Drawing.Color.Green
         R2CoreStandardMonetaryCreditSupplySourceStructure1.MCSSId = CType(1, Long)
         R2CoreStandardMonetaryCreditSupplySourceStructure1.MCSSName = "Cash"
         R2CoreStandardMonetaryCreditSupplySourceStructure1.MCSSTitle = "وجه نقد"
@@ -72,7 +72,7 @@ Partial Class UCMonetarySupply
         Me.UcMonetarySettingToolInstrumentCollection.BackColor = System.Drawing.Color.Transparent
         Me.UcMonetarySettingToolInstrumentCollection.Location = New System.Drawing.Point(2, 33)
         Me.UcMonetarySettingToolInstrumentCollection.Name = "UcMonetarySettingToolInstrumentCollection"
-        Me.UcMonetarySettingToolInstrumentCollection.Size = New System.Drawing.Size(395, 165)
+        Me.UcMonetarySettingToolInstrumentCollection.Size = New System.Drawing.Size(472, 230)
         Me.UcMonetarySettingToolInstrumentCollection.TabIndex = 1
         '
         'UCMonetarySupply
@@ -83,7 +83,7 @@ Partial Class UCMonetarySupply
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCMonetarySupply"
         Me.Padding = New System.Windows.Forms.Padding(2)
-        Me.Size = New System.Drawing.Size(402, 205)
+        Me.Size = New System.Drawing.Size(479, 270)
         Me.PnlMain.ResumeLayout(False)
         Me.ResumeLayout(False)
 

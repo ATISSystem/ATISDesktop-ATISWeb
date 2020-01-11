@@ -16,6 +16,19 @@ Public Class UCMoney
 
 #Region "General Properties"
 
+    Private _UCTextAlign As HorizontalAlignment = HorizontalAlignment.Center
+    <Browsable(True)>
+    Public Property UCTextAlign() As HorizontalAlignment
+        Get
+            Return _UCTextAlign
+        End Get
+        Set(value As HorizontalAlignment)
+            _UCTextAlign = value
+            TxtMoney.TextAlign = value
+        End Set
+    End Property
+
+
     Private _UCBorder As Boolean = True
     <Browsable(True)>
     Public Property UCBorder() As Boolean

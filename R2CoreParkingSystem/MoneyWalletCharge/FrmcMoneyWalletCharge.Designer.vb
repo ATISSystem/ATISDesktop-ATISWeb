@@ -63,10 +63,10 @@ Partial Class FrmcMoneyWalletCharge
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.BackColor = System.Drawing.Color.Transparent
         Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.Location = New System.Drawing.Point(10, 323)
+        Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.Location = New System.Drawing.Point(10, 349)
         Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.Name = "UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge"
         Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.Size = New System.Drawing.Size(975, 184)
+        Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.Size = New System.Drawing.Size(975, 158)
         Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge.TabIndex = 1
         '
         'UcMoneyWalletCharge
@@ -78,7 +78,7 @@ Partial Class FrmcMoneyWalletCharge
         Me.UcMoneyWalletCharge.Location = New System.Drawing.Point(10, 3)
         Me.UcMoneyWalletCharge.Name = "UcMoneyWalletCharge"
         Me.UcMoneyWalletCharge.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcMoneyWalletCharge.Size = New System.Drawing.Size(975, 314)
+        Me.UcMoneyWalletCharge.Size = New System.Drawing.Size(975, 340)
         Me.UcMoneyWalletCharge.TabIndex = 0
         Me.UcMoneyWalletCharge.UCConfigurationIndex = CType(2, Long)
         Me.UcMoneyWalletCharge.UCLocalPrintFlagforUCPrintBillan = True

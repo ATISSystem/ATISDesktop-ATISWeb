@@ -393,7 +393,7 @@ Namespace MonetaryCreditSupplySources
 #Region "Override Methods"
                 Public Overrides Sub Initialize()
                     Try
-                        TargetedPosDevice.IpAddress = "172.26.29.30"
+                        TargetedPosDevice.IpAddress = R2CoreMClassConfigurationOfComputersManagement.GetConfigString(R2CoreConfigurations.AttachedPoses, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0)
                         TargetedPosDevice.Port = 8888
                         'SearchPCPosAsync()
                     Catch ex As Exception

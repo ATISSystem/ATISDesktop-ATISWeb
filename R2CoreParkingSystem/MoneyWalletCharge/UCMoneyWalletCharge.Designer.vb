@@ -42,9 +42,9 @@ Partial Class UCMoneyWalletCharge
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcMoneyWallet.BackColor = System.Drawing.Color.Transparent
         Me.UcMoneyWallet.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcMoneyWallet.Location = New System.Drawing.Point(617, 56)
+        Me.UcMoneyWallet.Location = New System.Drawing.Point(661, 56)
         Me.UcMoneyWallet.Name = "UcMoneyWallet"
-        Me.UcMoneyWallet.Size = New System.Drawing.Size(203, 233)
+        Me.UcMoneyWallet.Size = New System.Drawing.Size(203, 349)
         Me.UcMoneyWallet.TabIndex = 0
         '
         'UcLabelTop
@@ -56,7 +56,7 @@ Partial Class UCMoneyWalletCharge
         Me.UcLabelTop.Location = New System.Drawing.Point(0, 0)
         Me.UcLabelTop.Name = "UcLabelTop"
         Me.UcLabelTop.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelTop.Size = New System.Drawing.Size(824, 53)
+        Me.UcLabelTop.Size = New System.Drawing.Size(868, 53)
         Me.UcLabelTop.TabIndex = 8
         Me.UcLabelTop.UCBackColor = System.Drawing.Color.DodgerBlue
         Me.UcLabelTop.UCFont = New System.Drawing.Font("B Homa", 20.25!)
@@ -69,7 +69,7 @@ Partial Class UCMoneyWalletCharge
         Me.PicPreapring.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.PicPreapring.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PicPreapring.Image = CType(resources.GetObject("PicPreapring.Image"), System.Drawing.Image)
-        Me.PicPreapring.Location = New System.Drawing.Point(8, 214)
+        Me.PicPreapring.Location = New System.Drawing.Point(8, 330)
         Me.PicPreapring.Name = "PicPreapring"
         Me.PicPreapring.Size = New System.Drawing.Size(33, 29)
         Me.PicPreapring.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -82,7 +82,7 @@ Partial Class UCMoneyWalletCharge
         Me.PicExit.BackColor = System.Drawing.Color.DodgerBlue
         Me.PicExit.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PicExit.Image = CType(resources.GetObject("PicExit.Image"), System.Drawing.Image)
-        Me.PicExit.Location = New System.Drawing.Point(784, 12)
+        Me.PicExit.Location = New System.Drawing.Point(828, 12)
         Me.PicExit.Name = "PicExit"
         Me.PicExit.Size = New System.Drawing.Size(31, 28)
         Me.PicExit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -99,7 +99,7 @@ Partial Class UCMoneyWalletCharge
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(3, 3)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(824, 296)
+        Me.PnlMain.Size = New System.Drawing.Size(868, 412)
         Me.PnlMain.TabIndex = 0
         '
         'UcMonetarySupply
@@ -112,7 +112,7 @@ Partial Class UCMoneyWalletCharge
         Me.UcMonetarySupply.Location = New System.Drawing.Point(3, 56)
         Me.UcMonetarySupply.Name = "UcMonetarySupply"
         Me.UcMonetarySupply.Padding = New System.Windows.Forms.Padding(2)
-        Me.UcMonetarySupply.Size = New System.Drawing.Size(608, 234)
+        Me.UcMonetarySupply.Size = New System.Drawing.Size(652, 350)
         Me.UcMonetarySupply.TabIndex = 15
         Me.UcMonetarySupply.UCConfigurationIndex = CType(0, Long)
         Me.UcMonetarySupply.UCEnable = True
@@ -125,7 +125,7 @@ Partial Class UCMoneyWalletCharge
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCMoneyWalletCharge"
         Me.Padding = New System.Windows.Forms.Padding(3)
-        Me.Size = New System.Drawing.Size(830, 302)
+        Me.Size = New System.Drawing.Size(874, 418)
         CType(Me.PicPreapring, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PicExit,System.ComponentModel.ISupportInitialize).EndInit
         Me.PnlMain.ResumeLayout(false)
