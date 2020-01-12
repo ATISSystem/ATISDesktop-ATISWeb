@@ -3,6 +3,7 @@ Imports System.Drawing
 Imports System.Reflection
 Imports System.Windows.Forms
 Imports System.Timers
+Imports System.ComponentModel
 
 Imports R2Core.ComputersManagement
 Imports R2Core.ConfigurationManagement
@@ -23,13 +24,20 @@ Namespace MonetarySupply
     ' On All of Location of Code Where UCMonetarySupply Used so ConfigurationIndex must be set to UCConfigurationIndex Property
     ' For Example UCMoneyWalletCharge has ConfigurationIndex Property so send it to UCMonetarySupply
 
+    Public Enum MonetarySupplyResult
+        None = 0
+        Success = 1
+        UnSuccess = 2
+    End Enum
+
     Public Class R2CoreMonetarySupply
 
         Private _CurrentNSS As R2CoreStandardMonetaryCreditSupplySourceStructure = Nothing
         Private _Amount As Int64
-        Public Event MonetarySupplySuccessEvent(TransactionId As Int64, Amount As Int64)
-        Public Event MonetarySupplyUnSuccessEvent(TransactionId As Int64, Amount As Int64)
+        Public Event MonetarySupplySuccessEvent(TransactionId As Int64, Amount As Int64, SupplyReport As String)
+        Public Event MonetarySupplyUnSuccessEvent(TransactionId As Int64, Amount As Int64, SupplyReport As String)
         Private WithEvents _MonetaryCreditSupplySource As R2CoreMonetaryCreditSupplySource = Nothing
+        Private WithEvents _MonetarySupplyWatcher As System.Windows.Forms.Timer = New System.Windows.Forms.Timer
 
         Public Sub New(YourNSS As R2CoreStandardMonetaryCreditSupplySourceStructure, YourAmount As Int64)
             Try
@@ -41,40 +49,35 @@ Namespace MonetarySupply
             End Try
         End Sub
 
-        Public Sub Initialize()
+        Public Sub StartSupply()
             Try
                 _MonetaryCreditSupplySource = R2CoreMonetaryCreditSupplySourcesManagement.GetMonetaryCreditSupplySourceInstance(_CurrentNSS, _Amount)
                 _MonetaryCreditSupplySource.Initialize()
+                _MonetaryCreditSupplySource.DoCreditSupply()
+                _MonetarySupplyWatcher.Interval = 100
+                _MonetarySupplyWatcher.Enabled = True
+                _MonetarySupplyWatcher.Start()
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
 
-        Private Sub _MonetaryCreditSupplySource_MonetaryCreditSupplySuccessEvent(TransactionId As Int64, Amount As Int64) Handles _MonetaryCreditSupplySource.MonetaryCreditSupplySuccessEvent
+        Private Sub _MonetarySupplyWatcher_Tick(sender As Object, e As EventArgs) Handles _MonetarySupplyWatcher.Tick
             Try
-                '_MonetaryCreditSupplySource.Dispose()
-                RaiseEvent MonetarySupplySuccessEvent(TransactionId, Amount)
+                If _MonetaryCreditSupplySource.MonetaryCreditSupplyResult <> MonetarySupplyResult.None Then
+                    _MonetarySupplyWatcher.Enabled = False
+                    _MonetarySupplyWatcher.Stop()
+                    If _MonetaryCreditSupplySource.MonetaryCreditSupplyResult = MonetarySupplyResult.Success Then
+                        RaiseEvent MonetarySupplySuccessEvent(_MonetaryCreditSupplySource.TransactionId, _MonetaryCreditSupplySource.Amount, _MonetaryCreditSupplySource.SupplyReport)
+                    Else
+                        RaiseEvent MonetarySupplyUnSuccessEvent(_MonetaryCreditSupplySource.TransactionId, _MonetaryCreditSupplySource.Amount, _MonetaryCreditSupplySource.SupplyReport)
+                    End If
+                End If
             Catch ex As Exception
                 MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
 
-        Private Sub _MonetaryCreditSupplySource_MonetaryCreditSupplyUnSuccessEvent(TransactionId As Int64, Amount As Int64) Handles _MonetaryCreditSupplySource.MonetaryCreditSupplyUnSuccessEvent
-            Try
-                '_MonetaryCreditSupplySource.Dispose()
-                RaiseEvent MonetarySupplyUnSuccessEvent(TransactionId, Amount)
-            Catch ex As Exception
-                MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Private Sub _MonetaryCreditSupplySource_InitializedEvent() Handles _MonetaryCreditSupplySource.InitializedEvent
-            Try
-                _MonetaryCreditSupplySource.DoCreditSupply()
-            Catch ex As Exception
-                MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
     End Class
 
 End Namespace
@@ -202,27 +205,47 @@ Namespace MonetaryCreditSupplySources
     End Class
 
     Public MustInherit Class R2CoreMonetaryCreditSupplySource
-
-        Public Event MonetaryCreditSupplySuccessEvent(TransactionId As Int64, Amount As Int64)
-        Public Event MonetaryCreditSupplyUnSuccessEvent(TransactionId As Int64, Amount As Int64)
-        Public Event InitializedEvent()
+        Protected _DateTime As R2DateTime = New R2DateTime
 
         Public Sub New(YourAmount As Int64)
             Try
-                Amount = YourAmount
+                _Amount = YourAmount
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
 
-        Private _Amount As Int64 = 0
-        Public Property Amount As Int64
+        Protected _Amount As Int64 = 0
+        <Browsable(False)>
+        Public ReadOnly Property Amount As Int64
             Get
                 Return _Amount
             End Get
-            Set(value As Int64)
-                _Amount = value
-            End Set
+        End Property
+
+        Protected _SupplyReport As String = String.Empty
+        <Browsable(False)>
+        Public ReadOnly Property SupplyReport As String
+            Get
+                Return _SupplyReport
+            End Get
+        End Property
+
+
+        Protected _TransactionId As Int64 = 0
+        <Browsable(False)>
+        Public ReadOnly Property TransactionId As Int64
+            Get
+                Return _TransactionId
+            End Get
+        End Property
+
+        Protected _MonetaryCreditSupplyResult As MonetarySupply.MonetarySupplyResult = MonetarySupply.MonetarySupplyResult.None
+        <Browsable(False)>
+        Public ReadOnly Property MonetaryCreditSupplyResult As MonetarySupply.MonetarySupplyResult
+            Get
+                Return _MonetaryCreditSupplyResult
+            End Get
         End Property
 
         Public MustOverride Sub DoCreditSupply()
@@ -231,35 +254,14 @@ Namespace MonetaryCreditSupplySources
 
         Public MustOverride Sub Dispose()
 
-        Protected Sub OnMonetaryCreditSupplySuccess(YourTransactionId As Int64, YourAmount As Int64)
-            Try
-                RaiseEvent MonetaryCreditSupplySuccessEvent(YourTransactionId, YourAmount)
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
 
-        Protected Sub OnMonetaryCreditSupplyUnSuccess(YourTransactionId As Int64, YourAmount As Int64)
-            Try
-                RaiseEvent MonetaryCreditSupplyUnSuccessEvent(YourTransactionId, YourAmount)
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Protected Sub OnInitialized()
-            Try
-                RaiseEvent InitializedEvent()
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
     End Class
 
     Namespace Cash
 
         Public Class R2CoreCash
             Inherits MonetaryCreditSupplySources.R2CoreMonetaryCreditSupplySource
+
 
             Public Sub New(YourAmount As Int64)
                 MyBase.New(YourAmount)
@@ -269,16 +271,19 @@ Namespace MonetaryCreditSupplySources
                 End Try
             End Sub
 
-            Public Overrides Sub Dispose()
+            Public Overrides Sub Initialize()
+
             End Sub
 
             Public Overrides Sub DoCreditSupply()
-                OnMonetaryCreditSupplyUnSuccess(Amount, Amount)
+                _SupplyReport = "عملیات موفق"
+                _TransactionId = Convert.ToUInt64(_DateTime.GetCurrentDateShamsiFull.Replace("/", "") + _DateTime.GetCurrentTime.Replace(":", "") + Int((1000 - 100 + 1) * Rnd() + 100).ToString)
+                _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
             End Sub
 
-            Public Overrides Sub Initialize()
-                OnInitialized()
+            Public Overrides Sub Dispose()
             End Sub
+
         End Class
 
     End Namespace
@@ -290,8 +295,7 @@ Namespace MonetaryCreditSupplySources
             Public Class R2CorePCPos
                 Inherits R2CoreMonetaryCreditSupplySource
 
-                Private _DateTime As R2DateTime = New R2DateTime
-                Private TargetedPosDevice As PosDevice = Nothing
+                Private TargetedPosDevice As PosDevice = New PosDevice
                 Public WithEvents _PCPOS As PcPosBusiness = New PcPosBusiness
                 Public WithEvents _SearchPos As PcPosDiscovery = New PcPosDiscovery
                 Public Event SearchAsyncCompleted(ResultCount As Int16, Description As String)
@@ -303,8 +307,6 @@ Namespace MonetaryCreditSupplySources
                         Return R2CoreMClassConfigurationOfComputersManagement.GetConfigString(R2CoreConfigurations.AttachedPoses, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0)
                     End Get
                 End Property
-
-                Private Property TransactionId As String = String.Empty
 
 #End Region
 
@@ -321,7 +323,7 @@ Namespace MonetaryCreditSupplySources
                 Private Sub LoggingPosResult(YourPosResult As PosResult)
                     Try
                         Dim DataStruct As DataStruct = GetPosResultComposit(YourPosResult)
-                        TransactionId = DataStruct.Data1
+                        _TransactionId = DataStruct.Data1
                         R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "پوز - خرید", DataStruct.Data1, DataStruct.Data2, DataStruct.Data3, DataStruct.Data4, DataStruct.Data5, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                     Catch ex As Exception
                         Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -362,12 +364,13 @@ Namespace MonetaryCreditSupplySources
                     Try
                         LoggingPosResult(e)
                         If e.ResponseCode = "00" Then
-                            OnMonetaryCreditSupplySuccess(TransactionId, Amount)
+                            _SupplyReport = e.PcPosStatus
+                            _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
                         Else
-                            OnMonetaryCreditSupplyUnSuccess(TransactionId, Amount)
+                            _SupplyReport = "شکست عملیات هنگام ارتباط با دستگاه پوز"
+                            _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.UnSuccess
                         End If
                     Catch ex As Exception
-                        Dispose()
                         MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                     End Try
                 End Sub
@@ -379,10 +382,8 @@ Namespace MonetaryCreditSupplySources
                             RaiseEvent SearchAsyncCompleted(e.Count, (New Exceptions.PCPosWithTargetIpNotFoundException).Message)
                         Else
                             TargetedPosDevice = e(0)
-                            OnInitialized()
                         End If
                     Catch ex As Exception
-                        Dispose()
                         MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                     End Try
                 End Sub
@@ -390,6 +391,32 @@ Namespace MonetaryCreditSupplySources
 #End Region
 
 #Region "Override Methods"
+                Public Overrides Sub Initialize()
+                    Try
+                        TargetedPosDevice.IpAddress = "172.26.29.30"
+                        TargetedPosDevice.Port = 8888
+                        'SearchPCPosAsync()
+                    Catch ex As Exception
+                        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                    End Try
+
+                End Sub
+
+                Public Overrides Sub DoCreditSupply()
+                    Try
+                        _PCPOS = New PcPosBusiness
+                        _PCPOS.Amount = Amount
+                        _PCPOS.RetryTimeOut = New Integer() {1000, 1000, 1000}
+                        _PCPOS.ResponseTimeout = New Integer() {30000, 1000, 1000}
+                        _PCPOS.Ip = TargetedPosDevice.IpAddress
+                        _PCPOS.Port = TargetedPosDevice.Port
+                        _PCPOS.ConnectionType = PcPosConnectionType.Lan
+                        _PCPOS.AsyncSaleTransaction()
+                    Catch ex As Exception
+                        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                    End Try
+                End Sub
+
                 Public Overrides Sub Dispose()
                     Try
                         _PCPOS.Dispose()
@@ -401,29 +428,7 @@ Namespace MonetaryCreditSupplySources
                     End Try
                 End Sub
 
-                Public Overrides Sub DoCreditSupply()
-                    Try
-                        _PCPOS = New PcPosBusiness
-                        _PCPOS.Amount = Amount
-                        _PCPOS.RetryTimeOut = New Integer() {5000, 5000, 5000}
-                        _PCPOS.ResponseTimeout = New Integer() {180000, 5000, 5000}
-                        _PCPOS.Ip = TargetedPosDevice.IpAddress
-                        _PCPOS.Port = TargetedPosDevice.Port
-                        _PCPOS.ConnectionType = PcPosConnectionType.Lan
-                        _PCPOS.AsyncSaleTransaction()
-                    Catch ex As Exception
-                        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-                    End Try
-                End Sub
 
-                Public Overrides Sub Initialize()
-                    Try
-                        SearchPCPosAsync()
-                    Catch ex As Exception
-                        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-                    End Try
-
-                End Sub
 
 
 #End Region
@@ -465,16 +470,19 @@ Namespace MonetaryCreditSupplySources
                 End Try
             End Sub
 
-            Public Overrides Sub Dispose()
-            End Sub
-
-            Public Overrides Sub DoCreditSupply()
-                OnMonetaryCreditSupplySuccess(Amount, Amount)
-            End Sub
-
             Public Overrides Sub Initialize()
 
             End Sub
+
+            Public Overrides Sub DoCreditSupply()
+                _SupplyReport = "عملیات موفق"
+                _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
+            End Sub
+
+            Public Overrides Sub Dispose()
+            End Sub
+
+
         End Class
 
     End Namespace

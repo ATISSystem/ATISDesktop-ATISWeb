@@ -65,38 +65,34 @@ Public Class FrmcMessageDialog
                 Dim params() As Object = New Object() {YourDialogColorType, YourMessage, YourHint, YourMessageType, YourMessageImage, Sender, ForceToDisappearMessage}
                 BeginInvoke(myDelegate, params)
             Else
+                If Me.DesignMode Then Exit Sub
+                Dim MasterColor As Color = GetColor(YourDialogColorType)
+                ''LblMessage.Text = Split(YourMessage, vbCrLf)(Split(YourMessage, vbCrLf).Length - 1)
+                ''LblMessage.Text = Split(YourMessage, ControlChars.CrLf)(Split(YourMessage, ControlChars.CrLf).Length - 1)
                 LblMessage.Text = YourMessage
+                If Not (YourMessageImage Is Nothing) Then
+                    PictureBoxMessage.Image = YourMessageImage.GetImage()
+                Else
+                    PictureBoxMessage.Image = Nothing
+                End If
+
+                PnlMain.Colors(1).Color = MasterColor
+
+                LblHint.Text = YourHint
+                If YourMessageType = MessageType.PersianMessage Then
+                    LblMessage.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 6), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+                    LblHint.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 7), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+                ElseIf YourMessageType = MessageType.ErrorMessage Then
+                    LblMessage.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 8), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+                    LblHint.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 9), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+                End If
+                If ForceToDisappearMessage Then
+                    FrmTimer.Enabled = True
+                    FrmTimer.Start()
+                End If
                 Me.Visible = True
                 Me.Show()
-                Me.BringToFront()
             End If
-            'If Me.DesignMode Then Exit Sub
-            'Dim MasterColor As Color = GetColor(YourDialogColorType)
-            '''LblMessage.Text = Split(YourMessage, vbCrLf)(Split(YourMessage, vbCrLf).Length - 1)
-            '''LblMessage.Text = Split(YourMessage, ControlChars.CrLf)(Split(YourMessage, ControlChars.CrLf).Length - 1)
-            'LblMessage.Text = YourMessage
-            'If Not (YourMessageImage Is Nothing) Then
-            '    PictureBoxMessage.Image = YourMessageImage.GetImage()
-            'Else
-            '    PictureBoxMessage.Image = Nothing
-            'End If
-
-            'PnlMain.Colors(1).Color = MasterColor
-
-            'LblHint.Text = YourHint
-            'If YourMessageType = MessageType.PersianMessage Then
-            '    LblMessage.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 6), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-            '    LblHint.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 7), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-            'ElseIf YourMessageType = MessageType.ErrorMessage Then
-            '    LblMessage.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 8), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-            '    LblHint.Font = New System.Drawing.Font("B Homa", R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.FrmcDialogMessage, 9), System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-            'End If
-            'If ForceToDisappearMessage Then
-            '    FrmTimer.Enabled = True
-            '    FrmTimer.Start()
-            'End If
-            'Me.Visible = True
-            'Me.Show()
         Catch ex As Exception
             MessageBox.Show(Me, "FrmcMessageDialog.ViewDialogMessage" + vbCrLf + ex.Message, "بروز خطا در واسط اعلان و اطلاع رسانی - فضا نام اطلاع رسانی")
         End Try

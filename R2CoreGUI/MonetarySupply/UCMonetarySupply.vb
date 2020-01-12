@@ -12,8 +12,8 @@ Public Class UCMonetarySupply
     Inherits UCGeneral
 
 
-    Public Event UCMonetarySupplySuccessEvent(TransactionId As Int64, Amount As Int64)
-    Public Event UCMonetarySupplyUnSuccessEvent(TransactionId As Int64, Amount As Int64)
+    Public Event UCMonetarySupplySuccessEvent(TransactionId As Int64, Amount As Int64, SupplyReport As String)
+    Public Event UCMonetarySupplyUnSuccessEvent(TransactionId As Int64, Amount As Int64, SupplyReport As String)
     Public WithEvents _MonetarySupply As R2CoreMonetarySupply = Nothing
 
 
@@ -92,23 +92,23 @@ Public Class UCMonetarySupply
     Private Sub UcMonetarySettingToolInstrumentCollection_UCAmountChanged(Amount As Long) Handles UcMonetarySettingToolInstrumentCollection.UCAmountChanged
         Try
             _MonetarySupply = New R2CoreMonetarySupply(UcucMonetaryCreditSupplySourceCollection.UCCurrentNSS, Amount)
-            _MonetarySupply.Initialize()
+            _MonetarySupply.StartSupply()
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
 
-    Private Sub _MonetarySupply_MonetarySupplySuccessEvent(TransactionId As Long, Amount As Int64) Handles _MonetarySupply.MonetarySupplySuccessEvent
+    Private Sub _MonetarySupply_MonetarySupplySuccessEvent(TransactionId As Long, Amount As Int64, SupplyReport As String) Handles _MonetarySupply.MonetarySupplySuccessEvent
         Try
-            RaiseEvent UCMonetarySupplySuccessEvent(TransactionId, Amount)
+            RaiseEvent UCMonetarySupplySuccessEvent(TransactionId, Amount, SupplyReport)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
 
-    Private Sub _MonetarySupply_MonetarySupplyUnSuccessEvent(TransactionId As Long, Amount As Int64) Handles _MonetarySupply.MonetarySupplyUnSuccessEvent
+    Private Sub _MonetarySupply_MonetarySupplyUnSuccessEvent(TransactionId As Long, Amount As Int64, SupplyReport As String) Handles _MonetarySupply.MonetarySupplyUnSuccessEvent
         Try
-            RaiseEvent UCMonetarySupplyUnSuccessEvent(TransactionId, Amount)
+            RaiseEvent UCMonetarySupplyUnSuccessEvent(TransactionId, Amount, SupplyReport)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
