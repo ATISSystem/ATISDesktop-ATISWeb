@@ -70,6 +70,7 @@ Namespace Logging
 
         Public Shared ReadOnly Property LoadCapacitorSedimentingFailed As Int64 = 11
         Public Shared ReadOnly Property TurnExpirationFailed As Int64 = 12
+        Public Shared ReadOnly Property LoadCapacitorAccessStatistics As Int64 = 13
 
     End Class
 
