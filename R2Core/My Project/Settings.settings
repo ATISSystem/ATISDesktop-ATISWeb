@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="R2Core_R2PrimaryFileSharingWS_R2PrimaryFileSharingWebService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://192.168.85.16:2013/R2PRIMARYFILESHARINGwebservice.asmx</Value>
+      <Value Profile="(Default)">http://localhost:2293/R2PRIMARYFILESHARINGwebservice.asmx</Value>
     </Setting>
     <Setting Name="R2Core_R2PrimaryWS_R2PrimaryWebService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://192.168.85.16:2011/R2PRIMARYWEBSERVICE.ASMX</Value>
+      <Value Profile="(Default)">http://localhost:1696/R2PRIMARYWEBSERVICE.ASMX</Value>
     </Setting>
   </Settings>
 </SettingsFile>

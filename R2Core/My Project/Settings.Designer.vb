@@ -57,7 +57,7 @@ Namespace My
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("http://192.168.85.16:2013/R2PRIMARYFILESHARINGwebservice.asmx")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("http://localhost:2293/R2PRIMARYFILESHARINGwebservice.asmx")>  _
         Public ReadOnly Property R2Core_R2PrimaryFileSharingWS_R2PrimaryFileSharingWebService() As String
             Get
                 Return CType(Me("R2Core_R2PrimaryFileSharingWS_R2PrimaryFileSharingWebService"),String)
@@ -67,7 +67,7 @@ Namespace My
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("http://192.168.85.16:2011/R2PRIMARYWEBSERVICE.ASMX")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("http://localhost:1696/R2PRIMARYWEBSERVICE.ASMX")>  _
         Public ReadOnly Property R2Core_R2PrimaryWS_R2PrimaryWebService() As String
             Get
                 Return CType(Me("R2Core_R2PrimaryWS_R2PrimaryWebService"),String)

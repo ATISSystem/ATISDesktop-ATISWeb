@@ -245,8 +245,8 @@ Partial Class FrmcMessageDialog
         Me.ShowInTaskbar = false
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "FrmcMessageDialog"
-        Me.TopMost = true
-        Me.PnlMain.ResumeLayout(false)
+        Me.TopMost = True
+        Me.PnlMain.ResumeLayout(False)
         CType(Me.PictureBoxGif,System.ComponentModel.ISupportInitialize).EndInit
         Me.PnlImage.ResumeLayout(false)
         CType(Me.PicExit,System.ComponentModel.ISupportInitialize).EndInit

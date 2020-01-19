@@ -88,6 +88,7 @@
             <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
             <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourTargetCityId" type="s:long" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -1738,10 +1739,10 @@
   </wsdl:binding>
   <wsdl:service name="PayanehWebService">
     <wsdl:port name="PayanehWebServiceSoap" binding="tns:PayanehWebServiceSoap">
-      <soap:address location="http://192.168.85.16:2012/PayanehWebService.asmx" />
+      <soap:address location="http://localhost:10919/PayanehWebService.asmx" />
     </wsdl:port>
     <wsdl:port name="PayanehWebServiceSoap12" binding="tns:PayanehWebServiceSoap12">
-      <soap12:address location="http://192.168.85.16:2012/PayanehWebService.asmx" />
+      <soap12:address location="http://localhost:10919/PayanehWebService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -2760,7 +2760,7 @@ Namespace ReportsManagement
             End Try
         End Sub
 
-        Public Shared Sub ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(YourAnnouncementHallId As AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls, YourCompanyCode As Int64, YourDateTime1 As R2StandardDateAndTimeStructure, YourDateTime2 As R2StandardDateAndTimeStructure)
+        Public Shared Sub ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(YourAnnouncementHallId As AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls, YourCompanyCode As Int64, YourDateTime1 As R2StandardDateAndTimeStructure, YourDateTime2 As R2StandardDateAndTimeStructure, YourTargetCityId As Int64)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
             Try
@@ -2771,6 +2771,7 @@ Namespace ReportsManagement
                 CmdSql.ExecuteNonQuery()
 
                 'لیست بار ثبتی
+                Dim TargetCitySql As String = IIf(YourTargetCityId = Int64.MinValue, String.Empty, " and E.nCityCode=" & YourTargetCityId & "")
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 If YourAnnouncementHallId = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.General Then
                     If YourCompanyCode = Int64.MinValue Then
@@ -2781,7 +2782,7 @@ Namespace ReportsManagement
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
                                inner join DBTransport.dbo.tbCompany as CO On e.nCompCode=CO.nCompCode 
                                inner join dbtransport.dbo.tbCarType as CT On E.nTruckType=CT.snCarType 
-                            Where (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' ) 
+                            Where (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' )" + TargetCitySql + "
                             Order By E.dDateElam,E.nCompCode,E.nTruckType,E.dTimeElam")
                     Else
                         Da.SelectCommand = New SqlClient.SqlCommand("
@@ -2791,7 +2792,7 @@ Namespace ReportsManagement
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
                                inner join DBTransport.dbo.tbCompany as CO On e.nCompCode=CO.nCompCode 
                                inner join DBTransport.dbo.tbCarType as CT On E.nTruckType=CT.snCarType 
-                            Where E.nCompCode=" & YourCompanyCode & " and (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' ) 
+                            Where E.nCompCode=" & YourCompanyCode & " and (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' )" + TargetCitySql + "
                             Order By E.dDateElam,E.nTruckType,E.dTimeElam")
                     End If
                 Else
@@ -2803,7 +2804,7 @@ Namespace ReportsManagement
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
                                inner join DBTransport.dbo.tbCompany as CO On e.nCompCode=CO.nCompCode 
                                inner join DBTransport.dbo.tbCarType as CT On E.nTruckType=CT.snCarType 
-                            Where E.nTruckType in (Select AHRCarType.LoaderTypeId from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationLoaderTypes as AHRCarType Where AHRCarType.AHId=" & YourAnnouncementHallId & " ) and (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' ) 
+                            Where E.nTruckType in (Select AHRCarType.LoaderTypeId from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationLoaderTypes as AHRCarType Where AHRCarType.AHId=" & YourAnnouncementHallId & " ) and (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' )" + TargetCitySql + " 
                             Order By E.dDateElam,E.nCompCode,E.dTimeElam")
                     Else
                         Da.SelectCommand = New SqlClient.SqlCommand("
@@ -2813,7 +2814,7 @@ Namespace ReportsManagement
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
                                inner join DBTransport.dbo.tbCompany as CO On e.nCompCode=CO.nCompCode 
                                inner join DBTransport.dbo.tbCarType as CT On E.nTruckType=CT.snCarType 
-                            Where E.nTruckType in (Select AHRCarType.LoaderTypeId from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationLoaderTypes as AHRCarType Where AHRCarType.AHId=" & YourAnnouncementHallId & " ) and  E.nCompCode=" & YourCompanyCode & " and (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' ) 
+                            Where E.nTruckType in (Select AHRCarType.LoaderTypeId from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationLoaderTypes as AHRCarType Where AHRCarType.AHId=" & YourAnnouncementHallId & " ) and  E.nCompCode=" & YourCompanyCode & " and (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' )" + TargetCitySql + " 
                             Order By e.nEstelamID")
                     End If
                 End If
