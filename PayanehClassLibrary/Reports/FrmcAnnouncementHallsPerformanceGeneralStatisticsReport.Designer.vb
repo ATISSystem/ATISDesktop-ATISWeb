@@ -29,10 +29,6 @@ Partial Class FrmcAnnouncementHallsPerformanceGeneralStatisticsReport
         Me.PnlAnnouncementHallsPerformanceGeneralStatisticsReport.SuspendLayout
         Me.SuspendLayout
         '
-        '_FrmMessageDialog
-        '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(288, 137)
-        '
         'PnlAnnouncementHallsPerformanceGeneralStatisticsReport
         '
         Me.PnlAnnouncementHallsPerformanceGeneralStatisticsReport.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _

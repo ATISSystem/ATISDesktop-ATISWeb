@@ -69,7 +69,8 @@ Public Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
                 AnnouncemenetHall = UcucAnnouncementHallCollection.UCCurrentNSS.AHId
             End If
 
-            Dim TargetCityId As Int64 = IIf(ChkLoadTargetCity.Checked, UcSearcherLoadTargets.UCGetSelectedNSS.OCode, Int64.MinValue)
+            Dim TargetCityId As Int64
+            If ChkLoadTargetCity.Checked Then TargetCityId = UcSearcherLoadTargets.UCGetSelectedNSS.OCode Else TargetCityId = Int64.MinValue
 
             If RBAllCompany.Checked = True Then
                 WS.WebMethodReportingInformationPrividerCapacitorLoadsTransportCompaniesRegisteredLoadsReport(AnnouncemenetHall, Int64.MinValue, UcDateTimeHolder.UCGetDateTime1.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime1.DateShamsiFull, UcDateTimeHolder.UCGetDateTime1.Time, UcDateTimeHolder.UCGetDateTime2.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime2.DateShamsiFull, UcDateTimeHolder.UCGetDateTime2.Time, TargetCityId)

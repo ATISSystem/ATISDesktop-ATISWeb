@@ -41,11 +41,6 @@ Partial Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
         Me.PnlAnnouncementHallSelection.SuspendLayout()
         Me.SuspendLayout()
         '
-        '_FrmMessageDialog
-        '
-        Me._FrmMessageDialog.ClientSize = New System.Drawing.Size(0, 0)
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(-32000, -32000)
-        '
         'PnlCapacitorLoadsTransportCompaniesRegisteredLoadsReport
         '
         Me.PnlCapacitorLoadsTransportCompaniesRegisteredLoadsReport.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
