@@ -7,6 +7,7 @@ Imports System.Windows.Forms
 Imports R2Core.BaseStandardClass
 Imports R2CoreGUI.My.Resources
 Imports R2Core.R2Enums
+Imports R2Core.ExceptionManagement
 
 
 Public Class UCSearcherAdvance
@@ -216,9 +217,11 @@ Public Class UCSearcherAdvance
     Public Function UCGetSelectedNSS() As R2StandardStructure
         Try
             If UCSelectedItem = Nothing Then
-                Throw New Exception("اطلاعات مورد نظر انتخاب نشده است")
+                Throw New DataEntryException
             End If
             Return New R2StandardStructure(Split(UCSelectedItem, ":")(0), Split(UCSelectedItem, ":")(1))
+        Catch ex As DataEntryException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
