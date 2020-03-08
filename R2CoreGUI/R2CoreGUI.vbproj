@@ -164,6 +164,12 @@
     <Compile Include="Base Graphical UCs\UCButton.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Base Graphical UCs\UCButtonCButton.Designer.vb">
+      <DependentUpon>UCButtonCButton.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Base Graphical UCs\UCButtonCButton.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Base Graphical UCs\UCButtonDelete.Designer.vb">
       <DependentUpon>UCButtonDelete.vb</DependentUpon>
     </Compile>
@@ -706,6 +712,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Base Graphical UCs\UCButton.resx">
       <DependentUpon>UCButton.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Base Graphical UCs\UCButtonCButton.resx">
+      <DependentUpon>UCButtonCButton.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Base Graphical UCs\UCButtonSpecial.resx">
       <DependentUpon>UCButtonSpecial.vb</DependentUpon>

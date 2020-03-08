@@ -56,14 +56,6 @@ Public Class UCMenu
 
 #Region "Event Handlers"
 
-    Private Sub UcLabel_UCMouseEnteredEvent()
-        PnlMain.BackColor = Color.Black
-    End Sub
-
-    Private Sub UcLabel_UCMouseLeavedEvent()
-        PnlMain.BackColor = Color.White
-    End Sub
-
     Private Sub CButton_Click(sender As Object, e As EventArgs) Handles CButton.Click
         Try
             RaiseEvent UCClickedEvent(Me)
