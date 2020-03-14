@@ -18,10 +18,10 @@ Public Class UCAccountingCollection
 
     Public Event UCSelectedNSSChangedEvent(NSS As R2StandardEnterExitAccountingStructure)
     Public Event UCViewCollectionCompeletedEvent()
+    Private Property UCTotalNumberOfRecordstoView As Int32 = 40
 
 #Region "General Properties"
 
-    Private Property UCTotalNumberOfRecordstoView As Int32 = 40
 
 
 #End Region

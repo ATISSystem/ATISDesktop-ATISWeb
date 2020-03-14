@@ -6,6 +6,8 @@ Imports R2Core
 Public Class UCSortAlphabetic
     Inherits UCGeneral
 
+    Public Event SortOrderChanged(ByVal SortOrder As R2Enums.SortOrder)
+
 
 #Region " Windows Form Designer generated code "
 
@@ -40,94 +42,93 @@ Public Class UCSortAlphabetic
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    Friend WithEvents PicCode As System.Windows.Forms.PictureBox
-    Friend WithEvents PicName As System.Windows.Forms.PictureBox
+    Friend WithEvents PicSort As System.Windows.Forms.PictureBox
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(UCSortAlphabetic))
-        Me.PicCode = New System.Windows.Forms.PictureBox
-        Me.PicName = New System.Windows.Forms.PictureBox
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UCSortAlphabetic))
+        Me.PicSort = New System.Windows.Forms.PictureBox()
+        CType(Me.PicSort, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'PicCode
+        'PicSort
         '
-        Me.PicCode.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PicCode.Dock = System.Windows.Forms.DockStyle.Left
-        Me.PicCode.Image = CType(resources.GetObject("PicCode.Image"), System.Drawing.Image)
-        Me.PicCode.Location = New System.Drawing.Point(0, 0)
-        Me.PicCode.Name = "PicCode"
-        Me.PicCode.Size = New System.Drawing.Size(24, 16)
-        Me.PicCode.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PicCode.TabIndex = 5
-        Me.PicCode.TabStop = False
-        '
-        'PicName
-        '
-        Me.PicName.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PicName.Dock = System.Windows.Forms.DockStyle.Left
-        Me.PicName.Image = CType(resources.GetObject("PicName.Image"), System.Drawing.Image)
-        Me.PicName.Location = New System.Drawing.Point(24, 0)
-        Me.PicName.Name = "PicName"
-        Me.PicName.Size = New System.Drawing.Size(21, 16)
-        Me.PicName.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PicName.TabIndex = 8
-        Me.PicName.TabStop = False
+        Me.PicSort.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PicSort.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.PicSort.Image = CType(resources.GetObject("PicSort.Image"), System.Drawing.Image)
+        Me.PicSort.Location = New System.Drawing.Point(0, 0)
+        Me.PicSort.Name = "PicSort"
+        Me.PicSort.Size = New System.Drawing.Size(27, 17)
+        Me.PicSort.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PicSort.TabIndex = 5
+        Me.PicSort.TabStop = False
         '
         'UCSortAlphabetic
         '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.BackColor = System.Drawing.Color.White
-        Me.Controls.Add(Me.PicName)
-        Me.Controls.Add(Me.PicCode)
+        Me.Controls.Add(Me.PicSort)
         Me.Name = "UCSortAlphabetic"
-        Me.Size = New System.Drawing.Size(46, 16)
+        Me.Size = New System.Drawing.Size(27, 17)
+        CType(Me.PicSort, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
 
 #End Region
 
-    Private mySortOrder As R2Enums.SortOrder = R2Enums.SortOrder.Code
-    Public Event SortOrderChanged(ByVal SortOrder As R2Enums.SortOrder)
 
-#Region "Overrides Sub And Function"
-    Protected  Sub UCRefreshGeneral()
+#Region "General Properties"
 
-    End Sub
-    Public  Sub DisposeResources()
-
-    End Sub
-
-#End Region
-
-#Region "Engine"
-#Region "Events Management"
-    Private Sub PicCode_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles PicCode.Click
-        SortOrder = R2Enums.SortOrder.Code
-    End Sub
-    Private Sub PicName_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles PicName.Click
-        SortOrder = R2Enums.SortOrder.Name
-    End Sub
-#End Region
-#Region "Propertis Management"
-    Public Property SortOrder() As R2Enums.SortOrder
+    Private _UCSortOrder As R2Enums.SortOrder = R2Enums.SortOrder.Code
+    Public Property UCSortOrder As R2Enums.SortOrder
         Get
-            Return mySortOrder
+            Return _UCSortOrder
         End Get
-        Set(ByVal Value As R2Enums.SortOrder)
-            mySortOrder = Value
-            RaiseEvent SortOrderChanged(Value)
+        Set(value As R2Enums.SortOrder)
+            _UCSortOrder = value
+            RaiseEvent SortOrderChanged(value)
         End Set
     End Property
+
 #End Region
-#Region "Subs And Funcs"
+
+#Region "Subroutins And Functions"
+
     Public Sub SwicthSortOrder()
-        If SortOrder = R2Enums.SortOrder.Code Then
-            SortOrder = R2Enums.SortOrder.Name
+        If UCSortOrder = R2Enums.SortOrder.Code Then
+            UCSortOrder = R2Enums.SortOrder.Name
         Else
-            SortOrder = R2Enums.SortOrder.Code
+            UCSortOrder = R2Enums.SortOrder.Code
         End If
     End Sub
+
+
 #End Region
+
+#Region "Events"
 #End Region
+
+#Region "Event Handlers"
+
+    Private Sub PicSort_Click(sender As Object, e As EventArgs) Handles PicSort.Click
+        Try
+            SwicthSortOrder()
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+
+#End Region
+
+#Region "Override Methods"
+#End Region
+
+#Region "Abstract Methods"
+#End Region
+
+#Region "Implemented Members"
+#End Region
+
 
 
 End Class
