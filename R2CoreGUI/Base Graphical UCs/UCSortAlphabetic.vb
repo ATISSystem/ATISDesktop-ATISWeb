@@ -1,7 +1,8 @@
 
-Imports System.Reflection 
+Imports System.Reflection
 
 Imports R2Core
+Imports R2CoreGUI.My.Resources
 
 Public Class UCSortAlphabetic
     Inherits UCGeneral
@@ -85,6 +86,11 @@ Public Class UCSortAlphabetic
         End Get
         Set(value As R2Enums.SortOrder)
             _UCSortOrder = value
+            If value = R2Enums.SortOrder.Code Then
+                PicSort.Image = Sort_Code.ToBitmap
+            Else
+                PicSort.Image = Sort_Name.ToBitmap
+            End If
             RaiseEvent SortOrderChanged(value)
         End Set
     End Property

@@ -1036,6 +1036,12 @@
   <ItemGroup>
     <None Include="Resources\iconfinder_20_330402.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sort.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sort__1_.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

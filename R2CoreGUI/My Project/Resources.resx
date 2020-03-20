@@ -145,4 +145,10 @@
   <data name="UPArrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\iconfinder_9_330409.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Sort_Code" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sort.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sort_Name" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sort__1_.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
