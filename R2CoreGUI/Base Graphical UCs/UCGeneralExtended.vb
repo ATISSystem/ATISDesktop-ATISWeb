@@ -1,8 +1,11 @@
 ﻿
+Imports R2Core.DateAndTimeManagement
+
 
 Public Class UCGeneralExtended
 
     Protected Event UCGotFocusedEvent()
+    Protected _DateTime As New R2DateTime
 
     Public Sub UCFocus()
         RaiseEvent UCGotFocusedEvent()

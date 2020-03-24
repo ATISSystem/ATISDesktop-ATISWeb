@@ -188,10 +188,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://localhost:2011/R2PRIMARYWEBSERVICE.ASMX">
+    <WebReferenceUrl Include="http://localhost:1696/R2PRIMARYWEBSERVICE.ASMX">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\R2PrimaryWS\</RelPath>
-      <UpdateFromURL>http://localhost:2011/R2PRIMARYWEBSERVICE.ASMX</UpdateFromURL>
+      <UpdateFromURL>http://localhost:1696/R2PRIMARYWEBSERVICE.ASMX</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -199,10 +199,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>R2Core_R2PrimaryWS_R2PrimaryWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://localhost:2013/R2PRIMARYFILESHARINGwebservice.asmx">
+    <WebReferenceUrl Include="http://localhost:2293/R2PRIMARYFILESHARINGwebservice.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\R2PrimaryFileSharingWS\</RelPath>
-      <UpdateFromURL>http://localhost:2013/R2PRIMARYFILESHARINGwebservice.asmx</UpdateFromURL>
+      <UpdateFromURL>http://localhost:2293/R2PRIMARYFILESHARINGwebservice.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

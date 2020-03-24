@@ -14,6 +14,7 @@ Public Class UCViewerNSSTurnDataEntry
     Private _FrmMessageDialog As FrmcMessageDialog
 
 
+
 #Region "General Properties"
 #End Region
 
@@ -36,7 +37,7 @@ Public Class UCViewerNSSTurnDataEntry
     Private Sub UCViewInformation()
         Try
             Dim NSS As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure = UCNSSCurrent
-            UcNumberTurnId.UCValue = Mid(NSS.OtaghdarTurnNumber,7,20)
+            UcNumberTurnId.UCValue = Mid(NSS.OtaghdarTurnNumber, 7, 20)
             UcLabelTruck.UCValue = NSS.LicensePlatePString
             UcLabelTruckDriver.UCValue = NSS.TruckDriver
             UcLabelDateTimeComposite.UCValue = NSS.EnterDate + " - " + NSS.EnterTime
@@ -49,6 +50,7 @@ Public Class UCViewerNSSTurnDataEntry
 
     Public Overloads Sub UCRefreshGeneral()
         Try
+            UcNumberTargetYear.UCValue = _DateTime.GetCurrentSalShamsiFull
             UCNSSCurrent = Nothing
             UCRefresh()
         Catch ex As Exception
@@ -73,7 +75,7 @@ Public Class UCViewerNSSTurnDataEntry
 
     Private Sub UcNumberTurnId_UC13Pressed(UserNumber As String) Handles UcNumberTurnId.UC13Pressed
         Try
-            UCNSSCurrent = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(UcucSequentialTurnCollection.UCCurrentNSS.SequentialTurnId,UcNumberTurnId.UCValue)
+            UCNSSCurrent = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(UcucSequentialTurnCollection.UCCurrentNSS.SequentialTurnId, UcNumberTurnId.UCValue, UcNumberTargetYear.UCValue)
             UCViewInformation()
             RaiseEvent UC13PressedEvent()
         Catch ex As Exception

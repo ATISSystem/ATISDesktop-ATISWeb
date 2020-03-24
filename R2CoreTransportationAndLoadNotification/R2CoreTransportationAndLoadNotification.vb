@@ -2584,7 +2584,7 @@ Namespace Turns
             End Try
         End Function
 
-        Public Shared Function GetNSSTurn(YourSeqTId As Int64, YourTurnId As Int64) As R2CoreTransportationAndLoadNotificationStandardTurnStructure
+        Public Shared Function GetNSSTurn(YourSeqTId As Int64, YourTurnId As Int64, YourTargetYearFull As Int64) As R2CoreTransportationAndLoadNotificationStandardTurnStructure
             Try
                 Dim CurrentSalShamsiFull As String = _DateTime.GetCurrentSalShamsiFull
                 Dim Ds As DataSet
@@ -2596,7 +2596,7 @@ Namespace Turns
                                   Inner Join dbtransport.dbo.TbPerson as Person On EnterExit.nDriverCode=Person.nIDPerson
                                   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnStatuses as TurnStatus On EnterExit.TurnStatus=TurnStatus.TurnStatusId
                                   Inner Join R2Primary.DBO.TblSoftwareUsers AS Users On EnterExit.nUserIdEnter=Users.UserId 
-                                Where SeqT.SeqTId=" & YourSeqTId & " and SUBSTRING(EnterExit.OtaghdarTurnNumber,2,4)='" & CurrentSalShamsiFull & "' and SUBSTRING(EnterExit.OtaghdarTurnNumber,7,20)=" & YourTurnId & "", 1, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
+                                Where SeqT.SeqTId=" & YourSeqTId & " and SUBSTRING(EnterExit.OtaghdarTurnNumber,2,4)='" & YourTargetYearFull & "' and SUBSTRING(EnterExit.OtaghdarTurnNumber,7,20)=" & YourTurnId & "", 1, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
                 Dim NSS As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure = New R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure
                 NSS.nEnterExitId = Ds.Tables(0).Rows(0).Item("nEnterExitId")
                 NSS.EnterDate = Ds.Tables(0).Rows(0).Item("StrEnterDate")
