@@ -60,7 +60,7 @@ Public Class UCMoneyWalletCharge
         ' Add any initialization after the InitializeComponent() call.
         Try
             If Not ((R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.ChargeActiveOnThisLocation, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) = True) And (R2CoreMClassLoginManagement.CurrentUserNSS.UserCanCharge = True)) Then Me.Enabled = False
-            _Timer.Interval = 10000
+            _Timer.Interval = 50000
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
