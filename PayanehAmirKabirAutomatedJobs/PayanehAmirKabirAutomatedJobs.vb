@@ -29,7 +29,7 @@ Public Class PayanehAmirKabirAutomatedJobs
             _DateTime = New R2DateTime()
             R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser())
 
-            _AutomatedJobsTimer.Interval = R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.PayanehAmirKabirAutomatedJobsSetting, 0) * 60 * 1000
+            _AutomatedJobsTimer.Interval = R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.PayanehAmirKabirAutomatedJobsSetting, 0) * 1000
             _AutomatedJobsTimer.Enabled = True
             _AutomatedJobsTimer.Start()
 

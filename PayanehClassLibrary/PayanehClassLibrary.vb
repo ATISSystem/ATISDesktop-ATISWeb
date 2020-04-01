@@ -1360,6 +1360,19 @@ Namespace DriverTrucksManagement
             End Try
         End Function
 
+        Public Shared Function IsExistDriverTruck(YourMobileNumber As String) As Boolean
+            Try
+                Dim DS As New DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New DataBaseManagement.R2ClassSqlConnectionSepas, "Select nIDPerson from dbtransport.dbo.TbPerson Where strAddress='" & YourMobileNumber.Trim & "'", 1, DS).GetRecordsCount <> 0 Then
+                    Return True
+                Else
+                    Return False
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Shared Function GetNSSDriverTruckbyDriverId(YournIdPerson As String) As R2StandardDriverTruckStructure
             Try
 

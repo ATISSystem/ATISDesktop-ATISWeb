@@ -454,7 +454,7 @@ Namespace PublicProc
             End If
         End Function
         'تابع کامادار کردن يک رشته عددي
-        Private Shared Function R2MakeCamaYourDigit(ByVal xdig As UInt64) As String
+        Public Shared Function R2MakeCamaYourDigit(ByVal xdig As UInt64) As String
             Dim myDigit As String
             Dim yourDigit As String
             Try
@@ -1956,7 +1956,7 @@ Namespace DatabaseManagement
                 'For loopx As Int64 = 0 To myList.Count - 1
                 Dim myIndex As Int32 = myList.FindIndex(AddressOf FindDataBox)
                 'If (myList.Item(loopx).SqlString = SqlString) And (myList.Item(loopx).SqlConnection.ConnectionString = Sqlcnn.GetConnection.ConnectionString) Then
-                If yourDisposeCounter >= 0 Then
+                If yourDisposeCounter > 0 Then
                     If myIndex >= 0 Then
                         Dim myCurrentDateTime As DateTime = Date.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
                         If (myList.Item(myIndex).DisposeCounter <> 0) And (DateAndTime.DateDiff(DateInterval.Second, myList.Item(myIndex).StartTime, myCurrentDateTime) >= myList.Item(myIndex).DisposeCounter) Then
@@ -5205,11 +5205,11 @@ Namespace EntityRelations
             End Try
         End Function
 
-        Public Shared Function GetNSSEntityRelation(YourERId1 As Int64,YourERId2 As Int64,YourERTypeId As Int64) As R2StandardEntityRelationStructure
+        Public Shared Function GetNSSEntityRelation(YourERId1 As Int64, YourERId2 As Int64, YourERTypeId As Int64) As R2StandardEntityRelationStructure
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.E2=" & YourERId2 & " and ERs.ERTypeId=" & YourERTypeId & "", 1, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
-                Return GetNSSEntityRelation(ds.Tables(0).Rows(0).Item("ERId"))
+                Return GetNSSEntityRelation(Ds.Tables(0).Rows(0).Item("ERId"))
             Catch ex As EntityRelationNotFoundException
 
             Catch ex As Exception

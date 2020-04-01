@@ -38,22 +38,14 @@ Partial Class Form1
         Me.Button10 = New System.Windows.Forms.Button()
         Me.Button11 = New System.Windows.Forms.Button()
         Me.Button12 = New System.Windows.Forms.Button()
-        Me.Button13 = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.Button14 = New System.Windows.Forms.Button()
-        Me.ListBox1 = New System.Windows.Forms.ListBox()
         Me.Button15 = New System.Windows.Forms.Button()
         Me.Button16 = New System.Windows.Forms.Button()
-        Me.UcTurnRegisterRequestConfirmation = New PayanehClassLibrary.UCTurnRegisterRequestConfirmation()
-        Me.UcPersianTextBoxSerial = New R2CoreGUI.UCPersianTextBox()
-        Me.UcPersianTextBoxPelak = New R2CoreGUI.UCPersianTextBox()
-        Me.UcPersianTextBox2 = New R2CoreGUI.UCPersianTextBox()
-        Me.UcMoney1 = New R2CoreGUI.UCMoney()
+        Me.Button17 = New System.Windows.Forms.Button()
+        Me.Button13 = New System.Windows.Forms.Button()
         Me.UcNumber1 = New R2CoreGUI.UCNumber()
         Me.UcTextBox1 = New R2CoreGUI.UCTextBox()
         Me.UcPersianTextBox1 = New R2CoreGUI.UCPersianTextBox()
-        Me.Button17 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Button1
@@ -185,35 +177,6 @@ Partial Class Form1
         Me.Button12.Text = "Button12"
         Me.Button12.UseVisualStyleBackColor = True
         '
-        'Button13
-        '
-        Me.Button13.Location = New System.Drawing.Point(399, 286)
-        Me.Button13.Name = "Button13"
-        Me.Button13.Size = New System.Drawing.Size(173, 23)
-        Me.Button13.TabIndex = 25
-        Me.Button13.Text = "محاسبه هزینه"
-        Me.Button13.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label1.Location = New System.Drawing.Point(578, 313)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(30, 23)
-        Me.Label1.TabIndex = 28
-        Me.Label1.Text = "پلاک"
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label2.Location = New System.Drawing.Point(578, 345)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(38, 23)
-        Me.Label2.TabIndex = 29
-        Me.Label2.Text = "سریال"
-        '
         'Button14
         '
         Me.Button14.Location = New System.Drawing.Point(65, 327)
@@ -222,14 +185,6 @@ Partial Class Form1
         Me.Button14.TabIndex = 32
         Me.Button14.Text = "Button14"
         Me.Button14.UseVisualStyleBackColor = True
-        '
-        'ListBox1
-        '
-        Me.ListBox1.FormattingEnabled = True
-        Me.ListBox1.Location = New System.Drawing.Point(732, 156)
-        Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(214, 316)
-        Me.ListBox1.TabIndex = 33
         '
         'Button15
         '
@@ -249,84 +204,23 @@ Partial Class Form1
         Me.Button16.Text = "Button16"
         Me.Button16.UseVisualStyleBackColor = True
         '
-        'UcTurnRegisterRequestConfirmation
+        'Button17
         '
-        Me.UcTurnRegisterRequestConfirmation.BackColor = System.Drawing.Color.Transparent
-        Me.UcTurnRegisterRequestConfirmation.Location = New System.Drawing.Point(452, 415)
-        Me.UcTurnRegisterRequestConfirmation.Name = "UcTurnRegisterRequestConfirmation"
-        Me.UcTurnRegisterRequestConfirmation.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcTurnRegisterRequestConfirmation.Size = New System.Drawing.Size(211, 57)
-        Me.UcTurnRegisterRequestConfirmation.TabIndex = 35
-        Me.UcTurnRegisterRequestConfirmation.UCChkTruckNobat = True
+        Me.Button17.Location = New System.Drawing.Point(12, 549)
+        Me.Button17.Name = "Button17"
+        Me.Button17.Size = New System.Drawing.Size(75, 23)
+        Me.Button17.TabIndex = 37
+        Me.Button17.Text = "Button17"
+        Me.Button17.UseVisualStyleBackColor = True
         '
-        'UcPersianTextBoxSerial
+        'Button13
         '
-        Me.UcPersianTextBoxSerial.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxSerial.Location = New System.Drawing.Point(399, 345)
-        Me.UcPersianTextBoxSerial.MaxCharacterReached = CType(50, Short)
-        Me.UcPersianTextBoxSerial.Name = "UcPersianTextBoxSerial"
-        Me.UcPersianTextBoxSerial.Size = New System.Drawing.Size(173, 27)
-        Me.UcPersianTextBoxSerial.TabIndex = 31
-        Me.UcPersianTextBoxSerial.UCBackColor = System.Drawing.Color.White
-        Me.UcPersianTextBoxSerial.UCBorder = True
-        Me.UcPersianTextBoxSerial.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcPersianTextBoxSerial.UCEnable = True
-        Me.UcPersianTextBoxSerial.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcPersianTextBoxSerial.UCForeColor = System.Drawing.Color.Black
-        Me.UcPersianTextBoxSerial.UCMultiLine = False
-        Me.UcPersianTextBoxSerial.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
-        Me.UcPersianTextBoxSerial.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcPersianTextBoxSerial.UCValue = ""
-        '
-        'UcPersianTextBoxPelak
-        '
-        Me.UcPersianTextBoxPelak.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxPelak.Location = New System.Drawing.Point(399, 312)
-        Me.UcPersianTextBoxPelak.MaxCharacterReached = CType(50, Short)
-        Me.UcPersianTextBoxPelak.Name = "UcPersianTextBoxPelak"
-        Me.UcPersianTextBoxPelak.Size = New System.Drawing.Size(173, 27)
-        Me.UcPersianTextBoxPelak.TabIndex = 30
-        Me.UcPersianTextBoxPelak.UCBackColor = System.Drawing.Color.White
-        Me.UcPersianTextBoxPelak.UCBorder = True
-        Me.UcPersianTextBoxPelak.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcPersianTextBoxPelak.UCEnable = True
-        Me.UcPersianTextBoxPelak.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcPersianTextBoxPelak.UCForeColor = System.Drawing.Color.Black
-        Me.UcPersianTextBoxPelak.UCMultiLine = False
-        Me.UcPersianTextBoxPelak.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
-        Me.UcPersianTextBoxPelak.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcPersianTextBoxPelak.UCValue = ""
-        '
-        'UcPersianTextBox2
-        '
-        Me.UcPersianTextBox2.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBox2.Location = New System.Drawing.Point(375, 15)
-        Me.UcPersianTextBox2.MaxCharacterReached = CType(50, Short)
-        Me.UcPersianTextBox2.Name = "UcPersianTextBox2"
-        Me.UcPersianTextBox2.Size = New System.Drawing.Size(300, 265)
-        Me.UcPersianTextBox2.TabIndex = 24
-        Me.UcPersianTextBox2.UCBackColor = System.Drawing.Color.White
-        Me.UcPersianTextBox2.UCBorder = True
-        Me.UcPersianTextBox2.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcPersianTextBox2.UCEnable = True
-        Me.UcPersianTextBox2.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcPersianTextBox2.UCForeColor = System.Drawing.Color.Black
-        Me.UcPersianTextBox2.UCMultiLine = True
-        Me.UcPersianTextBox2.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
-        Me.UcPersianTextBox2.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcPersianTextBox2.UCValue = "rfwrwer"
-        '
-        'UcMoney1
-        '
-        Me.UcMoney1.Location = New System.Drawing.Point(592, 76)
-        Me.UcMoney1.Name = "UcMoney1"
-        Me.UcMoney1.Size = New System.Drawing.Size(299, 36)
-        Me.UcMoney1.TabIndex = 23
-        Me.UcMoney1.UCBackColor = System.Drawing.Color.White
-        Me.UcMoney1.UCBorder = True
-        Me.UcMoney1.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcMoney1.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcMoney1.UCForeColor = System.Drawing.Color.Black
+        Me.Button13.Location = New System.Drawing.Point(333, 298)
+        Me.Button13.Name = "Button13"
+        Me.Button13.Size = New System.Drawing.Size(75, 23)
+        Me.Button13.TabIndex = 38
+        Me.Button13.Text = "Button13"
+        Me.Button13.UseVisualStyleBackColor = True
         '
         'UcNumber1
         '
@@ -336,7 +230,7 @@ Partial Class Form1
         Me.UcNumber1.Name = "UcNumber1"
         Me.UcNumber1.Size = New System.Drawing.Size(228, 30)
         Me.UcNumber1.TabIndex = 22
-        Me.UcNumber1.UCBackColor = System.Drawing.Color.White
+        Me.UcNumber1.UCBackColor = System.Drawing.Color.RoyalBlue
         Me.UcNumber1.UCBackColorDisable = System.Drawing.Color.Gainsboro
         Me.UcNumber1.UCBorder = True
         Me.UcNumber1.UCBorderColor = System.Drawing.Color.DarkGray
@@ -388,34 +282,17 @@ Partial Class Form1
         Me.UcPersianTextBox1.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.UcPersianTextBox1.UCValue = "rfwrwer"
         '
-        'Button17
-        '
-        Me.Button17.Location = New System.Drawing.Point(12, 549)
-        Me.Button17.Name = "Button17"
-        Me.Button17.Size = New System.Drawing.Size(75, 23)
-        Me.Button17.TabIndex = 37
-        Me.Button17.Text = "Button17"
-        Me.Button17.UseVisualStyleBackColor = True
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(997, 594)
+        Me.Controls.Add(Me.Button13)
         Me.Controls.Add(Me.Button17)
         Me.Controls.Add(Me.Button16)
-        Me.Controls.Add(Me.UcTurnRegisterRequestConfirmation)
         Me.Controls.Add(Me.Button15)
-        Me.Controls.Add(Me.ListBox1)
         Me.Controls.Add(Me.Button14)
-        Me.Controls.Add(Me.UcPersianTextBoxSerial)
-        Me.Controls.Add(Me.UcPersianTextBoxPelak)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.Button13)
-        Me.Controls.Add(Me.UcPersianTextBox2)
-        Me.Controls.Add(Me.UcMoney1)
         Me.Controls.Add(Me.UcNumber1)
         Me.Controls.Add(Me.UcTextBox1)
         Me.Controls.Add(Me.UcPersianTextBox1)
@@ -459,17 +336,9 @@ Partial Class Form1
     Friend WithEvents UcPersianTextBox1 As R2CoreGUI.UCPersianTextBox
     Friend WithEvents UcTextBox1 As R2CoreGUI.UCTextBox
     Friend WithEvents UcNumber1 As R2CoreGUI.UCNumber
-    Friend WithEvents UcMoney1 As R2CoreGUI.UCMoney
-    Friend WithEvents UcPersianTextBox2 As R2CoreGUI.UCPersianTextBox
-    Friend WithEvents Button13 As Button
-    Friend WithEvents Label1 As Label
-    Friend WithEvents Label2 As Label
-    Friend WithEvents UcPersianTextBoxPelak As R2CoreGUI.UCPersianTextBox
-    Friend WithEvents UcPersianTextBoxSerial As R2CoreGUI.UCPersianTextBox
     Friend WithEvents Button14 As Button
-    Friend WithEvents ListBox1 As ListBox
     Friend WithEvents Button15 As Button
-    Friend WithEvents UcTurnRegisterRequestConfirmation As PayanehClassLibrary.UCTurnRegisterRequestConfirmation
     Friend WithEvents Button16 As Button
     Friend WithEvents Button17 As Button
+    Friend WithEvents Button13 As Button
 End Class
