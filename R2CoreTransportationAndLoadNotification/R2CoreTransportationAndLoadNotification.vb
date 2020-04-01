@@ -2554,6 +2554,16 @@ Namespace AnnouncementHalls
             End Property
         End Class
 
+        Public Class AnnouncementHallSubGroupUnActiveException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "زیر گروه اعلام بار مورد نظر فعال نیست"
+                End Get
+            End Property
+        End Class
+
+
 
     End Namespace
 
@@ -2758,6 +2768,8 @@ Namespace Turns
                 NSS.TurnStatusTitle = Ds.Tables(0).Rows(0).Item("TurnStatusTitle").trim
                 NSS.UserName = Ds.Tables(0).Rows(0).Item("Username").trim
                 Return NSS
+            Catch ex As TurnNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -2797,6 +2809,8 @@ Namespace Turns
                     Lst.Add(NSS)
                 Next
                 Return Lst
+            Catch ex As TurnNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -3662,7 +3676,7 @@ Namespace Turns
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "نوبت با شماره شاخص مورد نظر وجود ندارد"
+                    Return "درحال حاضر نوبتی در سامانه وجود ندارد"
                 End Get
             End Property
         End Class
@@ -4898,11 +4912,13 @@ Namespace LoadAllocation
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
                 Dim NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId)
+                Dim NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure = R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroup(NSSLoadCapacitorLoad.AHSGId)
+                If NSSAnnouncementHallSubGroup.Active = 0 Then Throw New AnnouncementHallSubGroupUnActiveException
                 Dim NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = Turns.R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(YourTurnId)
                 'آیا زمان تخصیص بار برای زیرگروه سالن مورد نظر فرارسیده است
                 If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
                     If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationTime Then
-                        Throw New LoadAllocationRegisteringTimingNotReachedException
+                        Throw New TimingNotReachedException
                     End If
                 End If
                 'کنترل تطابق تسلسل نوبت مربوط به نوبت انتخاب شده
@@ -4939,6 +4955,16 @@ Namespace LoadAllocation
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 RePrioritize(NSSTurn)
                 Return LAIdNew
+            Catch EX As AnnouncementHallSubGroupUnActiveException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw EX
+            Catch ex As TurnNotFoundException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw ex
             Catch ex As LoadAllocationMaximumAllowedNumberReachedException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -4954,7 +4980,7 @@ Namespace LoadAllocation
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                 End If
                 Throw ex
-            Catch ex As LoadAllocationRegisteringTimingNotReachedException
+            Catch ex As TimingNotReachedException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                 End If
@@ -5495,11 +5521,11 @@ Namespace LoadAllocation
 
     Namespace Exceptions
 
-        Public Class LoadAllocationRegisteringTimingNotReachedException
+        Public Class TimingNotReachedException
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "تخصیص بار تا لحظاتی دیگر امکان پذیر نیست"
+                    Return "انجام این فرآیند تا لحظاتی دیگر امکان پذیر نیست"
                 End Get
             End Property
         End Class
@@ -6136,7 +6162,7 @@ Namespace MobileUsers
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "شماره موبایل مورد نظر وجود ندارد"
+                    Return "شماره موبایل مورد نظر در سامانه موجود نیست"
                 End Get
             End Property
         End Class
