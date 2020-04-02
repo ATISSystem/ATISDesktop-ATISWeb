@@ -1,10 +1,10 @@
 ﻿
+
 Imports System.Data.SqlClient
 Imports System.Drawing.Printing
 Imports System.Globalization
 Imports System.Reflection
 Imports System.Resources
-Imports FreeControls
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.TurnRegisterRequest
 Imports R2Core.DatabaseManagement
@@ -72,6 +72,8 @@ Public Class Form1
         End Try
 
     End Sub
+
+
 
 
     'Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
@@ -333,4 +335,7 @@ Public Class Form1
     '    x.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "123", "1234", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
     'End Sub
 
+
+
 End Class
+

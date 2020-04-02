@@ -4769,7 +4769,7 @@ Namespace LoadAllocation
        Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver 
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On LoadCapacitor.nCompCode=TransportCompanies.TCId 
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadPermissionStatuses as LoadPermissionStatuses On Turns.LoadPermissionStatus=LoadPermissionStatuses.LoadPermissionStatusId 
-    Where Turns.nEnterExitId=@LastTurnId and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=3) and CarAndPersons.snRelation=2 and AHs.Active=1 and AHs.Deleted=0 and AHSGs.Active=1 and AHSGs.Deleted=0
+    Where Turns.nEnterExitId=@LastTurnId and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=2 or LoadAllocations.LAStatusId=3) and CarAndPersons.snRelation=2 and AHs.Active=1 and AHs.Deleted=0 and AHSGs.Active=1 and AHSGs.Deleted=0
     Order By LoadAllocations.Priority Desc", 1, DS).GetRecordsCount() = 0 Then Throw New LoadAllocationNotFoundException
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
@@ -4945,9 +4945,9 @@ Namespace LoadAllocation
                 Dim LAIdNew As Int64 = CmdSql.ExecuteScalar() + 1
                 CmdSql.CommandText = "Select Top 1 LoadAllocations.Priority from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations
                                       Where LoadAllocations.TurnId=" & YourTurnId & " and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=3)
-                                      Order By LoadAllocations.Priority Asc"
+                                      Order By LoadAllocations.Priority Desc"
                 Dim Obj = CmdSql.ExecuteScalar
-                Dim Priority As Int16 = IIf(Object.Equals(Obj, Nothing), R2CoreMClassConfigurationManagement.GetConfigInt32(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadAllocationsLoadPermissionRegisteringSetting, 2), Convert.ToInt16(Obj) - 1)
+                Dim Priority As Int16 = IIf(Object.Equals(Obj, Nothing), 1, Convert.ToInt16(Obj) + 1)
                 CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations(nEstelamId,TurnId,LAStatusId,LANote,Priority,DateTimeMilladi,DateShamsi,Time,UserId) Values(" & YournEstelamId & "," & YourTurnId & "," & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.Registered & ",''," & Priority & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "'," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ")"
                 CmdSql.ExecuteNonQuery()
                 R2CoreTransportationAndLoadNotificationMClassTurnsManagement.LoadAllocationRegistering(YourTurnId)
@@ -5056,7 +5056,7 @@ Namespace LoadAllocation
                 'آیا زمان تخصیص بار برای زیرگروه سالن مورد نظر فرارسیده است
                 If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
                     If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationTime Then
-                        Throw New LoadAllocationRegisteringTimingNotReachedException
+                        Throw New TimingNotReachedException
                     End If
                 End If
                 Dim NSSLoadAllocationStatus As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStatusStructure = GetNSSLoadAllocationStatus(YourCancellingStatus)
@@ -5070,7 +5070,7 @@ Namespace LoadAllocation
                 R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.LoadCapacitorLoadAllocationCancelling(NSSLoadAllocation.nEstelamId)
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 RePrioritize(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(NSSLoadAllocation.TurnId))
-            Catch ex As LoadAllocationRegisteringTimingNotReachedException
+            Catch ex As TimingNotReachedException
                 Throw ex
             Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
@@ -5251,7 +5251,7 @@ Namespace LoadAllocation
                 'آیا زمان تخصیص بار برای زیرگروه سالن مورد نظر فرارسیده است
                 If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
                     If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationTime Then
-                        Throw New LoadAllocationRegisteringTimingNotReachedException
+                        Throw New TimingNotReachedException
                     End If
                 End If
                 Dim DS As DataSet
@@ -5269,7 +5269,7 @@ Namespace LoadAllocation
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 End If
-            Catch ex As LoadAllocationRegisteringTimingNotReachedException
+            Catch ex As TimingNotReachedException
                 Throw ex
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
@@ -5288,7 +5288,7 @@ Namespace LoadAllocation
                 'آیا زمان تخصیص بار برای زیرگروه سالن مورد نظر فرارسیده است
                 If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
                     If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationTime Then
-                        Throw New LoadAllocationRegisteringTimingNotReachedException
+                        Throw New TimingNotReachedException
                     End If
                 End If
                 Dim DS As DataSet
@@ -5306,7 +5306,7 @@ Namespace LoadAllocation
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 End If
-            Catch ex As LoadAllocationRegisteringTimingNotReachedException
+            Catch ex As TimingNotReachedException
                 Throw ex
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
