@@ -801,7 +801,7 @@ Namespace LoadTargets
 		                             Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On LoadCapacitor.AHId=AHs.AHId 
 	                                 Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On LoadCapacitor.AHSGId=AHSGs.AHSGId 
                                   Where  LoadCapacitor.bFlag=0 and  (LoadCapacitor.LoadStatus=1 or LoadCapacitor.LoadStatus=2) and LoadCapacitor.nCarNum>0 and
-                                         AHs.AHId=" & YourAHId & " and AHSGs.AHSGId=" & YourAHSGId & " and AHs.Active=1 and AHs.Deleted=0 and AHSGs.Active=1 and AHSGs.Deleted=0 and Provinces.Active=1 and Provinces.Deleted=0
+                                         AHs.AHId=" & YourAHId & " and AHSGs.AHSGId=" & YourAHSGId & " and AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0
                                   Order By Provinces.ProvinceName", 1, DS).GetRecordsCount() = 0 Then Throw New LoadAllocationNotFoundException
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardProvinceStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardProvinceStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
@@ -2248,7 +2248,7 @@ Namespace AnnouncementHalls
                  Select AHs.AHId,AHSGs.AHSGId from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs
                     Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationAnnouncementHallSubGroups as AHRAHSG On AHs.AHId=AHRAHSG.AHId 
                     Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On AHRAHSG.AHSGId=AHSGs.AHSGId 
-                 Where AHs.Deleted=0 and AHs.Active=1 and AHRAHSG.RelationActive=1 and AHSGs.Deleted=0 and AHSGs.Active=1
+                 Where AHs.Deleted=0 and AHs.ViewFlag=1 and AHRAHSG.RelationActive=1 and AHSGs.Deleted=0 and AHSGs.ViewFlag=1
                  Order By AHs.AHId,AHSGs.AHSGId", 3600, DS)
 
                 Dim Lst = New List(Of R2CoreTransportationAndLoadNotificationStandardAnnouncementHallAnnouncementHallSubGroupJOINTStructure)
@@ -2284,7 +2284,7 @@ Namespace AnnouncementHalls
                              "Select Top 1 AH.AHId,AH.AHTitle,AH.AHColor,AH.Active,AH.Deleted,AH.ViewFlag from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AH 
                                  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationAnnouncementHallSubGroups as AHRAHSG On AH.AHId=AHRAHSG.AHId
                                  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSG On AHRAHSG.AHSGId=AHSG.AHSGId
-                                Where AHSG.AHSGId = " & YourAHSGId & " and AHSG.Deleted=0 and AHSG.Active=1 and AHRAHSG.RelationActive=1 and AH.Deleted=0 and AH.Active=1", 3600, DS).GetRecordsCount() = 0 Then Throw New AnnouncementHallNotFoundException
+                                Where AHSG.AHSGId = " & YourAHSGId & " and AHSG.Deleted=0 and AHSG.ViewFlag=1 and AHRAHSG.RelationActive=1 and AH.Deleted=0 and AH.ViewFlag=1", 3600, DS).GetRecordsCount() = 0 Then Throw New AnnouncementHallNotFoundException
                 Return New R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure(DS.Tables(0).Rows(0).Item("AHId"), DS.Tables(0).Rows(0).Item("AHTitle").trim, DS.Tables(0).Rows(0).Item("AHColor").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch exx As AnnouncementHallNotFoundException
                 Throw exx
@@ -2443,7 +2443,7 @@ Namespace AnnouncementHalls
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                                  "Select AH.AHId,AH.AHTitle,AH.AHColor,AH.Active,AH.Deleted,AH.ViewFlag from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AH 
                                   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationComputers as AHRComp On AH.AHId=AHRComp.AHId
-                                    Where AHRComp.ComId=" & R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId & " and AHRComp.RelationActive=1 and AH.Deleted=0 and ah.Active=1 ", 3600, DS)
+                                    Where AHRComp.ComId=" & R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId & " and AHRComp.RelationActive=1 and AH.Deleted=0 and ah.ViewFlag=1 ", 3600, DS)
                 Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                     Lst.Add(New R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure(DS.Tables(0).Rows(Loopx).Item("AHId"), DS.Tables(0).Rows(Loopx).Item("AHTitle").trim, DS.Tables(0).Rows(Loopx).Item("AHColor").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
@@ -2461,7 +2461,7 @@ Namespace AnnouncementHalls
                                   "Select AHSG.AHSGId,AHSG.AHSGTitle,AHSG.Active,AHSG.Deleted,AHSG.ViewFlag from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AH 
                                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationAnnouncementHallSubGroups as AHRAHSG On AH.AHId=AHRAHSG.AHId
                                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSG On AHRAHSG.AHSGId=AHSG.AHSGId
-                                   Where AH.AHId = " & YourAHId & " and AHSG.Deleted=0 and AHSG.Active=1 and AHRAHSG.RelationActive=1 and AH.Deleted=0 and AH.Active=1", 3600, DS)
+                                   Where AH.AHId = " & YourAHId & " and AHSG.Deleted=0 and AHSG.ViewFlag=1 and AHRAHSG.RelationActive=1 and AH.Deleted=0 and AH.ViewFlag=1", 3600, DS)
                 Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                     Lst.Add(New R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure(DS.Tables(0).Rows(Loopx).Item("AHSGId"), DS.Tables(0).Rows(Loopx).Item("AHSGTitle").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
@@ -4769,7 +4769,7 @@ Namespace LoadAllocation
        Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver 
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On LoadCapacitor.nCompCode=TransportCompanies.TCId 
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadPermissionStatuses as LoadPermissionStatuses On Turns.LoadPermissionStatus=LoadPermissionStatuses.LoadPermissionStatusId 
-    Where Turns.nEnterExitId=@LastTurnId and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=2 or LoadAllocations.LAStatusId=3) and CarAndPersons.snRelation=2 and AHs.Active=1 and AHs.Deleted=0 and AHSGs.Active=1 and AHSGs.Deleted=0
+    Where Turns.nEnterExitId=@LastTurnId and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=2 or LoadAllocations.LAStatusId=3) and CarAndPersons.snRelation=2 and AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0
     Order By LoadAllocations.Priority Desc", 1, DS).GetRecordsCount() = 0 Then Throw New LoadAllocationNotFoundException
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
