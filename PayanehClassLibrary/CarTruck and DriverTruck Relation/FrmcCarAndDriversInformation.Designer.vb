@@ -24,7 +24,6 @@ Partial Class FrmcCarAndDriversInformation
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1 As R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure = New R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure()
         Me.UcTraficCard = New R2CoreParkingSystem.UCTrafficCard()
         Me.UcButtonSabt = New R2CoreGUI.UCButton()
         Me.PnlCarAndDriversInformation = New System.Windows.Forms.Panel()
@@ -33,15 +32,16 @@ Partial Class FrmcCarAndDriversInformation
         Me.UcDriverTruckSecond = New PayanehClassLibrary.UCDriverTruck()
         Me.UcCarTruck = New PayanehClassLibrary.UCCarTruck()
         Me.PnlTrucksRelationAnnouncementHalls = New System.Windows.Forms.Panel()
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups = New R2CoreGUI.UCButtonDelete()
         Me.UcViewerNSSAnnouncementHallSubGroup = New R2CoreTransportationAndLoadNotification.UCViewerNSSAnnouncementHallSubGroup()
         Me.UcCarTruckPnlTrucksRelationAnnouncementHalls = New PayanehClassLibrary.UCCarTruck()
         Me.UcAnnouncementHallSelection = New R2CoreTransportationAndLoadNotification.UCAnnouncementHallSelection()
         Me.PnlTankTreilers = New System.Windows.Forms.Panel()
         Me.UcChangeTankTreilerStatus = New PayanehClassLibrary.UCChangeTankTreilerStatus()
-        Me.PnlCarAndDriversInformation.SuspendLayout
-        Me.PnlTrucksRelationAnnouncementHalls.SuspendLayout
-        Me.PnlTankTreilers.SuspendLayout
-        Me.SuspendLayout
+        Me.PnlCarAndDriversInformation.SuspendLayout()
+        Me.PnlTrucksRelationAnnouncementHalls.SuspendLayout()
+        Me.PnlTankTreilers.SuspendLayout()
+        Me.SuspendLayout()
         '
         '_FrmMessageDialog
         '
@@ -49,7 +49,7 @@ Partial Class FrmcCarAndDriversInformation
         '
         'UcTraficCard
         '
-        Me.UcTraficCard.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTraficCard.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTraficCard.BackColor = System.Drawing.Color.Transparent
         Me.UcTraficCard.Location = New System.Drawing.Point(626, -1)
         Me.UcTraficCard.Name = "UcTraficCard"
@@ -59,7 +59,7 @@ Partial Class FrmcCarAndDriversInformation
         '
         'UcButtonSabt
         '
-        Me.UcButtonSabt.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcButtonSabt.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcButtonSabt.BackColor = System.Drawing.Color.Transparent
         Me.UcButtonSabt.Location = New System.Drawing.Point(749, 125)
         Me.UcButtonSabt.Name = "UcButtonSabt"
@@ -68,16 +68,16 @@ Partial Class FrmcCarAndDriversInformation
         Me.UcButtonSabt.TabIndex = 204
         Me.UcButtonSabt.UCBackColor = System.Drawing.Color.OrangeRed
         Me.UcButtonSabt.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonSabt.UCEnable = true
-        Me.UcButtonSabt.UCFont = New System.Drawing.Font("B Homa", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonSabt.UCEnable = True
+        Me.UcButtonSabt.UCFont = New System.Drawing.Font("B Homa", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonSabt.UCForeColor = System.Drawing.Color.White
         Me.UcButtonSabt.UCValue = "ثبت رابطه کارت تردد، خودرو ، راننده اول و دوم"
         '
         'PnlCarAndDriversInformation
         '
-        Me.PnlCarAndDriversInformation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlCarAndDriversInformation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlCarAndDriversInformation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlCarAndDriversInformation.Controls.Add(Me.UcNumbernIDCar)
         Me.PnlCarAndDriversInformation.Controls.Add(Me.UcButtonSabt)
@@ -92,8 +92,8 @@ Partial Class FrmcCarAndDriversInformation
         '
         'UcNumbernIDCar
         '
-        Me.UcNumbernIDCar.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumbernIDCar.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumbernIDCar.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumbernIDCar.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumbernIDCar.Location = New System.Drawing.Point(643, 131)
         Me.UcNumbernIDCar.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumbernIDCar.Name = "UcNumbernIDCar"
@@ -101,56 +101,58 @@ Partial Class FrmcCarAndDriversInformation
         Me.UcNumbernIDCar.TabIndex = 205
         Me.UcNumbernIDCar.UCBackColor = System.Drawing.Color.White
         Me.UcNumbernIDCar.UCBackColorDisable = System.Drawing.Color.White
-        Me.UcNumbernIDCar.UCBorder = System.Windows.Forms.BorderStyle.None
-        Me.UcNumbernIDCar.UCEnable = false
-        Me.UcNumbernIDCar.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumbernIDCar.UCBorder = False
+        Me.UcNumbernIDCar.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcNumbernIDCar.UCEnable = False
+        Me.UcNumbernIDCar.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumbernIDCar.UCForeColor = System.Drawing.Color.Black
-        Me.UcNumbernIDCar.UCMultiLine = false
-        Me.UcNumbernIDCar.UCValue = CType(0,Long)
+        Me.UcNumbernIDCar.UCMultiLine = False
+        Me.UcNumbernIDCar.UCValue = CType(0, Long)
         '
         'UcDriverTruckFirst
         '
-        Me.UcDriverTruckFirst.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcDriverTruckFirst.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcDriverTruckFirst.BackColor = System.Drawing.Color.Transparent
         Me.UcDriverTruckFirst.Location = New System.Drawing.Point(5, 154)
         Me.UcDriverTruckFirst.Name = "UcDriverTruckFirst"
         Me.UcDriverTruckFirst.Padding = New System.Windows.Forms.Padding(3)
         Me.UcDriverTruckFirst.Size = New System.Drawing.Size(986, 167)
         Me.UcDriverTruckFirst.TabIndex = 201
-        Me.UcDriverTruckFirst.UCViewButtons = true
+        Me.UcDriverTruckFirst.UCViewButtons = True
         '
         'UcDriverTruckSecond
         '
-        Me.UcDriverTruckSecond.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcDriverTruckSecond.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcDriverTruckSecond.BackColor = System.Drawing.Color.Transparent
         Me.UcDriverTruckSecond.Location = New System.Drawing.Point(5, 322)
         Me.UcDriverTruckSecond.Name = "UcDriverTruckSecond"
         Me.UcDriverTruckSecond.Padding = New System.Windows.Forms.Padding(3)
         Me.UcDriverTruckSecond.Size = New System.Drawing.Size(986, 169)
         Me.UcDriverTruckSecond.TabIndex = 202
-        Me.UcDriverTruckSecond.UCViewButtons = true
+        Me.UcDriverTruckSecond.UCViewButtons = True
         '
         'UcCarTruck
         '
-        Me.UcCarTruck.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcCarTruck.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcCarTruck.BackColor = System.Drawing.Color.Transparent
         Me.UcCarTruck.Location = New System.Drawing.Point(5, 5)
         Me.UcCarTruck.Name = "UcCarTruck"
         Me.UcCarTruck.Padding = New System.Windows.Forms.Padding(3)
         Me.UcCarTruck.Size = New System.Drawing.Size(604, 151)
         Me.UcCarTruck.TabIndex = 200
-        Me.UcCarTruck.UCViewButtons = true
+        Me.UcCarTruck.UCViewButtons = True
         '
         'PnlTrucksRelationAnnouncementHalls
         '
-        Me.PnlTrucksRelationAnnouncementHalls.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlTrucksRelationAnnouncementHalls.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlTrucksRelationAnnouncementHalls.BackColor = System.Drawing.Color.Transparent
         Me.PnlTrucksRelationAnnouncementHalls.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlTrucksRelationAnnouncementHalls.Controls.Add(Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups)
         Me.PnlTrucksRelationAnnouncementHalls.Controls.Add(Me.UcViewerNSSAnnouncementHallSubGroup)
         Me.PnlTrucksRelationAnnouncementHalls.Controls.Add(Me.UcCarTruckPnlTrucksRelationAnnouncementHalls)
         Me.PnlTrucksRelationAnnouncementHalls.Controls.Add(Me.UcAnnouncementHallSelection)
@@ -159,9 +161,24 @@ Partial Class FrmcCarAndDriversInformation
         Me.PnlTrucksRelationAnnouncementHalls.Size = New System.Drawing.Size(995, 512)
         Me.PnlTrucksRelationAnnouncementHalls.TabIndex = 206
         '
+        'UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups
+        '
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.BackColor = System.Drawing.Color.Transparent
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.Location = New System.Drawing.Point(31, 216)
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.Name = "UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups"
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.Size = New System.Drawing.Size(147, 40)
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.TabIndex = 3
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.UCBackColor = System.Drawing.Color.Red
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.UCBackColorDisable = System.Drawing.Color.Gray
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.UCEnable = True
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.UCFont = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.UCForeColor = System.Drawing.Color.White
+        Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.UCValue = "حذف همه زیرگروه ها"
+        '
         'UcViewerNSSAnnouncementHallSubGroup
         '
-        Me.UcViewerNSSAnnouncementHallSubGroup.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcViewerNSSAnnouncementHallSubGroup.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcViewerNSSAnnouncementHallSubGroup.BackColor = System.Drawing.Color.Transparent
         Me.UcViewerNSSAnnouncementHallSubGroup.Location = New System.Drawing.Point(782, 216)
         Me.UcViewerNSSAnnouncementHallSubGroup.Name = "UcViewerNSSAnnouncementHallSubGroup"
@@ -172,37 +189,31 @@ Partial Class FrmcCarAndDriversInformation
         '
         'UcCarTruckPnlTrucksRelationAnnouncementHalls
         '
-        Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.BackColor = System.Drawing.Color.Transparent
         Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.Location = New System.Drawing.Point(31, 55)
         Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.Name = "UcCarTruckPnlTrucksRelationAnnouncementHalls"
         Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.Padding = New System.Windows.Forms.Padding(3)
         Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.Size = New System.Drawing.Size(934, 153)
         Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.TabIndex = 1
-        Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.UCViewButtons = false
+        Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.UCViewButtons = False
         '
         'UcAnnouncementHallSelection
         '
-        Me.UcAnnouncementHallSelection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcAnnouncementHallSelection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcAnnouncementHallSelection.BackColor = System.Drawing.Color.Transparent
         Me.UcAnnouncementHallSelection.Location = New System.Drawing.Point(31, 267)
         Me.UcAnnouncementHallSelection.Name = "UcAnnouncementHallSelection"
         Me.UcAnnouncementHallSelection.Size = New System.Drawing.Size(934, 93)
         Me.UcAnnouncementHallSelection.TabIndex = 0
-        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.Active = true
-        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.AHColor = "Yellow"
-        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.AHId = CType(2,Long)
-        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.AHTitle = "سالن اعلام بار ذوبی"
-        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.Deleted = false
-        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.ViewFlag = true
         '
         'PnlTankTreilers
         '
-        Me.PnlTankTreilers.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlTankTreilers.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlTankTreilers.BackColor = System.Drawing.Color.Transparent
         Me.PnlTankTreilers.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlTankTreilers.Controls.Add(Me.UcChangeTankTreilerStatus)
@@ -213,8 +224,8 @@ Partial Class FrmcCarAndDriversInformation
         '
         'UcChangeTankTreilerStatus
         '
-        Me.UcChangeTankTreilerStatus.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcChangeTankTreilerStatus.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcChangeTankTreilerStatus.BackColor = System.Drawing.Color.Transparent
         Me.UcChangeTankTreilerStatus.Location = New System.Drawing.Point(20, 55)
         Me.UcChangeTankTreilerStatus.Name = "UcChangeTankTreilerStatus"
@@ -223,7 +234,7 @@ Partial Class FrmcCarAndDriversInformation
         '
         'FrmcCarAndDriversInformation
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
         Me.Controls.Add(Me.PnlCarAndDriversInformation)
@@ -235,7 +246,7 @@ Partial Class FrmcCarAndDriversInformation
         Me.Controls.SetChildIndex(Me.PnlTrucksRelationAnnouncementHalls, 0)
         Me.Controls.SetChildIndex(Me.PnlTankTreilers, 0)
         Me.Controls.SetChildIndex(Me.PnlCarAndDriversInformation, 0)
-        Me.PnlCarAndDriversInformation.ResumeLayout(false)
+        Me.PnlCarAndDriversInformation.ResumeLayout(False)
         Me.PnlTrucksRelationAnnouncementHalls.ResumeLayout(false)
         Me.PnlTankTreilers.ResumeLayout(false)
         Me.ResumeLayout(false)
@@ -254,4 +265,5 @@ End Sub
     Friend WithEvents UcViewerNSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotification.UCViewerNSSAnnouncementHallSubGroup
     Friend WithEvents PnlTankTreilers As System.Windows.Forms.Panel
     Friend WithEvents UcChangeTankTreilerStatus As UCChangeTankTreilerStatus
+    Friend WithEvents UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups As UCButtonDelete
 End Class

@@ -3271,8 +3271,7 @@ Namespace ReportsManagement
 	                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCars On Turns.strCardno=AHSGRCars.CarId 
 	                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SeqT On Substring(Turns.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS=SeqT.SeqTKeyWord Collate Arabic_CI_AI_WS
                    Where (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and 
-                         AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and AHSGRCars.RelationActive=1 and 
-		                 SeqT.Active=1 and SeqT.Deleted=0 
+                         AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and AHSGRCars.RelationActive=1 
                    Order By Turns.strEnterDate,Turns.strEnterTime")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
@@ -3309,7 +3308,7 @@ Namespace ReportsManagement
 		                         (Select SeqT.SeqTKeyWord from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AH
 			                         Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationSequentialTurns as AHRSeqT On AH.AHId=AHRSeqT.AHId
 			                         Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SeqT On AHRSeqT.SeqTId=SeqT.SeqTId 
-			                       Where AH.AHId=" & YourAnnouncementHallId & " and AH.Deleted=0 and AHRSeqT.RelationActive=1 and SeqT.Deleted=0)")
+			                       Where AH.AHId=" & YourAnnouncementHallId & " and AH.Deleted=0 and AHRSeqT.RelationActive=1)")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 Da.Fill(Ds)

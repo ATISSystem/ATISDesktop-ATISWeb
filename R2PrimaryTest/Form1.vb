@@ -57,6 +57,16 @@ Public Class Form1
 
     Private Sub Button13_Click(sender As Object, e As EventArgs) Handles Button13.Click
         Try
+            Dim NSSTruck = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(85194)
+            R2CoreTransportationAndLoadNotification.Trucks.R2CoreTransportationAndLoadNotificationMClassTrucksManagement.SetTruckRelationAnnouncementHallSubGroups(NSSTruck, R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroup(7))
+            R2CoreTransportationAndLoadNotification.Trucks.R2CoreTransportationAndLoadNotificationMClassTrucksManagement.SetTruckRelationAnnouncementHallSubGroups(NSSTruck, R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroup(8))
+            R2CoreTransportationAndLoadNotification.Trucks.R2CoreTransportationAndLoadNotificationMClassTrucksManagement.SetTruckRelationAnnouncementHallSubGroups(NSSTruck, R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroup(9))
+            Dim NSSTurn As R2CoreTransportationAndLoadNotification.Turns.R2CoreTransportationAndLoadNotificationStandardTurnStructure = R2CoreTransportationAndLoadNotification.Turns.R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(854126)
+
+            If R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetAnnouncementHallSubGroups(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(NSSTurn)).Where(Function(x) x = 9).Count = 0 Then
+                Throw New Exception
+            End If
+
             Dim cmdsql As New SqlClient.SqlCommand
             cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
             cmdsql.Connection.Open()

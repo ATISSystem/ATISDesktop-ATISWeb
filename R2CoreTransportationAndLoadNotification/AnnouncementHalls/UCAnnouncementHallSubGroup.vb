@@ -60,6 +60,14 @@ Public Class UCAnnouncementHallSubGroup
         End Try
     End Sub
 
+    Public Sub UCViewNSSNothing()
+        Try
+            UCNSSCurrent = Nothing
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
     Public Sub UCViewNSS(YourAHSGId As Int64)
         Try
             UCNSSCurrent = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroup(YourAHSGId)

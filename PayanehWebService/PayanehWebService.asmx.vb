@@ -31,6 +31,7 @@ Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
 Public Class PayanehWebService
     Inherits System.Web.Services.WebService
 
+
     <WebMethod()>
     Private Sub WebMethodSetUser()
         Try
