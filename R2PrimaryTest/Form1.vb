@@ -57,25 +57,25 @@ Public Class Form1
 
     Private Sub Button13_Click(sender As Object, e As EventArgs) Handles Button13.Click
         Try
-            Dim NSSTruck = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(85194)
-            R2CoreTransportationAndLoadNotification.Trucks.R2CoreTransportationAndLoadNotificationMClassTrucksManagement.SetTruckRelationAnnouncementHallSubGroups(NSSTruck, R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroup(7))
-            R2CoreTransportationAndLoadNotification.Trucks.R2CoreTransportationAndLoadNotificationMClassTrucksManagement.SetTruckRelationAnnouncementHallSubGroups(NSSTruck, R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroup(8))
-            R2CoreTransportationAndLoadNotification.Trucks.R2CoreTransportationAndLoadNotificationMClassTrucksManagement.SetTruckRelationAnnouncementHallSubGroups(NSSTruck, R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroup(9))
-            Dim NSSTurn As R2CoreTransportationAndLoadNotification.Turns.R2CoreTransportationAndLoadNotificationStandardTurnStructure = R2CoreTransportationAndLoadNotification.Turns.R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(854126)
+            R2Core.UserManagement.R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser())
+            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering()
 
-            If R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetAnnouncementHallSubGroups(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(NSSTurn)).Where(Function(x) x = 9).Count = 0 Then
-                Throw New Exception
-            End If
+            'Dim NSSTruck = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(85194)
+            'Dim NSSTurn As R2CoreTransportationAndLoadNotification.Turns.R2CoreTransportationAndLoadNotificationStandardTurnStructure = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(854126)
 
-            Dim cmdsql As New SqlClient.SqlCommand
-            cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
-            cmdsql.Connection.Open()
-            cmdsql.CommandText = "Select Top 1 LoadAllocations.Priority from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations
-                                      Where LoadAllocations.TurnId=429793 and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=3)
-                                      Order By LoadAllocations.Priority Asc"
-            Dim Obj = cmdsql.ExecuteScalar
-            Dim Priority As Int16 = IIf(Object.Equals(Obj, Nothing), 10, Convert.ToInt16(Obj) - 1)
-            MessageBox.Show(Priority)
+            'If R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetAnnouncementHallSubGroups(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(NSSTurn)).Where(Function(x) x = 9).Count = 0 Then
+            '    Throw New Exception
+            'End If
+
+            'Dim cmdsql As New SqlClient.SqlCommand
+            'cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
+            'cmdsql.Connection.Open()
+            'cmdsql.CommandText = "Select Top 1 LoadAllocations.Priority from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations
+            '                          Where LoadAllocations.TurnId=429793 and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=3)
+            '                          Order By LoadAllocations.Priority Asc"
+            'Dim Obj = cmdsql.ExecuteScalar
+            'Dim Priority As Int16 = IIf(Object.Equals(Obj, Nothing), 10, Convert.ToInt16(Obj) - 1)
+            'MessageBox.Show(Priority)
 
         Catch ex As Exception
             MessageBox.Show(ex.Message)

@@ -30,6 +30,14 @@ Public Class FrmcCarAndDriversInformation
 
 #Region "General Properties"
 
+    Private Property ReservedTruckId As Int64
+        Get
+            Return UcNumbernIDCar.UCValue
+        End Get
+        Set(value As Int64)
+            UcNumbernIDCar.UCValue = value
+        End Set
+    End Property
 
 #End Region
 
@@ -77,7 +85,15 @@ Public Class FrmcCarAndDriversInformation
         Dim CmdSql As New SqlClient.SqlCommand
         CmdSql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection()
         Try
-            Dim myNSSTraficCard As R2CoreParkingSystemStandardTrafficCardStructure = UcTraficCard.UCGetNSS()
+            Dim myNSSTraficCard As R2CoreParkingSystemStandardTrafficCardStructure = Nothing
+            Try
+                myNSSTraficCard = UcTraficCard.UCGetNSS()
+            Catch ex As GetNSSException
+                FrmcViewLocalMessage("کارت تردد نامشخص است - شاید نیاز باشد کارت تردد را به سیستم معرفی کنید")
+            Catch ex As Exception
+                Throw ex
+            End Try
+
             Dim myNSSCarTruck As R2StandardCarTruckStructure = UcCarTruck.UCGetNSS()
             Dim myNSSDriverTruckFirst As R2StandardDriverTruckStructure = UcDriverTruckFirst.UCGetNSS()
             Dim myNSSDriverTruckSecond As R2StandardDriverTruckStructure = Nothing
@@ -87,9 +103,9 @@ Public Class FrmcCarAndDriversInformation
                 FrmcViewLocalMessage("راننده دوم نامشخص است - " + ex.Message)
             End Try
             Dim myNSSCarTruckReserved As R2StandardCarTruckStructure = Nothing
-            If UcNumbernIDCar.UCValue <> 0 Then
+            If ReservedTruckId <> 0 Then
                 Try
-                    myNSSCarTruckReserved = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(UcNumbernIDCar.UCValue)
+                    myNSSCarTruckReserved = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(ReservedTruckId)
                 Catch exx As GetNSSException
                 Catch ex As Exception
                     Throw ex
@@ -98,8 +114,10 @@ Public Class FrmcCarAndDriversInformation
             CmdSql.Connection.Open()
             CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
             ' حذف روابط قبلی کارت تردد با پلاک های دیگر
-            CmdSql.CommandText = "Update R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Set RelationActive=0 Where CardId=" & myNSSTraficCard.CardId & ""
-            CmdSql.ExecuteNonQuery()
+            If myNSSTraficCard IsNot Nothing Then
+                CmdSql.CommandText = "Update R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Set RelationActive=0 Where CardId=" & myNSSTraficCard.CardId & ""
+                CmdSql.ExecuteNonQuery()
+            End If
             'حذف روابط قبلی پلاک با کارت های تردد دیگر
             CmdSql.CommandText = "Update R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Set RelationActive=0 Where nCarId=" & myNSSCarTruck.NSSCar.nIdCar & ""
             CmdSql.ExecuteNonQuery()
@@ -109,19 +127,25 @@ Public Class FrmcCarAndDriversInformation
                 CmdSql.ExecuteNonQuery()
             End If
             'ایجاد رابطه جدید کارت و پلاک
-            CmdSql.CommandText = "Insert into R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars(CardId,nCarId,RelationActive) Values(" & myNSSTraficCard.CardId & "," & myNSSCarTruck.NSSCar.nIdCar & ",1)"
-            CmdSql.ExecuteNonQuery()
+            If myNSSTraficCard IsNot Nothing Then
+                CmdSql.CommandText = "Insert into R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars(CardId,nCarId,RelationActive) Values(" & myNSSTraficCard.CardId & "," & myNSSCarTruck.NSSCar.nIdCar & ",1)"
+                CmdSql.ExecuteNonQuery()
+            End If
             If myNSSCarTruckReserved IsNot Nothing Then
                 'تعویض پلاک قبلی با پلاک چدید در بانک پارکینگ سیستم
                 CmdSql.CommandText = "Update R2PrimaryParkingSystem.dbo.TblEntryExit Set PelakEnter='" & myNSSCarTruck.NSSCar.StrCarNo & "',SerialEnter='" & myNSSCarTruck.NSSCar.StrCarSerialNo & "',CityEnter='" & R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(myNSSCarTruck.NSSCar.nIdCity) & "' Where PelakEnter='" & myNSSCarTruckReserved.NSSCar.StrCarNo & "' and SerialEnter='" & myNSSCarTruckReserved.NSSCar.StrCarSerialNo & "' and CityEnter='" & R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(myNSSCarTruckReserved.NSSCar.nIdCity) & "' and FlagA=0"
                 CmdSql.ExecuteNonQuery()
             End If
             '  تعویض پلاک بر اساس کارت در بانک پارکینگ سیستم
-            CmdSql.CommandText = "Update R2PrimaryParkingSystem.dbo.TblEntryExit Set PelakEnter='" & myNSSCarTruck.NSSCar.StrCarNo & "',SerialEnter='" & myNSSCarTruck.NSSCar.StrCarSerialNo & "',CityEnter='" & R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(myNSSCarTruck.NSSCar.nIdCity) & "' Where CardNoEnter='" & myNSSTraficCard.CardNo & "' and FlagA=0"
-            CmdSql.ExecuteNonQuery()
+            If myNSSTraficCard IsNot Nothing Then
+                CmdSql.CommandText = "Update R2PrimaryParkingSystem.dbo.TblEntryExit Set PelakEnter='" & myNSSCarTruck.NSSCar.StrCarNo & "',SerialEnter='" & myNSSCarTruck.NSSCar.StrCarSerialNo & "',CityEnter='" & R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(myNSSCarTruck.NSSCar.nIdCity) & "' Where CardNoEnter='" & myNSSTraficCard.CardNo & "' and FlagA=0"
+                CmdSql.ExecuteNonQuery()
+            End If
             ' تعویض کارت تردد بر اساس پلاک در بانک پارکینگ سیستم
-            CmdSql.CommandText = "Update R2PrimaryParkingSystem.dbo.TblEntryExit Set CardNoEnter='" & myNSSTraficCard.CardNo & "' Where PelakEnter='" & myNSSCarTruck.NSSCar.StrCarNo & "' and SerialEnter='" & myNSSCarTruck.NSSCar.StrCarSerialNo & "' and CityEnter='" & R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(myNSSCarTruck.NSSCar.nIdCity) & "' and FlagA=0"
-            CmdSql.ExecuteNonQuery()
+            If myNSSTraficCard IsNot Nothing Then
+                CmdSql.CommandText = "Update R2PrimaryParkingSystem.dbo.TblEntryExit Set CardNoEnter='" & myNSSTraficCard.CardNo & "' Where PelakEnter='" & myNSSCarTruck.NSSCar.StrCarNo & "' and SerialEnter='" & myNSSCarTruck.NSSCar.StrCarSerialNo & "' and CityEnter='" & R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(myNSSCarTruck.NSSCar.nIdCity) & "' and FlagA=0"
+                CmdSql.ExecuteNonQuery()
+            End If
             'تغییر کد ونام راننده به راننده موقت
             CmdSql.CommandText = "Update Dbtransport.dbo.TbEnterExit Set StrDriverName='" & R2CoreParkingSystemMClassDrivers.GetNSSTempDriver().StrPersonFullName & "',nDriverCode=" & R2CoreParkingSystemMClassDrivers.GetNSSTempDriver().nIdPerson & " Where nDriverCode=" & myNSSDriverTruckFirst.NSSDriver.nIdPerson & " and bflagDriver=0"
             CmdSql.ExecuteNonQuery()
@@ -139,11 +163,13 @@ Public Class FrmcCarAndDriversInformation
                 CmdSql.ExecuteNonQuery()
             End If
             'تغییر پلاک بر اساس کارت تردد در بانک سپاس
-            CmdSql.CommandText = "Update Dbtransport.dbo.TbGhabz Set nIdCar=" & myNSSCarTruck.NSSCar.nIdCar & " Where StrBarCodeNo='" & myNSSTraficCard.CardNo & "'"
-            CmdSql.ExecuteNonQuery()
-            'تغییر کارت تردد بر اساس پلاک در بانک سپاس
-            CmdSql.CommandText = "Update Dbtransport.dbo.TbGhabz Set StrBarCodeNo='" & myNSSTraficCard.CardNo & "' Where nIdCar=" & myNSSCarTruck.NSSCar.nIdCar & ""
-            CmdSql.ExecuteNonQuery()
+            If myNSSTraficCard IsNot Nothing Then
+                CmdSql.CommandText = "Update Dbtransport.dbo.TbGhabz Set nIdCar=" & myNSSCarTruck.NSSCar.nIdCar & " Where StrBarCodeNo='" & myNSSTraficCard.CardNo & "'"
+                CmdSql.ExecuteNonQuery()
+                'تغییر کارت تردد بر اساس پلاک در بانک سپاس
+                CmdSql.CommandText = "Update Dbtransport.dbo.TbGhabz Set StrBarCodeNo='" & myNSSTraficCard.CardNo & "' Where nIdCar=" & myNSSCarTruck.NSSCar.nIdCar & ""
+                CmdSql.ExecuteNonQuery()
+            End If
             'حذف ارتباط راننده اول و دوم در صورت وجود با ناوگان
             If myNSSDriverTruckFirst IsNot Nothing Then
                 If MessageBox.Show("ارتباط راننده اول با ناوگان دیگر حذف شود؟", "R2PrimarySystem", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
@@ -175,7 +201,6 @@ Public Class FrmcCarAndDriversInformation
             End If
             CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ارتباط کارت تردد ، خودرو و راننده ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.RegisterRecords, "ثبت روابط اطلاعاتی کارت و پلاک و راننده", myNSSTraficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
         Catch exx As GetNSSException
             If CmdSql.Connection.State <> ConnectionState.Closed Then
                 CmdSql.Transaction.Rollback()
@@ -233,7 +258,7 @@ Public Class FrmcCarAndDriversInformation
             FrmRefresh()
             Dim nIdCar As Int64 = R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(NSS.CardId)
             UcCarTruck.UCViewCarInformation(nIdCar)
-            UcNumbernIDCar.UCValue = nIdCar
+            ReservedTruckId = nIdCar
         Catch exx As GetDataException
             FrmcViewLocalMessage(exx.Message)
         Catch ex As Exception
@@ -243,6 +268,7 @@ Public Class FrmcCarAndDriversInformation
 
     Private Sub UcCarTruck_UCViewCarTruckInformationCompleted(CarId As String) Handles UcCarTruck.UCViewCarTruckInformationCompleted
         Try
+            ReservedTruckId = CarId
             UcDriverTruckFirst.UCRefreshGeneral()
             UcDriverTruckSecond.UCRefreshGeneral()
             UcDriverTruckFirst.UCViewDriverInformation(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(CarId))
