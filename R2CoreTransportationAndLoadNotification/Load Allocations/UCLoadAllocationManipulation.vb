@@ -61,7 +61,7 @@ Public Class UCLoadAllocationManipulation
         Try
             MyBase.UCRefreshGeneral()
             UCRefresh()
-            If RefreshUcViewerNSSLoadCapacitorLoadDataEntry Then 
+            If RefreshUcViewerNSSLoadCapacitorLoadDataEntry Then
                 UcViewerNSSLoadCapacitorLoadDataEntry.UCRefreshGeneral()
                 UcViewerNSSLoadCapacitorLoadDataEntry.UCFocus()
             End If
@@ -78,7 +78,7 @@ Public Class UCLoadAllocationManipulation
             UcPersianTextBoxLoadAllocationStatus.UCBackColor = Color.FromName(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocationStatus(R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.None).LoadAllocationStatusColor)
             UcButtonLoadAllocationRegistering.UCEnable = True
             UcViewerNSSTurnDataEntry.UCRefreshGeneral()
-            UcViewerNSSTurnDataEntry.UCFocus 
+            UcViewerNSSTurnDataEntry.UCFocus()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
