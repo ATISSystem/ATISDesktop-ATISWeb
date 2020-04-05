@@ -20,6 +20,7 @@ Imports R2Core.ExceptionManagement
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadManipulation
+Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
 
 
@@ -196,8 +197,9 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodCarTruckHasTurn(YourPelak As String, YourSerial As String) As Boolean
         Try
-            Dim NSSCar As R2StandardCarStructure = R2CoreParkingSystemMClassCars.GetNSSCar(R2CoreParkingSystemMClassCars.GetnIdCar(New R2CoreLPR.LicensePlateManagement.R2StandardLicensePlateStructure(YourPelak, YourSerial, R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(R2CoreParkingSystemMClassCitys.IRANCityCode), Nothing)))
-            Return PayanehClassLibraryMClassCarTruckNobatManagement.IsCarHasNobat(NSSCar.nIdCar)
+            Dim myTruck
+            Dim mySeqT
+            Return R2CoreTransportationAndLoadNotificationMClassTurnsManagement.ExistActiveTurn(myTruck, mySeqT)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

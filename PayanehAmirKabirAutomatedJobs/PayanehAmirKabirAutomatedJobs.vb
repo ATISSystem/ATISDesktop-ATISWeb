@@ -59,7 +59,12 @@ Public Class PayanehAmirKabirAutomatedJobs
             _AutomatedJobsTimer.Stop()
 
             'ارسال اس ام اس های اکتیو سازی کاربران موبایل آتیس موبایل
-            R2CoreSMS.SMSSendAndRecieved.R2CoreSMSMClassSMSDomainManagement.SMSDomainSendRecieved()
+            Try
+                R2CoreSMS.SMSSendAndRecieved.R2CoreSMSMClassSMSDomainManagement.SMSDomainSendRecieved()
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "SMSDomainSendRecieved:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
 
             'فراخوانی سرویس رسوب بار در سالن اعلام بار
             Try

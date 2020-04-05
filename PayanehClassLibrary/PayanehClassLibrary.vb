@@ -490,7 +490,7 @@ Namespace CarTruckNobatManagement
 
                 'کنتر دارا بودن نوبت فعال قبلی
                 Dim NSSTruck = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(NSSCarTruck.NSSCar.nIdCar)
-                If Not R2CoreTransportationAndLoadNotification.Turns.R2CoreTransportationAndLoadNotificationMClassTurnsManagement.ExistActiveTurn(NSSTruck, NSSSeqT) Then
+                If R2CoreTransportationAndLoadNotificationMClassTurnsManagement.ExistActiveTurn(NSSTruck, NSSSeqT) Then
                     R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "ناوگان نوبت دارد", YourTrafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                     Throw New GetNobatExceptionCarTruckHasNobat
                 End If

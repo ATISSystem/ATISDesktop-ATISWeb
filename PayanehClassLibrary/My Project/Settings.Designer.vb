@@ -77,7 +77,7 @@ Namespace My
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("http://localhost:10919/PayanehWebService.asmx")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("http://192.168.85.16:2012/PayanehWebService.asmx")>  _
         Public ReadOnly Property PayanehClassLibrary_PayanehWS_PayanehWebService() As String
             Get
                 Return CType(Me("PayanehClassLibrary_PayanehWS_PayanehWebService"),String)
