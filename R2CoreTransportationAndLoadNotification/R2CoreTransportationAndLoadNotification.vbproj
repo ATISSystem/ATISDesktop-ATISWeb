@@ -696,6 +696,10 @@
       <Project>{68ee9753-9b39-4d0b-bfe5-0f941a5f183c}</Project>
       <Name>R2CoreParkingSystem</Name>
     </ProjectReference>
+    <ProjectReference Include="..\R2CoreSMS\R2CoreSMS.vbproj">
+      <Project>{dae8f88e-0def-46ef-a70b-9f670954dcab}</Project>
+      <Name>R2CoreSMS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\R2Core\R2Core.vbproj">
       <Project>{b0651d1e-73a2-4e74-8483-6fbc60831969}</Project>
       <Name>R2Core</Name>

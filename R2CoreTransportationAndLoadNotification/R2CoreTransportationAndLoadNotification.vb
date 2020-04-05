@@ -6160,7 +6160,9 @@ Namespace MobileUsers
                 Dim VerificationCode As String
                 If R2CoreTransportationAndLoadNotificationMClassTruckDriversManagement.IsExistTruckDriver(YourMobileNumber) Then
                     VerificationCode = InsertMobileUserFirstTime(YourMobileNumber, YourNameFamily)
-                    Return VerificationCode
+                    Dim SMSSender As New R2CoreSMS.SMSSendAndRecieved.R2CoreSMSSendRecive
+                    SMSSender.SendSms(New R2CoreSMS.SMSSendAndRecieved.R2CoreSMSStandardSmsStructure(Nothing, YourMobileNumber, VerificationCode, 1, Nothing, 1, Nothing, Nothing))
+                    'Return VerificationCode
                 Else
                     Throw New TruckDriverMobileNumberNotFoundException
                 End If
