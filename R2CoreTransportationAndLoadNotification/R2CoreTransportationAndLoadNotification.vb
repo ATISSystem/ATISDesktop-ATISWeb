@@ -4151,15 +4151,16 @@ Namespace LoadPermission
                 Dim NSSLoadAllocation As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(NSSLoadPermission.nEstelamId, NSSLoadPermission.TurnId)
                 'کنترل وضعیت مجوز
                 If Not NSSLoadPermission.LoadPermissionStatusId = R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.Registered Then Throw New LoadPermissionCancellingNotAllowedBecuaseLoadPermissionStatusException
-                CmdSql.Connection.Open()
-                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
                 'احیاء نوبت یا کنسلی نوبت به دلیل عدم احیاء
                 R2CoreTransportationAndLoadNotificationMClassTurnsManagement.LoadPermissionCancelling(YourTurnId, YourTurnResuscitationFlag)
                 R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.ChangeLoadAllocationStatus(NSSLoadAllocation.LAId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionCancelled)
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
                 CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations Set LANote='کنسلی مجوز'  Where LAId=" & NSSLoadAllocation.LAId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.CommandText = "Update DBTransport.dbo.TbEnterExit Set LoadPermissionStatus=" & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.Cancelled & " Where nEnterExitId=" & YourTurnId & ""
                 CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 'کنسلی مجوز بار ضمن ارسال وضعیت بازگردانی بار یا کنسلی بار
                 If NSSLoadAllocation.DateShamsi < _DateTime.GetCurrentDateShamsiFull Then
                     'بار رسوب شده است و نیازی به عملیات خاصی نیست
@@ -4169,7 +4170,7 @@ Namespace LoadPermission
                 Else
                     Throw New GetDataException
                 End If
-                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+
             Catch exx As LoadPermissionCancellingNotAllowedBecuaseLoadPermissionStatusException
                 Throw exx
             Catch ex As Exception

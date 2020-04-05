@@ -1209,6 +1209,7 @@ Namespace TurnRegisterRequest
                                   OrElse TypeOf ex Is TruckDriverNotFoundException _
                                   OrElse TypeOf ex Is GetDataException _
                                   OrElse TypeOf ex Is LoadCapacitorLoadAHSGIdViaTruckAHSGIdNotAllowedException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
