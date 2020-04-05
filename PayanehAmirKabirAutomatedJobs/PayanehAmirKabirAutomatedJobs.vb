@@ -58,6 +58,9 @@ Public Class PayanehAmirKabirAutomatedJobs
             _AutomatedJobsTimer.Enabled = False
             _AutomatedJobsTimer.Stop()
 
+            'ارسال اس ام اس های اکتیو سازی کاربران موبایل آتیس موبایل
+            R2CoreSMS.SMSSendAndRecieved.R2CoreSMSMClassSMSDomainManagement.SMSDomainSendRecieved()
+
             'فراخوانی سرویس رسوب بار در سالن اعلام بار
             Try
                 R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()

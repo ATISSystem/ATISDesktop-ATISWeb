@@ -2087,7 +2087,7 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property RFIDCardNotConfirmMessage As Int64 = 8
         Public Shared ReadOnly Property FrmcDialogMessage As Int64 = 9
         Public Shared ReadOnly Property RFIDCardDefultBuffer As Int64 = 10
-        Public Shared ReadOnly Property SmsSystem As Int64 = 11
+        Public Shared ReadOnly Property SmsSystemSetting As Int64 = 11
         Public Shared ReadOnly Property ProgrammerDebugFlag As Int64 = 21
         Public Shared ReadOnly Property Suprema As Int64 = 24
         Public Shared ReadOnly Property Dermalog As Int64 = 25
