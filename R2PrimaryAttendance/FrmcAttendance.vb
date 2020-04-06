@@ -38,7 +38,7 @@ Public Class FrmcAttendane
         ' Add any initialization after the InitializeComponent() call.
         Try
             FrmRefresh()
-            InitialSuprema()
+            'InitialSuprema()
             _HookKeyboard.InstallHook()
         Catch ex As Exception
             UcFingerPrintCapturerSuprema.UCViewOtherMessage("بروز خطا هنگام ارتباط با اسکنر" + vbCrLf + "ارتباط اسکنر با سیستم را کنترل کنید")
@@ -91,7 +91,7 @@ Public Class FrmcAttendane
         Try
             UcPersonnelImage.UCRefresh()
             PicNU1.Image = Nothing : PicNU2.Image = Nothing : PicNU3.Image = Nothing : PicNU4.Image = Nothing
-            InitialSuprema()
+            'InitialSuprema()
             UcListBoxPersonnelEnterExit.UCRefresh()
         Catch ex As Exception
             Throw New Exception("FrmRefresh" + vbCrLf + ex.Message.ToString)
@@ -185,7 +185,7 @@ Public Class FrmcAttendane
                 _MinimizeWithDelayTimer.Start()
                 MaximizeForm()
                 R2Core.RFIDCardsManagement.R2CoreRFIDCardReaderInterface.StartReading(Me, R2CoreRFIDCardReaderInterface.InterfaceMode.TestForRFIDCardConfirm)
-                CaptureFingerPrint()
+                'CaptureFingerPrint()
             End If
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

@@ -28,7 +28,7 @@ Public Class UCViewerNSSTurnDataEntry
         ' Add any initialization after the InitializeComponent() call.
         Try
             _FrmMessageDialog = New FrmcMessageDialog()
-            UCRefreshGeneral()
+            UCRefreshGeneral(True)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -48,9 +48,10 @@ Public Class UCViewerNSSTurnDataEntry
         End Try
     End Sub
 
-    Public Overloads Sub UCRefreshGeneral()
+    Public Overloads Sub UCRefreshGeneral(YourDoUpdateCurrentSalShamsi As Boolean)
         Try
-            UcNumberTargetYear.UCValue = _DateTime.GetCurrentSalShamsiFull
+            MyBase.UCRefreshGeneral()
+            If YourDoUpdateCurrentSalShamsi Then UcNumberTargetYear.UCValue = _DateTime.GetCurrentSalShamsiFull
             UCNSSCurrent = Nothing
             UCRefresh()
         Catch ex As Exception
@@ -96,6 +97,10 @@ Public Class UCViewerNSSTurnDataEntry
     End Sub
 
     Private Sub UcucSequentialTurnCollection_UCCurrentNSSChangedEvent() Handles UcucSequentialTurnCollection.UCCurrentNSSChangedEvent
+        UcNumberTurnId.UCFocus()
+    End Sub
+
+    Private Sub UcNumberTargetYear_UC13Pressed(UserNumber As String) Handles UcNumberTargetYear.UC13Pressed
         UcNumberTurnId.UCFocus()
     End Sub
 

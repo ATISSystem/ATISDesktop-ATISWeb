@@ -71,11 +71,12 @@ Partial Class FrmcAttendane
         Me.UcListBoxPersonnelEnterExit.UCBackColor = System.Drawing.Color.White
         Me.UcListBoxPersonnelEnterExit.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
         Me.UcListBoxPersonnelEnterExit.UCForeColor = System.Drawing.Color.Black
+        Me.UcListBoxPersonnelEnterExit.UCTitle = "سوابق تردد پرسنل"
         '
         'GroupBox2
         '
-        Me.GroupBox2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.GroupBox2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.GroupBox2.Controls.Add(Me.UcDateTime)
         Me.GroupBox2.Controls.Add(Me.PicExit)
         Me.GroupBox2.Controls.Add(Me.UcButtonDisableHook)
@@ -84,18 +85,18 @@ Partial Class FrmcAttendane
         Me.GroupBox2.Controls.Add(Me.PicNU3)
         Me.GroupBox2.Controls.Add(Me.PicNU2)
         Me.GroupBox2.Controls.Add(Me.PicNU1)
-        Me.GroupBox2.Font = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.GroupBox2.Font = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.GroupBox2.Location = New System.Drawing.Point(3, -5)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.GroupBox2.Size = New System.Drawing.Size(166, 557)
         Me.GroupBox2.TabIndex = 5
-        Me.GroupBox2.TabStop = false
+        Me.GroupBox2.TabStop = False
         '
         'UcDateTime
         '
-        Me.UcDateTime.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcDateTime.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcDateTime.BackColor = System.Drawing.Color.Transparent
         Me.UcDateTime.Location = New System.Drawing.Point(13, 79)
         Me.UcDateTime.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
@@ -104,26 +105,26 @@ Partial Class FrmcAttendane
         Me.UcDateTime.Size = New System.Drawing.Size(145, 73)
         Me.UcDateTime.TabIndex = 25
         Me.UcDateTime.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcDateTime.UCClockIconAppierance = false
-        Me.UcDateTime.UCEnable = true
-        Me.UcDateTime.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcDateTime.UCClockIconAppierance = False
+        Me.UcDateTime.UCEnable = True
+        Me.UcDateTime.UCFont = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcDateTime.UCForeColor = System.Drawing.Color.Black
         '
         'PicExit
         '
         Me.PicExit.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PicExit.Image = CType(resources.GetObject("PicExit.Image"),System.Drawing.Image)
+        Me.PicExit.Image = CType(resources.GetObject("PicExit.Image"), System.Drawing.Image)
         Me.PicExit.Location = New System.Drawing.Point(6, 19)
         Me.PicExit.Name = "PicExit"
         Me.PicExit.Size = New System.Drawing.Size(37, 30)
         Me.PicExit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PicExit.TabIndex = 24
-        Me.PicExit.TabStop = false
+        Me.PicExit.TabStop = False
         '
         'UcButtonDisableHook
         '
-        Me.UcButtonDisableHook.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcButtonDisableHook.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcButtonDisableHook.BackColor = System.Drawing.Color.Transparent
         Me.UcButtonDisableHook.Location = New System.Drawing.Point(7, 472)
         Me.UcButtonDisableHook.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
@@ -133,15 +134,15 @@ Partial Class FrmcAttendane
         Me.UcButtonDisableHook.TabIndex = 21
         Me.UcButtonDisableHook.UCBackColor = System.Drawing.Color.OrangeRed
         Me.UcButtonDisableHook.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonDisableHook.UCEnable = false
-        Me.UcButtonDisableHook.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonDisableHook.UCEnable = False
+        Me.UcButtonDisableHook.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonDisableHook.UCForeColor = System.Drawing.Color.White
         Me.UcButtonDisableHook.UCValue = "غیر فعال سازی Hook"
         '
         'UcButtonEnableHook
         '
-        Me.UcButtonEnableHook.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcButtonEnableHook.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcButtonEnableHook.BackColor = System.Drawing.Color.Transparent
         Me.UcButtonEnableHook.Location = New System.Drawing.Point(7, 507)
         Me.UcButtonEnableHook.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
@@ -151,8 +152,8 @@ Partial Class FrmcAttendane
         Me.UcButtonEnableHook.TabIndex = 20
         Me.UcButtonEnableHook.UCBackColor = System.Drawing.Color.OrangeRed
         Me.UcButtonEnableHook.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonEnableHook.UCEnable = false
-        Me.UcButtonEnableHook.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonEnableHook.UCEnable = False
+        Me.UcButtonEnableHook.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonEnableHook.UCForeColor = System.Drawing.Color.White
         Me.UcButtonEnableHook.UCValue = "فعال سازی Hook"
         '
@@ -163,7 +164,7 @@ Partial Class FrmcAttendane
         Me.PicNU4.Size = New System.Drawing.Size(90, 50)
         Me.PicNU4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PicNU4.TabIndex = 9
-        Me.PicNU4.TabStop = false
+        Me.PicNU4.TabStop = False
         '
         'PicNU3
         '
@@ -172,7 +173,7 @@ Partial Class FrmcAttendane
         Me.PicNU3.Size = New System.Drawing.Size(90, 50)
         Me.PicNU3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PicNU3.TabIndex = 9
-        Me.PicNU3.TabStop = false
+        Me.PicNU3.TabStop = False
         '
         'PicNU2
         '
@@ -181,7 +182,7 @@ Partial Class FrmcAttendane
         Me.PicNU2.Size = New System.Drawing.Size(90, 50)
         Me.PicNU2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PicNU2.TabIndex = 9
-        Me.PicNU2.TabStop = false
+        Me.PicNU2.TabStop = False
         '
         'PicNU1
         '
@@ -190,15 +191,16 @@ Partial Class FrmcAttendane
         Me.PicNU1.Size = New System.Drawing.Size(90, 50)
         Me.PicNU1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PicNU1.TabIndex = 9
-        Me.PicNU1.TabStop = false
+        Me.PicNU1.TabStop = False
         '
         'UcFingerPrintCapturerSuprema
         '
-        Me.UcFingerPrintCapturerSuprema.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcFingerPrintCapturerSuprema.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcFingerPrintCapturerSuprema.BackColor = System.Drawing.Color.WhiteSmoke
         Me.UcFingerPrintCapturerSuprema.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.UcFingerPrintCapturerSuprema.Enabled = False
         Me.UcFingerPrintCapturerSuprema.Location = New System.Drawing.Point(376, 7)
         Me.UcFingerPrintCapturerSuprema.Name = "UcFingerPrintCapturerSuprema"
         Me.UcFingerPrintCapturerSuprema.Scanner = Nothing
@@ -207,9 +209,9 @@ Partial Class FrmcAttendane
         '
         'UcPersonnelImage
         '
-        Me.UcPersonnelImage.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcPersonnelImage.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersonnelImage.BackColor = System.Drawing.Color.Transparent
         Me.UcPersonnelImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.UcPersonnelImage.Location = New System.Drawing.Point(376, 7)
@@ -220,7 +222,7 @@ Partial Class FrmcAttendane
         '
         'FrmcAttendane
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Red
         Me.ClientSize = New System.Drawing.Size(831, 562)
@@ -228,11 +230,10 @@ Partial Class FrmcAttendane
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "FrmcAttendane"
         Me.Padding = New System.Windows.Forms.Padding(1)
-        Me.ShowIcon = false
-        Me.ShowInTaskbar = false
+        Me.ShowIcon = False
+        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.TopMost = true
-        Me.PnlMain.ResumeLayout(false)
+        Me.PnlMain.ResumeLayout(False)
         Me.GroupBox2.ResumeLayout(false)
         CType(Me.PicExit,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.PicNU4,System.ComponentModel.ISupportInitialize).EndInit
