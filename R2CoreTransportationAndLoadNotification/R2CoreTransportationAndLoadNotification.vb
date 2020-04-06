@@ -3661,7 +3661,7 @@ Namespace Turns
                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSG On AHRAHSG.AHSGId=AHSG.AHSGId
                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCar On AHSG.AHSGId=AHSGRCar.AHSGId
                             Inner Join dbtransport.dbo.TbCar as Car On AHSGRCar.CarId=Car.nIDCar
-                        Where AHRSeqT.RelationActive=1 and AH.Deleted=0 and AHRAHSG.RelationActive=1 and AHSG.Deleted=0 and AHSGRCar.RelationActive=1 and Car.nIDCar=85194 and Car.ViewFlag=1
+                        Where AHRSeqT.RelationActive=1 and AH.Deleted=0 and AHRAHSG.RelationActive=1 and AHSG.Deleted=0 and AHSGRCar.RelationActive=1 and Car.nIDCar=" & YourNSSTruck.NSSCar.nIdCar & " and Car.ViewFlag=1
                         Order By AHSGRCar.Priority Asc", 1, DS).GetRecordsCount() = 0 Then Throw New SequentialTurnNotFoundException
                     Return New R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure(DS.Tables(0).Rows(0).Item("SeqTId"), DS.Tables(0).Rows(0).Item("SeqTTitle").trim, DS.Tables(0).Rows(0).Item("SeqTColor").trim, DS.Tables(0).Rows(0).Item("SeqTKeyWord").trim, DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
                 Catch ex As Exception

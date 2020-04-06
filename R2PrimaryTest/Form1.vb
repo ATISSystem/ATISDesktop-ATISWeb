@@ -58,6 +58,7 @@ Public Class Form1
     Private Sub Button13_Click(sender As Object, e As EventArgs) Handles Button13.Click
         Try
             R2Core.UserManagement.R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser())
+            SequentialTurns.R2CoreTransportationAndLoadNotificationMClassSequentialTurnsManagement.GetNSSSequentialTurn(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(85182))
             Dim X As New R2CoreSMS.SMSSendAndRecieved.R2CoreSMSSendRecive
             X.SendSms(New R2CoreSMS.SMSSendAndRecieved.R2CoreSMSStandardSmsStructure(0, "09132043148", "12345", 1, Nothing, Nothing, Nothing, Nothing))
 
