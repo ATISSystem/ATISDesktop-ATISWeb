@@ -141,6 +141,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="PayanehAmirKabirTransportCompaniesRemoteApplicationMainModule.vb" />
+    <Compile Include="Processes\FrmcMobileUserMobileNumberRegistering.Designer.vb">
+      <DependentUpon>FrmcMobileUserMobileNumberRegistering.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Processes\FrmcMobileUserMobileNumberRegistering.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Processes\FrmcTransportCompanyLoadCapacitorLoadsManipulation.Designer.vb">
       <DependentUpon>FrmcTransportCompanyLoadCapacitorLoadsManipulation.vb</DependentUpon>
     </Compile>
@@ -230,6 +236,9 @@
     <EmbeddedResource Include="First Layer GUIs\FrmcFirst.resx">
       <DependentUpon>FrmcFirst.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="First Layer GUIs\FrmcMainLocal.resx">
+      <DependentUpon>FrmcMainLocal.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="First Layer GUIs\FrmcMainMenuLocal.resx">
       <DependentUpon>FrmcMainMenuLocal.vb</DependentUpon>
     </EmbeddedResource>
@@ -238,6 +247,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Processes\FrmcMobileUserMobileNumberRegistering.resx">
+      <DependentUpon>FrmcMobileUserMobileNumberRegistering.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Processes\FrmcTransportCompanyLoadCapacitorLoadsManipulation.resx">
       <DependentUpon>FrmcTransportCompanyLoadCapacitorLoadsManipulation.vb</DependentUpon>

@@ -11,13 +11,13 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("PayanehWebService")>
-<Assembly: AssemblyCopyright("Copyright ©  2018")>
+<Assembly: AssemblyCopyright("Copyright ©  2020")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("0743c245-ca41-449d-83a4-6b6144909deb")>
+<Assembly: Guid("e7e7b8f8-7f12-4985-9f0d-a1a3023397a5")>
 
 ' Version information for an assembly consists of the following four values:
 '

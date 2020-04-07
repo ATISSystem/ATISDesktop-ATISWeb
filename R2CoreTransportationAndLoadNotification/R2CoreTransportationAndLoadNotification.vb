@@ -422,6 +422,20 @@ Namespace TruckDrivers
             End Try
         End Function
 
+        Public Shared Sub TruckDriverMobileEditing(YourSmartCardNo As String, YourMobileNumber As String)
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update dbtransport.dbo.TbPerson Set strIDNO='" & YourMobileNumber & "' 
+                                      Where nIDPerson=(Select Top 1 nIDDriver from dbtransport.dbo.TbDriver Where strSmartcardNo='" & YourSmartCardNo & "' Order By nIDDriver Desc)"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
     End Class
 
     Namespace Exceptions

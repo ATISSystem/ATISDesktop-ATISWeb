@@ -35,54 +35,55 @@ Partial Class FrmcMainMenuLocal
         Me.UcButtonSpecialTransportCompanyLoadCapacitorReports = New R2CoreWinFormRemoteApplications.UCButtonSpecial()
         Me.UcLabelFixMessage3 = New R2CoreWinFormRemoteApplications.UCLabel()
         Me.UcLabelDailyMessage = New R2CoreWinFormRemoteApplications.UCLabel()
-        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.PictureBox2,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.SuspendLayout
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering = New R2CoreWinFormRemoteApplications.UCButtonSpecial()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
         '
         'PictureBox1
         '
-        Me.PictureBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"),System.Drawing.Image)
+        Me.PictureBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
         Me.PictureBox1.Location = New System.Drawing.Point(6, 568)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(997, 27)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 5
-        Me.PictureBox1.TabStop = false
+        Me.PictureBox1.TabStop = False
         '
         'PictureBox2
         '
-        Me.PictureBox2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"),System.Drawing.Image)
+        Me.PictureBox2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
         Me.PictureBox2.Location = New System.Drawing.Point(3, 3)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(997, 27)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox2.TabIndex = 4
-        Me.PictureBox2.TabStop = false
+        Me.PictureBox2.TabStop = False
         '
         'UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation
         '
-        Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.BackColor = System.Drawing.Color.Black
-        Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.Location = New System.Drawing.Point(452, 90)
+        Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.Location = New System.Drawing.Point(452, 65)
         Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.Name = "UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation"
         Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.Padding = New System.Windows.Forms.Padding(2)
         Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.Size = New System.Drawing.Size(303, 52)
         Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.TabIndex = 7
         Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.UCBackColor = System.Drawing.Color.White
         Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.UCEnable = true
-        Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.UCEnable = True
+        Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.UCForeColor = System.Drawing.Color.Black
         Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation.UCValue = "ثبت بار"
         '
         'UcLabelFixMessage2
         '
-        Me.UcLabelFixMessage2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabelFixMessage2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelFixMessage2.BackColor = System.Drawing.Color.White
         Me.UcLabelFixMessage2.Location = New System.Drawing.Point(48, 336)
         Me.UcLabelFixMessage2.Name = "UcLabelFixMessage2"
@@ -91,16 +92,16 @@ Partial Class FrmcMainMenuLocal
         Me.UcLabelFixMessage2.Size = New System.Drawing.Size(755, 132)
         Me.UcLabelFixMessage2.TabIndex = 9
         Me.UcLabelFixMessage2.UCBackColor = System.Drawing.Color.White
-        Me.UcLabelFixMessage2.UCFont = New System.Drawing.Font("IRMehr", 21.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabelFixMessage2.UCFont = New System.Drawing.Font("IRMehr", 21.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabelFixMessage2.UCForeColor = System.Drawing.Color.Red
         Me.UcLabelFixMessage2.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.UcLabelFixMessage2.UCValue = "کلیه بارهای اطاقدار ، ورق ، رول و ذوب آهن فقط درصورت داشتن مجوز سالن اعلام بار ، "& _ 
+        Me.UcLabelFixMessage2.UCValue = "کلیه بارهای اطاقدار ، ورق ، رول و ذوب آهن فقط درصورت داشتن مجوز سالن اعلام بار ، " &
     "مجاز به صدور بارنامه می باشد."
         '
         'UcLabelFixMessage1
         '
-        Me.UcLabelFixMessage1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabelFixMessage1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelFixMessage1.BackColor = System.Drawing.Color.White
         Me.UcLabelFixMessage1.Location = New System.Drawing.Point(55, 296)
         Me.UcLabelFixMessage1.Name = "UcLabelFixMessage1"
@@ -109,47 +110,47 @@ Partial Class FrmcMainMenuLocal
         Me.UcLabelFixMessage1.Size = New System.Drawing.Size(755, 60)
         Me.UcLabelFixMessage1.TabIndex = 10
         Me.UcLabelFixMessage1.UCBackColor = System.Drawing.Color.White
-        Me.UcLabelFixMessage1.UCFont = New System.Drawing.Font("IRMehr", 21.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabelFixMessage1.UCFont = New System.Drawing.Font("IRMehr", 21.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabelFixMessage1.UCForeColor = System.Drawing.Color.Blue
         Me.UcLabelFixMessage1.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelFixMessage1.UCValue = "قابل توجه کلیه شرکتهای حمل و نقل"
         '
         'UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation
         '
-        Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.BackColor = System.Drawing.Color.Black
-        Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.Location = New System.Drawing.Point(452, 146)
+        Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.Location = New System.Drawing.Point(452, 121)
         Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.Name = "UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation"
         Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.Padding = New System.Windows.Forms.Padding(2)
         Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.Size = New System.Drawing.Size(303, 52)
         Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.TabIndex = 11
         Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.UCBackColor = System.Drawing.Color.White
         Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.UCEnable = true
-        Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.UCEnable = True
+        Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.UCForeColor = System.Drawing.Color.Black
         Me.UcButtonSpecialTransportCompanyLoadCapacitorSedimentLoadAllocation.UCValue = "تخصیص بار"
         '
         'UcButtonSpecialTransportCompanyLoadCapacitorReports
         '
-        Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.BackColor = System.Drawing.Color.Black
-        Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.Location = New System.Drawing.Point(452, 202)
+        Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.Location = New System.Drawing.Point(452, 233)
         Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.Name = "UcButtonSpecialTransportCompanyLoadCapacitorReports"
         Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.Padding = New System.Windows.Forms.Padding(2)
         Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.Size = New System.Drawing.Size(303, 52)
         Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.TabIndex = 12
         Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.UCBackColor = System.Drawing.Color.White
         Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.UCEnable = true
-        Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.UCEnable = True
+        Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.UCForeColor = System.Drawing.Color.Black
         Me.UcButtonSpecialTransportCompanyLoadCapacitorReports.UCValue = "گزارشات"
         '
         'UcLabelFixMessage3
         '
-        Me.UcLabelFixMessage3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabelFixMessage3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelFixMessage3.BackColor = System.Drawing.Color.White
         Me.UcLabelFixMessage3.Location = New System.Drawing.Point(55, 448)
         Me.UcLabelFixMessage3.Name = "UcLabelFixMessage3"
@@ -158,15 +159,15 @@ Partial Class FrmcMainMenuLocal
         Me.UcLabelFixMessage3.Size = New System.Drawing.Size(755, 47)
         Me.UcLabelFixMessage3.TabIndex = 13
         Me.UcLabelFixMessage3.UCBackColor = System.Drawing.Color.White
-        Me.UcLabelFixMessage3.UCFont = New System.Drawing.Font("IRMehr", 18!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabelFixMessage3.UCFont = New System.Drawing.Font("IRMehr", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabelFixMessage3.UCForeColor = System.Drawing.Color.LimeGreen
         Me.UcLabelFixMessage3.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelFixMessage3.UCValue = "سیستم صدور مجوز سالن جهت بارهای رسوبی در نرم افزار لحاظ گردیده است."
         '
         'UcLabelDailyMessage
         '
-        Me.UcLabelDailyMessage.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabelDailyMessage.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelDailyMessage.BackColor = System.Drawing.Color.White
         Me.UcLabelDailyMessage.Location = New System.Drawing.Point(48, 90)
         Me.UcLabelDailyMessage.Name = "UcLabelDailyMessage"
@@ -175,17 +176,34 @@ Partial Class FrmcMainMenuLocal
         Me.UcLabelDailyMessage.Size = New System.Drawing.Size(368, 178)
         Me.UcLabelDailyMessage.TabIndex = 14
         Me.UcLabelDailyMessage.UCBackColor = System.Drawing.Color.White
-        Me.UcLabelDailyMessage.UCFont = New System.Drawing.Font("IRMehr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabelDailyMessage.UCFont = New System.Drawing.Font("IRMehr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabelDailyMessage.UCForeColor = System.Drawing.Color.MidnightBlue
         Me.UcLabelDailyMessage.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelDailyMessage.UCValue = resources.GetString("UcLabelDailyMessage.UCValue")
         '
+        'UcButtonSpecialTruckDriverMobileNumberRegistering
+        '
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.BackColor = System.Drawing.Color.Black
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.Location = New System.Drawing.Point(452, 177)
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.Name = "UcButtonSpecialTruckDriverMobileNumberRegistering"
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.Padding = New System.Windows.Forms.Padding(2)
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.Size = New System.Drawing.Size(303, 52)
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.TabIndex = 15
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.UCBackColor = System.Drawing.Color.White
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.UCBackColorDisable = System.Drawing.Color.Gray
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.UCEnable = True
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.UCForeColor = System.Drawing.Color.Black
+        Me.UcButtonSpecialTruckDriverMobileNumberRegistering.UCValue = "ثبت شماره موبایل راننده در سامانه"
+        '
         'FrmcMainMenuLocal
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Red
         Me.ClientSize = New System.Drawing.Size(865, 579)
+        Me.Controls.Add(Me.UcButtonSpecialTruckDriverMobileNumberRegistering)
         Me.Controls.Add(Me.UcLabelDailyMessage)
         Me.Controls.Add(Me.UcLabelFixMessage3)
         Me.Controls.Add(Me.UcButtonSpecialTransportCompanyLoadCapacitorReports)
@@ -193,6 +211,7 @@ Partial Class FrmcMainMenuLocal
         Me.Controls.Add(Me.UcLabelFixMessage1)
         Me.Controls.Add(Me.UcLabelFixMessage2)
         Me.Controls.Add(Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Location = New System.Drawing.Point(0, 0)
         Me.Name = "FrmcMainMenuLocal"
         Me.Controls.SetChildIndex(Me.UcButtonSpecialUserTransportCompanyLoadCapacitorLoadManipulation, 0)
@@ -202,7 +221,8 @@ Partial Class FrmcMainMenuLocal
         Me.Controls.SetChildIndex(Me.UcButtonSpecialTransportCompanyLoadCapacitorReports, 0)
         Me.Controls.SetChildIndex(Me.UcLabelFixMessage3, 0)
         Me.Controls.SetChildIndex(Me.UcLabelDailyMessage, 0)
-        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
+        Me.Controls.SetChildIndex(Me.UcButtonSpecialTruckDriverMobileNumberRegistering, 0)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
 
@@ -216,4 +236,5 @@ End Sub
     Friend WithEvents UcButtonSpecialTransportCompanyLoadCapacitorReports As UCButtonSpecial
     Friend WithEvents UcLabelFixMessage3 As UCLabel
     Friend WithEvents UcLabelDailyMessage As UCLabel
+    Friend WithEvents UcButtonSpecialTruckDriverMobileNumberRegistering As UCButtonSpecial
 End Class

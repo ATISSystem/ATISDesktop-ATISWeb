@@ -92,6 +92,8 @@ Namespace PayanehWS
         
         Private WebMethodGetNSSDriverTruckBySmartCarNofromLocalDataBaseOperationCompleted As System.Threading.SendOrPostCallback
         
+        Private WebMethodMobileUserMobileNumberRegisteringOperationCompleted As System.Threading.SendOrPostCallback
+        
         Private WebMethodCreateRelationBetweenCarTruckAndDriverTruckOperationCompleted As System.Threading.SendOrPostCallback
         
         Private WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceOperationCompleted As System.Threading.SendOrPostCallback
@@ -237,6 +239,9 @@ Namespace PayanehWS
         
         '''<remarks/>
         Public Event WebMethodGetNSSDriverTruckBySmartCarNofromLocalDataBaseCompleted As WebMethodGetNSSDriverTruckBySmartCarNofromLocalDataBaseCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodMobileUserMobileNumberRegisteringCompleted As WebMethodMobileUserMobileNumberRegisteringCompletedEventHandler
         
         '''<remarks/>
         Public Event WebMethodCreateRelationBetweenCarTruckAndDriverTruckCompleted As WebMethodCreateRelationBetweenCarTruckAndDriverTruckCompletedEventHandler
@@ -1084,6 +1089,32 @@ Namespace PayanehWS
         End Sub
         
         '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodMobileUserMobileNumberRegistering", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodMobileUserMobileNumberRegistering(ByVal YourSmartCardNo As String, ByVal YourMobileNumber As String)
+            Me.Invoke("WebMethodMobileUserMobileNumberRegistering", New Object() {YourSmartCardNo, YourMobileNumber})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodMobileUserMobileNumberRegisteringAsync(ByVal YourSmartCardNo As String, ByVal YourMobileNumber As String)
+            Me.WebMethodMobileUserMobileNumberRegisteringAsync(YourSmartCardNo, YourMobileNumber, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodMobileUserMobileNumberRegisteringAsync(ByVal YourSmartCardNo As String, ByVal YourMobileNumber As String, ByVal userState As Object)
+            If (Me.WebMethodMobileUserMobileNumberRegisteringOperationCompleted Is Nothing) Then
+                Me.WebMethodMobileUserMobileNumberRegisteringOperationCompleted = AddressOf Me.OnWebMethodMobileUserMobileNumberRegisteringOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodMobileUserMobileNumberRegistering", New Object() {YourSmartCardNo, YourMobileNumber}, Me.WebMethodMobileUserMobileNumberRegisteringOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodMobileUserMobileNumberRegisteringOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodMobileUserMobileNumberRegisteringCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodMobileUserMobileNumberRegisteringCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodCreateRelationBetweenCarTruckAndDriverTruck", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
         Public Sub WebMethodCreateRelationBetweenCarTruckAndDriverTruck(ByVal YourCarTruckSmartCardNo As String, ByVal YourDriverTruckSmartCardNo As String)
             Me.Invoke("WebMethodCreateRelationBetweenCarTruckAndDriverTruck", New Object() {YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo})
@@ -1883,6 +1914,10 @@ Namespace PayanehWS
             End Get
         End Property
     End Class
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodMobileUserMobileNumberRegisteringCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _

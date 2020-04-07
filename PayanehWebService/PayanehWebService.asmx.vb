@@ -23,7 +23,6 @@ Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadM
 Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
 
-
 ' To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
 ' <System.Web.Script.Services.ScriptService()> _
 <System.Web.Services.WebService(Namespace:="http://tempuri.org/")>
@@ -325,6 +324,15 @@ Public Class PayanehWebService
         Try
             Dim NSS As R2StandardDriverTruckStructure = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbySmartCardNo(YourSmartCardNo)
             PersonFullName = NSS.NSSDriver.StrPersonFullName : NationalCode = NSS.NSSDriver.StrNationalCode : DrivingLicenceNo = NSS.NSSDriver.strDrivingLicenceNo
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    <WebMethod()>
+    Public Sub WebMethodMobileUserMobileNumberRegistering(YourSmartCardNo As String, YourMobileNumber As String)
+        Try
+            R2CoreTransportationAndLoadNotification.TruckDrivers.R2CoreTransportationAndLoadNotificationMClassTruckDriversManagement.TruckDriverMobileEditing(YourSmartCardNo, YourMobileNumber)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
