@@ -3303,7 +3303,7 @@ Namespace Turns
 							Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSG On AHSGRCar.AHSGId=AHSG.AHSGId
 							Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationAnnouncementHallSubGroups AS AHRAHSG On AHSG.AHSGId=AHRAHSG.AHSGId
 							Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AH On AHRAHSG.AHId=AH.AHId
-                       Where EnterExit.nEnterExitId=" & YourTurnId & " and RFIDCardRCar.RelationActive=1 and AHRAHSG.RelationActive=1 and AHSGRCar.RelationActive=1", 1, DS).GetRecordsCount() = 0 Then Throw New TurnPrintingInfNotFoundException
+                       Where EnterExit.nEnterExitId=" & YourTurnId & " and RFIDCardRCar.RelationActive=1 and AHRAHSG.RelationActive=1 and AHSGRCar.RelationActive=1 Order By AHSGRCar.Priority Asc", 1, DS).GetRecordsCount() = 0 Then Throw New TurnPrintingInfNotFoundException
                     Dim TurnPrintingInf As New R2CoreTransportationAndLoadNotificationTurnPrintingInf
                     TurnPrintingInf.TurnId = DS.Tables(0).Rows(0).Item("nEnterExitId")
                     TurnPrintingInf.TurnDate = DS.Tables(0).Rows(0).Item("strEnterDate").trim
