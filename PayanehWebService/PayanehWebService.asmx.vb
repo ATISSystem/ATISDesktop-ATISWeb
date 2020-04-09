@@ -23,6 +23,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadM
 Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
 
+
 ' To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
 ' <System.Web.Script.Services.ScriptService()> _
 <System.Web.Services.WebService(Namespace:="http://tempuri.org/")>
