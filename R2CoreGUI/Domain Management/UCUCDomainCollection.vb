@@ -60,7 +60,7 @@ Public Class UCUCDomainCollection
     Private _Lst As List(Of R2StandardStructure)
     Private _Counter As Int64
     Private _Type As System.Type
-    Public Sub UCViewCollection(YourCollection As List(Of R2StandardStructure), YourTypeofUCDomain As System.Type)
+    Protected Sub UCViewCollection(YourCollection As List(Of R2StandardStructure), YourTypeofUCDomain As System.Type)
         Try
             UCRefresh()
             _Lst = YourCollection
