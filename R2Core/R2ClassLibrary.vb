@@ -3171,6 +3171,32 @@ Namespace ProcessesManagement
 End Namespace
 
 Namespace ExceptionManagement
+
+    Public MustInherit Class R2CoreMClassExceptionsManagement
+        Public Shared Function GetSqlExceptionMessage(YourSqlExceptionId As Int64) As String
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 Message from R2Primary.dbo.TblSqlExceptions Where SEId=" & YourSqlExceptionId & " Order By SEId Asc", 3600, Ds).GetRecordsCount() = 0 Then Throw New SqlExceptionNotFoundException
+                Return Ds.Tables(0).Rows(0).Item("Message")
+            Catch ex As SqlExceptionNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
+
+    Public Class SqlExceptionNotFoundException
+        Inherits ApplicationException
+        Public Overrides ReadOnly Property Message As String
+            Get
+                Return "اس کیو ال اکسپشن با کد شاخص مورد نظر یافت نشد"
+            End Get
+        End Property
+    End Class
+
+
     Public Class GetNSSException
         Inherits ApplicationException
         Public Overrides ReadOnly Property Message As String
