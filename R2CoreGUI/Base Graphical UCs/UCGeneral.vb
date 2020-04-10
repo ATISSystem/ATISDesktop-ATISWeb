@@ -11,7 +11,7 @@ Public Class UCGeneral
     Protected _DateTime As New R2DateTime
 
     ''Protected _FrmMessageDialog As new  FrmcMessageDialog
-    Protected Event _UCDisposeResourcesRequest()
+    Protected Event UCDisposeResourcesRequest()
     Protected Event UCGotFocusedEvent()
 
 

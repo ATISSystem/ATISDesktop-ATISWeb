@@ -375,6 +375,18 @@
     <Compile Include="DateAndTime Management\UCTimeEntry.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Domain Management\UCDomain.Designer.vb">
+      <DependentUpon>UCDomain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Domain Management\UCDomain.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Domain Management\UCUCDomainCollection.Designer.vb">
+      <DependentUpon>UCUCDomainCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Domain Management\UCUCDomainCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="FingerPrints Management\FrmcShowFinger.Designer.vb">
       <DependentUpon>FrmcShowFinger.vb</DependentUpon>
     </Compile>
@@ -808,6 +820,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DateAndTime Management\UCTimeEntry.resx">
       <DependentUpon>UCTimeEntry.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Domain Management\UCDomain.resx">
+      <DependentUpon>UCDomain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Domain Management\UCUCDomainCollection.resx">
+      <DependentUpon>UCUCDomainCollection.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FingerPrints Management\FrmcShowFinger.resx">
       <DependentUpon>FrmcShowFinger.vb</DependentUpon>
