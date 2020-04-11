@@ -842,10 +842,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>PayanehClassLibrary_TerminalsWebService_TerminalsWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://192.168.85.16:2012/PayanehWebService.asmx">
+    <WebReferenceUrl Include="http://192.168.1.3:2012/PayanehWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\PayanehWS\</RelPath>
-      <UpdateFromURL>http://192.168.85.16:2012/PayanehWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://192.168.1.3:2012/PayanehWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

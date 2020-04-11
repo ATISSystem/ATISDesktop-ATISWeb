@@ -25,7 +25,7 @@ Imports System.Xml.Serialization
 Namespace PayanehWS
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code"),  _
      System.Web.Services.WebServiceBindingAttribute(Name:="PayanehWebServiceSoap", [Namespace]:="http://tempuri.org/")>  _
@@ -91,6 +91,8 @@ Namespace PayanehWS
         Private WebMethodGetNSSDriverTruckBySmartCarNofromRmtoOperationCompleted As System.Threading.SendOrPostCallback
         
         Private WebMethodGetNSSDriverTruckBySmartCarNofromLocalDataBaseOperationCompleted As System.Threading.SendOrPostCallback
+        
+        Private WebMethodMobileUserMobileNumberRegisteringOperationCompleted As System.Threading.SendOrPostCallback
         
         Private WebMethodCreateRelationBetweenCarTruckAndDriverTruckOperationCompleted As System.Threading.SendOrPostCallback
         
@@ -237,6 +239,9 @@ Namespace PayanehWS
         
         '''<remarks/>
         Public Event WebMethodGetNSSDriverTruckBySmartCarNofromLocalDataBaseCompleted As WebMethodGetNSSDriverTruckBySmartCarNofromLocalDataBaseCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodMobileUserMobileNumberRegisteringCompleted As WebMethodMobileUserMobileNumberRegisteringCompletedEventHandler
         
         '''<remarks/>
         Public Event WebMethodCreateRelationBetweenCarTruckAndDriverTruckCompleted As WebMethodCreateRelationBetweenCarTruckAndDriverTruckCompletedEventHandler
@@ -703,22 +708,22 @@ Namespace PayanehWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodCarTruckHasTurn", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Function WebMethodCarTruckHasTurn(ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourSequentialTurnId As Integer) As Boolean
-            Dim results() As Object = Me.Invoke("WebMethodCarTruckHasTurn", New Object() {YourPelak, YourSerial, YourSequentialTurnId})
+        Public Function WebMethodCarTruckHasTurn(ByVal YourPelak As String, ByVal YourSerial As String) As Boolean
+            Dim results() As Object = Me.Invoke("WebMethodCarTruckHasTurn", New Object() {YourPelak, YourSerial})
             Return CType(results(0),Boolean)
         End Function
         
         '''<remarks/>
-        Public Overloads Sub WebMethodCarTruckHasTurnAsync(ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourSequentialTurnId As Integer)
-            Me.WebMethodCarTruckHasTurnAsync(YourPelak, YourSerial, YourSequentialTurnId, Nothing)
+        Public Overloads Sub WebMethodCarTruckHasTurnAsync(ByVal YourPelak As String, ByVal YourSerial As String)
+            Me.WebMethodCarTruckHasTurnAsync(YourPelak, YourSerial, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodCarTruckHasTurnAsync(ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourSequentialTurnId As Integer, ByVal userState As Object)
+        Public Overloads Sub WebMethodCarTruckHasTurnAsync(ByVal YourPelak As String, ByVal YourSerial As String, ByVal userState As Object)
             If (Me.WebMethodCarTruckHasTurnOperationCompleted Is Nothing) Then
                 Me.WebMethodCarTruckHasTurnOperationCompleted = AddressOf Me.OnWebMethodCarTruckHasTurnOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodCarTruckHasTurn", New Object() {YourPelak, YourSerial, YourSequentialTurnId}, Me.WebMethodCarTruckHasTurnOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodCarTruckHasTurn", New Object() {YourPelak, YourSerial}, Me.WebMethodCarTruckHasTurnOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodCarTruckHasTurnOperationCompleted(ByVal arg As Object)
@@ -1084,6 +1089,32 @@ Namespace PayanehWS
         End Sub
         
         '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodMobileUserMobileNumberRegistering", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodMobileUserMobileNumberRegistering(ByVal YourSmartCardNo As String, ByVal YourMobileNumber As String)
+            Me.Invoke("WebMethodMobileUserMobileNumberRegistering", New Object() {YourSmartCardNo, YourMobileNumber})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodMobileUserMobileNumberRegisteringAsync(ByVal YourSmartCardNo As String, ByVal YourMobileNumber As String)
+            Me.WebMethodMobileUserMobileNumberRegisteringAsync(YourSmartCardNo, YourMobileNumber, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodMobileUserMobileNumberRegisteringAsync(ByVal YourSmartCardNo As String, ByVal YourMobileNumber As String, ByVal userState As Object)
+            If (Me.WebMethodMobileUserMobileNumberRegisteringOperationCompleted Is Nothing) Then
+                Me.WebMethodMobileUserMobileNumberRegisteringOperationCompleted = AddressOf Me.OnWebMethodMobileUserMobileNumberRegisteringOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodMobileUserMobileNumberRegistering", New Object() {YourSmartCardNo, YourMobileNumber}, Me.WebMethodMobileUserMobileNumberRegisteringOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodMobileUserMobileNumberRegisteringOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodMobileUserMobileNumberRegisteringCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodMobileUserMobileNumberRegisteringCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodCreateRelationBetweenCarTruckAndDriverTruck", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
         Public Sub WebMethodCreateRelationBetweenCarTruckAndDriverTruck(ByVal YourCarTruckSmartCardNo As String, ByVal YourDriverTruckSmartCardNo As String)
             Me.Invoke("WebMethodCreateRelationBetweenCarTruckAndDriverTruck", New Object() {YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo})
@@ -1418,63 +1449,63 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerSedimentedLoadsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerTruckersAssociationFinancialReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerContractorCompanyFinancialReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerDriverTruckLoadsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerCapacitorLoadsforAnnounceReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerCapacitorLoadsTransportCompaniesRegisteredLoadsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerAnnouncementHallsPerformanceReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerAnnouncementHallsPerformanceGeneralStatisticsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerTrucksAverageOfSleepDaysToGetLoadPermissionReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerTravelLengthOfLoadTargetsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationProviderTransportPriceTarrifsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationProviderIndigenousTrucksWithUNNativeLPReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodGetDSPersonnelFingerPrintsCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodGetDSPersonnelFingerPrintsCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodGetDSPersonnelFingerPrintsCompletedEventArgs
@@ -1497,19 +1528,19 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodComputerMessageProduceCopyOfTurnCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodComputerMessageProduceSodoorNobatCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodCarTruckHasTurnCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodCarTruckHasTurnCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodCarTruckHasTurnCompletedEventArgs
@@ -1532,11 +1563,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyLoadCapacitorLoadRegisterCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodTransportCompanyLoadCapacitorLoadRegisterCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodTransportCompanyLoadCapacitorLoadRegisterCompletedEventArgs
@@ -1559,11 +1590,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyLoadCapacitorLoadRegisterWithTTPTIdCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodTransportCompanyLoadCapacitorLoadRegisterWithTTPTIdCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodTransportCompanyLoadCapacitorLoadRegisterWithTTPTIdCompletedEventArgs
@@ -1586,19 +1617,19 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyLoadCapacitorLoadEditCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyLoadCapacitorLoadDeleteCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyLoadsCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodTransportCompanyLoadsCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodTransportCompanyLoadsCompletedEventArgs
@@ -1621,11 +1652,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyCitiesCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodTransportCompanyCitiesCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodTransportCompanyCitiesCompletedEventArgs
@@ -1648,11 +1679,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyCarTypesCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodTransportCompanyCarTypesCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodTransportCompanyCarTypesCompletedEventArgs
@@ -1675,11 +1706,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyLoadCapacitorLoadsCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodTransportCompanyLoadCapacitorLoadsCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodTransportCompanyLoadCapacitorLoadsCompletedEventArgs
@@ -1702,11 +1733,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyLoadCapacitorSedimentedLoadsCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodTransportCompanyLoadCapacitorSedimentedLoadsCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodTransportCompanyLoadCapacitorSedimentedLoadsCompletedEventArgs
@@ -1729,11 +1760,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodGetNSSCarTruckBySmartCarNofromRmtoCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodGetNSSCarTruckBySmartCarNofromRmtoCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodGetNSSCarTruckBySmartCarNofromRmtoCompletedEventArgs
@@ -1764,11 +1795,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodGetNSSCarTruckBySmartCarNofromLocalDataBaseCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodGetNSSCarTruckBySmartCarNofromLocalDataBaseCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodGetNSSCarTruckBySmartCarNofromLocalDataBaseCompletedEventArgs
@@ -1799,11 +1830,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodGetNSSDriverTruckBySmartCarNofromRmtoCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodGetNSSDriverTruckBySmartCarNofromRmtoCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodGetNSSDriverTruckBySmartCarNofromRmtoCompletedEventArgs
@@ -1842,11 +1873,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodGetNSSDriverTruckBySmartCarNofromLocalDataBaseCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodGetNSSDriverTruckBySmartCarNofromLocalDataBaseCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodGetNSSDriverTruckBySmartCarNofromLocalDataBaseCompletedEventArgs
@@ -1885,19 +1916,23 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodMobileUserMobileNumberRegisteringCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodCreateRelationBetweenCarTruckAndDriverTruckCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiionCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiionCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiionCompletedEventArgs
@@ -1920,11 +1955,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyGetLoadCapacitorSedimentLoadPermisiionPrintingInfCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodTransportCompanyGetLoadCapacitorSedimentLoadPermisiionPrintingInfCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodTransportCompanyGetLoadCapacitorSedimentLoadPermisiionPrintingInfCompletedEventArgs
@@ -2067,11 +2102,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodTransportCompanyGetMoneyWalletInventoryCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodTransportCompanyGetMoneyWalletInventoryCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodTransportCompanyGetMoneyWalletInventoryCompletedEventArgs
@@ -2094,11 +2129,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodGetAllPermissionEnterExitsCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodGetAllPermissionEnterExitsCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodGetAllPermissionEnterExitsCompletedEventArgs
@@ -2121,11 +2156,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodGetTransportCompaniesDailyMessageCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodGetTransportCompaniesDailyMessageCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodGetTransportCompaniesDailyMessageCompletedEventArgs
@@ -2156,11 +2191,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodGetTransportCompaniesFirstPageMessagesCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodGetTransportCompaniesFirstPageMessagesCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodGetTransportCompaniesFirstPageMessagesCompletedEventArgs
@@ -2183,11 +2218,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodISCompanyActiveCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodISCompanyActiveCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodISCompanyActiveCompletedEventArgs
