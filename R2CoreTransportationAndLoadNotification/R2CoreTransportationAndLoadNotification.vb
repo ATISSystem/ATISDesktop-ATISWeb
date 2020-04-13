@@ -5500,6 +5500,18 @@ Namespace LoadAllocation
             End Try
         End Sub
 
+        Public Shared Function IsActiveLoadAllocationRegisteringforThisAnnouncementHallSubGroup(YourNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure) As Boolean
+            Try
+                var NSSLoadCapacitorLoad = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId);
+                String ComposeSearchString = NSSLoadCapacitorLoad.AHSGId.ToString() + "=";
+                String[] AllAnnouncementHallsLoadAllocationSetting = R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigString(Convert.ToInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadAllocationSetting), NSSLoadCapacitorLoad.AHId,);
+                Dim AllAnnounceTimesofAnnouncementHallSubGroup = Split(Mid(AllAnnounceTimesofAnnouncementHall.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllAnnounceTimesofAnnouncementHall.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), "-")
+                Return New R2StandardDateAndTimeStructure(Nothing, Nothing, AllAnnounceTimesofAnnouncementHallSubGroup(AllAnnounceTimesofAnnouncementHallSubGroup.Count - 1))
+
+            Catch ex As Exception
+
+            End Try
+        End Function
 
     End Class
 
