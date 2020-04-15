@@ -67,21 +67,26 @@ Public Class FrmcAnnouncementHallAutomation
 
     Private Sub UcCar_UCViewCarInformationCompleted(CarId As String) Handles UcCar.UCViewCarInformationCompleted
         Try
-            UcViewerTankTreiler.UCViewTankTreilerStatus(PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(CarId))
+            Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(CarId)
+            UcViewerTankTreiler.UCViewTankTreilerStatus(NSSCarTruck)
             UcMoneyWallet.UCRefresh()
             UcCarAndDriverPresenter.UCRefresh()
             UcucCarTruckNobatCollection.UCRefresh()
             UcCarEnterExitStatus.UCRefresh()
-            Dim NSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(CarId))
-            UcCarAndDriverPresenter.UCSetCar(R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(NSSTerafficCard.CardId))
-            UcMoneyWallet.UCViewMoneyWalletOnlyCharge(NSSTerafficCard)
-            Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(CarId)
+            Dim NSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure
+            Try
+                NSSTerafficCard = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(CarId))
+                UcMoneyWallet.UCViewMoneyWalletOnlyCharge(NSSTerafficCard)
+                UcCarEnterExitStatus.UCViewStatus(NSSTerafficCard)
+            Catch ex As Exception
+                FrmcViewLocalMessage("اطلاعات پایه کارت تردد و خودرو و روابط آن ها تکمیل نیست")
+            End Try
+            UcCarAndDriverPresenter.UCSetCar(CarId)
             UcucCarTruckNobatCollection.UCViewCollection(NSSCarTruck)
-            UcCarEnterExitStatus.UCViewStatus(NSSTerafficCard)
         Catch exx As GetNSSException
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "اطلاعات پایه کارت تردد و خودرو و روابط آن ها تکمیل نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exxx As GetDataException
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "اطلاعات پایه کارت تردد و خودرو و روابط آن ها تکمیل نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exxx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
