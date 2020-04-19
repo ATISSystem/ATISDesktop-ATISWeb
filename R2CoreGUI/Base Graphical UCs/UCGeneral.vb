@@ -17,15 +17,14 @@ Public Class UCGeneral
 
     Private _UCFrmMessageDialog As FrmcMessageDialog = New FrmcMessageDialog()
     <Browsable(False)>
-    Public ReadOnly Property UCFrmMessageDialog As FrmcMessageDialog
+    Protected ReadOnly Property UCFrmMessageDialog As FrmcMessageDialog
         Get
             If _UCFrmMessageDialog Is Nothing Then _UCFrmMessageDialog = New FrmcMessageDialog()
             Return _UCFrmMessageDialog
         End Get
     End Property
 
-    Protected Sub UCRefreshGeneral()
-
+    Public Overridable Sub UCRefreshGeneral()
     End Sub
 
     Public Overridable Sub DisposeResources()

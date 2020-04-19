@@ -387,6 +387,12 @@
     <Compile Include="Domain Management\UCUCDomainCollection.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Domain Management\UCUCDomainSelectorCollection.Designer.vb">
+      <DependentUpon>UCUCDomainSelectorCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Domain Management\UCUCDomainSelectorCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="FingerPrints Management\FrmcShowFinger.Designer.vb">
       <DependentUpon>FrmcShowFinger.vb</DependentUpon>
     </Compile>
@@ -826,6 +832,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Domain Management\UCUCDomainCollection.resx">
       <DependentUpon>UCUCDomainCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Domain Management\UCUCDomainSelectorCollection.resx">
+      <DependentUpon>UCUCDomainSelectorCollection.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FingerPrints Management\FrmcShowFinger.resx">
       <DependentUpon>FrmcShowFinger.vb</DependentUpon>

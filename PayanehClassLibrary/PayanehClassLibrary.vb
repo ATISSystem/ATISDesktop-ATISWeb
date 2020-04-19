@@ -346,14 +346,14 @@ Namespace CarTruckNobatManagement
             End Try
         End Sub
 
-        Public Shared Function GetListOfAllnEnterExitId(YourAHId As Int64, YourAHSGId As Int64) As List(Of String)
+        Public Shared Function GetListOfAllnEnterExitId(YourNSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, YourNSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure) As List(Of String)
             Try
-                Dim SeqTKeyWord As String = R2CoreTransportationAndLoadNotificationMClassSequentialTurnsManagement.GetNSSSequentialTurn(Convert.ToInt32(YourAHId)).SequentialTurnKeyWord
+                Dim SeqTKeyWord As String = R2CoreTransportationAndLoadNotificationMClassSequentialTurnsManagement.GetNSSSequentialTurn(YourNSSAnnouncementHall).SequentialTurnKeyWord
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "
                        Select Cast(Substring(Turns.OtaghdarTurnNumber,7,20) as int) as OtaghdarTurnNumber,Turns.StrEnterDate from dbtransport.dbo.TbEnterExit as Turns
                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCars On Turns.strCardno=AHSGRCars.CarId 
-                        Where bFlagDriver=0 and AHSGRCars.AHSGId=" & YourAHSGId & " and Substring(OtaghdarTurnNumber,1,1)='" & SeqTKeyWord & "' and AHSGRCars.RelationActive=1 Order By nEnterExitId", 1, Ds).GetRecordsCount() = 0 Then
+                        Where bFlagDriver=0 and AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and Substring(OtaghdarTurnNumber,1,1)='" & SeqTKeyWord & "' and AHSGRCars.RelationActive=1 Order By nEnterExitId", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New GetDataException
                 End If
                 Dim Lst As List(Of String) = New List(Of String)
@@ -900,18 +900,18 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
-        Public Shared Sub TurnsCancellation(YourTopnEnterExitId As Int64, YourAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, YourAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure)
+        Public Shared Sub TurnsCancellation(YourTopnEnterExitId As Int64, YourNSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, YourNSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
-                Dim SeqTKeyWord As String = R2CoreTransportationAndLoadNotificationMClassSequentialTurnsManagement.GetNSSSequentialTurn(Convert.ToInt32(YourAnnouncementHall.AHId)).SequentialTurnKeyWord
+                Dim SeqTKeyWord As String = R2CoreTransportationAndLoadNotificationMClassSequentialTurnsManagement.GetNSSSequentialTurn(YourNSSAnnouncementHall).SequentialTurnKeyWord
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 Da.SelectCommand = New SqlClient.SqlCommand("
                        Select nEnterExitId from dbtransport.dbo.TbEnterExit as Turns
                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCars On Turns.strCardno=AHSGRCars.CarId 
                         Where (SUBSTRING(Turns.OtaghdarTurnNumber,7,20) < = " & YourTopnEnterExitId & ") and 
                               (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and 
-                              AHSGRCars.AHSGId=" & YourAnnouncementHallSubGroup.AHSGId & " and 
+                              AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and 
                               AHSGRCars.RelationActive=1
                         Order By nEnterExitId")
                 Da.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
@@ -926,7 +926,7 @@ Namespace CarTruckNobatManagement
                                                  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCars On Turns.strCardno=AHSGRCars.CarId 
                                            Where (SUBSTRING(Turns.OtaghdarTurnNumber,7,20) < = " & YourTopnEnterExitId & ") and 
                                                  (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and 
-                                                 AHSGRCars.AHSGId=" & YourAnnouncementHallSubGroup.AHSGId & " and 
+                                                 AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and 
                                                  AHSGRCars.RelationActive=1)"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()

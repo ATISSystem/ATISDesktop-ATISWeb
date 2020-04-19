@@ -48,7 +48,7 @@ Public Class UCTransportPriceTarrifsReport
 
 #Region "Event Handlers"
 
-    Private Sub UcAnnouncementHallSelection_UCCurrentNSSChangedEvent(NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure) Handles UcAnnouncementHallSelection.UCCurrentNSSChangedEvent
+    Private Sub UcAnnouncementHallSelection_UCCurrentNSSAnnouncementHallSubGroupChangedEvent(NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure) Handles UcAnnouncementHallSelection.UCCurrentNSSAnnouncementHallSubGroupChangedEvent
         Try
             Cursor.Current = Cursors.WaitCursor
             _WS.WebMethodReportingInformationProviderTransportPriceTarrifsReport(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, RBAll.Checked <> True)

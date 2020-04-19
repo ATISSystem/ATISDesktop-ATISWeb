@@ -40,6 +40,14 @@ Public Class UCPersianShamsiDate
 
         ' Add any initialization after the InitializeComponent() call.
         Try
+            UCRefreshGeneral()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Public Overrides Sub UCRefreshGeneral()
+        Try
             Dim CurrentDateTime As R2StandardDateAndTimeStructure = New R2StandardDateAndTimeStructure(_DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime)
             UcTextBoxYear.UCValue = CurrentDateTime.GetShamsiYear
             UcTextBoxMonth.UCValue = CurrentDateTime.GetShamsiMonth

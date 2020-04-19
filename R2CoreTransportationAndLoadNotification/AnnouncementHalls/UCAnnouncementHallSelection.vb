@@ -8,7 +8,9 @@ Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
 Public Class UCAnnouncementHallSelection
     Inherits UCGeneral
 
-    Public Event UCCurrentNSSChangedEvent(NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure)
+    Public Event UCCurrentNSSAnnouncementHallSubGroupChangedEvent(NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure)
+    Public Event UCCurrentNSSAnnouncementHallChangedEvent(NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure)
+
 
 
 #Region "General Properties"
@@ -54,14 +56,23 @@ Public Class UCAnnouncementHallSelection
         UcucAnnouncementHallSubGroupCollection.UCRefresh()
     End Sub
 
-    Private Sub UCRaiseNSSChangedEvent()
+    Private Sub UCRaiseNSSAnnouncementHallSubGroupChangedEvent()
         Try
             If UCNSSCurrentAnnouncementHallSubGroup Is Nothing Then Exit Sub
-            RaiseEvent UCCurrentNSSChangedEvent(UcucAnnouncementHallCollection.UCCurrentNSS, UcucAnnouncementHallSubGroupCollection.UCCurrentNSS)
+            RaiseEvent UCCurrentNSSAnnouncementHallSubGroupChangedEvent(UcucAnnouncementHallCollection.UCCurrentNSS, UcucAnnouncementHallSubGroupCollection.UCCurrentNSS)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Sub
+
+    Private Sub UCRaiseNSSAnnouncementHallChangedEvent()
+        Try
+            RaiseEvent UCCurrentNSSAnnouncementHallChangedEvent(UcucAnnouncementHallCollection.UCCurrentNSS)
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
 
 #End Region
 
@@ -76,6 +87,7 @@ Public Class UCAnnouncementHallSelection
             _UCNSSCurrentAnnouncementHall = UcucAnnouncementHallCollection.UCCurrentNSS
             _UCNSSCurrentAnnouncementHallSubGroup = Nothing
             UcucAnnouncementHallSubGroupCollection.UCViewCollection(UcucAnnouncementHallCollection.UCCurrentNSS.AHId)
+            UCRaiseNSSAnnouncementHallChangedEvent()
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -84,7 +96,7 @@ Public Class UCAnnouncementHallSelection
     Private Sub UcucAnnouncementHallSubGroupCollection_UCCurrentNSSChangedEvent() Handles UcucAnnouncementHallSubGroupCollection.UCCurrentNSSChangedEvent
         Try
             _UCNSSCurrentAnnouncementHallSubGroup = UcucAnnouncementHallSubGroupCollection.UCCurrentNSS
-            UCRaiseNSSChangedEvent()
+            UCRaiseNSSAnnouncementHallSubGroupChangedEvent()
         Catch ex As Exception
             UcucAnnouncementHallSubGroupCollection.UCViewCollection(UcucAnnouncementHallCollection.UCCurrentNSS.AHId)
         End Try

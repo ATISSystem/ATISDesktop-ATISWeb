@@ -87,9 +87,9 @@ Public Class UCSortAlphabetic
         Set(value As R2Enums.SortOrder)
             _UCSortOrder = value
             If value = R2Enums.SortOrder.Code Then
-                PicSort.Image = Sort_Code.ToBitmap
+                PicSort.Image = My.Resources.Sort_Code.ToBitmap
             Else
-                PicSort.Image = Sort_Name.ToBitmap
+                PicSort.Image = My.Resources.Sort_Name.ToBitmap
             End If
             RaiseEvent SortOrderChanged(value)
         End Set

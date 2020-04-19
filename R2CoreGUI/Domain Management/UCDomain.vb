@@ -30,7 +30,7 @@ Public Class UCDomain
 
     Private _UCNSSCurrent As R2StandardStructure = Nothing
     <Browsable(False)>
-    Public Property UCNSSCurrent() As R2StandardStructure
+    Protected Property UCNSSCurrent() As R2StandardStructure
         Get
             Return _UCNSSCurrent
         End Get
@@ -44,7 +44,7 @@ Public Class UCDomain
         End Set
     End Property
 
-    Private _UCPadding As Padding = New Padding(5)
+    Private _UCPadding As Padding = New Padding(2)
     <Browsable(True)>
     Public Property UCPadding As Padding
         Get
@@ -71,7 +71,7 @@ Public Class UCDomain
     <Browsable(True)>
     Public Property UCMaxMinHeightDifference As Int64 = Int64.MaxValue
 
-    Private _UCCurrentMaxMinStatus As R2Core.R2Enums.MaxMin = R2Core.R2Enums.MaxMin.Min
+    Private _UCCurrentMaxMinStatus As R2Core.R2Enums.MaxMin = R2Core.R2Enums.MaxMin.None
     <Browsable(True)>
     Public Property UCCurrentMaxMinStatus As R2Core.R2Enums.MaxMin
         Get
@@ -79,7 +79,8 @@ Public Class UCDomain
         End Get
         Set(value As R2Core.R2Enums.MaxMin)
             Try
-                If _UCCurrentMaxMinStatus = R2Core.R2Enums.MaxMin.Max Then
+                If _UCCurrentMaxMinStatus = R2Core.R2Enums.MaxMin.None Then
+                ElseIf _UCCurrentMaxMinStatus = R2Core.R2Enums.MaxMin.Max Then
                     Me.Size = New Size(Me.Width, Me.Height - UCMaxMinHeightDifference)
                     _UCCurrentMaxMinStatus = R2Core.R2Enums.MaxMin.Min
                     RaiseEvent UCSwitchedMaxMinHightRequestedEvent()
@@ -95,6 +96,8 @@ Public Class UCDomain
     End Property
 
 
+
+
 #End Region
 
 #Region "Subroutins And Functions"
@@ -106,7 +109,6 @@ Public Class UCDomain
 
         ' Add any initialization after the InitializeComponent() call.
         Try
-            UCRefreshInformation()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -121,7 +123,7 @@ Public Class UCDomain
         End Try
     End Sub
 
-    Public Overloads Sub UCRefreshGeneral()
+    Public Overrides Sub UCRefreshGeneral()
         Try
             UCNSSCurrent = Nothing
             UCRefreshInformation()
@@ -133,12 +135,19 @@ Public Class UCDomain
     Public Sub UCViewNSS(YourNSS As R2StandardStructure)
         Try
             UCNSSCurrent = YourNSS
-            If YourNSS Is Nothing Then RaiseEvent UCViewNSSNothingRequestedEvent()
-            RaiseEvent UCViewNSSRequestedEvent()
+            If YourNSS Is Nothing Then
+                RaiseEvent UCViewNSSNothingRequestedEvent()
+            Else
+                RaiseEvent UCViewNSSRequestedEvent()
+            End If
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Sub
+
+    Public Function UCGetNSSCurrent() As R2StandardStructure
+        Return UCNSSCurrent
+    End Function
 
     Public Sub UCShowUnActive()
         RaiseEvent UCChangeColorToUnActiveRequestedEvent()
@@ -156,6 +165,16 @@ Public Class UCDomain
 #End Region
 
 #Region "Events"
+
+    Protected Sub UCOnClickedEvent()
+        Try
+            RaiseEvent UCClickedEvent(Me)
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+
+    End Sub
+
 #End Region
 
 #Region "Event Handlers"

@@ -215,6 +215,11 @@ Public Class UCPersianTextBox
 
     End Sub
 
+    Public Overrides Sub UCRefreshGeneral()
+        MyBase.UCRefreshGeneral()
+        UCRefresh()
+    End Sub
+
     Public Sub UCRefresh()
         UCValue = ""
         TxtPersianText.Clear()

@@ -18,12 +18,87 @@ Public Class UCUCDomainCollection
 
     Public Event UCSelectedItemChangedEvent(Item As UCDomain)
     Public Event UCViewCollectionCompeletedEvent()
+    Public Event UCRefreshInformationRequestedEvent()
 
 
 #Region "General Properties"
 
     <Browsable(True)>
     Public Property UCTotalNumberOfItemsToView As Int64 = Int64.MaxValue
+
+    Private _UCTitleVisable As Boolean = True
+    <Browsable(True)>
+    Public Property UCTitleVisable As Boolean
+        Get
+            Return _UCTitleVisable
+        End Get
+        Set(value As Boolean)
+            _UCTitleVisable = value
+            UcLabelTop.Visible = value
+        End Set
+    End Property
+
+    Private _UCTitle As String = String.Empty
+    <Browsable(True)>
+    Public Property UCTitle As String
+        Get
+            Return _UCTitle
+        End Get
+        Set(value As String)
+            _UCTitle = value
+            UcLabelTop.UCValue = value
+        End Set
+    End Property
+
+    Private _UCTitleHight As Int64 = 53
+    <Browsable(True)>
+    Public Property UCTitleHight As Int64
+        Get
+            Return _UCTitleHight
+        End Get
+        Set(value As Int64)
+            _UCTitleHight = value
+            UcLabelTop.Size = New System.Drawing.Size(UcLabelTop.Size.Width, value)
+        End Set
+    End Property
+
+    Private _UCTitleBackColor As Color = Color.DodgerBlue
+    Public Property UCTitleBackColor As Color
+        Get
+            Return _UCTitleBackColor
+        End Get
+        Set(value As Color)
+            _UCTitleBackColor = value
+            UcLabelTop.UCBackColor = value
+        End Set
+    End Property
+
+    Private _UCTitleForeColor As Color = Color.White
+    Public Property UCTitleForeColor As Color
+        Get
+            Return _UCTitleForeColor
+        End Get
+        Set(value As Color)
+            _UCTitleForeColor = value
+            UcLabelTop.UCForeColor = value
+        End Set
+    End Property
+
+    Private _UCTitleFont As Font = New System.Drawing.Font("B Homa", 20.25!)
+    Public Property UCTitleFont As Font
+        Get
+            Return _UCTitleFont
+        End Get
+        Set(value As Font)
+            _UCTitleFont = value
+            UcLabelTop.UCFont = value
+        End Set
+    End Property
+
+
+
+
+
 
 #End Region
 
@@ -35,22 +110,18 @@ Public Class UCUCDomainCollection
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        UCRefreshGeneral()
     End Sub
 
-    Public Overloads Sub UCRefreshGeneral()
-        Try
-            UCRefresh()
-        Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-        End Try
+    Private Sub UCRefreshInformation()
+        PnlUCs.SuspendLayout()
+        PnlUCs.Controls.Clear()
+        PnlUCs.ResumeLayout()
     End Sub
 
-    Private Sub UCRefresh()
+    Public Overrides Sub UCRefreshGeneral()
         Try
-            PnlUCs.SuspendLayout()
-            PnlUCs.Controls.Clear()
-            PnlUCs.ResumeLayout()
+            UCRefreshInformation()
+            RaiseEvent UCRefreshInformationRequestedEvent()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -62,10 +133,10 @@ Public Class UCUCDomainCollection
     Private _Type As System.Type
     Protected Sub UCViewCollection(YourCollection As List(Of R2StandardStructure), YourTypeofUCDomain As System.Type)
         Try
-            UCRefresh()
+            UCRefreshInformation()
             _Lst = YourCollection
             _Type = YourTypeofUCDomain
-            If _Lst.Count < 1 Then
+            If _Lst.Count <1 Then
                 RaiseEvent UCViewCollectionCompeletedEvent()
                 Exit Sub
             End If
@@ -136,6 +207,7 @@ Public Class UCUCDomainCollection
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
+
 
 
 #End Region

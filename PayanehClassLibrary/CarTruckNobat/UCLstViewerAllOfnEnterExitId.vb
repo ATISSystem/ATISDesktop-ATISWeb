@@ -39,7 +39,7 @@ Public Class UCLstViewerAllOfnEnterExitId
     Private Sub UCViewInf()
         Try
             LstViewerAllOfnEnterExitId.Items.Clear()
-            Dim Lst As List(Of String) = CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.GetListOfAllnEnterExitId(UcAnnouncementHallSelection1.UCNSSCurrentAnnouncementHall.AHId, UcAnnouncementHallSelection1.UCNSSCurrentAnnouncementHallSubGroup.AHSGId)
+            Dim Lst As List(Of String) = CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.GetListOfAllnEnterExitId(UcAnnouncementHallSelection1.UCNSSCurrentAnnouncementHall, UcAnnouncementHallSelection1.UCNSSCurrentAnnouncementHallSubGroup)
             For Each S As String In Lst
                 LstViewerAllOfnEnterExitId.Items.Add(S)
             Next
@@ -91,12 +91,16 @@ Public Class UCLstViewerAllOfnEnterExitId
         RaiseEvent UCSelectedValueChanged(LstViewerAllOfnEnterExitId.Items(LstViewerAllOfnEnterExitId.SelectedIndex))
     End Sub
 
-    Private Sub UcAnnouncementHallSelection_UCCurrentNSSChangedEvent(NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure) Handles UcAnnouncementHallSelection1.UCCurrentNSSChangedEvent
+    Private Sub UcAnnouncementHallSelection_UCCurrentNSSAnnouncementHallSubGroupChangedEvent(NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure) Handles UcAnnouncementHallSelection1.UCCurrentNSSAnnouncementHallSubGroupChangedEvent
         Try
             UCViewInf()
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
+    End Sub
+
+    Private Sub UcAnnouncementHallSelection1_UCCurrentNSSAnnouncementHallChangedEvent(NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure) Handles UcAnnouncementHallSelection1.UCCurrentNSSAnnouncementHallChangedEvent
+        LstViewerAllOfnEnterExitId.Items.Clear()
     End Sub
 
 
