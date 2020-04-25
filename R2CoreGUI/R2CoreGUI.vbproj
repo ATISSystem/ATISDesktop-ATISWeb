@@ -1069,6 +1069,12 @@
   <ItemGroup>
     <None Include="Resources\sort__1_.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Sort_Code.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Sort_Name.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

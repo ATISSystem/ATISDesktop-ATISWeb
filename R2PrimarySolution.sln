@@ -45,6 +45,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PAKTCRemoteApplicationSetup
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PayanehWebService", "PayanehWebService\PayanehWebService.vbproj", "{D8550DFA-71AE-4EDF-A612-ABEE34889750}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "R2PrimaryAutomatedJobs", "R2PrimaryAutomatedJobs\R2PrimaryAutomatedJobs.vbproj", "{07D2413C-4F43-4F79-B1DE-1A70E7DEBA2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,10 @@ Global
 		{D8550DFA-71AE-4EDF-A612-ABEE34889750}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8550DFA-71AE-4EDF-A612-ABEE34889750}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8550DFA-71AE-4EDF-A612-ABEE34889750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07D2413C-4F43-4F79-B1DE-1A70E7DEBA2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07D2413C-4F43-4F79-B1DE-1A70E7DEBA2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07D2413C-4F43-4F79-B1DE-1A70E7DEBA2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07D2413C-4F43-4F79-B1DE-1A70E7DEBA2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

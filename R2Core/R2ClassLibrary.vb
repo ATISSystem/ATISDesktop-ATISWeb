@@ -2104,6 +2104,7 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property MonetaryCreditSupplySources As Int64 = 65
         Public Shared ReadOnly Property MonetarySettingTools As Int64 = 66
         Public Shared ReadOnly Property AttachedPoses As Int64 = 67
+        Public Shared ReadOnly Property R2PrimaryAutomatedJobsSetting As Int64 = 70
 
 
 

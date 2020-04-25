@@ -46,6 +46,7 @@ Partial Class Form1
         Me.UcNumber1 = New R2CoreGUI.UCNumber()
         Me.UcTextBox1 = New R2CoreGUI.UCTextBox()
         Me.UcPersianTextBox1 = New R2CoreGUI.UCPersianTextBox()
+        Me.UcSortAlphabetic1 = New R2CoreGUI.UCSortAlphabetic()
         Me.SuspendLayout()
         '
         'Button1
@@ -282,12 +283,22 @@ Partial Class Form1
         Me.UcPersianTextBox1.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.UcPersianTextBox1.UCValue = "rfwrwer"
         '
+        'UcSortAlphabetic1
+        '
+        Me.UcSortAlphabetic1.BackColor = System.Drawing.Color.White
+        Me.UcSortAlphabetic1.Location = New System.Drawing.Point(371, 178)
+        Me.UcSortAlphabetic1.Name = "UcSortAlphabetic1"
+        Me.UcSortAlphabetic1.Size = New System.Drawing.Size(176, 210)
+        Me.UcSortAlphabetic1.TabIndex = 39
+        Me.UcSortAlphabetic1.UCSortOrder = R2Core.R2Enums.SortOrder.Code
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(997, 594)
+        Me.Controls.Add(Me.UcSortAlphabetic1)
         Me.Controls.Add(Me.Button13)
         Me.Controls.Add(Me.Button17)
         Me.Controls.Add(Me.Button16)
@@ -341,4 +352,5 @@ Partial Class Form1
     Friend WithEvents Button16 As Button
     Friend WithEvents Button17 As Button
     Friend WithEvents Button13 As Button
+    Friend WithEvents UcSortAlphabetic1 As R2CoreGUI.UCSortAlphabetic
 End Class
