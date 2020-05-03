@@ -19,6 +19,7 @@ Public Class UCUCDomainSelectorCollection
     Protected Event UCUPItemRequestedEvent(NSS As R2StandardStructure)
     Protected Event UCDownItemRequestedEvent(NSS As R2StandardStructure)
     Public Event UCSelectedItemChangedEvent(NSS As R2StandardStructure)
+    Public Event UCViewNSSRequestedEvent(NSS As R2StandardStructure)
 
 
 #Region "General Properties"
@@ -121,6 +122,14 @@ Public Class UCUCDomainSelectorCollection
             PnlUCDomain.Controls.Clear()
             PnlUCDomain.Controls.Add(UC)
             RaiseEvent UCSelectedItemChangedEvent(_NSS)
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Public Sub UCViewNSS(YourNSS As R2StandardStructure)
+        Try
+            RaiseEvent UCViewNSSRequestedEvent(YourNSS)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
