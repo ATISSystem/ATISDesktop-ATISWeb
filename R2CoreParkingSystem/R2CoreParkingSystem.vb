@@ -656,7 +656,7 @@ Namespace EnterExitManagement
             End Try
         End Function
 
-        Public Shared Function GetEnterExitMblgh(ByVal YourTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, ByVal EnterExitRequestType As R2EnterExitRequestType, ByRef Tavaghof As Int16) As Int64
+        Public Shared Function GetEnterExitMblgh(ByVal YourTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, ByVal EnterExitRequestType As R2EnterExitRequestType, ByRef Tavaghof As Int64) As Int64
             Try
                 'تعیین نوع کارت از نظر موقتی و دایمی
                 If YourTrafficCard.TempCardType = TerafficTempCardType.Temp Then

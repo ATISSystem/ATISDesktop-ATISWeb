@@ -256,7 +256,7 @@ Public Class FrmcEnterExit
 
             'محاسبه هزينه تردد
             Dim myMblgh As Int64 = 0
-            Dim myTavaghof As Int16 = 0
+            Dim myTavaghof As Int64 = 0
             myMblgh = R2CoreParkingSystemMClassEnterExitManagement.GetEnterExitMblgh(_NSSTrafficCard, myEnterExitRequest, myTavaghof)
             If myEnterExitRequest = R2EnterExitRequestType.EnterRequest Then
                 UcMoneyWallet.UCViewMoneyWalletNextStatus(_NSSTrafficCard, BagPayType.MinusMoney, myMblgh, R2CoreParkingSystemAccountings.EnterType)

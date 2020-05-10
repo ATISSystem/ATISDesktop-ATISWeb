@@ -139,6 +139,24 @@ Public Class UCUCDomainSelectorCollection
         Return t.GetConstructor(New System.Type() {}).Invoke(New UCDomain() {})
     End Function
 
+    Public Function UCGetNSS() As R2StandardStructure
+        Try
+            Return DirectCast(PnlUCDomain.Controls(0), UCDomain).UCGetNSSCurrent
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Function
+
+
+
+
+#End Region
+
+#Region "Events"
+#End Region
+
+#Region "Event Handlers"
+
     Private Sub PicUP_Click(sender As Object, e As EventArgs) Handles PicUP.Click
         Try
             RaiseEvent UCUPItemRequestedEvent(_NSS)
@@ -154,18 +172,6 @@ Public Class UCUCDomainSelectorCollection
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
-
-
-
-
-
-#End Region
-
-#Region "Events"
-#End Region
-
-#Region "Event Handlers"
-
 
 
 
