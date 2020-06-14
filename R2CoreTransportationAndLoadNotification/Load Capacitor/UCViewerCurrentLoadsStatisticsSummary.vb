@@ -33,18 +33,27 @@ Public Class UCViewerCurrentLoadsStatisticsSummary
     End Sub
 
 
-    Public Overloads Sub UCRefreshGeneral()
+    Public Overrides Sub UCRefreshGeneral()
         Try
-            UcLabelAnnounced.UCRefresh()
-            UcLabelReleased.UCRefresh()
+            MyBase.UCRefreshGeneral()
+            UCRefreshInformation()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Sub
 
-    Public Sub UCRefreshInformation(YourAHId As Int64, YourAHSGId As Int64)
+    Protected Overrides Sub UCRefreshInformation()
         Try
-            UCRefreshGeneral()
+            UcLabelAnnounced.UCRefreshGeneral()
+            UcLabelReleased.UCRefreshGeneral()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Public Sub UCViewInformation(YourAHId As Int64, YourAHSGId As Int64)
+        Try
+            UCRefreshInformation()
             UcLabelAnnounced.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTotalAmountOfAnnouncedLoads(YourAHId, YourAHSGId)
             UcLabelReleased.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTotalAmountOfReleasedLoads(YourAHId, YourAHSGId)
         Catch ex As Exception

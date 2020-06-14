@@ -61,10 +61,10 @@ Public Class UCViewerNSSTurnDataEntry
 
     Private Sub UCRefresh()
         UcNumberTurnId.UCRefresh()
-        UcLabelTruck.UCRefresh()
-        UcLabelTruckDriver.UCRefresh()
-        UcLabelDateTimeComposite.UCRefresh()
-        UcLabelTurnStatus.UCRefresh()
+        UcLabelTruck.UCRefreshGeneral()
+        UcLabelTruckDriver.UCRefreshGeneral()
+        UcLabelDateTimeComposite.UCRefreshGeneral()
+        UcLabelTurnStatus.UCRefreshGeneral()
     End Sub
 
 #End Region

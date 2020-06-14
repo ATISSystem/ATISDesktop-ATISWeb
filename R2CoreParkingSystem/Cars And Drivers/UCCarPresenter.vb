@@ -23,7 +23,7 @@ Public Class UCCarPresenter
     End Sub
 
     Public Sub UCRefresh()
-        UcLabelStrCarNo.UCRefresh() : UcLabelStrCarSerialNo.UCRefresh()
+        UcLabelStrCarNo.UCRefreshGeneral() : UcLabelStrCarSerialNo.UCRefreshGeneral()
         UcCmbCity.UCRefresh() : UcCmbCarType.UCRefresh()
         UcLabelStrCarNo.Focus()
     End Sub

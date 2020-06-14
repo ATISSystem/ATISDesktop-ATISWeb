@@ -27,6 +27,9 @@ Public Class UCGeneral
     Public Overridable Sub UCRefreshGeneral()
     End Sub
 
+    Protected Overridable Sub UCRefreshInformation()
+    End Sub
+
     Public Overridable Sub DisposeResources()
     End Sub
 

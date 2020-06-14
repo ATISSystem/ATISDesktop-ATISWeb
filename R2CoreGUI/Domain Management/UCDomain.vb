@@ -17,7 +17,6 @@ Public Class UCDomain
     Protected Event UCChangeColorToUnActiveRequestedEvent()
     Protected Event UCViewNSSNothingRequestedEvent()
     Protected Event UCFontChangeRequestEvent()
-    Protected Event UCRefreshInformationRequestedEvent()
     Protected Event UCSwitchedMaxMinHightRequestedEvent()
     Protected Event UCNSSCurrentChangedToNothingEvent()
 
@@ -115,18 +114,16 @@ Public Class UCDomain
 
     End Sub
 
-    Protected Overridable Sub UCRefreshInformation()
+    Protected Overridable Shadows Sub UCRefreshInformation()
         Try
-            RaiseEvent UCRefreshInformationRequestedEvent()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Sub
 
-    Public Overrides Sub UCRefreshGeneral()
+    Public Overridable Shadows Sub UCRefreshGeneral()
         Try
             UCNSSCurrent = Nothing
-            UCRefreshInformation()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

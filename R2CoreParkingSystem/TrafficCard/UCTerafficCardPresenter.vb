@@ -51,9 +51,9 @@ Public Class UCTerafficCardPresenter
     End Sub
 
     Public Sub UCRefresh()
-        UcLabelCardNo.UCRefresh()
-        UcLabelCardId.UCRefresh()
-        UcLabelCardTypeName.UCRefresh()
+        UcLabelCardNo.UCRefreshGeneral()
+        UcLabelCardId.UCRefreshGeneral()
+        UcLabelCardTypeName.UCRefreshGeneral()
     End Sub
 
     Public Function UCGetNSS() As R2CoreParkingSystemStandardTrafficCardStructure

@@ -649,10 +649,10 @@
   </wsdl:binding>
   <wsdl:service name="R2PrimaryWebService">
     <wsdl:port name="R2PrimaryWebServiceSoap" binding="tns:R2PrimaryWebServiceSoap">
-      <soap:address location="http://192.168.1.3:2011/R2PRIMARYWEBSERVICE.ASMX" />
+      <soap:address location="http://37.255.209.4:2011/R2PRIMARYWEBSERVICE.ASMX" />
     </wsdl:port>
     <wsdl:port name="R2PrimaryWebServiceSoap12" binding="tns:R2PrimaryWebServiceSoap12">
-      <soap12:address location="http://192.168.1.3:2011/R2PRIMARYWEBSERVICE.ASMX" />
+      <soap12:address location="http://37.255.209.4:2011/R2PRIMARYWEBSERVICE.ASMX" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

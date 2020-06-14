@@ -96,17 +96,15 @@ Public Class UCUCDomainSelectorCollection
         UCRefreshGeneral()
     End Sub
 
-    Public Overloads Sub UCRefreshGeneral()
+    Public Overridable Shadows Sub UCRefreshGeneral()
         Try
-            UCRefresh()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Sub
 
-    Private Sub UCRefresh()
+    Protected Overridable Shadows Sub UCRefreshInformation()
         Try
-
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

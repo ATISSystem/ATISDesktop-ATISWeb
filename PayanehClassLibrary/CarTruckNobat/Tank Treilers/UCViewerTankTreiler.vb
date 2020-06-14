@@ -28,7 +28,7 @@ Public Class UCViewerTankTreiler
     End Sub
 
     Public Sub UCRefresh()
-        UcLabel.UCRefresh()
+        UcLabel.UCRefreshGeneral()
     End Sub
 
     Public Sub UCViewTankTreilerStatus(YourNSS As R2StandardCarTruckStructure)
@@ -38,7 +38,7 @@ Public Class UCViewerTankTreiler
             If PayanehClassLibraryMClassCarTruckNobatManagement.IsCarTruckTankTreiler(YourNSS) Then
                 UcLabel.UCValue = "تانکر مخزندار"
             Else
-                UcLabel.UCRefresh()
+                UcLabel.UCRefreshGeneral()
             End If
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

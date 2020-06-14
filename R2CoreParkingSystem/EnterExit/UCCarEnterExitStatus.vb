@@ -19,7 +19,7 @@ Public Class UCCarEnterExitStatus
     End Sub
 
     Public Sub UCRefresh()
-        UcLabelCarEnterExitStatus.UCRefresh()
+        UcLabelCarEnterExitStatus.UCRefreshGeneral()
     End Sub
 
     Public Sub UCViewStatus(YourNSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure)

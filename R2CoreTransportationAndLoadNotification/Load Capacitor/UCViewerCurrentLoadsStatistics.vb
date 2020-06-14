@@ -635,29 +635,38 @@ End Sub
     Friend WithEvents UcLabelLoadAllocationCancelled As UCLabel
     Friend WithEvents UcAnnouncementHallSelection As UCAnnouncementHallSelection
 
-    Public Overloads Sub UCRefreshGeneral()
+    Public Overrides Sub UCRefreshGeneral()
         Try
-            UcLabelRegistered.UCRefresh()
-            UcLabelDeleted.UCRefresh()
-            UcLabelIncremented.UCRefresh()
-            UcLabelDecremented.UCRefresh()
-            UcLabelFreeLined.UCRefresh()
-            UcLabelAnnounced.UCRefresh()
-            UcLabelLoadAllocated.UCRefresh()
-            UcLabelLoadAllocationCancelled.UCRefresh()
-            UcLabelLoadPermissioned.UCRefresh()
-            UcLabelSedimented.UCRefresh()
-            UcLabelLoadPermissionCancelled.UCRefresh()
-            UcLabelCancelled.UCRefresh()
-            UcLabelReminder.UCRefresh()
+            MyBase.UCRefreshGeneral()
+            UCRefreshInformation()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Sub
 
-    Public Sub UCRefreshInformation(YourAHId As Int64, YourAHSGId As Int64)
+    Protected Overrides Sub UCRefreshInformation()
         Try
-            UCRefreshGeneral()
+            UcLabelRegistered.UCRefreshGeneral()
+            UcLabelDeleted.UCRefreshGeneral()
+            UcLabelIncremented.UCRefreshGeneral()
+            UcLabelDecremented.UCRefreshGeneral()
+            UcLabelFreeLined.UCRefreshGeneral()
+            UcLabelAnnounced.UCRefreshGeneral()
+            UcLabelLoadAllocated.UCRefreshGeneral()
+            UcLabelLoadAllocationCancelled.UCRefreshGeneral()
+            UcLabelLoadPermissioned.UCRefreshGeneral()
+            UcLabelSedimented.UCRefreshGeneral()
+            UcLabelLoadPermissionCancelled.UCRefreshGeneral()
+            UcLabelCancelled.UCRefreshGeneral()
+            UcLabelReminder.UCRefreshGeneral()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub UCViewInformation(YourAHId As Int64, YourAHSGId As Int64)
+        Try
+            UCRefreshInformation()
             UcLabelRegistered.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTotalAmountOfRegisteredLoads(YourAHId, YourAHSGId)
             UcLabelDeleted.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTotalAmountOfDeletedLoads(YourAHId, YourAHSGId)
             UcLabelIncremented.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTotalAmountOfIncrementedLoads(YourAHId, YourAHSGId)
@@ -678,8 +687,6 @@ End Sub
 
 
 
-
-
 #End Region
 
 #Region "Events"
@@ -689,7 +696,7 @@ End Sub
 
     Private Sub UcAnnouncementHallSelection_UCCurrentNSSAnnouncementHallSubGroupChangedEvent(NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure) Handles UcAnnouncementHallSelection.UCCurrentNSSAnnouncementHallSubGroupChangedEvent
         Try
-            UCRefreshInformation(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId)
+            UCViewInformation(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

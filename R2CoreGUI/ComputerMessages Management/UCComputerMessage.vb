@@ -27,11 +27,11 @@ Public Class UCComputerMessage
     End Sub
 
     Public Sub UCRefresh()
-        UcLabelCMTypeTitle.UCRefresh()
-        UcLabelCMNote.UCRefresh()
-        UcLabelUserName.UCRefresh()
-        UcLabelComputerName.UCRefresh()
-        UcLabelDateTime.UCRefresh()
+        UcLabelCMTypeTitle.UCRefreshGeneral()
+        UcLabelCMNote.UCRefreshGeneral()
+        UcLabelUserName.UCRefreshGeneral()
+        UcLabelComputerName.UCRefreshGeneral()
+        UcLabelDateTime.UCRefreshGeneral()
     End Sub
 
     Public Sub UCViewNSS(YourNSS As R2StandardComputerMessageStructure)

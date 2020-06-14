@@ -43,21 +43,25 @@ Public Class UCViewerNSSLoadCapacitorLoadDataEntry
         End Try
     End Sub
 
-    Public Overloads Sub UCRefreshGeneral()
+    Public Overrides Sub UCRefreshGeneral()
         Try
-            UCNSSCurrent = Nothing
-            UCRefresh()
+            MyBase.UCRefreshGeneral()
+            UCRefreshInformation()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Sub
 
-    Private Sub UCRefresh()
-        UcNumbernEstelamId.UCRefresh()
-        UcLabelTransportCompany.UCRefresh()
-        UcLabelGood.UCRefresh()
-        UcLabelLoadTarget.UCRefresh()
-        UcLabelStrDescription.UCRefresh()
+    Protected Overrides Sub UCRefreshInformation()
+        Try
+            UcNumbernEstelamId.UCRefreshGeneral()
+            UcLabelTransportCompany.UCRefreshGeneral()
+            UcLabelGood.UCRefreshGeneral()
+            UcLabelLoadTarget.UCRefreshGeneral()
+            UcLabelStrDescription.UCRefreshGeneral()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
     End Sub
 
 #End Region

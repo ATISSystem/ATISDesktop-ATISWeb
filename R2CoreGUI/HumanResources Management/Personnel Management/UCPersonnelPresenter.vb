@@ -22,7 +22,7 @@ Public Class UCPersonnelPresenter
     End Sub
 
     Public Sub UCRefresh()
-        UcLabelNameFamily.UCRefresh()
+        UcLabelNameFamily.UCRefreshGeneral()
         UcPersonnelImage.UCRefresh()
     End Sub
 

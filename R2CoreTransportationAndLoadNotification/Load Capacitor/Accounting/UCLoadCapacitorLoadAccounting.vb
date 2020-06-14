@@ -38,10 +38,10 @@ Public Class UCLoadCapacitorLoadAccounting
 
     Private Sub UCRefresh()
         Try
-            UcLabelAccountTitle.UCRefresh()
-            UcLabelDateTimeComposite.UCRefresh()
-            UcLabelAmount.UCRefresh()
-            UcLabelUserName.UCRefresh()
+            UcLabelAccountTitle.UCRefreshGeneral()
+            UcLabelDateTimeComposite.UCRefreshGeneral()
+            UcLabelAmount.UCRefreshGeneral()
+            UcLabelUserName.UCRefreshGeneral()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

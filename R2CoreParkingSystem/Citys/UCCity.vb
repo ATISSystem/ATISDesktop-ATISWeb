@@ -23,8 +23,8 @@ Public Class UCCity
     End Sub
 
     Public Sub UCRefresh()
-        UcLabelnCityCode.UCRefresh()
-        UcLabelStrCityName.UCRefresh()
+        UcLabelnCityCode.UCRefreshGeneral()
+        UcLabelStrCityName.UCRefreshGeneral()
         UcNumbernDistance.UCRefresh()
         UcNumbernProvince.UCRefresh()
     End Sub

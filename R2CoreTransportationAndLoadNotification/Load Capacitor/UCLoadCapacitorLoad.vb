@@ -40,7 +40,15 @@ Public Class UCLoadCapacitorLoad
 
     End Sub
 
-    Public Sub UCRefreshGeneral()
+    Public Overridable Sub UCRefreshGeneral()
+        Try
+            UCRefreshInformation()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Protected Overridable Sub UCRefreshInformation()
         Try
             UCNSSCurrent = Nothing
         Catch ex As Exception

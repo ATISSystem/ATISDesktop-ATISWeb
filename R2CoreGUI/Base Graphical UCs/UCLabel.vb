@@ -82,9 +82,22 @@ Public Class UCLabel
 
     End Sub
 
-    Public Sub UCRefresh()
-        UCValue = ""
-        Label.Text = ""
+    Public Overrides Sub UCRefreshGeneral()
+        Try
+            MyBase.UCRefreshGeneral()
+            UCRefreshInformation()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Protected Overrides Sub UCRefreshInformation()
+        Try
+            UCValue = ""
+            Label.Text = ""
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
     End Sub
 
 #End Region

@@ -48,7 +48,7 @@ Public Class UCUCLoadCapacitorLoadCollectionAdvance
 #Region "Event Handlers"
     Private Sub UcAnnouncementHallSelection_UCCurrentNSSAnnouncementHallSubGroupChangedEvent(NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure) Handles UcAnnouncementHallSelection.UCCurrentNSSAnnouncementHallSubGroupChangedEvent
         Try
-            UcViewerCurrentLoadsStatisticsSummary.UCRefreshInformation(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId)
+            UcViewerCurrentLoadsStatisticsSummary.UCViewInformation(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId)
             UCViewCollection()
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

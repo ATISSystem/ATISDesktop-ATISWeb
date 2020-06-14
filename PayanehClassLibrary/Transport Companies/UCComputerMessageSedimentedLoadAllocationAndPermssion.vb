@@ -29,8 +29,8 @@ Public Class UCComputerMessageSedimentedLoadAllocationAndPermssion
     End Sub
 
     Public Sub UCRefresh()
-        UcLabelProductName.UCRefresh()
-        UcLabelTransportCompany.UCRefresh()
+        UcLabelProductName.UCRefreshGeneral()
+        UcLabelTransportCompany.UCRefreshGeneral()
     End Sub
 
 
