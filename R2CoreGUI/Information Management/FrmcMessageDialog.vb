@@ -94,7 +94,7 @@ Public Class FrmcMessageDialog
                 Me.Show()
             End If
         Catch ex As Exception
-            MessageBox.Show(Me, "FrmcMessageDialog.ViewDialogMessage" + vbCrLf + ex.Message, "بروز خطا در واسط اعلان و اطلاع رسانی - فضا نام اطلاع رسانی")
+            MessageBox.Show(Me, "FrmcMessageDialog.ViewDialogMessage" + vbCrLf + ex.Message, "بروز خطا در واسط اعلام و اطلاع رسانی - فضا نام اطلاع رسانی")
         End Try
     End Sub
 

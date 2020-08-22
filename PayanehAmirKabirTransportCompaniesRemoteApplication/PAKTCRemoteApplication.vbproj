@@ -306,6 +306,7 @@
     <None Include="Web References\PayanehWS\PayanehWebService.wsdl" />
     <None Include="Web References\PayanehWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -384,10 +385,16 @@
     <None Include="Web References\PayanehWS\PayanehWebService.disco" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://192.168.85.16:2012/PayanehWebService.asmx">
+    <ProjectReference Include="..\R2CoreWinFormRemoteApplications\R2CoreWinFormRemoteApplications.vbproj">
+      <Project>{33a65840-4214-40b0-a91d-0be3a05e912c}</Project>
+      <Name>R2CoreWinFormRemoteApplications</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://37.255.209.4:2012/PayanehWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\PayanehWS\</RelPath>
-      <UpdateFromURL>http://192.168.85.16:2012/PayanehWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://37.255.209.4:2012/PayanehWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -395,12 +402,6 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>PAKTCRemoteApplication_PayanehWS_PayanehWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\R2CoreWinFormRemoteApplications\R2CoreWinFormRemoteApplications.vbproj">
-      <Project>{33a65840-4214-40b0-a91d-0be3a05e912c}</Project>
-      <Name>R2CoreWinFormRemoteApplications</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

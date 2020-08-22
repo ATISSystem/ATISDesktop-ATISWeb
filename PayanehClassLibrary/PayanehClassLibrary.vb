@@ -2611,22 +2611,22 @@ Namespace ReportsManagement
                 Dim DSExit As New DataSet
                 Dim DSReturnAmount As New DataSet
                 Dim myReturnAmount As Int64 = 0
-                Dim myConcat1 As String
-                Dim myConcat2 As String
+                Dim myConcat1 As String = myDateShamsi1.Replace("/", "") + YourDateTime1.Time.Replace(":", "")
+                Dim myConcat2 As String = myDateShamsi1.Replace("/", "") + YourDateTime2.Time.Replace(":", "")
+                Dim myCurrentDate As String = myDateShamsi1
 
                 Do
-                    myDateShamsi2 = R2Core.PublicProc.R2CoreMClassPublicProcedures.GetNextShamsiDate(myDateShamsi1)
 
-                    If myDateShamsi1 = "1396/05/01" Then
-                        myConcat1 = myDateShamsi1.Replace("/", "") + "00:00:00"
-                    Else
-                        myConcat1 = myDateShamsi1.Replace("/", "") + YourDateTime1.Time.Replace(":", "")
-                    End If
-                    If myDateShamsi2 = "1396/05/01" Then
-                        myConcat2 = myDateShamsi1.Replace("/", "") + "23:59:59"
-                    Else
-                        myConcat2 = myDateShamsi2.Replace("/", "") + YourDateTime2.Time.Replace(":", "")
-                    End If
+                    'If myDateShamsi1 = "1396/05/01" Then
+                    '    myConcat1 = myDateShamsi1.Replace("/", "") + "00:00:00"
+                    'Else
+                    '    myConcat1 = myDateShamsi1.Replace("/", "") + YourDateTime1.Time.Replace(":", "")
+                    'End If
+                    'If myDateShamsi2 = "1396/05/01" Then
+                    '    myConcat2 = myDateShamsi1.Replace("/", "") + "23:59:59"
+                    'Else
+                    '    myConcat2 = myDateShamsi1.Replace("/", "") + YourDateTime2.Time.Replace(":", "")
+                    'End If
 
                     Dim mySixCharkhEnterTotal As Int64 = 0
                     Dim mySixCharkhEnterJam As Int64 = 0
@@ -2710,8 +2710,10 @@ Namespace ReportsManagement
                             myReturnAmount = myReturnAmount + (DSReturnAmount.Tables(0).Rows(0).Item("Jam") * 100 / 109)
                         End If
                     End If
-                    myDateShamsi1 = myDateShamsi2
-                Loop While myDateShamsi2.Replace("/", "") < YourDateTime2.DateShamsiFull.Replace("/", "")
+                    myCurrentDate = R2Core.PublicProc.R2CoreMClassPublicProcedures.GetNextShamsiDate(myCurrentDate)
+                    myConcat1 = myCurrentDate.Replace("/", "") + YourDateTime1.Time.Replace(":", "")
+                    myConcat2 = myCurrentDate.Replace("/", "") + YourDateTime2.Time.Replace(":", "")
+                Loop While myCurrentDate.Replace("/", "") <= YourDateTime2.DateShamsiFull.Replace("/", "")
 
                 'ثبت جمع کل مبالغ بازگشت شده
                 CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblEnterExitByMblghReport Set ReturnAmount = " & myReturnAmount & ""
@@ -3006,7 +3008,7 @@ Namespace ReportsManagement
                                                     inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSG On AHSGRCarType.AHSGId=AHSG.AHSGId
                                                     inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationAnnouncementHallSubGroups as AHRAHSG On AHSG.AHSGId=AHRAHSG.AHSGId
                                                     inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AH On AHRAHSG.AHId=AH.AHId
-                                                  Where Elam.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and Elam.dDateElam<='" & YourDateTime2.DateShamsiFull & "' and AH.AHId=" & YourNSSAnnouncementHall.AHId & " and Elam.LoadStatus<>3  and Elam.LoadStatus<>4  
+                                                  Where Elam.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and Elam.dDateElam<='" & YourDateTime2.DateShamsiFull & "' and AH.AHId=" & YourNSSAnnouncementHall.AHId & " and Elam.LoadStatus<>3 and Elam.LoadStatus<>4 and Elam.LoadStatus<>6  
                                                   Group By Elam.nCompCode,AH.AHId,AHSG.AHSGId) as ElamInf
                                                     inner join dbtransport.dbo.tbCompany as Comp On ElamInf.nCompCode=Comp.nCompCode
                                                             Order By ElamInf.nCompCode,ElamInf.AHId,ElamInf.AHSGId")
@@ -3021,7 +3023,7 @@ Namespace ReportsManagement
                                                                inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSG On AHSGRCarType.AHSGId=AHSG.AHSGId
                                                                inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationAnnouncementHallSubGroups as AHRAHSG On AHSG.AHSGId=AHRAHSG.AHSGId
                                                                inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AH On AHRAHSG.AHId=AH.AHId
-                                                             Where  Elam.LoadStatus<>3  and Elam.LoadStatus<>4 and Elam.dDateElam>='" & YourDateTime1.DateShamsiFull & "'  and Elam.dDateElam<='" & YourDateTime2.DateShamsiFull & "' and EnterExit.bFlag=1 and EnterExit.bFlagDriver=1 and AH.AHId=" & YourNSSAnnouncementHall.AHId & " 
+                                                             Where  EnterExit.LoadPermissionStatus=1 and Elam.dDateElam>='" & YourDateTime1.DateShamsiFull & "'  and Elam.dDateElam<='" & YourDateTime2.DateShamsiFull & "' and EnterExit.bFlag=1 and EnterExit.bFlagDriver=1 and AH.AHId=" & YourNSSAnnouncementHall.AHId & " 
                                                              Group By Elam.nCompCode,AH.AHId,AHSG.AHSGId,EnterExit.strBarnameNo")
 
                 DaReleasedLoad.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
@@ -3195,7 +3197,7 @@ Namespace ReportsManagement
                         inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSG On AHSGRCarType.AHSGId=AHSG.AHSGId
                         inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationAnnouncementHallSubGroups as AHRAHSG On AHSG.AHSGId=AHRAHSG.AHSGId
                         inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AH On AHRAHSG.AHId=AH.AHId
-                     Where Elam.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and Elam.dDateElam<='" & YourDateTime2.DateShamsiFull & "'
+                     Where Elam.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and Elam.dDateElam<='" & YourDateTime2.DateShamsiFull & "' and Elam.LoadStatus<>3 and Elam.LoadStatus<>4 and Elam.LoadStatus<>6
                      Group By AH.AHId,AHSG.AHSGId")
                 DaRegisteredLoad.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
                 DsRegisteredLoad.Tables.Clear()
@@ -3208,7 +3210,7 @@ Namespace ReportsManagement
                         inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSG On AHSGRCarType.AHSGId=AHSG.AHSGId
                         inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationAnnouncementHallSubGroups as AHRAHSG On AHSG.AHSGId=AHRAHSG.AHSGId
                         inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AH On AHRAHSG.AHId=AH.AHId
-                     Where Elam.dDateElam>='" & YourDateTime1.DateShamsiFull & "'  and Elam.dDateElam<='" & YourDateTime2.DateShamsiFull & "' and EnterExit.bFlag=1 and EnterExit.bFlagDriver=1
+                     Where EnterExit.LoadPermissionStatus=1 and Elam.dDateElam>='" & YourDateTime1.DateShamsiFull & "'  and Elam.dDateElam<='" & YourDateTime2.DateShamsiFull & "' and EnterExit.bFlag=1 and EnterExit.bFlagDriver=1
                      Group By AH.AHId,AHSG.AHSGId,EnterExit.strBarnameNo")
                 DaReleasedLoad.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
                 DsReleasedLoad.Tables.Clear()
@@ -4371,7 +4373,7 @@ Namespace TransportCompanies
         Inherits ApplicationException
         Public Overrides ReadOnly Property Message As String
             Get
-                Return "مقدار صفر برای تعداد بار مجاز نیست"
+                Return "مقادیر صفر و کمتر از آن برای تعداد بار مجاز نیست"
             End Get
         End Property
     End Class
@@ -4562,18 +4564,6 @@ Namespace LoadNotification.LoadPermission
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message + vbCrLf + "خطا ممکن است به دلیل تداخل در ثبت اطلاعات پایه راننده و ناوگان باشد")
             End Try
         End Sub
-
-        Public Shared Function GetAllPermissionEnterExits(YournEstelamId As Int64) As DataSet
-            Try
-                Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select Car.strCarNo,Car.strCarSerialNo,CarType.strCarName,Person.strPersonFullName,Driver.strDrivingLicenceNo,Person.strNationalCode,Driver.strSmartcardNo,EnterExit.strExitDate,EnterExit.strExitTime,EnterExit.strBarnameNo,Person.strAddress as AddressMobile,'' as OtherNote from dbtransport.dbo.tbEnterExit as EnterExit inner join dbtransport.dbo.TbCar as Car On EnterExit.strCardno=Car.nIDCar inner join dbtransport.dbo.TbPerson as Person On EnterExit.nDriverCode=Person.nIDPerson inner join dbtransport.dbo.TbDriver as Driver On Person.nIDPerson=Driver.nIDDriver inner join dbtransport.dbo.tbCarType as CarType On Car.snCarType=CarType.snCarType Where EnterExit.nEstelamID=" & YournEstelamId & " and EnterExit.bFlagDriver=1 Order By EnterExit.nEnterExitId", 1, Ds).GetRecordsCount() = 0 Then
-                    Throw New Exception("هیچ مجوزی برای بار مورد نظر صادر نشده است")
-                End If
-                Return Ds
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
 
         Public Shared Sub ResuscitationSedimentedLoadbynEstelamId(YournEstelamId As Int64)
             Dim CmdSql As New SqlCommand

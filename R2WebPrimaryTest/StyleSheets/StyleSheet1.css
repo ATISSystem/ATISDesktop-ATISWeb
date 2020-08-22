@@ -1,0 +1,32 @@
+﻿.PanelinlineBlockLeft {
+    display: inline-block;
+    float: left;
+}
+
+.PanelinlineBlockRight {
+    display: inline-block;
+    float:right;
+}
+
+.TransportCompanyTitle {
+    float: right;
+    text-align:center;
+}
+
+TextBox {
+    border-radius: 50px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

@@ -270,10 +270,10 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://localhost:1696/R2PRIMARYWEBSERVICE.ASMX">
+    <WebReferenceUrl Include="http://localhost:2011/R2PRIMARYWEBSERVICE.ASMX">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\R2PrimaryWS\</RelPath>
-      <UpdateFromURL>http://localhost:1696/R2PRIMARYWEBSERVICE.ASMX</UpdateFromURL>
+      <UpdateFromURL>http://localhost:2011/R2PRIMARYWEBSERVICE.ASMX</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

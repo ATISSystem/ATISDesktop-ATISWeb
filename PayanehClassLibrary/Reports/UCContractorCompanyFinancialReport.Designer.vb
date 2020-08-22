@@ -52,8 +52,8 @@ Partial Class UCContractorCompanyFinancialReport
         Me.UcDateTimeHolder.Size = New System.Drawing.Size(192, 186)
         Me.UcDateTimeHolder.TabIndex = 352
         Me.UcDateTimeHolder.UCDisableTimeSetting = true
-        Me.UcDateTimeHolder.UCTime1 = "07:00:00"
-        Me.UcDateTimeHolder.UCTime2 = "06:59:59"
+        Me.UcDateTimeHolder.UCTime1 = "00:00:00"
+        Me.UcDateTimeHolder.UCTime2 = "23:59:59"
         Me.UcDateTimeHolder.UCViewTitle = false
         '
         'ChkVat

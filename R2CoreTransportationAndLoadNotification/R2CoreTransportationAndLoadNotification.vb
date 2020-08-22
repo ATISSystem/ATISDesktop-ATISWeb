@@ -77,7 +77,7 @@ Namespace Logging
         Public Shared ReadOnly Property TurnExpirationFailed As Int64 = 12
         Public Shared ReadOnly Property LoadCapacitorAccessStatistics As Int64 = 13
         Public Shared ReadOnly Property LoadAllocationsAccessStatistics As Int64 = 14
-
+        Public Shared ReadOnly Property TransferringTommorowLoads As Int64 = 15
     End Class
 
 End Namespace
@@ -498,6 +498,7 @@ Namespace ConfigurationsManagement
         Public Shared ReadOnly Property AnnouncementHallsLoadSedimentationSetting = 63
         Public Shared ReadOnly Property AnnouncementHallsAutomaticProcessesTiming = 68
         Public Shared ReadOnly Property AnnouncementHallsLoadAllocationSetting = 69
+        Public Shared ReadOnly Property TommorowLoads = 71
     End Class
 
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement
@@ -800,7 +801,7 @@ Namespace TransportCompanies
         Public Shared Function GetNSSTransportCompanyFullOfWorkCompany(YourWorkDate1 As R2StandardDateAndTimeStructure, YourWorkDate2 As R2StandardDateAndTimeStructure, YourAHId As Int64, YourAHSGId As Int64) As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure
             Try
                 Dim DS As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 nCompCode from (Select nCompCode,Sum(nCarNumKol) as Suming from dbtransport.dbo.tbElam Where (dDateElam>='" & YourWorkDate1.DateShamsiFull & "') and (dDateElam<='" & YourWorkDate2.DateShamsiFull & "') and AHId=" & YourAHId & " and AHSGId=" & YourAHSGId & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " Group By nCompCode) as Companies  Order By Companies.Suming Desc", 1, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 nCompCode from (Select nCompCode,Sum(nCarNumKol) as Suming from dbtransport.dbo.tbElam Where (dDateElam>='" & YourWorkDate1.DateShamsiFull & "') and (dDateElam<='" & YourWorkDate2.DateShamsiFull & "') and AHId=" & YourAHId & " and AHSGId=" & YourAHSGId & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow & " Group By nCompCode) as Companies  Order By Companies.Suming Desc", 1, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
                 Return GetNSSTransportCompany(DS.Tables(0).Rows(0).Item("nCompCode"))
             Catch ex As TransportCompanyNotFoundException
                 Throw ex
@@ -809,7 +810,21 @@ Namespace TransportCompanies
             End Try
         End Function
 
-
+        Public Shared Function GetNSSTransportCompnay(YourNSSUser As R2Core.UserManagement.R2CoreStandardUserStructure) As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure
+            Try
+                Dim DS As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                 "Select Top 1 TransportCompanies.TCId from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies
+                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationSoftwareUsers as TCRUser On TransportCompanies.TCId=TCRUser.TCId
+                            Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On TCRUser.UserId=SoftwareUsers.UserId
+                          Where SoftwareUsers.UserId=" & YourNSSUser.UserId & "", 1, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
+                Return GetNSSTransportCompany(DS.Tables(0).Rows(0).Item("TCId"))
+            Catch ex As TransportCompanyNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
     End Class
 
     Namespace Exceptions
@@ -1131,6 +1146,8 @@ Namespace LoadCapacitor
             Public Shared ReadOnly Property AllocationCancelling As Int64 = 10
             Public Shared ReadOnly Property FreeLining As Int64 = 11
             Public Shared ReadOnly Property Sedimenting As Int64 = 12
+            Public Shared ReadOnly Property RegisteringforTommorow As Int64 = 13
+            Public Shared ReadOnly Property TransferringTommorowLoads As Int64 = 14
         End Class
 
         Public Class R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure
@@ -1288,6 +1305,13 @@ Namespace LoadCapacitor
 
     Namespace LoadCapacitorLoad
 
+        Public Enum LoadCapacitorLoadsListType
+            None = 0
+            NotSedimented = 1
+            Sedimented = 2
+            TommorowLoad = 3
+        End Enum
+
         Public Enum R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions
             None = 0
             nEstelamId = 1
@@ -1312,6 +1336,8 @@ Namespace LoadCapacitor
             Public Shared ReadOnly Property Deleted As Int64 = 3
             Public Shared ReadOnly Property Cancelled As Int64 = 4
             Public Shared ReadOnly Property Sedimented As Int64 = 5
+            Public Shared ReadOnly Property RegisteredforTommorow As Int64 = 6
+
         End Class
 
         Public Class R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStatusStructure
@@ -1408,15 +1434,17 @@ Namespace LoadCapacitor
                 _LoadTargetTitle = String.Empty
                 _LoaderTypeTitle = String.Empty
                 _TransportCompanyTel = String.Empty
+                _LoadTarget = String.Empty
             End Sub
 
-            Public Sub New(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourTransportCompanyTitle As String, YourGoodTitle As String, YourLoadTargetTitle As String, YourLoaderTypeTitle As String, YourTransportCompanyTel As String)
+            Public Sub New(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourTransportCompanyTitle As String, YourGoodTitle As String, YourLoadTargetTitle As String, YourLoaderTypeTitle As String, YourTransportCompanyTel As String, YourLoadTarget As String)
                 MyBase.New(YourNSS.nEstelamId, YourNSS.StrBarName, YourNSS.nCityCode, YourNSS.nBarCode, YourNSS.nCompCode, YourNSS.nTruckType, YourNSS.StrAddress, YourNSS.nUserId, YourNSS.nCarNumKol, YourNSS.StrPriceSug, YourNSS.StrDescription, YourNSS.dDateElam, YourNSS.dTimeElam, YourNSS.nCarNum, YourNSS.LoadStatus, YourNSS.nBarSource, YourNSS.AHId, YourNSS.AHSGId)
                 _TransportCompanyTitle = YourTransportCompanyTitle
                 _GoodTitle = YourGoodTitle
                 _LoadTargetTitle = YourLoadTargetTitle
                 _LoaderTypeTitle = YourLoaderTypeTitle
                 _TransportCompanyTel = YourTransportCompanyTel
+                _LoadTarget = YourLoadTarget
             End Sub
 
             Public Property TransportCompanyTitle As String
@@ -1424,6 +1452,7 @@ Namespace LoadCapacitor
             Public Property GoodTitle As String
             Public Property LoadTargetTitle As String
             Public Property LoaderTypeTitle As String
+            Public Property LoadTarget As String
 
         End Class
 
@@ -1500,7 +1529,7 @@ Namespace LoadCapacitor
                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderType On Elam.nTruckType=LoaderType.LoaderTypeId 
                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces on City.nProvince=Provinces.ProvinceId 
                            Where Elam.dDateElam ='" & _DateTime.GetCurrentDateShamsiFull() & "' and Elam.AHId=" & YourAHId & "" + IIf(YourAHSGId = Int64.MinValue, " ", " and Elam.AHSGId=" & YourAHSGId & "")
-                    If YourLoadStatusLimitation Then Sql = Sql + " And Elam.LoadStatus<>3 And Elam.LoadStatus<>4"
+                    If YourLoadStatusLimitation Then Sql = Sql + " And Elam.LoadStatus<>3 And Elam.LoadStatus<>4 And Elam.LoadStatus<>6"
                     If Not YournCarNumViewZeroFlag Then Sql = Sql + " And Elam.nCarNum>0"
                     If YourAHATTypeId = AnnouncementHallAnnounceTimeTypes.UnAnnounceLoads Then Sql = Sql + " And Elam.dTimeElam>='" & LastAnnounceTime & "' and Elam.LoadStatus<>5"
                     If YourAHATTypeId = AnnouncementHallAnnounceTimeTypes.LastAnnounceLoads Then Sql = Sql + " and Elam.dTimeElam<'" & LastAnnounceTime & "' and Elam.LoadStatus<>5"
@@ -1540,7 +1569,7 @@ Namespace LoadCapacitor
                     R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, Sql, 0, DS)
                     Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                        Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(DS.Tables(0).Rows(Loopx).Item("nEstelamId"), DS.Tables(0).Rows(Loopx).Item("StrBarName").trim, DS.Tables(0).Rows(Loopx).Item("nCityCode"), DS.Tables(0).Rows(Loopx).Item("nBarCode"), DS.Tables(0).Rows(Loopx).Item("nCompCode"), DS.Tables(0).Rows(Loopx).Item("nTruckType"), DS.Tables(0).Rows(Loopx).Item("StrAddress").trim, DS.Tables(0).Rows(Loopx).Item("nUserId"), DS.Tables(0).Rows(Loopx).Item("nCarNumKol"), DS.Tables(0).Rows(Loopx).Item("StrPriceSug"), DS.Tables(0).Rows(Loopx).Item("strDescription").trim, DS.Tables(0).Rows(Loopx).Item("dDateElam").trim, DS.Tables(0).Rows(Loopx).Item("dTimeElam").trim, DS.Tables(0).Rows(Loopx).Item("nCarNum"), DS.Tables(0).Rows(Loopx).Item("LoadStatus"), DS.Tables(0).Rows(Loopx).Item("nBarSource"), DS.Tables(0).Rows(Loopx).Item("AHId"), DS.Tables(0).Rows(Loopx).Item("AHSGId")), DS.Tables(0).Rows(Loopx).Item("TCTitle").trim, DS.Tables(0).Rows(Loopx).Item("strGoodName").trim, DS.Tables(0).Rows(Loopx).Item("strCityName").trim, DS.Tables(0).Rows(Loopx).Item("LoaderTypeTitle").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim))
+                        Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(DS.Tables(0).Rows(Loopx).Item("nEstelamId"), DS.Tables(0).Rows(Loopx).Item("StrBarName").trim, DS.Tables(0).Rows(Loopx).Item("nCityCode"), DS.Tables(0).Rows(Loopx).Item("nBarCode"), DS.Tables(0).Rows(Loopx).Item("nCompCode"), DS.Tables(0).Rows(Loopx).Item("nTruckType"), DS.Tables(0).Rows(Loopx).Item("StrAddress").trim, DS.Tables(0).Rows(Loopx).Item("nUserId"), DS.Tables(0).Rows(Loopx).Item("nCarNumKol"), DS.Tables(0).Rows(Loopx).Item("StrPriceSug"), DS.Tables(0).Rows(Loopx).Item("strDescription").trim, DS.Tables(0).Rows(Loopx).Item("dDateElam").trim, DS.Tables(0).Rows(Loopx).Item("dTimeElam").trim, DS.Tables(0).Rows(Loopx).Item("nCarNum"), DS.Tables(0).Rows(Loopx).Item("LoadStatus"), DS.Tables(0).Rows(Loopx).Item("nBarSource"), DS.Tables(0).Rows(Loopx).Item("AHId"), DS.Tables(0).Rows(Loopx).Item("AHSGId")), DS.Tables(0).Rows(Loopx).Item("TCTitle").trim, DS.Tables(0).Rows(Loopx).Item("strGoodName").trim, DS.Tables(0).Rows(Loopx).Item("strCityName").trim, DS.Tables(0).Rows(Loopx).Item("LoaderTypeTitle").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("StrCityName").trim))
                     Next
                     Return Lst
                 Catch ex As Exception
@@ -1548,28 +1577,79 @@ Namespace LoadCapacitor
                 End Try
             End Function
 
-            Public Shared Function GetNotSedimentedLoadCapacitorLoads(YourTransportCompanyId As Int64) As DataSet
+            Public Shared Function GetNotSedimentedLoadCapacitorLoads(YourTransportCompanyId As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
                 Try
                     Dim DS As DataSet
                     R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                      "Select Elam.nEstelamID,Elam.strBarName,Elam.nCityCode,Elam.nBarcode,Elam.nCompCode,Elam.nTruckType,Elam.strAddress,Elam.nCarNumKol,
-                              Elam.strPriceSug,Elam.strDescription,Elam.dDateElam,Elam.dTimeElam,Elam.nCarNum,Elam.nBarSource From DBTransport.dbo.TbElam as Elam 
-                        Where Elam.dDateElam='" & _DateTime.GetCurrentDateShamsiFull() & "' and Elam.LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " and Elam.LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled & " and Elam.LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted & " and Elam.nCompCode=" & YourTransportCompanyId & " Order By Elam.nEstelamID", 1, DS)
-                    Return DS
+                         "Select Elam.nEstelamID,Elam.strBarName,Elam.nCityCode,Elam.nBarcode,Elam.nCompCode,Elam.nTruckType,Elam.strAddress,
+                                 Elam.nUserID,Elam.nCarNumKol,Elam.strPriceSug,Elam.strDescription,Elam.dDateElam,Elam.dTimeElam,Elam.nCarNum,
+	                             Elam.LoadStatus,Elam.nBarSource,Elam.AHId,Elam.AHSGId,TransportCompanies.TCTitle,TransportCompanies.TCTel,
+	                             Product.strGoodName,City.strCityName,LoaderType.LoaderTypeTitle,LoadStatuses.LoadStatusName
+                          From DBTransport.dbo.TbElam as Elam 
+                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Elam.nCompCode=TransportCompanies.TCId 
+                              Inner Join dbtransport.dbo.tbProducts as Product On Elam.nBarcode=Product.strGoodCode 
+                              Inner Join dbtransport.dbo.tbCity as City On Elam.nCityCode=City.nCityCode 
+                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderType On Elam.nTruckType=LoaderType.LoaderTypeId 
+                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadStatuses On Elam.LoadStatus=LoadStatuses.LoadStatusId
+                          Where Elam.dDateElam ='" & _DateTime.GetCurrentDateShamsiFull() & "' and (Elam.LoadStatus<>3 and Elam.LoadStatus<>4 and Elam.LoadStatus<>5 and Elam.LoadStatus<>6) and Elam.nCompCode=" & YourTransportCompanyId & "
+                          Order By Elam.dTimeElam Desc", 1, DS)
+                    Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
+                    For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                        Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(DS.Tables(0).Rows(Loopx).Item("nEstelamId"), DS.Tables(0).Rows(Loopx).Item("StrBarName").trim, DS.Tables(0).Rows(Loopx).Item("nCityCode"), DS.Tables(0).Rows(Loopx).Item("nBarCode"), DS.Tables(0).Rows(Loopx).Item("nCompCode"), DS.Tables(0).Rows(Loopx).Item("nTruckType"), DS.Tables(0).Rows(Loopx).Item("StrAddress").trim, DS.Tables(0).Rows(Loopx).Item("nUserId"), DS.Tables(0).Rows(Loopx).Item("nCarNumKol"), DS.Tables(0).Rows(Loopx).Item("StrPriceSug"), DS.Tables(0).Rows(Loopx).Item("strDescription").trim, DS.Tables(0).Rows(Loopx).Item("dDateElam").trim, DS.Tables(0).Rows(Loopx).Item("dTimeElam").trim, DS.Tables(0).Rows(Loopx).Item("nCarNum"), DS.Tables(0).Rows(Loopx).Item("LoadStatus"), DS.Tables(0).Rows(Loopx).Item("nBarSource"), DS.Tables(0).Rows(Loopx).Item("AHId"), DS.Tables(0).Rows(Loopx).Item("AHSGId")), DS.Tables(0).Rows(Loopx).Item("TCTitle").trim, DS.Tables(0).Rows(Loopx).Item("strGoodName").trim, DS.Tables(0).Rows(Loopx).Item("strCityName").trim, DS.Tables(0).Rows(Loopx).Item("LoaderTypeTitle").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("StrCityName").trim))
+                    Next
+                    Return Lst
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
             End Function
 
-            Public Shared Function GetSedimentedLoadCapacitorLoads(YourTransportCompanyId As Int64) As DataSet
+            Public Shared Function GetSedimentedLoadCapacitorLoads(YourTransportCompanyId As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
                 Try
                     Dim DS As DataSet
                     R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                      "Select Elam.nEstelamID,Elam.strBarName,Elam.nCityCode,Elam.nBarcode,Elam.nCompCode,Elam.nTruckType,Elam.strAddress,Elam.nCarNumKol,
-                              Elam.strPriceSug,Elam.strDescription,Elam.dDateElam,Elam.dTimeElam,Elam.nCarNum,Elam.nBarSource From DBTransport.dbo.TbElam as Elam 
-                        Where Elam.dDateElam='" & _DateTime.GetCurrentDateShamsiFull() & "' and Elam.LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & "
-                               and Elam.nCompCode=" & YourTransportCompanyId & " Order By Elam.nEstelamID", 1, DS)
-                    Return DS
+                      "Select Elam.nEstelamID,Elam.strBarName,Elam.nCityCode,Elam.nBarcode,Elam.nCompCode,Elam.nTruckType,Elam.strAddress,
+                              Elam.nUserID,Elam.nCarNumKol,Elam.strPriceSug,Elam.strDescription,Elam.dDateElam,Elam.dTimeElam,Elam.nCarNum,
+	                          Elam.LoadStatus,Elam.nBarSource,Elam.AHId,Elam.AHSGId,TransportCompanies.TCTitle,TransportCompanies.TCTel,
+	                          Product.strGoodName,City.strCityName,LoaderType.LoaderTypeTitle,LoadStatuses.LoadStatusName
+                       From DBTransport.dbo.TbElam as Elam 
+                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Elam.nCompCode=TransportCompanies.TCId 
+                             Inner Join dbtransport.dbo.tbProducts as Product On Elam.nBarcode=Product.strGoodCode 
+                             Inner Join dbtransport.dbo.tbCity as City On Elam.nCityCode=City.nCityCode 
+                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderType On Elam.nTruckType=LoaderType.LoaderTypeId 
+                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadStatuses On Elam.LoadStatus=LoadStatuses.LoadStatusId
+                       Where Elam.dDateElam ='" & _DateTime.GetCurrentDateShamsiFull() & "' and (Elam.LoadStatus=5) and Elam.nCompCode=" & YourTransportCompanyId & "
+                       Order By Elam.dTimeElam Desc", 1, DS)
+                    Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
+                    For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                        Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(DS.Tables(0).Rows(Loopx).Item("nEstelamId"), DS.Tables(0).Rows(Loopx).Item("StrBarName").trim, DS.Tables(0).Rows(Loopx).Item("nCityCode"), DS.Tables(0).Rows(Loopx).Item("nBarCode"), DS.Tables(0).Rows(Loopx).Item("nCompCode"), DS.Tables(0).Rows(Loopx).Item("nTruckType"), DS.Tables(0).Rows(Loopx).Item("StrAddress").trim, DS.Tables(0).Rows(Loopx).Item("nUserId"), DS.Tables(0).Rows(Loopx).Item("nCarNumKol"), DS.Tables(0).Rows(Loopx).Item("StrPriceSug"), DS.Tables(0).Rows(Loopx).Item("strDescription").trim, DS.Tables(0).Rows(Loopx).Item("dDateElam").trim, DS.Tables(0).Rows(Loopx).Item("dTimeElam").trim, DS.Tables(0).Rows(Loopx).Item("nCarNum"), DS.Tables(0).Rows(Loopx).Item("LoadStatus"), DS.Tables(0).Rows(Loopx).Item("nBarSource"), DS.Tables(0).Rows(Loopx).Item("AHId"), DS.Tables(0).Rows(Loopx).Item("AHSGId")), DS.Tables(0).Rows(Loopx).Item("TCTitle").trim, DS.Tables(0).Rows(Loopx).Item("strGoodName").trim, DS.Tables(0).Rows(Loopx).Item("strCityName").trim, DS.Tables(0).Rows(Loopx).Item("LoaderTypeTitle").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("StrCityName").trim))
+                    Next
+                    Return Lst
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Shared Function GetTommorowLoadCapacitorLoads(YourTransportCompanyId As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
+                Try
+                    Dim DS As DataSet
+                    R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                      "Select Elam.nEstelamID,Elam.strBarName,Elam.nCityCode,Elam.nBarcode,Elam.nCompCode,Elam.nTruckType,Elam.strAddress,
+                              Elam.nUserID,Elam.nCarNumKol,Elam.strPriceSug,Elam.strDescription,Elam.dDateElam,Elam.dTimeElam,Elam.nCarNum,
+	                          Elam.LoadStatus,Elam.nBarSource,Elam.AHId,Elam.AHSGId,TransportCompanies.TCTitle,TransportCompanies.TCTel,
+	                          Product.strGoodName,City.strCityName,LoaderType.LoaderTypeTitle,LoadStatuses.LoadStatusName
+                       From DBTransport.dbo.TbElam as Elam 
+                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Elam.nCompCode=TransportCompanies.TCId 
+                             Inner Join dbtransport.dbo.tbProducts as Product On Elam.nBarcode=Product.strGoodCode 
+                             Inner Join dbtransport.dbo.tbCity as City On Elam.nCityCode=City.nCityCode 
+                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderType On Elam.nTruckType=LoaderType.LoaderTypeId 
+                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadStatuses On Elam.LoadStatus=LoadStatuses.LoadStatusId
+                       Where Elam.dDateElam ='" & _DateTime.GetCurrentDateShamsiFull() & "' and (Elam.LoadStatus=6) and Elam.nCompCode=" & YourTransportCompanyId & "
+                       Order By Elam.dTimeElam Desc", 1, DS)
+                    Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
+                    For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                        Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(DS.Tables(0).Rows(Loopx).Item("nEstelamId"), DS.Tables(0).Rows(Loopx).Item("StrBarName").trim, DS.Tables(0).Rows(Loopx).Item("nCityCode"), DS.Tables(0).Rows(Loopx).Item("nBarCode"), DS.Tables(0).Rows(Loopx).Item("nCompCode"), DS.Tables(0).Rows(Loopx).Item("nTruckType"), DS.Tables(0).Rows(Loopx).Item("StrAddress").trim, DS.Tables(0).Rows(Loopx).Item("nUserId"), DS.Tables(0).Rows(Loopx).Item("nCarNumKol"), DS.Tables(0).Rows(Loopx).Item("StrPriceSug"), DS.Tables(0).Rows(Loopx).Item("strDescription").trim, DS.Tables(0).Rows(Loopx).Item("dDateElam").trim, DS.Tables(0).Rows(Loopx).Item("dTimeElam").trim, DS.Tables(0).Rows(Loopx).Item("nCarNum"), DS.Tables(0).Rows(Loopx).Item("LoadStatus"), DS.Tables(0).Rows(Loopx).Item("nBarSource"), DS.Tables(0).Rows(Loopx).Item("AHId"), DS.Tables(0).Rows(Loopx).Item("AHSGId")), DS.Tables(0).Rows(Loopx).Item("TCTitle").trim, DS.Tables(0).Rows(Loopx).Item("strGoodName").trim, DS.Tables(0).Rows(Loopx).Item("strCityName").trim, DS.Tables(0).Rows(Loopx).Item("LoaderTypeTitle").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("StrCityName").trim))
+                    Next
+                    Return Lst
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
@@ -1759,6 +1839,31 @@ Namespace LoadCapacitor
                 End Try
             End Function
 
+            Public Shared Function GetAllofTommorowLoads() As List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
+                Try
+                    Dim DS As DataSet
+                    R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                      "Select Elam.nEstelamID,Elam.strBarName,Elam.nCityCode,Elam.nBarcode,Elam.nCompCode,Elam.nTruckType,Elam.strAddress,
+                              Elam.nUserID,Elam.nCarNumKol,Elam.strPriceSug,Elam.strDescription,Elam.dDateElam,Elam.dTimeElam,Elam.nCarNum,
+	                          Elam.LoadStatus,Elam.nBarSource,Elam.AHId,Elam.AHSGId,TransportCompanies.TCTitle,TransportCompanies.TCTel,
+	                          Product.strGoodName,City.strCityName,LoaderType.LoaderTypeTitle,LoadStatuses.LoadStatusName
+                       From DBTransport.dbo.TbElam as Elam 
+                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Elam.nCompCode=TransportCompanies.TCId 
+                             Inner Join dbtransport.dbo.tbProducts as Product On Elam.nBarcode=Product.strGoodCode 
+                             Inner Join dbtransport.dbo.tbCity as City On Elam.nCityCode=City.nCityCode 
+                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderType On Elam.nTruckType=LoaderType.LoaderTypeId 
+                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadStatuses On Elam.LoadStatus=LoadStatuses.LoadStatusId
+                       Where (Elam.LoadStatus=6) Order By Elam.dTimeElam Desc", 1, DS)
+                    Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
+                    For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                        Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(DS.Tables(0).Rows(Loopx).Item("nEstelamId"), DS.Tables(0).Rows(Loopx).Item("StrBarName").trim, DS.Tables(0).Rows(Loopx).Item("nCityCode"), DS.Tables(0).Rows(Loopx).Item("nBarCode"), DS.Tables(0).Rows(Loopx).Item("nCompCode"), DS.Tables(0).Rows(Loopx).Item("nTruckType"), DS.Tables(0).Rows(Loopx).Item("StrAddress").trim, DS.Tables(0).Rows(Loopx).Item("nUserId"), DS.Tables(0).Rows(Loopx).Item("nCarNumKol"), DS.Tables(0).Rows(Loopx).Item("StrPriceSug"), DS.Tables(0).Rows(Loopx).Item("strDescription").trim, DS.Tables(0).Rows(Loopx).Item("dDateElam").trim, DS.Tables(0).Rows(Loopx).Item("dTimeElam").trim, DS.Tables(0).Rows(Loopx).Item("nCarNum"), DS.Tables(0).Rows(Loopx).Item("LoadStatus"), DS.Tables(0).Rows(Loopx).Item("nBarSource"), DS.Tables(0).Rows(Loopx).Item("AHId"), DS.Tables(0).Rows(Loopx).Item("AHSGId")), DS.Tables(0).Rows(Loopx).Item("TCTitle").trim, DS.Tables(0).Rows(Loopx).Item("strGoodName").trim, DS.Tables(0).Rows(Loopx).Item("strCityName").trim, DS.Tables(0).Rows(Loopx).Item("LoaderTypeTitle").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("StrCityName").trim))
+                    Next
+                    Return Lst
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
         End Class
 
 
@@ -1781,11 +1886,23 @@ Namespace LoadCapacitor
                     If YourNSS.nCarNumKol < 1 Then Throw New LoadCapacitorLoadnCarNumKolCanNotBeZeroException
                     'کنترل اکتیو بودن شرکت حمل و نقل
                     If R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.ISTransportCompanyActive(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(YourNSS.nCompCode, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)) = False Then Throw New TransportCompanyISNotActiveException
-                    'کنترل اتمام زمان ثبت بار
-                    If _DateTime.GetCurrentTime() > R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetAnnouncementHallLeastAnnounceTime(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId).Time Then
-                        Throw New LoadCapacitorLoadRegisterTimePassedException
+                    'بررسی بار فردا
+                    Dim ComposeSearchString As String = NSSAnnouncementHallSubGroup.AHSGId.ToString + "="
+                    Dim AllTommorowConfigforAHId As String() = Split(R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.TommorowLoads, NSSAnnouncementHall.AHId), "-")
+                    Dim AllTommorowConfigforAHSGId = Split(Mid(AllTommorowConfigforAHId.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllTommorowConfigforAHId.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ";")
+                    Dim IsTommorowLoadRegisteringActive As Boolean = AllTommorowConfigforAHSGId(0)
+                    Dim TommorowLoadRegisteringFirstTime As String = AllTommorowConfigforAHSGId(1)
+                    Dim TommorowLoadRegisteringEndTime As String = AllTommorowConfigforAHSGId(2)
+                    Dim CurrentTimeforRegistering As String = _DateTime.GetCurrentTime()
+                    Dim TommorowLoadRegisteringFlag As Boolean = False
+                    If IsTommorowLoadRegisteringActive And (CurrentTimeforRegistering >= TommorowLoadRegisteringFirstTime And CurrentTimeforRegistering <= TommorowLoadRegisteringEndTime) Then
+                        TommorowLoadRegisteringFlag = True
+                    Else
+                        'کنترل اتمام زمان ثبت بار
+                        If _DateTime.GetCurrentTime() > R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetAnnouncementHallLeastAnnounceTime(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId).Time Then
+                            Throw New LoadCapacitorLoadRegisterTimePassedException
+                        End If
                     End If
-
                     'استاندارد سازی نرخ حمل بر اساس تعرفه های سازمانی
                     Dim Tarrif As String = YourNSS.StrPriceSug
                     Try
@@ -1800,13 +1917,29 @@ Namespace LoadCapacitor
                     CmdSql.ExecuteNonQuery()
                     CmdSql.CommandText = "Select IDENT_CURRENT('dbtransport.dbo.TbElam') "
                     Dim nEstelamIdNew As Int64 = CmdSql.ExecuteScalar() + 1
-                    CmdSql.CommandText = "Insert Into dbtransport.dbo.TbElam(StrBarName,nCityCode,nBarCode,bFlag,nCompCode,nTruckType,nCarNum,StrAddress,nUserId,dDateElam,dTimeElam,nCarNumKol,StrPriceSug,StrDescription,LoadStatus,nBarSource,AHId,AHSGId) Values('" & YourNSS.StrBarName & "'," & YourNSS.nCityCode & "," & YourNSS.nBarCode & ",0," & YourNSS.nCompCode & "," & YourNSS.nTruckType & "," & YourNSS.nCarNumKol & ",'" & YourNSS.StrAddress & "'," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "'," & YourNSS.nCarNumKol & "," & Tarrif & ",'" & YourNSS.StrDescription & "'," & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered & ",21310000," & NSSAnnouncementHall.AHId & "," & NSSAnnouncementHallSubGroup.AHSGId & ")"
+                    If TommorowLoadRegisteringFlag Then
+                        CmdSql.CommandText = "Insert Into dbtransport.dbo.TbElam(StrBarName,nCityCode,nBarCode,bFlag,nCompCode,nTruckType,nCarNum,StrAddress,nUserId,dDateElam,dTimeElam,nCarNumKol,StrPriceSug,StrDescription,LoadStatus,nBarSource,AHId,AHSGId) Values('" & YourNSS.StrBarName & "'," & YourNSS.nCityCode & "," & YourNSS.nBarCode & ",0," & YourNSS.nCompCode & "," & YourNSS.nTruckType & "," & YourNSS.nCarNumKol & ",'" & YourNSS.StrAddress & "'," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "'," & YourNSS.nCarNumKol & "," & Tarrif & ",'" & YourNSS.StrDescription & "'," & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow & ",21310000," & NSSAnnouncementHall.AHId & "," & NSSAnnouncementHallSubGroup.AHSGId & ")"
+                    Else
+                        CmdSql.CommandText = "Insert Into dbtransport.dbo.TbElam(StrBarName,nCityCode,nBarCode,bFlag,nCompCode,nTruckType,nCarNum,StrAddress,nUserId,dDateElam,dTimeElam,nCarNumKol,StrPriceSug,StrDescription,LoadStatus,nBarSource,AHId,AHSGId) Values('" & YourNSS.StrBarName & "'," & YourNSS.nCityCode & "," & YourNSS.nBarCode & ",0," & YourNSS.nCompCode & "," & YourNSS.nTruckType & "," & YourNSS.nCarNumKol & ",'" & YourNSS.StrAddress & "'," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "'," & YourNSS.nCarNumKol & "," & Tarrif & ",'" & YourNSS.StrDescription & "'," & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered & ",21310000," & NSSAnnouncementHall.AHId & "," & NSSAnnouncementHallSubGroup.AHSGId & ")"
+                    End If
                     CmdSql.ExecuteNonQuery()
                     'ثبت اکانت
-                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(nEstelamIdNew, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Registering, YourNSS.nCarNumKol, Nothing, Nothing, Nothing, Nothing))
+                    If TommorowLoadRegisteringFlag Then
+                        R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(nEstelamIdNew, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.RegisteringforTommorow, YourNSS.nCarNumKol, Nothing, Nothing, Nothing, Nothing))
+                    Else
+                        R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(nEstelamIdNew, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Registering, YourNSS.nCarNumKol, Nothing, Nothing, Nothing, Nothing))
+                    End If
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                     'ارسال کد مخزن بار
                     Return nEstelamIdNew
+                Catch ex As Exception When TypeOf ex Is LoadCapacitorLoadNumberOverLimitException _
+                                    OrElse TypeOf ex Is LoadCapacitorLoadnCarNumKolCanNotBeZeroException _
+                                    OrElse TypeOf ex Is TransportCompanyISNotActiveException _
+                                    OrElse TypeOf ex Is LoadCapacitorLoadRegisterTimePassedException
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then
+                        CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                    End If
+                    Throw ex
                 Catch ex As Exception
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -1824,8 +1957,19 @@ Namespace LoadCapacitor
                     YourNSS.AHId = NSSAnnouncementHall.AHId
                     YourNSS.AHSGId = NSSAnnouncementHallSubGroup.AHSGId
                     Dim CurrentNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YourNSS.nEstelamId)
-                    'کنترل اتمام زمان ویرایش بار
-                    If R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then Throw New LoadCapacitorLoadEditTimePassedException
+                    'بررسی بار فردا
+                    Dim ComposeSearchString As String = NSSAnnouncementHallSubGroup.AHSGId.ToString + "="
+                    Dim AllTommorowConfigforAHId As String() = Split(R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.TommorowLoads, NSSAnnouncementHall.AHId), "-")
+                    Dim AllTommorowConfigforAHSGId = Split(Mid(AllTommorowConfigforAHId.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllTommorowConfigforAHId.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ";")
+                    Dim IsTommorowLoadRegisteringActive As Boolean = AllTommorowConfigforAHSGId(0)
+                    Dim TommorowLoadRegisteringFirstTime As String = AllTommorowConfigforAHSGId(1)
+                    Dim TommorowLoadRegisteringEndTime As String = AllTommorowConfigforAHSGId(2)
+                    Dim CurrentTimeforRegistering As String = _DateTime.GetCurrentTime()
+                    If IsTommorowLoadRegisteringActive And (CurrentTimeforRegistering >= TommorowLoadRegisteringFirstTime And CurrentTimeforRegistering <= TommorowLoadRegisteringEndTime) And YourNSS.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow Then
+                    Else
+                        'کنترل اتمام زمان ویرایش بار
+                        If R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then Throw New LoadCapacitorLoadEditTimePassedException
+                    End If
                     'کنترل تعداد بار
                     If YourNSS.nCarNumKol > R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.LoadCapacitorLoadNumberLimit, 0) Then Throw New LoadCapacitorLoadNumberOverLimitException
                     If YourNSS.nCarNumKol = 0 Then Throw New LoadCapacitorLoadnCarNumKolCanNotBeZeroException
@@ -1855,6 +1999,14 @@ Namespace LoadCapacitor
                         R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(YourNSS.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Incrementing, YourNSS.nCarNumKol - CurrentnCarNumKol, Nothing, Nothing, Nothing, Nothing))
                     End If
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Catch ex As Exception When TypeOf ex Is LoadCapacitorLoadEditTimePassedException _
+                                    OrElse TypeOf ex Is LoadCapacitorLoadNumberOverLimitException _
+                                    OrElse TypeOf ex Is LoadCapacitorLoadnCarNumKolCanNotBeZeroException _
+                                    OrElse TypeOf ex Is TransportCompanyISNotActiveException
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then
+                        CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                    End If
+                    Throw ex
                 Catch ex As Exception
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -1870,19 +2022,35 @@ Namespace LoadCapacitor
                     Dim NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId)
                     Dim NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHall(NSSLoadCapacitorLoad.AHId)
                     Dim NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(NSSLoadCapacitorLoad.nTruckType)
+                    'بررسی بار فردا
+                    Dim ComposeSearchString As String = NSSAnnouncementHallSubGroup.AHSGId.ToString + "="
+                    Dim AllTommorowConfigforAHId As String() = Split(R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.TommorowLoads, NSSAnnouncementHall.AHId), "-")
+                    Dim AllTommorowConfigforAHSGId = Split(Mid(AllTommorowConfigforAHId.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllTommorowConfigforAHId.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ";")
+                    Dim IsTommorowLoadRegisteringActive As Boolean = AllTommorowConfigforAHSGId(0)
+                    Dim TommorowLoadRegisteringFirstTime As String = AllTommorowConfigforAHSGId(1)
+                    Dim TommorowLoadRegisteringEndTime As String = AllTommorowConfigforAHSGId(2)
+                    Dim CurrentTimeforRegistering As String = _DateTime.GetCurrentTime()
+                    If IsTommorowLoadRegisteringActive And (CurrentTimeforRegistering >= TommorowLoadRegisteringFirstTime And CurrentTimeforRegistering <= TommorowLoadRegisteringEndTime) And NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow Then
+                    Else
+                        'کنترل اتمام زمان حذف بار
+                        If R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, NSSLoadCapacitorLoad.dTimeElam)) Then Throw New LoadCapacitorLoadDeleteTimePassedException
+                    End If
 
-                    'کنترل اتمام زمان حذف بار
-                    If R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, NSSLoadCapacitorLoad.dTimeElam)) Then Throw New LoadCapacitorLoadDeleteTimePassedException
                     'حذف بار
                     CmdSql.Connection.Open()
                     CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
                     'کنترل وضعیت بار
-                    If Not (NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered Or NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.FreeLined) Then Throw New LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException
+                    If Not (NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered Or NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.FreeLined Or NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow) Then Throw New LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException
 
                     CmdSql.CommandText = "Update DBTransport.dbo.TbElam Set LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted & " Where nEstelamId=" & NSSLoadCapacitorLoad.nEstelamId & ""
                     CmdSql.ExecuteNonQuery()
                     R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Deleting, NSSLoadCapacitorLoad.nCarNumKol, Nothing, Nothing, Nothing, Nothing))
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Catch ex As Exception When TypeOf ex Is LoadCapacitorLoadDeleteTimePassedException
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then
+                        CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                    End If
+                    Throw ex
                 Catch ex As Exception
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -1898,7 +2066,8 @@ Namespace LoadCapacitor
                     Dim NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId)
                     Dim NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHall(NSSLoadCapacitorLoad.AHId)
                     Dim NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(NSSLoadCapacitorLoad.nTruckType)
-
+                    'کنترل بار فردا - بار فردا قابل کنسل شدن نیست
+                    If NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow Then Throw New UnabletoCancellingorFreeliningTommorowLoadException
                     'کنترل زمان کنسلی بار
                     If Not R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, NSSLoadCapacitorLoad.dTimeElam)) Then Throw New LoadCapacitorLoadCancelTimeNotReachedException
                     'حذف بار
@@ -1912,6 +2081,11 @@ Namespace LoadCapacitor
                     'ثبت اکانت
                     R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Cancelling, 1, Nothing, Nothing, Nothing, Nothing))
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Catch ex As Exception When TypeOf ex Is LoadCapacitorLoadCancelTimeNotReachedException
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then
+                        CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                    End If
+                    Throw ex
                 Catch ex As Exception
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -1927,6 +2101,8 @@ Namespace LoadCapacitor
                     Dim NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId)
                     Dim NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHall(NSSLoadCapacitorLoad.AHId)
                     Dim NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(NSSLoadCapacitorLoad.nTruckType)
+                    'کنترل بار فردا - بار فردا قابل آزاد شدن نیست
+                    If NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow Then Throw New UnabletoCancellingorFreeliningTommorowLoadException
 
                     'خط آزاد نمودن بار
                     CmdSql.Connection.Open()
@@ -1941,6 +2117,12 @@ Namespace LoadCapacitor
                     'ثبت اکانت
                     R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.FreeLining, NSSLoadCapacitorLoad.nCarNumKol, Nothing, Nothing, Nothing, Nothing))
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Catch ex As Exception When TypeOf ex Is LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException _
+                                   OrElse TypeOf ex Is LoadCapacitorLoadFreeLiningTimePassedException
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then
+                        CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                    End If
+                    Throw ex
                 Catch ex As Exception
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -2048,7 +2230,7 @@ Namespace LoadCapacitor
             Private Shared Sub LoadCapacitorLoadAllocating_(YourNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure)
                 Try
                     'کنترل وضعیت بار
-                    If YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled Or YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted Or YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented Then Throw New LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException
+                    If YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled Or YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted Or YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented Or YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow Then Throw New LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException
                     'ثبت اکانت
                     R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(YourNSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Allocating, 1, Nothing, Nothing, Nothing, Nothing))
                 Catch ex As Exception
@@ -2107,11 +2289,51 @@ Namespace LoadCapacitor
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
             End Sub
+
+            Public Shared Sub TransferringTommorowLoads()
+                Dim CmdSql As New SqlClient.SqlCommand
+                CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+                Try
+                    Dim CurrentTimeforTransferringTommorowLoads As String = _DateTime.GetCurrentTime()
+                    Dim CurrentDateforTransferringTommorowLoads As String = _DateTime.GetCurrentDateShamsiFull()
+                    If Not((CurrentTimeforTransferringTommorowLoads >= "00:00:00") And (CurrentTimeforTransferringTommorowLoads <= "00:05:00")) Then
+                        Return
+                    End If
+                    'لیست کامل باری که باید انتقال یابد
+                    Dim Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetAllofTommorowLoads()
+                    'باری برای رسوب وجود ندارد
+                    If IsNothing(Lst) Or Lst.Count = 0 Then Return
+
+                    CmdSql.CommandText = "Update dbtransport.dbo.tbElam Set LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered & ",dDateElam='" & CurrentDateforTransferringTommorowLoads & "',dTimeElam='00:00:00'
+                                       Where LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow & ""
+                    CmdSql.Connection.Open()
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.Connection.Close()
+
+                    For Each LoadCapcitorLoad In Lst
+                        R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(LoadCapcitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.TransferringTommorowLoads, 1, Nothing, Nothing, Nothing, Nothing))
+                    Next
+                Catch ex As Exception
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
         End Class
 
     End Namespace
 
     Namespace Exceptions
+
+        Public Class UnabletoCancellingorFreeliningTommorowLoadException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "بار فردا قابل کنسل شدن و یا آزادسازی نیست"
+                End Get
+            End Property
+        End Class
+
         Public Class LoadCapacitorLoadStatusException
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
@@ -2134,7 +2356,7 @@ Namespace LoadCapacitor
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "مقدار صفر برای تعداد بار مجاز نیست"
+                    Return "مقادیر صفر و کمتر از آن برای تعداد بار مجاز نیست"
                 End Get
             End Property
         End Class
@@ -4174,6 +4396,47 @@ Namespace LoadPermission
 
     End Class
 
+    Public Class R2CoreTransportationAndLoadNotificationStandardLoadPermissionExtended_Structure
+        Inherits R2CoreTransportationAndLoadNotificationStandardLoadPermissionStructure
+
+        Public Sub New()
+            MyBase.New()
+            _StrDescription = String.Empty
+            _Truck = String.Empty
+            _TruckDriver = String.Empty
+            _StrDrivingLicenceNo = String.Empty
+            _StrNationalCode = String.Empty
+            _StrSmartcardNo = String.Empty
+            _IssuedLocation = String.Empty
+            _Mobile = String.Empty
+            _strAddress = String.Empty
+        End Sub
+
+        Public Sub New(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadPermissionStructure, ByVal YourStrDescription As String, ByVal YourTruck As String, ByVal YourTruckDriver As String, ByVal YourStrDrivingLicenceNo As String, ByVal YourStrNationalCode As String, ByVal YourStrSmartcardNo As String, ByVal YourIssuedLocation As String, YourMobile As String, YourAddress As String)
+            MyBase.New(YourNSS.nEstelamId, YourNSS.TurnId, YourNSS.LoadPermissionDate, YourNSS.LoadPermissionTime, YourNSS.LoadPermissionRegisteringLocation, YourNSS.UserId, YourNSS.LoadPermissionStatusId)
+            _StrDescription = YourStrDescription
+            _Truck = YourTruck
+            _TruckDriver = YourTruckDriver
+            _StrDrivingLicenceNo = YourStrDrivingLicenceNo
+            _StrNationalCode = YourStrNationalCode
+            _StrSmartcardNo = YourStrSmartcardNo
+            _IssuedLocation = YourIssuedLocation
+            _Mobile = YourMobile
+            _strAddress = YourAddress
+        End Sub
+
+        Public Property StrDescription As String
+        Public Property Truck As String
+        Public Property TruckDriver As String
+        Public Property StrDrivingLicenceNo As String
+        Public Property StrNationalCode As String
+        Public Property StrSmartcardNo As String
+        Public Property IssuedLocation As String
+        Public Property Mobile As String
+        Public Property strAddress As String
+
+    End Class
+
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement
         Private Shared _DateTime As New R2DateTime
 
@@ -4295,6 +4558,36 @@ Namespace LoadPermission
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
+
+        Public Shared Function GetLoadPermissionsIssued(YournEstelamId As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadPermissionExtended_Structure)
+            Try
+                Dim DS As DataSet
+                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                       "Select Turns.nEstelamID,Turns.nEnterExitId,Turns.strExitDate,Turns.strExitTime,Turns.strBarnameNo,Turns.nUserIdExit,Turns.LoadPermissionStatus,
+                               Elam.strDescription,Car.strCarNo+'-'+strCarSerialNo as Truck,Person.strPersonFullName as TruckDriver,Drivers.strDrivingLicenceNo,Person.strNationalCode,
+	                           Drivers.strSmartcardNo,LPILs.LPILTitle as IssuedLocation,Person.strIDNO as Mobile,Person.strAddress as Address
+	                    from dbtransport.dbo.tbEnterExit as Turns 
+                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadPermissionIssuingLocations as LPILs On Turns.strBarnameNo=LPILs.LPILId
+                           Inner Join dbtransport.dbo.tbElam as Elam On Turns.nEstelamID=Elam.nEstelamID
+                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompany On Elam.nCompCode=TransportCompany.TCId
+                           Inner Join dbtransport.dbo.tbProducts as Product On Elam.nBarcode=Product.strGoodCode
+                           Inner Join dbtransport.dbo.tbCity as City On Elam.nCityCode=City.nCityCode
+                           Inner Join dbtransport.dbo.TbCar as Car On Turns.strCardno=Car.nIDCar
+                           Inner Join dbtransport.dbo.TbPerson as Person On Turns.nDriverCode=Person.nIDPerson
+	                       Inner Join dbtransport.dbo.TbDriver as Drivers On Person.nIDPerson=Drivers.nIDDriver
+                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadPermissionStatuses as LoadPermissionStatus On Turns.LoadPermissionStatus=LoadPermissionStatus.LoadPermissionStatusId
+                        Where Elam.nEstelamId=" & YournEstelamId & " and Turns.LoadPermissionStatus=1
+                        Order By Turns.StrExitDate Desc,Turns.StrExitTime Desc", 1, DS)
+                Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadPermissionExtended_Structure) = New List(Of R2CoreTransportationAndLoadNotificationStandardLoadPermissionExtended_Structure)
+                For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                    Dim NSS As New R2CoreTransportationAndLoadNotificationStandardLoadPermissionExtended_Structure
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoadPermissionExtended_Structure(New R2CoreTransportationAndLoadNotificationStandardLoadPermissionStructure(DS.Tables(0).Rows(Loopx).Item("nEstelamID"), DS.Tables(0).Rows(Loopx).Item("nEnterExitId"), DS.Tables(0).Rows(Loopx).Item("strExitDate").trim, DS.Tables(0).Rows(Loopx).Item("strExitTime").trim, DS.Tables(0).Rows(Loopx).Item("strBarnameNo"), DS.Tables(0).Rows(Loopx).Item("nUserIdExit"), DS.Tables(0).Rows(Loopx).Item("LoadPermissionStatus")), DS.Tables(0).Rows(Loopx).Item("strDescription").trim, DS.Tables(0).Rows(Loopx).Item("Truck").trim, DS.Tables(0).Rows(Loopx).Item("TruckDriver").trim, DS.Tables(0).Rows(Loopx).Item("strDrivingLicenceNo").trim, DS.Tables(0).Rows(Loopx).Item("strNationalCode").trim, DS.Tables(0).Rows(Loopx).Item("strSmartcardNo").trim, DS.Tables(0).Rows(Loopx).Item("IssuedLocation").trim, DS.Tables(0).Rows(Loopx).Item("Mobile").trim, DS.Tables(0).Rows(Loopx).Item("Address").trim))
+                Next
+                Return Lst
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
         Public Shared Function GetLoadPermissions(YourAHId As Int64, YourAHSGId As Int64, YourLoadPermissionStatusId As Int64, YourLoadPermissionLocation As R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation, Optional YourTransportCompanyId As Int64 = Int64.MinValue) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadPermissionExtendedStructure)
             Try
@@ -4534,6 +4827,7 @@ Namespace LoadPermission
                 Try
                     Dim myPaperSizeHalf As Integer = _PrintDocumentPermission.PrinterSettings.DefaultPageSettings.PaperSize.Width / 4
                     Dim myStrFontSuperMax As Font = New System.Drawing.Font("Badr", 18, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+                    Dim myStrFontUpperMax As Font = New System.Drawing.Font("Badr", 16, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
                     Dim myStrFontMax As Font = New System.Drawing.Font("Badr", 14, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
                     Dim myStrFontMin As Font = New System.Drawing.Font("Badr", 10, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
                     Dim myDigFont As Font = New System.Drawing.Font("Alborz Titr", 14.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
@@ -4543,33 +4837,34 @@ Namespace LoadPermission
                     YourEventArgs.Graphics.DrawString(" پايانه اميرکبير اصفهان ", myStrFontSuperMax, Brushes.DarkBlue, X + 180, Y)
                     YourEventArgs.Graphics.DrawString(" ((مجوز بارگيری)) ", myStrFontSuperMax, Brushes.DarkBlue, X + 195, Y + 30)
                     YourEventArgs.Graphics.DrawString(" تاريخ صدور: " + _PPDS.LoadPermissionDate, myStrFontMin, Brushes.DarkBlue, X + 15, Y + 20)
-                    YourEventArgs.Graphics.DrawString(" شماره تخصيص: " + _PPDS.LoadAllocationId.ToString(), myStrFontMax, Brushes.DarkBlue, X + 380, Y + 20)
-                    YourEventArgs.Graphics.DrawString(" شماره مجوز: " + _PPDS.nEstelamId.ToString(), myStrFontMax, Brushes.DarkBlue, X + 380, Y + 40)
+                    YourEventArgs.Graphics.DrawString(" شماره تخصيص: " + _PPDS.LoadAllocationId.ToString(), myStrFontMax, Brushes.DarkBlue, X + 360, Y + 20)
+                    YourEventArgs.Graphics.DrawString(" شماره مجوز: " + _PPDS.nEstelamId.ToString(), myStrFontMax, Brushes.DarkBlue, X + 360, Y + 40)
                     YourEventArgs.Graphics.DrawString(" ساعت صدور: " + _PPDS.LoadPermissionTime, myStrFontMin, Brushes.DarkBlue, X + 15, Y + 40)
-                    YourEventArgs.Graphics.DrawString(" شماره نوبت: " + _PPDS.TurnId.ToString(), myStrFontMax, Brushes.DarkBlue, X + 380, Y + 60)
-                    YourEventArgs.Graphics.DrawString("شرکت/موسسه محترم: " + _PPDS.TransportCompany, myStrFontSuperMax, Brushes.DarkBlue, X + 180, Y + 100)
+                    YourEventArgs.Graphics.DrawString(" شماره نوبت: " + _PPDS.TurnId.ToString(), myStrFontMax, Brushes.DarkBlue, X + 360, Y + 60)
+                    YourEventArgs.Graphics.DrawString("شرکت/موسسه محترم: " + _PPDS.TransportCompany, myStrFontSuperMax, Brushes.DarkBlue, X + 160, Y + 80)
                     Dim a As Char()
                     If _PPDS.TruckLP.Trim <> String.Empty Then
                         a = _PPDS.TruckLP.ToCharArray()
-                        YourEventArgs.Graphics.DrawString(_PPDS.TruckLPSerial + "-", myStrFontSuperMax, Brushes.DarkBlue, X + 20, Y + 140)
-                        YourEventArgs.Graphics.DrawString(a(4), myStrFontSuperMax, Brushes.DarkBlue, X + 60, Y + 140)
-                        YourEventArgs.Graphics.DrawString(a(5), myStrFontSuperMax, Brushes.DarkBlue, X + 70, Y + 140)
-                        YourEventArgs.Graphics.DrawString(a(3), myStrFontSuperMax, Brushes.DarkBlue, X + 80, Y + 140)
-                        YourEventArgs.Graphics.DrawString(a(0), myStrFontSuperMax, Brushes.DarkBlue, X + 90, Y + 140)
-                        YourEventArgs.Graphics.DrawString(a(1), myStrFontSuperMax, Brushes.DarkBlue, X + 100, Y + 140)
-                        YourEventArgs.Graphics.DrawString(a(2) + " پلاک ", myStrFontSuperMax, Brushes.DarkBlue, X + 110, Y + 140)
+                        YourEventArgs.Graphics.DrawString(_PPDS.TruckLPSerial + "-", myStrFontSuperMax, Brushes.DarkBlue, X + 20, Y + 120)
+                        YourEventArgs.Graphics.DrawString(a(4), myStrFontSuperMax, Brushes.DarkBlue, X + 60, Y + 120)
+                        YourEventArgs.Graphics.DrawString(a(5), myStrFontSuperMax, Brushes.DarkBlue, X + 70, Y + 120)
+                        YourEventArgs.Graphics.DrawString(a(3), myStrFontSuperMax, Brushes.DarkBlue, X + 80, Y + 120)
+                        YourEventArgs.Graphics.DrawString(a(0), myStrFontSuperMax, Brushes.DarkBlue, X + 90, Y + 120)
+                        YourEventArgs.Graphics.DrawString(a(1), myStrFontSuperMax, Brushes.DarkBlue, X + 100, Y + 120)
+                        YourEventArgs.Graphics.DrawString(a(2) + " پلاک ", myStrFontSuperMax, Brushes.DarkBlue, X + 110, Y + 120)
                     End If
-                    YourEventArgs.Graphics.DrawString(" بدين وسيله يک دستگاه " + _PPDS.LoaderType, myStrFontMin, Brushes.DarkBlue, X + 300, Y + 150)
-                    YourEventArgs.Graphics.DrawString(" به رانندگی آقای " + _PPDS.TruckDriver, myStrFontSuperMax, Brushes.DarkBlue, X + 150, Y + 170)
-                    YourEventArgs.Graphics.DrawString(_PPDS.TruckDriverDrivingLicenseNo + " دارای گواهينامه به شماره ", myStrFontMin, Brushes.DarkBlue, X + 20, Y + 200)
-                    YourEventArgs.Graphics.DrawString(" از " + _PPDS.SourceCity, myStrFontMax, Brushes.DarkBlue, X + 250, Y + 220)
-                    YourEventArgs.Graphics.DrawString(" به مقصد " + _PPDS.TargetCity, myStrFontMax, Brushes.DarkBlue, X + 20, Y + 220)
-                    YourEventArgs.Graphics.DrawString(" جهت حمل " + _PPDS.GoodName, myStrFontMax, Brushes.DarkBlue, X + 330, Y + 250)
-                    YourEventArgs.Graphics.DrawString(_PPDS.TransportPrice + " با نرخ ", myStrFontMin, Brushes.DarkBlue, X + 350, Y + 280)
-                    YourEventArgs.Graphics.DrawString(" ريال با مسئوليت آن شرکت/موسسه معرفی می گردد ", myStrFontMin, Brushes.DarkBlue, X + 125, Y + 280)
-                    YourEventArgs.Graphics.DrawString(_PPDS.LoadCapacitorLoadDescription, myStrFontMax, Brushes.DarkBlue, X + 20, Y + 300)
-                    YourEventArgs.Graphics.DrawString("نام کاربر : " + _PPDS.UserName, myStrFontMin, Brushes.DarkBlue, X + 50, Y + 320)
-                    YourEventArgs.Graphics.DrawString(" طول سفر :" + _PPDS.OtherNote + " ساعت", myStrFontMin, Brushes.DarkBlue, X + 165, Y + 320)
+                    YourEventArgs.Graphics.DrawString(" بدين وسيله يک دستگاه " + _PPDS.LoaderType, myStrFontMin, Brushes.DarkBlue, X + 300, Y + 120)
+                    YourEventArgs.Graphics.DrawString(" به رانندگی آقای " + _PPDS.TruckDriver, myStrFontSuperMax, Brushes.DarkBlue, X + 150, Y + 140)
+                    YourEventArgs.Graphics.DrawString(_PPDS.TruckDriverDrivingLicenseNo + " دارای گواهينامه به شماره ", myStrFontMin, Brushes.DarkBlue, X + 20, Y + 170)
+                    YourEventArgs.Graphics.DrawString(" از " + _PPDS.SourceCity, myStrFontMax, Brushes.DarkBlue, X + 250, Y + 180)
+                    YourEventArgs.Graphics.DrawString(" به مقصد " + _PPDS.TargetCity, myStrFontMax, Brushes.DarkBlue, X + 20, Y + 180)
+                    YourEventArgs.Graphics.DrawString(" جهت حمل " + _PPDS.GoodName, myStrFontMax, Brushes.DarkBlue, X + 330, Y + 210)
+                    YourEventArgs.Graphics.DrawString(_PPDS.TransportPrice + " با نرخ ", myStrFontMin, Brushes.DarkBlue, X + 350, Y + 240)
+                    YourEventArgs.Graphics.DrawString(" ريال با مسئوليت آن شرکت/موسسه معرفی می گردد ", myStrFontMin, Brushes.DarkBlue, X + 125, Y + 240)
+                    YourEventArgs.Graphics.DrawString(_PPDS.LoadCapacitorLoadDescription, myStrFontMax, Brushes.DarkBlue, X + 20, Y + 260)
+                    YourEventArgs.Graphics.DrawString("نام کاربر : " + _PPDS.UserName, myStrFontMin, Brushes.DarkBlue, X + 50, Y + 280)
+                    YourEventArgs.Graphics.DrawString(" طول سفر :" + _PPDS.OtherNote + " ساعت", myStrFontMin, Brushes.DarkBlue, X + 165, Y + 280)
+                    YourEventArgs.Graphics.DrawString("باتوجه به اعلام شرکت ذوب آهن ورود افراد فقط با ماسک امکانپذير است", myStrFontUpperMax, Brushes.DarkBlue, X, Y + 300)
                     'مرحله دوم
                     Y = Y + 400
                     YourEventArgs.Graphics.DrawRectangle(New Pen(Brushes.Black, 1), X, Y, 520, 350)
@@ -4577,32 +4872,33 @@ Namespace LoadPermission
                     YourEventArgs.Graphics.DrawString(" پايانه اميرکبير اصفهان ", myStrFontSuperMax, Brushes.DarkBlue, X + 180, Y)
                     YourEventArgs.Graphics.DrawString(" ((مجوز بارگيری)) ", myStrFontSuperMax, Brushes.DarkBlue, X + 195, Y + 30)
                     YourEventArgs.Graphics.DrawString(" تاريخ صدور: " + _PPDS.LoadPermissionDate, myStrFontMin, Brushes.DarkBlue, X + 15, Y + 20)
-                    YourEventArgs.Graphics.DrawString(" شماره تخصيص: " + _PPDS.LoadAllocationId.ToString(), myStrFontMax, Brushes.DarkBlue, X + 380, Y + 20)
-                    YourEventArgs.Graphics.DrawString(" شماره مجوز: " + _PPDS.nEstelamId.ToString(), myStrFontMax, Brushes.DarkBlue, X + 380, Y + 40)
+                    YourEventArgs.Graphics.DrawString(" شماره تخصيص: " + _PPDS.LoadAllocationId.ToString(), myStrFontMax, Brushes.DarkBlue, X + 360, Y + 20)
+                    YourEventArgs.Graphics.DrawString(" شماره مجوز: " + _PPDS.nEstelamId.ToString(), myStrFontMax, Brushes.DarkBlue, X + 360, Y + 40)
                     YourEventArgs.Graphics.DrawString(" ساعت صدور: " + _PPDS.LoadPermissionTime, myStrFontMin, Brushes.DarkBlue, X + 15, Y + 40)
-                    YourEventArgs.Graphics.DrawString(" شماره نوبت: " + _PPDS.TurnId.ToString(), myStrFontMax, Brushes.DarkBlue, X + 380, Y + 60)
-                    YourEventArgs.Graphics.DrawString("شرکت/موسسه محترم: " + _PPDS.TransportCompany, myStrFontSuperMax, Brushes.DarkBlue, X + 180, Y + 100)
+                    YourEventArgs.Graphics.DrawString(" شماره نوبت: " + _PPDS.TurnId.ToString(), myStrFontMax, Brushes.DarkBlue, X + 360, Y + 60)
+                    YourEventArgs.Graphics.DrawString("شرکت/موسسه محترم: " + _PPDS.TransportCompany, myStrFontSuperMax, Brushes.DarkBlue, X + 160, Y + 80)
                     If _PPDS.TruckLP.Trim <> String.Empty Then
                         a = _PPDS.TruckLP.ToCharArray()
-                        YourEventArgs.Graphics.DrawString(_PPDS.TruckLPSerial + "-", myStrFontSuperMax, Brushes.DarkBlue, X + 20, Y + 140)
-                        YourEventArgs.Graphics.DrawString(a(4), myStrFontSuperMax, Brushes.DarkBlue, X + 60, Y + 140)
-                        YourEventArgs.Graphics.DrawString(a(5), myStrFontSuperMax, Brushes.DarkBlue, X + 70, Y + 140)
-                        YourEventArgs.Graphics.DrawString(a(3), myStrFontSuperMax, Brushes.DarkBlue, X + 80, Y + 140)
-                        YourEventArgs.Graphics.DrawString(a(0), myStrFontSuperMax, Brushes.DarkBlue, X + 90, Y + 140)
-                        YourEventArgs.Graphics.DrawString(a(1), myStrFontSuperMax, Brushes.DarkBlue, X + 100, Y + 140)
-                        YourEventArgs.Graphics.DrawString(a(2) + " پلاک ", myStrFontSuperMax, Brushes.DarkBlue, X + 110, Y + 140)
+                        YourEventArgs.Graphics.DrawString(_PPDS.TruckLPSerial + "-", myStrFontSuperMax, Brushes.DarkBlue, X + 20, Y + 120)
+                        YourEventArgs.Graphics.DrawString(a(4), myStrFontSuperMax, Brushes.DarkBlue, X + 60, Y + 120)
+                        YourEventArgs.Graphics.DrawString(a(5), myStrFontSuperMax, Brushes.DarkBlue, X + 70, Y + 120)
+                        YourEventArgs.Graphics.DrawString(a(3), myStrFontSuperMax, Brushes.DarkBlue, X + 80, Y + 120)
+                        YourEventArgs.Graphics.DrawString(a(0), myStrFontSuperMax, Brushes.DarkBlue, X + 90, Y + 120)
+                        YourEventArgs.Graphics.DrawString(a(1), myStrFontSuperMax, Brushes.DarkBlue, X + 100, Y + 120)
+                        YourEventArgs.Graphics.DrawString(a(2) + " پلاک ", myStrFontSuperMax, Brushes.DarkBlue, X + 110, Y + 120)
                     End If
-                    YourEventArgs.Graphics.DrawString(" بدين وسيله يک دستگاه " + _PPDS.LoaderType, myStrFontMin, Brushes.DarkBlue, X + 300, Y + 150)
-                    YourEventArgs.Graphics.DrawString(" به رانندگی آقای " + _PPDS.TruckDriver, myStrFontSuperMax, Brushes.DarkBlue, X + 150, Y + 170)
-                    YourEventArgs.Graphics.DrawString(_PPDS.TruckDriverDrivingLicenseNo + " دارای گواهينامه به شماره ", myStrFontMin, Brushes.DarkBlue, X + 20, Y + 200)
-                    YourEventArgs.Graphics.DrawString(" از " + _PPDS.SourceCity, myStrFontMax, Brushes.DarkBlue, X + 250, Y + 220)
-                    YourEventArgs.Graphics.DrawString(" به مقصد " + _PPDS.TargetCity, myStrFontMax, Brushes.DarkBlue, X + 20, Y + 220)
-                    YourEventArgs.Graphics.DrawString(" جهت حمل " + _PPDS.GoodName, myStrFontMax, Brushes.DarkBlue, X + 330, Y + 250)
-                    YourEventArgs.Graphics.DrawString(_PPDS.TransportPrice + " با نرخ ", myStrFontMin, Brushes.DarkBlue, X + 350, Y + 280)
-                    YourEventArgs.Graphics.DrawString(" ريال با مسئوليت آن شرکت/موسسه معرفی می گردد ", myStrFontMin, Brushes.DarkBlue, X + 125, Y + 280)
-                    YourEventArgs.Graphics.DrawString(_PPDS.LoadCapacitorLoadDescription, myStrFontMax, Brushes.DarkBlue, X + 20, Y + 300)
-                    YourEventArgs.Graphics.DrawString("نام کاربر : " + _PPDS.UserName, myStrFontMin, Brushes.DarkBlue, X + 50, Y + 320)
-                    YourEventArgs.Graphics.DrawString(" طول سفر :" + _PPDS.OtherNote + " ساعت", myStrFontMin, Brushes.DarkBlue, X + 165, Y + 320)
+                    YourEventArgs.Graphics.DrawString(" بدين وسيله يک دستگاه " + _PPDS.LoaderType, myStrFontMin, Brushes.DarkBlue, X + 300, Y + 120)
+                    YourEventArgs.Graphics.DrawString(" به رانندگی آقای " + _PPDS.TruckDriver, myStrFontSuperMax, Brushes.DarkBlue, X + 150, Y + 140)
+                    YourEventArgs.Graphics.DrawString(_PPDS.TruckDriverDrivingLicenseNo + " دارای گواهينامه به شماره ", myStrFontMin, Brushes.DarkBlue, X + 20, Y + 170)
+                    YourEventArgs.Graphics.DrawString(" از " + _PPDS.SourceCity, myStrFontMax, Brushes.DarkBlue, X + 250, Y + 180)
+                    YourEventArgs.Graphics.DrawString(" به مقصد " + _PPDS.TargetCity, myStrFontMax, Brushes.DarkBlue, X + 20, Y + 180)
+                    YourEventArgs.Graphics.DrawString(" جهت حمل " + _PPDS.GoodName, myStrFontMax, Brushes.DarkBlue, X + 330, Y + 210)
+                    YourEventArgs.Graphics.DrawString(_PPDS.TransportPrice + " با نرخ ", myStrFontMin, Brushes.DarkBlue, X + 350, Y + 240)
+                    YourEventArgs.Graphics.DrawString(" ريال با مسئوليت آن شرکت/موسسه معرفی می گردد ", myStrFontMin, Brushes.DarkBlue, X + 125, Y + 240)
+                    YourEventArgs.Graphics.DrawString(_PPDS.LoadCapacitorLoadDescription, myStrFontMax, Brushes.DarkBlue, X + 20, Y + 260)
+                    YourEventArgs.Graphics.DrawString("نام کاربر : " + _PPDS.UserName, myStrFontMin, Brushes.DarkBlue, X + 50, Y + 280)
+                    YourEventArgs.Graphics.DrawString(" طول سفر :" + _PPDS.OtherNote + " ساعت", myStrFontMin, Brushes.DarkBlue, X + 165, Y + 280)
+                    YourEventArgs.Graphics.DrawString("باتوجه به اعلام شرکت ذوب آهن ورود افراد فقط با ماسک امکانپذير است", myStrFontUpperMax, Brushes.DarkBlue, X, Y + 300)
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
@@ -5115,6 +5411,9 @@ Namespace LoadAllocation
                 If NSSAnnouncementHallSubGroup.Active = 0 Then Throw New AnnouncementHallSubGroupUnActiveException
                 Dim NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = Turns.R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(YourTurnId)
                 Dim NSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(NSSTurn)
+                'بررسی بار فردا
+                If NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow Then Throw New UnableAllocatingTommorowLoadException
+
                 'آیا زمان تخصیص بار برای زیرگروه سالن مورد نظر فرارسیده است
                 If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
                     If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationTime Then
@@ -5717,6 +6016,15 @@ Namespace LoadAllocation
 
     Namespace Exceptions
 
+        Public Class UnableAllocatingTommorowLoadException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "بار فردا قابلیت صدور تخصیص ندارد"
+                End Get
+            End Property
+        End Class
+
         Public Class TimingNotReachedException
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
@@ -6015,7 +6323,7 @@ Namespace LoadSedimentation
 
                 Dim LastAnnounceTime As String = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetAnnouncemenetHallLastAnnounceTime(YourAHId, YourAHSGId).Time
                 CmdSql.CommandText = "Update dbtransport.dbo.tbElam Set bFlag=1,LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " 
-                                       Where (dDateElam='" & _DateTime.GetCurrentDateShamsiFull & "') and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled & " and AHId=" & YourAHId & " and AHSGId=" & YourAHSGId & " and (dTimeElam<='" & LastAnnounceTime & "')"
+                                       Where (dDateElam='" & _DateTime.GetCurrentDateShamsiFull & "') and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow & " and AHId=" & YourAHId & " and AHSGId=" & YourAHSGId & " and (dTimeElam<='" & LastAnnounceTime & "')"
                 CmdSql.Connection.Open()
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
@@ -6075,7 +6383,7 @@ Namespace LoadSedimentation
             Try
                 R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId)
                 CmdSql.CommandText = "Update dbtransport.dbo.tbElam Set bFlag=1,LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " 
-                                       Where (nEstelamId=" & YournEstelamId & ") and (LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled & ")"
+                                       Where (nEstelamId=" & YournEstelamId & ") and (LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow & ")"
                 CmdSql.Connection.Open()
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()

@@ -406,8 +406,8 @@ Namespace MonetaryCreditSupplySources
                     Try
                         _PCPOS = New PcPosBusiness
                         _PCPOS.Amount = Amount
-                        _PCPOS.RetryTimeOut = New Integer() {5000, 5000, 5000}
-                        _PCPOS.ResponseTimeout = New Integer() {1800000, 5000, 5000}
+                        _PCPOS.RetryTimeOut = New Integer() {1800000, 1800000, 1800000}
+                        _PCPOS.ResponseTimeout = New Integer() {1800000, 1800000, 1800000}
                         _PCPOS.Ip = TargetedPosDevice.IpAddress
                         _PCPOS.Port = TargetedPosDevice.Port
                         _PCPOS.ConnectionType = PcPosConnectionType.Lan

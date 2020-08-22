@@ -30,21 +30,6 @@ Public Class FrmcUserPasswordEdit
         End Try
     End Sub
 
-    Private Sub Sabtroutin()
-        Dim cmdsql As New SqlClient.SqlCommand
-        cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
-        Try
-            cmdsql.Connection.Open()
-            cmdsql.CommandText = "update R2Primary.dbo.TblSoftwareUsers Set UserPassword='" & UcTextBoxNewUserPassword.UCValue & "'   where UserId=" & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ""
-            cmdsql.ExecuteNonQuery()
-            cmdsql.Connection.Close()
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess,"رمز عبور کاربر تغییر یافت", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch ex As Exception
-            If cmdsql.Connection.State <> ConnectionState.Closed Then cmdsql.Connection.Close()
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-        End Try
-    End Sub
-
 
 
 #End Region
@@ -56,7 +41,8 @@ Public Class FrmcUserPasswordEdit
 
     Private Sub UcButton_UCClickedEvent() Handles UcButton.UCClickedEvent
         Try
-            Sabtroutin()
+            R2CoreMClassLoginManagement.ChangeUserPassword(New R2CoreStandardUserStructure(R2CoreMClassLoginManagement.CurrentUserNSS.UserId,Nothing,Nothing,UcTextBoxNewUserPassword.UCValue,Nothing,Nothing,Nothing))
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess,"رمز عبور کاربر تغییر یافت", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

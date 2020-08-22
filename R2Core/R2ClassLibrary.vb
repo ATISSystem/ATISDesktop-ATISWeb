@@ -90,6 +90,16 @@ Public Class R2Enums
         Min = 2
     End Enum
 
+    Public Enum MessageDialogType
+        None = 0
+        ErrorType = 1
+        ErrorInDataEntry = 2
+        Warning = 3
+        SuccessProccess = 4
+        Information = 5
+    End Enum
+
+
 End Class
 
 Namespace PublicProc
@@ -1723,6 +1733,19 @@ Namespace UserManagement
             End Try
         End Function
 
+        PUBLIC Shared sub ChangeUserPassword(YourNSS As R2CoreStandardUserStructure)
+            Dim cmdsql As New SqlClient.SqlCommand
+            cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
+            Try
+                cmdsql.Connection.Open()
+                cmdsql.CommandText = "update R2Primary.dbo.TblSoftwareUsers Set UserPassword='" & YourNSS.UserPassword & "'   where UserId=" & YourNSS.UserId & ""
+                cmdsql.ExecuteNonQuery()
+                cmdsql.Connection.Close()
+            Catch ex As Exception
+                If cmdsql.Connection.State <> ConnectionState.Closed Then cmdsql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End sub
 
     End Class
 

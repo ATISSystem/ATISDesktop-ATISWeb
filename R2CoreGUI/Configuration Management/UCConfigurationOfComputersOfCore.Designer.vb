@@ -1343,7 +1343,7 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(929, 29)
         Me.Label8.TabIndex = 0
-        Me.Label8.Text = "اعلان پیام های سیستم"
+        Me.Label8.Text = "اعلام پیام های سیستم"
         Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Panel14

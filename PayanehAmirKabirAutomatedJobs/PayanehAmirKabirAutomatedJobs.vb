@@ -7,6 +7,7 @@ Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
 Imports R2Core.UserManagement
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
 Imports R2CoreTransportationAndLoadNotification.Logging
 
@@ -57,6 +58,14 @@ Public Class PayanehAmirKabirAutomatedJobs
         Try
             _AutomatedJobsTimer.Enabled = False
             _AutomatedJobsTimer.Stop()
+
+            'انتقال بار فردا به بار امروز
+            Try
+                R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TransferringTommorowLoads:" + ex.Message.ToString, EventLogEntryType.Error)
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.TransferringTommorowLoads, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, Nothing, Nothing, Nothing))
+            End Try
 
             'فراخوانی سرویس رسوب بار در سالن اعلام بار
             Try

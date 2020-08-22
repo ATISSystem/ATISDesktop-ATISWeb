@@ -45,6 +45,10 @@ Namespace R2PrimaryWS
         
         Private WebMethodReportingInformationPrividerCarEntranceReportOperationCompleted As System.Threading.SendOrPostCallback
         
+        Private WebMethodReportingInformationPrividerTerraficCardsIdentityReportOperationCompleted As System.Threading.SendOrPostCallback
+        
+        Private WebMethodReportingInformationPrividerBlackListReportOperationCompleted As System.Threading.SendOrPostCallback
+        
         Private WebMethodGetCurrentDateTimeMilladiOperationCompleted As System.Threading.SendOrPostCallback
         
         Private WebMethodRegisteringHandyBillsOperationCompleted As System.Threading.SendOrPostCallback
@@ -115,6 +119,12 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         Public Event WebMethodReportingInformationPrividerCarEntranceReportCompleted As WebMethodReportingInformationPrividerCarEntranceReportCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodReportingInformationPrividerTerraficCardsIdentityReportCompleted As WebMethodReportingInformationPrividerTerraficCardsIdentityReportCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodReportingInformationPrividerBlackListReportCompleted As WebMethodReportingInformationPrividerBlackListReportCompletedEventHandler
         
         '''<remarks/>
         Public Event WebMethodGetCurrentDateTimeMilladiCompleted As WebMethodGetCurrentDateTimeMilladiCompletedEventHandler
@@ -318,6 +328,59 @@ Namespace R2PrimaryWS
             If (Not (Me.WebMethodReportingInformationPrividerCarEntranceReportCompletedEvent) Is Nothing) Then
                 Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
                 RaiseEvent WebMethodReportingInformationPrividerCarEntranceReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerTerraficCardsIdentityRepo"& _ 
+            "rt", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationPrividerTerraficCardsIdentityReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
+            Me.Invoke("WebMethodReportingInformationPrividerTerraficCardsIdentityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerTerraficCardsIdentityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
+            Me.WebMethodReportingInformationPrividerTerraficCardsIdentityReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerTerraficCardsIdentityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationPrividerTerraficCardsIdentityReportOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationPrividerTerraficCardsIdentityReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerTerraficCardsIdentityReportOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodReportingInformationPrividerTerraficCardsIdentityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2}, Me.WebMethodReportingInformationPrividerTerraficCardsIdentityReportOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodReportingInformationPrividerTerraficCardsIdentityReportOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationPrividerTerraficCardsIdentityReportCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodReportingInformationPrividerTerraficCardsIdentityReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerBlackListReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationPrividerBlackListReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourBlackListType As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerBlackListReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourBlackListType})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerBlackListReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourBlackListType As Long)
+            Me.WebMethodReportingInformationPrividerBlackListReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourBlackListType, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerBlackListReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourBlackListType As Long, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationPrividerBlackListReportOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationPrividerBlackListReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerBlackListReportOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodReportingInformationPrividerBlackListReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourBlackListType}, Me.WebMethodReportingInformationPrividerBlackListReportOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodReportingInformationPrividerBlackListReportOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationPrividerBlackListReportCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodReportingInformationPrividerBlackListReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
             End If
         End Sub
         
@@ -526,6 +589,14 @@ Namespace R2PrimaryWS
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerCarEntranceReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodReportingInformationPrividerTerraficCardsIdentityReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodReportingInformationPrividerBlackListReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _

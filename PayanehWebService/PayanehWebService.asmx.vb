@@ -400,7 +400,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodGetTransportCompaniesDailyMessage(ByRef YourDailyMessageColorHolder As String) As String
         Try
-            WebMethodSetUser()
+            WebMethodSetUser() 
             Return PayanehClassLibrary.TransportCompanies.TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompaniesDailyMessage(YourDailyMessageColorHolder)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
