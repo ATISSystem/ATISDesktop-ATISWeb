@@ -7,10 +7,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="container-fluid p-0">
-        <div class="row ">
+        <div class="d-flex flex-row justify-content-around">
             <div class="col-lg-3">
                 <div class="card" style="width: 18rem;">
-                    <img src="/Images/Allighapoo1.jpg" class="card-img-top" alt="...">
+                    <img src="/Images/Header2.jpg" class="card-img-top" alt="...">
                     <div class="card-body text-right">
                         <h5 class="card-title text-right R2FontBYekanLarge">تغییر رمز عبور</h5>
                         <p class="card-text text-right R2FontBYekanSmall">از طریق این منو امکان تغییر رمز عبور وجود دارد.پس از تغییر رمز از سیستم خارج شوید و مجددا وارد شوید تا از صحت رمز عبور جدید اطمینان یابید</p>
@@ -20,7 +20,7 @@
             </div>
             <div class="col-lg-3">
                 <div class="card" style="width: 18rem;">
-                    <img src="/Images/Allighapoo1.jpg" class="card-img-top" alt="...">
+                    <img src="/Images/Header2.jpg" class="card-img-top" alt="...">
                     <div class="card-body text-right">
                         <h5 class="card-title text-right R2FontBYekanLarge">بار فردا</h5>
                         <p class="card-text text-right R2FontBYekanSmall">از طریق این منو امکان ثبت،ویرایش ،حذف و مشاهده بارفردا وجود دارد.عملیات مذکور از پایان اعلام بار تا پایان روز امکان پذیر است</p>
@@ -30,7 +30,7 @@
             </div>
             <div class="col-lg-3">
                 <div class="card" style="width: 18rem;">
-                    <img src="/Images/Allighapoo1.jpg" class="card-img-top" alt="...">
+                    <img src="/Images/Header2.jpg" class="card-img-top" alt="...">
                     <div class="card-body text-right">
                         <h5 class="card-title text-right R2FontBYekanLarge">تخصیص بار رسوبی</h5>
                         <p class="card-text text-right R2FontBYekanSmall">از طریق این منو می توانید بارهای رسوب شده خود را مشاهده نموده و در صورت نیاز با داشتن اطلاعات هوشمند ناوگان و راننده تخصیص صادر نمایید</p>
@@ -40,7 +40,7 @@
             </div>
             <div class="col-lg-3">
                 <div class="card" style="width: 18rem;">
-                    <img src="/Images/Allighapoo1.jpg" class="card-img-top" alt="...">
+                    <img src="/Images/Header2.jpg" class="card-img-top" alt="...">
                     <div class="card-body text-right">
                         <h5 class="card-title text-right R2FontBYekanLarge">اعلام بار</h5>
                         <p class="card-text text-right R2FontBYekanSmall">از طریق این منو می توانید بار خود را ثبت،ویرایش و یا حذف نمایید.ثبت،ویرایش و حذف بار حداکثر تا شروع اعلام بار امکان پذیر است</p>

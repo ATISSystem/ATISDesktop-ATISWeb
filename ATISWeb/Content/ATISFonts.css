@@ -26,6 +26,29 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'KoodakBold';
+    src: url('../fonts/KoodakBold.eot?#iefix') format('FontName-opentype'), url('../fonts/KoodakBold.ttf') format('truetype'), url('../fonts/KoodakBold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.R2FontKoodakBoldSmall {
+    font-family: KoodakBold;
+    font-size: small;
+    font-style: normal;
+}
+.R2FontKoodakBoldMedium {
+    font-family: KoodakBold;
+    font-size: medium;
+    font-style: normal;
+}
+.R2FontKoodakBoldLarge {
+    font-family: KoodakBold;
+    font-size: large;
+    font-style: normal;
+}
+
 .R2FontIranNastaliqSmall {
     font-family: IranNastaliq;
     font-size:  small;

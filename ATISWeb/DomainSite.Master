@@ -24,7 +24,7 @@
     <form id="form1" runat="server">
         <TWebControl:WcAlertShower runat="server" ID="WcAlertShower" />
 
-        <div class="jumbotron jumbotron-fluid bg-dark p-0" style="min-height: 100px; background-image: url(/Images/Allighapoo1.jpg)">
+        <div class="jumbotron jumbotron-fluid bg-dark p-0" style="min-height: 100px;background-image: url(/Images/Header3.jpg)" >
             <nav class="navbar navbar-inverse navbar-expand-lg" style="float: right">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -32,10 +32,19 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-white R2FontBYekanMedium" href="/MenuManagement/WfMainMenu.aspx">منوی اصلی</a>
+                            <a  class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color:rgba(0, 0, 0, 0.2);" href="/TransportationAndLoadNotification/LoadCapacitorManagement/WfTommorowLoadsManipulation.aspx">بار فردا</a>
+                        </li>
+                        <li class="nav-item">
+                            <a  class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color:rgba(0, 0, 0, 0.2);" href="/TransportationAndLoadNotification/LoadAllocationManagement/WfLoadCapacitorLoadLoadAllocationLoadPermissionIssue.aspx">تخصیص بار رسوبی</a>
+                        </li>
+                        <li class="nav-item">
+                            <a  class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color:rgba(0, 0, 0, 0.2);" href="/TransportationAndLoadNotification/LoadCapacitorManagement/WfLoadCapacitorLoadManipulation.aspx">اعلام بار</a>
+                        </li>
+                        <li class="nav-item">
+                            <a  class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color:rgba(0, 0, 0, 0.2);" href="/MenuManagement/WfMainMenu.aspx">منوی اصلی</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link text-white R2FontBYekanMedium" href="/ATISStartManagement/WfATISStart.aspx">صفحه اصلی</a>
+                            <a  class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color: darkorange;" href="/ATISStartManagement/WfATISStart.aspx">صفحه اصلی</a>
                         </li>
                     </ul>
                 </div>
@@ -43,6 +52,9 @@
         </div>
         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         </asp:ContentPlaceHolder>
+        <footer class="mt-lg-5">
+            <div class="bg-dark" style="min-height: 250px;"></div>
+        </footer>
     </form>
 
 </body>

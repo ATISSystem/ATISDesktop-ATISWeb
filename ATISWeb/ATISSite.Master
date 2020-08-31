@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ATISSite.master.cs" Inherits="ATISWeb.ATISSite" %>
+﻿A<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ATISSite.master.cs" Inherits="ATISWeb.ATISSite" %>
 
 <!DOCTYPE html>
 
@@ -7,46 +7,75 @@
     <title></title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=1">
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/ATISFonts.css" rel="stylesheet" />
 
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
-<body>
+<body style="background-color: black">
     <form id="form1" runat="server">
-        <div class="jumbotron jumbotron-fluid bg-dark p-0" style="background-image: url(/Images/Allighapoo1.jpg); min-height: 600px;">
-            <nav class="navbar navbar-inverse navbar-expand-lg" style="float: right">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link text-white R2FontBYekanMedium" href="#">تماس با ما</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white R2FontBYekanMedium" href="#">راهنمای آتیس</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white R2FontBYekanMedium" href="#">درباره آتیس</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white R2FontBYekanMedium" href="#">آتیس دسکتاپ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white R2FontBYekanMedium" href="#">آتیس موبایل</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white R2FontBYekanMedium" href="/LoginManagement/WfLogin.aspx">آتیس وب</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link text-white R2FontBYekanMedium" href="#">صفحه اصلی</a>
-                        </li>
-                    </ul>
+        <div class="jumbotron jumbotron-fluid p-0" style="background-image: url(/Images/3520962.jpg); min-height: 400px; background-position: center; background-repeat: no-repeat; background-size: cover;">
+            <div class="container-fluid p-0" style="min-height: 70px;">
+                <div class="d-flex flex-column d-inline-flex  ml-3 mt-3">
+                    <span class="R2FontBHomaSmall" style="font-size: 20px; color: white">سامانه آتیس</span>
+                    <span class="R2FontBHomaSmall" style="font-size: 15px; color: white">ارائه خدمات الکترونیک و اطلاع رسانی بار</span>
+                    <span class="R2FontBHomaSmall" style="font-size: 10px; color: white">03133863070-03133863080 تلفن پشتیبانی</span>
+                    <span class="R2FontBHomaSmall" style="font-size: 10px; color: white">03133864300 تلفن شکایات</span>
                 </div>
-            </nav>
+                <nav class="navbar navbar-expand-lg bg-transparent" style="float: right">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item ml-2">
+                                <a class="btn text-white R2FontBYekanMedium" href="#" style="background-color:rgba(0, 0, 0, 0.3);">تماس با ما</a>
+                            </li>
+                            <li class="nav-item ml-2">
+                                <a class="btn text-white R2FontBYekanMedium" href="#" style="background-color:rgba(0, 0, 0, 0.3);">راهنمای آتیس</a>
+                            </li>
+                            <li class="nav-item ml-2">
+                                <a class="btn text-white R2FontBYekanMedium" href="#" style="background-color:rgba(0, 0, 0, 0.3);">درباره آتیس</a>
+                            </li>
+                            <li class="nav-item ml-2">
+                                <a class="btn text-white R2FontBYekanMedium" href="#" style="background-color:rgba(0, 0, 0, 0.3);">آتیس دسکتاپ</a>
+                            </li>
+                            <li class="nav-item ml-2">
+                                <a class="btn text-white R2FontBYekanMedium" href="#" style="background-color:rgba(0, 0, 0, 0.3);">آتیس موبایل</a>
+                            </li>
+                            <li class="nav-item ml-2">
+                                <a class="btn text-white R2FontBYekanMedium" href="/LoginManagement/WfLogin.aspx" style="background-color:rgba(0, 0, 0, 0.3);">آتیس وب</a>
+                            </li>
+                            <li class="nav-item active ml-2">
+                                <a class="btn text-white R2FontBYekanMedium" href="#" style="background-color:darkorange;">صفحه اصلی</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="d-flex flex-column ml-3">
+                <span class="mb-0" style="font-family: Impact; font-size: 60px; color: white">ATIS</span>
+                <span class="" style="font-family: Impact; font-size: 20px; color: white">AmirKabir Transportation Information System</span>
+                <span class="" style="font-family: Brush Script MT; font-size: 25px; color: red">Base On R2Primary System</span>
+            </div>
+
+            <div class="container-fluid p-0" style="visibility: hidden">
+                <div class="row p-0 bg-success col-md-12">
+                    <div class="col col-md-6 bg-transparent border rounded" style="min-height: 300px;">
+                        ATIS
+                        <div class="row row-cols-1">
+                            <div class="col">1 of 2</div>
+                            <div class="col">2 of 2</div>
+                        </div>
+                    </div>
+                    <div class=" col bg-dark col-md-6">
+                        <h1>ATIS</h1>
+                    </div>
+                </div>
+            </div>
         </div>
         <div>
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">

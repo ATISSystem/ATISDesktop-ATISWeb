@@ -2,9 +2,9 @@
 
 <div class="container">
     <div class="card m-auto" style="width: 25rem;">
-        <img class="card-img-top" src="/Images/2-2.jpg" alt="Card image cap">
+        <img class="card-img-top" src="/Images/Header1.jpg" alt="Card image cap" style="min-height: 10rem;">
         <div class="card-body"> 
-            <h6 class="card-title text-center" style="font-size: 10px">پرتال یکپارچه خدمات الکترونیک و اطلاع رسانی بار رانندگان</h6>
+            <h6 class="card-title text-center" style="font-size: 10px">پرتال یکپارچه خدمات الکترونیک و اطلاع رسانی بار</h6>
             <h6 class="card-title text-center R2FontBHomaLarge" style="font-size: 25px">آتیس وب</h6>
             <h6 class="card-title text-center">تایید هویت کاربر</h6>
             <div class="input-group mb-2">
@@ -23,8 +23,7 @@
                 <asp:Button runat="server" ID="BtnSubmit" CssClass="btn btn-success R2FontBYekanSmall" Text="تایید" />
             </div>
         </div>
-        <h4 class="card-text text-center">ATIS System</h4>
-        <h6 class="card-text text-center">AmirKabir Tranportation Information System</h6>
+        <h4 class="card-text text-center">ATIS Web</h4>
         <br />
     </div>
 </div>
