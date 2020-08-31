@@ -33,6 +33,29 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Brush Script MT Italic';
+    src: url('../fonts/Brush Script MT Italic.eot?#iefix') format('embedded-opentype'), url('../fonts/Brush Script MT Italic.ttf') format('truetype'), url('../fonts/Brush Script MT Italic.woff') format('woff'), url('../fonts/Brush Script MT Italic.woff#Brush Script MT Italic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.R2FontBrushScriptMTItalicSmall {
+    font-family: Brush Script MT Italic;
+    font-size: small;
+    font-style: normal;
+}
+.R2FontBrushScriptMTItalicMedium {
+    font-family: Brush Script MT Italic;
+    font-size:  medium;
+    font-style: normal;
+}
+.R2FontBrushScriptMTItalicLarge {
+    font-family: Brush Script MT Italic;
+    font-size: large;
+    font-style: normal;
+}
+
 .R2FontKoodakBoldSmall {
     font-family: KoodakBold;
     font-size: small;
@@ -54,13 +77,11 @@
     font-size:  small;
     font-style: normal;
 }
-
 .R2FontIranNastaliqMedium {
     font-family: IranNastaliq;
     font-size: medium;
     font-style: normal;
 }
-
 .R2FontIranNastaliqLarge {
     font-family: IranNastaliq;
     font-size: large;
@@ -72,25 +93,21 @@
     font-size: large;
     font-style: normal;
 }
-
 .R2FontBYekanXLarge {
     font-family: BYekan;
     font-size: x-large;
     font-style: normal;
 }
-
 .R2FontBYekanXXLarge {
     font-family: BYekan;
     font-size:  xx-large;
     font-style: normal;
 }
-
 .R2FontBYekanMedium {
     font-family: BYekan;
     font-size: medium;
     font-style: normal;
 }
-
 .R2FontBYekanSmall {
     font-family: BYekan;
     font-size: small;
@@ -102,25 +119,21 @@
     font-size: large;
     font-style: normal;
 }
-
 .R2FontBHomaXLarge {
     font-family: BHoma;
     font-size: x-large;
     font-style: normal;
 }
-
 .R2FontBHomaXXLarge {
     font-family: BHoma;
     font-size: xx-large;
     font-style: normal;
 }
-
 .R2FontBHomaMedium {
     font-family: BHoma;
     font-size: medium;
     font-style: normal;
 }
-
 .R2FontBHomaSmall {
     font-family: BHoma;
     font-size: small;

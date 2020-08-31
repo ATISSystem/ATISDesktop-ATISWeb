@@ -81,6 +81,7 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\ATISFonts.css" />
     <Content Include="Default.aspx" />
+    <Content Include="fonts\Brush Script MT Italic.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\Yekan.svg" />
     <Content Include="Images\2-2.jpg" />
@@ -138,6 +139,9 @@
     <Content Include="fonts\KoodakBold.eot" />
     <Content Include="fonts\KoodakBold.ttf" />
     <Content Include="fonts\KoodakBold.woff" />
+    <Content Include="fonts\Brush Script MT Italic.eot" />
+    <Content Include="fonts\Brush Script MT Italic.ttf" />
+    <Content Include="fonts\Brush Script MT Italic.woff" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />

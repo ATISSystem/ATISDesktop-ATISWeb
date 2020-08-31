@@ -59,7 +59,7 @@
             <div class="d-flex flex-column ml-3">
                 <span class="mb-0" style="font-family: Impact; font-size: 60px; color: white">ATIS</span>
                 <span class="" style="font-family: Impact; font-size: 20px; color: white">AmirKabir Transportation Information System</span>
-                <span class="" style="font-family: Brush Script MT; font-size: 25px; color: red">Base On R2Primary System</span>
+                <span class="R2FontBrushScriptMTItalicSmall" style="color: red">Base On R2Primary System</span>
             </div>
 
             <div class="container-fluid p-0" style="visibility: hidden">
