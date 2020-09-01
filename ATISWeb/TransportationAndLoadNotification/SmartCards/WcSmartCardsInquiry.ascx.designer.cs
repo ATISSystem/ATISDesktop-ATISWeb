@@ -40,22 +40,13 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards {
         protected global::System.Web.UI.WebControls.TextBox TxtTruckSmartCardNo;
         
         /// <summary>
-        /// BtnTruckSmartCardInquiryfromRMTO control.
+        /// BtnTruckSmartCardInquiry control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnTruckSmartCardInquiryfromRMTO;
-        
-        /// <summary>
-        /// BtnTruckSmartCardInquiryfromLocal control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnTruckSmartCardInquiryfromLocal;
+        protected global::System.Web.UI.WebControls.Button BtnTruckSmartCardInquiry;
         
         /// <summary>
         /// LblTruck control.
@@ -85,22 +76,13 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards {
         protected global::System.Web.UI.WebControls.TextBox TxtTruckDriverSmartCardNo;
         
         /// <summary>
-        /// BtnTruckDriverSmartCardInquiryfromRMTO control.
+        /// BtnTruckDriverSmartCardInquiry control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnTruckDriverSmartCardInquiryfromRMTO;
-        
-        /// <summary>
-        /// BtnTruckDriverSmartCardInquiryfromLocal control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnTruckDriverSmartCardInquiryfromLocal;
+        protected global::System.Web.UI.WebControls.Button BtnTruckDriverSmartCardInquiry;
         
         /// <summary>
         /// LblTruckDriver control.

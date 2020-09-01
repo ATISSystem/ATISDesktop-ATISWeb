@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 
 using PayanehClassLibrary.CarTrucksManagement;
 using PayanehClassLibrary.DriverTrucksManagement;
+using R2Core.ExceptionManagement;
 
 namespace ATISWeb.TransportationAndLoadNotification.SmartCards
 {
@@ -31,8 +32,6 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
             TxtTruckSmartCardNo.Text = string.Empty;
         }
 
-        private void WcViewTruck(R2StandardCarTruckStructure YourNSS)
-        { LblTruck.Text = YourNSS.NSSCar.GetCarPelakSerialComposit(); }
 
         #endregion
 
@@ -45,56 +44,38 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
         {
             try
             {
-                BtnTruckSmartCardInquiryfromRMTO.Click += BtnTruckSmartCardInquiryfromRMTO_Click;
-                BtnTruckSmartCardInquiryfromLocal.Click += BtnTruckSmartCardInquiryfromLocal_Click;
-                BtnTruckDriverSmartCardInquiryfromLocal.Click += BtnTruckDriverSmartCardInquiryfromLocal_Click;
-                BtnTruckDriverSmartCardInquiryfromRMTO.Click += BtnTruckDriverSmartCardInquiryfromRMTO_Click;
+                BtnTruckSmartCardInquiry.Click += BtnTruckSmartCardInquiry_Click;
+                BtnTruckDriverSmartCardInquiry.Click += BtnTruckDriverSmartCardInquiry_Click;
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }
 
-        private void BtnTruckDriverSmartCardInquiryfromRMTO_Click(object sender, EventArgs e)
+        private void BtnTruckDriverSmartCardInquiry_Click(object sender, EventArgs e)
         {
             try
             {
                 LblTruckDriver.Text = string.Empty;
-                R2StandardDriverTruckStructure NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetDriverTruckfromRMTOAndInsertUpdateLocalDataBase(TxtTruckDriverSmartCardNo.Text);
+                R2StandardDriverTruckStructure NSS = null;
+                try { NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbySmartCardNo(TxtTruckDriverSmartCardNo.Text); }
+                catch (GetNSSException ex)
+                { NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetDriverTruckfromRMTOAndInsertUpdateLocalDataBase(TxtTruckDriverSmartCardNo.Text); }
                 LblTruckDriver.Text = NSS.NSSDriver.StrPersonFullName.Trim();
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }
 
-        private void BtnTruckDriverSmartCardInquiryfromLocal_Click(object sender, EventArgs e)
+        private void BtnTruckSmartCardInquiry_Click(object sender, EventArgs e)
         {
             try
             {
-                LblTruckDriver.Text = string.Empty;
-                R2StandardDriverTruckStructure NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbySmartCardNo(TxtTruckDriverSmartCardNo.Text);
-                LblTruckDriver.Text = NSS.NSSDriver.StrPersonFullName.Trim();
-            }
-            catch (Exception ex)
-            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
-        }
-
-        private void BtnTruckSmartCardInquiryfromLocal_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                R2StandardCarTruckStructure NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyBodyNo(TxtTruckSmartCardNo.Text);
-                WcViewTruck(NSS);
-            }
-            catch (Exception ex)
-            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
-        }
-
-        private void BtnTruckSmartCardInquiryfromRMTO_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                R2StandardCarTruckStructure NSS = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase(TxtTruckSmartCardNo.Text);
-                WcViewTruck(NSS);
+                LblTruck.Text = string.Empty;
+                R2StandardCarTruckStructure NSS = null;
+                try { NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyBodyNo(TxtTruckSmartCardNo.Text); }
+                catch (GetNSSException ex)
+                { NSS = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase(TxtTruckSmartCardNo.Text); }
+                LblTruck.Text = NSS.NSSCar.GetCarPelakSerialComposit();
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }

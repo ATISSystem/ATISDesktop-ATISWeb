@@ -53,7 +53,7 @@
 
     <div class="container">
         <div class="modal fade" id="Alerter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" id="PnlDialog" role="document">
+            <div class="modal-dialog modal-dialog-centered modal-xl" id="PnlDialog" role="document">
                 <div class="modal-content" id="PnlContent">
                     <div class="modal-header text-center" id="PnlHeader">
                         <span class="R2FontBYekanMedium text-white">پیام سیستم</span>
@@ -64,10 +64,10 @@
                     <div class="modal-body text-center R2FontBHomaSmall" style="word-wrap: break-word;">
                         <div class="d-flex flex-column">
                             <span class="R2FontBHomaXLarge" style="color:crimson" id="SpanFixMessage1"></span>
-                            <span class="R2FontBHomaSmall" id="SpanDailyMessage"></span>
+                            <span class="R2FontBHomaXLarge" id="SpanDailyMessage"></span>
                             <hr id="hr1"/>
                             <span class="R2FontBHomaLarge" id="SpanFixMessage2"></span>
-                            <span class="R2FontBYekanXXLarge" id="SpanFixMessage3"></span>
+                            <span class="R2FontBHomaLarge" id="SpanFixMessage3"></span>
                         </div>
                     </div>
                     <div class="modal-footer">

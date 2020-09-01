@@ -53,7 +53,7 @@
         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         </asp:ContentPlaceHolder>
         <footer class="mt-lg-5">
-            <div class="bg-dark" style="min-height: 250px;"></div>
+            <div class="bg-light" style="min-height: 250px;"></div>
         </footer>
     </form>
 

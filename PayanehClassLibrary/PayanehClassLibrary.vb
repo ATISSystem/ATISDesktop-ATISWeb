@@ -1677,7 +1677,6 @@ Namespace CarTrucksManagement
 
         Public Shared Function GetNSSCarTruckbyBodyNo(YourStrBodyNo As String) As R2StandardCarTruckStructure
             Try
-
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 Da.SelectCommand = New SqlCommand("Select Top 1 * from dbtransport.dbo.TbCar Where StrBodyNo='" & YourStrBodyNo & "' Order By nIdCar Desc")
                 Da.SelectCommand.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()

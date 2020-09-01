@@ -6,7 +6,7 @@
 
 <div class="container-fluid p-1 border border-primary">
     <div class="container-fluid text-right bg-primary mb-1" style="height: 40px">
-        <asp:Label runat="server" ID="Label2" CssClass="R2FontBHomaLarge text-white">ثبت و یرایش بار</asp:Label>
+        <asp:Label runat="server" ID="Label2" CssClass="R2FontBHomaLarge text-white">ثبت و ویرایش بار</asp:Label>
     </div>
     <div class="container-fluid p-0 mb-2" style="">
         <TWebControl:WcLoadCapacitorLoadsCollectionSummaryIntelligently runat="server" ID="WcLoadCapacitorLoadsCollectionSummaryIntelligently"></TWebControl:WcLoadCapacitorLoadsCollectionSummaryIntelligently>
@@ -56,7 +56,7 @@
                                 <div class="input-group mb-1">
                                     <asp:TextBox ID="TxtSearchLoaderType" runat="server" CssClass="form-control R2FontBHomaSmall text-center" placeholder="جستجو" Style="direction: rtl;"></asp:TextBox>
                                     <div class="input-group-append">
-                                        <button runat="server" id="BtnSearchLoaderType" class="btn btn-group-sm" style="background-color: greenyellow; color: black"><i class="fa fa-refresh" style=""></i></button>
+                                        <button runat="server" id="BtnSearchLoaderType" class="btn btn-group-sm" style="background-color: gray; color: white"><i class="fa fa-search" style=""></i></button>
                                     </div>
                                 </div>
                                 <asp:DropDownList ID="DropDownListLoaderType" runat="server" CssClass="form-control form-control-sm R2FontBHomaSmall" dir="rtl" AutoPostBack="True"></asp:DropDownList>
@@ -75,7 +75,7 @@
                                 <div class="input-group mb-1">
                                     <asp:TextBox ID="TxtSearchTargetCity" runat="server" CssClass="form-control R2FontBHomaSmall text-center" placeholder="جستجو" Style="direction: rtl;"></asp:TextBox>
                                     <div class="input-group-append">
-                                        <button runat="server" id="BtnSearchTargetCity" class="btn btn-group-sm" style="background-color: greenyellow; color: black"><i class="fa fa-refresh" style=""></i></button>
+                                        <button runat="server" id="BtnSearchTargetCity" class="btn btn-group-sm" style="background-color: gray; color: white"><i class="fa fa-search" style=""></i></button>
                                     </div>
                                 </div>
                                 <asp:DropDownList ID="DropDownListTargetCity" runat="server" CssClass="form-control form-control-sm R2FontBHomaSmall" dir="rtl" AutoPostBack="True"></asp:DropDownList>
@@ -95,7 +95,7 @@
                                 <div class="input-group mb-1">
                                     <asp:TextBox ID="TxtSearchLoad" runat="server" CssClass="form-control R2FontBHomaSmall text-center" placeholder="جستجو" Style="direction: rtl;"></asp:TextBox>
                                     <div class="input-group-append">
-                                        <button runat="server" id="BtnSearchLoad" class="btn btn-group-sm" style="background-color: greenyellow; color: black"><i class="fa fa-refresh" style=""></i></button>
+                                        <button runat="server" id="BtnSearchLoad" class="btn btn-group-sm" style="background-color: gray; color: white"><i class="fa fa-search" style=""></i></button>
                                     </div>
                                 </div>
                                 <asp:DropDownList ID="DropDownListLoad" runat="server" CssClass="form-control form-control-sm R2FontBHomaSmall" dir="rtl" AutoPostBack="True"></asp:DropDownList>
