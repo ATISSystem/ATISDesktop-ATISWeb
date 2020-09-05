@@ -34,6 +34,9 @@
                                 <a class="btn text-white R2FontBYekanMedium" href="#" style="background-color:rgba(0, 0, 0, 0.3);">تماس با ما</a>
                             </li>
                             <li class="nav-item ml-2">
+                                <a class="btn R2FontBYekanMedium" href="#" style="background-color:rgba(0, 0, 0, 0.3); color: yellow;">شارژ کیف پول</a>
+                            </li>
+                            <li class="nav-item ml-2">
                                 <a class="btn text-white R2FontBYekanMedium" href="#" style="background-color:rgba(0, 0, 0, 0.3);">راهنمای آتیس</a>
                             </li>
                             <li class="nav-item ml-2">

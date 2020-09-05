@@ -3,6 +3,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    
+    <div class="jumbotron w-25 bg-transparent mx-auto mt-0">
+        <a href="#" class="btn R2FontBHomaMedium text-nowrap" style="background-color: yellow;color:black">شارژ کیف پول از طریق درگاه پرداخت زرین پال</a>
+    </div>
 
     <div class="container-fluid p-0 mb-5">
         <div class="d-flex flex-row justify-content-around">

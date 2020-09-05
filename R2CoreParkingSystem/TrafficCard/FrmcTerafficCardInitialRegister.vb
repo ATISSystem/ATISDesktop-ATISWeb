@@ -67,7 +67,6 @@ Public Class FrmcTerafficCardInitialRegister
             NSSTerafficCard.TempCardType = UcCmbTerafficTempCardType.UCGetCurrentTempTypeCode()
             R2CoreParkingSystemMClassTrafficCardManagement.TerafficCardInitialRegister(NSSTerafficCard)
             R2CoreMClassLoggingManagement.LogRegister(new R2CoreStandardLoggingStructure(0,R2CoreLogType.Info,"ثبت اولیه و فعال سازی کارت تردد انجام گرفت",NSSTerafficCard.CardNo,0,0,0,0,R2CoreMClassLoginManagement.CurrentUserNSS.UserId,_DateTime.GetCurrentDateTimeMilladiFormated(),_DateTime.GetCurrentDateShamsiFull))
-            MessageBox.Show("کارت تردد ثبت شد")
         Catch exx As GetNSSException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "برای ثبت کارت تردد باید ابتدا کارت در لیست کارت های آر اف ثبت شود", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception

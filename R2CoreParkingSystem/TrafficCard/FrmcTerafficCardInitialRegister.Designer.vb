@@ -57,6 +57,8 @@ Partial Class FrmcTerafficCardInitialRegister
         '
         'UcLabelNote
         '
+        Me.UcLabelNote._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabelNote._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelNote.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.UcLabelNote.BackColor = System.Drawing.Color.Transparent
         Me.UcLabelNote.Location = New System.Drawing.Point(592, 35)

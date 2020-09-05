@@ -7,11 +7,13 @@ using R2Core.PublicProc;
 using R2Core.UserManagement;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls;
 using R2CoreTransportationAndLoadNotification.Goods;
+using R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadManipulation;
 using R2CoreTransportationAndLoadNotification.LoaderTypes;
 using R2CoreTransportationAndLoadNotification.LoadTargets;
 using R2CoreTransportationAndLoadNotification.TransportCompanies;
+using R2CoreTransportationAndLoadNotification.TransportCompanies.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 {
@@ -237,6 +239,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 WcInformationChangedEvent?.Invoke(this, new EventArgs());
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "بار با موفقیت به ثبت رسید" + "');", true);
             }
+            catch (Exception ex) when (ex is LoadCapacitorLoadNumberOverLimitException || ex is LoadCapacitorLoadnCarNumKolCanNotBeZeroException || ex is TransportCompanyISNotActiveException || ex is LoadCapacitorLoadRegisterTimePassedException || ex is LoadCapacitorLoadEditTimePassedException)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "\\n" + ex.Message + "');", true); }
         }
@@ -254,6 +258,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                     Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "بار با موفقیت حذف شد" + "');", true);
                 }
             }
+            catch (Exception ex) when (ex is LoadCapacitorLoadDeleteTimePassedException)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "\\n" + ex.Message + "');", true); }
 
@@ -272,6 +278,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                     Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "بار با موفقیت کنسل شد" + "');", true);
                 }
             }
+            catch (Exception ex) when (ex is LoadCapacitorLoadCancelTimeNotReachedException)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "\\n" + ex.Message + "');", true); }
 
