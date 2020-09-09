@@ -249,7 +249,9 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         {
             try
             {
-                R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure NSS = WcGetNSS(false);
+                R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure NSSTemp = WcGetNSS(false);
+                R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure NSS = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(NSSTemp.nEstelamId);
+
                 if (NSS.nEstelamId != 0)
                 {
                     R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadDeleting(NSS,ATISWebMClassLoginManagement.GetNSSCurrentUser());
@@ -269,7 +271,9 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         {
             try
             {
-                R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure NSS = WcGetNSS(false);
+                R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure NSSTemp = WcGetNSS(false);
+                R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure NSS = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(NSSTemp.nEstelamId);
+
                 if (NSS.nEstelamId != 0)
                 {
                     R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadCancelling(NSS,ATISWebMClassLoginManagement.GetNSSCurrentUser());
