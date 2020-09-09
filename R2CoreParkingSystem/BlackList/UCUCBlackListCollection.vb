@@ -105,12 +105,12 @@ Public Class UCUCBlackListCollection
                 Exit Sub
             End If
             CmdSql.Connection.Open()
-            CmdSql.CommandText = "Insert Into dbtransport.dbo.TbBlackList(nTruckNo,nPlakPlac,nPlakSerial,StrDesc,FlagA,nAmount,StrDate,nUser) Values('" & _NSSCar.StrCarNo & "'," & _NSSCar.nIdCity & ",'" & _NSSCar.StrCarSerialNo & "','" & UcPersianTextBoxSharh.UCValue & "',0," & UcMoney.UCValueMoney & ",'" & _DateTime.GetCurrentDateShamsiFull() & "'," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ")"
+            CmdSql.CommandText = "Insert Into dbtransport.dbo.TbBlackList(nTruckNo,nPlakPlac,nPlakSerial,StrDesc,FlagA,nAmount,StrDate,nUser) Values('" & _NSSCar.StrCarNo & "'," & _NSSCar.nIdCity & ",'" & _NSSCar.StrCarSerialNo & "','" & UcPersianTextBoxSharh.UCValue & "',0," & UcMoney.UCValueMoney & ",'" & _DateTime.GetCurrentDateShamsiFull() & "'," & R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId & ")"
             CmdSql.ExecuteNonQuery()
             CmdSql.Connection.Close()
             UCViewInformation(_NSSCar)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "شرح تخلف به لیست سیاه خودرو اضافه شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Info, "شرح تخلف به لیست سیاه خودرو اضافه شد" + vbCrLf + UcPersianTextBoxSharh.UCValue, "", 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Info, "شرح تخلف به لیست سیاه خودرو اضافه شد" + vbCrLf + UcPersianTextBoxSharh.UCValue, "", 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

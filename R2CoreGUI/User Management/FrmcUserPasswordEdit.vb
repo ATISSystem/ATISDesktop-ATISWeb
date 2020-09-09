@@ -41,7 +41,7 @@ Public Class FrmcUserPasswordEdit
 
     Private Sub UcButton_UCClickedEvent() Handles UcButton.UCClickedEvent
         Try
-            R2CoreMClassLoginManagement.ChangeUserPassword(New R2CoreStandardUserStructure(R2CoreMClassLoginManagement.CurrentUserNSS.UserId,Nothing,Nothing,UcTextBoxNewUserPassword.UCValue,Nothing,Nothing,Nothing))
+            R2CoreMClassLoginManagement.ChangeUserPassword(New R2CoreStandardUserStructure(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId,Nothing,Nothing,UcTextBoxNewUserPassword.UCValue,Nothing,Nothing,Nothing))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess,"رمز عبور کاربر تغییر یافت", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

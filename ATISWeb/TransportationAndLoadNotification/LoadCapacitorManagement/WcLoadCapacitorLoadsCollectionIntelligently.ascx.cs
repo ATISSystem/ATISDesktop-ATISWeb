@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using ATISWeb.LoginManagement;
 using R2Core.PublicProc;
 using R2Core.UserManagement;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
@@ -38,7 +38,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         {
             try
             {
-                var TCId = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(R2CoreMClassLoginManagement.CurrentUserNSS).TCId;
+                var TCId = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(ATISWebMClassLoginManagement.GetNSSCurrentUser()).TCId;
                 List<R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure> Lst = null;
                 if (WcCurrentListType == LoadCapacitorLoadsListType.NotSedimented)
                 {

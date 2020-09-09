@@ -5,8 +5,9 @@ using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using R2Core.ExceptionManagement;
 using R2Core.UserManagement;
+using R2Core.UserManagement.Exceptions;
 
 namespace ATISWeb.LoginManagement
 {
@@ -34,10 +35,18 @@ namespace ATISWeb.LoginManagement
         {
             try
             {
-                R2CoreStandardUserStructure NSS = R2CoreMClassLoginManagement.GetNSSUser(TxtUserShenaseh.Text, TxtUserPassword.Text);
-                R2CoreMClassLoginManagement.SetCurrentUserbyShenasehPassword(new R2CoreStandardUserStructure(0, "", TxtUserShenaseh.Text, TxtUserPassword.Text, "", false, false));
-                WcUserAuthenticationSuccessEvent?.Invoke(this, e);
+                if (R2CoreMClassLoginManagement.AuthenticationUserbyShenasehPassword(new R2CoreStandardUserStructure(0, "", TxtUserShenaseh.Text, TxtUserPassword.Text, "", false, false)))
+                {
+                    R2CoreStandardUserStructure NSS = R2CoreMClassLoginManagement.GetNSSUser(TxtUserShenaseh.Text, TxtUserPassword.Text);
+                    Session.Add("CurrentUser", NSS);
+                    Session.Timeout = 60;
+                    WcUserAuthenticationSuccessEvent?.Invoke(this, e);
+                }
+                else
+                { }
             }
+            catch (Exception ex) when (ex is UserIsNotActiveException || ex is UserNotExistException || ex is GetNSSException)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }

@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using ATISWeb.LoginManagement;
 using R2CoreTransportationAndLoadNotification.TransportCompanies;
 using R2Core.UserManagement;
 
@@ -28,7 +28,7 @@ namespace ATISWeb.TransportationAndLoadNotification.TransportCompanies
         {
             try
             {
-                R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure NSS = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(R2Core.UserManagement.R2CoreMClassLoginManagement.CurrentUserNSS);
+                R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure NSS = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(ATISWebMClassLoginManagement.GetNSSCurrentUser());
                 TxtTransportCompanyTitle.Text = NSS.TCTitle.Trim();
             }
             catch (Exception ex)

@@ -95,8 +95,8 @@ Public Class UCUserChargeSavabeghCollection
     Public Sub UCViewSavabegh(YourNSSUser As R2CoreStandardUserStructure)
         Try
             PnlUCs.Controls.Clear()
-            UcLabelDaramad.UCValue = R2Core.PublicProc.R2CoreMClassPublicProcedures.ParseSignDigitToSignString(R2CoreParkingSystemMClassUserChargeProcessManagement.GetTotalAmountofUserChargeProcess(R2CoreMClassLoginManagement.CurrentUserNSS, UcPersianShamsiDate1.UCGetDate.DateShamsiFull, UcPersianShamsiDate2.UCGetDate().DateShamsiFull, UcTimeEntry1.UCGetTime().Time, UcTimeEntry2.UCGetTime.Time))
-            UCViewCollection(R2CoreParkingSystemMClassUserChargeProcessManagement.GetUserChargeProcessCollection(R2CoreMClassLoginManagement.CurrentUserNSS, UcPersianShamsiDate1.UCGetDate.DateShamsiFull, UcPersianShamsiDate2.UCGetDate().DateShamsiFull, UcTimeEntry1.UCGetTime().Time, UcTimeEntry2.UCGetTime.Time, UCTotalNumberOfRecordstoView))
+            UcLabelDaramad.UCValue = R2Core.PublicProc.R2CoreMClassPublicProcedures.ParseSignDigitToSignString(R2CoreParkingSystemMClassUserChargeProcessManagement.GetTotalAmountofUserChargeProcess(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, UcPersianShamsiDate1.UCGetDate.DateShamsiFull, UcPersianShamsiDate2.UCGetDate().DateShamsiFull, UcTimeEntry1.UCGetTime().Time, UcTimeEntry2.UCGetTime.Time))
+            UCViewCollection(R2CoreParkingSystemMClassUserChargeProcessManagement.GetUserChargeProcessCollection(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, UcPersianShamsiDate1.UCGetDate.DateShamsiFull, UcPersianShamsiDate2.UCGetDate().DateShamsiFull, UcTimeEntry1.UCGetTime().Time, UcTimeEntry2.UCGetTime.Time, UCTotalNumberOfRecordstoView))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -114,7 +114,7 @@ Public Class UCUserChargeSavabeghCollection
 
     Private Sub UcButton_UCClickedEvent() Handles UcButton.UCClickedEvent
         Try
-            UCViewSavabegh(R2CoreMClassLoginManagement.CurrentUserNSS)
+            UCViewSavabegh(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

@@ -59,7 +59,7 @@ Public Class UCMoneyWalletCharge
 
         ' Add any initialization after the InitializeComponent() call.
         Try
-            If Not ((R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.ChargeActiveOnThisLocation, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) = True) And (R2CoreMClassLoginManagement.CurrentUserNSS.UserCanCharge = True)) Then Me.Enabled = False
+            If Not ((R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.ChargeActiveOnThisLocation, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) = True) And (R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserCanCharge = True)) Then Me.Enabled = False
             _Timer.Interval = 50000
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -131,14 +131,14 @@ Public Class UCMoneyWalletCharge
                 _Timer.Enabled = False : _Timer.Stop()
                 If Amount <> 0 Then
                     UcMoneyWallet.UCViewandActMoneyWalletNextStatus(_NSS, BagPayType.AddMoney, Amount, R2CoreParkingSystemAccountings.ChargeType)
-                    R2CoreParkingSystemMClassMoneyWalletChargeManagement.SabtCharge(New R2StandardMoneyWalletChargeStructure(_NSS, UcMoneyWallet.UCGetMblgh, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, "", _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, 0, _DateTime.GetCurrentTime))
-                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "شارژ کیف پول انجام گرفت" + vbCrLf + Amount.ToString, _NSS.CardNo, IIf(Object.Equals(TransactionId, Nothing), String.Empty, TransactionId), 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                    R2CoreParkingSystemMClassMoneyWalletChargeManagement.SabtCharge(New R2StandardMoneyWalletChargeStructure(_NSS, UcMoneyWallet.UCGetMblgh, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, "", _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, 0, _DateTime.GetCurrentTime))
+                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "شارژ کیف پول انجام گرفت" + vbCrLf + Amount.ToString, _NSS.CardNo, IIf(Object.Equals(TransactionId, Nothing), String.Empty, TransactionId), 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                     'چاپ رسید شارژ ابتدا برای کل کامپیوتر مطابق کانفیگ بررسی می شود
                     'سپس به صورت محلی نیز بررسی می شود
                     If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.MoneyWalletCharge, R2CoreMClassComputersManagement.GetNSSCurrentComputer().MId, 0) = True Then
                         If UCLocalPrintFlagforUCPrintBillan = True Then
                             UcMoneyWallet.UCPrintBillan(UCMoneyWallet.PrintType.Billan)
-                            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "چاپ قبض شارژ کیف پول انجام گرفت" + vbCrLf + Amount.ToString, _NSS.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "چاپ قبض شارژ کیف پول انجام گرفت" + vbCrLf + Amount.ToString, _NSS.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                         End If
                     End If
                     RaiseEvent UCMoneyWalletChargedEvent(UcMoneyWallet.UCGetMblgh)

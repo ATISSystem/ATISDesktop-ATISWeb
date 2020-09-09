@@ -665,7 +665,7 @@ Partial Class FrmcMainMenu
     Friend WithEvents UcShutDown As UCShutDown
     Friend WithEvents UcCollectionofUCActiveForm As UCCollectionofUCActiveForm
     Friend WithEvents LblBottom1ApplicationDomainTitle As Label
-    Friend WithEvents UcUserImage As UCUserImage
+    Public WithEvents UcUserImage As UCUserImage
     Friend WithEvents LblTopApplicationDomainPersianTitle As Label
     Friend WithEvents LblApplicationDomainAbbreviationInner As Label
     Friend WithEvents LblBottomSystemPersianTitle As Label

@@ -66,7 +66,7 @@ Public Class FrmcBlackList
             Dim _NSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(nIdCar))
             If UcMoneyWallet.UCGetMoneyWalletCurrentCharge >= Mblgh Then
                 UcMoneyWallet.UCViewandActMoneyWalletNextStatus(_NSSTrafficCard, BagPayType.MinusMoney, Mblgh, R2CoreParkingSystemAccountings.BlackList)
-                R2CoreParkingSystemMClassBlackList.ChangeBlackListMblgh(NSSBlackList,Mblgh)
+                R2CoreParkingSystemMClassBlackList.ChangeBlackListMblgh(NSSBlackList,Mblgh,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             Else
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "موجودی کیف پول کافی نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             End If

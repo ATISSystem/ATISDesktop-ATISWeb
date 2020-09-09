@@ -506,7 +506,7 @@ Public Class FrmcIndigenousTrucksWithUNNativeLP
             End If
             If MessageBox.Show("آیا تصمیم دارید ناوگان مورد نظر را به لیست اضافه کنید", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, MessageBoxOptions.RtlReading) = DialogResult.Yes Then
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP(Pelak,Serial,DateTimeMilladi,DateShamsi,UserId,EnghezaDate) values('" & TxtPelakAdd.Text & "','" & TxtSerialAdd.Text & "','" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull & "'," & R2Core.UserManagement.R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ",'" & IIf(ChkExpirationShamsiDate.Checked, UcPersianShamsiDate.UCGetDate.DateShamsiFull, String.Empty) & "')"
+                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP(Pelak,Serial,DateTimeMilladi,DateShamsi,UserId,EnghezaDate) values('" & TxtPelakAdd.Text & "','" & TxtSerialAdd.Text & "','" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull & "'," & R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId & ",'" & IIf(ChkExpirationShamsiDate.Checked, UcPersianShamsiDate.UCGetDate.DateShamsiFull, String.Empty) & "')"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
                 FillList()

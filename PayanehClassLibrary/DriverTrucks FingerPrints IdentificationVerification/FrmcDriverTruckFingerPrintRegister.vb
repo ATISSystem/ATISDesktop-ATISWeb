@@ -110,10 +110,10 @@ Public Class FrmcDriverTruckFingerPrintRegister
 
     Private Sub UcButtonSaveFPsDriverTruckFirst_UCClickedEvent() Handles UcButtonSaveFPsDriverTruckFirst.UCClickedEvent
         Try
-            PayanehClassLibraryMClassDriverTruckSalonPresentManagement.SaveDriverTruckFPs(UcDriverTruckFirst.UCGetNSS, UcFingerPrintCapturerDermalog.GetlISTfPS, UcDriverImagePnlRegister.UCGetImage)
+            PayanehClassLibraryMClassDriverTruckSalonPresentManagement.SaveDriverTruckFPs(UcDriverTruckFirst.UCGetNSS, UcFingerPrintCapturerDermalog.GetlISTfPS, UcDriverImagePnlRegister.UCGetImage,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "اثرانگشت راننده باری ثبت شد", "تعداد اثر ثبت شده : " + PayanehClassLibraryMClassDriverTruckSalonPresentManagement.GetCountOfFPSSabted().ToString(), FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exx As GetNSSException
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده اول مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده اول مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "راننده مشخص نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exxx As DriverTruckFPsExistException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exxx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -124,10 +124,10 @@ Public Class FrmcDriverTruckFingerPrintRegister
 
     Private Sub UcButtonSaveFPsDriverTruckSecond_UCClickedEvent() Handles UcButtonSaveFPsDriverTruckSecond.UCClickedEvent
         Try
-            PayanehClassLibraryMClassDriverTruckSalonPresentManagement.SaveDriverTruckFPs(UcDriverTruckSecond.UCGetNSS, UcFingerPrintCapturerDermalog.GetlISTfPS, UcDriverImagePnlRegister.UCGetImage)
+            PayanehClassLibraryMClassDriverTruckSalonPresentManagement.SaveDriverTruckFPs(UcDriverTruckSecond.UCGetNSS, UcFingerPrintCapturerDermalog.GetlISTfPS, UcDriverImagePnlRegister.UCGetImage,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "اثرانگشت راننده باری ثبت شد", "تعداد اثر ثبت شده : " + PayanehClassLibraryMClassDriverTruckSalonPresentManagement.GetCountOfFPSSabted().ToString(), FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exx As GetNSSException
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده دوم مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده دوم مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "راننده مشخص نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exxx As DriverTruckFPsExistException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exxx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -145,7 +145,7 @@ Public Class FrmcDriverTruckFingerPrintRegister
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اثر انگشت راننده ثبت نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             End If
         Catch exx As GetNSSException
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده اول مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده اول مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "راننده مشخص نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exx As DriverImageCaptureException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -163,7 +163,7 @@ Public Class FrmcDriverTruckFingerPrintRegister
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اثر انگشت راننده ثبت نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             End If
         Catch exx As GetNSSException
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده دوم مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده دوم مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "راننده مشخص نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exx As DriverImageCaptureException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -178,7 +178,7 @@ Public Class FrmcDriverTruckFingerPrintRegister
             R2CoreParkingSystemMClassDrivers.DeleteDriverImage(UcDriverTruckFirst.UCGetNSS().NSSDriver)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "اثرانگشت راننده باری حذف شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exx As GetNSSException
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده اول مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده اول مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "راننده مشخص نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
@@ -191,7 +191,7 @@ Public Class FrmcDriverTruckFingerPrintRegister
             R2CoreParkingSystemMClassDrivers.DeleteDriverImage(UcDriverTruckSecond.UCGetNSS().NSSDriver)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "اثرانگشت راننده باری حذف شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exx As GetNSSException
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده دوم مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده دوم مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "راننده مشخص نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
@@ -203,7 +203,7 @@ Public Class FrmcDriverTruckFingerPrintRegister
             Dim nIdCar As Int64 = R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(NSS.CardId)
             UcCarTruck.UCViewCarInformation(nIdCar)
         Catch exx As GetDataException
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات پایه کارت تردد و خودرو و روابط آن ها تکمیل نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات پایه کارت تردد و خودرو و روابط آن ها تکمیل نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "اطلاعات پایه کارت تردد و خودرو و روابط آن ها تکمیل نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
@@ -215,7 +215,7 @@ Public Class FrmcDriverTruckFingerPrintRegister
         Try
             UcDriverTruckFirst.UCViewDriverInformation(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(CarId))
         Catch exx As Exception When TypeOf exx Is GetNSSException OrElse TypeOf exx Is GetDataException
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده اول مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده اول مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             Exit Sub
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
@@ -240,7 +240,7 @@ Public Class FrmcDriverTruckFingerPrintRegister
         Try
             UcDriverTruckSecond.UCViewDriverInformation(R2CoreParkingSystemMClassCars.GetnIdPersonSecond(CarId))
         Catch exx As Exception When TypeOf exx Is GetNSSException OrElse TypeOf exx Is GetDataException
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات پایه راننده دوم تکمیل نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات پایه راننده دوم تکمیل نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             Exit Sub
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

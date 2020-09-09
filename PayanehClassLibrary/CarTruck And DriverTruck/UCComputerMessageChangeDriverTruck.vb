@@ -39,7 +39,7 @@ Public Class UCComputerMessageChangeDriverTruck
     Private WithEvents _Refrence As FrmcCarAndDriversInformation = Nothing
     Private Sub UcButtonChangeDriverTruck_UCClickedEvent() Handles UcButtonChangeDriverTruck.UCClickedEvent
         Try
-            _Refrence = R2CoreGUIMClassProcessesManagement.OpenProccess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcCarAndDriversInformation))
+            _Refrence = R2CoreGUIMClassProcessesManagement.OpenProccess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcCarAndDriversInformation),R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

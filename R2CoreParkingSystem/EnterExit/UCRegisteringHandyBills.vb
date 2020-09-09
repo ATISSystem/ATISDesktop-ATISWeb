@@ -68,7 +68,7 @@ Public Class UCRegisteringHandyBills
                 Exit Sub
             End If
             Dim myTeadad As Int64 = UcNumberTeadad.UCValue
-            R2CoreParkingSystemMClassEnterExitManagement.RegisteringHandyBills(myTeadad, New R2StandardDateAndTimeStructure(Nothing,UcPersianShamsiDate.UCGetDate.DateShamsiFull, Nothing), UcCmbTerafficCardType.UCGetCurrentTypeCode())
+            R2CoreParkingSystemMClassEnterExitManagement.RegisteringHandyBills(myTeadad, New R2StandardDateAndTimeStructure(Nothing,UcPersianShamsiDate.UCGetDate.DateShamsiFull, Nothing), UcCmbTerafficCardType.UCGetCurrentTypeCode(),R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ثبت قبوض به تعداد مورد نظر انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             UcButton.UCEnable = False
         Catch ex As Exception

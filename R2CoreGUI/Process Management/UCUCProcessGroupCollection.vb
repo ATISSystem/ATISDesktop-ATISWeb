@@ -65,7 +65,7 @@ Public Class UCUCProcessGroupCollection
         Try
             PnlUCProcessGroupCollection.SuspendLayout()
             PnlUCProcessGroupCollection.Controls.Clear()
-            Dim Lst As List(Of R2StandardProcessGroupStructure) = R2CoreMClassProcessesManagement.GetListOfProcessGroupsHaveUser(R2CoreMClassLoginManagement.CurrentUserNSS)
+            Dim Lst As List(Of R2StandardProcessGroupStructure) = R2CoreMClassProcessesManagement.GetListOfProcessGroupsHaveUser(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             For Loopx As Int16 = Lst.Count - 1 To 0 Step -1
                 Dim UC As UCProcessGroup = New UCProcessGroup(Lst(Loopx))
                 UC.Dock = DockStyle.Top

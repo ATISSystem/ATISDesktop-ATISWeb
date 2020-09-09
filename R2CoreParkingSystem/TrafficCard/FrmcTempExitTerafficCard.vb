@@ -119,7 +119,7 @@ Public Class FrmcTempExitTerafficCard
 
     Private Sub UcButtonTaeed_UCClickedEvent() Handles UcButtonTaeed.UCClickedEvent
         Try
-            R2CoreParkingSystemMClassEnterExitManagement.ExitTempTerafficCard(_NSSTerafficCard, UcMoney.UCValueWithoutComa)
+            R2CoreParkingSystemMClassEnterExitManagement.ExitTempTerafficCard(_NSSTerafficCard, UcMoney.UCValueWithoutComa,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "خروج موقت کارت تردد انجام گرفت", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exx As TerafficCardLastExitedException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "کارت تردد قبلا خروج شده است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)

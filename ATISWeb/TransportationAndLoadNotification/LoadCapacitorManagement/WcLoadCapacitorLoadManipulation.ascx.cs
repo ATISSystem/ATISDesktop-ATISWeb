@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Web.UI;
-
+using ATISWeb.LoginManagement;
 using R2Core.DateAndTimeManagement;
 using R2Core.PublicProc;
 using R2Core.UserManagement;
@@ -48,9 +48,9 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 if (TxtTarrif.Text == string.Empty) { TxtTarrif.Text = "0"; }
                 R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure NSS = null;
                 if (TxtnEstelamId.Text != "0" & TxtnEstelamId.Text != string.Empty)
-                { NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(Convert.ToInt64(TxtnEstelamId.Text), TxtLoadReciever.Text, Convert.ToInt64(TxtSearchTargetCity.Text.Split('#')[0]), Convert.ToInt64(TxtSearchLoad.Text.Split('#')[0]), R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(R2CoreMClassLoginManagement.CurrentUserNSS).TCId, Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]), TxtAddress.Text, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, Convert.ToInt64(TxtnCarNumKol.Text), Convert.ToInt64(TxtTarrif.Text.Replace(",", "")), TxtDescription.Text, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), Convert.ToInt64(TxtnCarNumKol.Text), R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, 21310000, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0])).AHId, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0])).AHSGId); }
+                { NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(Convert.ToInt64(TxtnEstelamId.Text), TxtLoadReciever.Text, Convert.ToInt64(TxtSearchTargetCity.Text.Split('#')[0]), Convert.ToInt64(TxtSearchLoad.Text.Split('#')[0]), R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(ATISWebMClassLoginManagement.GetNSSCurrentUser()).TCId, Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]), TxtAddress.Text,ATISWebMClassLoginManagement.GetNSSCurrentUser().UserId, Convert.ToInt64(TxtnCarNumKol.Text), Convert.ToInt64(TxtTarrif.Text.Replace(",", "")), TxtDescription.Text, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), Convert.ToInt64(TxtnCarNumKol.Text), R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, 21310000, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0])).AHId, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0])).AHSGId); }
                 else
-                { NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, TxtLoadReciever.Text, Convert.ToInt64(TxtSearchTargetCity.Text.Split('#')[0]), Convert.ToInt64(TxtSearchLoad.Text.Split('#')[0]), R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(R2CoreMClassLoginManagement.CurrentUserNSS).TCId, Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]), TxtAddress.Text, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, Convert.ToInt64(TxtnCarNumKol.Text), Convert.ToInt64(TxtTarrif.Text.Replace(",", "")), TxtDescription.Text, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), Convert.ToInt64(TxtnCarNumKol.Text), R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, 21310000, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0])).AHId, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0])).AHSGId); }
+                { NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, TxtLoadReciever.Text, Convert.ToInt64(TxtSearchTargetCity.Text.Split('#')[0]), Convert.ToInt64(TxtSearchLoad.Text.Split('#')[0]), R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(ATISWebMClassLoginManagement.GetNSSCurrentUser()).TCId, Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]), TxtAddress.Text, ATISWebMClassLoginManagement.GetNSSCurrentUser().UserId, Convert.ToInt64(TxtnCarNumKol.Text), Convert.ToInt64(TxtTarrif.Text.Replace(",", "")), TxtDescription.Text, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), Convert.ToInt64(TxtnCarNumKol.Text), R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, 21310000, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0])).AHId, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0])).AHSGId); }
                 return NSS;
             }
             catch (Exception ex)
@@ -229,7 +229,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
             try
             {
                 R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure NSS = WcGetNSS(true);
-                if (NSS.nEstelamId != 0) { R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadEditing(NSS); }
+                if (NSS.nEstelamId != 0) { R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadEditing(NSS,ATISWebMClassLoginManagement.GetNSSCurrentUser()); }
                 else
                 {
                     long mynEstelamId = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadRegistering(NSS);
@@ -252,7 +252,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure NSS = WcGetNSS(false);
                 if (NSS.nEstelamId != 0)
                 {
-                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadDeleting(NSS.nEstelamId);
+                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadDeleting(NSS,ATISWebMClassLoginManagement.GetNSSCurrentUser());
                     WcRefreshInformation();
                     WcInformationChangedEvent?.Invoke(this, new EventArgs());
                     Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "بار با موفقیت حذف شد" + "');", true);
@@ -272,7 +272,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure NSS = WcGetNSS(false);
                 if (NSS.nEstelamId != 0)
                 {
-                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadCancelling(NSS.nEstelamId);
+                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadCancelling(NSS,ATISWebMClassLoginManagement.GetNSSCurrentUser());
                     WcRefreshInformation();
                     WcInformationChangedEvent?.Invoke(this, new EventArgs());
                     Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "بار با موفقیت کنسل شد" + "');", true);

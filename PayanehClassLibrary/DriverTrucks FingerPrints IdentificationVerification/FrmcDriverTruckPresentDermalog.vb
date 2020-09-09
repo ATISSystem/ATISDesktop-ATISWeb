@@ -91,7 +91,7 @@ Public Class FrmcDriverTruckPresentDermalog
             Dim CountOfDrivers As Int64 = R2CoreParkingSystemMClassDrivers.GetCountOfDriversAttachedCar(_NSSCar)
             Dim DS As DataSet = New DataSet()
             If CountOfDrivers = 0 Then
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننذه باری" + vbCrLf + "تعداد راننده متصل به ناوگان نامتعارف است", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننذه باری" + vbCrLf + "تعداد راننده متصل به ناوگان نامتعارف است", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "تعداد راننده متصل به ناوگان نامتعارف است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 Exit Try
             ElseIf CountOfDrivers = 1 Then
@@ -102,7 +102,7 @@ Public Class FrmcDriverTruckPresentDermalog
 
             If VerificationFlag = False Then
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTruckDriverPresent(NobatId,CardId,CarId,DriverId,CardNo,PelakSerial,DriverNameFamily,PresentType,DateTimeMilladi,DateShamsi,UserId) values(" & UcCarTruckNobat.UCGetNSS.nEnterExitId & "," & _NSSTerafficCard.CardId & "," & _NSSCar.nIdCar & "," & _NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _NSSTerafficCard.CardNo & "','" & _NSSCar.GetCarPelakSerialComposit() & "','" & R2CoreParkingSystemMClassDrivers.GetNSSDriver(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(_NSSCar.nIdCar)).StrPersonFullName & "'," & PresentType.Salon & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull & "'," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ")"
+                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTruckDriverPresent(NobatId,CardId,CarId,DriverId,CardNo,PelakSerial,DriverNameFamily,PresentType,DateTimeMilladi,DateShamsi,UserId) values(" & UcCarTruckNobat.UCGetNSS.nEnterExitId & "," & _NSSTerafficCard.CardId & "," & _NSSCar.nIdCar & "," & _NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _NSSTerafficCard.CardNo & "','" & _NSSCar.GetCarPelakSerialComposit() & "','" & R2CoreParkingSystemMClassDrivers.GetNSSDriver(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(_NSSCar.nIdCar)).StrPersonFullName & "'," & PresentType.Salon & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull & "'," & R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId & ")"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
                 ViewPresent()
@@ -112,7 +112,7 @@ Public Class FrmcDriverTruckPresentDermalog
             'اثرانگشت راننده غیرفعال است
             If PayanehClassLibraryMClassDriverTruckSalonPresentManagement.IsDriverTruckFingerPrintActive(_NSSDriverTruck) = False Then
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTruckDriverPresent(NobatId,CardId,CarId,DriverId,CardNo,PelakSerial,DriverNameFamily,PresentType,DateTimeMilladi,DateShamsi,UserId) values(" & UcCarTruckNobat.UCGetNSS.nEnterExitId & "," & _NSSTerafficCard.CardId & "," & _NSSCar.nIdCar & "," & _NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _NSSTerafficCard.CardNo & "','" & _NSSCar.GetCarPelakSerialComposit() & "','" & R2CoreParkingSystemMClassDrivers.GetNSSDriver(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(_NSSCar.nIdCar)).StrPersonFullName & "'," & PresentType.Salon & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull & "'," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ")"
+                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTruckDriverPresent(NobatId,CardId,CarId,DriverId,CardNo,PelakSerial,DriverNameFamily,PresentType,DateTimeMilladi,DateShamsi,UserId) values(" & UcCarTruckNobat.UCGetNSS.nEnterExitId & "," & _NSSTerafficCard.CardId & "," & _NSSCar.nIdCar & "," & _NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _NSSTerafficCard.CardNo & "','" & _NSSCar.GetCarPelakSerialComposit() & "','" & R2CoreParkingSystemMClassDrivers.GetNSSDriver(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(_NSSCar.nIdCar)).StrPersonFullName & "'," & PresentType.Salon & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull & "'," & R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId & ")"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
                 ViewPresent()
@@ -252,7 +252,7 @@ Public Class FrmcDriverTruckPresentDermalog
             If R2CoreFingerPrintMClassDermalogManagemet.Verification(UcFingerPrintCapturerDermalog.GetlISTfPS, TemplateArray, TemplateNumber, myScore) = True Then
                 UcFingerPrintCapturerDermalog.UCViewOtherMessage("Score:" + myScore.ToString)
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTruckDriverPresent(NobatId,CardId,CarId,DriverId,CardNo,PelakSerial,DriverNameFamily,PresentType,DateTimeMilladi,DateShamsi,UserId) values(" & UcCarTruckNobat.UCGetNSS.nEnterExitId & "," & _NSSTerafficCard.CardId & "," & _NSSCar.nIdCar & "," & _NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _NSSTerafficCard.CardNo & "','" & _NSSCar.GetCarPelakSerialComposit() & "','" & R2CoreParkingSystemMClassDrivers.GetNSSDriver(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(_NSSCar.nIdCar)).StrPersonFullName & "'," & PresentType.Salon & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull & "'," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ")"
+                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTruckDriverPresent(NobatId,CardId,CarId,DriverId,CardNo,PelakSerial,DriverNameFamily,PresentType,DateTimeMilladi,DateShamsi,UserId) values(" & UcCarTruckNobat.UCGetNSS.nEnterExitId & "," & _NSSTerafficCard.CardId & "," & _NSSCar.nIdCar & "," & _NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _NSSTerafficCard.CardNo & "','" & _NSSCar.GetCarPelakSerialComposit() & "','" & R2CoreParkingSystemMClassDrivers.GetNSSDriver(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(_NSSCar.nIdCar)).StrPersonFullName & "'," & PresentType.Salon & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull & "'," & R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId & ")"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
                 ViewPresent()
@@ -300,12 +300,12 @@ Public Class FrmcDriverTruckPresentDermalog
                 Dim nIdCar As Int64 = R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(_NSSTerafficCard.CardId)
                 _NSSCar = R2CoreParkingSystemMClassCars.GetNSSCar(nIdCar)
             Catch exx As GetNSSException
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "کارت تردد قابل قبول نیست" + vbCrLf + "و یااطلاعات ناوگان باری موجود نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "کارت تردد قابل قبول نیست" + vbCrLf + "و یااطلاعات ناوگان باری موجود نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "کارت تردد قابل قبول نیست" + vbCrLf + "و یااطلاعات ناوگان باری موجود نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 StartReading()
                 Return
             Catch exxx As GetDataException
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "اطلاعات پایه کارت تردد و خودرو و روابط آن ها تکمیل نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "اطلاعات پایه کارت تردد و خودرو و روابط آن ها تکمیل نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "اطلاعات پایه کارت تردد و خودرو و روابط آن ها تکمیل نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 StartReading()
                 Return
@@ -323,7 +323,7 @@ Public Class FrmcDriverTruckPresentDermalog
                 UcCarPresenter.UCViewCarInformation(_NSSCar)
                 _NSSDriverTruck = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(_NSSCar.nIdCar))
             Catch ex As Exception When TypeOf ex Is GetNSSException OrElse TypeOf ex Is GetDataException
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "اطلاعات مرتبط با راننده ، ناوگان و یا کارت تردد یافت نشد", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "اطلاعات مرتبط با راننده ، ناوگان و یا کارت تردد یافت نشد", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "اطلاعات مرتبط با راننده ، ناوگان و یا کارت تردد یافت نشد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 StartReading()
                 Return
@@ -333,7 +333,7 @@ Public Class FrmcDriverTruckPresentDermalog
             Try
                 UcCarTruckNobat.UCViewInf(_NSSCar)
             Catch exx As GetNobatException
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + exx.Message, _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + exx.Message, _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 StartReading()
                 Return
@@ -347,7 +347,7 @@ Public Class FrmcDriverTruckPresentDermalog
             If BedehyJam < 0 Then
                 Dim BedString As String = R2CoreMClassPublicProcedures.ParseSignDigitToSignString(Math.Abs(BedehyJam) - (Math.Abs(BedehyJam) Mod 10000) + 10000)
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "کسری موجودی شارژ" + vbCrLf + BedString + vbCrLf + "ریال", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Nothing)
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "کسری موجودی شارژ" + " " + BedString + " " + "ریال", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "کسری موجودی شارژ" + " " + BedString + " " + "ریال", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 StartReading()
                 Return
             End If
@@ -357,7 +357,7 @@ Public Class FrmcDriverTruckPresentDermalog
                 If PayanehClassLibraryMClassDriverTruckSalonPresentManagement.ExistIndigenousTrucksWithUNNativeLP(_NSSCar.StrCarNo, _NSSCar.StrCarSerialNo) = False Then
                     If PayanehClassLibraryMClassCarTruckNobatManagement.GetNobatDateShamsi(UcCarTruckNobat.UCGetNSS.nEnterExitId) >= R2CoreMClassConfigurationManagement.GetConfigString(PayanehClassLibraryConfigurations.SalonFingerPrint, 6) Then
                         If PayanehClassLibraryMClassDriverTruckSalonPresentManagement.IsDriverTruckPresentsContinuous(UcCarTruckNobat.UCGetNSS.nEnterExitId) = False Then
-                            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "ناوگان غير بومي.حاضري هاي قبلي کامل نيست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "ناوگان غير بومي.حاضري هاي قبلي کامل نيست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "ناوگان غير بومي" + vbCrLf + "حاضري هاي قبلي کامل نيست.امکان ثبت حاضري وجود ندارد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Nothing)
                             StartReading()
                             Return
@@ -369,7 +369,7 @@ Public Class FrmcDriverTruckPresentDermalog
             'کنترل این که راننده دوم روی بیش از دو ناوگان نباشد برای تقلب
             Try
                 If R2CoreParkingSystemMClassDrivers.GetCountOfCarsSecondDriverAttached(R2CoreParkingSystemMClassDrivers.GetNSSDriver(R2CoreParkingSystemMClassCars.GetnIdPersonSecond(_NSSCar.nIdCar))) > 2 Then
-                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "نام راننده دوم ناوگان بيش از دو مرتبه ثبت شده است و غير مجاز است", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "نام راننده دوم ناوگان بيش از دو مرتبه ثبت شده است و غير مجاز است", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                     _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "نام راننده دوم ناوگان بيش از دو مرتبه ثبت شده است و غير مجاز است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Nothing)
                     StartReading()
                     Return
@@ -379,7 +379,7 @@ Public Class FrmcDriverTruckPresentDermalog
 
             'کنترل ثبت اوليه اثر انگشت 
             If PayanehClassLibraryMClassDriverTruckSalonPresentManagement.HaveDriversFingerPrintSabted(_NSSCar) = False Then
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "اثرانگشت و تصوير راننده اول یا دوم ثبت نشده است", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + "اثرانگشت و تصوير راننده اول یا دوم ثبت نشده است", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "اثرانگشت و تصوير راننده اول یا دوم ثبت نشده است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Nothing)
                 StartReading()
                 Return

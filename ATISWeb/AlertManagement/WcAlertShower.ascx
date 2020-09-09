@@ -10,8 +10,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body text-center R2FontBHomaSmall" style="word-wrap: break-word;">
-                    <asp:Label runat="server" ID="LblMessage" CssClass="R2FontBHomaSmall text-center" Text="123"></asp:Label>
+                <div class="modal-body text-center R2FontBHomaMedium" style="word-wrap: break-word;">
+                    <asp:Label runat="server" ID="LblMessage" CssClass="R2FontBHomaMedium text-center" Text="123"></asp:Label>
                 </div>
                 <div class="modal-footer">
                     <a class="btn R2FontBYekanMedium mx-auto rounded" data-dismiss="modal" href="#" role="button">تایید</a>

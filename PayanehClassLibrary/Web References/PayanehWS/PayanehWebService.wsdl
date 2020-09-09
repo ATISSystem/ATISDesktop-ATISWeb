@@ -293,9 +293,31 @@
             <s:element minOccurs="1" maxOccurs="1" name="YournCarNumKol" type="s:long" />
             <s:element minOccurs="0" maxOccurs="1" name="YourStrPriceSug" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="YourStrDescription" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourUserNSS" type="tns:R2CoreStandardUserStructure" />
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:complexType name="R2CoreStandardUserStructure">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:R2StandardStructure">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="UserId" type="s:long" />
+              <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="UserShenaseh" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="UserPassword" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="UserPinCode" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="UserCanCharge" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="UserActive" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="R2StandardStructure">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="WebMethodTransportCompanyLoadCapacitorLoadEditResponse">
         <s:complexType />
       </s:element>
@@ -503,6 +525,7 @@
             <s:element minOccurs="1" maxOccurs="1" name="YournEstelamId" type="s:long" />
             <s:element minOccurs="0" maxOccurs="1" name="YourCarTruckSmartCardNo" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="YourDriverTruckSmartCardNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourUserNSS" type="tns:R2CoreStandardUserStructure" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -1778,10 +1801,10 @@
   </wsdl:binding>
   <wsdl:service name="PayanehWebService">
     <wsdl:port name="PayanehWebServiceSoap" binding="tns:PayanehWebServiceSoap">
-      <soap:address location="http://192.168.20.3:2012/PayanehWebService.asmx" />
+      <soap:address location="http://localhost:2012/PayanehWebService.asmx" />
     </wsdl:port>
     <wsdl:port name="PayanehWebServiceSoap12" binding="tns:PayanehWebServiceSoap12">
-      <soap12:address location="http://192.168.20.3:2012/PayanehWebService.asmx" />
+      <soap12:address location="http://localhost:2012/PayanehWebService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

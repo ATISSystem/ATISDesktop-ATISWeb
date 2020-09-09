@@ -40,7 +40,7 @@ Public Class UCProcess
 
     Private Sub GLabel_Click(sender As Object, e As EventArgs) Handles GLabel.Click
         Try
-            R2CoreGUIMClassProcessesManagement.OpenProccess(_NSS)
+            R2CoreGUIMClassProcessesManagement.OpenProccess(_NSS,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

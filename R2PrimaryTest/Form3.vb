@@ -8,7 +8,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadO
 Public Class Form3
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
-            R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser)
+            'R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser)
             R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
             'PayanehClassLibrary.Rmto.RmtoWebService.GetInf(RmtoWebService.InfoType.GET_DRIVER_BY_SHC, "1222524")
         Catch ex As Exception
@@ -222,7 +222,7 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser)
+            'R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser)
             R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
             'PayanehClassLibrary.Rmto.RmtoWebService.GetInf(RmtoWebService.InfoType.GET_DRIVER_BY_SHC, "1222524")
         Catch ex As Exception

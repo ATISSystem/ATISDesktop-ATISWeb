@@ -4,8 +4,10 @@ Imports System.Reflection
 Imports R2Core.UserManagement
 Imports R2Core.AuthenticationManagement
 Imports R2Core.ComputersManagement
+Imports R2Core.ExceptionManagement
 Imports R2Core.PublicProc
 Imports R2Core.RFIDCardsManagement
+Imports R2Core.UserManagement.Exceptions
 
 
 Public Class UCUserLogin
@@ -59,31 +61,39 @@ Public Class UCUserLogin
         End Try
     End Function
 
-    Private Sub SetCurrentUserByShenasehPassword()
+    Private Sub UCAuthenticationUserByShenasehPassword()
         Try
-            Dim NSS As R2CoreStandardUserStructure = R2CoreMClassLoginManagement.GetNSSUser(UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue)
-            'بررسی مجوز کاربر برای دسترسی به کامپیوتر
-            If GetUserComputerPermission(NSS) = False Then
-                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "کاربر مجوز لازم برای دسترسی به این کامپیوتر را ندارد", R2CoreMClassComputersManagement.GetNSSCurrentComputer().MName, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-                Exit Try
+            If R2CoreMClassLoginManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardUserStructure(0, "", UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue, "", False, False)) Then
+                Dim NSS As R2CoreStandardUserStructure = R2CoreMClassLoginManagement.GetNSSUser(UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue)
+                'بررسی مجوز کاربر برای دسترسی به کامپیوتر
+                If GetUserComputerPermission(NSS) = False Then
+                    UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "کاربر مجوز لازم برای دسترسی به این کامپیوتر را ندارد", R2CoreMClassComputersManagement.GetNSSCurrentComputer().MName, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                    Exit Try
+                End If
+                RaiseEvent UCUserAuthenticationSuccessEvent(NSS)
+            Else
             End If
-            R2CoreMClassLoginManagement.SetCurrentUserbyShenasehPassword(New R2CoreStandardUserStructure(0, "", UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue, "", False, False))
-            RaiseEvent UCUserAuthenticationSuccessEvent(NSS)
+        Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
         End Try
     End Sub
 
-    Private Sub SetCurrentUserByPinCode(YourPinCode As String)
+    Private Sub UCAuthenticationUserByPinCode(YourPinCode As String)
         Try
-            Dim NSS As R2CoreStandardUserStructure = R2CoreMClassLoginManagement.GetNSSUser(YourPinCode)
-            'بررسی مجوز کاربر برای دسترسی به کامپیوتر
-            If GetUserComputerPermission(NSS) = False Then
-                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "کاربر مجوز لازم برای دسترسی به این کامپیوتر را ندارد", R2CoreMClassComputersManagement.GetNSSCurrentComputer().MName, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-                Exit Try
+            If R2CoreMClassLoginManagement.AuthenticationUserByPinCode(New R2CoreStandardUserStructure(0, "", "", "", YourPinCode, False, False)) Then
+                Dim NSS As R2CoreStandardUserStructure = R2CoreMClassLoginManagement.GetNSSUser(YourPinCode)
+                'بررسی مجوز کاربر برای دسترسی به کامپیوتر
+                If GetUserComputerPermission(NSS) = False Then
+                    UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "کاربر مجوز لازم برای دسترسی به این کامپیوتر را ندارد", R2CoreMClassComputersManagement.GetNSSCurrentComputer().MName, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                    Exit Try
+                End If
+                RaiseEvent UCUserAuthenticationSuccessEvent(NSS)
+            Else
             End If
-            R2CoreMClassLoginManagement.SetCurrentUserByPinCode(NSS)
-            RaiseEvent UCUserAuthenticationSuccessEvent(NSS)
+        Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
         End Try
@@ -99,7 +109,9 @@ Public Class UCUserLogin
 
     Private Sub UcButtonSpecial_UCClickedEvent() Handles UcButtonSpecial.UCClickedEvent
         Try
-            SetCurrentUserByShenasehPassword()
+            UCAuthenticationUserByShenasehPassword()
+        Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -107,7 +119,9 @@ Public Class UCUserLogin
 
     Private Sub UcButtonSpecial_UC13PressedEvent() Handles UcButtonSpecial.UC13PressedEvent
         Try
-            SetCurrentUserByShenasehPassword()
+            UCAuthenticationUserByShenasehPassword()
+        Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException  OrElse TypeOf (ex) Is GetNSSException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -144,7 +158,9 @@ Public Class UCUserLogin
 
     Public Sub R2RFIDCardReaded(CardNo As String) Implements R2CoreRFIDCardRequester.R2RFIDCardReaded
         Try
-            SetCurrentUserByPinCode(CardNo)
+            UCAuthenticationUserByPinCode(CardNo)
+        Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -161,7 +177,7 @@ Public Class UCUserLogin
         MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + MessageWarning)
     End Sub
 
-  
+
 
 
 

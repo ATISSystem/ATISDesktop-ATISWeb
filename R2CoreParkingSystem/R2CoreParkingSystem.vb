@@ -914,14 +914,14 @@ Namespace EnterExitManagement
             End Try
         End Function
 
-        Public Shared Sub ExitTempTerafficCard(YourTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourMblgh As Int64)
+        Public Shared Sub ExitTempTerafficCard(YourTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourMblgh As Int64,YourUserNSS As R2CoreStandardUserStructure)
             Try
                 If YourMblgh <= R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletCharge(YourTerafficCard) Then
                     Dim LastEnterExitId As Int64
                     LastEnterExitId = R2CoreParkingSystemMClassEnterExitManagement.GetEnterExitIdforTerafficCardWhichNotExited(YourTerafficCard)
-                    R2CoreParkingSystemMClassEnterExitManagement.UpdateForExit(New R2StandardEnterExitStructure(LastEnterExitId, _DateTime.GetCurrentDateTimeMilladiFormated(), "", "", R2CaptureType.None, R2CameraType.None, Nothing, "", 0, R2EnterStatus.None, 0, 0, Nothing, _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime, R2CaptureType.None, R2CameraType.None, Nothing, YourTerafficCard.CardNo, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, R2ExitStatus.NotUserPullCard, YourMblgh, R2CoreMClassConfigurationManagement.GetComputerCode, New R2StandardLicensePlateStructure(), True))
-                    R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(YourTerafficCard, BagPayType.MinusMoney, YourMblgh, R2CoreParkingSystemAccountings.ExitTemp)
-                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Info, "خروج موقت کارت تردد انجام گرفت", YourTerafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                    R2CoreParkingSystemMClassEnterExitManagement.UpdateForExit(New R2StandardEnterExitStructure(LastEnterExitId, _DateTime.GetCurrentDateTimeMilladiFormated(), "", "", R2CaptureType.None, R2CameraType.None, Nothing, "", 0, R2EnterStatus.None, 0, 0, Nothing, _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime, R2CaptureType.None, R2CameraType.None, Nothing, YourTerafficCard.CardNo, YourUserNSS.UserId, R2ExitStatus.NotUserPullCard, YourMblgh, R2CoreMClassConfigurationManagement.GetComputerCode, New R2StandardLicensePlateStructure(), True))
+                    R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(YourTerafficCard, BagPayType.MinusMoney, YourMblgh, R2CoreParkingSystemAccountings.ExitTemp,YourUserNSS)
+                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Info, "خروج موقت کارت تردد انجام گرفت", YourTerafficCard.CardNo, 0, 0, 0, 0,YourUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 Else
                     Throw New MoneyWalletCurrentChargeNotEnoughException
                 End If
@@ -950,11 +950,11 @@ Namespace EnterExitManagement
 
         Private Shared RegisteringHandyBillsFixedCardNo As String = "94A36342"
         Private Shared RegisteringHandyBillsFixedTime As String = "08:00:00"
-        Public Shared Sub RegisteringHandyBills(YourTeadad As Int64, YourShamsiDate As R2StandardDateAndTimeStructure, YourTerafficCardType As TerafficCardType)
+        Public Shared Sub RegisteringHandyBills(YourTeadad As Int64, YourShamsiDate As R2StandardDateAndTimeStructure, YourTerafficCardType As TerafficCardType,YourUserNSS As R2CoreStandardUserStructure)
             Try
                 Dim myMblgh As Int64 = Microsoft.VisualBasic.Switch(YourTerafficCardType = TerafficCardType.Savari, R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMblghPaye, 0), YourTerafficCardType = TerafficCardType.SixCharkh, R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMblghPaye, 2), YourTerafficCardType = TerafficCardType.TenCharkh, R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMblghPaye, 1), YourTerafficCardType = TerafficCardType.Tereili, R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMblghPaye, 3))
                 For Loopx As Int64 = 0 To YourTeadad - 1
-                    R2CoreParkingSystemMClassAccountingManagement.InsertAccounting(New R2StandardEnterExitAccountingStructure(R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(RegisteringHandyBillsFixedCardNo), R2CoreParkingSystemAccountings.RegisteringHandyBills, YourShamsiDate.DateShamsiFull, RegisteringHandyBillsFixedTime, _DateTime.GetMilladiDateTimeFromDateShamsiFull(YourShamsiDate.DateShamsiFull, RegisteringHandyBillsFixedTime), Nothing, R2CoreMClassConfigurationManagement.GetComputerCode(), myMblgh, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, 0, 0))
+                    R2CoreParkingSystemMClassAccountingManagement.InsertAccounting(New R2StandardEnterExitAccountingStructure(R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(RegisteringHandyBillsFixedCardNo), R2CoreParkingSystemAccountings.RegisteringHandyBills, YourShamsiDate.DateShamsiFull, RegisteringHandyBillsFixedTime, _DateTime.GetMilladiDateTimeFromDateShamsiFull(YourShamsiDate.DateShamsiFull, RegisteringHandyBillsFixedTime), Nothing, R2CoreMClassConfigurationManagement.GetComputerCode(), myMblgh,YourUserNSS.UserId, 0, 0))
                 Next
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1484,12 +1484,12 @@ Namespace TrafficCardsManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
-        Public Shared Sub TerafficCardInitialRegister(YourNSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure)
+        Public Shared Sub TerafficCardInitialRegister(YourNSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure,YourUserNSS As R2CoreStandardUserStructure)
             Try
                 UpdateTrafficCardType(YourNSSTerafficCard)
                 'کسر هزینه کارت تردد در صورتی که دائمی باشد و نه موقت
                 If YourNSSTerafficCard.TempCardType = TerafficTempCardType.NoTemp Then
-                    R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(YourNSSTerafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMeselanius, 2), R2CoreParkingSystemAccountings.HazinehKart)
+                    R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(YourNSSTerafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMeselanius, 2), R2CoreParkingSystemAccountings.HazinehKart,YourUserNSS)
                 End If
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1812,7 +1812,7 @@ Namespace AccountingManagement
                 If YourEEAcounting.NSSCar Is Nothing Then
                     CmdSql.CommandText = "insert into R2Primary.dbo.TblAccounting(CardId,EEAccountingProcessType,DateShamsiA,TimeA,DateMilladiA,PelakA,SerialA,CityA,PelakTypeA,MaabarCode,MblghA,UseridA,CurrentChargeA,ReminderChargeA) values('" & YourEEAcounting.NSSTrafficCard.CardId & "'," & YourEEAcounting.EEAccountingProcessType & ",'" & YourEEAcounting.DateShamsiA & "','" & YourEEAcounting.TimeA & "','" & YourEEAcounting.DateTimeMilladiA.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "','','','" & Now.Millisecond.ToString() + Rnd().ToString() & "',0,'" & YourEEAcounting.MaabarCode & "'," & YourEEAcounting.MblghA & "," & YourEEAcounting.UserIdA & "," & YourEEAcounting.CurrentChargeA & "," & YourEEAcounting.ReminderChargeA & ")"
                 Else
-                    CmdSql.CommandText = "insert into R2Primary.dbo.TblAccounting(CardId,EEAccountingProcessType,DateShamsiA,TimeA,DateMilladiA,PelakA,SerialA,CityA,PelakTypeA,MaabarCode,MblghA,UseridA,CurrentChargeA,ReminderChargeA) values('" & YourEEAcounting.NSSTrafficCard.CardId & "'," & YourEEAcounting.EEAccountingProcessType & ",'" & YourEEAcounting.DateShamsiA & "','" & YourEEAcounting.TimeA & "','" & YourEEAcounting.DateTimeMilladiA.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "','" & YourEEAcounting.NSSCar.StrCarNo & "','" & YourEEAcounting.NSSCar.StrCarSerialNo & "','" & R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(YourEEAcounting.NSSCar.nIdCity) & "'," & R2PelakType.None & ",'" & R2CoreMClassConfigurationManagement.GetComputerCode() & "'," & YourEEAcounting.MblghA & "," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & "," & YourEEAcounting.CurrentChargeA & "," & YourEEAcounting.ReminderChargeA & ")"
+                    CmdSql.CommandText = "insert into R2Primary.dbo.TblAccounting(CardId,EEAccountingProcessType,DateShamsiA,TimeA,DateMilladiA,PelakA,SerialA,CityA,PelakTypeA,MaabarCode,MblghA,UseridA,CurrentChargeA,ReminderChargeA) values('" & YourEEAcounting.NSSTrafficCard.CardId & "'," & YourEEAcounting.EEAccountingProcessType & ",'" & YourEEAcounting.DateShamsiA & "','" & YourEEAcounting.TimeA & "','" & YourEEAcounting.DateTimeMilladiA.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "','" & YourEEAcounting.NSSCar.StrCarNo & "','" & YourEEAcounting.NSSCar.StrCarSerialNo & "','" & R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(YourEEAcounting.NSSCar.nIdCity) & "'," & R2PelakType.None & ",'" & R2CoreMClassConfigurationManagement.GetComputerCode() & "'," & YourEEAcounting.MblghA & "," & YourEEAcounting.UserIdA & "," & YourEEAcounting.CurrentChargeA & "," & YourEEAcounting.ReminderChargeA & ")"
                 End If
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -1878,7 +1878,7 @@ Namespace MoneyWalletManagement
 
         Private Shared _DateTime As R2DateTime = New R2DateTime
 
-        Public Shared Sub ActMoneyWalletNextStatus(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourBagType As BagPayType, YourMblgh As Int64, YourAccountCode As R2CoreParkingSystemAccountings)
+        Public Shared Sub ActMoneyWalletNextStatus(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourBagType As BagPayType, YourMblgh As Int64, YourAccountCode As R2CoreParkingSystemAccountings,YourUserNSS As R2CoreStandardUserStructure)
             Try
                 Dim myNSSCar As R2StandardCarStructure = Nothing
                 Try
@@ -1893,7 +1893,7 @@ Namespace MoneyWalletManagement
                 ElseIf YourBagType = BagPayType.MinusMoney Then
                     myMoneyWalletReminder = myMoneyWalletCurrentCharge - YourMblgh
                 End If
-                R2CoreParkingSystemMClassAccountingManagement.InsertAccounting(New R2StandardEnterExitAccountingStructure(YourNSSTrafficCard, YourAccountCode, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), _DateTime.GetCurrentDateTimeMilladiFormated(), myNSSCar, R2CoreMClassConfigurationManagement.GetComputerCode(), YourMblgh, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, myMoneyWalletCurrentCharge, myMoneyWalletReminder))
+                R2CoreParkingSystemMClassAccountingManagement.InsertAccounting(New R2StandardEnterExitAccountingStructure(YourNSSTrafficCard, YourAccountCode, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), _DateTime.GetCurrentDateTimeMilladiFormated(), myNSSCar, R2CoreMClassConfigurationManagement.GetComputerCode(), YourMblgh,YourUserNSS.UserId, myMoneyWalletCurrentCharge, myMoneyWalletReminder))
                 AddMinusMoneyWallet(YourNSSTrafficCard, YourBagType, YourMblgh)
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1946,13 +1946,13 @@ Namespace MoneyWalletManagement
             End Try
         End Function
 
-        Public Shared Function GetMoneyWalletAllMoney(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourAccountType As R2CoreParkingSystemAccountings) As Int64
+        Public Shared Function GetMoneyWalletAllMoney(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourAccountType As R2CoreParkingSystemAccountings,YourUserNSS As R2CoreStandardUserStructure) As Int64
             Try
                 Dim myAllMoney As Int64 = GetMoneyWalletCharge(YourNSSTrafficCard)
                 If myAllMoney >= 0 Then
-                    ActMoneyWalletNextStatus(YourNSSTrafficCard, BagPayType.MinusMoney, myAllMoney, YourAccountType)
+                    ActMoneyWalletNextStatus(YourNSSTrafficCard, BagPayType.MinusMoney, myAllMoney, YourAccountType,YourUserNSS)
                 Else
-                    ActMoneyWalletNextStatus(YourNSSTrafficCard, BagPayType.AddMoney, -myAllMoney, YourAccountType)
+                    ActMoneyWalletNextStatus(YourNSSTrafficCard, BagPayType.AddMoney, -myAllMoney, YourAccountType,YourUserNSS)
                 End If
                 Return myAllMoney
             Catch ex As Exception
@@ -2071,7 +2071,7 @@ Namespace MoneyWalletChargeManagement
                 Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
                 Cmdsql.CommandText = "select top 1 radifx from R2Primary.dbo.TblMoneyWalletCharges where CardId='" & MoneyWalletCharge.NSSTrafficCard.CardId & "' order by radifx desc"
                 Dim myRadifx As Int32 = Cmdsql.ExecuteScalar + 1
-                Cmdsql.CommandText = "insert into R2Primary.dbo.TblMoneyWalletCharges(CardId,Radifx,DateShamsi,TimeCharge,DateTimeMilladi,Mblgh,UserId,Mobile,Tash) values('" & MoneyWalletCharge.NSSTrafficCard.CardId & "'," & myRadifx & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "'," & MoneyWalletCharge.Mblgh & "," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ",'" & MoneyWalletCharge.Mobile & "'," & MoneyWalletCharge.Tash & ")"
+                Cmdsql.CommandText = "insert into R2Primary.dbo.TblMoneyWalletCharges(CardId,Radifx,DateShamsi,TimeCharge,DateTimeMilladi,Mblgh,UserId,Mobile,Tash) values('" & MoneyWalletCharge.NSSTrafficCard.CardId & "'," & myRadifx & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "'," & MoneyWalletCharge.Mblgh & "," & MoneyWalletCharge.UserId & ",'" & MoneyWalletCharge.Mobile & "'," & MoneyWalletCharge.Tash & ")"
                 Cmdsql.ExecuteNonQuery()
                 Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
             Catch ex As Exception
@@ -2313,7 +2313,7 @@ Namespace Cars
             End Try
         End Function
 
-        Public Shared Function InsertCar(YourNSS As R2StandardCarStructure) As Int64
+        Public Shared Function InsertCar(YourNSS As R2StandardCarStructure,YourUserNSS As R2CoreStandardUserStructure) As Int64
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -2323,7 +2323,7 @@ Namespace Cars
                 CmdSql.CommandText = "Select top 1 * from dbtransport.dbo.tbcar with (tablockx)" : CmdSql.ExecuteNonQuery()
                 CmdSql.CommandText = "Select IDENT_CURRENT('dbtransport.dbo.tbCar')"
                 Dim mynIdCar As Int64 = CmdSql.ExecuteScalar + 1
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.tbCar(snCarType,StrCarNo,StrCarSerialNo,nIdCity,StrBodyNo,nUserID,strFanniDate,ViewFlag) Values(" & YourNSS.snCarType & ",'" & YourNSS.StrCarNo & "','" & YourNSS.StrCarSerialNo & "'," & YourNSS.nIdCity & ",'" & mynIdCar & "'," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull & "',1)"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.tbCar(snCarType,StrCarNo,StrCarSerialNo,nIdCity,StrBodyNo,nUserID,strFanniDate,ViewFlag) Values(" & YourNSS.snCarType & ",'" & YourNSS.StrCarNo & "','" & YourNSS.StrCarSerialNo & "'," & YourNSS.nIdCity & ",'" & mynIdCar & "'," & YourUserNSS.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull & "',1)"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Return mynIdCar
@@ -2825,15 +2825,15 @@ Namespace BlackList
             End Try
         End Function
 
-        Public Shared Sub ChangeBlackListMblgh(YourNSSBlackList As R2StandardBlackListStructure, YourNewAmount As Int64)
+        Public Shared Sub ChangeBlackListMblgh(YourNSSBlackList As R2StandardBlackListStructure, YourNewAmount As Int64,YourUserNSS As R2CoreStandardUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update dbtransport.dbo.TbBlackList Set nAmount=" & YourNewAmount & ",StrDate='" & _DateTime.GetCurrentDateShamsiFull() & "',nUser=" & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & " Where nId=" & YourNSSBlackList.nId & ""
+                CmdSql.CommandText = "Update dbtransport.dbo.TbBlackList Set nAmount=" & YourNewAmount & ",StrDate='" & _DateTime.GetCurrentDateShamsiFull() & "',nUser=" & YourUserNSS.UserId & " Where nId=" & YourNSSBlackList.nId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Info, "مبلغ تخلف برای لیست سیاه خودرو تغییر یافت" + vbCrLf + YourNSSBlackList.nId.ToString() + vbCrLf + YourNewAmount.ToString(), 0, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Info, "مبلغ تخلف برای لیست سیاه خودرو تغییر یافت" + vbCrLf + YourNSSBlackList.nId.ToString() + vbCrLf + YourNewAmount.ToString(), 0, 0, 0, 0, 0, YourUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -3260,7 +3260,7 @@ Namespace City
         Public Shared Function GetListOfCitys_SearchIntroCharacters(YourSearchStr As String) As List(Of R2StandardCityStructure)
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbCity Where StrCityNAME LIKE '%" & YourSearchStr & "%' Order by StrCityName", 3600, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbCity Where StrCityNAME LIKE '%" & YourSearchStr.Replace("ی", "ي").Replace("ک", "ك") & "%' Order by StrCityName", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 End If
                 Dim Lst As List(Of R2StandardCityStructure) = New List(Of R2StandardCityStructure)
@@ -3277,7 +3277,7 @@ Namespace City
         Public Shared Function GetListOfCitys_SearchforLeftCharacters(YourSearchStr As String) As List(Of R2StandardCityStructure)
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbCity Where Left(StrCityNAME," & YourSearchStr.Length & ")='" & YourSearchStr & "' Order by StrCityName", 3600, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbCity Where Left(StrCityNAME," & YourSearchStr.Length & ")='" & YourSearchStr.Replace("ی", "ي").Replace("ک", "ك") & "' Order by StrCityName", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 End If
                 Dim Lst As List(Of R2StandardCityStructure) = New List(Of R2StandardCityStructure)

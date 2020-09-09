@@ -36,7 +36,7 @@ Public Class UCRFIDCardInitialRegistration
         Try
             UCRefresh()
             UcrfidCardTextMaintainer.UCValue = YourCardNo
-            R2CoreMClassRFIDCardManagement.RFIDCardInitialRegister(YourCardNo)
+            R2CoreMClassRFIDCardManagement.RFIDCardInitialRegister(YourCardNo,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             RaiseEvent UCRFIDCardInitialRegistered(YourCardNo)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

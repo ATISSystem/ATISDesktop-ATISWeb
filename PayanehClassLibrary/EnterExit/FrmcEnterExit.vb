@@ -148,7 +148,7 @@ Public Class FrmcEnterExit
                 Dim myMessage As String = "كارت تردد غير فعال است "
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, myMessage, "استفاده از اين كارت ممنوع و غير مجاز است", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 R2CoreParkingSystemMClassDriverMonitor.UpdateDriverMonitorInfForMaabar(New R2CoreParkingSystemDriverMonitorStructure(R2CoreMClassConfigurationManagement.GetComputerCode(), _NSSTrafficCard.CardId, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, 0, UcMoneyWallet.UCGetReminderCharge, myMessage, 18, Color.Red, Nothing, _DateTime.GetCurrentDateTimeMilladi))
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "استفاده از اين كارت ممنوع و غير مجاز است", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "استفاده از اين كارت ممنوع و غير مجاز است", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 Exit Try
             End If
 
@@ -158,7 +158,7 @@ Public Class FrmcEnterExit
                 Dim myMessage As String = "نوع کارت" + " " + CName + " " + "پشتيبانی نمی شود"
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, myMessage, "یک کارت جدید روی دستگاه کارت خوان بکشید", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 R2CoreParkingSystemMClassDriverMonitor.UpdateDriverMonitorInfForMaabar(New R2CoreParkingSystemDriverMonitorStructure(R2CoreMClassConfigurationManagement.GetComputerCode(), _NSSTrafficCard.CardId, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, 0, UcMoneyWallet.UCGetReminderCharge, myMessage, 18, Color.Red, Nothing, _DateTime.GetCurrentDateTimeMilladi))
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, myMessage, _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, myMessage, _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 Exit Try
             End If
 
@@ -177,7 +177,7 @@ Public Class FrmcEnterExit
                 Dim myMessage As String = "وضعیت ورود یا خروج کارت با این معبر مطابقت ندارد"
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, myMessage + vbCrLf + "کارت  قبلا  " + R2CoreParkingSystemMClassEnterExitManagement.GetEnterExitRequestTypeName(myEnterExitRequest) + " نشده است  ", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 R2CoreParkingSystemMClassDriverMonitor.UpdateDriverMonitorInfForMaabar(New R2CoreParkingSystemDriverMonitorStructure(R2CoreMClassConfigurationManagement.GetComputerCode(), _NSSTrafficCard.CardId, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, 0, UcMoneyWallet.UCGetReminderCharge, myMessage, 18, Color.Red, Nothing, _DateTime.GetCurrentDateTimeMilladi))
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "وضعیت ورود یا خروج کارت با این معبر مطابقت ندارد", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "وضعیت ورود یا خروج کارت با این معبر مطابقت ندارد", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 Exit Try
             End If
 
@@ -187,7 +187,7 @@ Public Class FrmcEnterExit
                 R2CoreRFIDCardReaderInterface.ControlLeds(0, 1)
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, myMessage, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 R2CoreParkingSystemMClassDriverMonitor.UpdateDriverMonitorInfForMaabar(New R2CoreParkingSystemDriverMonitorStructure(R2CoreMClassConfigurationManagement.GetComputerCode(), _NSSTrafficCard.CardId, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, 0, UcMoneyWallet.UCGetReminderCharge, myMessage, 18, Color.Red, Nothing, _DateTime.GetCurrentDateTimeMilladi))
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "ورود کارت با کارت خوان دوم امکان پذير نيست", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "ورود کارت با کارت خوان دوم امکان پذير نيست", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 Exit Try
             ElseIf myEnterExitRequest = R2EnterExitRequestType.ExitRequest And R2CoreRFIDCardReaderInterface.GetRFType = R2CoreRFIDCardReader.RFType.RFType2 Then
                 R2CoreRFIDCardReader.ControlLeds(1, 0)
@@ -268,11 +268,11 @@ Public Class FrmcEnterExit
             If (UcMoneyWallet.UCGetReminderCharge < 0) And (myEnterExitRequest = R2EnterExitRequestType.EnterRequest) Then
                 Dim myMessage As String = "كارت تردد شما فاقد شارژ مورد نياز است" + vbCrLf + "به واحد شارژ مراجعه نماييد"
                 R2CoreParkingSystemMClassDriverMonitor.UpdateDriverMonitorInfForMaabar(New R2CoreParkingSystemDriverMonitorStructure(R2CoreMClassConfigurationManagement.GetComputerCode(), _NSSTrafficCard.CardId, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, myMblgh, UcMoneyWallet.UCGetReminderCharge, myMessage, 18, Color.Red, myLP, _DateTime.GetCurrentDateTimeMilladi))
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "كارت تردد شما فاقد شارژ مورد نياز است - هنگام ورود", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "كارت تردد شما فاقد شارژ مورد نياز است - هنگام ورود", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             End If
             If (UcMoneyWallet.UCGetReminderCharge < 0) And (myEnterExitRequest = R2EnterExitRequestType.ExitRequest) Then
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "كارت تردد شما فاقد شارژ مورد نياز است - هنگام خروج", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
-                If (R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.ChargeActiveOnThisLocation, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) = True) And (R2CoreMClassLoginManagement.CurrentUserNSS.UserCanCharge = True) Then
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "كارت تردد شما فاقد شارژ مورد نياز است - هنگام خروج", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                If (R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.ChargeActiveOnThisLocation, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) = True) And (R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserCanCharge = True) Then
                     ChangeMenuStatus("PnlMoneyWalletCharge", False)
                     ''PnlMoneyWalletCharge.Enabled = False
                     UcMoneyWalletCharge.UCPrepare(_NSSTrafficCard, Math.Abs(UcMoneyWallet.UCGetReminderCharge))
@@ -298,8 +298,8 @@ Public Class FrmcEnterExit
                         If _NSSTrafficCard.CardNo <> LastTrafficCard.CardNo Then
                             R2CoreParkingSystemMClassTrafficCardManagement.DisallowTerafficCard(LastTrafficCard)
                             R2CoreParkingSystemMClassEnterExitManagement.UpdateForExit(New R2StandardEnterExitStructure(LastEnterExitId, Now, "", "", R2CaptureType.None, R2CameraType.None, Nothing, "", 0, R2EnterStatus.None, 0, 0, Nothing, _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime, R2CaptureType.None, R2CameraType.None, Nothing, LastTrafficCard.CardNo, R2CoreMClassLoginManagement.GetNSSSystemUser.UserId, R2ExitStatus.SystemExit, 0, R2CoreMClassConfigurationManagement.GetComputerCode, myLP, True))
-                            Dim LastTrafficCardCharge As Int64 = R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletAllMoney(LastTrafficCard, R2CoreParkingSystemAccountings.ExitSystem)
-                            R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(_NSSTrafficCard, BagPayType.AddMoney, LastTrafficCardCharge, R2CoreParkingSystemAccountings.TransferallChargeToAnother)
+                            Dim LastTrafficCardCharge As Int64 = R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletAllMoney(LastTrafficCard, R2CoreParkingSystemAccountings.ExitSystem,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                            R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(_NSSTrafficCard, BagPayType.AddMoney, LastTrafficCardCharge, R2CoreParkingSystemAccountings.TransferallChargeToAnother,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                         End If
                     End If
                 End If
@@ -308,7 +308,7 @@ Public Class FrmcEnterExit
             'تراكنش ثبت اطلاعات تردد و کیف پول
             Try
                 If myEnterExitRequest = R2EnterExitRequestType.EnterRequest Then
-                    Dim myEnterExitIDTemp As UInt64 = R2CoreParkingSystemMClassEnterExitManagement.InsertEnterExit(New R2StandardEnterExitStructure(0, _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime, R2CaptureType.AniiCapture, R2CameraType.EnterCamera, Nothing, _NSSTrafficCard.CardNo, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, myEnterStatus, myMblgh, R2CoreMClassConfigurationManagement.GetComputerCode, myLP, _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime, R2CaptureType.None, R2CameraType.None, Nothing, "", 0, R2ExitStatus.None, 0, 0, New R2StandardLicensePlateStructure, False))
+                    Dim myEnterExitIDTemp As UInt64 = R2CoreParkingSystemMClassEnterExitManagement.InsertEnterExit(New R2StandardEnterExitStructure(0, _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime, R2CaptureType.AniiCapture, R2CameraType.EnterCamera, Nothing, _NSSTrafficCard.CardNo, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, myEnterStatus, myMblgh, R2CoreMClassConfigurationManagement.GetComputerCode, myLP, _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime, R2CaptureType.None, R2CameraType.None, Nothing, "", 0, R2ExitStatus.None, 0, 0, New R2StandardLicensePlateStructure, False))
                     'ذخیره سازی تصویر
                     If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.Camera1, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) = True Then
                         If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.SaveCarPicture, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) = True Then
@@ -316,11 +316,11 @@ Public Class FrmcEnterExit
                         End If
                     End If
                     UcMoneyWallet.UCViewandActMoneyWalletNextStatus(_NSSTrafficCard, BagPayType.MinusMoney, UcMoneyWallet.UCGetMblgh, R2CoreParkingSystemAccountings.EnterType)
-                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Info, "ثبت موفقیت آمیز تردد - هنگام ورود", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Info, "ثبت موفقیت آمیز تردد - هنگام ورود", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 ElseIf myEnterExitRequest = R2EnterExitRequestType.ExitRequest Then
-                    R2CoreParkingSystemMClassEnterExitManagement.UpdateForExit(New R2StandardEnterExitStructure(myEnterExitId, Now, "", "", R2CaptureType.None, R2CameraType.None, Nothing, "", 0, R2EnterStatus.None, 0, 0, Nothing, _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime, R2CaptureType.AniiCapture, R2CameraType.Bidirectional, Nothing, _NSSTrafficCard.CardNo, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, myExitStatus, UcMoneyWallet.UCGetMblgh, R2CoreMClassConfigurationManagement.GetComputerCode(), myLP, True))
+                    R2CoreParkingSystemMClassEnterExitManagement.UpdateForExit(New R2StandardEnterExitStructure(myEnterExitId, Now, "", "", R2CaptureType.None, R2CameraType.None, Nothing, "", 0, R2EnterStatus.None, 0, 0, Nothing, _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime, R2CaptureType.AniiCapture, R2CameraType.Bidirectional, Nothing, _NSSTrafficCard.CardNo, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, myExitStatus, UcMoneyWallet.UCGetMblgh, R2CoreMClassConfigurationManagement.GetComputerCode(), myLP, True))
                     UcMoneyWallet.UCViewandActMoneyWalletNextStatus(_NSSTrafficCard, BagPayType.MinusMoney, UcMoneyWallet.UCGetMblgh, R2CoreParkingSystemAccountings.ExitType)
-                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Info, "ثبت موفقیت آمیز تردد - هنگام خروج", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Info, "ثبت موفقیت آمیز تردد - هنگام خروج", _NSSTrafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 End If
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + "تراکنش ثبت تردد" + vbCrLf + ex.Message)
@@ -339,7 +339,7 @@ Public Class FrmcEnterExit
                 'فرآیند صدور نوبت ناوگان باری
                 If (UcTurnRegisterRequestConfirmation.UCChkTruckNobat = True) And R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTerraficCardTypeforTurnRegisteringActive(_NSSTrafficCard) Then
                     Dim TurnId As Int64 = Int64.MinValue
-                    Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(_NSSTrafficCard.CardId)), False, False, TurnId)
+                    Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(_NSSTrafficCard.CardId)), False, False, TurnId,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                     _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + TurnRegisterRequestId.ToString & vbCrLf & "شماره نوبت :" + TurnId.ToString, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 End If
                 UcTurnRegisterRequestConfirmation.UCChkTruckNobat = True

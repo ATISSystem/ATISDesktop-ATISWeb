@@ -299,7 +299,7 @@ Public Class FrmcCarAndDriversInformation
             R2CoreTransportationAndLoadNotificationMClassTrucksManagement.SetTruckRelationAnnouncementHallSubGroup(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.nIdCar), NSSAnnouncementHallSubGroup)
             UcViewerNSSAnnouncementHallSubGroup.UCViewNSS(NSSAnnouncementHallSubGroup)
             FrmcViewLocalMessage("ارتباط ناوگان باری و سالن اعلام بار برقرار شد")
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.RegisterRecords, "ثبت رابطه ناوگان باری و سالن اعلام بار", UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.GetCarPelakSerialComposit(), 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.RegisterRecords, "ثبت رابطه ناوگان باری و سالن اعلام بار", UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.GetCarPelakSerialComposit(), 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             UcAnnouncementHallSelection.UCRefresh()
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
@@ -324,7 +324,7 @@ Public Class FrmcCarAndDriversInformation
             R2CoreTransportationAndLoadNotificationMClassTrucksManagement.DisabledAllTruckRelationAnnouncementHallSubGroups(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.nIdCar))
             UcViewerNSSAnnouncementHallSubGroup.UCViewNSSNothing()
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "کلیه روابط ناوگان باری با زیرگروه های اعلام بار حذف شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.RegisterRecords, "حذف کلیه روابط ناوگان باری و زیرگروه های اعلام بار", UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.GetCarPelakSerialComposit(), 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.RegisterRecords, "حذف کلیه روابط ناوگان باری و زیرگروه های اعلام بار", UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.GetCarPelakSerialComposit(), 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
 

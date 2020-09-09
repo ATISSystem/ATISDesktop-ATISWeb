@@ -72,7 +72,7 @@ Public Class FrmcTerafficCardEdit
         Try
             UcTerafficCardViewerEditor.UCEditTerafficCard()
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess,"مشخصات ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-            R2CoreMClassLoggingManagement.LogRegister(new R2CoreStandardLoggingStructure(0,R2CoreLogType.Info,"ویرایش مشخصات کارت تردد انجام گرفت",UcTerafficCardViewerEditor.UCGetNSSTerafficCard.CardNo,0,0,0,0,R2CoreMClassLoginManagement.CurrentUserNSS.UserId,_DateTime.GetCurrentDateTimeMilladiFormated(),_DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(new R2CoreStandardLoggingStructure(0,R2CoreLogType.Info,"ویرایش مشخصات کارت تردد انجام گرفت",UcTerafficCardViewerEditor.UCGetNSSTerafficCard.CardNo,0,0,0,0,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId,_DateTime.GetCurrentDateTimeMilladiFormated(),_DateTime.GetCurrentDateShamsiFull))
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

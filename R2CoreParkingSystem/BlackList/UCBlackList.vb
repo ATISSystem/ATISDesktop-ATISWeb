@@ -77,7 +77,7 @@ Public Class UCBlackList
         Try
             If UcMoneynAmount.UCValueMoney <> 0 Then
                 UcButtonPardakht.UCEnable = False
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Info, "پرداخت وجه تخلف یا لیست سیاه خودرو انجام گرفت" + vbCrLf + _NSSBlackList.nId.ToString(), "", 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Info, "پرداخت وجه تخلف یا لیست سیاه خودرو انجام گرفت" + vbCrLf + _NSSBlackList.nId.ToString(), "", 0, 0, 0, 0,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId , _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 RaiseEvent UCPardakhtRequestEvent(_NSSBlackList, UcMoneynAmount.UCValueMoney)
             End If
         Catch ex As Exception

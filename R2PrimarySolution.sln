@@ -51,7 +51,7 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "R2PrimaryAutomatedJobsSetup
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATISWeb", "ATISWeb\ATISWeb.csproj", "{193848F6-E6C2-4F65-A16A-0820DDC61FD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATISMobileAPKRepository", "ATISMobileAPKRepository\ATISMobileAPKRepository.csproj", "{6F0E4F62-E581-4012-9CB7-191EE18767BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATISMobileRestful", "ATISMobileRestful\ATISMobileRestful.csproj", "{2FBBFF1B-4081-4073-BE24-13791B29E1EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,10 +145,10 @@ Global
 		{193848F6-E6C2-4F65-A16A-0820DDC61FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{193848F6-E6C2-4F65-A16A-0820DDC61FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{193848F6-E6C2-4F65-A16A-0820DDC61FD6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6F0E4F62-E581-4012-9CB7-191EE18767BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F0E4F62-E581-4012-9CB7-191EE18767BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F0E4F62-E581-4012-9CB7-191EE18767BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F0E4F62-E581-4012-9CB7-191EE18767BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FBBFF1B-4081-4073-BE24-13791B29E1EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FBBFF1B-4081-4073-BE24-13791B29E1EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FBBFF1B-4081-4073-BE24-13791B29E1EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FBBFF1B-4081-4073-BE24-13791B29E1EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

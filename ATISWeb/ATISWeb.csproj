@@ -81,6 +81,7 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\ATISFonts.css" />
     <Content Include="Default.aspx" />
+    <Content Include="Downloads.aspx" />
     <Content Include="fonts\Brush Script MT Italic.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\Yekan.svg" />
@@ -142,6 +143,7 @@
     <Content Include="fonts\Brush Script MT Italic.eot" />
     <Content Include="fonts\Brush Script MT Italic.ttf" />
     <Content Include="fonts\Brush Script MT Italic.woff" />
+    <Content Include="WfSiteUnderConstructionAlert.aspx" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -267,6 +269,14 @@
     <Compile Include="DomainSite.Master.designer.cs">
       <DependentUpon>DomainSite.Master</DependentUpon>
     </Compile>
+    <Compile Include="Downloads.aspx.cs">
+      <DependentUpon>Downloads.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Downloads.aspx.designer.cs">
+      <DependentUpon>Downloads.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LoginManagement\ATISWebMClassLoginManagement.cs" />
     <Compile Include="LoginManagement\WcChangePasswordofCurrentUser.ascx.cs">
       <DependentUpon>WcChangePasswordofCurrentUser.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -379,6 +389,13 @@
     </Compile>
     <Compile Include="TransportationAndLoadNotification\TransportCompanies\WcViewerNSSTransportCompanyIntelligently.ascx.designer.cs">
       <DependentUpon>WcViewerNSSTransportCompanyIntelligently.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="WfSiteUnderConstructionAlert.aspx.cs">
+      <DependentUpon>WfSiteUnderConstructionAlert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WfSiteUnderConstructionAlert.aspx.designer.cs">
+      <DependentUpon>WfSiteUnderConstructionAlert.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -138,7 +138,7 @@ Public Class UCMoneyWallet
     Public Sub UCViewandActMoneyWalletNextStatus(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourBagType As BagPayType, YourMblgh As Int64, YourAccountCode As R2CoreParkingSystemAccountings)
         Try
             UCViewMoneyWalletNextStatus(YourNSSTrafficCard, YourBagType, YourMblgh, YourAccountCode)
-            R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(YourNSSTrafficCard, YourBagType, YourMblgh, YourAccountCode)
+            R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(YourNSSTrafficCard, YourBagType, YourMblgh, YourAccountCode,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -155,7 +155,7 @@ Public Class UCMoneyWallet
 
     Public Function UCGetAllMoney(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourAccountCode As R2CoreParkingSystemAccountings) As Int64
         Try
-            Dim AllMoney As Int64 = R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletAllMoney(YourNSSTrafficCard, YourAccountCode)
+            Dim AllMoney As Int64 = R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletAllMoney(YourNSSTrafficCard, YourAccountCode,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCViewMoneyWalletOnlyCharge(YourNSSTrafficCard)
             Return AllMoney
         Catch ex As Exception
@@ -208,7 +208,7 @@ Public Class UCMoneyWallet
                 E.Graphics.DrawString("زمان:" + _DateTime.GetCurrentTime, myStrFont, Brushes.DarkBlue, myPaperSizeHalf - "زمان:".Length, Y + 90)
                 E.Graphics.DrawString("مبلغ :" + R2CoreMClassPublicProcedures.ParseSignDigitToSignString(UCGetMblgh) + " ريال", myStrFont, Brushes.DarkBlue, myPaperSizeHalf - ("مبلغ :" + R2CoreMClassPublicProcedures.ParseSignDigitToSignString(UCGetMblgh) + " ريال").Length, Y + 110)
                 E.Graphics.DrawString("موجودی :" + R2CoreMClassPublicProcedures.ParseSignDigitToTashString(UCGetReminderCharge) + " ريال", myStrFont, Brushes.DarkBlue, myPaperSizeHalf - ("موجودی :" + R2CoreMClassPublicProcedures.ParseSignDigitToTashString(UCGetReminderCharge) + " ريال ").Length, Y + 130)
-                E.Graphics.DrawString("کاربر:" + R2CoreMClassLoginManagement.CurrentUserNSS.UserName, myStrFont, Brushes.DarkBlue, myPaperSizeHalf - "کاربر:".Length, Y + 150)
+                E.Graphics.DrawString("کاربر:" + R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserName, myStrFont, Brushes.DarkBlue, myPaperSizeHalf - "کاربر:".Length, Y + 150)
                 E.Graphics.DrawString("----------------------", myStrFont, Brushes.DarkBlue, myPaperSizeHalf - "----------------------".Length, Y + 170)
             ElseIf _PrintType = PrintType.Reminder Then
                 E.Graphics.DrawString("پايانه حمل و نقل اميرکبير", myStrFont, Drawing.Brushes.DarkBlue, myPaperSizeHalf - "پايانه حمل و نقل اميرکبير".Length, Y)

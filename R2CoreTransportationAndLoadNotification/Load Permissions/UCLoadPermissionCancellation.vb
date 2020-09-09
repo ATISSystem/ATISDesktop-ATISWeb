@@ -106,7 +106,7 @@ Public Class UCLoadPermissionCancellation
 
     Private Sub UcButtonLoadPermissionCancelling_UCClickedEvent() Handles UcButtonLoadPermissionCancelling.UCClickedEvent
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement.LoadPermissionCancelling(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId, CheckBoxTurn.Checked, CheckBoxLoadCapacitorLoad.Checked)
+            R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement.LoadPermissionCancelling(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId, CheckBoxTurn.Checked, CheckBoxLoadCapacitorLoad.Checked,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             Threading.Thread.Sleep(1500)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "کنسلی مجوز بارگیری انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             UCViewNSS(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId)

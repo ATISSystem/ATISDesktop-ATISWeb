@@ -120,7 +120,7 @@ Public Class UCViewerNSSLoadAllocationExtended
 
     Private Sub PicBoxLoadAllocationCancellation_Click(sender As Object, e As EventArgs) Handles PicBoxLoadAllocationCancellation.Click
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(UCNSSCurrent.LAId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser)
+            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(UCNSSCurrent.LAId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(UCNSSCurrent.LAId))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخصیص بار کنسل شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception

@@ -117,7 +117,7 @@ Public Class FrmcTurnRegisterRequest
     Private Sub UcButtonSodoorNobat_UCClickedEvent() Handles UcButtonSodoorNobat.UCClickedEvent
         Try
             Dim TurnId As Int64 = Int64.MinValue
-            Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(_NSSTruck, False, True, TurnId)
+            Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(_NSSTruck, False, True, TurnId,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + TurnRegisterRequestId.ToString & vbCrLf & "شماره نوبت :" + TurnId.ToString, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             RaiseEvent _SodorNobatSuccessEvent()
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException
@@ -163,7 +163,7 @@ Public Class FrmcTurnRegisterRequest
             If UC.UCNSSMenu.MenuPanel = "PnlSodoorNobat" Then
                 StartReading()
             ElseIf UC.UCNSSMenu.MenuPanel = "PnlCarandDriverInformation" Then
-                R2CoreGUIMClassProcessesManagement.OpenProccess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcCarAndDriversInformation))
+                R2CoreGUIMClassProcessesManagement.OpenProccess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcCarAndDriversInformation),R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             ElseIf UC.UCNSSMenu.MenuPanel = "PnlAccounting" Then
                 UcAccountingCollection.UCViewAccounting(_NSSTrafficCard)
             ElseIf UC.UCNSSMenu.MenuPanel = "PnlConsole" Then

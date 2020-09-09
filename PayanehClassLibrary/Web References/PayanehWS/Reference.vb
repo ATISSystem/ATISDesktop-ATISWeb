@@ -28,7 +28,8 @@ Namespace PayanehWS
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code"),  _
-     System.Web.Services.WebServiceBindingAttribute(Name:="PayanehWebServiceSoap", [Namespace]:="http://tempuri.org/")>  _
+     System.Web.Services.WebServiceBindingAttribute(Name:="PayanehWebServiceSoap", [Namespace]:="http://tempuri.org/"),  _
+     System.Xml.Serialization.XmlIncludeAttribute(GetType(R2StandardStructure))>  _
     Partial Public Class PayanehWebService
         Inherits System.Web.Services.Protocols.SoapHttpClientProtocol
         
@@ -789,21 +790,21 @@ Namespace PayanehWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodTransportCompanyLoadCapacitorLoadEdit", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodTransportCompanyLoadCapacitorLoadEdit(ByVal YournEstelamId As Long, ByVal YourStrBarName As String, ByVal YournCityCode As Long, ByVal YournBarCode As Long, ByVal YournCompCode As Long, ByVal YournTruckType As Long, ByVal YourStrAddress As String, ByVal YournCarNumKol As Long, ByVal YourStrPriceSug As String, ByVal YourStrDescription As String)
-            Me.Invoke("WebMethodTransportCompanyLoadCapacitorLoadEdit", New Object() {YournEstelamId, YourStrBarName, YournCityCode, YournBarCode, YournCompCode, YournTruckType, YourStrAddress, YournCarNumKol, YourStrPriceSug, YourStrDescription})
+        Public Sub WebMethodTransportCompanyLoadCapacitorLoadEdit(ByVal YournEstelamId As Long, ByVal YourStrBarName As String, ByVal YournCityCode As Long, ByVal YournBarCode As Long, ByVal YournCompCode As Long, ByVal YournTruckType As Long, ByVal YourStrAddress As String, ByVal YournCarNumKol As Long, ByVal YourStrPriceSug As String, ByVal YourStrDescription As String, ByVal YourUserNSS As R2CoreStandardUserStructure)
+            Me.Invoke("WebMethodTransportCompanyLoadCapacitorLoadEdit", New Object() {YournEstelamId, YourStrBarName, YournCityCode, YournBarCode, YournCompCode, YournTruckType, YourStrAddress, YournCarNumKol, YourStrPriceSug, YourStrDescription, YourUserNSS})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodTransportCompanyLoadCapacitorLoadEditAsync(ByVal YournEstelamId As Long, ByVal YourStrBarName As String, ByVal YournCityCode As Long, ByVal YournBarCode As Long, ByVal YournCompCode As Long, ByVal YournTruckType As Long, ByVal YourStrAddress As String, ByVal YournCarNumKol As Long, ByVal YourStrPriceSug As String, ByVal YourStrDescription As String)
-            Me.WebMethodTransportCompanyLoadCapacitorLoadEditAsync(YournEstelamId, YourStrBarName, YournCityCode, YournBarCode, YournCompCode, YournTruckType, YourStrAddress, YournCarNumKol, YourStrPriceSug, YourStrDescription, Nothing)
+        Public Overloads Sub WebMethodTransportCompanyLoadCapacitorLoadEditAsync(ByVal YournEstelamId As Long, ByVal YourStrBarName As String, ByVal YournCityCode As Long, ByVal YournBarCode As Long, ByVal YournCompCode As Long, ByVal YournTruckType As Long, ByVal YourStrAddress As String, ByVal YournCarNumKol As Long, ByVal YourStrPriceSug As String, ByVal YourStrDescription As String, ByVal YourUserNSS As R2CoreStandardUserStructure)
+            Me.WebMethodTransportCompanyLoadCapacitorLoadEditAsync(YournEstelamId, YourStrBarName, YournCityCode, YournBarCode, YournCompCode, YournTruckType, YourStrAddress, YournCarNumKol, YourStrPriceSug, YourStrDescription, YourUserNSS, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodTransportCompanyLoadCapacitorLoadEditAsync(ByVal YournEstelamId As Long, ByVal YourStrBarName As String, ByVal YournCityCode As Long, ByVal YournBarCode As Long, ByVal YournCompCode As Long, ByVal YournTruckType As Long, ByVal YourStrAddress As String, ByVal YournCarNumKol As Long, ByVal YourStrPriceSug As String, ByVal YourStrDescription As String, ByVal userState As Object)
+        Public Overloads Sub WebMethodTransportCompanyLoadCapacitorLoadEditAsync(ByVal YournEstelamId As Long, ByVal YourStrBarName As String, ByVal YournCityCode As Long, ByVal YournBarCode As Long, ByVal YournCompCode As Long, ByVal YournTruckType As Long, ByVal YourStrAddress As String, ByVal YournCarNumKol As Long, ByVal YourStrPriceSug As String, ByVal YourStrDescription As String, ByVal YourUserNSS As R2CoreStandardUserStructure, ByVal userState As Object)
             If (Me.WebMethodTransportCompanyLoadCapacitorLoadEditOperationCompleted Is Nothing) Then
                 Me.WebMethodTransportCompanyLoadCapacitorLoadEditOperationCompleted = AddressOf Me.OnWebMethodTransportCompanyLoadCapacitorLoadEditOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodTransportCompanyLoadCapacitorLoadEdit", New Object() {YournEstelamId, YourStrBarName, YournCityCode, YournBarCode, YournCompCode, YournTruckType, YourStrAddress, YournCarNumKol, YourStrPriceSug, YourStrDescription}, Me.WebMethodTransportCompanyLoadCapacitorLoadEditOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodTransportCompanyLoadCapacitorLoadEdit", New Object() {YournEstelamId, YourStrBarName, YournCityCode, YournBarCode, YournCompCode, YournTruckType, YourStrAddress, YournCarNumKol, YourStrPriceSug, YourStrDescription, YourUserNSS}, Me.WebMethodTransportCompanyLoadCapacitorLoadEditOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodTransportCompanyLoadCapacitorLoadEditOperationCompleted(ByVal arg As Object)
@@ -1143,21 +1144,21 @@ Namespace PayanehWS
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMe"& _ 
             "ssageProduce", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduce(ByVal YourComapnyCode As Long, ByVal YournEstelamId As Long, ByVal YourCarTruckSmartCardNo As String, ByVal YourDriverTruckSmartCardNo As String)
-            Me.Invoke("WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduce", New Object() {YourComapnyCode, YournEstelamId, YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo})
+        Public Sub WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduce(ByVal YourComapnyCode As Long, ByVal YournEstelamId As Long, ByVal YourCarTruckSmartCardNo As String, ByVal YourDriverTruckSmartCardNo As String, ByVal YourUserNSS As R2CoreStandardUserStructure)
+            Me.Invoke("WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduce", New Object() {YourComapnyCode, YournEstelamId, YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo, YourUserNSS})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceAsync(ByVal YourComapnyCode As Long, ByVal YournEstelamId As Long, ByVal YourCarTruckSmartCardNo As String, ByVal YourDriverTruckSmartCardNo As String)
-            Me.WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceAsync(YourComapnyCode, YournEstelamId, YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo, Nothing)
+        Public Overloads Sub WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceAsync(ByVal YourComapnyCode As Long, ByVal YournEstelamId As Long, ByVal YourCarTruckSmartCardNo As String, ByVal YourDriverTruckSmartCardNo As String, ByVal YourUserNSS As R2CoreStandardUserStructure)
+            Me.WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceAsync(YourComapnyCode, YournEstelamId, YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo, YourUserNSS, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceAsync(ByVal YourComapnyCode As Long, ByVal YournEstelamId As Long, ByVal YourCarTruckSmartCardNo As String, ByVal YourDriverTruckSmartCardNo As String, ByVal userState As Object)
+        Public Overloads Sub WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceAsync(ByVal YourComapnyCode As Long, ByVal YournEstelamId As Long, ByVal YourCarTruckSmartCardNo As String, ByVal YourDriverTruckSmartCardNo As String, ByVal YourUserNSS As R2CoreStandardUserStructure, ByVal userState As Object)
             If (Me.WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceOperationCompleted Is Nothing) Then
                 Me.WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceOperationCompleted = AddressOf Me.OnWebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduce", New Object() {YourComapnyCode, YournEstelamId, YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo}, Me.WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduce", New Object() {YourComapnyCode, YournEstelamId, YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo, YourUserNSS}, Me.WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduceOperationCompleted(ByVal arg As Object)
@@ -1446,6 +1447,134 @@ Namespace PayanehWS
             End If
             Return false
         End Function
+    End Class
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0"),  _
+     System.SerializableAttribute(),  _
+     System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.ComponentModel.DesignerCategoryAttribute("code"),  _
+     System.Xml.Serialization.XmlTypeAttribute([Namespace]:="http://tempuri.org/")>  _
+    Partial Public Class R2CoreStandardUserStructure
+        Inherits R2StandardStructure
+        
+        Private userIdField As Long
+        
+        Private userNameField As String
+        
+        Private userShenasehField As String
+        
+        Private userPasswordField As String
+        
+        Private userPinCodeField As String
+        
+        Private userCanChargeField As Boolean
+        
+        Private userActiveField As Boolean
+        
+        '''<remarks/>
+        Public Property UserId() As Long
+            Get
+                Return Me.userIdField
+            End Get
+            Set
+                Me.userIdField = value
+            End Set
+        End Property
+        
+        '''<remarks/>
+        Public Property UserName() As String
+            Get
+                Return Me.userNameField
+            End Get
+            Set
+                Me.userNameField = value
+            End Set
+        End Property
+        
+        '''<remarks/>
+        Public Property UserShenaseh() As String
+            Get
+                Return Me.userShenasehField
+            End Get
+            Set
+                Me.userShenasehField = value
+            End Set
+        End Property
+        
+        '''<remarks/>
+        Public Property UserPassword() As String
+            Get
+                Return Me.userPasswordField
+            End Get
+            Set
+                Me.userPasswordField = value
+            End Set
+        End Property
+        
+        '''<remarks/>
+        Public Property UserPinCode() As String
+            Get
+                Return Me.userPinCodeField
+            End Get
+            Set
+                Me.userPinCodeField = value
+            End Set
+        End Property
+        
+        '''<remarks/>
+        Public Property UserCanCharge() As Boolean
+            Get
+                Return Me.userCanChargeField
+            End Get
+            Set
+                Me.userCanChargeField = value
+            End Set
+        End Property
+        
+        '''<remarks/>
+        Public Property UserActive() As Boolean
+            Get
+                Return Me.userActiveField
+            End Get
+            Set
+                Me.userActiveField = value
+            End Set
+        End Property
+    End Class
+    
+    '''<remarks/>
+    <System.Xml.Serialization.XmlIncludeAttribute(GetType(R2CoreStandardUserStructure)),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0"),  _
+     System.SerializableAttribute(),  _
+     System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.ComponentModel.DesignerCategoryAttribute("code"),  _
+     System.Xml.Serialization.XmlTypeAttribute([Namespace]:="http://tempuri.org/")>  _
+    Partial Public Class R2StandardStructure
+        
+        Private oCodeField As String
+        
+        Private oNameField As String
+        
+        '''<remarks/>
+        Public Property OCode() As String
+            Get
+                Return Me.oCodeField
+            End Get
+            Set
+                Me.oCodeField = value
+            End Set
+        End Property
+        
+        '''<remarks/>
+        Public Property OName() As String
+            Get
+                Return Me.oNameField
+            End Get
+            Set
+                Me.oNameField = value
+            End Set
+        End Property
     End Class
     
     '''<remarks/>

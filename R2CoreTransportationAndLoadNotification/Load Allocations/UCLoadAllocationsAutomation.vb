@@ -81,7 +81,7 @@ Public Class UCLoadAllocationsAutomation
         Try
             _AutomationTimer.Enabled = False
             _AutomationTimer.Stop()
-            Dim ResultList As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure) = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering()
+            Dim ResultList As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure) = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UcucLoadAllocationCollection.UCViewCollection(ResultList)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

@@ -27,7 +27,7 @@ Public Class UCComputerMessageProducerEmergencyTurnRegisterRequest
 
     Private Sub UCEmergencyTurnRegisterRequest()
         Try
-            TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.ProduceEmergencyTurnRegisterRequestConfirmationComputerMessage(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCar.UCGetNSS.nIdCar), True, UcPersianTextBoxNote.UCValue)
+            TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.ProduceEmergencyTurnRegisterRequestConfirmationComputerMessage(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCar.UCGetNSS.nIdCar), True, UcPersianTextBoxNote.UCValue,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
         Catch ex As Exception When TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException
             Throw ex
         Catch ex As Exception

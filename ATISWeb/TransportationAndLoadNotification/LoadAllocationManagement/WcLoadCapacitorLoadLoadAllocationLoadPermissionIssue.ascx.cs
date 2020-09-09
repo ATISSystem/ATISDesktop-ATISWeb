@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using ATISWeb.LoginManagement;
 using ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement;
 using PayanehClassLibrary.LoadNotification.LoadPermission;
 using R2Core.UserManagement;
@@ -91,10 +91,10 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
             try
             {
                 BtnLoadAllocationLoadPermissionIssue.Enabled = false;
-                Int64 myCompanyCode = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(R2Core.UserManagement.R2CoreMClassLoginManagement.CurrentUserNSS).TCId;
+                Int64 myCompanyCode = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(ATISWebMClassLoginManagement.GetNSSCurrentUser()).TCId;
                 Int64 mynEstelamId = WcViewerNSSLoadCapacitorLoad.WcGetNSSCurrent.nEstelamId;
                 LoadNotificationLoadPermissionManagement.CarTruckRelationDriverTruck(WcSmartCardsInquiry.WcGetTruckSmartCardNo(), WcSmartCardsInquiry.WcGetTruckDriverSmartCardNo());
-                Int64 myTurnId = LoadNotificationLoadPermissionManagement.TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(myCompanyCode, mynEstelamId, WcSmartCardsInquiry.WcGetTruckSmartCardNo(), WcSmartCardsInquiry.WcGetTruckDriverSmartCardNo());
+                Int64 myTurnId = LoadNotificationLoadPermissionManagement.TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(myCompanyCode, mynEstelamId, WcSmartCardsInquiry.WcGetTruckSmartCardNo(), WcSmartCardsInquiry.WcGetTruckDriverSmartCardNo(),ATISWebMClassLoginManagement.GetNSSCurrentUser());
                 PermissionPrinting.GetInformationforRemotePermissionPrinting(mynEstelamId, myTurnId, ref PPDS.StrExitDate, ref PPDS.StrExitTime, ref PPDS.nEstelamId, ref PPDS.TurnId, ref PPDS.CompanyName, ref PPDS.CarTruckLoaderTypeName, ref PPDS.pelak, ref PPDS.Serial, ref PPDS.DriverTruckFullNameFamily, ref PPDS.DriverTruckDrivingLicenseNo, ref PPDS.ProductName, ref PPDS.TargetCityName, ref PPDS.StrPriceSug, ref PPDS.StrDescription, ref PPDS.PermissionUserName, ref PPDS.OtherNote);
                 PPDS.TurnId = myTurnId.ToString();
                 PPDS.nEstelamId = mynEstelamId.ToString();

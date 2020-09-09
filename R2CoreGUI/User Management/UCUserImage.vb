@@ -1,5 +1,6 @@
 ﻿
 Imports System.Reflection
+
 Imports R2Core.UserManagement
 
 Public Class UCUserImage
@@ -7,6 +8,14 @@ Public Class UCUserImage
 
 
 #Region "General Properties"
+
+    Private _UCCurrentNSS As R2CoreStandardUserStructure = Nothing
+    Public ReadOnly Property UCCurrentNSS As R2CoreStandardUserStructure
+        Get
+            Return _UCCurrentNSS
+        End Get
+    End Property
+
 #End Region
 
 #Region "Subroutins And Functions"
@@ -26,7 +35,8 @@ Public Class UCUserImage
 
     Public Sub UCSetUserImage(YourNSSUser As R2CoreStandardUserStructure)
         Try
-            PicUserImage.Image = R2Core.UserManagement.R2CoreMClassLoginManagement.GetUserImage(YourNSSUser).GetImage()
+            _UCCurrentNSS = YourNSSUser
+            PicUserImage.Image = R2CoreMClassLoginManagement.GetUserImage(YourNSSUser).GetImage()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

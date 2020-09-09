@@ -24,8 +24,7 @@ Imports R2Core.ProcessesManagement
 Imports R2Core.PublicProc
 Imports R2Core.R2PrimaryFileSharingWS
 Imports R2Core.UserManagement
-
-
+Imports R2Core.UserManagement.Exceptions
 
 
 Public Class R2Enums
@@ -964,7 +963,7 @@ Namespace ComputerMessagesManagement
 
         Public Shared Sub SendComputerMessage(YourComputerMessage As R2StandardComputerMessageStructure)
             Try
-                SabtComputerMessage(New R2StandardComputerMessageStructure(0, YourComputerMessage.CMNote, YourComputerMessage.CMType, True, False, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), YourComputerMessage.DataStruct))
+                SabtComputerMessage(New R2StandardComputerMessageStructure(0, YourComputerMessage.CMNote, YourComputerMessage.CMType, True, False, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, R2CoreMClassLoginManagement.GetNSSSystemUser.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), YourComputerMessage.DataStruct))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -1321,7 +1320,7 @@ Namespace UserManagement
         End Property
         Public Property UserShenaseh() As String
             Get
-                Return myUserShenaseh
+                Return myUserShenaseh.Trim()
             End Get
             Set(ByVal Value As String)
                 myUserShenaseh = Value
@@ -1329,7 +1328,7 @@ Namespace UserManagement
         End Property
         Public Property UserPassword() As String
             Get
-                Return myUserPassword
+                Return myUserPassword.Trim()
             End Get
             Set(ByVal Value As String)
                 myUserPassword = Value
@@ -1337,7 +1336,7 @@ Namespace UserManagement
         End Property
         Public Property UserPinCode() As String
             Get
-                Return myUserPinCode
+                Return myUserPinCode.Trim()
             End Get
             Set(ByVal Value As String)
                 myUserPinCode = Value
@@ -1635,47 +1634,49 @@ Namespace UserManagement
     Public Class R2CoreMClassLoginManagement
 
         Private Shared R2PrimaryFSWS As R2PrimaryFileSharingWS.R2PrimaryFileSharingWebService = New R2PrimaryFileSharingWebService()
-        Public Shared CurrentUserNSS As R2CoreStandardUserStructure = Nothing
 
         Public Shared Property GetNoneUserId As Int64 = 0
 
-        Public Shared Function SetCurrentUserbyShenasehPassword(YourUserNSS As R2CoreStandardUserStructure) As Boolean
+        Public Shared Function IsUserRegistered(YourUserNSS As R2CoreStandardUserStructure) As Boolean
             Try
-                Dim DS As DataSet
-                If DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers where ltrim(rtrim(UserShenaseh))='" & YourUserNSS.UserShenaseh & "' and ltrim(rtrim(UserPassword))='" & YourUserNSS.UserPassword & "'", 1, DS).GetRecordsCount = 0 Then
-                    Throw New Exception("کاربری با این مشخصات وجود ندارد")
-                Else
-                    If DS.Tables(0).Rows(0).Item("UserActive") = False Then Throw New Exception("اکانت کاربر مورد نظر در حال حاضر غیر فعال است")
-                    CurrentUserNSS = New R2CoreStandardUserStructure
-                    CurrentUserNSS.UserId = DS.Tables(0).Rows(0).Item("UserId")
-                    CurrentUserNSS.UserName = Trim(DS.Tables(0).Rows(0).Item("UserName"))
-                    CurrentUserNSS.UserPassword = Trim(DS.Tables(0).Rows(0).Item("UserPassword"))
-                    CurrentUserNSS.UserShenaseh = Trim(DS.Tables(0).Rows(0).Item("UserShenaseh"))
-                    CurrentUserNSS.UserPinCode = Trim(DS.Tables(0).Rows(0).Item("UserPinCode"))
-                    CurrentUserNSS.UserCanCharge = Trim(DS.Tables(0).Rows(0).Item("UserCanCharge"))
-                    CurrentUserNSS.UserActive = Trim(DS.Tables(0).Rows(0).Item("UserActive"))
+                If AuthenticationUserbyShenasehPassword(YourUserNSS) Then
+                    Return True
                 End If
+                Return False
+            Catch ex As UserNotExistException
+                Return False
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
 
-        Public Shared Function SetCurrentUserByPinCode(YourUserNSS As R2CoreStandardUserStructure) As Boolean
+        Public Shared Function AuthenticationUserbyShenasehPassword(YourUserNSS As R2CoreStandardUserStructure) As Boolean
+            Try
+                Dim DS As DataSet
+                If DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers where ltrim(rtrim(UserShenaseh))='" & YourUserNSS.UserShenaseh & "' and ltrim(rtrim(UserPassword))='" & YourUserNSS.UserPassword & "'", 1, DS).GetRecordsCount = 0 Then
+                    Throw New UserNotExistException
+                Else
+                    If DS.Tables(0).Rows(0).Item("UserActive") = False Then Throw New UserIsNotActiveException
+                End If
+                Return True
+            Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function AuthenticationUserByPinCode(YourUserNSS As R2CoreStandardUserStructure) As Boolean
             Try
                 Dim DS As DataSet
                 If DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers where UserPinCode='" & YourUserNSS.UserPinCode & "'", 1, DS).GetRecordsCount = 0 Then
-                    Throw New Exception("کاربری با این مشخصات وجود ندارد")
+                    Throw New UserNotExistException
                 Else
-                    If DS.Tables(0).Rows(0).Item("UserActive") = False Then Throw New Exception("اکانت کاربر مورد نظر در حال حاضر غیر فعال است")
-                    CurrentUserNSS = New R2CoreStandardUserStructure
-                    CurrentUserNSS.UserId = DS.Tables(0).Rows(0).Item("UserId")
-                    CurrentUserNSS.UserName = Trim(DS.Tables(0).Rows(0).Item("UserName"))
-                    CurrentUserNSS.UserPassword = Trim(DS.Tables(0).Rows(0).Item("UserPassword"))
-                    CurrentUserNSS.UserShenaseh = Trim(DS.Tables(0).Rows(0).Item("UserShenaseh"))
-                    CurrentUserNSS.UserPinCode = Trim(DS.Tables(0).Rows(0).Item("UserPinCode"))
-                    CurrentUserNSS.UserCanCharge = Trim(DS.Tables(0).Rows(0).Item("UserCanCharge"))
-                    CurrentUserNSS.UserActive = Trim(DS.Tables(0).Rows(0).Item("UserActive"))
+                    If DS.Tables(0).Rows(0).Item("UserActive") = False Then Throw New UserIsNotActiveException
                 End If
+                Return True
+            Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -1694,17 +1695,19 @@ Namespace UserManagement
         Public Shared Function GetNSSUser(YourUserId As Int64) As R2CoreStandardUserStructure
             Try
                 Dim Ds As DataSet
-                R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserId=" & YourUserId & "", 3600, Ds)
+                R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserId=" & YourUserId & "", 1, Ds)
                 Return New R2CoreStandardUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"))
+            Catch exx As GetNSSException
+                Throw exx
             Catch ex As Exception
-                Throw New ExceptionManagement.GetNSSException
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
 
         Public Shared Function GetNSSUser(YourUserShenaseh As String, YourUserPassword As String) As R2CoreStandardUserStructure
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserShenaseh='" & YourUserShenaseh.Trim() & "' and UserPassword='" & YourUserPassword.Trim() & "'", 3600, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserShenaseh='" & YourUserShenaseh.Trim() & "' and UserPassword='" & YourUserPassword.Trim() & "'", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New Exception("شناسه و رمز عبور نادرست است")
                 End If
                 Return New R2CoreStandardUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"))
@@ -1716,7 +1719,7 @@ Namespace UserManagement
         Public Shared Function GetNSSUser(YourPinCode As String) As R2CoreStandardUserStructure
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserPinCode='" & YourPinCode.Trim() & "'", 3600, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserPinCode='" & YourPinCode.Trim() & "'", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New Exception("پین کد شناسائی نشد")
                 End If
                 Return New R2CoreStandardUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"))
@@ -1733,7 +1736,7 @@ Namespace UserManagement
             End Try
         End Function
 
-        PUBLIC Shared sub ChangeUserPassword(YourNSS As R2CoreStandardUserStructure)
+        Public Shared Sub ChangeUserPassword(YourNSS As R2CoreStandardUserStructure)
             Dim cmdsql As New SqlClient.SqlCommand
             cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
             Try
@@ -1745,10 +1748,32 @@ Namespace UserManagement
                 If cmdsql.Connection.State <> ConnectionState.Closed Then cmdsql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
-        End sub
+        End Sub
 
     End Class
 
+    Namespace Exceptions
+
+        Public Class UserNotExistException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کاربری با این مشخصات وجود ندارد"
+                End Get
+            End Property
+        End Class
+
+        Public Class UserIsNotActiveException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "حساب کاربر مورد نظر در حال حاضر غیر فعال است"
+                End Get
+            End Property
+        End Class
+
+
+    End Namespace
 
 End Namespace
 
@@ -3011,7 +3036,7 @@ Namespace LoggingManagement
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New DatabaseManagement.R2PrimarySqlConnection).GetConnection()
             Try
-                CmdSql.CommandText = "insert into R2Primary.dbo.TblLogging(logtype,sharh,Optional1,Optional2,Optional3,Optional4,Optional5,userid,dateshamsi,datetimemilladi) values(" & YourLog.LogType & ",'" & YourLog.Sharh & "','" & YourLog.Optional1 & "','" & YourLog.Optional2 & "','" & YourLog.Optional3 & "','" & YourLog.Optional4 & "','" & YourLog.Optional5 & "'," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "')"
+                CmdSql.CommandText = "insert into R2Primary.dbo.TblLogging(logtype,sharh,Optional1,Optional2,Optional3,Optional4,Optional5,userid,dateshamsi,datetimemilladi) values(" & YourLog.LogType & ",'" & YourLog.Sharh & "','" & YourLog.Optional1 & "','" & YourLog.Optional2 & "','" & YourLog.Optional3 & "','" & YourLog.Optional4 & "','" & YourLog.Optional5 & "'," & YourLog.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "')"
                 CmdSql.Connection.Open()
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
@@ -3702,7 +3727,7 @@ Namespace RFIDCardsManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
-        Public Shared Sub RFIDCardInitialRegister(YourCardNo As String)
+        Public Shared Sub RFIDCardInitialRegister(YourCardNo As String, YourUserNSS As R2CoreStandardUserStructure)
             Dim Cmdsql As New SqlClient.SqlCommand
             Cmdsql.Connection = (New DatabaseManagement.R2PrimarySqlConnection).GetConnection
             Try
@@ -3720,7 +3745,7 @@ Namespace RFIDCardsManagement
                     myCardID = "1"
                 End If
                 Cmdsql.Connection.Open()
-                Cmdsql.CommandText = "insert into R2Primary.dbo.tblrfidcards(CardId,CardNo,Charge,UserIdSabt,UserIdEdit,PelakType,Pelak,Serial,NoMoney,Active,CompanyName,NameFamily,Mobile,Address,Tel,Tahvilg,DateTimeMilladiSabt,DateTimeMilladiEdit,DateShamsiSabt,DateShamsiEdit,CardType,TempCardType) values(" & myCardID & ",'" & YourCardNo & "',0," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & "," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ",0,'','',0,1,'','','','','','','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "',0,0)"
+                Cmdsql.CommandText = "insert into R2Primary.dbo.tblrfidcards(CardId,CardNo,Charge,UserIdSabt,UserIdEdit,PelakType,Pelak,Serial,NoMoney,Active,CompanyName,NameFamily,Mobile,Address,Tel,Tahvilg,DateTimeMilladiSabt,DateTimeMilladiEdit,DateShamsiSabt,DateShamsiEdit,CardType,TempCardType) values(" & myCardID & ",'" & YourCardNo & "',0," & YourUserNSS.UserId & "," & YourUserNSS.UserId & ",0,'','',0,1,'','','','','','','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "',0,0)"
                 Cmdsql.ExecuteNonQuery()
                 Cmdsql.Connection.Close()
             Catch ex As Exception
@@ -4692,7 +4717,7 @@ Namespace HumanResourcesManagement
                 End Try
             End Function
 
-            Public Shared Function InsertPersonnel(YourNSS As R2CoreStandardPersonnelStructure) As Int64
+            Public Shared Function InsertPersonnel(YourNSS As R2CoreStandardPersonnelStructure, YourUserNSS As R2CoreStandardUserStructure) As Int64
                 Dim CmdSql As SqlCommand = New SqlCommand
                 CmdSql.Connection = (New DatabaseManagement.R2PrimarySqlConnection).GetConnection()
                 Try
@@ -4701,7 +4726,7 @@ Namespace HumanResourcesManagement
                     CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                     CmdSql.CommandText = "Select top 1 PId from R2Primary.dbo.TblPersonelInf with (tablockx) Order by PId Desc "
                     Dim PId As Int64 = CmdSql.ExecuteScalar + 1
-                    CmdSql.CommandText = "Insert Into R2Primary.dbo.TblPersonelInf(PId,PIdOther,PNameFamily,PFatherName,NationalCode,Tel,Address,Active,DateTimeMilladiSabt,DateTimeMilladiEdit,DateShamsiSabt,DateShamsiEdit,UserIdSabt,UserIdEdit,FingerPrint,FingerPrint2,FingerPrint3,FingerPrint4) Values(" & PId & ",'" & YourNSS.PIdOther & "','" & YourNSS.PNameFamily & "','" & YourNSS.PFatherName & "','" & YourNSS.NationalCode & "','" & YourNSS.Tel & "','" & YourNSS.Address & "'," & IIf(YourNSS.Active, 1, 0) & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "'," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & "," & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ",0,0,0,0)"
+                    CmdSql.CommandText = "Insert Into R2Primary.dbo.TblPersonelInf(PId,PIdOther,PNameFamily,PFatherName,NationalCode,Tel,Address,Active,DateTimeMilladiSabt,DateTimeMilladiEdit,DateShamsiSabt,DateShamsiEdit,UserIdSabt,UserIdEdit,FingerPrint,FingerPrint2,FingerPrint3,FingerPrint4) Values(" & PId & ",'" & YourNSS.PIdOther & "','" & YourNSS.PNameFamily & "','" & YourNSS.PFatherName & "','" & YourNSS.NationalCode & "','" & YourNSS.Tel & "','" & YourNSS.Address & "'," & IIf(YourNSS.Active, 1, 0) & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "'," & YourUserNSS.UserId & "," & YourUserNSS.UserId & ",0,0,0,0)"
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                     Return PId
@@ -4713,13 +4738,13 @@ Namespace HumanResourcesManagement
                 End Try
             End Function
 
-            Public Shared Sub UpdatePersonnel(YourNSS As R2CoreStandardPersonnelStructure)
+            Public Shared Sub UpdatePersonnel(YourNSS As R2CoreStandardPersonnelStructure, YourUserNSS As R2CoreStandardUserStructure)
                 Dim CmdSql As SqlCommand = New SqlCommand
                 CmdSql.Connection = (New DatabaseManagement.R2PrimarySqlConnection).GetConnection()
                 Try
                     CmdSql.Connection.Open()
                     CmdSql.Transaction = CmdSql.Connection.BeginTransaction
-                    CmdSql.CommandText = "Update R2Primary.dbo.TblPersonelInf Set PIdOther='" & YourNSS.PIdOther & "',PNameFamily='" & YourNSS.PNameFamily & "',PFatherName='" & YourNSS.PFatherName & "',NationalCode='" & YourNSS.NationalCode & "',Tel='" & YourNSS.Tel & "',Address='" & YourNSS.Address & "',Active=" & IIf(YourNSS.Active, 1, 0) & ",DateTimeMilladiEdit='" & _DateTime.GetCurrentDateTimeMilladiFormated() & "',DateShamsiEdit='" & _DateTime.GetCurrentDateShamsiFull() & "',UserIdEdit=" & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & " Where PId=" & YourNSS.PId & ""
+                    CmdSql.CommandText = "Update R2Primary.dbo.TblPersonelInf Set PIdOther='" & YourNSS.PIdOther & "',PNameFamily='" & YourNSS.PNameFamily & "',PFatherName='" & YourNSS.PFatherName & "',NationalCode='" & YourNSS.NationalCode & "',Tel='" & YourNSS.Tel & "',Address='" & YourNSS.Address & "',Active=" & IIf(YourNSS.Active, 1, 0) & ",DateTimeMilladiEdit='" & _DateTime.GetCurrentDateTimeMilladiFormated() & "',DateShamsiEdit='" & _DateTime.GetCurrentDateShamsiFull() & "',UserIdEdit=" & YourUserNSS.UserId & " Where PId=" & YourNSS.PId & ""
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Catch ex As Exception

@@ -11,9 +11,9 @@ Namespace ProcessesManagement
 
     Public Class R2CoreGUIMClassProcessesManagement
 
-        Public Shared Function OpenProccess(YourNSSProcess As R2StandardProcessStructure) As Form
+        Public Shared Function OpenProccess(YourNSSProcess As R2StandardProcessStructure,YourUserNSS As R2CoreStandardUserStructure) As Form
             Try
-                If R2MClassAuthenticationManagement.UserHaveProcessPermission(R2CoreMClassLoginManagement.CurrentUserNSS, YourNSSProcess) = False Then
+                If R2MClassAuthenticationManagement.UserHaveProcessPermission(YourUserNSS, YourNSSProcess) = False Then
                     Throw New AuthenticationUserHasProcessPermissionException
                 ElseIf R2MClassAuthenticationManagement.ComputerHaveProcessPermission(R2CoreMClassComputersManagement.GetNSSCurrentComputer(), YourNSSProcess) = False Then
                     Throw New AuthenticationComputerHasProcessPermissionException

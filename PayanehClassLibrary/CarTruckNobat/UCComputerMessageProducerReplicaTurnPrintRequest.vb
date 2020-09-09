@@ -34,7 +34,7 @@ Public Class UCComputerMessageProducerReplicaTurnPrintRequest
     Private Sub UCComputerMessageProducerReplicaTurnPrintRequest_UCRequestSend() Handles Me.UCRequestSend
         Try
             Dim NSSTurn = PayanehClassLibraryMClassCarTruckNobatManagement.GetLastActiveNSSNobat(UcCar.UCGetNSS())
-            PayanehClassLibraryMClassCarTruckNobatManagement.ReplicaTurnPrintRequest(NSSTurn, True)
+            PayanehClassLibraryMClassCarTruckNobatManagement.ReplicaTurnPrintRequest(NSSTurn, True,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCSuccessSendingNotification()
         Catch ex As Exception When TypeOf ex Is GetNobatException OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is GetDataException OrElse TypeOf ex Is MoneyWalletNotExistException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)

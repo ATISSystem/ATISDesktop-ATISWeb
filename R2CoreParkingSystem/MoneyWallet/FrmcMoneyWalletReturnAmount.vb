@@ -97,7 +97,7 @@ Public Class FrmcMoneyWalletReturnAmount
             UcButton.UCEnable = False
             UcMoneyWallet.UCViewandActMoneyWalletNextStatus(_NSSTerafficCard, BagPayType.AddMoney, UcMoney.UCValue, R2CoreParkingSystemAccountings.MoneyWalletReturnAmount)
             UcAccountingCollection.UCViewAccounting(_NSSTerafficCard)
-            R2CoreMClassLoggingManagement.LogRegister(new R2CoreStandardLoggingStructure(0,R2CoreLogType.Note,"بازگشت مبلغ به کیف پول انجام گرفت",_NSSTerafficCard.CardNo,0,0,0,0,R2CoreMClassLoginManagement.CurrentUserNSS.UserId,_DateTime.GetCurrentDateTimeMilladiFormated(),_DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(new R2CoreStandardLoggingStructure(0,R2CoreLogType.Note,"بازگشت مبلغ به کیف پول انجام گرفت",_NSSTerafficCard.CardNo,0,0,0,0,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId,_DateTime.GetCurrentDateTimeMilladiFormated(),_DateTime.GetCurrentDateShamsiFull))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "بازگشت مبلغ به کیف پول انجام گرفت", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

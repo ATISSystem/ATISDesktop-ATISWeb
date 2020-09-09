@@ -67,7 +67,7 @@ Public Class UCUCComputerMessageCollection
                     Where CM.CMType in 
                       (Select Distinct CMTypeId From R2Primary.dbo.TblComputerMessageTypes
                         inner join R2Primary.dbo.TblSoftwareUserWorkingGroupsRelationSoftwareUsers on R2Primary.dbo.TblComputerMessageTypes.WorkingGroup=R2Primary.dbo.TblSoftwareUserWorkingGroupsRelationSoftwareUsers.WGId 
-                       Where R2Primary.dbo.TblSoftwareUserWorkingGroupsRelationSoftwareUsers.UserId=" & R2CoreMClassLoginManagement.CurrentUserNSS.UserId & ") 
+                       Where R2Primary.dbo.TblSoftwareUserWorkingGroupsRelationSoftwareUsers.UserId=" & R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId & ") 
                              and (CMActive=1) and (DateShamsi=('" & _DateTime.GetCurrentDateShamsiFull() & "'))
                        Order By DateTimeMilladi Desc", 1, Ds)
             PnlUCs.SuspendLayout()

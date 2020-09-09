@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using ATISWeb.LoginManagement;
 using PayanehClassLibrary.CarTrucksManagement;
 using PayanehClassLibrary.DriverTrucksManagement;
 using R2Core.ExceptionManagement;
@@ -74,7 +74,7 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
                 R2StandardCarTruckStructure NSS = null;
                 try { NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyBodyNo(TxtTruckSmartCardNo.Text); }
                 catch (GetNSSException ex)
-                { NSS = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase(TxtTruckSmartCardNo.Text); }
+                { NSS = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase(TxtTruckSmartCardNo.Text,ATISWebMClassLoginManagement.GetNSSCurrentUser()); }
                 LblTruck.Text = NSS.NSSCar.GetCarPelakSerialComposit();
             }
             catch (Exception ex)

@@ -7,6 +7,7 @@ Imports R2Core.DateAndTimeManagement
 Imports R2Core.ExceptionManagement
 Imports R2Core.HumanResourcesManagement.Personnel
 Imports R2Core.UserManagement
+Imports R2Core.UserManagement.Exceptions
 Imports R2CoreLPR.LicensePlateManagement
 Imports R2CoreParkingSystem.Cars
 Imports R2CoreParkingSystem.City
@@ -25,6 +26,20 @@ Public Class R2PrimaryWebService
     Inherits System.Web.Services.WebService
 
     Private _DateTime As R2DateTime = New R2DateTime()
+    Private _CurrentUserNSS As R2CoreStandardUserStructure = Nothing
+
+    <WebMethod()>
+    Private Sub WebMethodSetUserByShenasehPassword(YourUserShenaseh As String,YourUserPassword As String)
+        Try
+            If R2CoreMClassLoginManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardUserStructure(Int64.MinValue,String.Empty,YourUserShenaseh,YourUserPassword,String.Empty,Boolean.FalseString,Boolean.FalseString))
+                _CurrentUserNSS = R2CoreMClassLoginManagement.GetNSSUser(YourUserShenaseh, YourUserPassword)
+            End If
+        Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
+            Throw ex
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
 
     <WebMethod()>
     Public Sub WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport(YourDateTimeMilladi1 As DateTime, YourDateShamsiFull1 As String, YourTime1 As String)
@@ -124,11 +139,10 @@ Public Class R2PrimaryWebService
         End Try
     End Function
 
-    <WebMethod()>
+    <WebMethod()> 
     Public Sub WebMethodRegisteringHandyBills(YourTeadad As Int64, YourShamsiDate As String, YourTerafficCardType As Int64)
         Try
-            R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser())
-            R2CoreParkingSystemMClassEnterExitManagement.RegisteringHandyBills(YourTeadad, New R2StandardDateAndTimeStructure(Nothing, YourShamsiDate, Nothing), YourTerafficCardType)
+            R2CoreParkingSystemMClassEnterExitManagement.RegisteringHandyBills(YourTeadad, New R2StandardDateAndTimeStructure(Nothing, YourShamsiDate, Nothing), YourTerafficCardType,_CurrentUserNSS)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -137,7 +151,6 @@ Public Class R2PrimaryWebService
     <WebMethod()>
     Public Function WebMethodGetTotalRegisteredHandyBills(YourShamsiDate As String, YourTerafficCardType As Int64) As Int64
         Try
-            R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser())
             Return R2CoreParkingSystemMClassEnterExitManagement.GetTotalRegisteredHandyBills(New R2StandardDateAndTimeStructure(Nothing, YourShamsiDate, Nothing), YourTerafficCardType)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -147,7 +160,6 @@ Public Class R2PrimaryWebService
     <WebMethod()>
     Public Sub WebMethodDeleteRegisteredHandyBills(YourShamsiDate As String, YourTerafficCardType As Int64)
         Try
-            R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser())
             R2CoreParkingSystemMClassEnterExitManagement.DeleteRegisteredHandyBills(New R2StandardDateAndTimeStructure(Nothing, YourShamsiDate, Nothing), YourTerafficCardType)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

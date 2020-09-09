@@ -55,7 +55,7 @@ Public Class UCComputerMessageSedimentedLoadAllocationAndPermssion
 
     Private Sub UcButtonLoadAllocateAndPermission_UCClickedEvent() Handles UcButtonLoadAllocateAndPermission.UCClickedEvent
         Try
-            Dim TurnId As Int64 = PayanehClassLibrary.LoadNotification.LoadPermission.LoadNotificationLoadPermissionManagement.TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(_NSS.DataStruct.Data1, _NSS.DataStruct.Data2, _NSS.DataStruct.Data3, _NSS.DataStruct.Data4)
+            Dim TurnId As Int64 = PayanehClassLibrary.LoadNotification.LoadPermission.LoadNotificationLoadPermissionManagement.TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(_NSS.DataStruct.Data1, _NSS.DataStruct.Data2, _NSS.DataStruct.Data3, _NSS.DataStruct.Data4,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             ''Dim TurnId As Int64 = WS.WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(_NSS.DataStruct.Data1,_NSS.DataStruct.Data2,_NSS.DataStruct.Data3,_NSS.DataStruct.Data4)
             PayanehClassLibrary.LoadNotification.LoadPermission.PermissionPrinting.PrintPermission(_NSS.DataStruct.Data2, TurnId)
             PayanehClassLibrary.LoadNotification.LoadPermission.PermissionPrinting.PrintPermission(_NSS.DataStruct.Data2, TurnId)

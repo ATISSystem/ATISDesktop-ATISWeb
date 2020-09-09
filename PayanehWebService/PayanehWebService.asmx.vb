@@ -3,7 +3,7 @@ Imports System.Web.Services
 Imports System.Web.Services.Protocols
 Imports System.ComponentModel
 Imports System.Reflection
-
+ 
 Imports R2Core.BaseStandardClass
 Imports R2Core.ComputerMessagesManagement
 Imports R2Core.DateAndTimeManagement
@@ -17,6 +17,7 @@ Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.DriverTrucksManagement
 Imports PayanehClassLibrary.Rmto
 Imports R2Core.ExceptionManagement
+Imports R2Core.UserManagement.Exceptions
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadManipulation
@@ -33,10 +34,16 @@ Public Class PayanehWebService
     Inherits System.Web.Services.WebService
 
 
+    Private _CurrentUserNSS As R2CoreStandardUserStructure = Nothing
+
     <WebMethod()>
-    Private Sub WebMethodSetUser()
+    Private Sub WebMethodSetUserByShenasehPassword(YourUserShenaseh As String,YourUserPassword As String)
         Try
-            R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser())
+           if R2CoreMClassLoginManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardUserStructure(Int64.MinValue,String.Empty,YourUserShenaseh,YourUserPassword,String.Empty,Boolean.FalseString,Boolean.FalseString))
+               _CurrentUserNSS = R2CoreMClassLoginManagement.GetNSSUser(YourUserShenaseh, YourUserPassword)
+           End If
+        Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -171,11 +178,12 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Sub WebMethodComputerMessageProduceCopyOfTurn(YourPelak As String, YourSerial As String)
         Try
-            WebMethodSetUser()
             Dim DataStruct As DataStruct = New DataStruct()
             Dim NSSCar As R2StandardCarStructure = R2CoreParkingSystemMClassCars.GetNSSCar(R2CoreParkingSystemMClassCars.GetnIdCar(New R2CoreLPR.LicensePlateManagement.R2StandardLicensePlateStructure(YourPelak, YourSerial, R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(R2CoreParkingSystemMClassCitys.IRANCityCode), Nothing)))
             DataStruct.Data1 = PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.GetLastActiveNSSNobat(NSSCar).nEnterExitId
             R2CoreMClassComputerMessagesManagement.SendComputerMessage(New R2StandardComputerMessageStructure(Nothing, NSSCar.GetCarPelakSerialComposit(), 3, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, DataStruct))
+        Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -184,7 +192,6 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Sub WebMethodComputerMessageProduceSodoorNobat(YourPelak As String, YourSerial As String)
         Try
-            WebMethodSetUser()
             Dim DataStruct As DataStruct = New DataStruct()
             Dim NSSCar As R2StandardCarStructure = R2CoreParkingSystemMClassCars.GetNSSCar(R2CoreParkingSystemMClassCars.GetnIdCar(New R2CoreLPR.LicensePlateManagement.R2StandardLicensePlateStructure(YourPelak, YourSerial, R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(R2CoreParkingSystemMClassCitys.IRANCityCode), Nothing)))
             DataStruct.Data1 = NSSCar.nIdCar
@@ -208,8 +215,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodTransportCompanyLoadCapacitorLoadRegister(YourStrBarName As String, YournCityCode As Int64, YournBarCode As Int64, YournCompCode As Int64, YournTruckType As Int64, YourStrAddress As String, YournCarNumKol As Int64, YourStrPriceSug As String, YourStrDescription As String) As Int64
         Try
-            WebMethodSetUser()
-            Return R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadRegistering(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, YourStrBarName, YournCityCode, YournBarCode, YournCompCode, YournTruckType, YourStrAddress, Nothing, YournCarNumKol, YourStrPriceSug, YourStrDescription, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+            Return R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadRegistering(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, YourStrBarName, YournCityCode, YournBarCode, YournCompCode, YournTruckType, YourStrAddress, _CurrentUserNSS.UserId, YournCarNumKol, YourStrPriceSug, YourStrDescription, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -218,18 +224,16 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodTransportCompanyLoadCapacitorLoadRegisterWithTTPTId(YourStrBarName As String, YournCityCode As Int64, YournBarCode As Int64, YournCompCode As Int64, YournTruckType As Int64, YourStrAddress As String, YournCarNumKol As Int64, YourStrPriceSug As String, YourStrDescription As String, ByVal YourTarrifTransportPriceTypeId As Int64) As Int64
         Try
-            WebMethodSetUser()
-            Return R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadRegistering(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, YourStrBarName, YournCityCode, YournBarCode, YournCompCode, YournTruckType, YourStrAddress, Nothing, YournCarNumKol, YourStrPriceSug, YourStrDescription, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+            Return R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadRegistering(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, YourStrBarName, YournCityCode, YournBarCode, YournCompCode, YournTruckType, YourStrAddress, _CurrentUserNSS.UserId, YournCarNumKol, YourStrPriceSug, YourStrDescription, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Function
 
     <WebMethod()>
-    Public Sub WebMethodTransportCompanyLoadCapacitorLoadEdit(YournEstelamId As Int64, YourStrBarName As String, YournCityCode As Int64, YournBarCode As Int64, YournCompCode As Int64, YournTruckType As Int64, YourStrAddress As String, YournCarNumKol As Int64, YourStrPriceSug As String, YourStrDescription As String)
+    Public Sub WebMethodTransportCompanyLoadCapacitorLoadEdit(YournEstelamId As Int64, YourStrBarName As String, YournCityCode As Int64, YournBarCode As Int64, YournCompCode As Int64, YournTruckType As Int64, YourStrAddress As String, YournCarNumKol As Int64, YourStrPriceSug As String, YourStrDescription As String, YourUserNSS As R2CoreStandardUserStructure)
         Try
-            WebMethodSetUser()
-            R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadEditing(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(YournEstelamId, YourStrBarName, YournCityCode, YournBarCode, YournCompCode, YournTruckType, YourStrAddress, Nothing, YournCarNumKol, YourStrPriceSug, YourStrDescription, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+            R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadEditing(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(YournEstelamId, YourStrBarName, YournCityCode, YournBarCode, YournCompCode, YournTruckType, YourStrAddress, Nothing, YournCarNumKol, YourStrPriceSug, YourStrDescription, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing),_CurrentUserNSS)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -238,8 +242,8 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Sub WebMethodTransportCompanyLoadCapacitorLoadDelete(YournEstelamId As Int64)
         Try
-            WebMethodSetUser()
-            R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadDeleting(YournEstelamId)
+            Dim NSS = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId)
+            R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadDeleting(NSS,_CurrentUserNSS)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -275,7 +279,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodTransportCompanyLoadCapacitorLoads(YourCompanyCode As Int64) As DataSet
         Try
-            Return R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNotSedimentedLoadCapacitorLoads(YourCompanyCode)
+            'Return R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNotSedimentedLoadCapacitorLoads(YourCompanyCode)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -284,7 +288,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodTransportCompanyLoadCapacitorSedimentedLoads(YourCompanyCode As Int64) As DataSet
         Try
-            Return R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetSedimentedLoadCapacitorLoads(YourCompanyCode)
+            'Return R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetSedimentedLoadCapacitorLoads(YourCompanyCode)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -293,7 +297,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Sub WebMethodGetNSSCarTruckBySmartCarNofromRmto(YourSmartCardNo As String, ByRef Pelak As String, ByRef Serial As String)
         Try
-            Dim NSS As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase(YourSmartCardNo)
+            Dim NSS As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase(YourSmartCardNo,_CurrentUserNSS)
             Pelak = NSS.NSSCar.StrCarNo : Serial = NSS.NSSCar.StrCarSerialNo
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -349,9 +353,8 @@ Public Class PayanehWebService
     End Sub
 
     <WebMethod()>
-    Public Sub WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduce(YourComapnyCode As Int64, YournEstelamId As Int64, YourCarTruckSmartCardNo As String, YourDriverTruckSmartCardNo As String)
+    Public Sub WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduce(YourComapnyCode As Int64, YournEstelamId As Int64, YourCarTruckSmartCardNo As String, YourDriverTruckSmartCardNo As String, YourUserNSS As R2CoreStandardUserStructure)
         Try
-            WebMethodSetUser()
             PayanehClassLibrary.LoadNotification.LoadAllocation.LoadNotificationLoadAllocationManagement.TransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduce(YourComapnyCode, YournEstelamId, YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -361,8 +364,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(YourComapnyCode As Int64, YournEstelamId As Int64, YourCarTruckSmartCardNo As String, YourDriverTruckSmartCardNo As String) As Int64
         Try
-            WebMethodSetUser()
-            Return PayanehClassLibrary.LoadNotification.LoadPermission.LoadNotificationLoadPermissionManagement.TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(YourComapnyCode, YournEstelamId, YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo)
+            Return PayanehClassLibrary.LoadNotification.LoadPermission.LoadNotificationLoadPermissionManagement.TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(YourComapnyCode, YournEstelamId, YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo,_CurrentUserNSS)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -371,7 +373,6 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Sub WebMethodTransportCompanyGetLoadCapacitorSedimentLoadPermisiionPrintingInf(YournEstelamId As Int64, YourTurnId As Int64, ByRef StrExitDate As String, ByRef StrExitTime As String, ByRef nEstelamId As String, ByRef TurnId As String, ByRef CompanyName As String, ByRef CarTruckLoaderTypeName As String, ByRef Pelak As String, ByRef Serial As String, ByRef DriverTruckFullNameFamily As String, ByRef DriverTruckDrivingLicenseNo As String, ByRef ProductName As String, ByRef TargetCityName As String, ByRef StrPriceSug As String, ByRef StrDescription As String, ByRef PermissionUserName As String, ByRef OtherNote As String)
         Try
-            WebMethodSetUser()
             PayanehClassLibrary.LoadNotification.LoadPermission.PermissionPrinting.GetInformationforRemotePermissionPrinting(YournEstelamId, YourTurnId, StrExitDate, StrExitTime, nEstelamId, TurnId, CompanyName, CarTruckLoaderTypeName, Pelak, Serial, DriverTruckFullNameFamily, DriverTruckDrivingLicenseNo, ProductName, TargetCityName, StrPriceSug, StrDescription, PermissionUserName, OtherNote)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -381,7 +382,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodTransportCompanyGetMoneyWalletInventory(YourComapnyCode As Int64) As Int64
         Try
-            Return PayanehClassLibrary.TransportCompanies.TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompanyMoneyWalletInventory(YourComapnyCode)
+            Return TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompanyMoneyWalletInventory(YourComapnyCode)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -390,8 +391,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodGetAllPermissionEnterExits(YournEstelamId As Int64) As DataSet
         Try
-            WebMethodSetUser()
-            Return PayanehClassLibrary.LoadNotification.LoadPermission.LoadNotificationLoadPermissionManagement.GetAllPermissionEnterExits(YournEstelamId)
+            'Return PayanehClassLibrary.LoadNotification.LoadPermission.LoadNotificationLoadPermissionManagement.GetAllPermissionEnterExits(YournEstelamId)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -400,8 +400,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodGetTransportCompaniesDailyMessage(ByRef YourDailyMessageColorHolder As String) As String
         Try
-            WebMethodSetUser() 
-            Return PayanehClassLibrary.TransportCompanies.TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompaniesDailyMessage(YourDailyMessageColorHolder)
+            Return TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompaniesDailyMessage(YourDailyMessageColorHolder)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -410,8 +409,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodGetTransportCompaniesFirstPageMessages() As String
         Try
-            WebMethodSetUser()
-            Return PayanehClassLibrary.TransportCompanies.TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompaniesFirstPageMessages()
+            Return TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompaniesFirstPageMessages()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -420,8 +418,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodISCompanyActive(YourCompanyCode As Int64) As Boolean
         Try
-            WebMethodSetUser()
-            Return PayanehClassLibrary.TransportCompanies.TransportCompaniesLoadCapacitorLoadManipulation.ISCompanyActive(YourCompanyCode)
+            Return TransportCompaniesLoadCapacitorLoadManipulation.ISCompanyActive(YourCompanyCode)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

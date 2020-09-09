@@ -41,7 +41,7 @@ Public Class UCComputerMessageEmergencyTurnRegisterRequestConfirmation
 
     Private Sub UcButtonConfirmation_UCClickedEvent() Handles UcButtonConfirmation.UCClickedEvent
         Try
-            TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.EmergencyTurnRegister(_NSS.DataStruct, True)
+            TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.EmergencyTurnRegister(_NSS.DataStruct, True,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCDeactiveComputerMessage()
         Catch ex As Exception When TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, True)

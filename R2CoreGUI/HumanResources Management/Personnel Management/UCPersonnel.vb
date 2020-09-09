@@ -135,10 +135,10 @@ Public Class UCPersonnel
                 Exit Sub
             End If
             If UcNumberPId.UCValue = 0 Then
-                UcNumberPId.UCValue = R2CorePersonnelMClassManagement.InsertPersonnel(New R2CoreStandardPersonnelStructure(0, UcPersianTextBoxPIdOther.UCValue, UcPersianTextBoxNameFamily.UCValue, UcPersianTextBoxFather.UCValue, UcTextBoxNationalCode.UCValue, ChkActive.Checked, UcPersianTextBoxTel.UCValue, UcPersianTextBoxAddress.UCValue, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+                UcNumberPId.UCValue = R2CorePersonnelMClassManagement.InsertPersonnel(New R2CoreStandardPersonnelStructure(0, UcPersianTextBoxPIdOther.UCValue, UcPersianTextBoxNameFamily.UCValue, UcPersianTextBoxFather.UCValue, UcTextBoxNationalCode.UCValue, ChkActive.Checked, UcPersianTextBoxTel.UCValue, UcPersianTextBoxAddress.UCValue, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing),R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                 UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "مشخصات پرسنل ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             Else
-                R2CorePersonnelMClassManagement.UpdatePersonnel(New R2CoreStandardPersonnelStructure(UcNumberPId.UCValue, UcPersianTextBoxPIdOther.UCValue, UcPersianTextBoxNameFamily.UCValue, UcPersianTextBoxFather.UCValue, UcTextBoxNationalCode.UCValue, ChkActive.Checked, UcPersianTextBoxTel.UCValue, UcPersianTextBoxAddress.UCValue, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+                R2CorePersonnelMClassManagement.UpdatePersonnel(New R2CoreStandardPersonnelStructure(UcNumberPId.UCValue, UcPersianTextBoxPIdOther.UCValue, UcPersianTextBoxNameFamily.UCValue, UcPersianTextBoxFather.UCValue, UcTextBoxNationalCode.UCValue, ChkActive.Checked, UcPersianTextBoxTel.UCValue, UcPersianTextBoxAddress.UCValue, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing),R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                 UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "مشخصات پرسنل ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             End If
         Catch ex As Exception
