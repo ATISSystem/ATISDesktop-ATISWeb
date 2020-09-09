@@ -4,7 +4,9 @@ using System.Drawing;
 using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using ATISWeb.LoginManagement;
+using ATISWeb.LoginManagement.Exceptions;
 using R2Core.PublicProc;
 using R2Core.UserManagement;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
@@ -92,6 +94,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 tempFooterRow.BorderColor = Color.LightBlue;
                 TblLoadCapacitorLoads.Rows.Add(tempFooterRow);
             }
+            catch (PleaseReloginException ex)
+            { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
             catch (Exception ex)
             { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
         }

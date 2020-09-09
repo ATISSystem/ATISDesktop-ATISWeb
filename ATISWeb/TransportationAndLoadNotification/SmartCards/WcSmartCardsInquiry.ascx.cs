@@ -5,7 +5,9 @@ using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using ATISWeb.LoginManagement;
+using ATISWeb.LoginManagement.Exceptions;
 using PayanehClassLibrary.CarTrucksManagement;
 using PayanehClassLibrary.DriverTrucksManagement;
 using R2Core.ExceptionManagement;
@@ -77,6 +79,8 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
                 { NSS = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase(TxtTruckSmartCardNo.Text,ATISWebMClassLoginManagement.GetNSSCurrentUser()); }
                 LblTruck.Text = NSS.NSSCar.GetCarPelakSerialComposit();
             }
+            catch (PleaseReloginException ex)
+            { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }
