@@ -30,7 +30,7 @@
                     <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadAllocationLoadPermissionIssue">تخصیص بار</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadPersmissionsIssued">تخصیص های صادر شده</a>
+                    <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadPersmissionsIssued">مجوزهای صادر شده</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active R2FontBYekanMedium " data-toggle="tab" href="#LoadCapacitorLoads">لیست بار</a>

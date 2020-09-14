@@ -31,6 +31,7 @@ Partial Class Form3
         Me.TextBoxReport = New System.Windows.Forms.TextBox()
         Me.TextBoxResult = New System.Windows.Forms.TextBox()
         Me.Button4 = New System.Windows.Forms.Button()
+        Me.Button5 = New System.Windows.Forms.Button()
         Me.SuspendLayout
         '
         'Button1
@@ -125,11 +126,21 @@ Partial Class Form3
         Me.Button4.Text = "Button4"
         Me.Button4.UseVisualStyleBackColor = true
         '
+        'Button5
+        '
+        Me.Button5.Location = New System.Drawing.Point(51, 131)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(75, 23)
+        Me.Button5.TabIndex = 9
+        Me.Button5.Text = "Button5"
+        Me.Button5.UseVisualStyleBackColor = true
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.TextBoxResult)
         Me.Controls.Add(Me.TextBoxReport)
@@ -155,4 +166,5 @@ End Sub
     Friend WithEvents TextBoxReport As TextBox
     Friend WithEvents TextBoxResult As TextBox
     Friend WithEvents Button4 As Button
+    Friend WithEvents Button5 As Button
 End Class

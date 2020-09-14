@@ -56,7 +56,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 return NSS;
             }
             catch (PleaseReloginException ex)
-            { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
+            { Response.Redirect("/LoginManagement/Wflogin.aspx"); return null; }
             catch (Exception ex)
             { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "\\n" + MethodBase.GetCurrentMethod().Name + "\\n" + ex.Message); }
         }

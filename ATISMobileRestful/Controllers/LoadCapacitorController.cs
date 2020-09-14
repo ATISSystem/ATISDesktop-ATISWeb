@@ -31,7 +31,7 @@ namespace ATISMobileRestful.Controllers
                     Item.LoadnEstelamId = "کد مرجع : " + Lst[Loopx].nEstelamId;
                     Item.LoadCapacitorLoadTitleTargetCityTotalAmount = Lst[Loopx].GoodTitle.Trim() + " - " + Lst[Loopx].LoadTargetTitle.Trim() + "   تعداد : " + Lst[Loopx].nCarNum.ToString().Trim();
                     Item.TransportCompanyTarrifPrice = Lst[Loopx].TransportCompanyTitle.Trim() + " تلفن: " + Lst[Loopx].TransportCompanyTel.Trim() + "\n نرخ پایه : " + R2CoreMClassPublicProcedures.R2MakeCamaYourDigit(Convert.ToUInt64(Lst[Loopx].StrPriceSug));
-                    Item.Description = Lst[Loopx].StrDescription.Trim();
+                    Item.Description = Lst[Loopx].StrDescription.Trim() + " " + Lst[Loopx].StrBarName.Trim() + " " + Lst[Loopx].StrAddress.Trim();
                     _Loads.Add(Item);
                 }
                 return _Loads;

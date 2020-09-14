@@ -4,7 +4,7 @@
 <div class="container-fluid p-1 border border-primary rounded">
     <div class="container-fluid bg-primary mb-2" style="height: 50px">
         <div class="d-flex flex-row-reverse  text-right">
-            <asp:Label runat="server" ID="LblCaption" CssClass="R2FontBHomaLarge text-white">تخصیص های صادر شده</asp:Label>
+            <asp:Label runat="server" ID="LblCaption" CssClass="R2FontBHomaLarge text-white">مجوزهای صادر شده</asp:Label>
         </div>
     </div>
     <asp:UpdatePanel ID="UpdatePanelWcLoadCapacitorLoadLoadPermissionsIssued" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="True">
@@ -17,6 +17,10 @@
                     <AlternatingRowStyle BackColor="#CCCCCC" />
                     <Columns>
                         <asp:BoundField ItemStyle-CssClass="R2FontBHomaSmall" HeaderText="ناوگان" DataField="Truck">
+                            <HeaderStyle HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Center" />
+                        </asp:BoundField>
+                        <asp:BoundField ItemStyle-CssClass="R2FontBHomaSmall" HeaderText="هوشمند ناوگان" DataField="TruckSmartCardNo">
                             <HeaderStyle HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Center" />
                         </asp:BoundField>

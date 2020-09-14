@@ -33,7 +33,7 @@
                     <img src="/Images/ATISWeb.jpg" class="card-img-top" alt="..." style="height: 15rem; ">
                     <div class="card-body text-right mt-1" style="background-image: linear-gradient(to bottom left, grey , black )">
                         <h5 class="card-title text-right R2FontBHomaMedium text-white">آتیس وب</h5>
-                        <a href="/LoginManagement/WfLogin.aspx" class="btn btn-dark R2FontBYekanMedium mb-2 disabled">انتقال به سایت آتیس وب</a>
+                        <a href="/LoginManagement/WfLogin.aspx" class="btn btn-dark R2FontBYekanMedium mb-2">انتقال به سایت آتیس وب</a>
                     </div>
                 </div>
             </div>

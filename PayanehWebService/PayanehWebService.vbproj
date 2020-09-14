@@ -46,21 +46,6 @@
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PayanehClassLibrary">
-      <HintPath>..\PayanehClassLibrary\bin\Debug\PayanehClassLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="R2Core">
-      <HintPath>..\R2Core\bin\Debug\R2Core.dll</HintPath>
-    </Reference>
-    <Reference Include="R2CoreLPR">
-      <HintPath>..\R2CoreLPR\bin\Debug\R2CoreLPR.dll</HintPath>
-    </Reference>
-    <Reference Include="R2CoreParkingSystem">
-      <HintPath>..\R2CoreParkingSystem\bin\Debug\R2CoreParkingSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="R2CoreTransportationAndLoadNotification">
-      <HintPath>..\R2CoreTransportationAndLoadNotification\bin\Debug\R2CoreTransportationAndLoadNotification.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -160,6 +145,28 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PayanehClassLibrary\PayanehClassLibrary.vbproj">
+      <Project>{8bcfe2ef-2c83-4137-baaf-87e380d41971}</Project>
+      <Name>PayanehClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2CoreLPR\R2CoreLPR.vbproj">
+      <Project>{d3413023-d590-432c-8a6a-6bf2038624cf}</Project>
+      <Name>R2CoreLPR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2CoreParkingSystem\R2CoreParkingSystem.vbproj">
+      <Project>{68ee9753-9b39-4d0b-bfe5-0f941a5f183c}</Project>
+      <Name>R2CoreParkingSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2CoreTransportationAndLoadNotification\R2CoreTransportationAndLoadNotification.vbproj">
+      <Project>{ef77b294-2e31-4914-af7b-289a6a1bf8dc}</Project>
+      <Name>R2CoreTransportationAndLoadNotification</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2Core\R2Core.vbproj">
+      <Project>{b0651d1e-73a2-4e74-8483-6fbc60831969}</Project>
+      <Name>R2Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

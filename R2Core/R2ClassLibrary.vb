@@ -103,6 +103,14 @@ End Class
 
 Namespace PublicProc
     Public Class R2CoreMClassPublicProcedures
+        'رنگ سیه و سفید مناسب یک پس زمینه
+        Public Shared Function IdealBlackWhiteTextColor(YourBackGroundColor As Color) As Color
+            Dim nThreshold As Int64 = 105
+            Dim bgDelta As Int64 = Convert.ToInt32((YourBackGroundColor.R * 0.299) + (YourBackGroundColor.G * 0.587) + (YourBackGroundColor.B * 0.114))
+            Dim foreColor As Color = IIf(255 - bgDelta < nThreshold, Color.Black, Color.White)
+            Return foreColor
+        End Function
+
         'توليد تاريخ بعدي از يك تاريخ شمسي
         Public Shared Function GetNextShamsiDate(ByVal YourShamsiDate As String) As String
             Try

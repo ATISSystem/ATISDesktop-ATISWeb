@@ -368,6 +368,12 @@
     <Compile Include="Reports\FrmcIndigenousTrucksWithUNNativeLPReport.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Reports\FrmcLoadPermissionsIssuedOrderByPriorityReport.Designer.vb">
+      <DependentUpon>FrmcLoadPermissionsIssuedOrderByPriorityReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcLoadPermissionsIssuedOrderByPriorityReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Reports\FrmcSedimentedLoadsReport.Designer.vb">
       <DependentUpon>FrmcSedimentedLoadsReport.vb</DependentUpon>
     </Compile>
@@ -438,6 +444,12 @@
       <DependentUpon>UCIndigenousTrucksWithUNNativeLPReport.vb</DependentUpon>
     </Compile>
     <Compile Include="Reports\UCIndigenousTrucksWithUNNativeLPReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCLoadPermissionIssuedOrderByPriority.Designer.vb">
+      <DependentUpon>UCLoadPermissionIssuedOrderByPriority.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCLoadPermissionIssuedOrderByPriority.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Reports\UCSedimentedLoadsReport.Designer.vb">
@@ -683,6 +695,9 @@
     <EmbeddedResource Include="Reports\FrmcIndigenousTrucksWithUNNativeLPReport.resx">
       <DependentUpon>FrmcIndigenousTrucksWithUNNativeLPReport.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcLoadPermissionsIssuedOrderByPriorityReport.resx">
+      <DependentUpon>FrmcLoadPermissionsIssuedOrderByPriorityReport.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\FrmcSedimentedLoadsReport.resx">
       <DependentUpon>FrmcSedimentedLoadsReport.vb</DependentUpon>
     </EmbeddedResource>
@@ -718,6 +733,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UCIndigenousTrucksWithUNNativeLPReport.resx">
       <DependentUpon>UCIndigenousTrucksWithUNNativeLPReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCLoadPermissionIssuedOrderByPriority.resx">
+      <DependentUpon>UCLoadPermissionIssuedOrderByPriority.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UCSedimentedLoadsReport.resx">
       <DependentUpon>UCSedimentedLoadsReport.vb</DependentUpon>
@@ -831,10 +849,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://37.255.209.4:2010/TerminalsWebService.asmx">
+    <WebReferenceUrl Include="http://localhost:2010/TerminalsWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\TerminalsWebService\</RelPath>
-      <UpdateFromURL>http://37.255.209.4:2010/TerminalsWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://localhost:2010/TerminalsWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

@@ -50,6 +50,15 @@ Public Class PayanehWebService
     End Sub
 
     <WebMethod()>
+    Public Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport(YourDateTimeMilladi1 As DateTime, YourDateShamsiFull1 As String, YourTime1 As String, YourDateTimeMilladi2 As DateTime, YourDateShamsiFull2 As String, YourTime2 As String, YourSequentialTurnKeyWord As String)
+        Try
+            PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderLoadPermissionIssuedOrderByPriorityReport(New R2StandardDateAndTimeStructure(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1), New R2StandardDateAndTimeStructure(YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2),YourSequentialTurnKeyWord)
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    <WebMethod()>
     Public Sub WebMethodReportingInformationPrividerSedimentedLoadsReport(YourDateTimeMilladi1 As DateTime, YourDateShamsiFull1 As String, YourTime1 As String, YourDateTimeMilladi2 As DateTime, YourDateShamsiFull2 As String, YourTime2 As String, YourAnnouncementHallId As Int64, YourSedimentedLoadsReportType As Int32)
         Try
             PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderSedimentedLoadsReport(New R2StandardDateAndTimeStructure(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1), New R2StandardDateAndTimeStructure(YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2), YourAnnouncementHallId, CType(YourSedimentedLoadsReportType, PayanehClassLibraryMClassReportsManagement.SedimentedLoadsReportType))
@@ -364,7 +373,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodTransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(YourComapnyCode As Int64, YournEstelamId As Int64, YourCarTruckSmartCardNo As String, YourDriverTruckSmartCardNo As String) As Int64
         Try
-            Return PayanehClassLibrary.LoadNotification.LoadPermission.LoadNotificationLoadPermissionManagement.TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(YourComapnyCode, YournEstelamId, YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo,_CurrentUserNSS)
+            Return PayanehClassLibrary.LoadNotification.LoadPermission.LoadNotificationLoadPermissionManagement.TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(YourComapnyCode, YournEstelamId, YourCarTruckSmartCardNo, YourDriverTruckSmartCardNo)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

@@ -65,7 +65,7 @@ Public Class FrmcMessageDialog
                 Dim params() As Object = New Object() {YourDialogColorType, YourMessage, YourHint, YourMessageType, YourMessageImage, Sender, ForceToDisappearMessage}
                 BeginInvoke(myDelegate, params)
             Else
-                If Me.DesignMode Then Exit Sub
+                'If Me.DesignMode Then Exit Sub
                 Dim MasterColor As Color = GetColor(YourDialogColorType)
                 ''LblMessage.Text = Split(YourMessage, vbCrLf)(Split(YourMessage, vbCrLf).Length - 1)
                 ''LblMessage.Text = Split(YourMessage, ControlChars.CrLf)(Split(YourMessage, ControlChars.CrLf).Length - 1)

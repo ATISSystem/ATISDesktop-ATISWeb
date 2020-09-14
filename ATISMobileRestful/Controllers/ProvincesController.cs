@@ -11,6 +11,7 @@ using System.Globalization;
 using R2Core.LoggingManagement;
 using R2CoreTransportationAndLoadNotification.Logging;
 using R2CoreTransportationAndLoadNotification.LoadTargets;
+using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 
 
 namespace ATISMobileRestful.Controllers
@@ -18,12 +19,12 @@ namespace ATISMobileRestful.Controllers
     public class ProvincesController : ApiController
     {
         [HttpGet]
-        public List<Models.Province> GetProvinces(Int64 YourAHId, Int64 YourAHSGId)
+        public List<Models.Province> GetProvinces(Int64 YourAHId, Int64 YourAHSGId,LoadCapacitorLoadsListType YourLoadCapacitorLoadsListType)
         {
             List<Models.Province> _Provinces = new List<Models.Province>();
             try
             {
-                var Lst = R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetProvinces(YourAHId, YourAHSGId);
+                var Lst = R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetProvinces(YourAHId, YourAHSGId,YourLoadCapacitorLoadsListType);
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
                     var Item = new Models.Province();

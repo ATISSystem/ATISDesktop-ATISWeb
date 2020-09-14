@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using System.Web.Security;
 using R2Core.LoggingManagement;
 using R2CoreTransportationAndLoadNotification.Turns;
 using R2CoreTransportationAndLoadNotification.MobileUsers;
@@ -28,7 +28,8 @@ namespace ATISMobileRestful.Controllers
                     Item.TurnId = Lst[Loopx].nEnterExitId.ToString();
                     var OtaghdarTurnNumber = Lst[Loopx].OtaghdarTurnNumber.Trim().Split(':')[0];
                     var TurnDistanceToValidity = Lst[Loopx].OtaghdarTurnNumber.Trim().Split(':')[1];
-                    Item.OtaghdarTurnNumber = "شماره نوبت : " + OtaghdarTurnNumber + " فاصله شما تا اعتبار : " + TurnDistanceToValidity;
+                    string myTurnDistanceToValidity = (TurnDistanceToValidity.Trim()=="0")? "اعتبار ندارد":TurnDistanceToValidity;
+                    Item.OtaghdarTurnNumber = "شماره نوبت : " + OtaghdarTurnNumber + " فاصله شما تا اعتبار : " + myTurnDistanceToValidity;
                     Item.TurnDateTime ="زمان: "+ Lst[Loopx].EnterDate.Trim() + " - " + Lst[Loopx].EnterTime.Trim();
                     Item.TurnStatusTitle = "وضعیت نوبت: " + Lst[Loopx].TurnStatusTitle.Trim();
                     Item.LPPString  = "ناوگان: "+Lst[Loopx].LicensePlatePString.Trim();

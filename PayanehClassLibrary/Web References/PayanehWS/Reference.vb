@@ -33,6 +33,8 @@ Namespace PayanehWS
     Partial Public Class PayanehWebService
         Inherits System.Web.Services.Protocols.SoapHttpClientProtocol
         
+        Private WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted As System.Threading.SendOrPostCallback
+        
         Private WebMethodReportingInformationPrividerSedimentedLoadsReportOperationCompleted As System.Threading.SendOrPostCallback
         
         Private WebMethodReportingInformationPrividerTruckersAssociationFinancialReportOperationCompleted As System.Threading.SendOrPostCallback
@@ -150,6 +152,9 @@ Namespace PayanehWS
                 Me.useDefaultCredentialsSetExplicitly = true
             End Set
         End Property
+        
+        '''<remarks/>
+        Public Event WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportCompleted As WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportCompletedEventHandler
         
         '''<remarks/>
         Public Event WebMethodReportingInformationPrividerSedimentedLoadsReportCompleted As WebMethodReportingInformationPrividerSedimentedLoadsReportCompletedEventHandler
@@ -270,6 +275,33 @@ Namespace PayanehWS
         
         '''<remarks/>
         Public Event WebMethodISCompanyActiveCompleted As WebMethodISCompanyActiveCompletedEventHandler
+        
+        '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerLoadPermissionsIssuedOrde"& _ 
+            "rByPriorityReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourSequentialTurnKeyWord As String)
+            Me.Invoke("WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourSequentialTurnKeyWord})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourSequentialTurnKeyWord As String)
+            Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourSequentialTurnKeyWord, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourSequentialTurnKeyWord As String, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourSequentialTurnKeyWord}, Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerSedimentedLoadsReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
@@ -1576,6 +1608,10 @@ Namespace PayanehWS
             End Set
         End Property
     End Class
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _

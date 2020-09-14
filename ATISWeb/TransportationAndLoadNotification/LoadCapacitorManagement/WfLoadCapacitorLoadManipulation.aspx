@@ -25,8 +25,8 @@
         <div class="container-fluid">
             <ul class="nav nav-tabs justify-content-end" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadPersmissionsIssued">تخصیص های صادر شده</a>
-                </li>
+                    <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadPersmissionsIssued">مجوزهای صادر شده</a>
+                 </li>
                 <li class="nav-item">
                     <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoads">لیست بار</a>
                 </li>

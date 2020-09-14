@@ -41,10 +41,11 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 dt.Columns.Add(new DataColumn("strAddress", typeof(string)));
                 dt.Columns.Add(new DataColumn("Mobile", typeof(string)));
                 dt.Columns.Add(new DataColumn("StrExitDateTime", typeof(string)));
-                dt.Columns.Add(new DataColumn("StrSmartcardNo", typeof(string)));
+                dt.Columns.Add(new DataColumn("StrSmartCardNo", typeof(string)));
                 dt.Columns.Add(new DataColumn("StrNationalCode", typeof(string)));
                 dt.Columns.Add(new DataColumn("StrDrivingLicenceNo", typeof(string)));
                 dt.Columns.Add(new DataColumn("TruckDriver", typeof(string)));
+                dt.Columns.Add(new DataColumn("TruckSmartCardNo", typeof(string)));
                 dt.Columns.Add(new DataColumn("Truck", typeof(string)));
 
                 for (int i = 0; i <= Lst.Count - 1; i++)
@@ -55,11 +56,12 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                     dr["strAddress"] = Lst[i].strAddress.Trim();
                     dr["Mobile"] = Lst[i].Mobile.Trim();
                     dr["StrExitDateTime"] = Lst[i].LoadPermissionDate.Trim() + "-" + Lst[i].LoadPermissionTime.Trim();
-                    dr["StrSmartcardNo"] = Lst[i].StrSmartcardNo.Trim();
+                    dr["StrSmartcardNo"] = Lst[i].StrSmartCardNo.Trim();
                     dr["StrNationalCode"] = Lst[i].StrNationalCode.Trim();
                     dr["StrDrivingLicenceNo"] = Lst[i].StrDrivingLicenceNo.Trim();
                     dr["TruckDriver"] = Lst[i].TruckDriver.Trim();
                     dr["Truck"] = Lst[i].Truck.Trim();
+                    dr["TruckSmartCardNo"] = Lst[i].TruckSmartCardNo.Trim();
                     dt.Rows.Add(dr);
 
                 }

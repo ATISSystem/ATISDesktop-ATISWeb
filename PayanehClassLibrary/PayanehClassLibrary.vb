@@ -319,7 +319,7 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
-        Public Shared Sub ReplicaTurnPrintRequest(YourNSSCarTruckNobat As R2StandardCarTruckNobatStructure, YourTurnPrintRedirect As Boolean,YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub ReplicaTurnPrintRequest(YourNSSCarTruckNobat As R2StandardCarTruckNobatStructure, YourTurnPrintRedirect As Boolean, YourUserNSS As R2CoreStandardUserStructure)
             Try
                 Dim NSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTruck(YourNSSCarTruckNobat.nEnterExitId).NSSCar.nIdCar))
                 'کنترل موجودی کیف پول به منظور کسر هزینه چاپ قبض نوبت  - المثنی
@@ -327,7 +327,7 @@ Namespace CarTruckNobatManagement
                 If R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletCharge(NSSTerafficCard) < ReplicaTurnPrintCost Then
                     Throw New MoneyWalletCurrentChargeNotEnoughException
                 End If
-                R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSTerafficCard, BagPayType.MinusMoney, ReplicaTurnPrintCost, R2CoreParkingSystemAccountings.PrintCopyOfTurn,YourUserNSS)
+                R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSTerafficCard, BagPayType.MinusMoney, ReplicaTurnPrintCost, R2CoreParkingSystemAccountings.PrintCopyOfTurn, YourUserNSS)
                 R2CoreTransportationAndLoadNotificationMClassTurnPrintRequestManagement.ReplicaTurnPrintRequest(YourNSSCarTruckNobat.nEnterExitId, YourTurnPrintRedirect)
             Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is GetDataException OrElse TypeOf ex Is MoneyWalletNotExistException
                 Throw ex
@@ -443,7 +443,7 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
-        Public Shared Function GetNobat(YourTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, ByRef YourMblgh As Int64, YourTurnRegisterRequestId As Int64,YourUserNSS As R2CoreStandardUserStructure) As Int64
+        Public Shared Function GetNobat(YourTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, ByRef YourMblgh As Int64, YourTurnRegisterRequestId As Int64, YourUserNSS As R2CoreStandardUserStructure) As Int64
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -551,9 +551,9 @@ Namespace CarTruckNobatManagement
 
                 'هزینه نوبت انجمن و شرکت
                 YourMblgh = GetSherkatHazinehNobatMblgh(YourTrafficCard)
-                If YourMblgh > 0 Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(YourTrafficCard, BagPayType.MinusMoney, YourMblgh, R2CoreParkingSystemAccountings.SherkatHazinehNobat,YourUserNSS)
-                If YourTrafficCard.CardType = TerafficCardType.Tereili Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(YourTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 1), R2CoreParkingSystemAccountings.AnjomanHazinehNobat,YourUserNSS)
-                If YourTrafficCard.CardType = TerafficCardType.SixCharkh Or YourTrafficCard.CardType = TerafficCardType.TenCharkh Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(YourTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 4), R2CoreParkingSystemAccountings.AnjomanHazinehNobat,YourUserNSS)
+                If YourMblgh > 0 Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(YourTrafficCard, BagPayType.MinusMoney, YourMblgh, R2CoreParkingSystemAccountings.SherkatHazinehNobat, YourUserNSS)
+                If YourTrafficCard.CardType = TerafficCardType.Tereili Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(YourTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 1), R2CoreParkingSystemAccountings.AnjomanHazinehNobat, YourUserNSS)
+                If YourTrafficCard.CardType = TerafficCardType.SixCharkh Or YourTrafficCard.CardType = TerafficCardType.TenCharkh Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(YourTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 4), R2CoreParkingSystemAccountings.AnjomanHazinehNobat, YourUserNSS)
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
 
                 'ارسال نوبت ناوگان برای سیستم آنلاین
@@ -626,7 +626,7 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
-        Public Shared Function GetNobatKiosk(YourNSSCarTruck As R2StandardCarTruckStructure,YourUserNSS As R2CoreStandardUserStructure) As Int64
+        Public Shared Function GetNobatKiosk(YourNSSCarTruck As R2StandardCarTruckStructure, YourUserNSS As R2CoreStandardUserStructure) As Int64
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -750,9 +750,9 @@ Namespace CarTruckNobatManagement
                 If YourMoneyWalletInventoryControl Then
                     Dim myNSSTrafficCard = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(YourNSSTruck.NSSCar.nIdCar))
                     Dim myMblgh = GetSherkatHazinehNobatMblgh(myNSSTrafficCard)
-                    If myMblgh > 0 Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(myNSSTrafficCard, BagPayType.MinusMoney, myMblgh, R2CoreParkingSystemAccountings.SherkatHazinehNobat,R2CoreMClassLoginManagement.GetNSSSystemUser)
-                    If myNSSTrafficCard.CardType = TerafficCardType.Tereili Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(myNSSTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 1), R2CoreParkingSystemAccountings.AnjomanHazinehNobat,R2CoreMClassLoginManagement.GetNSSSystemUser)
-                    If myNSSTrafficCard.CardType = TerafficCardType.SixCharkh Or myNSSTrafficCard.CardType = TerafficCardType.TenCharkh Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(myNSSTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 4), R2CoreParkingSystemAccountings.AnjomanHazinehNobat,R2CoreMClassLoginManagement.GetNSSSystemUser)
+                    If myMblgh > 0 Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(myNSSTrafficCard, BagPayType.MinusMoney, myMblgh, R2CoreParkingSystemAccountings.SherkatHazinehNobat, R2CoreMClassLoginManagement.GetNSSSystemUser)
+                    If myNSSTrafficCard.CardType = TerafficCardType.Tereili Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(myNSSTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 1), R2CoreParkingSystemAccountings.AnjomanHazinehNobat, R2CoreMClassLoginManagement.GetNSSSystemUser)
+                    If myNSSTrafficCard.CardType = TerafficCardType.SixCharkh Or myNSSTrafficCard.CardType = TerafficCardType.TenCharkh Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(myNSSTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 4), R2CoreParkingSystemAccountings.AnjomanHazinehNobat, R2CoreMClassLoginManagement.GetNSSSystemUser)
                 End If
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Return mynIdEnterExit
@@ -1183,7 +1183,7 @@ Namespace TurnRegisterRequest
                 'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
                 If YourTruckMustBePresent Then R2CoreTransportationAndLoadNotificationMClassTurnsManagement.TruckPresentInParkingForTurnRegisteringControl(myNSSTruck)
                 'ثبت درخواست صدور نوبت بلادرنگ
-                Dim TurnRegisterRequestId = R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.TurnRegisterRequestRegistering(New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(Nothing, TurnRegisterRequestTypes.RealTime, myNSSTruck.NSSCar.nIdCar, R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.GetNSSTurnRegisterRequestType(TurnRegisterRequestTypes.RealTime).TRRTypeTitle, Nothing, Nothing, Nothing, Nothing), Nothing,R2CoreMClassLoginManagement.GetNSSSystemUser)
+                Dim TurnRegisterRequestId = R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.TurnRegisterRequestRegistering(New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(Nothing, TurnRegisterRequestTypes.RealTime, myNSSTruck.NSSCar.nIdCar, R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.GetNSSTurnRegisterRequestType(TurnRegisterRequestTypes.RealTime).TRRTypeTitle, Nothing, Nothing, Nothing, Nothing), Nothing, R2CoreMClassLoginManagement.GetNSSSystemUser)
                 'ثبت نوبت
                 YourTurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetNewTurnIdforAgent(myNSSTruck, YournEstelamId, TurnRegisterRequestId, False)
                 'ثبت رابطه نوبت با درخواست صدور نوبت از طریق فضانام مدیریت روابط نهادی
@@ -1215,7 +1215,7 @@ Namespace TurnRegisterRequest
             End Try
         End Function
 
-        Public Shared Function RealTimeTurnRegisterRequest(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourTurnPrintRedirect As Boolean, YourMoneyWalletInventoryControl As Boolean, ByRef YourTurnId As Int64,YourUserNSS As R2CoreStandardUserStructure) As Int64
+        Public Shared Function RealTimeTurnRegisterRequest(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourTurnPrintRedirect As Boolean, YourMoneyWalletInventoryControl As Boolean, ByRef YourTurnId As Int64, YourUserNSS As R2CoreStandardUserStructure) As Int64
             Try
                 Dim NSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(YourNSSTruck.NSSCar.nIdCar))
                 'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
@@ -1223,9 +1223,9 @@ Namespace TurnRegisterRequest
                 'کنترل موجودی کیف پول برای هزینه صدور نوبت - درصورتی که موجودی کافی نباشداکسپشن پرتاب می گردد 
                 If YourMoneyWalletInventoryControl Then If Not IsMoneyWalletInventoryIsEnoughForTurnRegistering(NSSTrafficCard) Then Throw New MoneyWalletCurrentChargeNotEnoughException
                 'ثبت درخواست صدور نوبت بلادرنگ
-                Dim TurnRegisterRequestId = R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.TurnRegisterRequestRegistering(New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(Nothing, TurnRegisterRequestTypes.RealTime, YourNSSTruck.NSSCar.nIdCar, R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.GetNSSTurnRegisterRequestType(TurnRegisterRequestTypes.RealTime).TRRTypeTitle, Nothing, Nothing, Nothing, Nothing), Nothing,YourUserNSS)
+                Dim TurnRegisterRequestId = R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.TurnRegisterRequestRegistering(New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(Nothing, TurnRegisterRequestTypes.RealTime, YourNSSTruck.NSSCar.nIdCar, R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.GetNSSTurnRegisterRequestType(TurnRegisterRequestTypes.RealTime).TRRTypeTitle, Nothing, Nothing, Nothing, Nothing), Nothing, YourUserNSS)
                 'ثبت نوبت
-                YourTurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetNobat(NSSTrafficCard, Nothing, TurnRegisterRequestId,YourUserNSS)
+                YourTurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetNobat(NSSTrafficCard, Nothing, TurnRegisterRequestId, YourUserNSS)
                 'ثبت رابطه نوبت با درخواست صدور نوبت از طریق فضانام مدیریت روابط نهادی
                 R2CoreMClassEntityRelationManagement.EntityRelationRegistering(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, YourTurnId, TurnRegisterRequestId, Nothing))
                 'درخواست چاپ نوبت
@@ -1238,13 +1238,13 @@ Namespace TurnRegisterRequest
             End Try
         End Function
 
-        Public Shared Function ProduceEmergencyTurnRegisterRequestConfirmationComputerMessage(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourMoneyWalletInventoryControl As Boolean, YourEmergencyTurnRegisterRequestNote As String,YourUserNSS As R2CoreStandardUserStructure) As Int64
+        Public Shared Function ProduceEmergencyTurnRegisterRequestConfirmationComputerMessage(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourMoneyWalletInventoryControl As Boolean, YourEmergencyTurnRegisterRequestNote As String, YourUserNSS As R2CoreStandardUserStructure) As Int64
             Try
                 Dim NSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(YourNSSTruck.NSSCar.nIdCar))
                 'کنترل موجودی کیف پول برای هزینه صدور نوبت - درصورتی که موجودی کافی نباشداکسپشن پرتاب می گردد 
                 If YourMoneyWalletInventoryControl Then If Not IsMoneyWalletInventoryIsEnoughForTurnRegistering(NSSTrafficCard) Then Throw New MoneyWalletCurrentChargeNotEnoughException
                 'ثبت درخواست صدور نوبت اضطراری
-                Dim TurnRegisterRequestId = R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.TurnRegisterRequestRegistering(New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(Nothing, TurnRegisterRequestTypes.Emergency, YourNSSTruck.NSSCar.nIdCar, R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.GetNSSTurnRegisterRequestType(TurnRegisterRequestTypes.Emergency).TRRTypeTitle & " " & YourEmergencyTurnRegisterRequestNote, Nothing, Nothing, Nothing, Nothing), Nothing,YourUserNSS)
+                Dim TurnRegisterRequestId = R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.TurnRegisterRequestRegistering(New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(Nothing, TurnRegisterRequestTypes.Emergency, YourNSSTruck.NSSCar.nIdCar, R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.GetNSSTurnRegisterRequestType(TurnRegisterRequestTypes.Emergency).TRRTypeTitle & " " & YourEmergencyTurnRegisterRequestNote, Nothing, Nothing, Nothing, Nothing), Nothing, YourUserNSS)
                 'ارسال پیام تایید درخواست صدور نوبت اضطراری
                 Dim DataStruct As DataStruct = New DataStruct()
                 DataStruct.Data1 = YourNSSTruck.NSSCar.nIdCar
@@ -1258,11 +1258,11 @@ Namespace TurnRegisterRequest
             End Try
         End Function
 
-        Public Shared Sub EmergencyTurnRegister(YourDataStruct As DataStruct, YourTurnPrintRedirect As Boolean,YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub EmergencyTurnRegister(YourDataStruct As DataStruct, YourTurnPrintRedirect As Boolean, YourUserNSS As R2CoreStandardUserStructure)
             Try
                 Dim NSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(YourDataStruct.Data1))
                 'ثبت نوبت
-                Dim YourTurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetNobat(NSSTrafficCard, Nothing, YourDataStruct.Data2,YourUserNSS)
+                Dim YourTurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetNobat(NSSTrafficCard, Nothing, YourDataStruct.Data2, YourUserNSS)
                 'ثبت رابطه نوبت با درخواست صدور نوبت از طریق فضانام مدیریت روابط نهادی
                 R2CoreMClassEntityRelationManagement.EntityRelationRegistering(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, YourTurnId, YourDataStruct.Data2, Nothing))
                 'درخواست چاپ نوبت
@@ -1702,7 +1702,7 @@ Namespace CarTrucksManagement
             End Try
         End Function
 
-        Public Shared Function GetCarTruckfromRMTOAndInsertUpdateLocalDataBase(YourBodyNo As String,YourUserNSS As R2CoreStandardUserStructure) As R2StandardCarTruckStructure
+        Public Shared Function GetCarTruckfromRMTOAndInsertUpdateLocalDataBase(YourBodyNo As String, YourUserNSS As R2CoreStandardUserStructure) As R2StandardCarTruckStructure
             Try
                 Dim NSS As R2StandardCarTruckStructure = RmtoWebService.GetNSSCarTruck(YourBodyNo)
                 If IsExistCarTruck(NSS) = True Then
@@ -1711,7 +1711,7 @@ Namespace CarTrucksManagement
                     R2CoreParkingSystemMClassCars.UpdateCar(NSS.NSSCar)
                     PayanehClassLibraryMClassCarTrucksManagement.UpdateCarTruck(NSS)
                 Else
-                    Dim nIdCar As Int64 = R2CoreParkingSystemMClassCars.InsertCar(NSS.NSSCar,YourUserNSS)
+                    Dim nIdCar As Int64 = R2CoreParkingSystemMClassCars.InsertCar(NSS.NSSCar, YourUserNSS)
                     NSS.NSSCar.nIdCar = nIdCar
                     PayanehClassLibraryMClassCarTrucksManagement.UpdateCarTruck(NSS)
                 End If
@@ -1761,7 +1761,7 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcTransportPriceTarrifsReport As Int64 = 55
         Public Shared ReadOnly FrmcIndigenousTrucksWithUNNativeLPReport As Int64 = 56
         Public Shared ReadOnly FrmcSedimentedLoadsReport As Int64 = 58
-
+        Public Shared ReadOnly FrmcLoadPermissionsIssuedOrderByPriorityReport As Int64 = 61
 
 
 
@@ -1815,7 +1815,7 @@ Namespace DriverTruckPresentManagement
             End Try
         End Function
 
-        Public Shared Sub SaveDriverTruckFPs(YourNSSDriverTruck As R2StandardDriverTruckStructure, YourListOfFPs As Generic.List(Of Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint), YourDriverImage As R2CoreImage,YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub SaveDriverTruckFPs(YourNSSDriverTruck As R2StandardDriverTruckStructure, YourListOfFPs As Generic.List(Of Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint), YourDriverImage As R2CoreImage, YourUserNSS As R2CoreStandardUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
@@ -2581,6 +2581,7 @@ Namespace ReportsManagement
         Public Shared ReadOnly IndigenousTrucksWithUNNativeLPReport As Int64 = 21
         Public Shared ReadOnly SedimentedLoadsByTransportCompnayTargetCityReport As Int64 = 24
         Public Shared ReadOnly SedimentedLoadsByTargetCityReport As Int64 = 25
+        Public Shared ReadOnly LoadPermissionsIssuedOrderByPriorityReport As Int64 = 28
     End Class
 
     Public Class PayanehClassLibraryMClassReportsManagement
@@ -3571,6 +3572,40 @@ Namespace ReportsManagement
             End Try
         End Sub
 
+        Public Shared Sub ReportingInformationProviderLoadPermissionIssuedOrderByPriorityReport(YourDate1 As R2StandardDateAndTimeStructure, YourDate2 As R2StandardDateAndTimeStructure, YourSequentialTurnKeyWord As String)
+            'گزارش مجوزهای صادر شده برای نوبت ها به ترتیب زمان صدور مجوز و اولویت انتخابی
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblLoadPermissionIssuedOrderByPriorityReport" : CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "
+                        Insert Into R2PrimaryReports.dbo.TblLoadPermissionIssuedOrderByPriorityReport
+                          Select Turns.OtaghdarTurnNumber,Persons.strPersonFullName,Trucks.strCarNo+'-'+Trucks.strCarSerialNo as Truck,LoadAllocations.LAId,LoadAllocations.Priority,Loads.nEstelamID,
+                                 Products.strGoodName,LoadTargets.strCityName,Turns.strExitDate+'-'+strExitTime as LoadPermissionDateTime 
+                          from dbtransport.dbo.tbEnterExit as Turns
+                            Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID=Loads.nEstelamID
+                            Inner Join dbtransport.dbo.tbCity as LoadTargets On Loads.nCityCode=LoadTargets.nCityCode
+                            Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode=Products.strGoodCode
+                            Inner Join dbtransport.dbo.TbPerson as Persons On Turns.nDriverCode=Persons.nIDPerson
+                            Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver
+                            Inner Join dbtransport.dbo.TbCar as Trucks On Turns.strCardno=Trucks.nIDCar
+                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId
+                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocationStatuses as LoadAllocationStatuses On LoadAllocations.LAStatusId=LoadAllocationStatuses.LoadAllocationStatusId
+                          Where Turns.strExitDate>='" & YourDate1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDate2.DateShamsiFull & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and
+                                LoadAllocations.LAStatusId=2 and SUBSTRING(Turns.OtaghdarTurnNumber,1,1)='" & YourSequentialTurnKeyWord & "'
+                          Order By Turns.strExitDate,Turns.strExitTime Desc"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
     End Class
 
 End Namespace
@@ -4432,7 +4467,7 @@ Namespace LoadNotification.LoadPermission
             End Try
         End Function
 
-        Public Shared Function TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(YourComapnyCode As Int64, YournEstelamId As Int64, YourCarTruckSmartCardNo As String, YourDriverTruckSmartCardNo As String,YourUserNSS As R2CoreStandardUserStructure) As Int64
+        Public Shared Function TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(YourComapnyCode As Int64, YournEstelamId As Int64, YourCarTruckSmartCardNo As String, YourDriverTruckSmartCardNo As String) As Int64
             Try
                 ''کنترل حداقل موجودی در کیف پول شرکت حمل و نقل
                 'Dim NSSMoneyWallet As R2CoreParkingSystemStandardTrafficCardStructure = TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompanyMoneyWallet(YourComapnyCode)
@@ -4451,12 +4486,12 @@ Namespace LoadNotification.LoadPermission
                     Try
                         TurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetLastActiveNSSNobat(NSSCarTruck.NSSCar).nEnterExitId
                     Catch exx As GetNobatException
-                        TurnId = CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.GetNobatKiosk(NSSCarTruck,YourUserNSS)
+                        TurnId = CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.GetNobatKiosk(NSSCarTruck, R2CoreMClassLoginManagement.GetNSSSystemUser())
                     Catch ex As Exception
                         Throw ex
                     End Try
                 Else
-                    TurnId = CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.GetNobatKiosk(NSSCarTruck,YourUserNSS)
+                    TurnId = CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.GetNobatKiosk(NSSCarTruck, R2CoreMClassLoginManagement.GetNSSSystemUser())
                 End If
 
 
@@ -4464,7 +4499,7 @@ Namespace LoadNotification.LoadPermission
 
                 'صدور مجوز بارگیری برای ناوگان باری
                 Try
-                    TransportCompanyLoadCapacitorSedimentLoadPermisiion(TurnId, YournEstelamId, PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(NSSCarTruck.NSSCar.nIdCar)),YourUserNSS)
+                    TransportCompanyLoadCapacitorSedimentLoadPermisiion(TurnId, YournEstelamId, PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(NSSCarTruck.NSSCar.nIdCar)), R2CoreMClassLoginManagement.GetNSSSystemUser())
                 Catch ex As Exception
                     'درصورتی که صدور مجوز با مشکل مواجه شود نوبت صادرشده باطل می گردد
                     PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToTrue(TurnId, False)
@@ -4496,7 +4531,7 @@ Namespace LoadNotification.LoadPermission
 
         End Function
 
-        Public Shared Sub TransportCompanyLoadCapacitorSedimentLoadPermisiion(YourTurnId As Int64, YournEstelamId As Int64, YourNSSDriverTruck As R2StandardDriverTruckStructure,YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub TransportCompanyLoadCapacitorSedimentLoadPermisiion(YourTurnId As Int64, YournEstelamId As Int64, YourNSSDriverTruck As R2StandardDriverTruckStructure, YourUserNSS As R2CoreStandardUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
