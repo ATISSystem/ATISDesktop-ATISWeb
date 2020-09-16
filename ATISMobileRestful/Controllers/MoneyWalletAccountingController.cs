@@ -28,13 +28,13 @@ namespace ATISMobileRestful.Controllers
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
                     var Item = new Models.MoneyWalletAccounting();
-                    Item.AccountName = "عملیات : " + Lst[Loopx].AccountName;
-                    Item.AccountDateTime =" زمان : "+Lst[Loopx].DateShamsiA + "-" + Lst[Loopx].TimeA;
-                    Item.CurrentCharge=" موجودی : " +R2CoreMClassPublicProcedures.ParseSignDigitToTashString(Lst[Loopx].CurrentChargeA);
-                    Item.Mblgh = " مبلغ : " + R2CoreMClassPublicProcedures.ParseSignDigitToTashString(Lst[Loopx].MblghA);
-                    Item.ReminderCharge = " باقیمانده : " + R2CoreMClassPublicProcedures.ParseSignDigitToTashString(Lst[Loopx].ReminderChargeA);
-                    Item.ComputerName = " مکان : " + Lst[Loopx].ComputerName;
-                    Item.UserName = " کاربر : " + Lst[Loopx].UserName;
+                    Item.AccountName = Lst[Loopx].AccountName;
+                    Item.AccountDateTime = Lst[Loopx].DateShamsiA + "\n" + Lst[Loopx].TimeA;
+                    Item.CurrentCharge = R2CoreMClassPublicProcedures.ParseSignDigitToSignString(Lst[Loopx].CurrentChargeA);
+                    Item.Mblgh = R2CoreMClassPublicProcedures.ParseSignDigitToSignString(Lst[Loopx].MblghA);
+                    Item.ReminderCharge = R2CoreMClassPublicProcedures.ParseSignDigitToSignString(Lst[Loopx].ReminderChargeA);
+                    Item.ComputerName = Lst[Loopx].ComputerName;
+                    Item.UserName = Lst[Loopx].UserName;
                     Item.BackGroundColorName =Lst[Loopx].ColorName;
                     Item.ForeGroundColorName =R2CoreMClassPublicProcedures.IdealBlackWhiteTextColor(Color.FromName(Lst[Loopx].ColorName)).Name;
                     _MoneyWalletAccountings.Add(Item);

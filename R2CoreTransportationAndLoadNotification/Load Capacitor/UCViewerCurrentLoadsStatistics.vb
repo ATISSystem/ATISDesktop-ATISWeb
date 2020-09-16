@@ -83,11 +83,15 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.UcLabelReminder = New R2CoreGUI.UCLabel()
-        Me.PnlMain.SuspendLayout
-        Me.PnlOutter.SuspendLayout
-        Me.PnlInner.SuspendLayout
-        Me.AlphaGradientPanel1.SuspendLayout
-        Me.SuspendLayout
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.UcLabelTransfferedTomarrowLoads = New R2CoreGUI.UCLabel()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.UcLabelRegisteredTomarrowLoads = New R2CoreGUI.UCLabel()
+        Me.PnlMain.SuspendLayout()
+        Me.PnlOutter.SuspendLayout()
+        Me.PnlInner.SuspendLayout()
+        Me.AlphaGradientPanel1.SuspendLayout()
+        Me.SuspendLayout()
         '
         'PnlMain
         '
@@ -132,7 +136,7 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelTop.Size = New System.Drawing.Size(800, 37)
         Me.UcLabelTop.TabIndex = 352
         Me.UcLabelTop.UCBackColor = System.Drawing.Color.DodgerBlue
-        Me.UcLabelTop.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabelTop.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabelTop.UCForeColor = System.Drawing.Color.White
         Me.UcLabelTop.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelTop.UCValue = "آمار بار"
@@ -140,11 +144,15 @@ Public Class UCViewerCurrentLoadsStatistics
         'AlphaGradientPanel1
         '
         Me.AlphaGradientPanel1.BackColor = System.Drawing.Color.Transparent
-        Me.AlphaGradientPanel1.Border = false
+        Me.AlphaGradientPanel1.Border = False
         Me.AlphaGradientPanel1.BorderColor = System.Drawing.SystemColors.ActiveBorder
         Me.AlphaGradientPanel1.Colors.Add(Me.ColorWithAlpha1)
         Me.AlphaGradientPanel1.Colors.Add(Me.ColorWithAlpha2)
         Me.AlphaGradientPanel1.ContentPadding = New System.Windows.Forms.Padding(0)
+        Me.AlphaGradientPanel1.Controls.Add(Me.UcLabelRegisteredTomarrowLoads)
+        Me.AlphaGradientPanel1.Controls.Add(Me.Label15)
+        Me.AlphaGradientPanel1.Controls.Add(Me.UcLabelTransfferedTomarrowLoads)
+        Me.AlphaGradientPanel1.Controls.Add(Me.Label14)
         Me.AlphaGradientPanel1.Controls.Add(Me.UcAnnouncementHallSelection)
         Me.AlphaGradientPanel1.Controls.Add(Me.Label12)
         Me.AlphaGradientPanel1.Controls.Add(Me.UcLabelRegistered)
@@ -173,16 +181,16 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.AlphaGradientPanel1.Controls.Add(Me.Label5)
         Me.AlphaGradientPanel1.Controls.Add(Me.UcLabelReminder)
         Me.AlphaGradientPanel1.CornerRadius = 20
-        Me.AlphaGradientPanel1.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
-            Or BlueActivity.Controls.Corner.BottomLeft)  _
-            Or BlueActivity.Controls.Corner.BottomRight),BlueActivity.Controls.Corner)
+        Me.AlphaGradientPanel1.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight) _
+            Or BlueActivity.Controls.Corner.BottomLeft) _
+            Or BlueActivity.Controls.Corner.BottomRight), BlueActivity.Controls.Corner)
         Me.AlphaGradientPanel1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.AlphaGradientPanel1.Gradient = true
+        Me.AlphaGradientPanel1.Gradient = True
         Me.AlphaGradientPanel1.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.AlphaGradientPanel1.GradientOffset = 1!
+        Me.AlphaGradientPanel1.GradientOffset = 1.0!
         Me.AlphaGradientPanel1.GradientSize = New System.Drawing.Size(0, 0)
         Me.AlphaGradientPanel1.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.AlphaGradientPanel1.Grayscale = false
+        Me.AlphaGradientPanel1.Grayscale = False
         Me.AlphaGradientPanel1.Image = Nothing
         Me.AlphaGradientPanel1.ImageAlpha = 75
         Me.AlphaGradientPanel1.ImagePadding = New System.Windows.Forms.Padding(5)
@@ -190,7 +198,7 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.AlphaGradientPanel1.ImageSize = New System.Drawing.Size(48, 48)
         Me.AlphaGradientPanel1.Location = New System.Drawing.Point(0, 42)
         Me.AlphaGradientPanel1.Name = "AlphaGradientPanel1"
-        Me.AlphaGradientPanel1.Rounded = true
+        Me.AlphaGradientPanel1.Rounded = True
         Me.AlphaGradientPanel1.Size = New System.Drawing.Size(800, 360)
         Me.AlphaGradientPanel1.TabIndex = 356
         '
@@ -208,8 +216,8 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         'UcAnnouncementHallSelection
         '
-        Me.UcAnnouncementHallSelection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcAnnouncementHallSelection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcAnnouncementHallSelection.BackColor = System.Drawing.Color.Transparent
         Me.UcAnnouncementHallSelection.Location = New System.Drawing.Point(13, 10)
         Me.UcAnnouncementHallSelection.Name = "UcAnnouncementHallSelection"
@@ -219,7 +227,7 @@ Public Class UCViewerCurrentLoadsStatistics
         'Label12
         '
         Me.Label12.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.Label12.Font = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label12.Font = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label12.ForeColor = System.Drawing.Color.Navy
         Me.Label12.Location = New System.Drawing.Point(296, 292)
         Me.Label12.Name = "Label12"
@@ -235,7 +243,7 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelRegistered.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcLabelRegistered.BackColor = System.Drawing.Color.Transparent
         Me.UcLabelRegistered.ForeColor = System.Drawing.Color.MediumBlue
-        Me.UcLabelRegistered.Location = New System.Drawing.Point(362, 122)
+        Me.UcLabelRegistered.Location = New System.Drawing.Point(397, 122)
         Me.UcLabelRegistered.Name = "UcLabelRegistered"
         Me.UcLabelRegistered.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelRegistered.Size = New System.Drawing.Size(105, 22)
@@ -257,7 +265,7 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelSedimented.Size = New System.Drawing.Size(40, 22)
         Me.UcLabelSedimented.TabIndex = 26
         Me.UcLabelSedimented.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelSedimented.UCFont = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcLabelSedimented.UCFont = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcLabelSedimented.UCForeColor = System.Drawing.Color.DarkViolet
         Me.UcLabelSedimented.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelSedimented.UCValue = "126"
@@ -266,7 +274,7 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         Me.UcLabelDeleted._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabelDeleted._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabelDeleted.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabelDeleted.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelDeleted.BackColor = System.Drawing.Color.Transparent
         Me.UcLabelDeleted.ForeColor = System.Drawing.Color.Red
         Me.UcLabelDeleted.Location = New System.Drawing.Point(729, 175)
@@ -275,7 +283,7 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelDeleted.Size = New System.Drawing.Size(40, 22)
         Me.UcLabelDeleted.TabIndex = 17
         Me.UcLabelDeleted.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelDeleted.UCFont = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcLabelDeleted.UCFont = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcLabelDeleted.UCForeColor = System.Drawing.Color.Red
         Me.UcLabelDeleted.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelDeleted.UCValue = "126"
@@ -292,7 +300,7 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelLoadPermissionCancelled.Size = New System.Drawing.Size(40, 22)
         Me.UcLabelLoadPermissionCancelled.TabIndex = 25
         Me.UcLabelLoadPermissionCancelled.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelLoadPermissionCancelled.UCFont = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcLabelLoadPermissionCancelled.UCFont = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcLabelLoadPermissionCancelled.UCForeColor = System.Drawing.Color.MediumSlateBlue
         Me.UcLabelLoadPermissionCancelled.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelLoadPermissionCancelled.UCValue = "126"
@@ -301,7 +309,7 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         Me.UcLabelIncremented._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabelIncremented._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabelIncremented.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabelIncremented.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelIncremented.BackColor = System.Drawing.Color.Transparent
         Me.UcLabelIncremented.Location = New System.Drawing.Point(651, 175)
         Me.UcLabelIncremented.Name = "UcLabelIncremented"
@@ -309,7 +317,7 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelIncremented.Size = New System.Drawing.Size(40, 22)
         Me.UcLabelIncremented.TabIndex = 18
         Me.UcLabelIncremented.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelIncremented.UCFont = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcLabelIncremented.UCFont = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcLabelIncremented.UCForeColor = System.Drawing.Color.Green
         Me.UcLabelIncremented.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelIncremented.UCValue = "126"
@@ -325,7 +333,7 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelCancelled.Size = New System.Drawing.Size(40, 22)
         Me.UcLabelCancelled.TabIndex = 24
         Me.UcLabelCancelled.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelCancelled.UCFont = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcLabelCancelled.UCFont = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcLabelCancelled.UCForeColor = System.Drawing.Color.BlueViolet
         Me.UcLabelCancelled.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelCancelled.UCValue = "126"
@@ -334,7 +342,7 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         Me.UcLabelDecremented._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabelDecremented._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabelDecremented.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabelDecremented.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelDecremented.BackColor = System.Drawing.Color.Transparent
         Me.UcLabelDecremented.Location = New System.Drawing.Point(583, 175)
         Me.UcLabelDecremented.Name = "UcLabelDecremented"
@@ -342,7 +350,7 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelDecremented.Size = New System.Drawing.Size(40, 22)
         Me.UcLabelDecremented.TabIndex = 19
         Me.UcLabelDecremented.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelDecremented.UCFont = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcLabelDecremented.UCFont = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcLabelDecremented.UCForeColor = System.Drawing.Color.OrangeRed
         Me.UcLabelDecremented.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelDecremented.UCValue = "126"
@@ -351,8 +359,8 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         Me.UcLabelLoadPermissioned._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabelLoadPermissioned._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabelLoadPermissioned.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabelLoadPermissioned.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelLoadPermissioned.BackColor = System.Drawing.Color.Transparent
         Me.UcLabelLoadPermissioned.Location = New System.Drawing.Point(327, 269)
         Me.UcLabelLoadPermissioned.Name = "UcLabelLoadPermissioned"
@@ -360,7 +368,7 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelLoadPermissioned.Size = New System.Drawing.Size(463, 22)
         Me.UcLabelLoadPermissioned.TabIndex = 23
         Me.UcLabelLoadPermissioned.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelLoadPermissioned.UCFont = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcLabelLoadPermissioned.UCFont = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcLabelLoadPermissioned.UCForeColor = System.Drawing.Color.Magenta
         Me.UcLabelLoadPermissioned.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelLoadPermissioned.UCValue = "126"
@@ -369,7 +377,7 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         Me.UcLabelFreeLined._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabelFreeLined._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabelFreeLined.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabelFreeLined.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelFreeLined.BackColor = System.Drawing.Color.Transparent
         Me.UcLabelFreeLined.Location = New System.Drawing.Point(514, 175)
         Me.UcLabelFreeLined.Name = "UcLabelFreeLined"
@@ -377,20 +385,20 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelFreeLined.Size = New System.Drawing.Size(40, 22)
         Me.UcLabelFreeLined.TabIndex = 21
         Me.UcLabelFreeLined.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelFreeLined.UCFont = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcLabelFreeLined.UCFont = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcLabelFreeLined.UCForeColor = System.Drawing.Color.DodgerBlue
         Me.UcLabelFreeLined.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelFreeLined.UCValue = "126"
         '
         'Label13
         '
-        Me.Label13.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label13.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label13.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label13.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label13.ForeColor = System.Drawing.Color.MidnightBlue
-        Me.Label13.Location = New System.Drawing.Point(8, 149)
+        Me.Label13.Location = New System.Drawing.Point(111, 149)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(503, 23)
+        Me.Label13.Size = New System.Drawing.Size(400, 23)
         Me.Label13.TabIndex = 20
         Me.Label13.Text = "اعلام شده"
         Me.Label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -399,16 +407,16 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         Me.UcLabelAnnounced._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabelAnnounced._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabelAnnounced.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabelAnnounced.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelAnnounced.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelAnnounced.Location = New System.Drawing.Point(13, 175)
+        Me.UcLabelAnnounced.Location = New System.Drawing.Point(111, 175)
         Me.UcLabelAnnounced.Name = "UcLabelAnnounced"
         Me.UcLabelAnnounced.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelAnnounced.Size = New System.Drawing.Size(498, 22)
+        Me.UcLabelAnnounced.Size = New System.Drawing.Size(400, 22)
         Me.UcLabelAnnounced.TabIndex = 22
         Me.UcLabelAnnounced.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelAnnounced.UCFont = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcLabelAnnounced.UCFont = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcLabelAnnounced.UCForeColor = System.Drawing.Color.MidnightBlue
         Me.UcLabelAnnounced.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelAnnounced.UCValue = "126"
@@ -425,16 +433,16 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelLoadAllocated.Size = New System.Drawing.Size(46, 22)
         Me.UcLabelLoadAllocated.TabIndex = 1
         Me.UcLabelLoadAllocated.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelLoadAllocated.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcLabelLoadAllocated.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcLabelLoadAllocated.UCForeColor = System.Drawing.Color.Crimson
         Me.UcLabelLoadAllocated.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelLoadAllocated.UCValue = "126"
         '
         'Label11
         '
-        Me.Label11.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label11.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label11.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label11.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label11.ForeColor = System.Drawing.Color.Magenta
         Me.Label11.Location = New System.Drawing.Point(322, 243)
         Me.Label11.Name = "Label11"
@@ -455,14 +463,14 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelLoadAllocationCancelled.Size = New System.Drawing.Size(46, 22)
         Me.UcLabelLoadAllocationCancelled.TabIndex = 353
         Me.UcLabelLoadAllocationCancelled.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelLoadAllocationCancelled.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcLabelLoadAllocationCancelled.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcLabelLoadAllocationCancelled.UCForeColor = System.Drawing.Color.HotPink
         Me.UcLabelLoadAllocationCancelled.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelLoadAllocationCancelled.UCValue = "126"
         '
         'Label10
         '
-        Me.Label10.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label10.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label10.ForeColor = System.Drawing.Color.MediumSlateBlue
         Me.Label10.Location = New System.Drawing.Point(119, 243)
         Me.Label10.Name = "Label10"
@@ -474,7 +482,7 @@ Public Class UCViewerCurrentLoadsStatistics
         'Label9
         '
         Me.Label9.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.Label9.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label9.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.HotPink
         Me.Label9.Location = New System.Drawing.Point(278, 196)
         Me.Label9.Name = "Label9"
@@ -488,7 +496,7 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.Label1.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.Label1.Font = New System.Drawing.Font("B Homa", 14.25!)
         Me.Label1.ForeColor = System.Drawing.Color.Green
-        Me.Label1.Location = New System.Drawing.Point(362, 91)
+        Me.Label1.Location = New System.Drawing.Point(397, 91)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(105, 33)
         Me.Label1.TabIndex = 5
@@ -497,7 +505,7 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         'Label8
         '
-        Me.Label8.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label8.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label8.ForeColor = System.Drawing.Color.BlueViolet
         Me.Label8.Location = New System.Drawing.Point(8, 243)
         Me.Label8.Name = "Label8"
@@ -508,8 +516,8 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         'Label2
         '
-        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label2.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label2.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.DodgerBlue
         Me.Label2.Location = New System.Drawing.Point(507, 149)
         Me.Label2.Name = "Label2"
@@ -520,8 +528,8 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         'Label7
         '
-        Me.Label7.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label7.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label7.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label7.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label7.ForeColor = System.Drawing.Color.Red
         Me.Label7.Location = New System.Drawing.Point(715, 149)
         Me.Label7.Name = "Label7"
@@ -533,7 +541,7 @@ Public Class UCViewerCurrentLoadsStatistics
         'Label3
         '
         Me.Label3.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.Label3.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label3.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.Crimson
         Me.Label3.Location = New System.Drawing.Point(418, 196)
         Me.Label3.Name = "Label3"
@@ -544,8 +552,8 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         'Label6
         '
-        Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label6.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label6.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label6.ForeColor = System.Drawing.Color.OrangeRed
         Me.Label6.Location = New System.Drawing.Point(567, 149)
         Me.Label6.Name = "Label6"
@@ -556,7 +564,7 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         'Label4
         '
-        Me.Label4.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label4.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.DarkViolet
         Me.Label4.Location = New System.Drawing.Point(231, 243)
         Me.Label4.Name = "Label4"
@@ -567,8 +575,8 @@ Public Class UCViewerCurrentLoadsStatistics
         '
         'Label5
         '
-        Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label5.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label5.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label5.ForeColor = System.Drawing.Color.Green
         Me.Label5.Location = New System.Drawing.Point(641, 149)
         Me.Label5.Name = "Label5"
@@ -589,25 +597,82 @@ Public Class UCViewerCurrentLoadsStatistics
         Me.UcLabelReminder.Size = New System.Drawing.Size(69, 34)
         Me.UcLabelReminder.TabIndex = 2
         Me.UcLabelReminder.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelReminder.UCFont = New System.Drawing.Font("Alborz Titr", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcLabelReminder.UCFont = New System.Drawing.Font("Alborz Titr", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcLabelReminder.UCForeColor = System.Drawing.Color.Navy
         Me.UcLabelReminder.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelReminder.UCValue = "126"
         '
+        'Label14
+        '
+        Me.Label14.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.Label14.Font = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label14.ForeColor = System.Drawing.Color.Green
+        Me.Label14.Location = New System.Drawing.Point(248, 93)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(143, 33)
+        Me.Label14.TabIndex = 356
+        Me.Label14.Text = "انتقال یافته(بارفردا)"
+        Me.Label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'UcLabelTransfferedTomarrowLoads
+        '
+        Me.UcLabelTransfferedTomarrowLoads._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabelTransfferedTomarrowLoads._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabelTransfferedTomarrowLoads.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcLabelTransfferedTomarrowLoads.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabelTransfferedTomarrowLoads.ForeColor = System.Drawing.Color.MediumBlue
+        Me.UcLabelTransfferedTomarrowLoads.Location = New System.Drawing.Point(254, 122)
+        Me.UcLabelTransfferedTomarrowLoads.Name = "UcLabelTransfferedTomarrowLoads"
+        Me.UcLabelTransfferedTomarrowLoads.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabelTransfferedTomarrowLoads.Size = New System.Drawing.Size(137, 22)
+        Me.UcLabelTransfferedTomarrowLoads.TabIndex = 357
+        Me.UcLabelTransfferedTomarrowLoads.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabelTransfferedTomarrowLoads.UCFont = New System.Drawing.Font("Alborz Titr", 14.25!)
+        Me.UcLabelTransfferedTomarrowLoads.UCForeColor = System.Drawing.Color.Green
+        Me.UcLabelTransfferedTomarrowLoads.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcLabelTransfferedTomarrowLoads.UCValue = "0"
+        '
+        'Label15
+        '
+        Me.Label15.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label15.ForeColor = System.Drawing.Color.MidnightBlue
+        Me.Label15.Location = New System.Drawing.Point(8, 149)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(97, 23)
+        Me.Label15.TabIndex = 358
+        Me.Label15.Text = "بار فردا"
+        Me.Label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'UcLabelRegisteredTomarrowLoads
+        '
+        Me.UcLabelRegisteredTomarrowLoads._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabelRegisteredTomarrowLoads._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabelRegisteredTomarrowLoads.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabelRegisteredTomarrowLoads.Location = New System.Drawing.Point(13, 175)
+        Me.UcLabelRegisteredTomarrowLoads.Name = "UcLabelRegisteredTomarrowLoads"
+        Me.UcLabelRegisteredTomarrowLoads.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabelRegisteredTomarrowLoads.Size = New System.Drawing.Size(92, 22)
+        Me.UcLabelRegisteredTomarrowLoads.TabIndex = 359
+        Me.UcLabelRegisteredTomarrowLoads.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabelRegisteredTomarrowLoads.UCFont = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcLabelRegisteredTomarrowLoads.UCForeColor = System.Drawing.Color.MidnightBlue
+        Me.UcLabelRegisteredTomarrowLoads.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcLabelRegisteredTomarrowLoads.UCValue = "126"
+        '
         'UCViewerCurrentLoadsStatistics
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCViewerCurrentLoadsStatistics"
         Me.Size = New System.Drawing.Size(804, 406)
-        Me.PnlMain.ResumeLayout(false)
-        Me.PnlOutter.ResumeLayout(false)
-        Me.PnlInner.ResumeLayout(false)
-        Me.AlphaGradientPanel1.ResumeLayout(false)
-        Me.ResumeLayout(false)
+        Me.PnlMain.ResumeLayout(False)
+        Me.PnlOutter.ResumeLayout(False)
+        Me.PnlInner.ResumeLayout(False)
+        Me.AlphaGradientPanel1.ResumeLayout(False)
+        Me.ResumeLayout(False)
 
-End Sub
+    End Sub
 
     Friend WithEvents Label4 As Windows.Forms.Label
     Friend WithEvents Label3 As Windows.Forms.Label
@@ -668,6 +733,8 @@ End Sub
         Try
             UCRefreshInformation()
             UcLabelRegistered.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTotalAmountOfRegisteredLoads(YourAHId, YourAHSGId)
+            UcLabelRegisteredTomarrowLoads.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTotalAmountOfRegisteredTomarrowLoads(YourAHId, YourAHSGId)
+            UcLabelTransfferedTomarrowLoads.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTotalAmountOfTransfferedTomarrowLoads(YourAHId, YourAHSGId)
             UcLabelDeleted.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTotalAmountOfDeletedLoads(YourAHId, YourAHSGId)
             UcLabelIncremented.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTotalAmountOfIncrementedLoads(YourAHId, YourAHSGId)
             UcLabelDecremented.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTotalAmountOfDecrementedLoads(YourAHId, YourAHSGId)
@@ -705,6 +772,10 @@ End Sub
     Friend WithEvents AlphaGradientPanel1 As BlueActivity.Controls.AlphaGradientPanel
     Friend WithEvents ColorWithAlpha1 As BlueActivity.Controls.ColorWithAlpha
     Friend WithEvents ColorWithAlpha2 As BlueActivity.Controls.ColorWithAlpha
+    Friend WithEvents UcLabelTransfferedTomarrowLoads As UCLabel
+    Friend WithEvents Label14 As Windows.Forms.Label
+    Friend WithEvents UcLabelRegisteredTomarrowLoads As UCLabel
+    Friend WithEvents Label15 As Windows.Forms.Label
 
 #End Region
 
