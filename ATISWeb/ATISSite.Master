@@ -1,4 +1,4 @@
-﻿A<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ATISSite.master.cs" Inherits="ATISWeb.ATISSite" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ATISSite.master.cs" Inherits="ATISWeb.ATISSite" %>
 
 <%@ Register TagPrefix="TWebControl" TagName="WcAlertShower" Src="~/AlertManagement/WcAlertShower.ascx" %>
 

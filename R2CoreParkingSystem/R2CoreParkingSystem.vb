@@ -3245,7 +3245,7 @@ Namespace City
         Public Shared Function GetnCityCodeFromStrCityName(YourCityName As String) As String
             Try
                 Dim Ds As New DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New DataBaseManagement.R2ClassSqlConnectionSepas, "Select top 1 nCityCode from dbtransport.dbo.TbCity Where StrCityName='" & YourCityName & "'", 10, Ds).GetRecordsCount <> 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New DataBaseManagement.R2ClassSqlConnectionSepas, "Select top 1 nCityCode from dbtransport.dbo.TbCity Where Viewflag=1 and Deleted=0 and StrCityName='" & YourCityName & "'", 10, Ds).GetRecordsCount <> 0 Then
                     Return Ds.Tables(0).Rows(0).Item(0)
                 Else
                     Throw New GetDataException
@@ -3260,7 +3260,7 @@ Namespace City
         Public Shared Function GetListOfCitys_SearchIntroCharacters(YourSearchStr As String) As List(Of R2StandardCityStructure)
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbCity Where StrCityNAME LIKE '%" & YourSearchStr.Replace("ی", "ي").Replace("ک", "ك") & "%' Order by StrCityName", 3600, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbCity Where Viewflag=1 and Deleted=0 and StrCityNAME LIKE '%" & YourSearchStr.Replace("ی", "ي").Replace("ک", "ك") & "%' Order by StrCityName", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 End If
                 Dim Lst As List(Of R2StandardCityStructure) = New List(Of R2StandardCityStructure)

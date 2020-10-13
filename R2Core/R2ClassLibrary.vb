@@ -2007,11 +2007,8 @@ Namespace DatabaseManagement
             Try
                 yourSqlcnn = Sqlcnn
                 yourSqlString = SqlString : yourDisposeCounter = DisposeCounter
-                'myGarbageTimer.Start()
-                'Dim myCurrentDateTime As DateTime = Date.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                'For loopx As Int64 = 0 To myList.Count - 1
                 Dim myIndex As Int32 = myList.FindIndex(AddressOf FindDataBox)
-                'If (myList.Item(loopx).SqlString = SqlString) And (myList.Item(loopx).SqlConnection.ConnectionString = Sqlcnn.GetConnection.ConnectionString) Then
+                Dim myR2ClassSqlDataBOX As R2ClassSqlDataBOX
                 If yourDisposeCounter > 0 Then
                     If myIndex >= 0 Then
                         Dim myCurrentDateTime As DateTime = Date.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
@@ -2020,14 +2017,27 @@ Namespace DatabaseManagement
                         End If
                         DS = myList.Item(myIndex).GetDS
                         Return myList.Item(myIndex)
+                    Else
+                        myR2ClassSqlDataBOX = New R2ClassSqlDataBOX(Sqlcnn, DisposeCounter, SqlString)
+                        myList.Add(myR2ClassSqlDataBOX)
+                        DS = myR2ClassSqlDataBOX.GetDS
+                        Return myR2ClassSqlDataBOX
                     End If
+                ElseIf yourDisposeCounter = 0 Then
+                    myR2ClassSqlDataBOX = New R2ClassSqlDataBOX(Sqlcnn, DisposeCounter, SqlString)
+                    If myIndex >= 0 Then
+                        myList.Item(myIndex)=Nothing
+                        myList.Item(myIndex)=myR2ClassSqlDataBOX
+                        DS = myR2ClassSqlDataBOX.GetDS
+                        Return myList.Item(myIndex)
+                    Else
+                        myList.Add(myR2ClassSqlDataBOX)
+                        DS = myR2ClassSqlDataBOX.GetDS
+                        Return myR2ClassSqlDataBOX
+                    End If
+                ElseIf yourDisposeCounter < 0 Then
+                    Throw New Exception("yourDisposeCounter < 0")
                 End If
-                'Next
-                'Dim myR2ClassSqlDataBOX As R2ClassSqlDataBOX = New R2ClassSqlDataBOX(Sqlcnn, DisposeCounter, SqlString)
-                Dim myR2ClassSqlDataBOX As R2ClassSqlDataBOX = New R2ClassSqlDataBOX(Sqlcnn, DisposeCounter, SqlString)
-                myList.Add(myR2ClassSqlDataBOX)
-                DS = myR2ClassSqlDataBOX.GetDS
-                Return myR2ClassSqlDataBOX
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try

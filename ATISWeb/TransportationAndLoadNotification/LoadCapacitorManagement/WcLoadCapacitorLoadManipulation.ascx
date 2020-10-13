@@ -42,7 +42,7 @@
             <div class="d-flex flex-row">
                 <asp:Button runat="server" ID="BtnLoadRegistering" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-success" Text="ثبت بار" />
                 <asp:Button runat="server" ID="BtnLoadDeleting" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-danger" Text="حذف بار" />
-                <asp:Button runat="server" ID="BtnLoadCancelling" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-secondary" Text="کنسلی بار" />
+                <asp:Button runat="server" ID="BtnLoadCancelling" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-secondary" Text="کنسلی بار" Enabled="False"/>
                 <asp:Button runat="server" ID="BtnNewLoad" CssClass="btn btn-info mr-2 R2FontBYekanSmall bg-warning" Text="بار جدید" />
             </div>
         </div>

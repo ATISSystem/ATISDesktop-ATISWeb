@@ -4,6 +4,7 @@ Imports System.Text
 Imports PayanehClassLibrary.Rmto
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.UserManagement
+Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
 
 Public Class Form3
@@ -237,6 +238,14 @@ Public Class Form3
             
         Catch ex As Exception
             MessageBox.Show(EX.Message)
+        End Try
+    End Sub
+
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        Try
+            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocationsforLoadPermissionRegistering(2,7)
+        Catch ex As Exception
+MessageBox.Show(ex.Message)
         End Try
     End Sub
 End Class
