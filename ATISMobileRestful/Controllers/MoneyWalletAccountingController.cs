@@ -20,11 +20,11 @@ namespace ATISMobileRestful.Controllers
         [HttpGet]
         public List<Models.MoneyWalletAccounting> GetMoneyWalletAccounting(Int64 YourMUId)
         {
-            R2CoreParkingSystemStandardTrafficCardStructure NSSMobileUser = R2CoreTransportationAndLoadNotificationMClassMobileUsersManagement.GetNSSTerafficCard(R2CoreTransportationAndLoadNotificationMClassMobileUsersManagement.GetNSSMobileUser(YourMUId));
+            R2CoreParkingSystemStandardTrafficCardStructure NSSTrafficCard = R2CoreTransportationAndLoadNotificationMClassMobileUsersManagement.GetNSSTerafficCard(R2CoreTransportationAndLoadNotificationMClassMobileUsersManagement.GetNSSMobileUser(YourMUId));
             List<Models.MoneyWalletAccounting> _MoneyWalletAccountings = new List<Models.MoneyWalletAccounting>();
             try
             {
-                var Lst = R2CoreParkingSystemMClassAccountingManagement.GetAccountingCollection(NSSMobileUser, 50);
+                var Lst = R2CoreParkingSystemMClassAccountingManagement.GetAccountingCollection(NSSTrafficCard, 50);
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
                     var Item = new Models.MoneyWalletAccounting();
@@ -35,8 +35,8 @@ namespace ATISMobileRestful.Controllers
                     Item.ReminderCharge = R2CoreMClassPublicProcedures.ParseSignDigitToSignString(Lst[Loopx].ReminderChargeA);
                     Item.ComputerName = Lst[Loopx].ComputerName;
                     Item.UserName = Lst[Loopx].UserName;
-                    Item.BackGroundColorName =Lst[Loopx].ColorName;
-                    Item.ForeGroundColorName =R2CoreMClassPublicProcedures.IdealBlackWhiteTextColor(Color.FromName(Lst[Loopx].ColorName)).Name;
+                    Item.BackGroundColorName = Lst[Loopx].ColorName;
+                    Item.ForeGroundColorName = R2CoreMClassPublicProcedures.IdealBlackWhiteTextColor(Color.FromName(Lst[Loopx].ColorName)).Name;
                     _MoneyWalletAccountings.Add(Item);
                 }
                 return _MoneyWalletAccountings;

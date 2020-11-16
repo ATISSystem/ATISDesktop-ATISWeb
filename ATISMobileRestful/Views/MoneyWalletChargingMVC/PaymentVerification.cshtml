@@ -1,0 +1,32 @@
+﻿
+@{}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>آتیس موبایل</title>
+    <link href="~/Content/font-awesome.css" rel="stylesheet">
+
+</head>
+<body>
+    <div>
+        @if (ViewBag.IsSuccess == true)
+        {
+            <div class="m-auto" style="background-color: green; color: white;">
+                <h1 style="text-align: center">شارژ موجودی با موفقیت انجام شد</h1>
+                <h2 style="text-align: center">کد پیگیری : @ViewBag.RefId</h2>
+                <h3 style="text-align: center">@ViewBag.Message1</h3>
+                <h3 style="text-align: center">@ViewBag.Message2</h3>
+                <h3 style="text-align: center">@ViewBag.Message3</h3>
+                <h3 style="text-align: center">@ViewBag.Message4</h3>
+            </div>}
+        else
+        {
+            <div class="R2FontBYekanSmall" style="background-color: red;color:white">
+                <h1 style="text-align: center">بروز خطا هنگام پرداخت</h1>
+                <h2 style="text-align: center">@ViewBag.Message</h2>
+            </div>}
+    </div>
+</body>
+</html>
