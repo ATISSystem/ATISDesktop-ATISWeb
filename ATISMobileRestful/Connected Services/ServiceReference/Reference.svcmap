@@ -19,10 +19,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="https://sandbox.zarinpal.com/pg/services/WebGate/wsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="https://www.zarinpal.com/pg/services/WebGate/wsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="PaymentGatewayImplementationService.wsdl" MetadataType="Wsdl" ID="a5702b9b-52bc-47de-86ca-5416f77d9eea" SourceId="1" SourceUrl="https://sandbox.zarinpal.com/pg/services/WebGate/wsdl" />
+    <MetadataFile FileName="PaymentGatewayImplementationService1.wsdl" MetadataType="Wsdl" ID="fff40dd4-9bc8-4259-b3f6-6227ae78c72c" SourceId="1" SourceUrl="https://www.zarinpal.com/pg/services/WebGate/wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -238,7 +238,7 @@
   </wsdl:binding>
   <wsdl:service name="PaymentGatewayImplementationService">
     <wsdl:port name="PaymentGatewayImplementationServicePort" binding="tns:PaymentGatewayImplementationServiceBinding">
-      <soap:address location="https://sandbox.zarinpal.com/pg/services/WebGate/service" />
+      <soap:address location="https://www.zarinpal.com/pg/services/WebGate/service" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
