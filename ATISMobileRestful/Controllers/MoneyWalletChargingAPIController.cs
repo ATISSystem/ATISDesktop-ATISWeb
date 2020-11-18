@@ -19,10 +19,10 @@ namespace ATISMobileRestful.Controllers
                 zarinpal.ServiceReference.PaymentGatewayImplementationServicePortTypeClient zp = new zarinpal.ServiceReference.PaymentGatewayImplementationServicePortTypeClient();
                 string Authority;
 
-                int Status = zp.PaymentRequest("aed16bb9-485a-416d-9891-d0b8d2bc98cc",(int)YourAmount, "تست درگاه زرین پال در آتیس", "shsuccessbarname@gmail.com", "09132043148", "http://ATISMobile.ir:3001/MoneyWalletChargingMVC/PaymentVerification/?YourMUId='" + YourMUId.ToString() + "'&YourAmount="+ ((int)YourAmount).ToString(), out Authority);
+                int Status = zp.PaymentRequest("aed16bb9-485a-416d-9891-d0b8d2bc98cc", (int)YourAmount, "درخواست پرداخت-زرین پال-آتیس", String.Empty, String.Empty, "http://ATISMobile.ir:3001/MoneyWalletChargingMVC/PaymentVerification/?YourMUId=" + YourMUId.ToString() + "&YourAmount=" + ((int)YourAmount).ToString(), out Authority);
 
                 if (Status == 100)
-                { return new MessageStruct { ErrorCode = false, Message1 = Authority, Message2 = "https://sandbox.zarinpal.com/pg/StartPay/", Message3 = string.Empty }; }
+                { return new MessageStruct { ErrorCode = false, Message1 = Authority, Message2 = "https://www.zarinpal.com/pg/StartPay/", Message3 = string.Empty }; }
                 else
                 { return new MessageStruct { ErrorCode = true, Message1 = "Error : " + Status.ToString(), Message2 = string.Empty, Message3 = string.Empty }; }
             }
