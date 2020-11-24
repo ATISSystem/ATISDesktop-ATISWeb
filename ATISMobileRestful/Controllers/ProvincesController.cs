@@ -24,7 +24,7 @@ namespace ATISMobileRestful.Controllers
             List<Models.Province> _Provinces = new List<Models.Province>();
             try
             {
-                var Lst = R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetProvinces(YourAHId, YourAHSGId,YourLoadCapacitorLoadsListType);
+                var Lst = R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetProvinces(YourAHId, YourAHSGId,YourLoadCapacitorLoadsListType,true);
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
                     var Item = new Models.Province();

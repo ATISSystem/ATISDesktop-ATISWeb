@@ -80,7 +80,7 @@ Namespace Logging
         Public Shared ReadOnly Property LoadAllocationsAccessStatistics As Int64 = 14
         Public Shared ReadOnly Property TransferringTommorowLoads As Int64 = 15
         Public Shared ReadOnly Property ATISMobileMoneyWalletsCharging As Int64 = 16
-        
+
     End Class
 
 End Namespace
@@ -903,47 +903,47 @@ Namespace LoadTargets
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement
         Private Shared _DateTime As R2DateTime = New R2DateTime
 
-        Public Shared Function GetProvinces(YourAHId As Int64, YourAHSGId As Int64, YourLoadCapacitorLoadsListType As LoadCapacitorLoadsListType) As List(Of R2CoreTransportationAndLoadNotificationStandardProvinceStructure)
+        Public Shared Function GetProvinces(YourAHId As Int64, YourAHSGId As Int64, YourLoadCapacitorLoadsListType As LoadCapacitorLoadsListType, YourListWithNumberOfLoads As Boolean) As List(Of R2CoreTransportationAndLoadNotificationStandardProvinceStructure)
             Try
                 Dim AHString = " and AHs.AHId=" & YourAHId & "" + IIf(YourAHSGId = Int64.MinValue, String.Empty, " and AHSGs.AHSGId=" & YourAHSGId & "")
                 Dim DS As DataSet
                 If YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.NotSedimented Then
                     If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                         "Select distinct Provinces.ProvinceId, Provinces.ProvinceName 
+                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Count(*) as NumberOfLoads
                                   from DBTransport.dbo.tbElam as LoadCapacitor
 	                                 Inner join DBTransport.dbo.tbCity as Cities On LoadCapacitor.nCityCode=Cities.nCityCode  
                                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces On Cities.nProvince=Provinces.ProvinceId 
 		                             Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On LoadCapacitor.AHId=AHs.AHId 
 	                                 Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On LoadCapacitor.AHSGId=AHSGs.AHSGId 
                                   Where ltrim(rtrim(LoadCapacitor.dDateElam))='" & _DateTime.GetCurrentDateShamsiFull & "' and LoadCapacitor.bFlag=0 and  (LoadCapacitor.LoadStatus=1 or LoadCapacitor.LoadStatus=2) and LoadCapacitor.nCarNum>0 and
-                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Order By Provinces.ProvinceName", 1, DS).GetRecordsCount() = 0 Then Throw New LoadTargetsforProvinceNotFoundException
+                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 1, DS).GetRecordsCount() = 0 Then Throw New LoadTargetsforProvinceNotFoundException
                 ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.Sedimented Then
                     If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                         "Select distinct Provinces.ProvinceId, Provinces.ProvinceName 
+                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Count(*) as NumberOfLoads 
                                   from DBTransport.dbo.tbElam as LoadCapacitor
 	                                 Inner join DBTransport.dbo.tbCity as Cities On LoadCapacitor.nCityCode=Cities.nCityCode  
                                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces On Cities.nProvince=Provinces.ProvinceId 
 		                             Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On LoadCapacitor.AHId=AHs.AHId 
 	                                 Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On LoadCapacitor.AHSGId=AHSGs.AHSGId 
                                   Where ltrim(rtrim(LoadCapacitor.dDateElam))='" & _DateTime.GetCurrentDateShamsiFull & "' and LoadCapacitor.bFlag=1 and  (LoadCapacitor.LoadStatus=5) and LoadCapacitor.nCarNum>0 and
-                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Order By Provinces.ProvinceName", 1, DS).GetRecordsCount() = 0 Then Throw New LoadTargetsforProvinceNotFoundException
+                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 1, DS).GetRecordsCount() = 0 Then Throw New LoadTargetsforProvinceNotFoundException
                 ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.TommorowLoad Then
                     If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                                                              "Select distinct Provinces.ProvinceId, Provinces.ProvinceName 
+                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Count(*) as NumberOfLoads 
                                   from DBTransport.dbo.tbElam as LoadCapacitor
 	                                 Inner join DBTransport.dbo.tbCity as Cities On LoadCapacitor.nCityCode=Cities.nCityCode  
                                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces On Cities.nProvince=Provinces.ProvinceId 
 		                             Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On LoadCapacitor.AHId=AHs.AHId 
 	                                 Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On LoadCapacitor.AHSGId=AHSGs.AHSGId 
                                   Where  LoadCapacitor.bFlag=0 and  (LoadCapacitor.LoadStatus=6) and LoadCapacitor.nCarNum>0 and
-                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Order By Provinces.ProvinceName", 1, DS).GetRecordsCount() = 0 Then Throw New LoadTargetsforProvinceNotFoundException
+                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 1, DS).GetRecordsCount() = 0 Then Throw New LoadTargetsforProvinceNotFoundException
                 ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.None Then
                 End If
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardProvinceStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardProvinceStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                     Dim NSS As R2CoreTransportationAndLoadNotificationStandardProvinceStructure = New R2CoreTransportationAndLoadNotificationStandardProvinceStructure
                     NSS.ProvinceId = DS.Tables(0).Rows(Loopx).Item("ProvinceId")
-                    NSS.ProvinceTitle = DS.Tables(0).Rows(Loopx).Item("ProvinceName").trim
+                    NSS.ProvinceTitle = IIf(Not YourListWithNumberOfLoads, DS.Tables(0).Rows(Loopx).Item("ProvinceName").trim, DS.Tables(0).Rows(Loopx).Item("ProvinceName").trim + ": تعداد " + DS.Tables(0).Rows(Loopx).Item("NumberOfLoads").ToString())
                     Lst.Add(NSS)
                 Next
                 Return Lst

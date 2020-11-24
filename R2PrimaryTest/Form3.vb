@@ -248,4 +248,13 @@ Public Class Form3
 MessageBox.Show(ex.Message)
         End Try
     End Sub
+
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        Try
+            R2CoreTransportationAndLoadNotification.LoadTargets.R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetProvinces(2,7,1,1)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+
+        End Try
+    End Sub
 End Class
