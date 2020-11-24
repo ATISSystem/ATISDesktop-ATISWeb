@@ -909,7 +909,7 @@ Namespace LoadTargets
                 Dim DS As DataSet
                 If YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.NotSedimented Then
                     If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Count(*) as NumberOfLoads
+                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Sum(LoadCapacitor.nCarNum) as NumberOfLoads
                                   from DBTransport.dbo.tbElam as LoadCapacitor
 	                                 Inner join DBTransport.dbo.tbCity as Cities On LoadCapacitor.nCityCode=Cities.nCityCode  
                                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces On Cities.nProvince=Provinces.ProvinceId 
@@ -919,7 +919,7 @@ Namespace LoadTargets
                                          AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 1, DS).GetRecordsCount() = 0 Then Throw New LoadTargetsforProvinceNotFoundException
                 ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.Sedimented Then
                     If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Count(*) as NumberOfLoads 
+                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Sum(LoadCapacitor.nCarNum) as NumberOfLoads 
                                   from DBTransport.dbo.tbElam as LoadCapacitor
 	                                 Inner join DBTransport.dbo.tbCity as Cities On LoadCapacitor.nCityCode=Cities.nCityCode  
                                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces On Cities.nProvince=Provinces.ProvinceId 
@@ -929,7 +929,7 @@ Namespace LoadTargets
                                          AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 1, DS).GetRecordsCount() = 0 Then Throw New LoadTargetsforProvinceNotFoundException
                 ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.TommorowLoad Then
                     If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Count(*) as NumberOfLoads 
+                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Sum(LoadCapacitor.nCarNum) as NumberOfLoads 
                                   from DBTransport.dbo.tbElam as LoadCapacitor
 	                                 Inner join DBTransport.dbo.tbCity as Cities On LoadCapacitor.nCityCode=Cities.nCityCode  
                                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces On Cities.nProvince=Provinces.ProvinceId 
