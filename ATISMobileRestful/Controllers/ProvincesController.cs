@@ -24,12 +24,12 @@ namespace ATISMobileRestful.Controllers
             List<Models.Province> _Provinces = new List<Models.Province>();
             try
             {
-                var Lst = R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetProvinces(YourAHId, YourAHSGId,YourLoadCapacitorLoadsListType,true);
+                var Lst =R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNumberOfLoadsOfProvinces(YourAHId, YourAHSGId,YourLoadCapacitorLoadsListType);
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
                     var Item = new Models.Province();
-                    Item.ProvinceId = "کداستان: "+Lst[Loopx].ProvinceId.ToString();
-                    Item.ProvinceTitle = Lst[Loopx].ProvinceTitle;
+                    Item.ProvinceId = "کداستان: "+Lst[Loopx].Province.ProvinceId.ToString();
+                    Item.ProvinceTitle = Lst[Loopx].Province.ProvinceTitle+"  :  تعداد بار "+ Lst[Loopx].NumberOfLoads.ToString();
                     _Provinces.Add(Item);
                 }
                 return _Provinces;
