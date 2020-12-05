@@ -92,39 +92,11 @@ Public Class FrmcEnterExit
         End Try
     End Sub
 
-
-
-
-
-#End Region
-
-#Region "Events"
-#End Region
-
-#Region "Event Handlers"
-
-
-    Private Sub FrmcEnterExit__RFIDCardStartToReadEvent() Handles Me._RFIDCardStartToReadEvent
-    End Sub
-
-    Private _LastReadedCardNo As String = String.Empty
-    Private Sub FrmcEnterExit__RFIDCardReadedEvent(CardNo As String) Handles Me._RFIDCardReadedEvent
+    Private Sub DoProccess(YourCardNo As String, YourChekforTerraficCardRelation As Boolean)
         Try
-            'کنترل این که کارت روی کارت خوان نماند
-            If _LastReadedCardNo = CardNo Then
-                Exit Try
-            Else
-                _LastReadedCardNo = CardNo
-                _TimerClearLastReadedTeraficCard.Stop()
-                _TimerClearLastReadedTeraficCard.Enabled = True
-                _TimerClearLastReadedTeraficCard.Start()
-            End If
-
-            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
-
             'بروز رساني صفحه تردد
             NewEnterExitRefresh()
-            _NSSTrafficCard = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(CardNo)
+            _NSSTrafficCard = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(YourCardNo)
             UcTerafficCardPresenter.UCShowTrafficCard(_NSSTrafficCard)
 
             'وضعیت تردد در ابتدای فرآیند تنظیم می گردد
@@ -153,8 +125,8 @@ Public Class FrmcEnterExit
             End If
 
             'کنترل نوع کارت هنگام تردد که مطابق نوع کارت معبر باشد
-            If R2CoreParkingSystemMClassTrafficCardManagement.IsTrafficCardTypeSupported(CardNo) = False Then
-                Dim CName As String = R2CoreParkingSystemMClassTrafficCardManagement.GetTrafficCardTypeName(CardNo)
+            If R2CoreParkingSystemMClassTrafficCardManagement.IsTrafficCardTypeSupported(YourCardNo) = False Then
+                Dim CName As String = R2CoreParkingSystemMClassTrafficCardManagement.GetTrafficCardTypeName(YourCardNo)
                 Dim myMessage As String = "نوع کارت" + " " + CName + " " + "پشتيبانی نمی شود"
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, myMessage, "یک کارت جدید روی دستگاه کارت خوان بکشید", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 R2CoreParkingSystemMClassDriverMonitor.UpdateDriverMonitorInfForMaabar(New R2CoreParkingSystemDriverMonitorStructure(R2CoreMClassConfigurationManagement.GetComputerCode(), _NSSTrafficCard.CardId, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, 0, UcMoneyWallet.UCGetReminderCharge, myMessage, 18, Color.Red, Nothing, _DateTime.GetCurrentDateTimeMilladi))
@@ -208,19 +180,21 @@ Public Class FrmcEnterExit
             Dim myLP As R2StandardLicensePlateStructure = New R2StandardLicensePlateStructure("", "", "", R2PelakType.None)
             If myEnterExitRequest = R2EnterExitRequestType.EnterRequest Then
                 Try
-                    UcCarAndTrafficCard.UCSetTerafficCard(_NSSTrafficCard)
-                    myLP = UcCarAndTrafficCard.UCGetLP()
+                    If YourChekforTerraficCardRelation Then
+                        UcCarAndTrafficCard.UCSetTerafficCard(_NSSTrafficCard)
+                        myLP = UcCarAndTrafficCard.UCGetLP()
+                    End If
                 Catch ex As Exception When TypeOf ex Is GetDataException OrElse TypeOf ex Is CarNotExistException OrElse TypeOf ex Is GetNSSException
                     'دریافت هوشمند از کاربر برای کارت تردد باری
                     If _NSSTrafficCard.CardType = TerafficCardType.Tereili Or _NSSTrafficCard.CardType = TerafficCardType.SixCharkh Or _NSSTrafficCard.CardType = TerafficCardType.TenCharkh Then
-                        UcCarImage.UCViewcolor(Color.White)
+                        UcCarImage.UCViewColor(Color.White)
                         UcCarImage.UCSetMarginColor(Color.White)
                         UcCarTruckUpdateInf.Visible = True
                         UcCarTruckUpdateInf.UCRefreshGeneral()
                         UcCarTruckUpdateInf.BringToFront()
                         UcCarTruckUpdateInf.UCFocus()
                         StartReading()
-                        Exit Sub 
+                        Exit Sub
                     End If
                     'پلاک خوانی
                     Dim LPTemp As R2StandardLicensePlateStructure = UcCarImage.UCGetLP()
@@ -372,6 +346,45 @@ Public Class FrmcEnterExit
                 ChangeMenuStatus("PnlMoneyWalletCharge", True)
             End If
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException
+            Throw ex
+        Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri
+            Throw ex
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+
+    End Sub
+
+
+
+
+
+#End Region
+
+#Region "Events"
+#End Region
+
+#Region "Event Handlers"
+
+
+    Private Sub FrmcEnterExit__RFIDCardStartToReadEvent() Handles Me._RFIDCardStartToReadEvent
+    End Sub
+
+    Private _LastReadedCardNo As String = String.Empty
+    Private Sub FrmcEnterExit__RFIDCardReadedEvent(CardNo As String) Handles Me._RFIDCardReadedEvent
+        Try
+            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
+            'کنترل این که کارت روی کارت خوان نماند
+            If _LastReadedCardNo = CardNo Then
+                Exit Try
+            Else
+                _LastReadedCardNo = CardNo
+                _TimerClearLastReadedTeraficCard.Stop()
+                _TimerClearLastReadedTeraficCard.Enabled = True
+                _TimerClearLastReadedTeraficCard.Start()
+            End If
+            DoProccess(CardNo, True)
+        Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Information, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Nothing, True)
@@ -385,8 +398,8 @@ Public Class FrmcEnterExit
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "خطا در عملکرد دستگاه کارت خوان", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
 
-        System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
 
+        System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
     End Sub
 
     Private Sub UcMoneyWalletCharge_UCMoneyWalletChargedEvent(Mblgh As Long) Handles UcMoneyWalletCharge.UCMoneyWalletChargedEvent
@@ -482,8 +495,8 @@ Public Class FrmcEnterExit
             'ایجاد رابطه بین ناوگان و کارت تردد
             UcCarTruckUpdateInf.Visible = False
             UcCarTruckUpdateInf.SendToBack()
-            R2CoreParkingSystemMClassCars.CreateRelationBetweenTerafficCardAndCar(_NSSTrafficCard,R2CoreParkingSystemMClassCars.GetNSSCar(CarId))
-            FrmcEnterExit__RFIDCardReadedEvent(_NSSTrafficCard.CardNo)
+            R2CoreParkingSystemMClassCars.CreateRelationBetweenTerafficCardAndCar(_NSSTrafficCard, R2CoreParkingSystemMClassCars.GetNSSCar(CarId))
+            DoProccess(_NSSTrafficCard.CardNo, True)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -494,6 +507,7 @@ Public Class FrmcEnterExit
         Try
             UcCarTruckUpdateInf.Visible = False
             UcCarTruckUpdateInf.SendToBack()
+            DoProccess(_NSSTrafficCard.CardNo, False)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

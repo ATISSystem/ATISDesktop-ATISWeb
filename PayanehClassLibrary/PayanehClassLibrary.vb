@@ -1023,7 +1023,7 @@ Namespace CarTruckNobatManagement
         Public Shared Function IsCarTruckTankTreiler(YourNSS As R2StandardCarTruckStructure) As Boolean
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from PayanehAmirKabir.dbo.TblTankTrailers Where Deleted=0 and OActive=1 and Pelak='" & YourNSS.NSSCar.StrCarNo & "' and Serial='" & YourNSS.NSSCar.StrCarSerialNo & "'", -1, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from PayanehAmirKabir.dbo.TblTankTrailers Where Deleted=0 and OActive=1 and Pelak='" & YourNSS.NSSCar.StrCarNo & "' and Serial='" & YourNSS.NSSCar.StrCarSerialNo & "'", 3600, Ds).GetRecordsCount() = 0 Then
                     Return False
                 Else
                     Return True
