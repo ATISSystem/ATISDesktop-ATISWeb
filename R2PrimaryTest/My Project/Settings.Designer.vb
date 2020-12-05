@@ -63,6 +63,16 @@ Namespace My
                 Return CType(Me("R2PrimaryTest_ir_rmto_smartcard_PKG_RMTO_WSService"),String)
             End Get
         End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("http://localhost:10919/PayanehWebService.asmx")>  _
+        Public ReadOnly Property R2PrimaryTest_PayanehWS_PayanehWebService() As String
+            Get
+                Return CType(Me("R2PrimaryTest_PayanehWS_PayanehWebService"),String)
+            End Get
+        End Property
     End Class
 End Namespace
 

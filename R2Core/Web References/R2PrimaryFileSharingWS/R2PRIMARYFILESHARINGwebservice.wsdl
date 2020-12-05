@@ -2,12 +2,28 @@
 <wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="WebMethodLogin">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="YourUserShenaseh" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourUserPassword" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodLoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="WebMethodLoginResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="WebMethodSaveFile">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="1" maxOccurs="1" name="YourRawGroupId" type="s:long" />
             <s:element minOccurs="0" maxOccurs="1" name="YourFileName" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="YourFile" type="s:base64Binary" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -19,6 +35,7 @@
           <s:sequence>
             <s:element minOccurs="1" maxOccurs="1" name="YourRawGroupId" type="s:long" />
             <s:element minOccurs="0" maxOccurs="1" name="YourFileName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -34,6 +51,7 @@
           <s:sequence>
             <s:element minOccurs="1" maxOccurs="1" name="YourRawGroupId" type="s:long" />
             <s:element minOccurs="0" maxOccurs="1" name="YourFileName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -49,18 +67,21 @@
           <s:sequence>
             <s:element minOccurs="1" maxOccurs="1" name="YourRawGroupId" type="s:long" />
             <s:element minOccurs="0" maxOccurs="1" name="YourFileName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
           </s:sequence>
         </s:complexType>
       </s:element>
       <s:element name="WebMethodDeleteFileResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="WebMethodDeleteFileResult" />
-          </s:sequence>
-        </s:complexType>
+        <s:complexType />
       </s:element>
     </s:schema>
   </wsdl:types>
+  <wsdl:message name="WebMethodLoginSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodLogin" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodLoginSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodLoginResponse" />
+  </wsdl:message>
   <wsdl:message name="WebMethodSaveFileSoapIn">
     <wsdl:part name="parameters" element="tns:WebMethodSaveFile" />
   </wsdl:message>
@@ -86,6 +107,10 @@
     <wsdl:part name="parameters" element="tns:WebMethodDeleteFileResponse" />
   </wsdl:message>
   <wsdl:portType name="R2PrimaryFileSharingWebServiceSoap">
+    <wsdl:operation name="WebMethodLogin">
+      <wsdl:input message="tns:WebMethodLoginSoapIn" />
+      <wsdl:output message="tns:WebMethodLoginSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="WebMethodSaveFile">
       <wsdl:input message="tns:WebMethodSaveFileSoapIn" />
       <wsdl:output message="tns:WebMethodSaveFileSoapOut" />
@@ -105,6 +130,15 @@
   </wsdl:portType>
   <wsdl:binding name="R2PrimaryFileSharingWebServiceSoap" type="tns:R2PrimaryFileSharingWebServiceSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WebMethodLogin">
+      <soap:operation soapAction="http://tempuri.org/WebMethodLogin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="WebMethodSaveFile">
       <soap:operation soapAction="http://tempuri.org/WebMethodSaveFile" style="document" />
       <wsdl:input>
@@ -144,6 +178,15 @@
   </wsdl:binding>
   <wsdl:binding name="R2PrimaryFileSharingWebServiceSoap12" type="tns:R2PrimaryFileSharingWebServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WebMethodLogin">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodLogin" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="WebMethodSaveFile">
       <soap12:operation soapAction="http://tempuri.org/WebMethodSaveFile" style="document" />
       <wsdl:input>
@@ -183,10 +226,10 @@
   </wsdl:binding>
   <wsdl:service name="R2PrimaryFileSharingWebService">
     <wsdl:port name="R2PrimaryFileSharingWebServiceSoap" binding="tns:R2PrimaryFileSharingWebServiceSoap">
-      <soap:address location="http://localhost:2013/R2PRIMARYFILESHARINGwebservice.asmx" />
+      <soap:address location="http://localhost:2293/R2PrimaryFileSharingWebService.asmx" />
     </wsdl:port>
     <wsdl:port name="R2PrimaryFileSharingWebServiceSoap12" binding="tns:R2PrimaryFileSharingWebServiceSoap12">
-      <soap12:address location="http://localhost:2013/R2PRIMARYFILESHARINGwebservice.asmx" />
+      <soap12:address location="http://localhost:2293/R2PrimaryFileSharingWebService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

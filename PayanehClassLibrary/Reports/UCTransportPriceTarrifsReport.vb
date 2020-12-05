@@ -51,7 +51,7 @@ Public Class UCTransportPriceTarrifsReport
     Private Sub UcAnnouncementHallSelection_UCCurrentNSSAnnouncementHallSubGroupChangedEvent(NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure) Handles UcAnnouncementHallSelection.UCCurrentNSSAnnouncementHallSubGroupChangedEvent
         Try
             Cursor.Current = Cursors.WaitCursor
-            _WS.WebMethodReportingInformationProviderTransportPriceTarrifsReport(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, RBAll.Checked <> True)
+            _WS.WebMethodReportingInformationProviderTransportPriceTarrifsReport(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, RBAll.Checked <> True,_WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
             R2CoreGUIMClassInformationManagement.PrintReport(ReportsManagement.PayanehReports.TransportPriceTarrifsReport)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

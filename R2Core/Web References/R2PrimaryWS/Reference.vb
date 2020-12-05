@@ -31,6 +31,8 @@ Namespace R2PrimaryWS
     Partial Public Class R2PrimaryWebService
         Inherits System.Web.Services.Protocols.SoapHttpClientProtocol
         
+        Private WebMethodLoginOperationCompleted As System.Threading.SendOrPostCallback
+        
         Private WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportOperationCompleted As System.Threading.SendOrPostCallback
         
         Private WebMethodReportingInformationPrividerUsersChargeReportOperationCompleted As System.Threading.SendOrPostCallback
@@ -100,6 +102,9 @@ Namespace R2PrimaryWS
         End Property
         
         '''<remarks/>
+        Public Event WebMethodLoginCompleted As WebMethodLoginCompletedEventHandler
+        
+        '''<remarks/>
         Public Event WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportCompleted As WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportCompletedEventHandler
         
         '''<remarks/>
@@ -145,23 +150,50 @@ Namespace R2PrimaryWS
         Public Event WebMethodExistCarCompleted As WebMethodExistCarCompletedEventHandler
         
         '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodLogin", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Function WebMethodLogin(ByVal YourUserShenaseh As String, ByVal YourUserPassword As String) As Long
+            Dim results() As Object = Me.Invoke("WebMethodLogin", New Object() {YourUserShenaseh, YourUserPassword})
+            Return CType(results(0),Long)
+        End Function
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodLoginAsync(ByVal YourUserShenaseh As String, ByVal YourUserPassword As String)
+            Me.WebMethodLoginAsync(YourUserShenaseh, YourUserPassword, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodLoginAsync(ByVal YourUserShenaseh As String, ByVal YourUserPassword As String, ByVal userState As Object)
+            If (Me.WebMethodLoginOperationCompleted Is Nothing) Then
+                Me.WebMethodLoginOperationCompleted = AddressOf Me.OnWebMethodLoginOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodLogin", New Object() {YourUserShenaseh, YourUserPassword}, Me.WebMethodLoginOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodLoginOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodLoginCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodLoginCompleted(Me, New WebMethodLoginCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerMoneyWalletsCurrentCharge"& _ 
             "Report", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String)
-            Me.Invoke("WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1})
+        Public Sub WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String)
-            Me.WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal userState As Object)
+        Public Overloads Sub WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportOperationCompleted Is Nothing) Then
                 Me.WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1}, Me.WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourExchangeKey}, Me.WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReportOperationCompleted(ByVal arg As Object)
@@ -173,21 +205,21 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerUsersChargeReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerUsersChargeReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
-            Me.Invoke("WebMethodReportingInformationPrividerUsersChargeReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2})
+        Public Sub WebMethodReportingInformationPrividerUsersChargeReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerUsersChargeReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerUsersChargeReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
-            Me.WebMethodReportingInformationPrividerUsersChargeReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerUsersChargeReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerUsersChargeReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerUsersChargeReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal userState As Object)
+        Public Overloads Sub WebMethodReportingInformationPrividerUsersChargeReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodReportingInformationPrividerUsersChargeReportOperationCompleted Is Nothing) Then
                 Me.WebMethodReportingInformationPrividerUsersChargeReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerUsersChargeReportOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerUsersChargeReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2}, Me.WebMethodReportingInformationPrividerUsersChargeReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerUsersChargeReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey}, Me.WebMethodReportingInformationPrividerUsersChargeReportOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodReportingInformationPrividerUsersChargeReportOperationCompleted(ByVal arg As Object)
@@ -199,21 +231,21 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerSoldRFIDCardsReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerSoldRFIDCardsReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
-            Me.Invoke("WebMethodReportingInformationPrividerSoldRFIDCardsReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2})
+        Public Sub WebMethodReportingInformationPrividerSoldRFIDCardsReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerSoldRFIDCardsReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerSoldRFIDCardsReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
-            Me.WebMethodReportingInformationPrividerSoldRFIDCardsReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerSoldRFIDCardsReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerSoldRFIDCardsReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerSoldRFIDCardsReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal userState As Object)
+        Public Overloads Sub WebMethodReportingInformationPrividerSoldRFIDCardsReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodReportingInformationPrividerSoldRFIDCardsReportOperationCompleted Is Nothing) Then
                 Me.WebMethodReportingInformationPrividerSoldRFIDCardsReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerSoldRFIDCardsReportOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerSoldRFIDCardsReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2}, Me.WebMethodReportingInformationPrividerSoldRFIDCardsReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerSoldRFIDCardsReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey}, Me.WebMethodReportingInformationPrividerSoldRFIDCardsReportOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodReportingInformationPrividerSoldRFIDCardsReportOperationCompleted(ByVal arg As Object)
@@ -226,23 +258,23 @@ Namespace R2PrimaryWS
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerParkingTotalEnteranceSepa"& _ 
             "rationByTerraficCardReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
+        Public Sub WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
             Me.Invoke("WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCar"& _ 
-                    "dReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2})
+                    "dReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
-            Me.WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal userState As Object)
+        Public Overloads Sub WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportOperationCompleted Is Nothing) Then
                 Me.WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportOperationCompleted
             End If
             Me.InvokeAsync("WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCar"& _ 
-                    "dReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2}, Me.WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportOperationCompleted, userState)
+                    "dReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey}, Me.WebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodReportingInformationPrividerParkingTotalEnteranceSeparationByTerraficCardReportOperationCompleted(ByVal arg As Object)
@@ -255,21 +287,21 @@ Namespace R2PrimaryWS
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerPresentCarsInParkingRepor"& _ 
             "t", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerPresentCarsInParkingReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourTerraficCardType As Short, ByVal YourViewCarImages As Boolean)
-            Me.Invoke("WebMethodReportingInformationPrividerPresentCarsInParkingReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourTerraficCardType, YourViewCarImages})
+        Public Sub WebMethodReportingInformationPrividerPresentCarsInParkingReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourTerraficCardType As Short, ByVal YourViewCarImages As Boolean, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerPresentCarsInParkingReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourTerraficCardType, YourViewCarImages, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerPresentCarsInParkingReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourTerraficCardType As Short, ByVal YourViewCarImages As Boolean)
-            Me.WebMethodReportingInformationPrividerPresentCarsInParkingReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourTerraficCardType, YourViewCarImages, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerPresentCarsInParkingReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourTerraficCardType As Short, ByVal YourViewCarImages As Boolean, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerPresentCarsInParkingReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourTerraficCardType, YourViewCarImages, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerPresentCarsInParkingReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourTerraficCardType As Short, ByVal YourViewCarImages As Boolean, ByVal userState As Object)
+        Public Overloads Sub WebMethodReportingInformationPrividerPresentCarsInParkingReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourTerraficCardType As Short, ByVal YourViewCarImages As Boolean, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodReportingInformationPrividerPresentCarsInParkingReportOperationCompleted Is Nothing) Then
                 Me.WebMethodReportingInformationPrividerPresentCarsInParkingReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerPresentCarsInParkingReportOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerPresentCarsInParkingReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourTerraficCardType, YourViewCarImages}, Me.WebMethodReportingInformationPrividerPresentCarsInParkingReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerPresentCarsInParkingReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourTerraficCardType, YourViewCarImages, YourExchangeKey}, Me.WebMethodReportingInformationPrividerPresentCarsInParkingReportOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodReportingInformationPrividerPresentCarsInParkingReportOperationCompleted(ByVal arg As Object)
@@ -281,21 +313,21 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerBlackListFinancialReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerBlackListFinancialReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
-            Me.Invoke("WebMethodReportingInformationPrividerBlackListFinancialReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2})
+        Public Sub WebMethodReportingInformationPrividerBlackListFinancialReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerBlackListFinancialReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerBlackListFinancialReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
-            Me.WebMethodReportingInformationPrividerBlackListFinancialReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerBlackListFinancialReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerBlackListFinancialReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerBlackListFinancialReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal userState As Object)
+        Public Overloads Sub WebMethodReportingInformationPrividerBlackListFinancialReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodReportingInformationPrividerBlackListFinancialReportOperationCompleted Is Nothing) Then
                 Me.WebMethodReportingInformationPrividerBlackListFinancialReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerBlackListFinancialReportOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerBlackListFinancialReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2}, Me.WebMethodReportingInformationPrividerBlackListFinancialReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerBlackListFinancialReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey}, Me.WebMethodReportingInformationPrividerBlackListFinancialReportOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodReportingInformationPrividerBlackListFinancialReportOperationCompleted(ByVal arg As Object)
@@ -307,21 +339,21 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerCarEntranceReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerCarEntranceReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourTerraficCard As String, ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourEntranceDateTimeSupport As Short, ByVal YourViewCarImages As Boolean)
-            Me.Invoke("WebMethodReportingInformationPrividerCarEntranceReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourTerraficCard, YourPelak, YourSerial, YourEntranceDateTimeSupport, YourViewCarImages})
+        Public Sub WebMethodReportingInformationPrividerCarEntranceReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourTerraficCard As String, ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourEntranceDateTimeSupport As Short, ByVal YourViewCarImages As Boolean, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerCarEntranceReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourTerraficCard, YourPelak, YourSerial, YourEntranceDateTimeSupport, YourViewCarImages, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerCarEntranceReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourTerraficCard As String, ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourEntranceDateTimeSupport As Short, ByVal YourViewCarImages As Boolean)
-            Me.WebMethodReportingInformationPrividerCarEntranceReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourTerraficCard, YourPelak, YourSerial, YourEntranceDateTimeSupport, YourViewCarImages, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerCarEntranceReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourTerraficCard As String, ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourEntranceDateTimeSupport As Short, ByVal YourViewCarImages As Boolean, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerCarEntranceReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourTerraficCard, YourPelak, YourSerial, YourEntranceDateTimeSupport, YourViewCarImages, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerCarEntranceReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourTerraficCard As String, ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourEntranceDateTimeSupport As Short, ByVal YourViewCarImages As Boolean, ByVal userState As Object)
+        Public Overloads Sub WebMethodReportingInformationPrividerCarEntranceReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourTerraficCard As String, ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourEntranceDateTimeSupport As Short, ByVal YourViewCarImages As Boolean, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodReportingInformationPrividerCarEntranceReportOperationCompleted Is Nothing) Then
                 Me.WebMethodReportingInformationPrividerCarEntranceReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerCarEntranceReportOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerCarEntranceReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourTerraficCard, YourPelak, YourSerial, YourEntranceDateTimeSupport, YourViewCarImages}, Me.WebMethodReportingInformationPrividerCarEntranceReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerCarEntranceReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourTerraficCard, YourPelak, YourSerial, YourEntranceDateTimeSupport, YourViewCarImages, YourExchangeKey}, Me.WebMethodReportingInformationPrividerCarEntranceReportOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodReportingInformationPrividerCarEntranceReportOperationCompleted(ByVal arg As Object)
@@ -334,21 +366,21 @@ Namespace R2PrimaryWS
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerTerraficCardsIdentityRepo"& _ 
             "rt", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerTerraficCardsIdentityReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
-            Me.Invoke("WebMethodReportingInformationPrividerTerraficCardsIdentityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2})
+        Public Sub WebMethodReportingInformationPrividerTerraficCardsIdentityReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerTerraficCardsIdentityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerTerraficCardsIdentityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
-            Me.WebMethodReportingInformationPrividerTerraficCardsIdentityReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerTerraficCardsIdentityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerTerraficCardsIdentityReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerTerraficCardsIdentityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal userState As Object)
+        Public Overloads Sub WebMethodReportingInformationPrividerTerraficCardsIdentityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodReportingInformationPrividerTerraficCardsIdentityReportOperationCompleted Is Nothing) Then
                 Me.WebMethodReportingInformationPrividerTerraficCardsIdentityReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerTerraficCardsIdentityReportOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerTerraficCardsIdentityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2}, Me.WebMethodReportingInformationPrividerTerraficCardsIdentityReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerTerraficCardsIdentityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey}, Me.WebMethodReportingInformationPrividerTerraficCardsIdentityReportOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodReportingInformationPrividerTerraficCardsIdentityReportOperationCompleted(ByVal arg As Object)
@@ -360,21 +392,21 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerBlackListReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerBlackListReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourBlackListType As Long)
-            Me.Invoke("WebMethodReportingInformationPrividerBlackListReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourBlackListType})
+        Public Sub WebMethodReportingInformationPrividerBlackListReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourBlackListType As Long, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerBlackListReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourBlackListType, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerBlackListReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourBlackListType As Long)
-            Me.WebMethodReportingInformationPrividerBlackListReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourBlackListType, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerBlackListReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourBlackListType As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerBlackListReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourBlackListType, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerBlackListReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourBlackListType As Long, ByVal userState As Object)
+        Public Overloads Sub WebMethodReportingInformationPrividerBlackListReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourBlackListType As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodReportingInformationPrividerBlackListReportOperationCompleted Is Nothing) Then
                 Me.WebMethodReportingInformationPrividerBlackListReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerBlackListReportOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerBlackListReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourBlackListType}, Me.WebMethodReportingInformationPrividerBlackListReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerBlackListReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourBlackListType, YourExchangeKey}, Me.WebMethodReportingInformationPrividerBlackListReportOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodReportingInformationPrividerBlackListReportOperationCompleted(ByVal arg As Object)
@@ -386,22 +418,22 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodGetCurrentDateTimeMilladi", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Function WebMethodGetCurrentDateTimeMilladi() As Date
-            Dim results() As Object = Me.Invoke("WebMethodGetCurrentDateTimeMilladi", New Object(-1) {})
+        Public Function WebMethodGetCurrentDateTimeMilladi(ByVal YourExchangeKey As Long) As Date
+            Dim results() As Object = Me.Invoke("WebMethodGetCurrentDateTimeMilladi", New Object() {YourExchangeKey})
             Return CType(results(0),Date)
         End Function
         
         '''<remarks/>
-        Public Overloads Sub WebMethodGetCurrentDateTimeMilladiAsync()
-            Me.WebMethodGetCurrentDateTimeMilladiAsync(Nothing)
+        Public Overloads Sub WebMethodGetCurrentDateTimeMilladiAsync(ByVal YourExchangeKey As Long)
+            Me.WebMethodGetCurrentDateTimeMilladiAsync(YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodGetCurrentDateTimeMilladiAsync(ByVal userState As Object)
+        Public Overloads Sub WebMethodGetCurrentDateTimeMilladiAsync(ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodGetCurrentDateTimeMilladiOperationCompleted Is Nothing) Then
                 Me.WebMethodGetCurrentDateTimeMilladiOperationCompleted = AddressOf Me.OnWebMethodGetCurrentDateTimeMilladiOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodGetCurrentDateTimeMilladi", New Object(-1) {}, Me.WebMethodGetCurrentDateTimeMilladiOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodGetCurrentDateTimeMilladi", New Object() {YourExchangeKey}, Me.WebMethodGetCurrentDateTimeMilladiOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodGetCurrentDateTimeMilladiOperationCompleted(ByVal arg As Object)
@@ -413,21 +445,21 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodRegisteringHandyBills", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodRegisteringHandyBills(ByVal YourTeadad As Long, ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long)
-            Me.Invoke("WebMethodRegisteringHandyBills", New Object() {YourTeadad, YourShamsiDate, YourTerafficCardType})
+        Public Sub WebMethodRegisteringHandyBills(ByVal YourTeadad As Long, ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodRegisteringHandyBills", New Object() {YourTeadad, YourShamsiDate, YourTerafficCardType, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodRegisteringHandyBillsAsync(ByVal YourTeadad As Long, ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long)
-            Me.WebMethodRegisteringHandyBillsAsync(YourTeadad, YourShamsiDate, YourTerafficCardType, Nothing)
+        Public Overloads Sub WebMethodRegisteringHandyBillsAsync(ByVal YourTeadad As Long, ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodRegisteringHandyBillsAsync(YourTeadad, YourShamsiDate, YourTerafficCardType, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodRegisteringHandyBillsAsync(ByVal YourTeadad As Long, ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long, ByVal userState As Object)
+        Public Overloads Sub WebMethodRegisteringHandyBillsAsync(ByVal YourTeadad As Long, ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodRegisteringHandyBillsOperationCompleted Is Nothing) Then
                 Me.WebMethodRegisteringHandyBillsOperationCompleted = AddressOf Me.OnWebMethodRegisteringHandyBillsOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodRegisteringHandyBills", New Object() {YourTeadad, YourShamsiDate, YourTerafficCardType}, Me.WebMethodRegisteringHandyBillsOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodRegisteringHandyBills", New Object() {YourTeadad, YourShamsiDate, YourTerafficCardType, YourExchangeKey}, Me.WebMethodRegisteringHandyBillsOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodRegisteringHandyBillsOperationCompleted(ByVal arg As Object)
@@ -439,22 +471,22 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodGetTotalRegisteredHandyBills", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Function WebMethodGetTotalRegisteredHandyBills(ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long) As Long
-            Dim results() As Object = Me.Invoke("WebMethodGetTotalRegisteredHandyBills", New Object() {YourShamsiDate, YourTerafficCardType})
+        Public Function WebMethodGetTotalRegisteredHandyBills(ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long, ByVal YourExchangeKey As Long) As Long
+            Dim results() As Object = Me.Invoke("WebMethodGetTotalRegisteredHandyBills", New Object() {YourShamsiDate, YourTerafficCardType, YourExchangeKey})
             Return CType(results(0),Long)
         End Function
         
         '''<remarks/>
-        Public Overloads Sub WebMethodGetTotalRegisteredHandyBillsAsync(ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long)
-            Me.WebMethodGetTotalRegisteredHandyBillsAsync(YourShamsiDate, YourTerafficCardType, Nothing)
+        Public Overloads Sub WebMethodGetTotalRegisteredHandyBillsAsync(ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodGetTotalRegisteredHandyBillsAsync(YourShamsiDate, YourTerafficCardType, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodGetTotalRegisteredHandyBillsAsync(ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long, ByVal userState As Object)
+        Public Overloads Sub WebMethodGetTotalRegisteredHandyBillsAsync(ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodGetTotalRegisteredHandyBillsOperationCompleted Is Nothing) Then
                 Me.WebMethodGetTotalRegisteredHandyBillsOperationCompleted = AddressOf Me.OnWebMethodGetTotalRegisteredHandyBillsOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodGetTotalRegisteredHandyBills", New Object() {YourShamsiDate, YourTerafficCardType}, Me.WebMethodGetTotalRegisteredHandyBillsOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodGetTotalRegisteredHandyBills", New Object() {YourShamsiDate, YourTerafficCardType, YourExchangeKey}, Me.WebMethodGetTotalRegisteredHandyBillsOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodGetTotalRegisteredHandyBillsOperationCompleted(ByVal arg As Object)
@@ -466,21 +498,21 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodDeleteRegisteredHandyBills", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodDeleteRegisteredHandyBills(ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long)
-            Me.Invoke("WebMethodDeleteRegisteredHandyBills", New Object() {YourShamsiDate, YourTerafficCardType})
+        Public Sub WebMethodDeleteRegisteredHandyBills(ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodDeleteRegisteredHandyBills", New Object() {YourShamsiDate, YourTerafficCardType, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodDeleteRegisteredHandyBillsAsync(ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long)
-            Me.WebMethodDeleteRegisteredHandyBillsAsync(YourShamsiDate, YourTerafficCardType, Nothing)
+        Public Overloads Sub WebMethodDeleteRegisteredHandyBillsAsync(ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodDeleteRegisteredHandyBillsAsync(YourShamsiDate, YourTerafficCardType, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodDeleteRegisteredHandyBillsAsync(ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long, ByVal userState As Object)
+        Public Overloads Sub WebMethodDeleteRegisteredHandyBillsAsync(ByVal YourShamsiDate As String, ByVal YourTerafficCardType As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodDeleteRegisteredHandyBillsOperationCompleted Is Nothing) Then
                 Me.WebMethodDeleteRegisteredHandyBillsOperationCompleted = AddressOf Me.OnWebMethodDeleteRegisteredHandyBillsOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodDeleteRegisteredHandyBills", New Object() {YourShamsiDate, YourTerafficCardType}, Me.WebMethodDeleteRegisteredHandyBillsOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodDeleteRegisteredHandyBills", New Object() {YourShamsiDate, YourTerafficCardType, YourExchangeKey}, Me.WebMethodDeleteRegisteredHandyBillsOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodDeleteRegisteredHandyBillsOperationCompleted(ByVal arg As Object)
@@ -492,21 +524,21 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerPersonnelEnterExitReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerPersonnelEnterExitReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
-            Me.Invoke("WebMethodReportingInformationPrividerPersonnelEnterExitReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2})
+        Public Sub WebMethodReportingInformationPrividerPersonnelEnterExitReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerPersonnelEnterExitReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerPersonnelEnterExitReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String)
-            Me.WebMethodReportingInformationPrividerPersonnelEnterExitReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerPersonnelEnterExitReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerPersonnelEnterExitReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerPersonnelEnterExitReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal userState As Object)
+        Public Overloads Sub WebMethodReportingInformationPrividerPersonnelEnterExitReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodReportingInformationPrividerPersonnelEnterExitReportOperationCompleted Is Nothing) Then
                 Me.WebMethodReportingInformationPrividerPersonnelEnterExitReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerPersonnelEnterExitReportOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerPersonnelEnterExitReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2}, Me.WebMethodReportingInformationPrividerPersonnelEnterExitReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerPersonnelEnterExitReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey}, Me.WebMethodReportingInformationPrividerPersonnelEnterExitReportOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodReportingInformationPrividerPersonnelEnterExitReportOperationCompleted(ByVal arg As Object)
@@ -518,22 +550,22 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodExistCar", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Function WebMethodExistCar(ByVal YourPelak As String, ByVal YourSerial As String) As Boolean
-            Dim results() As Object = Me.Invoke("WebMethodExistCar", New Object() {YourPelak, YourSerial})
+        Public Function WebMethodExistCar(ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourExchangeKey As Long) As Boolean
+            Dim results() As Object = Me.Invoke("WebMethodExistCar", New Object() {YourPelak, YourSerial, YourExchangeKey})
             Return CType(results(0),Boolean)
         End Function
         
         '''<remarks/>
-        Public Overloads Sub WebMethodExistCarAsync(ByVal YourPelak As String, ByVal YourSerial As String)
-            Me.WebMethodExistCarAsync(YourPelak, YourSerial, Nothing)
+        Public Overloads Sub WebMethodExistCarAsync(ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodExistCarAsync(YourPelak, YourSerial, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodExistCarAsync(ByVal YourPelak As String, ByVal YourSerial As String, ByVal userState As Object)
+        Public Overloads Sub WebMethodExistCarAsync(ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodExistCarOperationCompleted Is Nothing) Then
                 Me.WebMethodExistCarOperationCompleted = AddressOf Me.OnWebMethodExistCarOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodExistCar", New Object() {YourPelak, YourSerial}, Me.WebMethodExistCarOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodExistCar", New Object() {YourPelak, YourSerial, YourExchangeKey}, Me.WebMethodExistCarOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodExistCarOperationCompleted(ByVal arg As Object)
@@ -560,6 +592,33 @@ Namespace R2PrimaryWS
             End If
             Return false
         End Function
+    End Class
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodLoginCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodLoginCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
+     System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.ComponentModel.DesignerCategoryAttribute("code")>  _
+    Partial Public Class WebMethodLoginCompletedEventArgs
+        Inherits System.ComponentModel.AsyncCompletedEventArgs
+        
+        Private results() As Object
+        
+        Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+            MyBase.New(exception, cancelled, userState)
+            Me.results = results
+        End Sub
+        
+        '''<remarks/>
+        Public ReadOnly Property Result() As Long
+            Get
+                Me.RaiseExceptionIfNecessary
+                Return CType(Me.results(0),Long)
+            End Get
+        End Property
     End Class
     
     '''<remarks/>

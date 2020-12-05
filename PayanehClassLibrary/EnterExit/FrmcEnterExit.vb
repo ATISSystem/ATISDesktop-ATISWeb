@@ -211,7 +211,18 @@ Public Class FrmcEnterExit
                     UcCarAndTrafficCard.UCSetTerafficCard(_NSSTrafficCard)
                     myLP = UcCarAndTrafficCard.UCGetLP()
                 Catch ex As Exception When TypeOf ex Is GetDataException OrElse TypeOf ex Is CarNotExistException OrElse TypeOf ex Is GetNSSException
-                    'چون از رابطه کارت و پلاک چیزی بدست نیامد پس خطا هم نباید ایجاد شود
+                    'دریافت هوشمند از کاربر برای کارت تردد باری
+                    If _NSSTrafficCard.CardType = TerafficCardType.Tereili Or _NSSTrafficCard.CardType = TerafficCardType.SixCharkh Or _NSSTrafficCard.CardType = TerafficCardType.TenCharkh Then
+                        UcCarImage.UCViewcolor(Color.White)
+                        UcCarImage.UCSetMarginColor(Color.White)
+                        UcCarTruckUpdateInf.Visible = True
+                        UcCarTruckUpdateInf.UCRefreshGeneral()
+                        UcCarTruckUpdateInf.BringToFront()
+                        UcCarTruckUpdateInf.UCFocus()
+                        StartReading()
+                        Exit Sub 
+                    End If
+                    'پلاک خوانی
                     Dim LPTemp As R2StandardLicensePlateStructure = UcCarImage.UCGetLP()
                     If Object.Equals(LPTemp, Nothing) Then
                     Else
@@ -298,8 +309,8 @@ Public Class FrmcEnterExit
                         If _NSSTrafficCard.CardNo <> LastTrafficCard.CardNo Then
                             R2CoreParkingSystemMClassTrafficCardManagement.DisallowTerafficCard(LastTrafficCard)
                             R2CoreParkingSystemMClassEnterExitManagement.UpdateForExit(New R2StandardEnterExitStructure(LastEnterExitId, Now, "", "", R2CaptureType.None, R2CameraType.None, Nothing, "", 0, R2EnterStatus.None, 0, 0, Nothing, _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime, R2CaptureType.None, R2CameraType.None, Nothing, LastTrafficCard.CardNo, R2CoreMClassLoginManagement.GetNSSSystemUser.UserId, R2ExitStatus.SystemExit, 0, R2CoreMClassConfigurationManagement.GetComputerCode, myLP, True))
-                            Dim LastTrafficCardCharge As Int64 = R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletAllMoney(LastTrafficCard, R2CoreParkingSystemAccountings.ExitSystem,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
-                            R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(_NSSTrafficCard, BagPayType.AddMoney, LastTrafficCardCharge, R2CoreParkingSystemAccountings.TransferallChargeToAnother,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                            Dim LastTrafficCardCharge As Int64 = R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletAllMoney(LastTrafficCard, R2CoreParkingSystemAccountings.ExitSystem, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                            R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(_NSSTrafficCard, BagPayType.AddMoney, LastTrafficCardCharge, R2CoreParkingSystemAccountings.TransferallChargeToAnother, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                         End If
                     End If
                 End If
@@ -339,7 +350,7 @@ Public Class FrmcEnterExit
                 'فرآیند صدور نوبت ناوگان باری
                 If (UcTurnRegisterRequestConfirmation.UCChkTruckNobat = True) And R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTerraficCardTypeforTurnRegisteringActive(_NSSTrafficCard) Then
                     Dim TurnId As Int64 = Int64.MinValue
-                    Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(_NSSTrafficCard.CardId)), False, False, TurnId,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                    Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(_NSSTrafficCard.CardId)), False, False, TurnId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                     _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + TurnRegisterRequestId.ToString & vbCrLf & "شماره نوبت :" + TurnId.ToString, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 End If
                 UcTurnRegisterRequestConfirmation.UCChkTruckNobat = True
@@ -464,6 +475,29 @@ Public Class FrmcEnterExit
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
+    End Sub
+
+    Private Sub UcCarTruckUpdateInf_UCViewCarTruckInformationCompletedEvent(CarId As String) Handles UcCarTruckUpdateInf.UCViewCarTruckInformationCompletedEvent
+        Try
+            'ایجاد رابطه بین ناوگان و کارت تردد
+            UcCarTruckUpdateInf.Visible = False
+            UcCarTruckUpdateInf.SendToBack()
+            R2CoreParkingSystemMClassCars.CreateRelationBetweenTerafficCardAndCar(_NSSTrafficCard,R2CoreParkingSystemMClassCars.GetNSSCar(CarId))
+            FrmcEnterExit__RFIDCardReadedEvent(_NSSTrafficCard.CardNo)
+        Catch ex As Exception
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+        StartReading()
+    End Sub
+
+    Private Sub UcCarTruckUpdateInf_UCUserCanceledEvent() Handles UcCarTruckUpdateInf.UCUserCanceledEvent
+        Try
+            UcCarTruckUpdateInf.Visible = False
+            UcCarTruckUpdateInf.SendToBack()
+        Catch ex As Exception
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+        StartReading()
     End Sub
 
 

@@ -10,6 +10,7 @@ using ATISWeb.LoginManagement;
 using ATISWeb.LoginManagement.Exceptions;
 using PayanehClassLibrary.CarTrucksManagement;
 using PayanehClassLibrary.DriverTrucksManagement;
+using PayanehClassLibrary.Rmto;
 using R2Core.ExceptionManagement;
 
 namespace ATISWeb.TransportationAndLoadNotification.SmartCards
@@ -74,11 +75,13 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
             {
                 LblTruck.Text = string.Empty;
                 R2StandardCarTruckStructure NSS = null;
-                try { NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyBodyNo(TxtTruckSmartCardNo.Text); }
-                catch (GetNSSException ex)
-                { NSS = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase(TxtTruckSmartCardNo.Text,ATISWebMClassLoginManagement.GetNSSCurrentUser()); }
+                NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(TxtTruckSmartCardNo.Text, ATISWebMClassLoginManagement.GetNSSCurrentUser());
                 LblTruck.Text = NSS.NSSCar.GetCarPelakSerialComposit();
             }
+            catch (RMTOWebServiceSException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+            catch (GetNSSException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
             catch (Exception ex)

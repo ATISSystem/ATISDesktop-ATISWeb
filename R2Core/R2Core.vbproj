@@ -161,12 +161,12 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="Web References\R2PrimaryFileSharingWS\R2PRIMARYFILESHARINGwebservice.wsdl" />
+    <None Include="Web References\R2PrimaryFileSharingWS\R2PrimaryFileSharingWebService.wsdl" />
     <None Include="Web References\R2PrimaryFileSharingWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
-    <None Include="Web References\R2PrimaryWS\R2PRIMARYWEBSERVICE.wsdl" />
+    <None Include="Web References\R2PrimaryWS\R2PrimaryWebService.wsdl" />
     <None Include="Web References\R2PrimaryWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
@@ -178,8 +178,8 @@
   <ItemGroup>
     <Content Include="EasyD12.dll" />
     <Content Include="MF_API.dll" />
-    <None Include="Web References\R2PrimaryWS\R2PRIMARYWEBSERVICE.disco" />
-    <None Include="Web References\R2PrimaryFileSharingWS\R2PRIMARYFILESHARINGwebservice.disco" />
+    <None Include="Web References\R2PrimaryWS\R2PrimaryWebService.disco" />
+    <None Include="Web References\R2PrimaryFileSharingWS\R2PrimaryFileSharingWebService.disco" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -188,10 +188,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://localhost:2011/R2PRIMARYWEBSERVICE.ASMX">
+    <WebReferenceUrl Include="http://localhost:1696/R2PrimaryWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\R2PrimaryWS\</RelPath>
-      <UpdateFromURL>http://localhost:2011/R2PRIMARYWEBSERVICE.ASMX</UpdateFromURL>
+      <UpdateFromURL>http://localhost:1696/R2PrimaryWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -199,10 +199,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>R2Core_R2PrimaryWS_R2PrimaryWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://localhost:2013/R2PRIMARYFILESHARINGwebservice.asmx">
+    <WebReferenceUrl Include="http://localhost:2293/R2PrimaryFileSharingWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\R2PrimaryFileSharingWS\</RelPath>
-      <UpdateFromURL>http://localhost:2013/R2PRIMARYFILESHARINGwebservice.asmx</UpdateFromURL>
+      <UpdateFromURL>http://localhost:2293/R2PrimaryFileSharingWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

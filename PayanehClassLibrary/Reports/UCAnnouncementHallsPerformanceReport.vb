@@ -69,7 +69,7 @@ Public Class UCAnnouncementHallsPerformanceReport
         Try
             Cursor.Current = Cursors.WaitCursor
             If UcucAnnouncementHallCollection.UCCurrentNSS Is Nothing Then Throw new AnnouncementHallNotSelectedException
-            WS.WebMethodReportingInformationPrividerAnnouncementHallsPerformanceReport(UcDateTimeHolder.UCGetDateTime1.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime1.DateShamsiFull, UcDateTimeHolder.UCGetDateTime1.Time, UcDateTimeHolder.UCGetDateTime2.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime2.DateShamsiFull, UcDateTimeHolder.UCGetDateTime2.Time,UcucAnnouncementHallCollection.UCCurrentNSS.AHId)
+            WS.WebMethodReportingInformationPrividerAnnouncementHallsPerformanceReport(UcDateTimeHolder.UCGetDateTime1.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime1.DateShamsiFull, UcDateTimeHolder.UCGetDateTime1.Time, UcDateTimeHolder.UCGetDateTime2.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime2.DateShamsiFull, UcDateTimeHolder.UCGetDateTime2.Time,UcucAnnouncementHallCollection.UCCurrentNSS.AHId,WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
             If UcucAnnouncementHallCollection.UCCurrentNSS.AHId = AnnouncementHalls.Anbari Then
                 R2CoreGUIMClassInformationManagement.PrintReport(PayanehReports.AnbariAnnouncementHallPerformanceReport)
             ElseIf UcucAnnouncementHallCollection.UCCurrentNSS.AHId = AnnouncementHalls.Otaghdar Then

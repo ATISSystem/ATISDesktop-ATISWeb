@@ -36,7 +36,7 @@ Public Class UCUserImage
     Public Sub UCSetUserImage(YourNSSUser As R2CoreStandardUserStructure)
         Try
             _UCCurrentNSS = YourNSSUser
-            PicUserImage.Image = R2CoreMClassLoginManagement.GetUserImage(YourNSSUser).GetImage()
+            PicUserImage.Image = R2CoreMClassLoginManagement.GetUserImage(YourNSSUser,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS).GetImage()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

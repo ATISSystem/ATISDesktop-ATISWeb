@@ -115,6 +115,12 @@
     <Compile Include="CarTruck And DriverTruck\FrmcChangeDriverTruckAndCarTruckNumberPlateComputerMessageProducer.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCCarTruckUpdateInf.Designer.vb">
+      <DependentUpon>UCCarTruckUpdateInf.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruck And DriverTruck\UCCarTruckUpdateInf.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="CarTruckLoad\UCSedimentalLoadControlPanel.Designer.vb">
       <DependentUpon>UCSedimentalLoadControlPanel.vb</DependentUpon>
     </Compile>
@@ -569,6 +575,9 @@
     <EmbeddedResource Include="CarTruck And DriverTruck\FrmcChangeDriverTruckAndCarTruckNumberPlateComputerMessageProducer.resx">
       <DependentUpon>FrmcChangeDriverTruckAndCarTruckNumberPlateComputerMessageProducer.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CarTruck And DriverTruck\UCCarTruckUpdateInf.resx">
+      <DependentUpon>UCCarTruckUpdateInf.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CarTruckLoad\UCSedimentalLoadControlPanel.resx">
       <DependentUpon>UCSedimentalLoadControlPanel.vb</DependentUpon>
     </EmbeddedResource>
@@ -849,6 +858,17 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="http://localhost:10919/PayanehWebService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\PayanehWS\</RelPath>
+      <UpdateFromURL>http://localhost:10919/PayanehWebService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>PayanehClassLibrary_PayanehWS_PayanehWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://localhost:2010/TerminalsWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\TerminalsWebService\</RelPath>
@@ -859,17 +879,6 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>PayanehClassLibrary_TerminalsWebService_TerminalsWebService</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="http://Localhost:2012/PayanehWebService.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\PayanehWS\</RelPath>
-      <UpdateFromURL>http://Localhost:2012/PayanehWebService.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>PayanehClassLibrary_PayanehWS_PayanehWebService</CachedSettingsPropName>
     </WebReferenceUrl>
     <WebReferenceUrl Include="http://smartcard.rmto.ir:9090/orawsv/TR_PUBLIC_WS/PKG_RMTO_WS%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>

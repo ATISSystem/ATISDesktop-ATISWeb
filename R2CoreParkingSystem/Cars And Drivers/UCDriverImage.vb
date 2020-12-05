@@ -73,7 +73,7 @@ Public Class UCDriverImage
     Public Sub UCViewDriverImage(YourNSSDriver As R2StandardDriverStructure)
         Try
             _NSSDriver = YourNSSDriver
-            PicDriver.Image = R2CoreParkingSystemMClassDrivers.GetDriverImage(YourNSSDriver).GetImage()
+            PicDriver.Image = R2CoreParkingSystemMClassDrivers.GetDriverImage(YourNSSDriver,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS).GetImage()
         Catch exx As DriverImageNotExistException
             Throw exx
         Catch ex As Exception

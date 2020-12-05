@@ -30,6 +30,7 @@ Partial Class FrmcEnterExit
         Me.UcCarPresenter = New R2CoreParkingSystem.UCCarPresenter()
         Me.UcTerafficCardPresenter = New R2CoreParkingSystem.UCTerafficCardPresenter()
         Me.UcTurnRegisterRequestConfirmation = New PayanehClassLibrary.UCTurnRegisterRequestConfirmation()
+        Me.UcCarTruckUpdateInf = New PayanehClassLibrary.UcCarTruckUpdateInf()
         Me.UcCarAndTrafficCard = New R2CoreParkingSystem.UCCarAndTerafficCard()
         Me.UcMoneyWallet = New R2CoreParkingSystem.UCMoneyWallet()
         Me.UcCarImage = New R2CoreParkingSystem.UCCarImage()
@@ -65,6 +66,7 @@ Partial Class FrmcEnterExit
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PnlEnterExit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlEnterExit.Controls.Add(Me.UcBlackListCompositBlackListViewer)
+        Me.PnlEnterExit.Controls.Add(Me.UcCarTruckUpdateInf)
         Me.PnlEnterExit.Controls.Add(Me.UcCarPresenter)
         Me.PnlEnterExit.Controls.Add(Me.UcTerafficCardPresenter)
         Me.PnlEnterExit.Controls.Add(Me.UcTurnRegisterRequestConfirmation)
@@ -77,10 +79,21 @@ Partial Class FrmcEnterExit
         Me.PnlEnterExit.Size = New System.Drawing.Size(995, 512)
         Me.PnlEnterExit.TabIndex = 200
         '
+        'UcCarTruckUpdateInf
+        '
+        Me.UcCarTruckUpdateInf.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcCarTruckUpdateInf.BackColor = System.Drawing.Color.Transparent
+        Me.UcCarTruckUpdateInf.Location = New System.Drawing.Point(15, 126)
+        Me.UcCarTruckUpdateInf.Name = "UcCarTruckUpdateInf"
+        Me.UcCarTruckUpdateInf.Size = New System.Drawing.Size(726, 261)
+        Me.UcCarTruckUpdateInf.TabIndex = 0
+        Me.UcCarTruckUpdateInf.Visible = false
+        '
         'UcBlackListCompositBlackListViewer
         '
         Me.UcBlackListCompositBlackListViewer.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                                                              Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcBlackListCompositBlackListViewer.BackColor = System.Drawing.Color.Transparent
         Me.UcBlackListCompositBlackListViewer.Location = New System.Drawing.Point(15, 126)
         Me.UcBlackListCompositBlackListViewer.Name = "UcBlackListCompositBlackListViewer"
@@ -358,4 +371,5 @@ End Sub
     Friend WithEvents UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge As UCMoneyWalletChargeSavabeghCollection
     Friend WithEvents UcMoneyWalletChargePnlMoneyWalletCharge As UCMoneyWalletCharge
     Friend WithEvents UcBlackListCompositBlackListViewer As UCBlackListCompositBlackListViewer
+    Friend WithEvents UcCarTruckUpdateInf As UcCarTruckUpdateInf
 End Class

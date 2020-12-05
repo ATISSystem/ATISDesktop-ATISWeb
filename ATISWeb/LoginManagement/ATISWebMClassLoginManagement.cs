@@ -24,9 +24,7 @@ namespace ATISWeb.LoginManagement
             catch (PleaseReloginException ex)
             { throw ex; }
             catch (Exception ex)
-            {
-                throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message);
-            }
+            { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
         }
     }
 

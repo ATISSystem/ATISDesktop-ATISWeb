@@ -2489,12 +2489,12 @@ Namespace Cars
             End Try
         End Sub
 
-        Public Shared Function GetCarEnterExitImage(YourNSSCar As R2StandardCarStructure) As R2CoreImage
+        Public Shared Function GetCarEnterExitImage(YourNSSCar As R2StandardCarStructure,YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
             Try
                 Dim _NSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(YourNSSCar.nIdCar))
                 Dim CarImage As R2CoreImage
                 Try
-                    CarImage = GetCarImage(New R2CoreFile(R2CoreParkingSystemMClassEnterExitManagement.GetCarLastEnterExitId(_NSSTerafficCard).ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2)))
+                    CarImage = GetCarImage(New R2CoreFile(R2CoreParkingSystemMClassEnterExitManagement.GetCarLastEnterExitId(_NSSTerafficCard).ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2)),YourNSSUser)
                     Return CarImage
 
                 Catch exx As R2CoreParkingSystemCarImageNotExistException
@@ -2513,11 +2513,11 @@ Namespace Cars
             End Try
         End Function
 
-        Public Shared Function GetCarEnterExitImage(YourNSSTerraficCard As R2CoreParkingSystemStandardTrafficCardStructure) As R2CoreImage
+        Public Shared Function GetCarEnterExitImage(YourNSSTerraficCard As R2CoreParkingSystemStandardTrafficCardStructure,YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
             Try
                 Dim CarImage As R2CoreImage
                 Try
-                    CarImage = GetCarImage(New R2CoreFile(R2CoreParkingSystemMClassEnterExitManagement.GetCarLastEnterExitId(YourNSSTerraficCard).ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2)))
+                    CarImage = GetCarImage(New R2CoreFile(R2CoreParkingSystemMClassEnterExitManagement.GetCarLastEnterExitId(YourNSSTerraficCard).ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2)),YourNSSUser)
                     Return CarImage
                 Catch exx As R2CoreParkingSystemCarImageNotExistException
                     If YourNSSTerraficCard.CardType = TerafficCardType.Savari Then
@@ -2535,11 +2535,11 @@ Namespace Cars
             End Try
         End Function
 
-        Public Shared Function GetCarEnterExitImage(YourNSSEnterExit As R2StandardEnterExitStructure) As R2CoreImage
+        Public Shared Function GetCarEnterExitImage(YourNSSEnterExit As R2StandardEnterExitStructure,YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
             Try
                 Dim CarImage As R2CoreImage
                 Try
-                    CarImage = GetCarImage(New R2CoreFile(YourNSSEnterExit.EnterExitId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2)))
+                    CarImage = GetCarImage(New R2CoreFile(YourNSSEnterExit.EnterExitId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2)),YourNSSUser)
                     Return CarImage
                 Catch exx As R2CoreParkingSystemCarImageNotExistException
                     Dim NSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure
@@ -2559,26 +2559,26 @@ Namespace Cars
             End Try
         End Function
 
-        Public Shared Sub SaveCarEnterExitImage(YourCarImage As R2CoreImage, YourNSSEnterExit As R2StandardEnterExitStructure)
+        Public Shared Sub SaveCarEnterExitImage(YourCarImage As R2CoreImage, YourNSSEnterExit As R2StandardEnterExitStructure,YourNSSUser As R2CoreStandardUserStructure)
             Try
-                SaveCarImage(YourCarImage, New R2CoreFile(YourNSSEnterExit.EnterExitId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2)))
+                SaveCarImage(YourCarImage, New R2CoreFile(YourNSSEnterExit.EnterExitId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2)),YourNSSUser)
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
 
-        Private Shared Sub SaveCarImage(YourCarImage As R2CoreImage, YourFileInf As R2CoreFile)
+        Private Shared Sub SaveCarImage(YourCarImage As R2CoreImage, YourFileInf As R2CoreFile,YourNSSUser As R2CoreStandardUserStructure)
             Try
-                _R2PrimaryFSWS.WebMethodSaveFile(R2CoreParkingSystemRawGroups.CarImages, YourFileInf.FileName, YourCarImage.GetImageByte())
+                _R2PrimaryFSWS.WebMethodSaveFile(R2CoreParkingSystemRawGroups.CarImages, YourFileInf.FileName, YourCarImage.GetImageByte(),_R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh,YourNSSUser.UserPassword))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
 
-        Private Shared Function GetCarImage(YourFileInf As R2CoreFile) As R2CoreImage
+        Private Shared Function GetCarImage(YourFileInf As R2CoreFile,YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
             Try
-                If _R2PrimaryFSWS.WebMethodIOFileExist(R2CoreParkingSystemRawGroups.CarImages, YourFileInf.FileName) = True Then
-                    Return New R2CoreImage(_R2PrimaryFSWS.WebMethodGetFile(R2CoreParkingSystemRawGroups.CarImages, YourFileInf.FileName))
+                If _R2PrimaryFSWS.WebMethodIOFileExist(R2CoreParkingSystemRawGroups.CarImages, YourFileInf.FileName,_R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh,YourNSSUser.UserPassword)) = True Then
+                    Return New R2CoreImage(_R2PrimaryFSWS.WebMethodGetFile(R2CoreParkingSystemRawGroups.CarImages, YourFileInf.FileName,_R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh,YourNSSUser.UserPassword)))
                 Else
                     Throw New R2CoreParkingSystemCarImageNotExistException
                 End If
@@ -2589,7 +2589,24 @@ Namespace Cars
             End Try
         End Function
 
-
+        Public shared Sub CreateRelationBetweenTerafficCardAndCar(YourNSSTerraficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourNSSCar As R2StandardCarStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
+                CmdSql.CommandText = "Update R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Set RelationActive=0 Where CardId=" & YourNSSTerraficCard.CardId & " or nCarId=" & YourNSSCar.nIdCar & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Insert into R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars(CardId,nCarId,RelationActive) Values(" & YourNSSTerraficCard.CardId & "," & YourNSSCar.nIdCar & ",1)"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
     End Class
 
     Public Class CarNotExistException
@@ -3075,12 +3092,12 @@ Namespace Drivers
             End Try
         End Function
 
-        Public Shared Function GetDriverImage(YourNSSDriver As R2StandardDriverStructure) As R2CoreImage
+        Public Shared Function GetDriverImage(YourNSSDriver As R2StandardDriverStructure,YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
             Try
-                If _R2PrimaryFSWS.WebMethodIOFileExist(R2CoreParkingSystemRawGroups.DriverImages, YourNSSDriver.nIdPerson.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 1)) = False Then
+                If _R2PrimaryFSWS.WebMethodIOFileExist(R2CoreParkingSystemRawGroups.DriverImages, YourNSSDriver.nIdPerson.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 1),_R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh,YourNSSUser.UserPassword)) = False Then
                     Throw New DriverImageNotExistException
                 End If
-                Return New R2CoreImage(_R2PrimaryFSWS.WebMethodGetFile(R2CoreParkingSystemRawGroups.DriverImages, YourNSSDriver.nIdPerson.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 1)))
+                Return New R2CoreImage(_R2PrimaryFSWS.WebMethodGetFile(R2CoreParkingSystemRawGroups.DriverImages, YourNSSDriver.nIdPerson.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 1),_R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh,YourNSSUser.UserPassword)))
             Catch exx As DriverImageNotExistException
                 Throw exx
             Catch ex As Exception
@@ -3088,17 +3105,17 @@ Namespace Drivers
             End Try
         End Function
 
-        Public Shared Sub SaveDriverImage(YourNSSDriver As R2StandardDriverStructure, YourDriverImage As R2CoreImage)
+        Public Shared Sub SaveDriverImage(YourNSSDriver As R2StandardDriverStructure, YourDriverImage As R2CoreImage,YourNSSUser As R2CoreStandardUserStructure)
             Try
-                _R2PrimaryFSWS.WebMethodSaveFile(R2CoreParkingSystemRawGroups.DriverImages, YourNSSDriver.nIdPerson.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 1), YourDriverImage.GetImageByte())
+                _R2PrimaryFSWS.WebMethodSaveFile(R2CoreParkingSystemRawGroups.DriverImages, YourNSSDriver.nIdPerson.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 1), YourDriverImage.GetImageByte(),_R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh,YourNSSUser.UserPassword))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
 
-        Public Shared Sub DeleteDriverImage(YourNSSDriver As R2StandardDriverStructure)
+        Public Shared Sub DeleteDriverImage(YourNSSDriver As R2StandardDriverStructure,YourNSSUser As R2CoreStandardUserStructure)
             Try
-                _R2PrimaryFSWS.WebMethodDeleteFile(R2CoreParkingSystemRawGroups.DriverImages, YourNSSDriver.nIdPerson.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 1))
+                _R2PrimaryFSWS.WebMethodDeleteFile(R2CoreParkingSystemRawGroups.DriverImages, YourNSSDriver.nIdPerson.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 1),_R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh,YourNSSUser.UserPassword))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -3727,7 +3744,7 @@ Namespace ReportsManagement
                     If YourViewCarImages = True Then
                         Try
                             NSSEnterExit = New R2StandardEnterExitStructure(Ds.Tables(0).Rows(Loopx).Item("EnterExitId"), Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Ds.Tables(0).Rows(Loopx).Item("CardNoEnter"), Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
-                            CarImage = R2CoreParkingSystemMClassCars.GetCarEnterExitImage(NSSEnterExit)
+                            CarImage = R2CoreParkingSystemMClassCars.GetCarEnterExitImage(NSSEnterExit,R2CoreMClassLoginManagement.GetNSSSystemUser())
                             CarImageByte = CarImage.GetImageByte()
                         Catch ex As Exception
                         End Try
@@ -3812,7 +3829,7 @@ Namespace ReportsManagement
                     If YourViewCarImages = True Then
                         Try
                             NSSEnterExit = New R2StandardEnterExitStructure(Ds.Tables(0).Rows(Loopx).Item("EnterExitId"), Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Ds.Tables(0).Rows(Loopx).Item("CardNoEnter"), Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
-                            CarImage = R2CoreParkingSystemMClassCars.GetCarEnterExitImage(NSSEnterExit)
+                            CarImage = R2CoreParkingSystemMClassCars.GetCarEnterExitImage(NSSEnterExit,R2CoreMClassLoginManagement.GetNSSSystemUser())
                             CarImageByte = CarImage.GetImageByte()
                         Catch ex As Exception
                         End Try

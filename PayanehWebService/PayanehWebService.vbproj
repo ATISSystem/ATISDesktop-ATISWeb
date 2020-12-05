@@ -46,6 +46,10 @@
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PayanehClassLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\PayanehClassLibrary\bin\Debug\PayanehClassLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -147,10 +151,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PayanehClassLibrary\PayanehClassLibrary.vbproj">
-      <Project>{8bcfe2ef-2c83-4137-baaf-87e380d41971}</Project>
-      <Name>PayanehClassLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\R2CoreLPR\R2CoreLPR.vbproj">
       <Project>{d3413023-d590-432c-8a6a-6bf2038624cf}</Project>
       <Name>R2CoreLPR</Name>

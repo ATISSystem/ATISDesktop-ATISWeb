@@ -34,6 +34,7 @@ Partial Class Form3
         Me.Button5 = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Button7 = New System.Windows.Forms.Button()
+        Me.UcCarTruck1 = New PayanehClassLibrary.UCCarTruck()
         Me.SuspendLayout
         '
         'Button1
@@ -155,11 +156,22 @@ Partial Class Form3
         Me.Button7.Text = "Button7"
         Me.Button7.UseVisualStyleBackColor = true
         '
+        'UcCarTruck1
+        '
+        Me.UcCarTruck1.BackColor = System.Drawing.Color.Transparent
+        Me.UcCarTruck1.Location = New System.Drawing.Point(102, 205)
+        Me.UcCarTruck1.Name = "UcCarTruck1"
+        Me.UcCarTruck1.Padding = New System.Windows.Forms.Padding(3)
+        Me.UcCarTruck1.Size = New System.Drawing.Size(606, 153)
+        Me.UcCarTruck1.TabIndex = 12
+        Me.UcCarTruck1.UCViewButtons = true
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.UcCarTruck1)
         Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Button5)
@@ -191,4 +203,5 @@ End Sub
     Friend WithEvents Button5 As Button
     Friend WithEvents Button6 As Button
     Friend WithEvents Button7 As Button
+    Friend WithEvents UcCarTruck1 As PayanehClassLibrary.UCCarTruck
 End Class

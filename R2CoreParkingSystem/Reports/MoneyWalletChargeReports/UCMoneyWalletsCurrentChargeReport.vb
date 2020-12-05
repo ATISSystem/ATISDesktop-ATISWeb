@@ -69,7 +69,7 @@ Public Class UCMoneyWalletsCurrentChargeReport
     Private Sub UcButtonSpecial_UCClickedEvent() Handles UcButtonSpecial.UCClickedEvent
         Try
             Cursor.Current = Cursors.WaitCursor
-            WS.WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport(Nothing ,UcPersianShamsiDate.UCGetDate.DateShamsiFull  ,Nothing )
+            WS.WebMethodReportingInformationPrividerMoneyWalletsCurrentChargeReport(Nothing ,UcPersianShamsiDate.UCGetDate.DateShamsiFull  ,Nothing ,WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
             R2CoreGUIMClassInformationManagement.PrintReport(R2CoreParkingSystemReports.MoneyWalletsCurrentChargeReport)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

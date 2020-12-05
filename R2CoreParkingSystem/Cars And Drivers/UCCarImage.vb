@@ -1,19 +1,15 @@
 ﻿
 Imports System.Drawing
 Imports System.Reflection
-Imports R2Core.BaseStandardClass
 
+Imports R2Core.BaseStandardClass
 Imports R2Core.ComputersManagement
-Imports R2Core.ConfigurationManagement
-Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
-Imports R2CoreParkingSystem.ConfigurationManagement
 Imports R2CoreParkingSystem.EnterExitManagement
 Imports R2CoreParkingSystem.CamerasManagement
 Imports R2CoreParkingSystem.Cars
 Imports R2CoreParkingSystem.TrafficCardsManagement
 Imports R2CoreLPR.LicensePlateManagement
-Imports R2CoreLPR.LicensePlateRecognizer
 Imports R2CoreLPR.ConfigurationManagement
 
 
@@ -68,6 +64,11 @@ Public Class UCCarImage
 
     Private Sub UCViewImage(YourImage As R2CoreImage)
         PicCar.Image = YourImage.GetImage()
+    End Sub
+
+    Public Sub UCViewColor(YourColor As Color)
+        PicCar.Image = Nothing
+        PicCar.BackColor=YourColor
     End Sub
 
     Public Sub UCViewDefaultCarImage(YourTerafficCardType As TerafficCardType)
@@ -157,7 +158,7 @@ Public Class UCCarImage
         Try
             If (PicCar.Image Is My.Resources.DefaultCarImageSavari) Or (PicCar.Image Is My.Resources.DefaultCarImageTereilli) Then
             Else
-                R2CoreParkingSystemMClassCars.SaveCarEnterExitImage(New R2CoreImage(PicCar.Image),YourNSSEnterExit)
+                R2CoreParkingSystemMClassCars.SaveCarEnterExitImage(New R2CoreImage(PicCar.Image), YourNSSEnterExit,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             End If
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -166,7 +167,7 @@ Public Class UCCarImage
 
     Public Sub UCViewCarEnterExitImage(YourNSSCar As R2StandardCarStructure)
         Try
-            UCViewImage(R2CoreParkingSystemMClassCars.GetCarEnterExitImage(YourNSSCar))
+            UCViewImage(R2CoreParkingSystemMClassCars.GetCarEnterExitImage(YourNSSCar,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -174,7 +175,7 @@ Public Class UCCarImage
 
     Public Sub UCViewCarEnterExitImage(YourNSSTerraficCard As R2CoreParkingSystemStandardTrafficCardStructure)
         Try
-            UCViewImage(R2CoreParkingSystemMClassCars.GetCarEnterExitImage(YourNSSTerraficCard))
+            UCViewImage(R2CoreParkingSystemMClassCars.GetCarEnterExitImage(YourNSSTerraficCard,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -182,7 +183,7 @@ Public Class UCCarImage
 
     Public Sub UCViewCarEnterExitImage(YourNSSEnterExit As R2StandardEnterExitStructure)
         Try
-            UCViewImage(R2CoreParkingSystemMClassCars.GetCarEnterExitImage(YourNSSEnterExit))
+            UCViewImage(R2CoreParkingSystemMClassCars.GetCarEnterExitImage(YourNSSEnterExit,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

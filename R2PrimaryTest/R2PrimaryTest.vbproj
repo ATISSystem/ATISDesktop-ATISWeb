@@ -51,10 +51,6 @@
     <ApplicationIcon>R2%28Ico%291397102727.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="R2CoreLPR, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\R2CoreGUI\bin\Debug\R2CoreLPR.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -109,6 +105,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\PayanehWS\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Form3.resx">
@@ -137,6 +138,11 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
+    <None Include="Web References\PayanehWS\PayanehWebService.wsdl" />
+    <None Include="Web References\PayanehWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -146,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="R2%28Ico%291397102727.ico" />
+    <None Include="Web References\PayanehWS\PayanehWebService.disco" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PayanehClassLibrary\PayanehClassLibrary.vbproj">
@@ -155,6 +162,10 @@
     <ProjectReference Include="..\R2CoreGUI\R2CoreGUI.vbproj">
       <Project>{d9aef791-83e7-4238-bb9c-de0c57e0ed37}</Project>
       <Name>R2CoreGUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2CoreLPR\R2CoreLPR.vbproj">
+      <Project>{d3413023-d590-432c-8a6a-6bf2038624cf}</Project>
+      <Name>R2CoreLPR</Name>
     </ProjectReference>
     <ProjectReference Include="..\R2CoreParkingSystem\R2CoreParkingSystem.vbproj">
       <Project>{68EE9753-9B39-4D0B-BFE5-0F941A5F183C}</Project>
@@ -174,6 +185,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="http://localhost:10919/PayanehWebService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\PayanehWS\</RelPath>
+      <UpdateFromURL>http://localhost:10919/PayanehWebService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>R2PrimaryTest_PayanehWS_PayanehWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://smartcard.rmto.ir:9090/orawsv/TR_PUBLIC_WS/PKG_RMTO_WS%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\ir.rmto.smartcard\</RelPath>

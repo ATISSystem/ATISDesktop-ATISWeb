@@ -51,7 +51,7 @@ Public Class UCIndigenousTrucksWithUNNativeLPReport
     Private Sub UcButtonSpecial_UCClickedEvent() Handles UcButtonSpecial.UCClickedEvent
         Try
             Cursor.Current = Cursors.WaitCursor
-            _WS.WebMethodReportingInformationProviderIndigenousTrucksWithUNNativeLPReport()
+            _WS.WebMethodReportingInformationProviderIndigenousTrucksWithUNNativeLPReport(_WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
             R2CoreGUIMClassInformationManagement.PrintReport(ReportsManagement.PayanehReports.IndigenousTrucksWithUNNativeLPReport)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

@@ -14,6 +14,9 @@ Imports R2Core.LoggingManagement
 Imports R2Core.BaseStandardClass
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.UserManagement
+Imports R2Core.UserManagement.Exceptions
+Imports R2Core.SecurityAlgorithmsManagement
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 
 Imports PcPosDll
 
@@ -611,6 +614,124 @@ Namespace MonetarySettingTools
         End Function
 
     End Class
+
+End Namespace
+
+Namespace SecurityAlgorithmsManagement
+
+
+    Public Class ExchangeKey
+        Public Sub New()
+            ExchangeKey = Int64.MinValue
+            UserId = Int64.MinValue
+            StartDateTime = Now
+        End Sub
+
+        Public Sub New(YourExchangeKey As Int64, YourUserId As Int64, YourStartDateTime As DateTime)
+            ExchangeKey = YourExchangeKey
+            UserId = YourUserId
+            StartDateTime = YourStartDateTime
+        End Sub
+
+        Public ExchangeKey As Int64
+        Public UserId As Int64
+        Public StartDateTime As DateTime
+    End Class
+
+    Public Class ExchangeKeyManager
+
+        Private _LstUsers As List(Of ExchangeKey) = New List(Of ExchangeKey)
+
+        Public Sub New()
+        End Sub
+
+        Public Function Login(YourUserShenaseh As String, YourUserPassword As String) As Int64
+            Try
+                R2CoreMClassLoginManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardUserStructure(Nothing, Nothing, YourUserShenaseh, YourUserPassword, Nothing, Nothing, Nothing))
+                Dim NSS = R2CoreMClassLoginManagement.GetNSSUser(YourUserShenaseh, YourUserPassword)
+                If _LstUsers.Exists(Function(x) x.UserId = NSS.UserId) Then
+                    _LstUsers.Where(Function(x) x.UserId = NSS.UserId)(0).StartDateTime = Now
+                    Return _LstUsers.Where(Function(x) x.UserId = NSS.UserId)(0).ExchangeKey
+                End If
+                Dim EKTemp = R2CoreMClassSecurityAlgorithmsManagement.GetNewExchangeKey()
+                _LstUsers.Add(New ExchangeKey(EKTemp, NSS.UserId, Now))
+                Return EKTemp
+            Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Sub AuthenticationExchangeKey(YourExchangeKey As Int64)
+            Try
+                If _LstUsers.Exists(Function(x) x.ExchangeKey = YourExchangeKey) Then
+                    If DateDiff(DateInterval.Minute, _LstUsers.Where(Function(x) x.ExchangeKey = YourExchangeKey)(0).StartDateTime, Now) <= 1 Then
+                    Else
+                        _LstUsers.Remove(_LstUsers.Where(Function(x) x.ExchangeKey = YourExchangeKey)(0))
+                        Throw New ExchangeKeyTimeRangePassedException
+                    End If
+                Else
+                    Throw New ExchangeKeyNotExistException
+                End If
+            Catch ex As ExchangeKeyTimeRangePassedException
+                Throw ex
+            Catch ex As ExchangeKeyNotExistException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Function GetNSSUser(YourExchangeKey As Int64) As R2CoreStandardUserStructure
+            Try
+                AuthenticationExchangeKey(YourExchangeKey)
+                Return R2CoreMClassLoginManagement.GetNSSUser(_LstUsers.Where(Function(x) x.ExchangeKey = YourExchangeKey)(0).UserId)
+            Catch ex As ExchangeKeyTimeRangePassedException
+                Throw ex
+            Catch ex As ExchangeKeyNotExistException
+                Throw ex
+            Catch ex As GetNSSException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
+
+    Public NotInheritable Class R2CoreMClassSecurityAlgorithmsManagement
+        Public Shared Function GetNewExchangeKey() As Int64
+            Try
+                Dim RandGen As New Random
+                Return RandGen.Next(10000, 1000000)
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
+
+    Namespace Exceptions
+        Public Class ExchangeKeyNotExistException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کلید تبادل مورد نظر نامعتبر نیست"
+                End Get
+            End Property
+        End Class
+
+        Public Class ExchangeKeyTimeRangePassedException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "مدت زمان مجاز به پایان رسیده است"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
 
 End Namespace
 

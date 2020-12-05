@@ -63,7 +63,7 @@ Public Class UCTruckDriversWaitingToGetLoadPermissionReport
     Private Sub UcButtonSpecialViewReport_UCClickedEvent() Handles UcButtonSpecialViewReport.UCClickedEvent
         Try
             Cursor.Current = Cursors.WaitCursor
-            _WS.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport(UcAnnouncementHallSelection.UCNSSCurrentAnnouncementHallSubGroup.AHSGId)
+            _WS.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport(UcAnnouncementHallSelection.UCNSSCurrentAnnouncementHallSubGroup.AHSGId,_WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
             R2CoreGUIMClassInformationManagement.PrintReport(PayanehClassLibrary.ReportsManagement.PayanehReports.TruckDriversWaitingToGetLoadPermissionReport)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

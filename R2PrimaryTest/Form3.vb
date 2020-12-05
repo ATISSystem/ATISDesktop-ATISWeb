@@ -1,6 +1,8 @@
 ﻿Imports System.Data.SqlClient
 Imports System.Globalization
 Imports System.Text
+Imports PayanehClassLibrary.CarTrucksManagement
+Imports PayanehClassLibrary.PayanehWS
 Imports PayanehClassLibrary.Rmto
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.UserManagement
@@ -8,6 +10,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
 
 Public Class Form3
+    
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
             'R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser)
@@ -235,26 +238,30 @@ Public Class Form3
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         Try
-            
+
         Catch ex As Exception
-            MessageBox.Show(EX.Message)
+            MessageBox.Show(ex.Message)
         End Try
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocationsforLoadPermissionRegistering(2,7)
+            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocationsforLoadPermissionRegistering(2, 7)
         Catch ex As Exception
-MessageBox.Show(ex.Message)
+            MessageBox.Show(ex.Message)
         End Try
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
         Try
-            R2CoreTransportationAndLoadNotification.LoadTargets.R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetProvinces(2,7,1,1)
+            'R2CoreTransportationAndLoadNotification.LoadTargets.R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetProvinces(2,7,1,1)
+            'Dim NSS As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase("2218230",R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser())
+            Dim _WS As PayanehWS.PayanehWebService = New PayanehWS.PayanehWebService()
+            'Dim ExchangeKey = _WS.WebMethodLogin("123", "1234")
+            _ws.WebMethodGetnIdCarTruckBySmartCarNo("2063514","74094")
+            'PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating("1775507", R2CoreMClassLoginManagement.GetNSSSystemUser())
         Catch ex As Exception
             MessageBox.Show(ex.Message)
-
         End Try
     End Sub
 End Class

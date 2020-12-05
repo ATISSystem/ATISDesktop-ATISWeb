@@ -36,15 +36,11 @@ namespace ATISWeb.LoginManagement
         {
             try
             {
-                if (R2CoreMClassLoginManagement.AuthenticationUserbyShenasehPassword(new R2CoreStandardUserStructure(0, "", TxtUserShenaseh.Text, TxtUserPassword.Text, "", false, false)))
-                {
-                    R2CoreStandardUserStructure NSS = R2CoreMClassLoginManagement.GetNSSUser(TxtUserShenaseh.Text, TxtUserPassword.Text);
-                    Session.Add("CurrentUser", NSS);
-                    Session.Timeout = 60;
-                    WcUserAuthenticationSuccessEvent?.Invoke(this, e);
-                }
-                else
-                { }
+                R2CoreMClassLoginManagement.AuthenticationUserbyShenasehPassword(new R2CoreStandardUserStructure(0, "", TxtUserShenaseh.Text, TxtUserPassword.Text, "", false, false));
+                R2CoreStandardUserStructure NSS = R2CoreMClassLoginManagement.GetNSSUser(TxtUserShenaseh.Text, TxtUserPassword.Text);
+                Session.Add("CurrentUser", NSS);
+                Session.Timeout = 60;
+                WcUserAuthenticationSuccessEvent?.Invoke(this, e);
             }
             catch (Exception ex) when (ex is UserIsNotActiveException || ex is UserNotExistException || ex is GetNSSException)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }

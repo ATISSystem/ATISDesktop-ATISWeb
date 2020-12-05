@@ -139,7 +139,7 @@ Public Class FrmcDriverTruckFingerPrintRegister
     Private Sub UcButtonSavePictureDriverTruckFirst_UCClickedEvent() Handles UcButtonSavePictureDriverTruckFirst.UCClickedEvent
         Try
             If PayanehClassLibraryMClassDriverTruckSalonPresentManagement.HaveFirstDriverFingerPrintSabted(UcCarTruck.UCGetNSS().NSSCar) Then
-                R2CoreParkingSystemMClassDrivers.SaveDriverImage(UcDriverTruckFirst.UCGetNSS().NSSDriver, UcDriverImagePnlRegister.UCGetImage)
+                R2CoreParkingSystemMClassDrivers.SaveDriverImage(UcDriverTruckFirst.UCGetNSS().NSSDriver, UcDriverImagePnlRegister.UCGetImage,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تصویر راننده باری ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             Else
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اثر انگشت راننده ثبت نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -157,7 +157,7 @@ Public Class FrmcDriverTruckFingerPrintRegister
     Private Sub UcButtonSavePictureDriverTrucksecond_UCClickedEvent() Handles UcButtonSavePictureDriverTruckSecond.UCClickedEvent
         Try
             If PayanehClassLibraryMClassDriverTruckSalonPresentManagement.HaveSecondDriverFingerPrintSabted(UcCarTruck.UCGetNSS().NSSCar) Then
-                R2CoreParkingSystemMClassDrivers.SaveDriverImage(UcDriverTruckSecond.UCGetNSS().NSSDriver, UcDriverImagePnlRegister.UCGetImage)
+                R2CoreParkingSystemMClassDrivers.SaveDriverImage(UcDriverTruckSecond.UCGetNSS().NSSDriver, UcDriverImagePnlRegister.UCGetImage,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تصویر راننده باری ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             Else
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اثر انگشت راننده ثبت نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -175,7 +175,7 @@ Public Class FrmcDriverTruckFingerPrintRegister
     Private Sub UcButtonDeleteFPsDriverTruckFirst_UCClickedEvent() Handles UcButtonDeleteFPsDriverTruckFirst.UCClickedEvent
         Try
             PayanehClassLibraryMClassDriverTruckSalonPresentManagement.DeleteDriverTruckFPs(UcDriverTruckFirst.UCGetNSS())
-            R2CoreParkingSystemMClassDrivers.DeleteDriverImage(UcDriverTruckFirst.UCGetNSS().NSSDriver)
+            R2CoreParkingSystemMClassDrivers.DeleteDriverImage(UcDriverTruckFirst.UCGetNSS().NSSDriver,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "اثرانگشت راننده باری حذف شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exx As GetNSSException
             R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده اول مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
@@ -188,7 +188,7 @@ Public Class FrmcDriverTruckFingerPrintRegister
     Private Sub UcButtonDeleteFPsDriverTrucksecond_UCClickedEvent() Handles UcButtonDeleteFPsDriverTruckSecond.UCClickedEvent
         Try
             PayanehClassLibraryMClassDriverTruckSalonPresentManagement.DeleteDriverTruckFPs(UcDriverTruckSecond.UCGetNSS())
-            R2CoreParkingSystemMClassDrivers.DeleteDriverImage(UcDriverTruckSecond.UCGetNSS().NSSDriver)
+            R2CoreParkingSystemMClassDrivers.DeleteDriverImage(UcDriverTruckSecond.UCGetNSS().NSSDriver,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "اثرانگشت راننده باری حذف شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exx As GetNSSException
             R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت رانند ه باری" + vbCrLf + "اطلاعات راننده دوم مشخص نیست", _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))

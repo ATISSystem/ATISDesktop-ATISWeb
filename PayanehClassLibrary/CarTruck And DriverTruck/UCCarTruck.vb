@@ -15,6 +15,7 @@ Public Class UCCarTruck
     Public Event UCViewCarTruckInformationCompleted(CarId As String)
     Public Event UCRefreshedGeneralEvent()
     Private _CurrentNSS As R2StandardCarTruckStructure = Nothing
+    Private _WS As PayanehWS.PayanehWebService = New PayanehWS.PayanehWebService()
 
 
 
@@ -79,7 +80,7 @@ Public Class UCCarTruck
         Try
             UCRefresh()
             UcCar.UCViewCarInformation(YournIdCar)
-            _CurrentNSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(YournIdCar)
+            _CurrentNSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(YournIdCar)
             UcNumberStrBodyNo.UCValue = _CurrentNSS.StrBodyNo
             RaiseEvent UCViewCarTruckInformationCompleted(_CurrentNSS.NSSCar.nIdCar)
         Catch exx As GetNSSException
@@ -120,7 +121,7 @@ Public Class UCCarTruck
 
     Public Function UCGetNSS() As R2StandardCarTruckStructure
         Try
-            Dim myNSS As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(UcCar.UCGetNSS().nIdCar)
+            Dim myNSS As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(UcCar.UCGetNSS().nIdCar)
             Return myNSS
         Catch exx As GetNSSException
             Throw exx
@@ -138,7 +139,7 @@ Public Class UCCarTruck
 
     Private Sub UcCar_UCViewCarInformationCompleted(CarId As String) Handles UcCar.UCViewCarInformationCompleted
         Try
-           _CurrentNSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(CarId)
+            _CurrentNSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(CarId)
             UcNumberStrBodyNo.UCValue = _CurrentNSS.StrBodyNo
             RaiseEvent UCViewCarTruckInformationCompleted(CarId)
         Catch ex As Exception
@@ -148,24 +149,13 @@ Public Class UCCarTruck
 
     Private Sub UcNumberStrBodyNoSearch_UC13Pressed(UserNumber As String) Handles UcNumberStrBodyNoSearch.UC13Pressed
         Try
-            Try
-                UcCar.UCRefreshGeneral()
-                _CurrentNSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyBodyNo(UserNumber)
-                UcCar.UCViewCarInformation(_CurrentNSS.NSSCar)
-            Catch ex As GetNSSException
-                If MessageBox.Show(Nothing, "اطلاعات ناوگان در سیستم قبلا ثبت نشده است" + vbCrLf + "اطلاعات مورد نظر را از سرویس اینترنتی دریافت میکنید؟", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly) = DialogResult.Yes Then
-                    Try
-                        _CurrentNSS = Rmto.RmtoWebService.GetNSSCarTruck(UserNumber)
-                        UcCar.UCViewCarInformationDirty(_CurrentNSS.NSSCar)
-                        UcNumberStrBodyNo.UCValue = _CurrentNSS.StrBodyNo
-                    Catch exx As RMTOWebServiceSException
-                        UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-                    End Try
-                Else
-                End If
-            End Try
-        Catch exx As GetNSSException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + exx.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+            UcCar.UCRefreshGeneral()
+            Dim ExchangeKey = _WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword)
+            Dim nIdCar = _WS.WebMethodGetnIdCarTruckBySmartCarNo(UserNumber, ExchangeKey)
+            _CurrentNSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(nIdCar)
+            UcCar.UCViewCarInformation(_CurrentNSS.NSSCar)
+        Catch ex As System.Web.Services.Protocols.SoapException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

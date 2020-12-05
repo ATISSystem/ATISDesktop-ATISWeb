@@ -53,7 +53,7 @@ Public Class UCPersonnelImage
     Public Sub UCViewPersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure)
         Try
             _CurrentNSS=YourNSSPersonnel
-            PicPersonnel.Image = R2CorePersonnelMClassManagement.GetPersonnelImage(YourNSSPersonnel).GetImage()
+            PicPersonnel.Image = R2CorePersonnelMClassManagement.GetPersonnelImage(YourNSSPersonnel,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS).GetImage()
             If Object.Equals(PicPersonnel.Image, Nothing) Then
                 Throw New R2CorePersonnelNotExistException
             End If
@@ -74,7 +74,7 @@ Public Class UCPersonnelImage
 
     Public Sub UCSavePersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure)
         Try
-            R2CorePersonnelMClassManagement.SavePersonnelImage(YourNSSPersonnel,new R2CoreImage(PicPersonnel.Image))
+            R2CorePersonnelMClassManagement.SavePersonnelImage(YourNSSPersonnel,new R2CoreImage(PicPersonnel.Image),R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
