@@ -75,7 +75,7 @@ Public Class FrmcPersonnelAttendance
                 Dim params() As Object = New Object() {}
                 BeginInvoke(myDelegate, params)
             Else
-                UcPersonnelImage.UCViewPersonnelImage(YourNSSPersonnel)
+                UcPersonnelImage.UCViewPersonnelImage(YourNSSPersonnel,R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser())
                 UcPersonnelImage.BringToFront()
             End If
             'نمایش تعداد ورود و خروج

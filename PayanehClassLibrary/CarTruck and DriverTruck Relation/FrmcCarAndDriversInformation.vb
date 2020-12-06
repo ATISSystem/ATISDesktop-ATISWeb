@@ -266,7 +266,7 @@ Public Class FrmcCarAndDriversInformation
         End Try
     End Sub
 
-    Private Sub UcCarTruck_UCViewCarTruckInformationCompleted(CarId As String) Handles UcCarTruck.UCViewCarTruckInformationCompleted
+    Private Sub UcCarTruck_UCViewCarTruckInformationCompletedEvent(CarId As String) Handles UcCarTruck.UCViewCarTruckInformationCompletedEvent
         Try
             ReservedTruckId = CarId
             UcDriverTruckFirst.UCRefreshGeneral()
@@ -285,7 +285,7 @@ Public Class FrmcCarAndDriversInformation
         UcDriverTruckSecond.UCRefreshGeneral()
     End Sub
 
-    Private Sub UcCarTruckPnlTrucksRelationAnnouncementHalls_UCViewCarTruckInformationCompleted(CarId As String) Handles UcCarTruckPnlTrucksRelationAnnouncementHalls.UCViewCarTruckInformationCompleted
+    Private Sub UcCarTruckPnlTrucksRelationAnnouncementHalls_UCViewCarTruckInformationCompletedEvent(CarId As String) Handles UcCarTruckPnlTrucksRelationAnnouncementHalls.UCViewCarTruckInformationCompletedEvent
         Try
             UcViewerNSSAnnouncementHallSubGroup.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSAnnouncementHallSubGroup(CarId))
         Catch ex As Exception

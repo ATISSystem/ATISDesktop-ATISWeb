@@ -21,7 +21,7 @@ Public Class FrmcPersonnelEnterExits
         Try
             InitializeSpecial()
             FrmRefresh()
-            UcucPersonnelCollection.UCViewPersonnelsByUCPersonnelPresenter()
+            UcucPersonnelCollection.UCViewPersonnelsByUCPersonnelPresenter(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -55,7 +55,7 @@ Public Class FrmcPersonnelEnterExits
 
     Private Sub UcucPersonnelCollection_UCSelected(NSSPersonnel As R2CoreStandardPersonnelStructure) Handles UcucPersonnelCollection.UCSelected
         Try
-            UcPersonnelImage.UCViewPersonnelImage(NSSPersonnel)
+            UcPersonnelImage.UCViewPersonnelImage(NSSPersonnel,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UcListBoxPersonnelEnterExit.UCViewPersonnelEnterExit(NSSPersonnel)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

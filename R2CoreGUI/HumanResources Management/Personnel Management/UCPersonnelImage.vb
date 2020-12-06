@@ -7,6 +7,7 @@ Imports R2Core.BaseStandardClass
 
 Imports R2Core.DatabaseManagement
 Imports R2Core.HumanResourcesManagement.Personnel
+Imports R2Core.UserManagement
 Imports R2CoreGUI
 
 Public Class UCPersonnelImage
@@ -50,10 +51,10 @@ Public Class UCPersonnelImage
         End Try
     End Sub
 
-    Public Sub UCViewPersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure)
+    Public Sub UCViewPersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure,YourNSSUser As R2CoreStandardUserStructure)
         Try
             _CurrentNSS=YourNSSPersonnel
-            PicPersonnel.Image = R2CorePersonnelMClassManagement.GetPersonnelImage(YourNSSPersonnel,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS).GetImage()
+            PicPersonnel.Image = R2CorePersonnelMClassManagement.GetPersonnelImage(YourNSSPersonnel,YourNSSUser).GetImage()
             If Object.Equals(PicPersonnel.Image, Nothing) Then
                 Throw New R2CorePersonnelNotExistException
             End If

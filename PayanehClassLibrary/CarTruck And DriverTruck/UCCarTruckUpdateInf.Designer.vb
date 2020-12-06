@@ -30,9 +30,7 @@ Partial Class UCCarTruckUpdateInf
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PnlOutter = New System.Windows.Forms.Panel()
         Me.PnlInner = New System.Windows.Forms.Panel()
-        Me.UcButtonSpecialCancel = New R2CoreGUI.UCButtonSpecial()
         Me.UcLabel1 = New R2CoreGUI.UCLabel()
-        Me.UcButtonSpecialConfirm = New R2CoreGUI.UCButtonSpecial()
         Me.PnlMain.SuspendLayout
         Me.PnlOutter.SuspendLayout
         Me.PnlInner.SuspendLayout
@@ -68,7 +66,7 @@ Partial Class UCCarTruckUpdateInf
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(5, 5)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(737, 251)
+        Me.PnlMain.Size = New System.Drawing.Size(737, 207)
         Me.PnlMain.TabIndex = 1
         '
         'PnlOutter
@@ -80,38 +78,20 @@ Partial Class UCCarTruckUpdateInf
         Me.PnlOutter.Location = New System.Drawing.Point(0, 0)
         Me.PnlOutter.Name = "PnlOutter"
         Me.PnlOutter.Padding = New System.Windows.Forms.Padding(2)
-        Me.PnlOutter.Size = New System.Drawing.Size(737, 251)
+        Me.PnlOutter.Size = New System.Drawing.Size(737, 207)
         Me.PnlOutter.TabIndex = 1
         '
         'PnlInner
         '
         Me.PnlInner.BackColor = System.Drawing.Color.White
-        Me.PnlInner.Controls.Add(Me.UcButtonSpecialCancel)
         Me.PnlInner.Controls.Add(Me.UcLabel1)
-        Me.PnlInner.Controls.Add(Me.UcButtonSpecialConfirm)
         Me.PnlInner.Controls.Add(Me.UcCarTruck)
         Me.PnlInner.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlInner.Location = New System.Drawing.Point(2, 2)
         Me.PnlInner.Name = "PnlInner"
         Me.PnlInner.Padding = New System.Windows.Forms.Padding(5)
-        Me.PnlInner.Size = New System.Drawing.Size(731, 245)
+        Me.PnlInner.Size = New System.Drawing.Size(731, 201)
         Me.PnlInner.TabIndex = 0
-        '
-        'UcButtonSpecialCancel
-        '
-        Me.UcButtonSpecialCancel.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcButtonSpecialCancel.BackColor = System.Drawing.Color.Black
-        Me.UcButtonSpecialCancel.Location = New System.Drawing.Point(381, 198)
-        Me.UcButtonSpecialCancel.Name = "UcButtonSpecialCancel"
-        Me.UcButtonSpecialCancel.Padding = New System.Windows.Forms.Padding(2)
-        Me.UcButtonSpecialCancel.Size = New System.Drawing.Size(96, 41)
-        Me.UcButtonSpecialCancel.TabIndex = 3
-        Me.UcButtonSpecialCancel.UCBackColor = System.Drawing.Color.Red
-        Me.UcButtonSpecialCancel.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonSpecialCancel.UCEnable = true
-        Me.UcButtonSpecialCancel.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcButtonSpecialCancel.UCForeColor = System.Drawing.Color.White
-        Me.UcButtonSpecialCancel.UCValue = "انصراف"
         '
         'UcLabel1
         '
@@ -130,22 +110,6 @@ Partial Class UCCarTruckUpdateInf
         Me.UcLabel1.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabel1.UCValue = "ناوگان باری - شماره هوشمند ناوگان را وارد نمایید و سپس کلید اینتر را فشار دهید"
         '
-        'UcButtonSpecialConfirm
-        '
-        Me.UcButtonSpecialConfirm.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcButtonSpecialConfirm.BackColor = System.Drawing.Color.Black
-        Me.UcButtonSpecialConfirm.Location = New System.Drawing.Point(253, 198)
-        Me.UcButtonSpecialConfirm.Name = "UcButtonSpecialConfirm"
-        Me.UcButtonSpecialConfirm.Padding = New System.Windows.Forms.Padding(2)
-        Me.UcButtonSpecialConfirm.Size = New System.Drawing.Size(122, 41)
-        Me.UcButtonSpecialConfirm.TabIndex = 1
-        Me.UcButtonSpecialConfirm.UCBackColor = System.Drawing.Color.White
-        Me.UcButtonSpecialConfirm.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonSpecialConfirm.UCEnable = false
-        Me.UcButtonSpecialConfirm.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcButtonSpecialConfirm.UCForeColor = System.Drawing.Color.Black
-        Me.UcButtonSpecialConfirm.UCValue = "تایید"
-        '
         'UCCarTruckUpdateInf
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -154,7 +118,7 @@ Partial Class UCCarTruckUpdateInf
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCCarTruckUpdateInf"
         Me.Padding = New System.Windows.Forms.Padding(5)
-        Me.Size = New System.Drawing.Size(747, 261)
+        Me.Size = New System.Drawing.Size(747, 217)
         Me.PnlMain.ResumeLayout(false)
         Me.PnlOutter.ResumeLayout(false)
         Me.PnlInner.ResumeLayout(false)
@@ -168,6 +132,4 @@ End Sub
     Friend WithEvents PnlOutter As Windows.Forms.Panel
     Friend WithEvents PnlInner As Windows.Forms.Panel
     Friend WithEvents UcLabel1 As R2CoreGUI.UCLabel
-    Friend WithEvents UcButtonSpecialConfirm As R2CoreGUI.UCButtonSpecial
-    Friend WithEvents UcButtonSpecialCancel As UCButtonSpecial
 End Class

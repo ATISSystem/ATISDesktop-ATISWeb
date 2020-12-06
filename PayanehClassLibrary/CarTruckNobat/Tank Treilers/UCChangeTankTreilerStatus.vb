@@ -29,7 +29,7 @@ Public Class UCChangeTankTreilerStatus
 
 #Region "Event Handlers"
 
-    Private Sub UcCarTruck_UCViewCarTruckInformationCompleted(CarId As String) Handles UcCarTruck.UCViewCarTruckInformationCompleted
+    Private Sub UcCarTruck_UCViewCarTruckInformationCompletedEvent(CarId As String) Handles UcCarTruck.UCViewCarTruckInformationCompletedEvent
         Try
             UcTankTreilerManipulation.UCViewStatus(PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(carid))
         Catch ex As Exception

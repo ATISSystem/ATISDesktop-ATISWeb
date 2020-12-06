@@ -148,7 +148,7 @@ Public Class FrmcTurnRegisterRequest
         End Try
     End Sub
 
-    Private Sub UcCarTruckPnlCarTruckTurns_UCViewCarTruckInformationCompleted(CarId As String) Handles UcCarTruckPnlCarTruckTurns.UCViewCarTruckInformationCompleted
+    Private Sub UcCarTruckPnlCarTruckTurns_UCViewCarTruckInformationCompletedEvent(CarId As String) Handles UcCarTruckPnlCarTruckTurns.UCViewCarTruckInformationCompletedEvent
         Try
             Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(CarId)
             UcucCarTruckNobatCollectionPnlCarTruckTurns.UCViewCollection(NSSCarTruck)

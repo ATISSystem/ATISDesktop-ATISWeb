@@ -12,7 +12,8 @@ Public Class UCCarTruck
     Inherits UCGeneral
 
 
-    Public Event UCViewCarTruckInformationCompleted(CarId As String)
+    Public Event UCViewCarTruckInformationCompletedEvent(CarId As String)
+    Public Event UCViewCarTruckInformationNotCompletedEvent()
     Public Event UCRefreshedGeneralEvent()
     Private _CurrentNSS As R2StandardCarTruckStructure = Nothing
     Private _WS As PayanehWS.PayanehWebService = New PayanehWS.PayanehWebService()
@@ -82,7 +83,7 @@ Public Class UCCarTruck
             UcCar.UCViewCarInformation(YournIdCar)
             _CurrentNSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(YournIdCar)
             UcNumberStrBodyNo.UCValue = _CurrentNSS.StrBodyNo
-            RaiseEvent UCViewCarTruckInformationCompleted(_CurrentNSS.NSSCar.nIdCar)
+            RaiseEvent UCViewCarTruckInformationCompletedEvent(_CurrentNSS.NSSCar.nIdCar)
         Catch exx As GetNSSException
             Throw exx
         Catch ex As Exception
@@ -96,7 +97,7 @@ Public Class UCCarTruck
             _CurrentNSS = YourNSS
             UcCar.UCViewCarInformation(YourNSS.NSSCar)
             UcNumberStrBodyNo.UCValue = YourNSS.StrBodyNo
-            RaiseEvent UCViewCarTruckInformationCompleted(YourNSS.NSSCar.nIdCar)
+            RaiseEvent UCViewCarTruckInformationCompletedEvent(YourNSS.NSSCar.nIdCar)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -141,7 +142,7 @@ Public Class UCCarTruck
         Try
             _CurrentNSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(CarId)
             UcNumberStrBodyNo.UCValue = _CurrentNSS.StrBodyNo
-            RaiseEvent UCViewCarTruckInformationCompleted(CarId)
+            RaiseEvent UCViewCarTruckInformationCompletedEvent(CarId)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -156,8 +157,10 @@ Public Class UCCarTruck
             UcCar.UCViewCarInformation(_CurrentNSS.NSSCar)
         Catch ex As System.Web.Services.Protocols.SoapException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+            RaiseEvent UCViewCarTruckInformationNotCompletedEvent()
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+            RaiseEvent UCViewCarTruckInformationNotCompletedEvent()
         End Try
     End Sub
 

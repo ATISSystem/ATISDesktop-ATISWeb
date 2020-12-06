@@ -68,7 +68,7 @@ Public Class FrmcPersonelInf
 
     Private Sub UcPersonnelPnlPersonnelImage_UCViewPersonnelInformationCompleted(PersonnelId As Long) Handles UcPersonnelPnlPersonnelImage.UCViewPersonnelInformationCompleted
         Try
-            UcPersonnelImage.UCViewPersonnelImage(R2CorePersonnelMClassManagement.GetNSSPersonnel(PersonnelId))
+            UcPersonnelImage.UCViewPersonnelImage(R2CorePersonnelMClassManagement.GetNSSPersonnel(PersonnelId),R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

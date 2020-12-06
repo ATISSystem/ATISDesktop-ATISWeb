@@ -710,10 +710,10 @@
   </wsdl:binding>
   <wsdl:service name="R2PrimaryWebService">
     <wsdl:port name="R2PrimaryWebServiceSoap" binding="tns:R2PrimaryWebServiceSoap">
-      <soap:address location="http://localhost:1696/R2PrimaryWebService.asmx" />
+      <soap:address location="http://192.168.20.3:2011/R2PrimaryWebService.asmx" />
     </wsdl:port>
     <wsdl:port name="R2PrimaryWebServiceSoap12" binding="tns:R2PrimaryWebServiceSoap12">
-      <soap12:address location="http://localhost:1696/R2PrimaryWebService.asmx" />
+      <soap12:address location="http://192.168.20.3:2011/R2PrimaryWebService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

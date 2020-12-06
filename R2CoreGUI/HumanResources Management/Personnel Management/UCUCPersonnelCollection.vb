@@ -73,7 +73,7 @@ Public Class UCUCPersonnelCollection
         Cursor.Current = Cursors.Default
     End Sub
 
-    Public Sub UCViewPersonnelsByUCPersonnelPresenter()
+    Public Sub UCViewPersonnelsByUCPersonnelPresenter(YourNSSUser As R2CoreStandardUserStructure)
         Try
             Cursor.Current = Cursors.WaitCursor
             Dim Lst As List(Of R2CoreStandardPersonnelStructure) = R2CorePersonnelMClassManagement.CreateListOfPersonnel(True)
@@ -81,7 +81,7 @@ Public Class UCUCPersonnelCollection
             PnlUCs.Controls.Clear()
             For Loopx As Int16 = Lst.Count - 1 To 0 Step -1
                 Dim myUC As UCPersonnelPresenter = New UCPersonnelPresenter()
-                myUC.UCViewPersonnel(Lst(Loopx))
+                myUC.UCViewPersonnel(Lst(Loopx),YourNSSUser)
                 myUC.Dock = DockStyle.Top
                 PnlUCs.Controls.Add(myUC)
                 AddHandler myUC.UCClickedEvent, AddressOf UCs_UCClickedEvent

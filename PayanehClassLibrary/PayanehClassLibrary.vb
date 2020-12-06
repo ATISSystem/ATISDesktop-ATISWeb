@@ -164,6 +164,18 @@ Namespace Rmto
 
 End Namespace
 
+Namespace Logging
+
+    Public MustInherit Class PayanehClassLibraryLogType
+        Inherits R2CoreLogType
+
+        Public Shared ReadOnly Property CarTruckUpdateInfSuccess As Int64 = 17
+        Public Shared ReadOnly Property CarTruckUpdateInfNotSuccess As Int64 = 18
+
+    End Class
+
+End Namespace
+
 Namespace ComputerMessages
 
     Public MustInherit Class PayanehClassLibraryComputerMessageTypes

@@ -14,7 +14,7 @@ Public Class UCCarTruckUpdateInf
     Inherits UCGeneral
 
     Public Event UCViewCarTruckInformationCompletedEvent(CarId As String)
-    Public Event UCUserCanceledEvent
+    Public Event UCViewCarTruckInformationNotCompletedEvent()
 
 
 
@@ -34,8 +34,7 @@ Public Class UCCarTruckUpdateInf
 
     Private Sub UCRefresh()
         Try
-            UcCartruck.UCRefreshGeneral()
-            UcButtonSpecialConfirm.UCEnable=False
+            UcCarTruck.UCRefreshGeneral()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -58,32 +57,22 @@ Public Class UCCarTruckUpdateInf
 
 #Region "Event Handlers"
 
-    Private Sub UcCarTruck_UCViewCarTruckInformationCompleted(CarId As String) Handles UcCarTruck.UCViewCarTruckInformationCompleted
+    Private Sub UcCarTruck_UCViewCarTruckInformationCompletedEvent(CarId As String) Handles UcCarTruck.UCViewCarTruckInformationCompletedEvent
         Try
-            UcButtonSpecialConfirm.UCEnable = True
+            RaiseEvent UCViewCarTruckInformationCompletedEvent(CarId)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
 
-    Private Sub UcButtonSpecialConfirm_UCClickedEvent() Handles UcButtonSpecialConfirm.UCClickedEvent
+    Private Sub UcCarTruck_UCViewCarTruckInformationNotCompletedEvent() Handles UcCarTruck.UCViewCarTruckInformationNotCompletedEvent
         Try
-            UcButtonSpecialConfirm.UCEnable=False
-            RaiseEvent UCViewCarTruckInformationCompletedevent(UcCarTruck.UCGetNSS.NSSCar.nIdCar)
+            RaiseEvent UCViewCarTruckInformationNotCompletedEvent()
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
-
     End Sub
 
-    Private Sub UcButtonSpecialCancel_UCClickedEvent() Handles UcButtonSpecialCancel.UCClickedEvent
-        Try
-            RaiseEvent UCUserCanceledEvent
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-
-    End Sub
 
 
 

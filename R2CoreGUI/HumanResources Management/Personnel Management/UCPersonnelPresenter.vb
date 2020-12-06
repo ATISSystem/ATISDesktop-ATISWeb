@@ -1,6 +1,7 @@
 ﻿
 Imports System.Reflection
 Imports R2Core.HumanResourcesManagement.Personnel
+Imports R2Core.UserManagement
 
 Public Class UCPersonnelPresenter
     Inherits UCGeneral
@@ -26,11 +27,11 @@ Public Class UCPersonnelPresenter
         UcPersonnelImage.UCRefresh()
     End Sub
 
-    Public Sub UCViewPersonnel(YourNSSPersonnel As R2CoreStandardPersonnelStructure)
+    Public Sub UCViewPersonnel(YourNSSPersonnel As R2CoreStandardPersonnelStructure,YourNSSUser As R2CoreStandardUserStructure)
         Try
             _CurrentNSS = YourNSSPersonnel
             UcLabelNameFamily.UCValue = YourNSSPersonnel.PNameFamily.Trim()
-            UcPersonnelImage.UCViewPersonnelImage(YourNSSPersonnel)
+            UcPersonnelImage.UCViewPersonnelImage(YourNSSPersonnel,YourNSSUser)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

@@ -840,10 +840,10 @@
   </wsdl:binding>
   <wsdl:service name="PayanehWebService">
     <wsdl:port name="PayanehWebServiceSoap" binding="tns:PayanehWebServiceSoap">
-      <soap:address location="http://localhost:10919/PayanehWebService.asmx" />
+      <soap:address location="http://192.168.20.3:2012/PayanehWebService.asmx" />
     </wsdl:port>
     <wsdl:port name="PayanehWebServiceSoap12" binding="tns:PayanehWebServiceSoap12">
-      <soap12:address location="http://localhost:10919/PayanehWebService.asmx" />
+      <soap12:address location="http://192.168.20.3:2012/PayanehWebService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -210,7 +210,7 @@ Public Class FrmcDriverTruckFingerPrintRegister
         End Try
     End Sub
 
-    Private Sub UcCarTruck_UCViewCarTruckInformationCompleted(CarId As String) Handles UcCarTruck.UCViewCarTruckInformationCompleted
+    Private Sub UcCarTruck_UCViewCarTruckInformationCompletedEvent(CarId As String) Handles UcCarTruck.UCViewCarTruckInformationCompletedEvent
         'راننده اول
         Try
             UcDriverTruckFirst.UCViewDriverInformation(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(CarId))
