@@ -73,12 +73,21 @@ Public Class UCCarTruckUpdateInf
         End Try
     End Sub
 
+    Private Sub UCCarTruckUpdateInf_UCGotFocusedEvent() Handles Me.UCGotFocusedEvent
+        Try
+            UcCarTruck.UCFocus()
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
 
 
 
 #End Region
 
 #Region "Override Methods"
+
 #End Region
 
 #Region "Abstract Methods"

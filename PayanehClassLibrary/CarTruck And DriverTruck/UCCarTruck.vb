@@ -54,7 +54,8 @@ Public Class UCCarTruck
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-
+        UcNumberStrBodyNoSearch.UCAllowedMinNumber = 1000000
+        UcNumberStrBodyNoSearch.UCAllowedMaxNumber = 9999999
     End Sub
 
     Private Sub UCRefresh()
@@ -198,6 +199,10 @@ Public Class UCCarTruck
 
     Private Sub UcNumberStrBodyNo_UC13PressedEvent(CurrentText As String) Handles UcNumberStrBodyNo.UC13PressedEvent
         UcButtonSabt.Focus()
+    End Sub
+
+    Private Sub UCCarTruck_UCGotFocusedEvent() Handles Me.UCGotFocusedEvent
+        UcNumberStrBodyNoSearch.UCFocus()
     End Sub
 
 #End Region

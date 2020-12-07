@@ -60,15 +60,18 @@ Partial Class UCCarTruck
         '
         Me.UcNumberStrBodyNoSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.UcNumberStrBodyNoSearch.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
-        Me.UcNumberStrBodyNoSearch.Location = New System.Drawing.Point(235, 4)
+        Me.UcNumberStrBodyNoSearch.Location = New System.Drawing.Point(261, 6)
         Me.UcNumberStrBodyNoSearch.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberStrBodyNoSearch.Name = "UcNumberStrBodyNoSearch"
-        Me.UcNumberStrBodyNoSearch.Size = New System.Drawing.Size(134, 25)
-        Me.UcNumberStrBodyNoSearch.TabIndex = 29
+        Me.UcNumberStrBodyNoSearch.Size = New System.Drawing.Size(102, 20)
+        Me.UcNumberStrBodyNoSearch.TabIndex = 0
+        Me.UcNumberStrBodyNoSearch.UCAllowedMaxNumber = CType(9223372036854775807,Long)
+        Me.UcNumberStrBodyNoSearch.UCAllowedMinNumber = CType(-922337203685477580,Long)
         Me.UcNumberStrBodyNoSearch.UCBackColor = System.Drawing.Color.White
         Me.UcNumberStrBodyNoSearch.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcNumberStrBodyNoSearch.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
         Me.UcNumberStrBodyNoSearch.UCBorder = true
-        Me.UcNumberStrBodyNoSearch.UCBorderColor = System.Drawing.Color.Black
+        Me.UcNumberStrBodyNoSearch.UCBorderColor = System.Drawing.Color.DarkGray
         Me.UcNumberStrBodyNoSearch.UCEnable = true
         Me.UcNumberStrBodyNoSearch.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
         Me.UcNumberStrBodyNoSearch.UCForeColor = System.Drawing.Color.Black

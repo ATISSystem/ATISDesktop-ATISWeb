@@ -3267,6 +3267,26 @@ Namespace ExceptionManagement
         End Property
     End Class
 
+    Public Class InvalidEntryAmountException
+        Inherits ApplicationException
+        Public Overrides ReadOnly Property Message As String
+            Get
+                Return "مقدار وارد شده نادرست است"
+            End Get
+        End Property
+    End Class
+
+    Public Class InvalidEntryNumberException
+        Inherits ApplicationException
+        Public Overrides ReadOnly Property Message As String
+            Get
+                Return "تعداد وارد شده نادرست است"
+            End Get
+        End Property
+    End Class
+
+
+
 
     Public Class GetNSSException
         Inherits ApplicationException
