@@ -34,7 +34,10 @@ Partial Class Form3
         Me.Button5 = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Button7 = New System.Windows.Forms.Button()
-        Me.UcCarTruck1 = New PayanehClassLibrary.UCCarTruck()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.UcCreatorBillOfLadingControl1 = New R2CoreTransportationAndLoadNotification.UCCreatorBillOfLadingControl()
+        Me.UcucBillOfLadingControlCollectionAdvance1 = New R2CoreTransportationAndLoadNotification.UCUCBillOfLadingControlCollectionAdvance()
+        Me.UcManipulationBillOfLadingControl1 = New R2CoreTransportationAndLoadNotification.UCManipulationBillOfLadingControl()
         Me.SuspendLayout
         '
         'Button1
@@ -156,22 +159,49 @@ Partial Class Form3
         Me.Button7.Text = "Button7"
         Me.Button7.UseVisualStyleBackColor = true
         '
-        'UcCarTruck1
+        'Button8
         '
-        Me.UcCarTruck1.BackColor = System.Drawing.Color.Transparent
-        Me.UcCarTruck1.Location = New System.Drawing.Point(102, 205)
-        Me.UcCarTruck1.Name = "UcCarTruck1"
-        Me.UcCarTruck1.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcCarTruck1.Size = New System.Drawing.Size(606, 153)
-        Me.UcCarTruck1.TabIndex = 12
-        Me.UcCarTruck1.UCViewButtons = true
+        Me.Button8.Location = New System.Drawing.Point(491, 131)
+        Me.Button8.Name = "Button8"
+        Me.Button8.Size = New System.Drawing.Size(75, 23)
+        Me.Button8.TabIndex = 12
+        Me.Button8.Text = "Button8"
+        Me.Button8.UseVisualStyleBackColor = true
+        '
+        'UcCreatorBillOfLadingControl1
+        '
+        Me.UcCreatorBillOfLadingControl1.BackColor = System.Drawing.Color.Transparent
+        Me.UcCreatorBillOfLadingControl1.Location = New System.Drawing.Point(51, 41)
+        Me.UcCreatorBillOfLadingControl1.Name = "UcCreatorBillOfLadingControl1"
+        Me.UcCreatorBillOfLadingControl1.Size = New System.Drawing.Size(479, 178)
+        Me.UcCreatorBillOfLadingControl1.TabIndex = 13
+        '
+        'UcucBillOfLadingControlCollectionAdvance1
+        '
+        Me.UcucBillOfLadingControlCollectionAdvance1.BackColor = System.Drawing.Color.Transparent
+        Me.UcucBillOfLadingControlCollectionAdvance1.Location = New System.Drawing.Point(775, 12)
+        Me.UcucBillOfLadingControlCollectionAdvance1.Name = "UcucBillOfLadingControlCollectionAdvance1"
+        Me.UcucBillOfLadingControlCollectionAdvance1.Size = New System.Drawing.Size(254, 414)
+        Me.UcucBillOfLadingControlCollectionAdvance1.TabIndex = 14
+        '
+        'UcManipulationBillOfLadingControl1
+        '
+        Me.UcManipulationBillOfLadingControl1.BackColor = System.Drawing.Color.Transparent
+        Me.UcManipulationBillOfLadingControl1.Location = New System.Drawing.Point(28, 247)
+        Me.UcManipulationBillOfLadingControl1.Name = "UcManipulationBillOfLadingControl1"
+        Me.UcManipulationBillOfLadingControl1.Size = New System.Drawing.Size(643, 116)
+        Me.UcManipulationBillOfLadingControl1.TabIndex = 15
+        Me.UcManipulationBillOfLadingControl1.UCNSSCurrent = Nothing
         '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
-        Me.Controls.Add(Me.UcCarTruck1)
+        Me.ClientSize = New System.Drawing.Size(1041, 450)
+        Me.Controls.Add(Me.UcManipulationBillOfLadingControl1)
+        Me.Controls.Add(Me.UcucBillOfLadingControlCollectionAdvance1)
+        Me.Controls.Add(Me.UcCreatorBillOfLadingControl1)
+        Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Button5)
@@ -203,5 +233,8 @@ End Sub
     Friend WithEvents Button5 As Button
     Friend WithEvents Button6 As Button
     Friend WithEvents Button7 As Button
-    Friend WithEvents UcCarTruck1 As PayanehClassLibrary.UCCarTruck
+    Friend WithEvents Button8 As Button
+    Friend WithEvents UcCreatorBillOfLadingControl1 As R2CoreTransportationAndLoadNotification.UCCreatorBillOfLadingControl
+    Friend WithEvents UcucBillOfLadingControlCollectionAdvance1 As R2CoreTransportationAndLoadNotification.UCUCBillOfLadingControlCollectionAdvance
+    Friend WithEvents UcManipulationBillOfLadingControl1 As R2CoreTransportationAndLoadNotification.UCManipulationBillOfLadingControl
 End Class

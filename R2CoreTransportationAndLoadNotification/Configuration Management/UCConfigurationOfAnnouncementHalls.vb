@@ -45,7 +45,7 @@ Public Class UCConfigurationOfAnnouncementHalls
 #Region "Event Handlers"
     Private Sub UCConfigurationOfTransportationAndLoadNotification_UCChangeRegisteringRequestedEvent() Handles Me.UCChangeRegisteringRequestedEvent
         Try
-            R2CoreMClassConfigurationManagement.SetConfiguration(R2CoreTransportationAndLoadNotificationConfigurations.DefaultLoadSourceInf, 0, UcSearcherLoadSources.UCGetSelectedNSS.OCode)
+            R2CoreMClassConfigurationManagement.SetConfiguration(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 0, UcSearcherLoadSources.UCGetSelectedNSS.OCode)
             Dim Pattern As String = UcucAnnouncementHallSubGroupCollection.UCCurrentNSS.AHSGId.ToString + "="
             Dim IndexOfPattern As Int64 = Array.FindIndex(R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetAnnouncementHallAnnounceTimes(UcucAnnouncementHallCollection.UCCurrentNSS.AHId).ToArray(), Function(x) Mid(x, 1, 3) = Pattern)
             R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.SetConfiguration(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallAnnounceTime, UcucAnnouncementHallCollection.UCCurrentNSS.AHId, IndexOfPattern, Pattern+UcTextBoxAnnounceTime.UCValue.Replace(" ",""))
@@ -76,7 +76,7 @@ Public Class UCConfigurationOfAnnouncementHalls
             UcNumberPresentNeededIndigenousTruck.UCValue = R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, UcucAnnouncementHallCollection.UCCurrentNSS.AHId, 4)
             UcNumberPresentNeededUnIndigenousTruck.UCValue = R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, UcucAnnouncementHallCollection.UCCurrentNSS.AHId, 5)
             UcTextBoxIndigenousTruckSerials.UCValue = R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, UcucAnnouncementHallCollection.UCCurrentNSS.AHId, 6)
-            UcSearcherLoadSources.UCViewNSS(R2CoreTransportationAndLoadNotification.LoadSources.R2CoreTransportationAndLoadNotificationMclassLoadSourcesManagement.GetNSSLoadSource(R2Core.ConfigurationManagement.R2CoreMClassConfigurationManagement.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.DefaultLoadSourceInf, 0)))
+            UcSearcherLoadSources.UCViewNSS(R2CoreTransportationAndLoadNotification.LoadSources.R2CoreTransportationAndLoadNotificationMclassLoadSourcesManagement.GetNSSLoadSource(R2Core.ConfigurationManagement.R2CoreMClassConfigurationManagement.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 0)))
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

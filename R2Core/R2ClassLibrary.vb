@@ -1953,7 +1953,8 @@ Namespace DatabaseManagement
                 'پركردن ديتاست
                 Dim da As New SqlClient.SqlDataAdapter
                 da.SelectCommand = New SqlClient.SqlCommand(mySqlString)
-                da.SelectCommand.Connection = R2MClassDatabaseManagement.GetOpenConnection()
+                da.SelectCommand.Connection = myR2ClassSqlConnection.GetConnection()
+                'da.SelectCommand.Connection = R2MClassDatabaseManagement.GetOpenConnection()
                 myDS.Tables.Clear()
                 myRecordsCount = da.Fill(myDS)
             Catch ex As Exception
@@ -2040,7 +2041,7 @@ Namespace DatabaseManagement
                         Return myR2ClassSqlDataBOX
                     End If
                 ElseIf yourDisposeCounter < 0 Then
-                    Throw New Exception("yourDisposeCounter < 0")
+                    Throw New Exception("Error:yourDisposeCounter < 0")
                 End If
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
@@ -2061,7 +2062,33 @@ Namespace DatabaseManagement
 
     End Class
 
-    Public Class R2MClassDatabaseManagement
+    Public Class R2CoreMClassDatabaseManagement
+        Public shared Function GetOLEDbConnectionString(ByVal FileName As String) As String
+            Dim Builder As New OleDb.OleDbConnectionStringBuilder
+            If IO.Path.GetExtension(FileName).ToUpper = ".XLS" Then
+                Builder.Provider = "Microsoft.Jet.OLEDB.4.0"
+                Builder.Add("Extended Properties", "Excel 8.0;IMEX=1;HDR=No;")
+            Else
+                Builder.Provider = "Microsoft.ACE.OLEDB.12.0"
+                Builder.Add("Extended Properties", "Excel 12.0;IMEX=1;HDR=No;")
+            End If
+            Builder.DataSource = FileName
+            Return Builder.ConnectionString
+        End Function
+
+        Public shared Function GetOLEDbConnectionString(ByVal FileName As String, ByVal Header As String) As String
+            Dim Builder As New OleDb.OleDbConnectionStringBuilder
+            If IO.Path.GetExtension(FileName).ToUpper = ".XLS" Then
+                Builder.Provider = "Microsoft.Jet.OLEDB.4.0"
+                Builder.Add("Extended Properties", String.Format("Excel 8.0;IMEX=1;HDR={0};", Header))
+            Else
+                Builder.Provider = "Microsoft.ACE.OLEDB.12.0"
+                Builder.Add("Extended Properties", String.Format("Excel 12.0;IMEX=1;HDR={0};", Header))
+            End If
+            Builder.DataSource = FileName
+            Return Builder.ConnectionString
+        End Function
+
         Public Shared Function DocPaths() As String
             Try
                 Return R2CoreMClassConfigurationManagement.GetConfig(R2CoreConfigurations.DocumentsPath, 0) + "\pic common"
@@ -2102,8 +2129,8 @@ Namespace DatabaseManagement
             End Try
         End Function
 
-        Private Shared _OpenConnection As SqlClient.SqlConnection = (New R2PrimarySqlConnection).GetConnection
-        Private Shared WithEvents ConnectionTimer As New System.Timers.Timer(100000)
+        'Private Shared _OpenConnection As SqlClient.SqlConnection = (New R2PrimarySqlConnection).GetConnection
+        'Private Shared WithEvents ConnectionTimer As New System.Timers.Timer(60000)
 
         'Public Sub ForceConnectionToOpen(YourTimerInterval As Int64)
         '    Try
@@ -2117,27 +2144,27 @@ Namespace DatabaseManagement
         '    End Try
         'End Sub
 
-        Public Shared Function GetOpenConnection() As SqlConnection
-            Try
-                If _OpenConnection.State <> ConnectionState.Closed Then Return _OpenConnection
-                _OpenConnection.Open()
-                ConnectionTimer.Enabled = True
-                ConnectionTimer.Start()
-                Return _OpenConnection
-            Catch ex As Exception
-                MessageBox.Show(ex.Message)
-            End Try
-        End Function
+        'Public Shared Function GetOpenConnection() As SqlConnection
+        '    Try
+        '        If _OpenConnection.State <> ConnectionState.Closed Then Return _OpenConnection
+        '        _OpenConnection.Open()
+        '        ConnectionTimer.Enabled = True
+        '        ConnectionTimer.Start()
+        '        Return _OpenConnection
+        '    Catch ex As Exception
+        '        MessageBox.Show(ex.Message)
+        '    End Try
+        'End Function
 
-        Private Shared Sub ConnectionTimerHandler() Handles ConnectionTimer.Elapsed
-            Try
-                ConnectionTimer.Enabled = False
-                ConnectionTimer.Stop()
-                _OpenConnection.Close()
-            Catch ex As Exception
-                MessageBox.Show(ex.Message)
-            End Try
-        End Sub
+        'Private Shared Sub ConnectionTimerHandler() Handles ConnectionTimer.Elapsed
+        '    Try
+        '        ConnectionTimer.Enabled = False
+        '        ConnectionTimer.Stop()
+        '        _OpenConnection.Close()
+        '    Catch ex As Exception
+        '        MessageBox.Show(ex.Message)
+        '    End Try
+        'End Sub
 
     End Class
 
@@ -3285,9 +3312,6 @@ Namespace ExceptionManagement
         End Property
     End Class
 
-
-
-
     Public Class GetNSSException
         Inherits ApplicationException
         Public Overrides ReadOnly Property Message As String
@@ -3315,6 +3339,14 @@ Namespace ExceptionManagement
         End Property
     End Class
 
+    Public Class FileNotFoundException
+        Inherits ApplicationException
+        Public Overrides ReadOnly Property Message As String
+            Get
+                Return "فایل موجود نیست"
+            End Get
+        End Property
+    End Class
 
 
 
@@ -4405,7 +4437,7 @@ Namespace FileShareRawGroupsManagement
                     YourByteArray = New Byte(FS.Length) {}
                     FS.Read(YourByteArray, 0, FS.Length)
                 End Using
-            Catch exx As FileNotFoundException
+            Catch exx As IO.FileNotFoundException
                 Throw New R2CoreFileNotFoundInRawGroupsException
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

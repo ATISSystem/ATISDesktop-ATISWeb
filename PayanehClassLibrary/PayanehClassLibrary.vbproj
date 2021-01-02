@@ -51,6 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\ATISDesktopRefrences\AlphaGradientPanel.dll</HintPath>
     </Reference>
+    <Reference Include="CButtonLib">
+      <HintPath>C:\ATISDesktopRefrences\CButtonLib.dll</HintPath>
+    </Reference>
     <Reference Include="Dermalog.AFIS.FingerCode3, Version=1.1.1204.19, Culture=neutral, PublicKeyToken=97cac07b8409e999, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\ATISDesktopRefrences\Dermalog.AFIS.FingerCode3.dll</HintPath>
@@ -155,6 +158,12 @@
       <DependentUpon>UCComputerMessageProducerEmergencyTurnRegisterRequest.vb</DependentUpon>
     </Compile>
     <Compile Include="CarTruckNobat\UCComputerMessageProducerEmergencyTurnRegisterRequest.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageReserveTurnRegisterRequestConfirmation.Designer.vb">
+      <DependentUpon>UCComputerMessageReserveTurnRegisterRequestConfirmation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCComputerMessageReserveTurnRegisterRequestConfirmation.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CarTruckNobat\UCComputerMessageTurnPrint.Designer.vb">
@@ -599,6 +608,9 @@
     <EmbeddedResource Include="CarTruckNobat\UCComputerMessageProducerNoCostTurnPrintRequest.resx">
       <DependentUpon>UCComputerMessageProducerNoCostTurnPrintRequest.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCComputerMessageReserveTurnRegisterRequestConfirmation.resx">
+      <DependentUpon>UCComputerMessageReserveTurnRegisterRequestConfirmation.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CarTruckNobat\UCComputerMessageTurnPrint.resx">
       <DependentUpon>UCComputerMessageTurnPrint.vb</DependentUpon>
     </EmbeddedResource>
@@ -838,6 +850,10 @@
     <ProjectReference Include="..\R2CoreParkingSystem\R2CoreParkingSystem.vbproj">
       <Project>{68EE9753-9B39-4D0B-BFE5-0F941A5F183C}</Project>
       <Name>R2CoreParkingSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\R2CoreSMS\R2CoreSMS.vbproj">
+      <Project>{dae8f88e-0def-46ef-a70b-9f670954dcab}</Project>
+      <Name>R2CoreSMS</Name>
     </ProjectReference>
     <ProjectReference Include="..\R2CoreTransportationAndLoadNotification\R2CoreTransportationAndLoadNotification.vbproj">
       <Project>{ef77b294-2e31-4914-af7b-289a6a1bf8dc}</Project>

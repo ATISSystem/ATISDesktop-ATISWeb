@@ -1,4 +1,5 @@
 ﻿
+Imports System.Data.OleDb
 Imports System.Reflection
 Imports System.Data.SqlClient
 Imports System.Drawing
@@ -64,6 +65,7 @@ Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Turns.TurnPrinting
 Imports R2CoreTransportationAndLoadNotification.Turns.TurnRegisterRequest
 Imports R2CoreTransportationAndLoadNotification.AnnouncementTiming
+Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadTargets.Exceptions
 Imports R2CoreTransportationAndLoadNotification.MobileUsers
 Imports R2CoreTransportationAndLoadNotification.MobileUsers.Exeptions
@@ -91,6 +93,7 @@ Namespace ComputerMessages
         Inherits R2Core.ComputerMessagesManagement.R2CoreComputerMessageTypes
         Public Shared ReadOnly EmergencyTurnRegisterRequestConfirmation As Int64 = 2
         Public Shared ReadOnly TurnPrint As Int64 = 3
+        Public Shared ReadOnly ReserveTurnRegisterRequestConfirmation As Int64 = 7
     End Class
 
 End Namespace
@@ -126,6 +129,16 @@ Namespace Trucks
     End Class
 
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTrucksManagement
+        Public Shared Function GetNSSDefaultTruck() As R2CoreTransportationAndLoadNotificationStandardTruckStructure
+            Try
+                Return GetNSSTruck(R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 1))
+            Catch exx As TruckNotFoundException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Shared Function GetNSSTruck(YourTruckId As Int64) As R2CoreTransportationAndLoadNotificationStandardTruckStructure
             Try
                 Dim DS As DataSet
@@ -311,6 +324,8 @@ Namespace Trucks
         End Sub
 
 
+
+
     End Class
 
     Namespace IndigenousTrucks
@@ -388,6 +403,17 @@ Namespace TruckDrivers
     End Class
 
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTruckDriversManagement
+
+        Public Shared Function GetNSSDefaultTruckDriver() As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
+            Try
+                Return GetNSSTruckDriver(R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 2))
+            Catch ex As TruckDriverNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Shared Function GetNSSTruckDriver(YourTruckDriverId As Int64) As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
             Try
                 Dim DS As DataSet
@@ -494,7 +520,7 @@ Namespace ConfigurationsManagement
         Public Shared ReadOnly Property AnnouncementHallAnnounceTime = 55
         Public Shared ReadOnly Property AnnouncementHallsTurnCancellationSetting = 56
         Public Shared ReadOnly Property AnnouncementHallsTruckDriverAttendance = 57
-        Public Shared ReadOnly Property DefaultLoadSourceInf = 58
+        Public Shared ReadOnly Property DefaultTransportationAndLoadNotificationConfigs = 58
         Public Shared ReadOnly Property AnnouncementHallsLoadAllocationsLoadPermissionRegisteringSetting = 59
         Public Shared ReadOnly Property AnnouncementHallsTurnRegisteringSetting = 61
         Public Shared ReadOnly Property AnnouncementHallsLoadPermissionsSetting = 62
@@ -3740,7 +3766,6 @@ Namespace Turns
             Public Shared ReadOnly Property Replica = 2
         End Class
 
-
         Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTurnPrintRequestManagement
 
             Public Shared Sub NoCostTurnPrintRequest(YourTurnId As Int64, YourTurnPrintRedirect As Boolean)
@@ -3898,10 +3923,10 @@ Namespace Turns
                 End Try
             End Function
 
-            Private Shared Sub SaveTurnRegisterRequestAttachement(YourAttachement As R2CoreImage, YourTRRId As Int64,YourNSSUser as R2CoreStandardUserStructure)
+            Private Shared Sub SaveTurnRegisterRequestAttachement(YourAttachement As R2CoreImage, YourTRRId As Int64, YourNSSUser As R2CoreStandardUserStructure)
                 Try
                     Dim FileInf = New R2CoreFile(YourTRRId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2))
-                    _R2PrimaryFSWS.WebMethodSaveFile(FileShareRawGroupsManagement.R2CoreTransportationAndLoadNotificationRawGroups.TurnRegisterRequestAttachements, FileInf.FileName, YourAttachement.GetImageByte(),_R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh,YourNSSUser.UserPassword))
+                    _R2PrimaryFSWS.WebMethodSaveFile(FileShareRawGroupsManagement.R2CoreTransportationAndLoadNotificationRawGroups.TurnRegisterRequestAttachements, FileInf.FileName, YourAttachement.GetImageByte(), _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword))
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
@@ -3919,7 +3944,7 @@ Namespace Turns
                     Dim TRRIdNew As Int64 = CmdSql.ExecuteScalar() + 1
                     CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTurnRegisterRequests(TRRId,TRRTypeId,TruckId,Description,UserId,ComputerId,DateTimeMilladi,DateShamsi) Values(" & TRRIdNew & "," & YourNSSTRR.TRRTypeId & "," & YourNSSTRR.TruckId & ",'" & YourNSSTRR.Description & "'," & YourUserNSS.UserId & "," & R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "')"
                     CmdSql.ExecuteNonQuery()
-                    If YourAttachement IsNot Nothing Then SaveTurnRegisterRequestAttachement(YourAttachement, TRRIdNew,YourUserNSS)
+                    If YourAttachement IsNot Nothing Then SaveTurnRegisterRequestAttachement(YourAttachement, TRRIdNew, YourUserNSS)
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                     'ارسال کد درخواست
                     Return TRRIdNew
@@ -3981,6 +4006,8 @@ Namespace Turns
                     Dim DS As DataSet
                     If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2PrimaryTransportationAndLoadNotification.DBO.TblSequentialTurns Where SeqTId=" & YourSeqTId & "", 1, DS).GetRecordsCount() = 0 Then Throw New SequentialTurnNotFoundException
                     Return New R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure(DS.Tables(0).Rows(0).Item("SeqTId"), DS.Tables(0).Rows(0).Item("SeqTTitle").trim, DS.Tables(0).Rows(0).Item("SeqTColor").trim, DS.Tables(0).Rows(0).Item("SeqTKeyWord").trim, DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Catch ex As SequentialTurnNotFoundException
+                    Throw ex
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
@@ -4012,8 +4039,10 @@ Namespace Turns
                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCar On AHSG.AHSGId=AHSGRCar.AHSGId
                             Inner Join dbtransport.dbo.TbCar as Car On AHSGRCar.CarId=Car.nIDCar
                         Where AHRSeqT.RelationActive=1 and AH.Deleted=0 and AHRAHSG.RelationActive=1 and AHSG.Deleted=0 and AHSGRCar.RelationActive=1 and Car.nIDCar=" & YourNSSTruck.NSSCar.nIdCar & " and Car.ViewFlag=1
-                        Order By AHSGRCar.Priority Asc", 1, DS).GetRecordsCount() = 0 Then Throw New SequentialTurnNotFoundException
+                        Order By AHSGRCar.Priority Asc", 1, DS).GetRecordsCount() = 0 Then Throw New TruckRelatedSequentialTurnNotFoundException
                     Return New R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure(DS.Tables(0).Rows(0).Item("SeqTId"), DS.Tables(0).Rows(0).Item("SeqTTitle").trim, DS.Tables(0).Rows(0).Item("SeqTColor").trim, DS.Tables(0).Rows(0).Item("SeqTKeyWord").trim, DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Catch ex As TruckRelatedSequentialTurnNotFoundException
+                    Throw ex
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
@@ -4061,6 +4090,15 @@ Namespace Turns
                 Public Overrides ReadOnly Property Message As String
                     Get
                         Return "تسلسل نوبت با شماره شاخص مورد نظر وجود ندارد"
+                    End Get
+                End Property
+            End Class
+
+            Public Class TruckRelatedSequentialTurnNotFoundException
+                Inherits ApplicationException
+                Public Overrides ReadOnly Property Message As String
+                    Get
+                        Return "برای ناوگان ، تسلسل نوبت مرتبط یافت نشد"
                     End Get
                 End Property
             End Class
@@ -4831,7 +4869,7 @@ Namespace LoadPermission
                     Dim myDigFont As Font = New System.Drawing.Font("Alborz Titr", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
                     'مرحله اول
                     YourEventArgs.Graphics.DrawRectangle(New Pen(Brushes.Black, 5), X, Y, 700, 400)
-                    YourEventArgs.Graphics.DrawImage(My.Resources.qrcode, X + 40, Y + 60, 120, 120)
+                    YourEventArgs.Graphics.DrawImage(My.Resources.QRCodeLight, X + 40, Y + 60, 120, 120)
                     YourEventArgs.Graphics.DrawString(" پايانه اميرکبير اصفهان ", myStrFontSuperMax, Brushes.DarkBlue, X + 250, Y)
                     YourEventArgs.Graphics.DrawString(" ((مجوز بارگيری)) ", myStrFontSuperMax, Brushes.DarkBlue, X + 280, Y + 50)
                     YourEventArgs.Graphics.DrawString(" تاريخ صدور: " + _PPDS.LoadPermissionDate, myStrFontMax, Brushes.DarkBlue, X + 30, Y)
@@ -4867,7 +4905,7 @@ Namespace LoadPermission
                     'مرحله دوم
                     Y = Y + 550
                     YourEventArgs.Graphics.DrawRectangle(New Pen(Brushes.Black, 5), X, Y, 700, 400)
-                    YourEventArgs.Graphics.DrawImage(My.Resources.qrcode, X + 40, Y + 60, 120, 120)
+                    YourEventArgs.Graphics.DrawImage(My.Resources.QRCodeLight, X + 40, Y + 60, 120, 120)
                     YourEventArgs.Graphics.DrawString(" پايانه اميرکبير اصفهان ", myStrFontSuperMax, Brushes.DarkBlue, X + 250, Y)
                     YourEventArgs.Graphics.DrawString(" ((مجوز بارگيری)) ", myStrFontSuperMax, Brushes.DarkBlue, X + 280, Y + 50)
                     YourEventArgs.Graphics.DrawString(" تاريخ صدور: " + _PPDS.LoadPermissionDate, myStrFontMax, Brushes.DarkBlue, X + 30, Y)
@@ -4913,7 +4951,7 @@ Namespace LoadPermission
                     Dim myDigFont As Font = New System.Drawing.Font("Alborz Titr", 14.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
                     'مرحله اول
                     YourEventArgs.Graphics.DrawRectangle(New Pen(Brushes.Black, 1), X, Y, 520, 350)
-                    YourEventArgs.Graphics.DrawImage(My.Resources.qrcode, X + 30, Y + 60, 75, 75)
+                    YourEventArgs.Graphics.DrawImage(My.Resources.QRCodeLight, X + 30, Y + 60, 75, 75)
                     YourEventArgs.Graphics.DrawString(" پايانه اميرکبير اصفهان ", myStrFontSuperMax, Brushes.DarkBlue, X + 180, Y)
                     YourEventArgs.Graphics.DrawString(" ((مجوز بارگيری)) ", myStrFontSuperMax, Brushes.DarkBlue, X + 195, Y + 30)
                     YourEventArgs.Graphics.DrawString(" تاريخ صدور: " + _PPDS.LoadPermissionDate, myStrFontMin, Brushes.DarkBlue, X + 15, Y + 20)
@@ -4950,7 +4988,7 @@ Namespace LoadPermission
                     'مرحله دوم
                     Y = Y + 400
                     YourEventArgs.Graphics.DrawRectangle(New Pen(Brushes.Black, 1), X, Y, 520, 350)
-                    YourEventArgs.Graphics.DrawImage(My.Resources.qrcode, X + 30, Y + 60, 75, 75)
+                    YourEventArgs.Graphics.DrawImage(My.Resources.QRCodeLight, X + 30, Y + 60, 75, 75)
                     YourEventArgs.Graphics.DrawString(" پايانه اميرکبير اصفهان ", myStrFontSuperMax, Brushes.DarkBlue, X + 180, Y)
                     YourEventArgs.Graphics.DrawString(" ((مجوز بارگيری)) ", myStrFontSuperMax, Brushes.DarkBlue, X + 195, Y + 30)
                     YourEventArgs.Graphics.DrawString(" تاريخ صدور: " + _PPDS.LoadPermissionDate, myStrFontMin, Brushes.DarkBlue, X + 15, Y + 20)
@@ -6318,7 +6356,7 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcLoadPermissions As Int64 = 24
         Public Shared ReadOnly FrmcLoadCapacitor As Int64 = 44
         Public Shared ReadOnly FrmcLoadAllocations As Int64 = 45
-
+        Public Shared ReadOnly FrmcBillOfLadingControl As Int64 = 62
 
     End Class
 
@@ -6781,6 +6819,324 @@ Namespace MobileUsers
 
     End Namespace
 
+
+End Namespace
+
+Namespace BillOfLadingControl
+
+    Public Class R2CoreTransportationAndLoadNotificationStandardBillOfLadingStructure
+        Inherits R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            _BLNo = String.Empty
+            _BLSerial = String.Empty
+            _BLDateShamsi = String.Empty
+            _BLTime = String.Empty
+            _BLSenderTitle = String.Empty
+            _BLSenderNationalCode = String.Empty
+            _BLReceiverTitle = String.Empty
+            _BLReceiverNationalCode = String.Empty
+            _BLFirstTruckDriver = String.Empty
+            _BLTruckNo = String.Empty
+            _BLTruckSerialNo = String.Empty
+            _BLTruckSmartCardNo = String.Empty
+            _BLPrice = String.Empty
+            _BLSourceTitle = String.Empty
+            _BLTargetTitle = String.Empty
+            _BLGoodTitle = String.Empty
+            _BLWeight = String.Empty
+            _BLLoaderTypeTitle = String.Empty
+        End Sub
+
+        Public Sub New(YourBLNo As String, YourBLSerial As String, YourBLDateShamsi As String, YourBLTime As String, YourBLSenderTitle As String, YourBLSenderNationalCode As String, YourBLReceiverTitle As String, YourBLReceiverNationalCode As String, YourBLFirstTruckDriver As String, YourBLTruckNo As String, YourBLTruckSerialNo As String, YourBLTruckSmartCardNo As String, YourBLPrice As String, YourBLSourceTitle As String, YourBLTargetTitle As String, YourBLGoodTitle As String, YourBLWeight As String, YourBLLoaderTypeTitle As String)
+            MyBase.New(YourBLNo, YourBLSerial)
+            _BLNo = YourBLNo
+            _BLSerial = YourBLSerial
+            _BLDateShamsi = YourBLDateShamsi
+            _BLTime = YourBLTime
+            _BLSenderTitle = YourBLSenderTitle
+            _BLSenderNationalCode = YourBLSenderNationalCode
+            _BLReceiverTitle = YourBLReceiverTitle
+            _BLReceiverNationalCode = YourBLReceiverNationalCode
+            _BLFirstTruckDriver = YourBLFirstTruckDriver
+            _BLTruckNo = YourBLTruckNo
+            _BLTruckSerialNo = YourBLTruckSerialNo
+            _BLTruckSmartCardNo = YourBLTruckSmartCardNo
+            _BLPrice = YourBLPrice
+            _BLSourceTitle = YourBLSourceTitle
+            _BLTargetTitle = YourBLTargetTitle
+            _BLGoodTitle = YourBLGoodTitle
+            _BLWeight = YourBLWeight
+            _BLLoaderTypeTitle = YourBLLoaderTypeTitle
+        End Sub
+
+        Public Property BLNo As String
+        Public Property BLSerial As String
+        Public Property BLDateShamsi As String
+        Public Property BLTime As String
+        Public Property BLSenderTitle As String
+        Public Property BLSenderNationalCode As String
+        Public Property BLReceiverTitle As String
+        Public Property BLReceiverNationalCode As String
+        Public Property BLFirstTruckDriver As String
+        Public Property BLTruckNo As String
+        Public Property BLTruckSerialNo As String
+        Public Property BLTruckSmartCardNo As String
+        Public Property BLPrice As String
+        Public Property BLSourceTitle As String
+        Public Property BLTargetTitle As String
+        Public Property BLGoodTitle As String
+        Public Property BLWeight As String
+        Public Property BLLoaderTypeTitle As String
+
+
+    End Class
+
+    Public Class R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure
+        Inherits R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            _BLCId = Int64.MinValue
+            _BLCTitle = String.Empty
+            _DateTimeMilladi = Now
+            _DateShamsi = String.Empty
+            _Time = String.Empty
+            _UserId = Int64.MinValue
+            _Active = Boolean.FalseString
+            _ViewFlag = Boolean.FalseString
+            _Deleted = Boolean.FalseString
+            _BillOfLadings = Nothing
+        End Sub
+
+        Public Sub New(YourBLCId As Int64, YourBLCTitle As String, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourUserId As Int64, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean, YourBillOfLadings As List(Of R2CoreTransportationAndLoadNotificationStandardBillOfLadingStructure))
+            MyBase.New(YourBLCId, YourBLCTitle)
+            _BLCId = YourBLCId
+            _BLCTitle = YourBLCTitle
+            _DateTimeMilladi = YourDateTimeMilladi
+            _DateShamsi = YourDateShamsi
+            _Time = YourTime
+            _UserId = YourUserId
+            _Active = YourActive
+            _ViewFlag = YourViewFlag
+            _Deleted = YourDeleted
+            _BillOfLadings = YourBillOfLadings
+        End Sub
+
+        Public Property BLCId As Int64
+        Public Property BLCTitle As String
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property Time As String
+        Public Property UserId As Int64
+        Public Property Active As Boolean
+        Public Property ViewFlag As Boolean
+        Public Property Deleted As Boolean
+        Public Property BillOfLadings() As List(Of R2CoreTransportationAndLoadNotificationStandardBillOfLadingStructure)
+    End Class
+
+    Public Class R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlExtendedStructure
+        Inherits R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure
+
+        Public Sub New()
+            MyBase.New()
+            _DateTimeComposite = String.Empty
+            _UserName = String.Empty
+            _Status = String.Empty
+        End Sub
+
+        Public Sub New(YourNSS As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure, ByVal YourDateTimeComposite As String, ByVal YourUserName As String, YourStatus As String)
+            MyBase.New(YourNSS.BLCId, YourNSS.BLCTitle, YourNSS.DateTimeMilladi, YourNSS.DateShamsi, YourNSS.Time, YourNSS.UserId, YourNSS.Active, YourNSS.ViewFlag, YourNSS.Deleted, YourNSS.BillOfLadings)
+            _DateTimeComposite = YourDateTimeComposite
+            _UserName = YourUserName
+            _Status = YourStatus
+        End Sub
+
+        Public Property DateTimeComposite As String
+        Public Property UserName As String
+        Public Property Status As String
+
+    End Class
+
+    Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlManagement
+        Private Shared _DateTime As New R2DateTime
+
+        Public Shared Function GetBillOfLadingControlHeaders(YourSearchString As String) As List(Of R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure)
+            Try
+                Dim DS As DataSet
+                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                       "Select distinct BLC.* from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC 
+                                  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlsDetails as BLCDetails On BLC.BLCId=BLCDetails.BLCId
+                                Where Deleted=0 and blc.BLCTitle like '%" & YourSearchString & "%'", 0, DS)
+                Dim Lst = New List(Of R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure)
+                For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure(DS.Tables(0).Rows(Loopx).Item("BLCId"), DS.Tables(0).Rows(Loopx).Item("BLCTitle"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi"), DS.Tables(0).Rows(Loopx).Item("Time"), DS.Tables(0).Rows(Loopx).Item("UserId"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Deleted"), Nothing))
+                Next
+                Return Lst
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function GetNSSBillOfLadingControl(YourBLCId As Int64) As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlExtendedStructure
+            Try
+                Dim DS As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                                        "Select BLC.BLCTitle,BLC.DateTimeMilladi,BLC.DateShamsi,BLC.Time,BLC.UserId,BLC.ViewFlag,BLC.Active,BLC.Deleted,BLCDetail.*,(Replace(BLC.DateShamsi,'/','')+'-'+Replace(BLC.Time,':','')) AS DateTimeComposite,SoftwareUsers.UserName as UserName,IIf(BLC.Active=1,'فعال','غیرفعال') as Status
+                                                 From R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC
+                                                     Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlsDetails as BLCDetail On BLC.BLCId=BLCDetail.BLCId 
+                                                     Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On BLC.UserId=SoftwareUsers.UserId
+                                                 Where BLC.BLCId=" & YourBLCId & " Order By BLCDetail.BLCIndex", 3600, DS).GetRecordsCount() = 0 Then Throw New BillOfLadingControlNotFoundException
+                Dim NSSBLC = New R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlExtendedStructure
+                NSSBLC.BLCId = DS.Tables(0).Rows(0).Item("BLCId")
+                NSSBLC.BLCTitle = DS.Tables(0).Rows(0).Item("BLCTitle")
+                NSSBLC.DateTimeMilladi = DS.Tables(0).Rows(0).Item("DateTimeMilladi")
+                NSSBLC.DateShamsi = DS.Tables(0).Rows(0).Item("DateShamsi")
+                NSSBLC.Time = DS.Tables(0).Rows(0).Item("Time")
+                NSSBLC.UserId = DS.Tables(0).Rows(0).Item("UserId")
+                NSSBLC.ViewFlag = DS.Tables(0).Rows(0).Item("ViewFlag")
+                NSSBLC.Active = DS.Tables(0).Rows(0).Item("Active")
+                NSSBLC.Deleted = DS.Tables(0).Rows(0).Item("Deleted")
+                Dim Lst = New List(Of R2CoreTransportationAndLoadNotificationStandardBillOfLadingStructure)
+                For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                    Dim NSSBL = New R2CoreTransportationAndLoadNotificationStandardBillOfLadingStructure(DS.Tables(0).Rows(Loopx).Item("BLNo").trim, DS.Tables(0).Rows(Loopx).Item("BLSerial").trim, DS.Tables(0).Rows(Loopx).Item("BLDateShamsi").trim, DS.Tables(0).Rows(Loopx).Item("BLTime").trim, DS.Tables(0).Rows(Loopx).Item("BLSenderTitle").trim, DS.Tables(0).Rows(Loopx).Item("BLSenderNationalCode").trim, DS.Tables(0).Rows(Loopx).Item("BLReceiverTitle").trim, DS.Tables(0).Rows(Loopx).Item("BLReceiverNationalCode").trim, DS.Tables(0).Rows(Loopx).Item("BLFirstTruckDriver").trim, DS.Tables(0).Rows(Loopx).Item("BLTruckNo").trim, DS.Tables(0).Rows(Loopx).Item("BLTruckSerialNo").trim, DS.Tables(0).Rows(Loopx).Item("BLTruckSmartCardNo").trim, DS.Tables(0).Rows(Loopx).Item("BLPrice").trim, DS.Tables(0).Rows(Loopx).Item("BLSourceTitle").trim, DS.Tables(0).Rows(Loopx).Item("BLTargetTitle").trim, DS.Tables(0).Rows(Loopx).Item("BLGoodTitle").trim, DS.Tables(0).Rows(Loopx).Item("BLWeight").trim, DS.Tables(0).Rows(Loopx).Item("BLLoaderTypeTitle").trim)
+                    Lst.Add(NSSBL)
+                Next
+                NSSBLC.BillOfLadings = Lst
+                NSSBLC.DateTimeComposite = DS.Tables(0).Rows(0).Item("DateTimeComposite")
+                NSSBLC.UserName = DS.Tables(0).Rows(0).Item("UserName")
+                NSSBLC.Status = DS.Tables(0).Rows(0).Item("Status")
+                Return NSSBLC
+            Catch ex As BillOfLadingControlNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function BillOfLadingControlRegistering(YourNSSBillOfLadingControl As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure, YourNSSUser As R2CoreStandardUserStructure) As Int64
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                If YourNSSBillOfLadingControl.BLCTitle.Trim = String.Empty Then Throw New BillOfLadingControlMustHaveTitleForRegisteringException
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
+                CmdSql.CommandText = "Select Top 1 BLCId From R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls with (tablockx) Order By BLCId Desc"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Select IDENT_CURRENT('R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls') "
+                Dim BLCIdNew As Int64 = CmdSql.ExecuteScalar() + 1
+                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls(BLCTitle,DateTimeMilladi,DateShamsi,Time,UserId,ViewFlag,Active,Deleted) Values('" & YourNSSBillOfLadingControl.BLCTitle & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "'," & YourNSSUser.UserId & ",1,1,0)"
+                CmdSql.ExecuteNonQuery()
+                For Loopx As Int64 = 0 To YourNSSBillOfLadingControl.BillOfLadings.Count - 1
+                    CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlsDetails(BLCId,BLCIndex,BLNo,BlSerial,BLDateShamsi,BLTime,BLSenderTitle,BLSenderNationalCode,BLReceiverTitle,BLReceiverNationalCode,BLFirstTruckDriver,BLTruckNo,BLTruckSerialNo,BLTruckSmartCardNo,BLPrice,BLSourceTitle,BLTargetTitle,BLGoodTitle,BLWeight,BLLoaderTypeTitle) Values(" & BLCIdNew & "," & Loopx + 1 & ",'" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLNo & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLSerial & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLDateShamsi & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLTime & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLSenderTitle & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLSenderNationalCode & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLReceiverTitle & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLReceiverNationalCode & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLFirstTruckDriver & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLTruckNo & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLTruckSerialNo & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLTruckSmartCardNo & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLPrice & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLSourceTitle & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLTargetTitle & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLGoodTitle & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLWeight & "','" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLLoaderTypeTitle & "')"
+                    CmdSql.ExecuteNonQuery()
+                Next
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Return BLCIdNew
+            Catch ex As BillOfLadingControlMustHaveTitleForRegisteringException
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function ReadBillOfLadingControl(YourPathOfFile As String) As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure
+            Try
+                'خواندن فایل
+                Dim Da As New OleDbDataAdapter : Dim Ds As New DataSet
+                Try
+                    Da.SelectCommand = New OleDbCommand()
+                    Da.SelectCommand.Connection = New OleDbConnection(R2CoreMClassDatabaseManagement.GetOLEDbConnectionString(YourPathOfFile))
+                    Da.SelectCommand.CommandText = "Select f18 as  BlNo,f17 as BLSerial,f16 as BLDateShamsi,f15 as BLTime,f14 as BLSenderTitle,f13 as BLSenderNationalCode,f12 as BLReceiverTitle,f11 as BLReceiverNationalCode,f10 as BLFirstTruckDriver,f9 as BLTruckSmartCardNo,f8 as BLTruckNo,f7 as BLTruckSerialNo,f6 as BLPrice,f5 as BLSourceTitle,f4 as BLTargetTitle,f3 as BLGoodTitle,f2 as BLWeight,f1 as BLLoaderTypeTitle from [Sheet1$] Order By f19"
+                    Da.Fill(Ds)
+                Catch ex As Exception
+                    Throw New ReadingBillOfLadingControlFailedException
+                End Try
+                'ایجاد Dirty NSS
+                Dim NSSBillOfLadingControl = New R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure
+                Dim Lst = New List(Of R2CoreTransportationAndLoadNotificationStandardBillOfLadingStructure)
+                For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                    If IsNumeric(Ds.Tables(0).Rows(Loopx).Item("BLNo")) Then
+                        Dim myBlNo As String = Ds.Tables(0).Rows(Loopx).Item("BlNo")
+                        Dim myBLSerial As String = Ds.Tables(0).Rows(Loopx).Item("BLSerial")
+                        Dim myBLDateShamsi As String = Ds.Tables(0).Rows(Loopx).Item("BLDateShamsi")
+                        Dim myBLTime As String = Ds.Tables(0).Rows(Loopx).Item("BLTime")
+                        Dim myBLSenderTitle As String = Ds.Tables(0).Rows(Loopx).Item("BLSenderTitle")
+                        Dim myBLSenderNationalCode As String = Ds.Tables(0).Rows(Loopx).Item("BLSenderNationalCode")
+                        Dim myBLReceiverTitle As String = Ds.Tables(0).Rows(Loopx).Item("BLReceiverTitle")
+                        Dim myBLReceiverNationalCode As String = Ds.Tables(0).Rows(Loopx).Item("BLReceiverNationalCode")
+                        Dim myBLFirstTruckDriver As String = Ds.Tables(0).Rows(Loopx).Item("BLFirstTruckDriver")
+                        Dim myBLTruckSmartCardNo As String = Ds.Tables(0).Rows(Loopx).Item("BLTruckSmartCardNo")
+                        Dim myBLTruckNo As String = Ds.Tables(0).Rows(Loopx).Item("BLTruckNo")
+                        Dim myBLTruckSerialNo As String = Ds.Tables(0).Rows(Loopx).Item("BLTruckSerialNo")
+                        Dim myBLPrice As String = Ds.Tables(0).Rows(Loopx).Item("BLPrice").ToString().Replace(",", "")
+                        Dim myBLSourceTitle As String = Ds.Tables(0).Rows(Loopx).Item("BLSourceTitle")
+                        Dim myBLTargetTitle As String = Ds.Tables(0).Rows(Loopx).Item("BLTargetTitle")
+                        Dim myBLGoodTitle As String = Ds.Tables(0).Rows(Loopx).Item("BLGoodTitle")
+                        Dim myBLWeight As String = Ds.Tables(0).Rows(Loopx).Item("BLWeight")
+                        Dim myBLLoaderTypeTitle As String = Ds.Tables(0).Rows(Loopx).Item("BLLoaderTypeTitle")
+                        Lst.Add(New R2CoreTransportationAndLoadNotificationStandardBillOfLadingStructure(myBlNo, myBLSerial, myBLDateShamsi, myBLTime, myBLSenderTitle, myBLSenderNationalCode, myBLReceiverTitle, myBLReceiverNationalCode, myBLFirstTruckDriver, myBLTruckNo, myBLTruckSerialNo, myBLTruckSmartCardNo, myBLPrice, myBLSourceTitle, myBLTargetTitle, myBLGoodTitle, myBLWeight, myBLLoaderTypeTitle))
+                    End If
+                Next
+                NSSBillOfLadingControl.BillOfLadings = Lst
+                Return NSSBillOfLadingControl
+            Catch ex As ReadingBillOfLadingControlFailedException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Sub BillOfLadingControlDeleting(YourBLCId As Int64)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls Set Deleted=1,Active=0 Where BLCId=" & YourBLCId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+    End Class
+
+    Namespace Exceptions
+
+        Public Class BillOfLadingControlNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کنترل بارنامه با شماره شاخص مورد نظر وجود ندارد"
+                End Get
+            End Property
+        End Class
+
+        Public Class ReadingBillOfLadingControlFailedException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "خطا هنگام خواندن اطلاعات از فایل کنترل بارنامه"
+                End Get
+            End Property
+        End Class
+
+        Public Class BillOfLadingControlMustHaveTitleForRegisteringException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کنترل بارنامه برای ذخیره در بانک اطلاعاتی باید دارای یک عنوان باشد"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
 
 End Namespace
 

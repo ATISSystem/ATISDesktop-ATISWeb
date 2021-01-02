@@ -46,15 +46,19 @@ Partial Class UCSearcherSimple
         Me.UcPersianTextBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
             Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBox.BackColor = System.Drawing.Color.Transparent
         Me.UcPersianTextBox.Location = New System.Drawing.Point(34, 3)
         Me.UcPersianTextBox.MaxCharacterReached = CType(50,Short)
         Me.UcPersianTextBox.Name = "UcPersianTextBox"
         Me.UcPersianTextBox.Size = New System.Drawing.Size(177, 28)
         Me.UcPersianTextBox.TabIndex = 0
         Me.UcPersianTextBox.UCBackColor = System.Drawing.Color.White
+        Me.UcPersianTextBox.UCBorder = true
+        Me.UcPersianTextBox.UCBorderColor = System.Drawing.Color.DarkGray
         Me.UcPersianTextBox.UCEnable = true
         Me.UcPersianTextBox.UCFont = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcPersianTextBox.UCForeColor = System.Drawing.Color.Black
+        Me.UcPersianTextBox.UCForeColor = System.Drawing.Color.Gray
+        Me.UcPersianTextBox.UCMultiLine = false
         Me.UcPersianTextBox.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
         Me.UcPersianTextBox.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.UcPersianTextBox.UCValue = ""
@@ -71,13 +75,13 @@ Partial Class UCSearcherSimple
         Me.PicReturn.TabIndex = 3
         Me.PicReturn.TabStop = false
         '
-        'UCSearcher
+        'UCSearcherSimple
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.Panel1)
-        Me.Name = "UCSearcher"
+        Me.Name = "UCSearcherSimple"
         Me.Padding = New System.Windows.Forms.Padding(10)
         Me.Size = New System.Drawing.Size(238, 56)
         Me.Panel1.ResumeLayout(false)

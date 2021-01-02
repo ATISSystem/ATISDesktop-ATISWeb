@@ -324,8 +324,11 @@ Public Class FrmcEnterExit
                 UcCarImage.UCSetMarginColor(Color.GreenYellow)
                 'فرآیند صدور نوبت ناوگان باری
                 If (UcTurnRegisterRequestConfirmation.UCChkTruckNobat = True) And R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTerraficCardTypeforTurnRegisteringActive(_NSSTrafficCard) Then
+                    Dim NSSTruckTemp = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(_NSSTrafficCard.CardId))
+                    'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
+                    R2CoreTransportationAndLoadNotificationMClassTurnsManagement.TruckPresentInParkingForTurnRegisteringControl(NSSTruckTemp)
                     Dim TurnId As Int64 = Int64.MinValue
-                    Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(_NSSTrafficCard.CardId)), False, False, TurnId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                    Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(NSSTruckTemp, False, False, TurnId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                     _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + TurnRegisterRequestId.ToString & vbCrLf & "شماره نوبت :" + TurnId.ToString, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 End If
                 UcTurnRegisterRequestConfirmation.UCChkTruckNobat = True
@@ -359,7 +362,8 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is GetNSSException _
                             OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat _
                             OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri _
-                            OrElse TypeOf ex Is GetDataException
+                            OrElse TypeOf ex Is GetDataException _
+                            OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
             Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -395,7 +399,7 @@ Public Class FrmcEnterExit
                 _TimerClearLastReadedTeraficCard.Start()
             End If
             DoProccess(CardNo, True)
-        Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException
+        Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Information, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Nothing, True)
@@ -507,13 +511,14 @@ Public Class FrmcEnterExit
             UcCarTruckUpdateInf.Visible = False
             UcCarTruckUpdateInf.SendToBack()
             R2CoreParkingSystemMClassCars.CreateRelationBetweenTerafficCardAndCar(_NSSTrafficCard, R2CoreParkingSystemMClassCars.GetNSSCar(CarId))
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.CarTruckUpdateInfSuccess,"موفقیت در آپدیت اطلاعات ناوگان باری", UcCarTruckUpdateInf.UcCarTruck.UCGetNSS.StrBodyNo, _NSSTrafficCard.CardNo, UcCarTruckUpdateInf.UcCarTruck.UCGetNSS.NSSCar.GetCarPelakSerialComposit(), 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.CarTruckUpdateInfSuccess, "موفقیت در آپدیت اطلاعات ناوگان باری", UcCarTruckUpdateInf.UcCarTruck.UCGetNSS.StrBodyNo, _NSSTrafficCard.CardNo, UcCarTruckUpdateInf.UcCarTruck.UCGetNSS.NSSCar.GetCarPelakSerialComposit(), 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             DoProccess(_NSSTrafficCard.CardNo, True)
         Catch ex As Exception When TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
                                    OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
                                    OrElse TypeOf ex Is GetNobatException _
                                    OrElse TypeOf ex Is GetNSSException _
-                                   OrElse TypeOf ex Is GetDataException
+                                   OrElse TypeOf ex Is GetDataException _
+                                   OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
                                    OrElse TypeOf ex Is CarIsNotPresentInParkingException _
@@ -542,11 +547,12 @@ Public Class FrmcEnterExit
             UcCarTruckUpdateInf.SendToBack()
             R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.CarTruckUpdateInfNotSuccess, "عدم موفقیت در آپدیت اطلاعات ناوگان باری", UcCarTruckUpdateInf.UcCarTruck.UcNumberStrBodyNoSearch.UCValue, _NSSTrafficCard.CardNo, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             DoProccess(_NSSTrafficCard.CardNo, False)
-                    Catch ex As Exception When TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
-                                   OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
-                                   OrElse TypeOf ex Is GetNobatException _
-                                   OrElse TypeOf ex Is GetNSSException _
-                                   OrElse TypeOf ex Is GetDataException
+        Catch ex As Exception When TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
+                       OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
+                       OrElse TypeOf ex Is GetNobatException _
+                       OrElse TypeOf ex Is GetNSSException _
+                       OrElse TypeOf ex Is GetDataException _
+                       OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
                                    OrElse TypeOf ex Is CarIsNotPresentInParkingException _

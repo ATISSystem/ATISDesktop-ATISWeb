@@ -1,0 +1,90 @@
+﻿
+Imports System.Windows.Forms
+Imports System.Reflection
+
+Imports R2CoreGUI
+Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
+
+Public Class UCManipulationBillOfLadingControl
+    Inherits UCBillOfLadingControl
+
+    Public Event UCBillOfLadingControlDeletedEvent(BLCId As Int64) 
+
+
+#Region "General Properties"
+
+
+
+#End Region
+
+#Region "Subroutins And Functions"
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Try
+            UCRefresh()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Public Overloads Sub UCRefreshGeneral()
+        Try
+            MyBase.UCRefreshGeneral()
+            UCRefresh()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub UCRefresh()
+        Try
+            UcViewerNSSBillOfLadingControlExtended.UCRefreshGeneral()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+
+#End Region
+
+#Region "Events"
+#End Region
+
+#Region "Event Handlers"
+
+    Private Sub UCManipulationBillOfLadingControl_UCViewNSSRequested() Handles Me.UCViewNSSRequested
+        Try
+            UcViewerNSSBillOfLadingControlExtended.UCViewNSS(UCNSSCurrent)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub UcButtonDeleteBLC_UCClickedEvent() Handles UcButtonDeleteBLC.UCClickedEvent
+        Try
+            If MessageBox.Show("تصمیم دارید اطلاعات کنترل بارنامه را حذف نمایید", "ATIS System", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3) = DialogResult.Yes Then
+                R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlManagement.BillOfLadingControlDeleting(UCNSSCurrent.BLCId)
+                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "کنترل بارنامه با موفقیت حذف گردید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                RaiseEvent  UCBillOfLadingControlDeletedEvent(UCNSSCurrent.BLCId)
+            End If
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+#End Region
+
+#Region "Override Methods"
+#End Region
+
+#Region "Abstract Methods"
+#End Region
+
+#Region "Implemented Members"
+#End Region
+
+End Class

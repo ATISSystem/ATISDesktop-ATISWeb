@@ -53,7 +53,7 @@ Public Class UCCar
     End Sub
 
     Private Sub UCRefresh()
-        UcPersianTextBoxStrCarNo.UCRefresh() : UcPersianTextBoxStrCarSerialNo.UCRefresh()
+        UcPersianTextBoxStrCarNo.UCRefresh() : UcPersianTextBoxStrCarSerialNo.UCRefresh() : UcPersianTextBoxCarNo.UCRefresh()
         UcNumbernIdCar.UCRefresh() : UcCmbCity.UCRefresh() : UcCmbCarType.UCRefresh()
         UcPersianTextBoxStrCarNo.Focus()
         RaiseEvent UCRefreshedEvent()
@@ -130,7 +130,7 @@ Public Class UCCar
             If UcNumbernIdCar.UCValue = 0 Then
                 Dim NSSCar As R2StandardCarStructure = New R2StandardCarStructure("", R2CoreParkingSystemMClassCarType.GetsnCarTypeFromStrCarName(UcCmbCarType.UCGetCurrentCarType()), UcPersianTextBoxStrCarNo.UCValue, UcPersianTextBoxStrCarSerialNo.UCValue, R2CoreParkingSystemMClassCitys.GetnCityCodeFromStrCityName(UcCmbCity.UCGetCurrentCityCode()))
                 If R2CoreParkingSystemMClassCars.IsExistCar(NSSCar) Then Throw New DuplicateCarExistException
-                UcNumbernIdCar.UCValue = R2CoreParkingSystemMClassCars.InsertCar(NSSCar,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                UcNumbernIdCar.UCValue = R2CoreParkingSystemMClassCars.InsertCar(NSSCar, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                 UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "مشخصات خودرو ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             Else
                 R2CoreParkingSystemMClassCars.UpdateCar(New R2StandardCarStructure(UcNumbernIdCar.UCValue, R2CoreParkingSystemMClassCarType.GetsnCarTypeFromStrCarName(UcCmbCarType.UCGetCurrentCarType()), UcPersianTextBoxStrCarNo.UCValue, UcPersianTextBoxStrCarSerialNo.UCValue, R2CoreParkingSystemMClassCitys.GetnCityCodeFromStrCityName(UcCmbCity.UCGetCurrentCityCode())))

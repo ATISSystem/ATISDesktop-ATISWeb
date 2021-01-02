@@ -145,6 +145,54 @@
     <Compile Include="AnnouncementHalls\UCViewerNSSAnnouncementHallSubGroup.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\FrmcBillOfLadingControl.Designer.vb">
+      <DependentUpon>FrmcBillOfLadingControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\FrmcBillOfLadingControl.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCBillOfLadingControl.Designer.vb">
+      <DependentUpon>UCBillOfLadingControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCBillOfLadingControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCCreatorBillOfLadingControl.Designer.vb">
+      <DependentUpon>UCCreatorBillOfLadingControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCCreatorBillOfLadingControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCManipulationBillOfLadingControl.Designer.vb">
+      <DependentUpon>UCManipulationBillOfLadingControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCManipulationBillOfLadingControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCUCBillOfLadingControlCollection.Designer.vb">
+      <DependentUpon>UCUCBillOfLadingControlCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCUCBillOfLadingControlCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCUCBillOfLadingControlCollectionAdvance.Designer.vb">
+      <DependentUpon>UCUCBillOfLadingControlCollectionAdvance.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCUCBillOfLadingControlCollectionAdvance.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCViewerNSSBillOfLadingControl.Designer.vb">
+      <DependentUpon>UCViewerNSSBillOfLadingControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCViewerNSSBillOfLadingControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCViewerNSSBillOfLadingControlExtended.Designer.vb">
+      <DependentUpon>UCViewerNSSBillOfLadingControlExtended.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControl\UCViewerNSSBillOfLadingControlExtended.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Configuration Management\UCConfigurationOfAnnouncementHalls.Designer.vb">
       <DependentUpon>UCConfigurationOfAnnouncementHalls.vb</DependentUpon>
     </Compile>
@@ -511,6 +559,30 @@
     <EmbeddedResource Include="AnnouncementHalls\UCViewerNSSAnnouncementHallSubGroup.resx">
       <DependentUpon>UCViewerNSSAnnouncementHallSubGroup.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\FrmcBillOfLadingControl.resx">
+      <DependentUpon>FrmcBillOfLadingControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCBillOfLadingControl.resx">
+      <DependentUpon>UCBillOfLadingControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCCreatorBillOfLadingControl.resx">
+      <DependentUpon>UCCreatorBillOfLadingControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCManipulationBillOfLadingControl.resx">
+      <DependentUpon>UCManipulationBillOfLadingControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCUCBillOfLadingControlCollection.resx">
+      <DependentUpon>UCUCBillOfLadingControlCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCUCBillOfLadingControlCollectionAdvance.resx">
+      <DependentUpon>UCUCBillOfLadingControlCollectionAdvance.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCViewerNSSBillOfLadingControl.resx">
+      <DependentUpon>UCViewerNSSBillOfLadingControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCViewerNSSBillOfLadingControlExtended.resx">
+      <DependentUpon>UCViewerNSSBillOfLadingControlExtended.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Configuration Management\UCConfigurationOfAnnouncementHalls.resx">
       <DependentUpon>UCConfigurationOfAnnouncementHalls.vb</DependentUpon>
     </EmbeddedResource>
@@ -712,6 +784,13 @@
   <ItemGroup>
     <None Include="Resources\qrcode.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\qrcode990819.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\~AutoRecover.qrcode.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

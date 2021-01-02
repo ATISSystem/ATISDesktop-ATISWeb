@@ -1,4 +1,5 @@
 ﻿
+Imports System.ComponentModel
 Imports System.Reflection
 
 Public Class UCSearcherSimple
@@ -8,6 +9,31 @@ Public Class UCSearcherSimple
 
 
 #Region "General Properties"
+
+    Private _TextDisabled As String = String.Empty
+    <Browsable(True)>
+    Public Property UCTextDisabled() As String
+        Get
+            Return _TextDisabled
+        End Get
+        Set(value As String)
+            _TextDisabled = value
+            UcPersianTextBox.UCValue = value
+            UcPersianTextBox.UCForeColor=Color.DarkGray
+        End Set
+    End Property
+
+    Private _UCForeColor As Color = Color.Black
+    Public Property UCForeColor() As Color
+        Get
+            Return _UCForeColor
+        End Get
+        Set(value As Color)
+            _UCForeColor = value
+            UcPersianTextBox.UCForeColor = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Subroutins And Functions"
@@ -21,6 +47,10 @@ Public Class UCSearcherSimple
 
     End Sub
 
+    Public Function UCGetCurrentSerachingText() As String
+        Return UcPersianTextBox.UCValue.Trim()
+    End Function
+
 #End Region
 
 #Region "Events"
@@ -32,21 +62,28 @@ Public Class UCSearcherSimple
         Try
             RaiseEvent UC13PressedEvent(UcPersianTextBox.UCValue)
         Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name +vbCrLf + ex.Message,"", FrmcMessageDialog.MessageType.ErrorMessage , Nothing, Me)
-       End Try
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
     End Sub
 
     Private Sub PicReturn_Click(sender As Object, e As EventArgs) Handles PicReturn.Click
         Try
             RaiseEvent UC13PressedEvent(UcPersianTextBox.UCValue)
         Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name +vbCrLf + ex.Message,"", FrmcMessageDialog.MessageType.ErrorMessage , Nothing, Me)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
 
-    Private Sub UCSearcher_GotFocus(sender As Object, e As EventArgs) Handles Me.GotFocus
+    Private Sub UCSearcherSimple_GotFocus(sender As Object, e As EventArgs) Handles Me.GotFocus
         UcPersianTextBox.Focus()
     End Sub
+
+    Private Sub UcPersianTextBox_UCGotFocusEvent() Handles UcPersianTextBox.UCGotFocusEvent
+        UcPersianTextBox.UCRefresh()
+        UcPersianTextBox.UCForeColor = UCForeColor
+    End Sub
+
+
 
 #End Region
 

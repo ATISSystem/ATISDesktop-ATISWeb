@@ -6,6 +6,8 @@ Imports PayanehClassLibrary.PayanehWS
 Imports PayanehClassLibrary.Rmto
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.UserManagement
+Imports R2CoreGUI
+Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
 
@@ -263,5 +265,17 @@ Public Class Form3
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
+    End Sub
+
+    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+
+    End Sub
+
+    Private Sub Form3_Load(sender As Object, e As EventArgs) Handles Me.Load
+        'R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS=R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser()
+    End Sub
+
+    Private Sub UcucBillOfLadingControlCollectionAdvance1_UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure) Handles UcucBillOfLadingControlCollectionAdvance1.UCSelectedNSSChangedEvent
+        UcManipulationBillOfLadingControl1.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlManagement.GetNSSBillOfLadingControl(NSS.BLCId))
     End Sub
 End Class

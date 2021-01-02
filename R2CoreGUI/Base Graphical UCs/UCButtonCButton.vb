@@ -109,6 +109,21 @@ Public Class UCButtonCButton
         End Set
     End Property
 
+    Private _UCEnable As Boolean = True
+    Public Property UCEnable As Boolean
+        Get
+            Return _UCEnable
+        End Get
+        Set(value As Boolean)
+            _UCEnable = value
+            Me.Enabled = value
+            If value = True Then
+                CButton.ColorFillBlend = UCColorFillBlend
+            Else
+                CButton.ColorFillBlend = New CButtonLib.cBlendItems(New System.Drawing.Color() {System.Drawing.Color.Gray, System.Drawing.Color.Gray}, New Single() {0!, 1.0!})
+            End If
+        End Set
+    End Property
 
 
 #End Region
