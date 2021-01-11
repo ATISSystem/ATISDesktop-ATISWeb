@@ -1,4 +1,5 @@
-﻿Imports System.Data.SqlClient
+﻿Imports System.Data.OleDb
+Imports System.Data.SqlClient
 Imports System.Globalization
 Imports System.Text
 Imports PayanehClassLibrary.CarTrucksManagement
@@ -7,12 +8,15 @@ Imports PayanehClassLibrary.Rmto
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.UserManagement
 Imports R2CoreGUI
+Imports R2CoreTransportationAndLoadNotification
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
+Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
+Imports R2CoreTransportationAndLoadNotification.Rmto
 
 Public Class Form3
-    
+
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
             'R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser)
@@ -260,7 +264,7 @@ Public Class Form3
             'Dim NSS As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase("2218230",R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser())
             Dim _WS As PayanehWS.PayanehWebService = New PayanehWS.PayanehWebService()
             'Dim ExchangeKey = _WS.WebMethodLogin("123", "1234")
-            _ws.WebMethodGetnIdCarTruckBySmartCarNo("2063514","74094")
+            _WS.WebMethodGetnIdCarTruckBySmartCarNo("2063514", "74094")
             'PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating("1775507", R2CoreMClassLoginManagement.GetNSSSystemUser())
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -275,7 +279,56 @@ Public Class Form3
         'R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS=R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser()
     End Sub
 
-    Private Sub UcucBillOfLadingControlCollectionAdvance1_UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure) Handles UcucBillOfLadingControlCollectionAdvance1.UCSelectedNSSChangedEvent
-        UcManipulationBillOfLadingControl1.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlManagement.GetNSSBillOfLadingControl(NSS.BLCId))
+
+    Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
+        Dim cmdsql As New SqlCommand
+        cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection()
+        Try
+            Dim da As New OleDb.OleDbDataAdapter
+            Dim ds As New DataSet
+            da.SelectCommand = New OleDbCommand("Select Field8,Field10 from  TransportPriceTarrifsReport")
+            da.SelectCommand.Connection = New OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\4.mdb")
+            da.Fill(ds)
+            cmdsql.Connection.Open()
+            cmdsql.Transaction = cmdsql.Connection.BeginTransaction()
+            For loopx As Integer = 0 To ds.Tables(0).Rows.Count - 1
+                Dim TargetCityId As Int64 = ds.Tables(0).Rows(loopx).Item("Field8")
+                Dim Tarrif As Int64 = ds.Tables(0).Rows(loopx).Item("Field10")
+                cmdsql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifs(AHId,AHSGId,TargetCityId,Tarrif,DateTimeMilladi,DateShamsi,Time,OActive) values(2,7," & TargetCityId & "," & Tarrif & ",'2020-12-27 10:00:00','1399/10/07','10:00:00',0)"
+                cmdsql.ExecuteNonQuery()
+                cmdsql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifs(AHId,AHSGId,TargetCityId,Tarrif,DateTimeMilladi,DateShamsi,Time,OActive) values(2,8," & TargetCityId & "," & Tarrif & ",'2020-12-27 10:00:00','1399/10/07','10:00:00',0)"
+                cmdsql.ExecuteNonQuery()
+                cmdsql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifs(AHId,AHSGId,TargetCityId,Tarrif,DateTimeMilladi,DateShamsi,Time,OActive) values(2,9," & TargetCityId & "," & Tarrif & ",'2020-12-27 10:00:00','1399/10/07','10:00:00',0)"
+                cmdsql.ExecuteNonQuery()
+            Next
+            cmdsql.Transaction.Commit() : cmdsql.Connection.Close()
+            MessageBox.Show("Finished...")
+        Catch ex As Exception
+            If cmdsql.Connection.State <> ConnectionState.Closed Then
+                cmdsql.Transaction.Rollback()
+                cmdsql.Connection.Close()
+            End If
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
+        Try
+            RmtoWebService.GetNSSTruckDriver("3012237")
+            RmtoWebService.GetNSSTruck("2312401")
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
+        Try
+            Dim uc As New UCBillOfLadingControl:uc.UCViewNSS(2)
+            Dim NSSExtended As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlExtendedStructure = uc.UCNSSCurrent
+
+            MessageBox.Show(NSSExtended.BLCTitle)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
     End Sub
 End Class

@@ -1,7 +1,7 @@
 ﻿Imports R2CoreGUI
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class UCUCBillOfLadingControlCollection
+Partial Class UCUCBillOfLadingControlInfractionCollection
     Inherits UCGeneralExtended
 
     'UserControl overrides dispose to clean up the component list.
@@ -24,10 +24,19 @@ Partial Class UCUCBillOfLadingControlCollection
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PnlUCs = New System.Windows.Forms.Panel()
+        Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PnlMain.SuspendLayout
         Me.SuspendLayout
+        '
+        'PnlUCs
+        '
+        Me.PnlUCs.BackColor = System.Drawing.Color.White
+        Me.PnlUCs.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.PnlUCs.Location = New System.Drawing.Point(1, 1)
+        Me.PnlUCs.Name = "PnlUCs"
+        Me.PnlUCs.Size = New System.Drawing.Size(357, 297)
+        Me.PnlUCs.TabIndex = 0
         '
         'PnlMain
         '
@@ -38,32 +47,22 @@ Partial Class UCUCBillOfLadingControlCollection
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
         Me.PnlMain.Padding = New System.Windows.Forms.Padding(1)
-        Me.PnlMain.Size = New System.Drawing.Size(478, 309)
-        Me.PnlMain.TabIndex = 0
+        Me.PnlMain.Size = New System.Drawing.Size(361, 301)
+        Me.PnlMain.TabIndex = 1
         '
-        'PnlUCs
-        '
-        Me.PnlUCs.AutoScroll = true
-        Me.PnlUCs.BackColor = System.Drawing.Color.White
-        Me.PnlUCs.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PnlUCs.Location = New System.Drawing.Point(1, 1)
-        Me.PnlUCs.Name = "PnlUCs"
-        Me.PnlUCs.Size = New System.Drawing.Size(474, 305)
-        Me.PnlUCs.TabIndex = 0
-        '
-        'UCUCBillOfLadingControlCollection
+        'UCUCBillOfLadingControlInfractionCollection
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
-        Me.Name = "UCUCBillOfLadingControlCollection"
-        Me.Size = New System.Drawing.Size(478, 309)
+        Me.Name = "UCUCBillOfLadingControlInfractionCollection"
+        Me.Size = New System.Drawing.Size(361, 301)
         Me.PnlMain.ResumeLayout(false)
         Me.ResumeLayout(false)
 
 End Sub
 
-    Friend WithEvents PnlMain As Windows.Forms.Panel
     Friend WithEvents PnlUCs As Windows.Forms.Panel
+    Friend WithEvents PnlMain As Windows.Forms.Panel
 End Class

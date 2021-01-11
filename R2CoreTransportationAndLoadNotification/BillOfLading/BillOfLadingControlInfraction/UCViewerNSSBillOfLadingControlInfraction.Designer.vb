@@ -1,6 +1,6 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class UCViewerNSSBillOfLadingControl
-    Inherits UCBillOfLadingControl
+Partial Class UCViewerNSSBillOfLadingControlInfraction
+    Inherits UCBillOfLadingControlinfraction
 
     'UserControl overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
@@ -40,8 +40,8 @@ Partial Class UCViewerNSSBillOfLadingControl
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(5, 5)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(207, 80)
-        Me.PnlMain.TabIndex = 0
+        Me.PnlMain.Size = New System.Drawing.Size(216, 69)
+        Me.PnlMain.TabIndex = 1
         '
         'PnlOutter
         '
@@ -51,7 +51,7 @@ Partial Class UCViewerNSSBillOfLadingControl
         Me.PnlOutter.Location = New System.Drawing.Point(0, 0)
         Me.PnlOutter.Name = "PnlOutter"
         Me.PnlOutter.Padding = New System.Windows.Forms.Padding(1)
-        Me.PnlOutter.Size = New System.Drawing.Size(207, 80)
+        Me.PnlOutter.Size = New System.Drawing.Size(216, 69)
         Me.PnlOutter.TabIndex = 0
         '
         'PnlInner
@@ -64,7 +64,7 @@ Partial Class UCViewerNSSBillOfLadingControl
         Me.PnlInner.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlInner.Location = New System.Drawing.Point(1, 1)
         Me.PnlInner.Name = "PnlInner"
-        Me.PnlInner.Size = New System.Drawing.Size(205, 78)
+        Me.PnlInner.Size = New System.Drawing.Size(214, 67)
         Me.PnlInner.TabIndex = 0
         '
         'UcLabelBLCTitle
@@ -77,12 +77,12 @@ Partial Class UCViewerNSSBillOfLadingControl
         Me.UcLabelBLCTitle.Location = New System.Drawing.Point(3, 4)
         Me.UcLabelBLCTitle.Name = "UcLabelBLCTitle"
         Me.UcLabelBLCTitle.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelBLCTitle.Size = New System.Drawing.Size(198, 28)
+        Me.UcLabelBLCTitle.Size = New System.Drawing.Size(207, 28)
         Me.UcLabelBLCTitle.TabIndex = 3
         Me.UcLabelBLCTitle.UCBackColor = System.Drawing.Color.Transparent
         Me.UcLabelBLCTitle.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
         Me.UcLabelBLCTitle.UCForeColor = System.Drawing.Color.White
-        Me.UcLabelBLCTitle.UCTextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.UcLabelBLCTitle.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelBLCTitle.UCValue = "تفنگساز - تیرماه - 1"
         '
         'UcLabel1
@@ -91,7 +91,7 @@ Partial Class UCViewerNSSBillOfLadingControl
         Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel1.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel1.Location = New System.Drawing.Point(104, 38)
+        Me.UcLabel1.Location = New System.Drawing.Point(93, 38)
         Me.UcLabel1.Name = "UcLabel1"
         Me.UcLabel1.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabel1.Size = New System.Drawing.Size(12, 20)
@@ -108,10 +108,10 @@ Partial Class UCViewerNSSBillOfLadingControl
         Me.UcLabelTime._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelTime.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcLabelTime.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelTime.Location = New System.Drawing.Point(119, 38)
+        Me.UcLabelTime.Location = New System.Drawing.Point(111, 38)
         Me.UcLabelTime.Name = "UcLabelTime"
         Me.UcLabelTime.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelTime.Size = New System.Drawing.Size(92, 20)
+        Me.UcLabelTime.Size = New System.Drawing.Size(134, 20)
         Me.UcLabelTime.TabIndex = 0
         Me.UcLabelTime.UCBackColor = System.Drawing.Color.Transparent
         Me.UcLabelTime.UCFont = New System.Drawing.Font("IRMehr", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
@@ -125,10 +125,10 @@ Partial Class UCViewerNSSBillOfLadingControl
         Me.UcLabelDateShamsi._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelDateShamsi.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcLabelDateShamsi.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelDateShamsi.Location = New System.Drawing.Point(-7, 38)
+        Me.UcLabelDateShamsi.Location = New System.Drawing.Point(-32, 38)
         Me.UcLabelDateShamsi.Name = "UcLabelDateShamsi"
         Me.UcLabelDateShamsi.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelDateShamsi.Size = New System.Drawing.Size(105, 20)
+        Me.UcLabelDateShamsi.Size = New System.Drawing.Size(120, 20)
         Me.UcLabelDateShamsi.TabIndex = 1
         Me.UcLabelDateShamsi.UCBackColor = System.Drawing.Color.Transparent
         Me.UcLabelDateShamsi.UCFont = New System.Drawing.Font("IRMehr", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
@@ -136,14 +136,15 @@ Partial Class UCViewerNSSBillOfLadingControl
         Me.UcLabelDateShamsi.UCTextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.UcLabelDateShamsi.UCValue = "1399/12/28"
         '
-        'UCViewerNSSBillOfLadingControl
+        'UCViewerNSSBillOfLadingControlInfraction
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
-        Me.Name = "UCViewerNSSBillOfLadingControl"
+        Me.Name = "UCViewerNSSBillOfLadingControlInfraction"
         Me.Padding = New System.Windows.Forms.Padding(5)
-        Me.Size = New System.Drawing.Size(217, 90)
+        Me.Size = New System.Drawing.Size(226, 79)
         Me.PnlMain.ResumeLayout(false)
         Me.PnlOutter.ResumeLayout(false)
         Me.PnlInner.ResumeLayout(false)
@@ -154,8 +155,8 @@ End Sub
     Friend WithEvents PnlMain As Windows.Forms.Panel
     Friend WithEvents PnlOutter As Windows.Forms.Panel
     Friend WithEvents PnlInner As Windows.Forms.Panel
-    Friend WithEvents UcLabelTime As R2CoreGUI.UCLabel
     Friend WithEvents UcLabelBLCTitle As R2CoreGUI.UCLabel
     Friend WithEvents UcLabel1 As R2CoreGUI.UCLabel
+    Friend WithEvents UcLabelTime As R2CoreGUI.UCLabel
     Friend WithEvents UcLabelDateShamsi As R2CoreGUI.UCLabel
 End Class

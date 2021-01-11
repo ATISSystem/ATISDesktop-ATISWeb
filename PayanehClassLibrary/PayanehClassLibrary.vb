@@ -19,8 +19,8 @@ Imports PayanehClassLibrary.ConfigurationManagement
 Imports PayanehClassLibrary.DataBaseManagement
 Imports PayanehClassLibrary.DriverTrucksManagement
 Imports PayanehClassLibrary.LoadNotification.LoadPermission
-Imports PayanehClassLibrary.Rmto
 Imports PayanehClassLibrary.TransportCompanies
+Imports PayanehClassLibrary.TruckLoaderTypeManagement.Exceptions
 Imports R2Core
 Imports R2Core.BaseStandardClass
 Imports R2Core.ComputerMessagesManagement
@@ -33,6 +33,7 @@ Imports R2Core.DateAndTimeManagement
 Imports R2Core.DateAndTimeManagement.CalendarManagement.PersianCalendar
 Imports R2Core.EntityRelations
 Imports R2Core.LoggingManagement
+Imports R2Core.NetworkInternetManagement.Exceptions
 Imports R2Core.ProcessesManagement
 Imports R2Core.UserManagement
 Imports R2CoreGUI
@@ -69,102 +70,8 @@ Imports R2CoreTransportationAndLoadNotification.Turns.TurnRegisterRequest
 Imports R2CoreTransportationAndLoadNotification.MobileUsers
 Imports R2CoreTransportationAndLoadNotification.MobileUsers.Exeptions
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
+Imports R2CoreTransportationAndLoadNotification.Rmto
 
-
-
-Namespace Rmto
-    Public MustInherit Class RmtoWebService
-        Private Shared Service As RmtoWS.PKG_RMTO_WSService
-
-        Public Enum InfoType
-            GET_DRIVER_BY_SHC = 0
-            GET_DRIVER_BY_SHM = 1
-            GET_DRIVER_BY_SHP = 2
-            GET_FREIGHTER_BY_SHC = 3
-            GET_FREIGHTER_BY_VIN = 4
-            GET_FREIGHTER_BY_SHP = 5
-            GET_PASSENGER_BY_SHC = 6
-            GET_PASSENGER_BY_VIN = 7
-            GET_PASSENGER_BY_SHP = 8
-        End Enum
-
-        Public Shared Function GetInf(ByVal YourInfoType As InfoType, ByVal YourDFP As String) As String()
-            Try
-                Authentication()
-                If YourInfoType = InfoType.GET_DRIVER_BY_SHC Then
-                    Return Service.RMTO_WEB_SERVICES("Biinfo878", 41, "2043148", "", "", "", "", "", "", "", "", "", YourDFP).Split(";")
-                ElseIf YourInfoType = InfoType.GET_DRIVER_BY_SHM Then
-                    Return Service.RMTO_WEB_SERVICES("Biinfo878", 2, "2043148", "", "", "", "", "", "", "", "", "", YourDFP).Split(";")
-                ElseIf YourInfoType = InfoType.GET_FREIGHTER_BY_SHC Then
-                    Return Service.RMTO_WEB_SERVICES("Biinfo878", 4, "2043148", "", "", "", "", "", "", "", "", "", YourDFP).Split(";")
-                ElseIf YourInfoType = InfoType.GET_FREIGHTER_BY_VIN Then
-                    Return Service.RMTO_WEB_SERVICES("Biinfo878", 6, "2043148", "", "", "", "", "", "", "", "", "", YourDFP).Split(";")
-                End If
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Shared Function GetNSSDriverTruck(YourStrSmartCardNo As String) As R2StandardDriverTruckStructure
-            Try
-                Dim ComposeString As String() = GetInf(InfoType.GET_DRIVER_BY_SHC, YourStrSmartCardNo)
-                Dim NSSDriverTruck As New R2StandardDriverTruckStructure
-                NSSDriverTruck.NSSDriver = New R2StandardDriverStructure()
-                NSSDriverTruck.StrSmartCardNo = YourStrSmartCardNo
-                NSSDriverTruck.NSSDriver.StrFatherName = ComposeString(6).Split(":")(1)
-                NSSDriverTruck.NSSDriver.StrNationalCode = ComposeString(3).Split(":")(1)
-                NSSDriverTruck.NSSDriver.StrPersonFullName = ComposeString(4).Split(":")(1) + ";" + ComposeString(5).Split(":")(1)
-                NSSDriverTruck.NSSDriver.strDrivingLicenceNo = ComposeString(9).Split(":")(1)
-                Return NSSDriverTruck
-            Catch ex As Exception
-                Throw New RMTOWebServiceSException
-            End Try
-        End Function
-
-        Public Shared Function GetNSSCarTruck(YourStrBodyNo As String) As R2StandardCarTruckStructure
-            Try
-                Dim ComposeString As String() = GetInf(InfoType.GET_FREIGHTER_BY_SHC, YourStrBodyNo)
-                Dim NSSCarTruck As New R2StandardCarTruckStructure
-                NSSCarTruck.NSSCar = New R2StandardCarStructure()
-                NSSCarTruck.StrBodyNo = YourStrBodyNo
-                NSSCarTruck.NSSCar.StrCarNo = ComposeString(5).Split(":")(1) + ComposeString(6).Split(":")(1) + ComposeString(7).Split(":")(1)
-                NSSCarTruck.NSSCar.StrCarSerialNo = ComposeString(3).Split(":")(1)
-                NSSCarTruck.NSSCar.nIdCity = R2CoreParkingSystemMClassCitys.GetnCityCodeFromStrCityName(ComposeString(4).Split(":")(1))
-                NSSCarTruck.NSSCar.snCarType = ComposeString(12).Split(":")(1)
-                Return NSSCarTruck
-            Catch ex As Exception
-                Throw New RMTOWebServiceSException
-            End Try
-        End Function
-
-        Private Shared Sub Authentication()
-            Try
-                ''Dim UserName As String = "tr_web_service"
-                ''Dim Password As String = "tr_web_service123"
-                Dim UserName As String = "Biinfo878"
-                Dim Password As String = "2043148"
-                Service = New RmtoWS.PKG_RMTO_WSService()
-                Dim Credential As System.Net.CredentialCache = New System.Net.CredentialCache
-                Credential.Add(New Uri(Service.Url), "Basic", New System.Net.NetworkCredential(UserName, Password))
-                Service.Credentials = Credential
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-    End Class
-
-    Public Class RMTOWebServiceSException
-        Inherits ApplicationException
-        Public Overrides ReadOnly Property Message As String
-            Get
-                Return "شماره هوشمند وارد شده ممکن است نادرست باشد" + vbCrLf + "یا" + vbCrLf + "برقراری ارتباط با سرویس اینترنتی به دلیل نامعلومی مقدور نیست"
-            End Get
-        End Property
-    End Class
-
-
-End Namespace
 
 Namespace Logging
 
@@ -1576,6 +1483,14 @@ Namespace DriverTrucksManagement
 
     Public Class PayanehClassLibraryMClassDriverTrucksManagement
 
+        Public Shared Function GetNSSTruckDriver(YourNSSTruckDriver As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure) As R2StandardDriverTruckStructure
+            Try
+                Return New R2StandardDriverTruckStructure(YourNSSTruckDriver.NSSDriver, YourNSSTruckDriver.StrSmartCardNo)
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Shared Function IsExistDriverTruck(YourNSS As R2StandardDriverTruckStructure) As Boolean
             Try
                 Dim DS As New DataSet
@@ -1676,7 +1591,7 @@ Namespace DriverTrucksManagement
 
         Public Shared Function GetDriverTruckfromRMTOAndInsertUpdateLocalDataBase(YourSmartCardNo As String) As R2StandardDriverTruckStructure
             Try
-                Dim NSS As R2StandardDriverTruckStructure = RmtoWebService.GetNSSDriverTruck(YourSmartCardNo)
+                Dim NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSTruckDriver(RmtoWebService.GetNSSTruckDriver(YourSmartCardNo))
                 If IsExistDriverTruck(NSS) = True Then
                     Dim nIdPerson As Int64 = GetNSSDriverTruckbySmartCardNo(YourSmartCardNo).NSSDriver.nIdPerson
                     NSS.NSSDriver.nIdPerson = nIdPerson
@@ -1688,6 +1603,10 @@ Namespace DriverTrucksManagement
                     PayanehClassLibraryMClassDriverTrucksManagement.UpdateDriverTruck(NSS)
                 End If
                 Return GetNSSDriverTruckbySmartCardNo(YourSmartCardNo)
+            Catch ex As Exception When TypeOf ex Is InternetIsnotAvailableException OrElse 
+                                       TypeOf ex Is RMTOWebServiceSmartCardInvalidException OrElse 
+                                       TypeOf ex Is ConnectionIsNotAvailableException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -1743,6 +1662,14 @@ Namespace CarTrucksManagement
     End Class
 
     Public Class PayanehClassLibraryMClassCarTrucksManagement
+
+        Public Shared Function GetNSSTruck(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure) As R2StandardCarTruckStructure
+            Try
+                Return New R2StandardCarTruckStructure(YourNSSTruck.NSSCar, YourNSSTruck.SmartCardNo)
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
         Public Shared Function IsExistCarTruckBySmartCardNo(YourNSS As R2StandardCarTruckStructure) As Boolean
             Try
@@ -1847,7 +1774,7 @@ Namespace CarTrucksManagement
                     NSSCarTruck.NSSCar = NSSCar
                     NSSCarTruck.StrBodyNo = Ds.Tables(0).Rows(0).Item("StrBodyNo")
                 End If
-                Dim NSSTruckRmto As R2StandardCarTruckStructure = RmtoWebService.GetNSSCarTruck(YourSmartCardNo)
+                Dim NSSTruckRmto As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSTruck(RmtoWebService.GetNSSTruck(YourSmartCardNo))
                 If Object.Equals(NSSCarTruck, Nothing) Then
                     'NotExist In LocalDataBase
                     If IsExistCarTruckByLP(NSSTruckRmto) = True Then
@@ -1868,7 +1795,9 @@ Namespace CarTrucksManagement
                     R2CoreParkingSystemMClassCars.UpdateCar(NSSCarTruck.NSSCar)
                     Return NSSCarTruck
                 End If
-            Catch ex As RMTOWebServiceSException
+            Catch ex As Exception When TypeOf ex Is InternetIsnotAvailableException OrElse
+                                       TypeOf ex Is RMTOWebServiceSmartCardInvalidException OrElse
+                                       TypeOf ex Is ConnectionIsNotAvailableException
                 If Object.Equals(NSSCarTruck, Nothing) Then
                     Throw ex
                 Else
@@ -3755,7 +3684,7 @@ Namespace ReportsManagement
                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocationStatuses as LoadAllocationStatuses On LoadAllocations.LAStatusId=LoadAllocationStatuses.LoadAllocationStatusId
                           Where Turns.strExitDate>='" & YourDate1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDate2.DateShamsiFull & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and
                                 LoadAllocations.LAStatusId=2 and SUBSTRING(Turns.OtaghdarTurnNumber,1,1)='" & YourSequentialTurnKeyWord & "'
-                          Order By Turns.strExitDate,Turns.strExitTime Desc"
+                          Order By Turns.OtaghdarTurnNumber"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             Catch ex As Exception

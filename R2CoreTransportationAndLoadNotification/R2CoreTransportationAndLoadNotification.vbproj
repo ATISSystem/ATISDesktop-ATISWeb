@@ -60,7 +60,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -145,10 +148,46 @@
     <Compile Include="AnnouncementHalls\UCViewerNSSAnnouncementHallSubGroup.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\FrmcBillOfLadingControl.Designer.vb">
+    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCBillOfLadingControlInfraction.Designer.vb">
+      <DependentUpon>UCBillOfLadingControlInfraction.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCBillOfLadingControlInfraction.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCManipulationBillOfLadingControlInfraction.Designer.vb">
+      <DependentUpon>UCManipulationBillOfLadingControlInfraction.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCManipulationBillOfLadingControlInfraction.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCUCBillOfLadingControlInfractionCollection.Designer.vb">
+      <DependentUpon>UCUCBillOfLadingControlInfractionCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCUCBillOfLadingControlInfractionCollection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCUCBillOfLadingControlInfractionCollectionAdvance.Designer.vb">
+      <DependentUpon>UCUCBillOfLadingControlInfractionCollectionAdvance.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCUCBillOfLadingControlInfractionCollectionAdvance.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCViewerNSSBillOfLadingControlInfraction.Designer.vb">
+      <DependentUpon>UCViewerNSSBillOfLadingControlInfraction.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCViewerNSSBillOfLadingControlInfraction.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCViewerNSSBillOfLadingControlInfractionExtended.Designer.vb">
+      <DependentUpon>UCViewerNSSBillOfLadingControlInfractionExtended.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCViewerNSSBillOfLadingControlInfractionExtended.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BillOfLading\FrmcBillOfLadingControl.Designer.vb">
       <DependentUpon>FrmcBillOfLadingControl.vb</DependentUpon>
     </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\FrmcBillOfLadingControl.vb">
+    <Compile Include="BillOfLading\FrmcBillOfLadingControl.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="BillOfLading\BillOfLadingControl\UCBillOfLadingControl.Designer.vb">
@@ -527,6 +566,11 @@
     <Compile Include="Turns\UCViewerNSSTurnDataEntry.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Web References\RmtoWS\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AnnouncementHalls\UCAnnouncementHall.resx">
@@ -559,7 +603,25 @@
     <EmbeddedResource Include="AnnouncementHalls\UCViewerNSSAnnouncementHallSubGroup.resx">
       <DependentUpon>UCViewerNSSAnnouncementHallSubGroup.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\FrmcBillOfLadingControl.resx">
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControlInfraction\UCBillOfLadingControlInfraction.resx">
+      <DependentUpon>UCBillOfLadingControlInfraction.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControlInfraction\UCManipulationBillOfLadingControlInfraction.resx">
+      <DependentUpon>UCManipulationBillOfLadingControlInfraction.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControlInfraction\UCUCBillOfLadingControlInfractionCollection.resx">
+      <DependentUpon>UCUCBillOfLadingControlInfractionCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControlInfraction\UCUCBillOfLadingControlInfractionCollectionAdvance.resx">
+      <DependentUpon>UCUCBillOfLadingControlInfractionCollectionAdvance.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControlInfraction\UCViewerNSSBillOfLadingControlInfraction.resx">
+      <DependentUpon>UCViewerNSSBillOfLadingControlInfraction.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\BillOfLadingControlInfraction\UCViewerNSSBillOfLadingControlInfractionExtended.resx">
+      <DependentUpon>UCViewerNSSBillOfLadingControlInfractionExtended.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BillOfLading\FrmcBillOfLadingControl.resx">
       <DependentUpon>FrmcBillOfLadingControl.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCBillOfLadingControl.resx">
@@ -750,6 +812,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -758,6 +821,11 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\RmtoWS\PKG_RMTO_WS.wsdl" />
+    <None Include="Web References\RmtoWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -791,6 +859,25 @@
     <None Include="Resources\~AutoRecover.qrcode.png" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://smartcard.rmto.ir:9090/orawsv/TR_PUBLIC_WS/PKG_RMTO_WS%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\RmtoWS\</RelPath>
+      <UpdateFromURL>http://smartcard.rmto.ir:9090/orawsv/TR_PUBLIC_WS/PKG_RMTO_WS%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>R2CoreTransportationAndLoadNotification_RmtoWS_PKG_RMTO_WSService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

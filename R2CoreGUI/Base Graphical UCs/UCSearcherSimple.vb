@@ -6,6 +6,7 @@ Public Class UCSearcherSimple
     Inherits UCGeneral
 
     Public Event UC13PressedEvent(SearchString As String)
+    Public Event UCEmptyStringRefreshRequestedEvent()
 
 
 #Region "General Properties"
@@ -81,6 +82,14 @@ Public Class UCSearcherSimple
     Private Sub UcPersianTextBox_UCGotFocusEvent() Handles UcPersianTextBox.UCGotFocusEvent
         UcPersianTextBox.UCRefresh()
         UcPersianTextBox.UCForeColor = UCForeColor
+    End Sub
+
+    Private Sub PicRefresh_Click(sender As Object, e As EventArgs) Handles PicRefresh.Click
+        Try
+            RaiseEvent UCEmptyStringRefreshRequestedEvent
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
     End Sub
 
 

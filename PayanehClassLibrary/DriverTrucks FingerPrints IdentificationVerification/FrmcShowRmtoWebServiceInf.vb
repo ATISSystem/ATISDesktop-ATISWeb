@@ -1,8 +1,9 @@
 ﻿
 Imports System.Drawing
+Imports System.Net.NetworkInformation
 Imports System.Windows.Forms
 
-Imports PayanehClassLibrary.Rmto
+Imports R2CoreTransportationAndLoadNotification.Rmto
 
 Public Class FrmcShowRmtoWebServiceInf
 
@@ -18,6 +19,10 @@ Public Class FrmcShowRmtoWebServiceInf
             For loopx As UInt16 = 0 To myInf.Length - 1
                 TxtInf.Text += myInf(loopx) + vbCrLf
             Next
+        Catch ex As PingException
+            MessageBox.Show("FrmcShowRmtoWebServiceInf" + vbCrLf + ex.Message)
+        Catch ex As InvalidOperationException
+            MessageBox.Show("FrmcShowRmtoWebServiceInf" + vbCrLf + ex.Message)
         Catch ex As Exception
             MessageBox.Show("FrmcShowRmtoWebServiceInf" + vbCrLf + ex.Message)
         End Try

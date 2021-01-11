@@ -38,7 +38,7 @@ Namespace RmtoWS
         '''<remarks/>
         Public Sub New()
             MyBase.New
-            Me.Url = Global.PayanehClassLibrary.My.MySettings.Default.PayanehClassLibrary_RmtoWS_PKG_WEB_SERVICESService
+            Me.Url = Global.R2CoreTransportationAndLoadNotification.My.MySettings.Default.R2CoreTransportationAndLoadNotification_RmtoWS_PKG_RMTO_WSService
             If (Me.IsLocalFileSystemWebService(Me.Url) = true) Then
                 Me.UseDefaultCredentials = true
                 Me.useDefaultCredentialsSetExplicitly = false

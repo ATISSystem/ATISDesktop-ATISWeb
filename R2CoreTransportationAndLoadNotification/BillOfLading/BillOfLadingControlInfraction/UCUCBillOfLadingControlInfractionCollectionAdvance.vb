@@ -1,30 +1,15 @@
-﻿
-Imports System.ComponentModel
-Imports System.Reflection
+﻿Imports System.Reflection
 
 Imports R2CoreGUI
-Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
-Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
+Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControlInfraction
 
-Public Class UCUCBillOfLadingControlCollectionAdvance
+
+Public Class UCUCBillOfLadingControlInfractionCollectionAdvance
     Inherits UCGeneralExtended
 
-    Public Event UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure)
+    Public Event UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlInfractionStructure)
 
 #Region "General Properties"
-
-    Private _UCViewTitle As Boolean = True
-    <Browsable(True)>
-    Public Property UCViewTitle() As Boolean
-        Get
-            Return _UCViewTitle
-        End Get
-        Set(value As Boolean)
-            _UCViewTitle = value
-            UcLabelTop.Visible = value
-        End Set
-    End Property
-
 #End Region
 
 #Region "Subroutins And Functions"
@@ -40,12 +25,12 @@ Public Class UCUCBillOfLadingControlCollectionAdvance
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
-        
+
     End Sub
 
     Private Sub UCViewCollection(YourSearchString As String)
         Try
-            UcucBillOfLadingControlCollection.UCViewCollection(R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlManagement.GetBillOfLadingControlHeaders(YourSearchString))
+            UcucBillOfLadingControlInfractionCollection.UCViewCollection(R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlInfractionManagement.GetBillOfLadingControlInfractionHeaders(YourSearchString))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -58,8 +43,6 @@ Public Class UCUCBillOfLadingControlCollectionAdvance
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Sub
-
-
 
 #End Region
 
@@ -76,7 +59,7 @@ Public Class UCUCBillOfLadingControlCollectionAdvance
         End Try
     End Sub
 
-    Private Sub UcucBillOfLadingControlCollection_UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure) Handles UcucBillOfLadingControlCollection.UCSelectedNSSChangedEvent
+    Private Sub UcucBillOfLadingControlInfractionCollection_UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlInfractionStructure) Handles UcucBillOfLadingControlInfractionCollection.UCSelectedNSSChangedEvent
         Try
             RaiseEvent UCSelectedNSSChangedEvent(NSS)
         Catch ex As Exception

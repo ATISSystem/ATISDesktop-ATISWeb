@@ -35,9 +35,10 @@ Partial Class Form3
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Button7 = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
-        Me.UcCreatorBillOfLadingControl1 = New R2CoreTransportationAndLoadNotification.UCCreatorBillOfLadingControl()
-        Me.UcucBillOfLadingControlCollectionAdvance1 = New R2CoreTransportationAndLoadNotification.UCUCBillOfLadingControlCollectionAdvance()
-        Me.UcManipulationBillOfLadingControl1 = New R2CoreTransportationAndLoadNotification.UCManipulationBillOfLadingControl()
+        Me.Button9 = New System.Windows.Forms.Button()
+        Me.OleDbConnection1 = New System.Data.OleDb.OleDbConnection()
+        Me.Button10 = New System.Windows.Forms.Button()
+        Me.Button11 = New System.Windows.Forms.Button()
         Me.SuspendLayout
         '
         'Button1
@@ -168,39 +169,45 @@ Partial Class Form3
         Me.Button8.Text = "Button8"
         Me.Button8.UseVisualStyleBackColor = true
         '
-        'UcCreatorBillOfLadingControl1
+        'Button9
         '
-        Me.UcCreatorBillOfLadingControl1.BackColor = System.Drawing.Color.Transparent
-        Me.UcCreatorBillOfLadingControl1.Location = New System.Drawing.Point(51, 41)
-        Me.UcCreatorBillOfLadingControl1.Name = "UcCreatorBillOfLadingControl1"
-        Me.UcCreatorBillOfLadingControl1.Size = New System.Drawing.Size(479, 178)
-        Me.UcCreatorBillOfLadingControl1.TabIndex = 13
+        Me.Button9.Location = New System.Drawing.Point(205, 192)
+        Me.Button9.Name = "Button9"
+        Me.Button9.Size = New System.Drawing.Size(344, 31)
+        Me.Button9.TabIndex = 13
+        Me.Button9.Text = "انتقال شهری - آهن آلات"
+        Me.Button9.UseVisualStyleBackColor = true
         '
-        'UcucBillOfLadingControlCollectionAdvance1
+        'OleDbConnection1
         '
-        Me.UcucBillOfLadingControlCollectionAdvance1.BackColor = System.Drawing.Color.Transparent
-        Me.UcucBillOfLadingControlCollectionAdvance1.Location = New System.Drawing.Point(775, 12)
-        Me.UcucBillOfLadingControlCollectionAdvance1.Name = "UcucBillOfLadingControlCollectionAdvance1"
-        Me.UcucBillOfLadingControlCollectionAdvance1.Size = New System.Drawing.Size(254, 414)
-        Me.UcucBillOfLadingControlCollectionAdvance1.TabIndex = 14
+        Me.OleDbConnection1.ConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\SA.mdb"
         '
-        'UcManipulationBillOfLadingControl1
+        'Button10
         '
-        Me.UcManipulationBillOfLadingControl1.BackColor = System.Drawing.Color.Transparent
-        Me.UcManipulationBillOfLadingControl1.Location = New System.Drawing.Point(28, 247)
-        Me.UcManipulationBillOfLadingControl1.Name = "UcManipulationBillOfLadingControl1"
-        Me.UcManipulationBillOfLadingControl1.Size = New System.Drawing.Size(643, 116)
-        Me.UcManipulationBillOfLadingControl1.TabIndex = 15
-        Me.UcManipulationBillOfLadingControl1.UCNSSCurrent = Nothing
+        Me.Button10.Location = New System.Drawing.Point(205, 229)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(344, 31)
+        Me.Button10.TabIndex = 14
+        Me.Button10.Text = "SmartCard test"
+        Me.Button10.UseVisualStyleBackColor = true
+        '
+        'Button11
+        '
+        Me.Button11.Location = New System.Drawing.Point(205, 266)
+        Me.Button11.Name = "Button11"
+        Me.Button11.Size = New System.Drawing.Size(344, 31)
+        Me.Button11.TabIndex = 15
+        Me.Button11.Text = "SmartCard test"
+        Me.Button11.UseVisualStyleBackColor = true
         '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 450)
-        Me.Controls.Add(Me.UcManipulationBillOfLadingControl1)
-        Me.Controls.Add(Me.UcucBillOfLadingControlCollectionAdvance1)
-        Me.Controls.Add(Me.UcCreatorBillOfLadingControl1)
+        Me.Controls.Add(Me.Button11)
+        Me.Controls.Add(Me.Button10)
+        Me.Controls.Add(Me.Button9)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.Button6)
@@ -234,7 +241,8 @@ End Sub
     Friend WithEvents Button6 As Button
     Friend WithEvents Button7 As Button
     Friend WithEvents Button8 As Button
-    Friend WithEvents UcCreatorBillOfLadingControl1 As R2CoreTransportationAndLoadNotification.UCCreatorBillOfLadingControl
-    Friend WithEvents UcucBillOfLadingControlCollectionAdvance1 As R2CoreTransportationAndLoadNotification.UCUCBillOfLadingControlCollectionAdvance
-    Friend WithEvents UcManipulationBillOfLadingControl1 As R2CoreTransportationAndLoadNotification.UCManipulationBillOfLadingControl
+    Friend WithEvents Button9 As Button
+    Friend WithEvents OleDbConnection1 As OleDb.OleDbConnection
+    Friend WithEvents Button10 As Button
+    Friend WithEvents Button11 As Button
 End Class

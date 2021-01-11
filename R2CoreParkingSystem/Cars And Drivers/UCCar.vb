@@ -53,7 +53,7 @@ Public Class UCCar
     End Sub
 
     Private Sub UCRefresh()
-        UcPersianTextBoxStrCarNo.UCRefresh() : UcPersianTextBoxStrCarSerialNo.UCRefresh() : UcPersianTextBoxCarNo.UCRefresh()
+        UcPersianTextBoxStrCarNo.UCRefresh() : UcPersianTextBoxStrCarSerialNo.UCRefresh() 
         UcNumbernIdCar.UCRefresh() : UcCmbCity.UCRefresh() : UcCmbCarType.UCRefresh()
         UcPersianTextBoxStrCarNo.Focus()
         RaiseEvent UCRefreshedEvent()

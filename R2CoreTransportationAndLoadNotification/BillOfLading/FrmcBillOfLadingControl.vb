@@ -4,7 +4,8 @@ Imports System.Reflection
 Imports R2Core.ProcessesManagement
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
-Imports R2CoreTransportationAndLoadNotification.LoadPermission
+Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
+Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControlInfraction
 Imports R2CoreTransportationAndLoadNotification.ProcessesManagement
 
 Public Class FrmcBillOfLadingControl
@@ -53,7 +54,7 @@ Public Class FrmcBillOfLadingControl
 
 #Region "Event Handlers"
 
-    Private Sub UcCreatorBillOfLadingControl_UCBillOfLadingControlCreatedEvent(BLCId As Long) Handles UcCreatorBillOfLadingControl.UCBillOfLadingControlCreatedEvent
+    Private Sub UcCreatorBillOfLadingControl_UCBillOfLadingControlCreatedEvent(BLCId As Long)  Handles UcCreatorBillOfLadingControl.UCBillOfLadingControlCreatedEvent
         Try
             UcucBillOfLadingControlCollectionAdvance.UCViewCollection()
         Catch ex As Exception
@@ -72,6 +73,22 @@ Public Class FrmcBillOfLadingControl
     Private Sub UcManipulationBillOfLadingControl_UCBillOfLadingControlDeletedEvent(BLCId As Long) Handles UcManipulationBillOfLadingControl.UCBillOfLadingControlDeletedEvent
         Try
             UcucBillOfLadingControlCollectionAdvance.UCViewCollection()
+        Catch ex As Exception
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub UcManipulationBillOfLadingControlInfraction_UCBillOfLadingControlInfractionDeletedEvent(BLCIId As Long) Handles UcManipulationBillOfLadingControlInfraction.UCBillOfLadingControlInfractionDeletedEvent
+        Try
+            UcucBillOfLadingControlInfractionCollectionAdvance.UCViewCollection()
+        Catch ex As Exception
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub UcucBillOfLadingControlInfractionCollectionAdvance_UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlInfractionStructure) Handles UcucBillOfLadingControlInfractionCollectionAdvance.UCSelectedNSSChangedEvent
+        Try
+            UcManipulationBillOfLadingControlInfraction.UCViewNSS(NSS)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

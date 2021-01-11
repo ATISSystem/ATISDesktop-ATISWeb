@@ -6,7 +6,8 @@ Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.Drivers
 Imports PayanehClassLibrary.DriverTrucksManagement
-Imports PayanehClassLibrary.Rmto
+Imports R2Core.NetworkInternetManagement.Exceptions
+Imports R2CoreTransportationAndLoadNotification.Rmto
 
 
 Public Class UCDriverTruck
@@ -152,17 +153,21 @@ Public Class UCDriverTruck
             Catch ex As GetNSSException
                 If MessageBox.Show(Nothing, "اطلاعات راننده در سیستم قبلا ثبت نشده است" + vbCrLf + "اطلاعات مورد نظر را از سرویس اینترنتی دریافت میکنید؟", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly) = DialogResult.Yes Then
                     Try
-                        _CurrentNSS = Rmto.RmtoWebService.GetNSSDriverTruck(UserNumber)
+                        _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSTruckDriver(RmtoWebService.GetNSSTruckDriver(UserNumber))
                         UcDriver.UCViewDriverInformationDirty(_CurrentNSS.NSSDriver)
                         UcNumberStrSmartCardNo.UCValue = _CurrentNSS.StrSmartCardNo
-                    Catch exx As RMTOWebServiceSException
+                    Catch exx As Exception When TypeOf exx Is InternetIsnotAvailableException OrElse TypeOf exx Is RMTOWebServiceSmartCardInvalidException
                         UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                     End Try
                 Else
                 End If
             End Try
-        Catch exx As GetNSSException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + exx.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        Catch ex As InternetIsnotAvailableException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As ConnectionIsNotAvailableException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning,  ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As GetNSSException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

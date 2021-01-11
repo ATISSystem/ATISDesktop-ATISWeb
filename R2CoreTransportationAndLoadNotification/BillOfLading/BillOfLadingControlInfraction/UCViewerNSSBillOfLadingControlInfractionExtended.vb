@@ -1,17 +1,13 @@
-﻿
-Imports System.Drawing
-Imports System.Reflection
-Imports System.Windows.Forms
+﻿Imports System.Reflection
 
 Imports R2CoreGUI
-Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
-Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
+Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControlInfraction
 
 
-Public Class UCViewerNSSBillOfLadingControlExtended
-    Inherits UCBillOfLadingControl
+Public Class UCViewerNSSBillOfLadingControlInfractionExtended
+    Inherits UCBillOfLadingControlInfraction
 
-    Public Event UCClickedEvent(UC As UCBillOfLadingControl)
+    Public Event UCClickedEvent(UC As UCBillOfLadingControlInfraction)
 
 
 
@@ -66,10 +62,10 @@ Public Class UCViewerNSSBillOfLadingControlExtended
         End Try
     End Sub
 
-    Private Sub UCViewerNSSBillOfLadingControlExtended_UCViewNSSRequested() Handles Me.UCViewNSSRequested
+    Private Sub UCViewerNSSBillOfLadingControlInfractionExtended_UCViewNSSRequested() Handles Me.UCViewNSSRequested
         Try
             PnlInner.BackColor=UCBackColor
-            Dim NSSExtended =R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlManagement.GetNSSBillOfLadingControl(UCNSSCurrent.BLCId)
+            Dim NSSExtended =R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlInfractionManagement.GetNSSBillOfLadingControlInfraction( UCNSSCurrent.BLCIId)
             LblBLCTitle.Text = NSSExtended.BLCTitle
             LblDateTime.Text = NSSExtended.DateTimeComposite
             LblUserName.Text = NSSExtended.UserName.Trim
@@ -78,7 +74,6 @@ Public Class UCViewerNSSBillOfLadingControlExtended
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
-
 
 #End Region
 

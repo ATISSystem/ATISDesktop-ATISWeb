@@ -49,7 +49,7 @@ Public Class UCButtonCButton
         End Set
     End Property
 
-    Private _UCCorners As CButtonLib.CornersProperty = New CButtonLib.CornersProperty(16)
+    Private _UCCorners As CButtonLib.CornersProperty = New CButtonLib.CornersProperty(16,16,16,16)
     <Browsable(True)>
     Public Property UCCorners As CButtonLib.CornersProperty
         Get

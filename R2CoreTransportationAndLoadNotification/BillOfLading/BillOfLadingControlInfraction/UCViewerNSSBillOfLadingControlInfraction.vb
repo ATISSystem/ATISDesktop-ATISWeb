@@ -1,16 +1,14 @@
 ﻿
-Imports System.Drawing
 Imports System.Reflection
 
 Imports R2CoreGUI
-Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
-Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
+Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControlInfraction
 
 
-Public Class UCViewerNSSBillOfLadingControl
-    Inherits UCBillOfLadingControl
+Public Class UCViewerNSSBillOfLadingControlInfraction
+    Inherits UCBillOfLadingControlInfraction
 
-    Public Event UCClickedEvent(UC As UCViewerNSSBillOfLadingControl)
+    Public Event UCClickedEvent(UC As UCViewerNSSBillOfLadingControlInfraction)
 
 
 #Region "General Properties"
@@ -24,16 +22,14 @@ Public Class UCViewerNSSBillOfLadingControl
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        
-    End Sub
 
+    End Sub
 #End Region
 
 #Region "Events"
 #End Region
 
 #Region "Event Handlers"
-
 
     Private Sub UcLabels_UCClickedEvent() Handles UcLabelTime.UCClickedEvent, UcLabelDateShamsi.UCClickedEvent, UcLabelBLCTitle.UCClickedEvent
         Try
@@ -43,17 +39,17 @@ Public Class UCViewerNSSBillOfLadingControl
         End Try
     End Sub
 
-    Private Sub UCViewerNSSBillOfLadingControl_UCViewNSSRequested(NSSCurrent As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure) Handles Me.UCViewNSSRequested
+    Private Sub UCViewerNSSBillOfLadingControlInfraction_UCViewNSSRequested(NSSCurrent As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlInfractionStructure) Handles Me.UCViewNSSRequested
         Try
             PnlInner.BackColor=UCBackColor
-            UcLabelDateShamsi.UCValue = NSSCurrent.DateShamsi
-            UcLabelTime.UCValue = NSSCurrent.Time
-            UcLabelBLCTitle.UCValue = NSSCurrent.BLCTitle
+            Dim NSSExtended = DirectCast(NSSCurrent, R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlInfractionExtendedStructure)
+            UcLabelDateShamsi.UCValue = NSSExtended.DateShamsi
+            UcLabelTime.UCValue = NSSExtended.Time
+            UcLabelBLCTitle.UCValue = NSSExtended.BLCTitle
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
-
 
 #End Region
 
@@ -65,6 +61,5 @@ Public Class UCViewerNSSBillOfLadingControl
 
 #Region "Implemented Members"
 #End Region
-
 
 End Class

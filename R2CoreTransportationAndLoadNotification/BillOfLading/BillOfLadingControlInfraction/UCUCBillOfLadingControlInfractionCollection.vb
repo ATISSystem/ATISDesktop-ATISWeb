@@ -1,18 +1,14 @@
-﻿
-Imports System.Drawing
-Imports System.Reflection
+﻿Imports System.Reflection
 Imports System.Windows.Forms
 
 Imports R2CoreGUI
-Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
-Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
+Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControlInfraction
 
 
-Public Class UCUCBillOfLadingControlCollection
+Public Class UCUCBillOfLadingControlInfractionCollection
     Inherits UCGeneralExtended
 
-    
-    Public Event UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure)
+    Public Event UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlInfractionStructure)
 
 
 #Region "General Properties"
@@ -29,10 +25,10 @@ Public Class UCUCBillOfLadingControlCollection
     End Sub
 
     Private WithEvents _TTimer As System.Windows.Forms.Timer
-    Private Lst As List(Of R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure)
+    Private Lst As List(Of R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlInfractionExtendedStructure)
     Private _Counting As Int64
     Private _Counter As Int64
-    Public Sub UCViewCollection(YourCollection As List(Of R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure))
+    Public Sub UCViewCollection(YourCollection As List(Of R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlInfractionExtendedStructure))
         Try
             UCRefresh()
             Lst = YourCollection
@@ -52,12 +48,12 @@ Public Class UCUCBillOfLadingControlCollection
     Private Delegate Sub UCViewCollectionDelegate()
     Private Sub UCViewCollection()
         Try
-            Dim UC As UCViewerNSSBillOfLadingControl = New UCViewerNSSBillOfLadingControl()
+            Dim UC As UCViewerNSSBillOfLadingControlInfraction = New UCViewerNSSBillOfLadingControlInfraction()
             UC.UCViewNSS(Lst(_Counter))
             UC.Dock = DockStyle.Top
             AddHandler UC.UCClickedEvent, AddressOf UCs_UCClickedEvent
             If PnlUCs.InvokeRequired Then
-                PnlUCs.Invoke(New UCViewCollectionDelegate(AddressOf UCViewCollection))
+                PnlUCs.Invoke(New UCUCBillOfLadingControlInfractionCollection.UCViewCollectionDelegate(AddressOf UCViewCollection))
             Else
                 PnlUCs.Controls.Add(UC)
             End If
@@ -107,7 +103,7 @@ Public Class UCUCBillOfLadingControlCollection
         End Try
     End Sub
 
-    Private Sub UCs_UCClickedEvent(UC As UCViewerNSSBillOfLadingControl)
+    Private Sub UCs_UCClickedEvent(UC As UCViewerNSSBillOfLadingControlInfraction)
         Try
             RaiseEvent UCSelectedNSSChangedEvent(UC.UCNSSCurrent)
         Catch ex As Exception

@@ -8,6 +8,7 @@ Imports System.Windows.Forms
 Imports System.Drawing
 Imports System.Drawing.Imaging
 Imports System.IO
+Imports System.Net.NetworkInformation
 Imports System.Runtime.InteropServices
 Imports System.Text
 
@@ -20,11 +21,14 @@ Imports R2Core.DateAndTimeManagement
 Imports R2Core.EntityRelations.Exceptions
 Imports R2Core.ExceptionManagement
 Imports R2Core.FileShareRawGroupsManagement
+Imports R2Core.NetworkInternetManagement.Exceptions
 Imports R2Core.ProcessesManagement
 Imports R2Core.PublicProc
 Imports R2Core.R2PrimaryFileSharingWS
 Imports R2Core.UserManagement
 Imports R2Core.UserManagement.Exceptions
+
+
 
 
 Public Class R2Enums
@@ -100,6 +104,73 @@ Public Class R2Enums
 
 
 End Class
+
+Namespace NetworkInternetManagement
+
+    Public NotInheritable Class R2CoreMClassComputerMessagesManagement
+
+        Public Shared Function IsInternetAvailable() As Boolean
+            Try
+                If My.Computer.Network.Ping("www.google.com") Then
+                    Return True
+                Else
+                    Return False
+                End If
+            Catch ex As PingException
+                Throw new ConnectionIsNotAvailableException
+            Catch ex As InvalidOperationException
+                Throw New  ConnectionIsNotAvailableException
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function IsThisSiteAvailable(YourSiteURLorIP As String) As Boolean
+            Try
+                If My.Computer.Network.Ping(YourSiteURLorIP) Then
+                    Return True
+                Else
+                    Return False
+                End If
+            Catch ex As PingException
+                Throw ex
+            Catch ex As InvalidOperationException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+
+    End Class
+
+    Namespace Exceptions
+
+        Public Class InternetIsnotAvailableException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "اتصال به اینترنت امکان پذیر نیست.اتصالات شبکه و اینترنت را بررسی نمایید"
+                End Get
+            End Property
+        End Class
+
+        Public Class ConnectionIsNotAvailableException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "اتصال به شبکه امکان پذیر نیست.اتصالات شبکه را بررسی نمایید"
+                End Get
+            End Property
+        End Class
+
+
+    End Namespace
+
+
+
+
+End Namespace
 
 Namespace PublicProc
     Public Class R2CoreMClassPublicProcedures
@@ -1647,7 +1718,7 @@ Namespace UserManagement
 
         Public Shared Function IsUserRegistered(YourUserNSS As R2CoreStandardUserStructure) As Boolean
             Try
-                AuthenticationUserbyShenasehPassword(YourUserNSS) 
+                AuthenticationUserbyShenasehPassword(YourUserNSS)
                 Return True
             Catch ex As UserNotExistException
                 Return False
@@ -1740,9 +1811,9 @@ Namespace UserManagement
             End Try
         End Function
 
-        Public Shared Function GetUserImage(YourNSSUserRequest As R2CoreStandardUserStructure,YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
+        Public Shared Function GetUserImage(YourNSSUserRequest As R2CoreStandardUserStructure, YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
             Try
-                Return New R2CoreImage(R2PrimaryFSWS.WebMethodGetFile(R2Core.FileShareRawGroupsManagement.R2CoreRawGroups.UserImages, YourNSSUserRequest.UserId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 0),R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh,YourNSSUser.UserPassword)))
+                Return New R2CoreImage(R2PrimaryFSWS.WebMethodGetFile(R2Core.FileShareRawGroupsManagement.R2CoreRawGroups.UserImages, YourNSSUserRequest.UserId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 0), R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword)))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -2063,20 +2134,21 @@ Namespace DatabaseManagement
     End Class
 
     Public Class R2CoreMClassDatabaseManagement
-        Public shared Function GetOLEDbConnectionString(ByVal FileName As String) As String
+        Public Shared Function GetOLEDbConnectionString(ByVal FileName As String) As String
             Dim Builder As New OleDb.OleDbConnectionStringBuilder
             If IO.Path.GetExtension(FileName).ToUpper = ".XLS" Then
                 Builder.Provider = "Microsoft.Jet.OLEDB.4.0"
                 Builder.Add("Extended Properties", "Excel 8.0;IMEX=1;HDR=No;")
             Else
                 Builder.Provider = "Microsoft.ACE.OLEDB.12.0"
-                Builder.Add("Extended Properties", "Excel 12.0;IMEX=1;HDR=No;")
+                Builder.Add("Extended Properties", "Excel 12.0;")
+                'Builder.Add("Extended Properties", "Excel 12.0;IMEX=1;HDR=No;")
             End If
             Builder.DataSource = FileName
             Return Builder.ConnectionString
         End Function
 
-        Public shared Function GetOLEDbConnectionString(ByVal FileName As String, ByVal Header As String) As String
+        Public Shared Function GetOLEDbConnectionString(ByVal FileName As String, ByVal Header As String) As String
             Dim Builder As New OleDb.OleDbConnectionStringBuilder
             If IO.Path.GetExtension(FileName).ToUpper = ".XLS" Then
                 Builder.Provider = "Microsoft.Jet.OLEDB.4.0"
@@ -4829,17 +4901,17 @@ Namespace HumanResourcesManagement
                 End Try
             End Sub
 
-            Public Shared Function GetPersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure,YourNSSUser as R2CoreStandardUserStructure) As R2CoreImage
+            Public Shared Function GetPersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure, YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
                 Try
-                    Return New R2CoreImage(_R2PrimaryFSWS.WebMethodGetFile(R2CoreRawGroups.PersonnelImages, YourNSSPersonnel.PId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 3),_R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh,YourNSSUser.UserPassword)))
+                    Return New R2CoreImage(_R2PrimaryFSWS.WebMethodGetFile(R2CoreRawGroups.PersonnelImages, YourNSSPersonnel.PId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 3), _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword)))
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
             End Function
 
-            Public Shared Sub SavePersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure, YourPersonnelImage As R2CoreImage,YourNSSUser as R2CoreStandardUserStructure)
+            Public Shared Sub SavePersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure, YourPersonnelImage As R2CoreImage, YourNSSUser As R2CoreStandardUserStructure)
                 Try
-                    _R2PrimaryFSWS.WebMethodSaveFile(R2CoreRawGroups.PersonnelImages, YourNSSPersonnel.PId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 3), YourPersonnelImage.GetImageByte(),_R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh,YourNSSUser.UserPassword))
+                    _R2PrimaryFSWS.WebMethodSaveFile(R2CoreRawGroups.PersonnelImages, YourNSSPersonnel.PId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 3), YourPersonnelImage.GetImageByte(), _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword))
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try

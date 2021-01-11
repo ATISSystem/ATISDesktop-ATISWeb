@@ -28,12 +28,19 @@ Partial Class FrmcBillOfLadingControl
         Me.ColorWithAlpha1 = New BlueActivity.Controls.ColorWithAlpha()
         Me.ColorWithAlpha2 = New BlueActivity.Controls.ColorWithAlpha()
         Me.UcManipulationBillOfLadingControl = New R2CoreTransportationAndLoadNotification.UCManipulationBillOfLadingControl()
-        Me.UcCreatorBillOfLadingControl = New R2CoreTransportationAndLoadNotification.UCCreatorBillOfLadingControl()
         Me.UcucBillOfLadingControlCollectionAdvance = New R2CoreTransportationAndLoadNotification.UCUCBillOfLadingControlCollectionAdvance()
         Me.PnlInfractions = New BlueActivity.Controls.AlphaGradientPanel()
         Me.ColorWithAlpha3 = New BlueActivity.Controls.ColorWithAlpha()
         Me.ColorWithAlpha4 = New BlueActivity.Controls.ColorWithAlpha()
+        Me.UcManipulationBillOfLadingControlInfraction = New R2CoreTransportationAndLoadNotification.UCManipulationBillOfLadingControlInfraction()
+        Me.UcucBillOfLadingControlInfractionCollectionAdvance = New R2CoreTransportationAndLoadNotification.UCUCBillOfLadingControlInfractionCollectionAdvance()
+        Me.PnlPathOfFile = New BlueActivity.Controls.AlphaGradientPanel()
+        Me.ColorWithAlpha5 = New BlueActivity.Controls.ColorWithAlpha()
+        Me.ColorWithAlpha6 = New BlueActivity.Controls.ColorWithAlpha()
+        Me.UcCreatorBillOfLadingControl = New R2CoreTransportationAndLoadNotification.UCCreatorBillOfLadingControl()
         Me.PnlBillOfLadingControl.SuspendLayout
+        Me.PnlInfractions.SuspendLayout
+        Me.PnlPathOfFile.SuspendLayout
         Me.SuspendLayout
         '
         '_FrmMessageDialog
@@ -52,7 +59,6 @@ Partial Class FrmcBillOfLadingControl
         Me.PnlBillOfLadingControl.Colors.Add(Me.ColorWithAlpha2)
         Me.PnlBillOfLadingControl.ContentPadding = New System.Windows.Forms.Padding(0)
         Me.PnlBillOfLadingControl.Controls.Add(Me.UcManipulationBillOfLadingControl)
-        Me.PnlBillOfLadingControl.Controls.Add(Me.UcCreatorBillOfLadingControl)
         Me.PnlBillOfLadingControl.Controls.Add(Me.UcucBillOfLadingControlCollectionAdvance)
         Me.PnlBillOfLadingControl.CornerRadius = 20
         Me.PnlBillOfLadingControl.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
@@ -91,30 +97,23 @@ Partial Class FrmcBillOfLadingControl
         '
         Me.UcManipulationBillOfLadingControl.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcManipulationBillOfLadingControl.BackColor = System.Drawing.Color.Transparent
-        Me.UcManipulationBillOfLadingControl.Location = New System.Drawing.Point(57, 308)
+        Me.UcManipulationBillOfLadingControl.Location = New System.Drawing.Point(25, 38)
         Me.UcManipulationBillOfLadingControl.Name = "UcManipulationBillOfLadingControl"
-        Me.UcManipulationBillOfLadingControl.Size = New System.Drawing.Size(553, 116)
+        Me.UcManipulationBillOfLadingControl.Size = New System.Drawing.Size(629, 430)
         Me.UcManipulationBillOfLadingControl.TabIndex = 2
         Me.UcManipulationBillOfLadingControl.UCNSSCurrent = Nothing
-        '
-        'UcCreatorBillOfLadingControl
-        '
-        Me.UcCreatorBillOfLadingControl.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcCreatorBillOfLadingControl.BackColor = System.Drawing.Color.Transparent
-        Me.UcCreatorBillOfLadingControl.Location = New System.Drawing.Point(57, 93)
-        Me.UcCreatorBillOfLadingControl.Name = "UcCreatorBillOfLadingControl"
-        Me.UcCreatorBillOfLadingControl.Size = New System.Drawing.Size(553, 209)
-        Me.UcCreatorBillOfLadingControl.TabIndex = 1
+        Me.UcManipulationBillOfLadingControl.UCViewTitle = true
         '
         'UcucBillOfLadingControlCollectionAdvance
         '
         Me.UcucBillOfLadingControlCollectionAdvance.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcucBillOfLadingControlCollectionAdvance.BackColor = System.Drawing.Color.Transparent
         Me.UcucBillOfLadingControlCollectionAdvance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcucBillOfLadingControlCollectionAdvance.Location = New System.Drawing.Point(628, 93)
+        Me.UcucBillOfLadingControlCollectionAdvance.Location = New System.Drawing.Point(660, 38)
         Me.UcucBillOfLadingControlCollectionAdvance.Name = "UcucBillOfLadingControlCollectionAdvance"
-        Me.UcucBillOfLadingControlCollectionAdvance.Size = New System.Drawing.Size(317, 331)
+        Me.UcucBillOfLadingControlCollectionAdvance.Size = New System.Drawing.Size(309, 430)
         Me.UcucBillOfLadingControlCollectionAdvance.TabIndex = 0
+        Me.UcucBillOfLadingControlCollectionAdvance.UCViewTitle = true
         '
         'PnlInfractions
         '
@@ -127,6 +126,8 @@ Partial Class FrmcBillOfLadingControl
         Me.PnlInfractions.Colors.Add(Me.ColorWithAlpha3)
         Me.PnlInfractions.Colors.Add(Me.ColorWithAlpha4)
         Me.PnlInfractions.ContentPadding = New System.Windows.Forms.Padding(0)
+        Me.PnlInfractions.Controls.Add(Me.UcManipulationBillOfLadingControlInfraction)
+        Me.PnlInfractions.Controls.Add(Me.UcucBillOfLadingControlInfractionCollectionAdvance)
         Me.PnlInfractions.CornerRadius = 20
         Me.PnlInfractions.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
             Or BlueActivity.Controls.Corner.BottomLeft)  _
@@ -160,19 +161,98 @@ Partial Class FrmcBillOfLadingControl
         Me.ColorWithAlpha4.Color = System.Drawing.Color.Transparent
         Me.ColorWithAlpha4.Parent = Me.PnlInfractions
         '
+        'UcManipulationBillOfLadingControlInfraction
+        '
+        Me.UcManipulationBillOfLadingControlInfraction.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcManipulationBillOfLadingControlInfraction.BackColor = System.Drawing.Color.Transparent
+        Me.UcManipulationBillOfLadingControlInfraction.Location = New System.Drawing.Point(25, 38)
+        Me.UcManipulationBillOfLadingControlInfraction.Name = "UcManipulationBillOfLadingControlInfraction"
+        Me.UcManipulationBillOfLadingControlInfraction.Size = New System.Drawing.Size(629, 430)
+        Me.UcManipulationBillOfLadingControlInfraction.TabIndex = 1
+        Me.UcManipulationBillOfLadingControlInfraction.UCNSSCurrent = Nothing
+        Me.UcManipulationBillOfLadingControlInfraction.UCViewTitle = true
+        '
+        'UcucBillOfLadingControlInfractionCollectionAdvance
+        '
+        Me.UcucBillOfLadingControlInfractionCollectionAdvance.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcucBillOfLadingControlInfractionCollectionAdvance.BackColor = System.Drawing.Color.Transparent
+        Me.UcucBillOfLadingControlInfractionCollectionAdvance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.UcucBillOfLadingControlInfractionCollectionAdvance.Location = New System.Drawing.Point(660, 38)
+        Me.UcucBillOfLadingControlInfractionCollectionAdvance.Name = "UcucBillOfLadingControlInfractionCollectionAdvance"
+        Me.UcucBillOfLadingControlInfractionCollectionAdvance.Size = New System.Drawing.Size(309, 430)
+        Me.UcucBillOfLadingControlInfractionCollectionAdvance.TabIndex = 0
+        '
+        'PnlPathOfFile
+        '
+        Me.PnlPathOfFile.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlPathOfFile.BackColor = System.Drawing.Color.Transparent
+        Me.PnlPathOfFile.Border = true
+        Me.PnlPathOfFile.BorderColor = System.Drawing.Color.Black
+        Me.PnlPathOfFile.Colors.Add(Me.ColorWithAlpha5)
+        Me.PnlPathOfFile.Colors.Add(Me.ColorWithAlpha6)
+        Me.PnlPathOfFile.ContentPadding = New System.Windows.Forms.Padding(0)
+        Me.PnlPathOfFile.Controls.Add(Me.UcCreatorBillOfLadingControl)
+        Me.PnlPathOfFile.CornerRadius = 20
+        Me.PnlPathOfFile.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
+            Or BlueActivity.Controls.Corner.BottomLeft)  _
+            Or BlueActivity.Controls.Corner.BottomRight),BlueActivity.Controls.Corner)
+        Me.PnlPathOfFile.Gradient = true
+        Me.PnlPathOfFile.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
+        Me.PnlPathOfFile.GradientOffset = 1!
+        Me.PnlPathOfFile.GradientSize = New System.Drawing.Size(0, 0)
+        Me.PnlPathOfFile.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
+        Me.PnlPathOfFile.Grayscale = false
+        Me.PnlPathOfFile.Image = Nothing
+        Me.PnlPathOfFile.ImageAlpha = 75
+        Me.PnlPathOfFile.ImagePadding = New System.Windows.Forms.Padding(5)
+        Me.PnlPathOfFile.ImagePosition = BlueActivity.Controls.ImagePosition.BottomRight
+        Me.PnlPathOfFile.ImageSize = New System.Drawing.Size(48, 48)
+        Me.PnlPathOfFile.Location = New System.Drawing.Point(5, 50)
+        Me.PnlPathOfFile.Name = "PnlPathOfFile"
+        Me.PnlPathOfFile.Rounded = true
+        Me.PnlPathOfFile.Size = New System.Drawing.Size(995, 512)
+        Me.PnlPathOfFile.TabIndex = 51
+        '
+        'ColorWithAlpha5
+        '
+        Me.ColorWithAlpha5.Alpha = 255
+        Me.ColorWithAlpha5.Color = System.Drawing.Color.Transparent
+        Me.ColorWithAlpha5.Parent = Me.PnlPathOfFile
+        '
+        'ColorWithAlpha6
+        '
+        Me.ColorWithAlpha6.Alpha = 255
+        Me.ColorWithAlpha6.Color = System.Drawing.Color.Transparent
+        Me.ColorWithAlpha6.Parent = Me.PnlPathOfFile
+        '
+        'UcCreatorBillOfLadingControl
+        '
+        Me.UcCreatorBillOfLadingControl.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcCreatorBillOfLadingControl.BackColor = System.Drawing.Color.Transparent
+        Me.UcCreatorBillOfLadingControl.Location = New System.Drawing.Point(208, 154)
+        Me.UcCreatorBillOfLadingControl.Name = "UcCreatorBillOfLadingControl"
+        Me.UcCreatorBillOfLadingControl.Size = New System.Drawing.Size(579, 205)
+        Me.UcCreatorBillOfLadingControl.TabIndex = 0
+        '
         'FrmcBillOfLadingControl
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
-        Me.Controls.Add(Me.PnlBillOfLadingControl)
         Me.Controls.Add(Me.PnlInfractions)
+        Me.Controls.Add(Me.PnlPathOfFile)
+        Me.Controls.Add(Me.PnlBillOfLadingControl)
         Me.Location = New System.Drawing.Point(0, 0)
         Me.Name = "FrmcBillOfLadingControl"
         Me.Text = "FrmcBillOfLadingControl"
-        Me.Controls.SetChildIndex(Me.PnlInfractions, 0)
         Me.Controls.SetChildIndex(Me.PnlBillOfLadingControl, 0)
+        Me.Controls.SetChildIndex(Me.PnlPathOfFile, 0)
+        Me.Controls.SetChildIndex(Me.PnlInfractions, 0)
         Me.PnlBillOfLadingControl.ResumeLayout(false)
+        Me.PnlInfractions.ResumeLayout(false)
+        Me.PnlPathOfFile.ResumeLayout(false)
         Me.ResumeLayout(false)
 
 End Sub
@@ -184,6 +264,11 @@ End Sub
     Friend WithEvents ColorWithAlpha3 As BlueActivity.Controls.ColorWithAlpha
     Friend WithEvents ColorWithAlpha4 As BlueActivity.Controls.ColorWithAlpha
     Friend WithEvents UcManipulationBillOfLadingControl As UCManipulationBillOfLadingControl
-    Friend WithEvents UcCreatorBillOfLadingControl As UCCreatorBillOfLadingControl
     Friend WithEvents UcucBillOfLadingControlCollectionAdvance As UCUCBillOfLadingControlCollectionAdvance
+    Friend WithEvents UcManipulationBillOfLadingControlInfraction As UCManipulationBillOfLadingControlInfraction
+    Friend WithEvents UcucBillOfLadingControlInfractionCollectionAdvance As UCUCBillOfLadingControlInfractionCollectionAdvance
+    Friend WithEvents PnlPathOfFile As BlueActivity.Controls.AlphaGradientPanel
+    Friend WithEvents ColorWithAlpha5 As BlueActivity.Controls.ColorWithAlpha
+    Friend WithEvents ColorWithAlpha6 As BlueActivity.Controls.ColorWithAlpha
+    Friend WithEvents UcCreatorBillOfLadingControl As UCCreatorBillOfLadingControl
 End Class
