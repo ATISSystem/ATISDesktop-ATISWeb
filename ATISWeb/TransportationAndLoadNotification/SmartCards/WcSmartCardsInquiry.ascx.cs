@@ -10,10 +10,10 @@ using ATISWeb.LoginManagement;
 using ATISWeb.LoginManagement.Exceptions;
 using PayanehClassLibrary.CarTrucksManagement;
 using PayanehClassLibrary.DriverTrucksManagement;
-using PayanehClassLibrary.Rmto;
+using R2CoreTransportationAndLoadNotification.Rmto;
 using R2Core.ExceptionManagement;
 using R2Core.NetworkInternetManagement.Exceptions;
-using R2CoreTransportationAndLoadNotification.Rmto;
+
 
 namespace ATISWeb.TransportationAndLoadNotification.SmartCards
 {
@@ -67,7 +67,7 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
                 { NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetDriverTruckfromRMTOAndInsertUpdateLocalDataBase(TxtTruckDriverSmartCardNo.Text); }
                 LblTruckDriver.Text = NSS.NSSDriver.StrPersonFullName.Trim();
             }
-            catch (Exception ex) when (ex is RMTOSmartCardSiteIsNotAvailableException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
+            catch (Exception ex) when (ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
@@ -82,7 +82,7 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
                 NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(TxtTruckSmartCardNo.Text, ATISWebMClassLoginManagement.GetNSSCurrentUser());
                 LblTruck.Text = NSS.NSSCar.GetCarPelakSerialComposit();
             }
-            catch (Exception ex) when (ex is RMTOSmartCardSiteIsNotAvailableException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
+            catch (Exception ex) when (ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }

@@ -864,10 +864,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://192.168.20.3:2012/PayanehWebService.asmx">
+    <WebReferenceUrl Include="http://192.168.85.13:2012/PayanehWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\PayanehWS\</RelPath>
-      <UpdateFromURL>http://192.168.20.3:2012/PayanehWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://192.168.85.13:2012/PayanehWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
