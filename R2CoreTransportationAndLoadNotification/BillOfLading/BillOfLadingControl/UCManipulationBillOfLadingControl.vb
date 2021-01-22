@@ -7,11 +7,13 @@ Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControlInfraction
+Imports R2CoreTransportationAndLoadNotification.ReportManagement
 
 Public Class UCManipulationBillOfLadingControl
     Inherits UCBillOfLadingControl
 
     Public Event UCBillOfLadingControlDeletedEvent(BLCId As Int64)
+    Private _WS As R2Core.R2PrimaryWS.R2PrimaryWebService = New R2Core.R2PrimaryWS.R2PrimaryWebService()
 
 
 #Region "General Properties"
@@ -83,7 +85,7 @@ Public Class UCManipulationBillOfLadingControl
             Dim NSS = R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlInfractionManagement.BillOfLadingControlInfractionAnalyze(R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlManagement.GetNSSBillOfLadingControl(UCNSSCurrent.BLCId))
             If MessageBox.Show("اطلاعات کنترل بارنامه بررسی شد" + vbCrLf + "آیا می خواهید نتیجه بررسی تخلفات در بانک اطلاعاتی ذخیره گردد ؟", "ATIS System", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) Then
                 R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlInfractionManagement.BillOfLadingControlInfractionRegistering(NSS, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
-                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess,"تخلفات کنترل بارنامه در بانک اطلاعاتی ذخیره گردید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخلفات کنترل بارنامه در بانک اطلاعاتی ذخیره گردید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             End If
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
@@ -101,6 +103,17 @@ Public Class UCManipulationBillOfLadingControl
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
+    End Sub
+
+    Private Sub UcButtonCButtonViewBLC_UCClickedEvent() Handles UcButtonCButtonViewBLC.UCClickedEvent
+        Cursor.Current = Cursors.WaitCursor
+        Try
+            _WS.WebMethodReportingInformationProviderBillOfLadingControlReport(UcViewerNSSBillOfLadingControlExtended.UCNSSCurrent.BLCId, _WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
+            R2CoreGUIMClassInformationManagement.PrintReport(R2CoreTransportationAndLoadNotificationReports.BillOfLadingControlReport)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+        Cursor.Current = Cursors.Default
     End Sub
 
 #End Region

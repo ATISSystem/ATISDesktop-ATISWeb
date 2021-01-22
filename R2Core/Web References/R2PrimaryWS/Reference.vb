@@ -63,6 +63,10 @@ Namespace R2PrimaryWS
         
         Private WebMethodExistCarOperationCompleted As System.Threading.SendOrPostCallback
         
+        Private WebMethodReportingInformationProviderBillOfLadingControlReportOperationCompleted As System.Threading.SendOrPostCallback
+        
+        Private WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportOperationCompleted As System.Threading.SendOrPostCallback
+        
         Private useDefaultCredentialsSetExplicitly As Boolean
         
         '''<remarks/>
@@ -148,6 +152,12 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         Public Event WebMethodExistCarCompleted As WebMethodExistCarCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodReportingInformationProviderBillOfLadingControlReportCompleted As WebMethodReportingInformationProviderBillOfLadingControlReportCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportCompleted As WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportCompletedEventHandler
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodLogin", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
@@ -576,6 +586,60 @@ Namespace R2PrimaryWS
         End Sub
         
         '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationProviderBillOfLadingControlReport"& _ 
+            "", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationProviderBillOfLadingControlReport(ByVal YourBLCId As Long, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationProviderBillOfLadingControlReport", New Object() {YourBLCId, YourExchangeKey})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationProviderBillOfLadingControlReportAsync(ByVal YourBLCId As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationProviderBillOfLadingControlReportAsync(YourBLCId, YourExchangeKey, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationProviderBillOfLadingControlReportAsync(ByVal YourBLCId As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationProviderBillOfLadingControlReportOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationProviderBillOfLadingControlReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationProviderBillOfLadingControlReportOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodReportingInformationProviderBillOfLadingControlReport", New Object() {YourBLCId, YourExchangeKey}, Me.WebMethodReportingInformationProviderBillOfLadingControlReportOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodReportingInformationProviderBillOfLadingControlReportOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationProviderBillOfLadingControlReportCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodReportingInformationProviderBillOfLadingControlReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationProviderBillOfLadingControlInfrac"& _ 
+            "tionsReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationProviderBillOfLadingControlInfractionsReport(ByVal YourBLCIId As Long, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationProviderBillOfLadingControlInfractionsReport", New Object() {YourBLCIId, YourExchangeKey})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportAsync(ByVal YourBLCIId As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportAsync(YourBLCIId, YourExchangeKey, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportAsync(ByVal YourBLCIId As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationProviderBillOfLadingControlInfractionsReportOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodReportingInformationProviderBillOfLadingControlInfractionsReport", New Object() {YourBLCIId, YourExchangeKey}, Me.WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodReportingInformationProviderBillOfLadingControlInfractionsReportOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
         Public Shadows Sub CancelAsync(ByVal userState As Object)
             MyBase.CancelAsync(userState)
         End Sub
@@ -749,4 +813,12 @@ Namespace R2PrimaryWS
             End Get
         End Property
     End Class
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodReportingInformationProviderBillOfLadingControlReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
 End Namespace

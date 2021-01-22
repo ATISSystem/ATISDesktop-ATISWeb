@@ -75,6 +75,10 @@
       <Project>{68ee9753-9b39-4d0b-bfe5-0f941a5f183c}</Project>
       <Name>R2CoreParkingSystem</Name>
     </ProjectReference>
+    <ProjectReference Include="..\R2CoreTransportationAndLoadNotification\R2CoreTransportationAndLoadNotification.vbproj">
+      <Project>{ef77b294-2e31-4914-af7b-289a6a1bf8dc}</Project>
+      <Name>R2CoreTransportationAndLoadNotification</Name>
+    </ProjectReference>
     <ProjectReference Include="..\R2Core\R2Core.vbproj">
       <Project>{b0651d1e-73a2-4e74-8483-6fbc60831969}</Project>
       <Name>R2Core</Name>
@@ -150,6 +154,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

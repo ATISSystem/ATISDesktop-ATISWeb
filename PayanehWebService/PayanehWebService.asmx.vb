@@ -15,7 +15,6 @@ Imports PayanehClassLibrary.TransportCompanies
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.DriverTrucksManagement
-Imports PayanehClassLibrary.Rmto
 Imports R2Core.ExceptionManagement
 Imports R2Core.SecurityAlgorithmsManagement
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions

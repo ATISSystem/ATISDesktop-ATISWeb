@@ -18,6 +18,7 @@ Imports R2CoreParkingSystem.EnterExitManagement
 Imports R2CoreParkingSystem.MoneyWalletChargeManagement
 Imports R2CoreParkingSystem.ReportsManagement
 Imports R2CoreParkingSystem.TrafficCardsManagement
+Imports R2CoreTransportationAndLoadNotification.ReportManagement
 
 
 ' To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
@@ -191,11 +192,11 @@ Public Class R2PrimaryWebService
         End Try
     End Function
 
-    <WebMethod()> 
+    <WebMethod()>
     Public Sub WebMethodRegisteringHandyBills(YourTeadad As Int64, YourShamsiDate As String, YourTerafficCardType As Int64, YourExchangeKey As Int64)
         Try
-            DIM NSS =_ExchangeKeyManager.GetNSSUser(YourExchangeKey)
-            R2CoreParkingSystemMClassEnterExitManagement.RegisteringHandyBills(YourTeadad, New R2StandardDateAndTimeStructure(Nothing, YourShamsiDate, Nothing), YourTerafficCardType,NSS)
+            Dim NSS = _ExchangeKeyManager.GetNSSUser(YourExchangeKey)
+            R2CoreParkingSystemMClassEnterExitManagement.RegisteringHandyBills(YourTeadad, New R2StandardDateAndTimeStructure(Nothing, YourShamsiDate, Nothing), YourTerafficCardType, NSS)
         Catch ex As ExchangeKeyTimeRangePassedException
             Throw ex
         Catch ex As ExchangeKeyNotExistException
@@ -264,6 +265,32 @@ Public Class R2PrimaryWebService
         End Try
     End Function
 
+    <WebMethod()>
+    Public Sub WebMethodReportingInformationProviderBillOfLadingControlReport(YourBLCId As Int64, YourExchangeKey As Int64)
+        Try
+            _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)
+            R2CoreTransportationAndLoadNotificationReportsManagement.ReportingInformationProviderBillOfLadingControlReport(YourBLCId)
+        Catch ex As ExchangeKeyTimeRangePassedException
+            Throw ex
+        Catch ex As ExchangeKeyNotExistException
+            Throw ex
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
 
+    <WebMethod()>
+    Public Sub WebMethodReportingInformationProviderBillOfLadingControlInfractionsReport(YourBLCIId As Int64, YourExchangeKey As Int64)
+        Try
+            _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)
+            R2CoreTransportationAndLoadNotificationReportsManagemenT.ReportingInformationProviderBillOfLadingControlInfractionReport(YourBLCIId)
+        Catch ex As ExchangeKeyTimeRangePassedException
+            Throw ex
+        Catch ex As ExchangeKeyNotExistException
+            Throw ex
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
 
 End Class

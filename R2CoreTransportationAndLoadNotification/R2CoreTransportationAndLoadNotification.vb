@@ -23,6 +23,7 @@ Imports R2Core.NetworkInternetManagement.Exceptions
 Imports R2Core.ProcessesManagement
 Imports R2Core.PublicProc
 Imports R2Core.R2PrimaryFileSharingWS
+Imports R2Core.ReportsManagement
 Imports R2Core.UserManagement
 Imports R2CoreParkingSystem.AccountingManagement
 Imports R2CoreParkingSystem.City
@@ -229,6 +230,84 @@ Namespace Rmto
     '        End Get
     '    End Property
     'End Class
+
+
+End Namespace
+
+Namespace ReportManagement
+
+    Public MustInherit Class R2CoreTransportationAndLoadNotificationReports
+        Inherits R2CoreReports
+
+        Public Shared ReadOnly BillOfLadingControlReport As Int64 = 29
+        Public Shared ReadOnly BillOfLadingControlInfractionsReport As Int64 = 30
+
+    End Class
+
+    Public Class R2CoreTransportationAndLoadNotificationReportsManagement
+        Private Shared _DateTime As New R2DateTime
+
+        Public Shared Sub ReportingInformationProviderBillOfLadingControlReport(YourBLCId As Int64)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
+            Try
+                Dim _DateTime As R2DateTime = New R2DateTime
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblBillOfLadingControlsReport" : CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblBillOfLadingControlsReport
+                                    Select BLC.BLCId,BLC.BLCTitle,BLC.TCOId,BLC.TCOTitle,BLC.DateShamsi,BLC.Time,SoftwareUser.Username,'' as ReportDateTime,
+                                           BLCDetails.BLCIndex,BLCDetails.BLNo,BLCDetails.BlSerial,BLCDetails.BLDateShamsi,BLCDetails.BLTime,BLCDetails.BLSenderTitle,BLCDetails.BLSenderNationalCode,BLCDetails.BLReceiverTitle,
+	                                       BLCDetails.BLReceiverNationalCode,BLCDetails.BLFirstTruckDriver,BLCDetails.BLTruckNo,BLCDetails.BLTruckSerialNo,BLCDetails.BLTruckSmartCardNo,BLCDetails.BLPrice,
+	                                       BLCDetails.BLSourceTitle,BLCDetails.BLTargetTitle,BLCDetails.BLGoodTitle,BLCDetails.BLWeight,BLCDetails.BLLoaderTypeTitle
+                                    from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC
+                                       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlDetails as BLCDetails On BLC.BLCId=BLCDetails.BLCId
+                                       Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUser On BLC.UserId=SoftwareUser.UserId
+                                    Where BLC.BLCId=" & YourBLCId & " Order By BLCDetails.BLCIndex "
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblBillOfLadingControlsReport Set ReportDateTime='" & _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + " - " + _DateTime.GetCurrentTime() & "'"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Shared Sub ReportingInformationProviderBillOfLadingControlInfractionReport(YourBLCIId As Int64)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
+            Try
+                Dim _DateTime As R2DateTime = New R2DateTime
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblBillOfLadingControlInfractionsReport" : CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblBillOfLadingControlInfractionsReport
+                                          Select BLCInfraction.BLCIId,BLCInfraction.BLCId,BLC.BLCTitle,BLCInfraction.DateShamsi,BLCInfraction.Time,SoftwareUser.UserName,BLCInfraction.Note,'' as ReportDateTime,
+                                                 BLCInfractionDetail.BLCIIndex,BLCInfractionDetail.TruckAnalyze,BLCInfractionDetail.TonajAnalyze,BLCInfractionDetail.SenderAnalyze,BLCInfractionDetail.RecieverAnalyze,
+	                                             BLCInfractionDetail.SameSenderRecieverAnalyze,BLCInfractionDetail.LoadSourceInvalid 
+                                          from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlInfractions as BLCInfraction
+                                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlInfractionDetails as BLCInfractionDetail On BLCInfraction.BLCIId=BLCInfractionDetail.BLCIId
+                                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC On BLCInfraction.BLCId=BLC.BLCId
+                                              Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUser On BLCInfraction.UserId=SoftwareUser.UserId
+                                          Where BLCInfraction.BLCIId=" & YourBLCIId & " Order By BLCInfractionDetail.BLCIIndex"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblBillOfLadingControlInfractionsReport Set ReportDateTime='" & _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + " - " + _DateTime.GetCurrentTime() & "'"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+    End Class
+
+
 
 
 End Namespace

@@ -858,7 +858,6 @@
   <ItemGroup>
     <None Include="Resources\~AutoRecover.qrcode.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

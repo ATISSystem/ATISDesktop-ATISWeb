@@ -331,4 +331,12 @@ Public Class Form3
             MessageBox.Show(ex.Message)
         End Try
     End Sub
+
+    Private Sub Button12_Click(sender As Object, e As EventArgs) Handles Button12.Click
+        Try
+            R2CoreTransportationAndLoadNotification.ReportManagement.R2CoreTransportationAndLoadNotificationReportsManagement.ReportingInformationProviderBillOfLadingControlReport(10002)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
 End Class

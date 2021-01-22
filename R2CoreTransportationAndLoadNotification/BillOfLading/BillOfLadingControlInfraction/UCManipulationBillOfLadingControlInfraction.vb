@@ -5,12 +5,14 @@ Imports System.Windows.Forms
 
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControlInfraction
+Imports R2CoreTransportationAndLoadNotification.ReportManagement
 
 
 Public Class UCManipulationBillOfLadingControlInfraction
     Inherits UCBillOfLadingControlInfraction
 
     Public Event UCBillOfLadingControlInfractionDeletedEvent(BLCIId As Int64)
+    Private _WS As R2Core.R2PrimaryWS.R2PrimaryWebService = New R2Core.R2PrimaryWS.R2PrimaryWebService()
 
 
 #Region "General Properties"
@@ -88,6 +90,17 @@ Public Class UCManipulationBillOfLadingControlInfraction
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
+    End Sub
+
+    Private Sub UcButtonCButtonViewBLCI_UCClickedEvent() Handles UcButtonCButtonViewBLCI.UCClickedEvent
+        Cursor.Current = Cursors.WaitCursor
+        Try
+            _WS.WebMethodReportingInformationProviderBillOfLadingControlInfractionsReport(UcViewerNSSBillOfLadingControlInfractionExtended.UCNSSCurrent.BLCIId, _WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
+            R2CoreGUIMClassInformationManagement.PrintReport(R2CoreTransportationAndLoadNotificationReports.BillOfLadingControlInfractionsReport)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+        Cursor.Current = Cursors.Default
     End Sub
 
 #End Region

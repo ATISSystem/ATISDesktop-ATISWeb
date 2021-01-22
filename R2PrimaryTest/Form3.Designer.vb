@@ -39,6 +39,7 @@ Partial Class Form3
         Me.OleDbConnection1 = New System.Data.OleDb.OleDbConnection()
         Me.Button10 = New System.Windows.Forms.Button()
         Me.Button11 = New System.Windows.Forms.Button()
+        Me.Button12 = New System.Windows.Forms.Button()
         Me.SuspendLayout
         '
         'Button1
@@ -200,11 +201,21 @@ Partial Class Form3
         Me.Button11.Text = "SmartCard test"
         Me.Button11.UseVisualStyleBackColor = true
         '
+        'Button12
+        '
+        Me.Button12.Location = New System.Drawing.Point(205, 299)
+        Me.Button12.Name = "Button12"
+        Me.Button12.Size = New System.Drawing.Size(344, 31)
+        Me.Button12.TabIndex = 16
+        Me.Button12.Text = "SmartCard test"
+        Me.Button12.UseVisualStyleBackColor = true
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 450)
+        Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.Button11)
         Me.Controls.Add(Me.Button10)
         Me.Controls.Add(Me.Button9)
@@ -245,4 +256,5 @@ End Sub
     Friend WithEvents OleDbConnection1 As OleDb.OleDbConnection
     Friend WithEvents Button10 As Button
     Friend WithEvents Button11 As Button
+    Friend WithEvents Button12 As Button
 End Class
