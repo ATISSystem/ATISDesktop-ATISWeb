@@ -29,7 +29,7 @@ namespace ATISMobileRestful.Controllers
         {
             try
             {
-                return new MessageStruct { ErrorCode = false, Message1 =String.Empty , Message2 = String.Empty , Message3 = string.Empty };
+                return new MessageStruct { ErrorCode = false, Message1 = String.Empty, Message2 = String.Empty, Message3 = string.Empty };
                 R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure myNSSLoadCapacitorLoad = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId);
                 //if (IsActiveLoadAllocationforThisLoad(myNSSLoadCapacitorLoad))
                 //{ }

@@ -8,6 +8,7 @@ Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl.Exceptions
+Imports R2CoreTransportationAndLoadNotification.TransportCompanies.Exceptions
 
 
 Public Class UCCreatorBillOfLadingControl
@@ -66,11 +67,13 @@ Public Class UCCreatorBillOfLadingControl
         Try
             Dim NSSBillOfLadingControl = R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlManagement.ReadBillOfLadingControl(UcTextBoxPathOfFile.UCValue)
             NSSBillOfLadingControl.BLCTitle = UcPersianTextBoxBLCTitle.UCValue
-            If MessageBox.Show("اطلاعات فایل کنترل بارنامه در بانک اطلاعاتی ذخیره گردد؟", "ATIS System", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) Then
+            If MessageBox.Show("اطلاعات فایل کنترل بارنامه در بانک اطلاعاتی ذخیره گردد؟", "ATIS System", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
                 Dim BLCId = R2CoreTransportationAndLoadNotificationMClassBillOfLadingControlManagement.BillOfLadingControlRegistering(NSSBillOfLadingControl, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                 UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "اطلاعات فایل کنترل بارنامه با موفقیت در بانک اطلاعاتی ذخیره گردید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 RaiseEvent UCBillOfLadingControlCreatedEvent(BLCId)
             End If
+        Catch ex As TransportCompanyNotFoundException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As BillOfLadingControlFileHasInvalidStructureException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As BillOfLadingControlMustHaveTitleForRegisteringException

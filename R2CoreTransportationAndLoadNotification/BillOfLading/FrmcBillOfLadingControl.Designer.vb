@@ -241,15 +241,15 @@ Partial Class FrmcBillOfLadingControl
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
-        Me.Controls.Add(Me.PnlInfractions)
         Me.Controls.Add(Me.PnlPathOfFile)
+        Me.Controls.Add(Me.PnlInfractions)
         Me.Controls.Add(Me.PnlBillOfLadingControl)
         Me.Location = New System.Drawing.Point(0, 0)
         Me.Name = "FrmcBillOfLadingControl"
         Me.Text = "FrmcBillOfLadingControl"
         Me.Controls.SetChildIndex(Me.PnlBillOfLadingControl, 0)
-        Me.Controls.SetChildIndex(Me.PnlPathOfFile, 0)
         Me.Controls.SetChildIndex(Me.PnlInfractions, 0)
+        Me.Controls.SetChildIndex(Me.PnlPathOfFile, 0)
         Me.PnlBillOfLadingControl.ResumeLayout(false)
         Me.PnlInfractions.ResumeLayout(false)
         Me.PnlPathOfFile.ResumeLayout(false)

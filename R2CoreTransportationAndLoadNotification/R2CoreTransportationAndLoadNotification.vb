@@ -1005,6 +1005,8 @@ Namespace TransportCompanies
                 Dim DS As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * From R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies Where TCOrganizationCode=" & YourTransportCompanyOrganizationId & "", 3600, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
                 Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
+            Catch ex As TransportCompanyNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -7299,14 +7301,27 @@ Namespace BillOfLadingControl
                             End If
                         Next
                         NSSBillOfLadingControl.BillOfLadings = Lst
-                        Dim TC As String() = Split(Ds.Tables(0).Rows(8).Item("TransportCompany").ToString(), " ")
 
+                        Dim TC As String() = Nothing
+                        Dim TCCounter As Int64 = 0
+                        Do
+                            If Ds.Tables(0).Rows(TCCounter).Item(0).ToString() <> String.Empty Then
+                                TC = Split(Ds.Tables(0).Rows(TCCounter).Item(0).ToString(), " ")
+                            Else
+                                TCCounter += 1
+                            End If
+                        Loop While TC Is Nothing
                         NSSBillOfLadingControl.TCOId = TC(TC.Length - 2)
                         NSSBillOfLadingControl.TCOTitle = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompanyByOrganizationId(NSSBillOfLadingControl.TCOId).TCTitle
+
+                    Catch ex As TransportCompanyNotFoundException
+                        Throw ex
                     Catch ex As Exception
                         Throw New BillOfLadingControlFileHasInvalidStructureException
                     End Try
                     Return NSSBillOfLadingControl
+                Catch ex As TransportCompanyNotFoundException
+                    Throw ex
                 Catch ex As BillOfLadingControlFileHasInvalidStructureException
                     Throw ex
                 Catch ex As ReadingBillOfLadingControlFailedException
@@ -7537,7 +7552,7 @@ Namespace BillOfLadingControl
                             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                         End Try
 
-                        'مقایسه کد ملی و نام فرستنده در بارنامه با سوابق
+                        'مقایسه کد ملی و نام فرستنده در بارنامه با سوابق قبلی
                         Try
                             Dim Ds As New DataSet
                             If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
@@ -7545,7 +7560,7 @@ Namespace BillOfLadingControl
                                                        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlDetails as Detail On BLC.BLCId=Detail.BLCId
                                                 Where (Detail.BLSenderNationalCode='" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLSenderNationalCode & "' and Detail.BLSenderTitle<>'" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLSenderTitle & "')
                                                    or (Detail.BLSenderTitle='" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLSenderTitle & "' and Detail.BLSenderNationalCode<>'" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLSenderNationalCode & "')", 3600, Ds).GetRecordsCount <> 0 Then
-                                NSSBillOfLadingControlInfractionDetail.SenderAnalyze = Ds.Tables(0).Rows(0).Item("BLCTitle").ToString() + " - " + Ds.Tables(0).Rows(0).Item("DateShamsi").ToString().Replace("/","") + Ds.Tables(0).Rows(0).Item("Time").ToString().Replace(":","")+" - "+" Index:"+Ds.Tables(0).Rows(0).Item("BLCIndex").ToString()
+                                NSSBillOfLadingControlInfractionDetail.SenderAnalyze = Ds.Tables(0).Rows(0).Item("BLCTitle").ToString() + " - " + Ds.Tables(0).Rows(0).Item("DateShamsi").ToString().Replace("/", "") + Ds.Tables(0).Rows(0).Item("Time").ToString().Replace(":", "") + " - " + " Index:" + Ds.Tables(0).Rows(0).Item("BLCIndex").ToString()
                             End If
                         Catch ex As Exception
                             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -7559,7 +7574,7 @@ Namespace BillOfLadingControl
                                                        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlDetails as Detail On BLC.BLCId=Detail.BLCId
                                                 Where (Detail.BLReceiverNationalCode='" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLReceiverNationalCode & "' and Detail.BLReceiverTitle<>'" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLReceiverTitle & "')
                                                    or (Detail.BLReceiverTitle='" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLReceiverTitle & "' and Detail.BLReceiverNationalCode<>'" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLReceiverNationalCode & "')", 3600, Ds).GetRecordsCount <> 0 Then
-                                NSSBillOfLadingControlInfractionDetail.RecieverAnalyze =  Ds.Tables(0).Rows(0).Item("BLCTitle").ToString() + " - " + Ds.Tables(0).Rows(0).Item("DateShamsi").ToString().Replace("/","") + Ds.Tables(0).Rows(0).Item("Time").ToString().Replace(":","")+" - "+" Index:"+Ds.Tables(0).Rows(0).Item("BLCIndex").ToString()
+                                NSSBillOfLadingControlInfractionDetail.RecieverAnalyze = Ds.Tables(0).Rows(0).Item("BLCTitle").ToString() + " - " + Ds.Tables(0).Rows(0).Item("DateShamsi").ToString().Replace("/", "") + Ds.Tables(0).Rows(0).Item("Time").ToString().Replace(":", "") + " - " + " Index:" + Ds.Tables(0).Rows(0).Item("BLCIndex").ToString()
                             End If
                         Catch ex As Exception
                             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -7570,10 +7585,10 @@ Namespace BillOfLadingControl
                             If YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLSenderNationalCode = YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLReceiverNationalCode Then
                                 Dim Ds As New DataSet
                                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                                "Select Top 1 BLC.BLCId from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC 
+                                "Select Top 1 BLC.BLCTitle from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC 
                                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlDetails as Detail On BLC.BLCId=Detail.BLCId
-                                         Where Detail.BLSenderNationalCode='" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLSenderNationalCode & "' and Detail.BLGoodTitle='" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLGoodTitle & "'", 3600, Ds).GetRecordsCount = 0 Then
-                                    NSSBillOfLadingControlInfractionDetail.SameSenderRecieverAnalyze = "در سوابق قبلی یافت نشد"
+                                         Where Detail.BLReceiverNationalCode='" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLSenderNationalCode & "' and Detail.BLGoodTitle='" & YourNSSBillOfLadingControl.BillOfLadings(Loopx).BLGoodTitle & "' and BLC.BLCId<>" & YourNSSBillOfLadingControl.BLCId & "", 3600, Ds).GetRecordsCount = 0 Then
+                                    NSSBillOfLadingControlInfractionDetail.SameSenderRecieverAnalyze = "محموله در سوابق قبلی وجود ندارد"
                                 End If
                             End If
                         Catch ex As Exception

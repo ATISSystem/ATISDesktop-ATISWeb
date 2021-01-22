@@ -226,10 +226,10 @@
   </wsdl:binding>
   <wsdl:service name="R2PrimaryFileSharingWebService">
     <wsdl:port name="R2PrimaryFileSharingWebServiceSoap" binding="tns:R2PrimaryFileSharingWebServiceSoap">
-      <soap:address location="http://192.168.85.13:2013/R2PrimaryFileSharingWebService.asmx" />
+      <soap:address location="http://192.168.20.3:2013/R2PrimaryFileSharingWebService.asmx" />
     </wsdl:port>
     <wsdl:port name="R2PrimaryFileSharingWebServiceSoap12" binding="tns:R2PrimaryFileSharingWebServiceSoap12">
-      <soap12:address location="http://192.168.85.13:2013/R2PrimaryFileSharingWebService.asmx" />
+      <soap12:address location="http://192.168.20.3:2013/R2PrimaryFileSharingWebService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
