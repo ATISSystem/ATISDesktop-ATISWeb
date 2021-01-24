@@ -81,7 +81,10 @@ Public Class UCUCPersonnelCollection
             PnlUCs.Controls.Clear()
             For Loopx As Int16 = Lst.Count - 1 To 0 Step -1
                 Dim myUC As UCPersonnelPresenter = New UCPersonnelPresenter()
-                myUC.UCViewPersonnel(Lst(Loopx),YourNSSUser)
+                Try
+                    myUC.UCViewPersonnel(Lst(Loopx), YourNSSUser)
+                Catch ex As R2CorePersonnelNotExistException
+                End Try
                 myUC.Dock = DockStyle.Top
                 PnlUCs.Controls.Add(myUC)
                 AddHandler myUC.UCClickedEvent, AddressOf UCs_UCClickedEvent

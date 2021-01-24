@@ -58,10 +58,12 @@ Public Class UCPersonnelImage
             If Object.Equals(PicPersonnel.Image, Nothing) Then
                 Throw New R2CorePersonnelNotExistException
             End If
-        Catch exx As R2CorePersonnelNotExistException
-            Throw exx
+        Catch ex As R2CorePersonnelNotExistException
+            PicPersonnel.Image=My.Resources.DefaultPersonnelImage
+            Throw ex
         Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            PicPersonnel.Image=My.Resources.DefaultPersonnelImage
+            Throw New R2CorePersonnelNotExistException
         End Try
     End Sub
 
