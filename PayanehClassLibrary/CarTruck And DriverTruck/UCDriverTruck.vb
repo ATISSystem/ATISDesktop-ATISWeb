@@ -13,6 +13,8 @@ Imports R2Core.EntityRelationManagement
 Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement
 Imports R2CoreTransportationAndLoadNotification.EntityRelations
 Imports R2Core.EntityRelationManagement.Exceptions
+Imports R2Core.ConfigurationManagement
+Imports R2Core.PermissionManagement
 
 Public Class UCDriverTruck
     Inherits UCGeneral
@@ -114,14 +116,23 @@ Public Class UCDriverTruck
             Dim EntityRelation As R2StandardEntityRelationStructure = Nothing
             Try
                 EntityRelation = R2CoreMClassEntityRelationManagement.GetNSSEntityRelation(R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver, Int64.MinValue, NSSDriver.nIdPerson)
-                R2CoreMClassSoftwareUsersManagement.EditingSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, String.Empty, False, 1, R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TruckDriver , NSSDriver.StrIdNo, Nothing, Nothing, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing, Nothing, Nothing), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                R2CoreMClassSoftwareUsersManagement.EditingSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, String.Empty, False, 1, R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TruckDriver, NSSDriver.StrIdNo, Nothing, Nothing, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing, Nothing, Nothing), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             Catch ex As EntityRelationNotFoundException
-                R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, Nothing, Nothing, Nothing, R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TruckDriver, NSSDriver.StrIdNo, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
-            Catch ex As Exception
+                Dim UserId = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, Nothing, Nothing, Nothing, R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TruckDriver, NSSDriver.StrIdNo, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver, UserId, NSSDriver.nIdPerson, Nothing), RelationDeactiveTypes.BothDeactive)
+                'به دست آوردن لیست فرآیندهای موبایلی قابل دسترسی برای نوع کاربر راننده و ارسال به مدیریت مجوز
+                Dim ComposeSearchString1 As String = R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TruckDriver.ToString + ":"
+                Dim AllofSoftwareUserTypes1 As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesAccessMobileProcesses), ";")
+                Dim AllofMobileProcessesIds As String() = Split(Mid(AllofSoftwareUserTypes1.Where(Function(x) Mid(x, 1, ComposeSearchString1.Length) = ComposeSearchString1)(0), ComposeSearchString1.Length + 1, AllofSoftwareUserTypes1.Where(Function(x) Mid(x, 1, ComposeSearchString1.Length) = ComposeSearchString1)(0).Length), ",")
+                R2CoreMClassPermissionsManagement.RegisteringPermissions(R2CorePermissionTypes.SoftwareUsersAccessMobileProcesses, UserId,AllofMobileProcessesIds)
+                'به دست آوردن لیست گروههای فرآیند موبایلی برای نوع کاربر راننده و ارسال آن به مدیریت روابط نهادی
+                Dim ComposeSearchString2 As String = R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TruckDriver.ToString + ":"
+                Dim AllofSoftwareUserTypes2 As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesRelationMobileProcessGroups  ), ";")
+                Dim AllofMobileProcessGroupsIds As String() = Split(Mid(AllofSoftwareUserTypes2.Where(Function(x) Mid(x, 1, ComposeSearchString2.Length) = ComposeSearchString2)(0), ComposeSearchString2.Length + 1, AllofSoftwareUserTypes2.Where(Function(x) Mid(x, 1, ComposeSearchString2.Length) = ComposeSearchString2)(0).Length), ",")
+                R2CoreMClassEntityRelationManagement.RegisteringEntityRelations (R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup ,UserId ,AllofMobileProcessGroupsIds)
+           Catch ex As Exception
                 Throw ex
             End Try
-            R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver,))
-
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "مشخصات راننده ناوگان باری ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exx As GetNSSException
             Throw New Exception("اطلاعات پایه راننده را ثبت کنید")

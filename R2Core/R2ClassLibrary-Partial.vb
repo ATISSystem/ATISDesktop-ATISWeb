@@ -844,6 +844,8 @@ Namespace EntityManagement
 
     Public MustInherit Class R2CoreEntities
         Public Shared ReadOnly None As Int64 = 0
+        Public Shared ReadOnly SoftwareUsers As Int64 = 1
+        Public Shared ReadOnly MobileProcesses As Int64 = 2
     End Class
 
     Public Class R2StandardEntityRelationTypeStructure
@@ -915,6 +917,8 @@ Namespace EntityRelationManagement
 
     Public MustInherit Class R2CoreEntityRelationTypes
         Public Shared ReadOnly None As Int64 = 0
+        Public Shared ReadOnly SoftwareUser_MobileProcessGroup As Int64 = 3 
+
     End Class
 
     Public Class R2StandardEntityRelationTypeStructure
@@ -1011,7 +1015,7 @@ Namespace EntityRelationManagement
                 NSS.Deleted = Ds.Tables(0).Rows(0).Item("Deleted")
                 Return NSS
             Catch ex As EntityRelationTypeNotFoundException
-
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -1048,7 +1052,6 @@ Namespace EntityRelationManagement
                 ElseIf YourDeactive = RelationDeactiveTypes.BothDeactive Then
                     CmdSql.CommandText = "Update R2Primary.dbo.TblEntityRelations Set RelationActive=0 Where (E1=" & YourNSSEntityRelation.E1 & " or E2=" & YourNSSEntityRelation.E2 & ") and ERTypeId=" & YourNSSEntityRelation.ERTypeId & ""
                 ElseIf YourDeactive = RelationDeactiveTypes.None Then
-                    Throw New Exception
                 End If
                 CmdSql.ExecuteNonQuery()
 
@@ -1071,13 +1074,13 @@ Namespace EntityRelationManagement
             Try
                 Dim Ds As DataSet
                 If YourERId1 = Int64.MinValue Then
-                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E2=" & YourERId2 & " and ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException 
+                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E2=" & YourERId2 & " and ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
                     Return GetNSSEntityRelation(Ds.Tables(0).Rows(0).Item("ERId"))
                 ElseIf YourERId2 = Int64.MinValue Then
-                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException 
+                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
                     Return GetNSSEntityRelation(Ds.Tables(0).Rows(0).Item("ERId"))
                 Else
-                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.E2=" & YourERId2 & " ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException 
+                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.E2=" & YourERId2 & " ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
                     Return GetNSSEntityRelation(Ds.Tables(0).Rows(0).Item("ERId"))
                 End If
             Catch ex As Exception
@@ -1085,6 +1088,28 @@ Namespace EntityRelationManagement
             End Try
         End Function
 
+        Public Shared Sub RegisteringEntityRelations(YourEntityRelationTypeId As Int64, YourE1Id As Int64, YourE2Ids As String())
+            Dim Cmdsql As New SqlClient.SqlCommand
+            Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                Cmdsql.Connection.Open()
+                Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
+                For Loopx As Int64 = 0 To YourE2Ids.Count - 1
+                    Cmdsql.CommandText = "Select Top 1 ERId From R2Primary.dbo.TblEntityRelations With (tablockx) Order By ERId Desc"
+                    Cmdsql.ExecuteNonQuery()
+                    Dim ERIdNew As Int64 = Cmdsql.ExecuteScalar() + 1
+                    Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERId,ERTypeId,E1,E2,RelationActive)
+                                          Values(" & ERIdNew & "," & YourEntityRelationTypeId & "," & YourE1Id & "," & YourE2Ids(Loopx) & ")"
+                    Cmdsql.ExecuteNonQuery()
+                Next
+                Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
+            Catch ex As Exception
+                If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                    Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
 
     End Class
 
@@ -1115,6 +1140,7 @@ Namespace PermissionManagement
 
     Public MustInherit Class R2CorePermissionTypes
         Public Shared ReadOnly None As Int64 = 0
+        Public Shared ReadOnly SoftwareUsersAccessMobileProcesses As Int64 = 1
     End Class
 
     Public Class R2StandardPermissionTypeStructure
@@ -1200,7 +1226,25 @@ Namespace PermissionManagement
     End Class
 
     Public NotInheritable Class R2CoreMClassPermissionsManagement
-
+        Public Shared Sub RegisteringPermissions(YourPermissionTypeId As Int64, YourEntityIdFirst As Int64, YourEntityIdsSecond As String())
+            Dim Cmdsql As New SqlClient.SqlCommand
+            Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                Cmdsql.Connection.Open()
+                Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
+                For Loopx As Int64 = 0 To YourEntityIdsSecond.Count - 1
+                    Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblPermissions(EntityIdFirst,EntityIdSecond,PermissionTypeId,RelationActive) 
+                                          Values(" & YourEntityIdFirst & "," & YourEntityIdsSecond(Loopx) & "," & YourPermissionTypeId & ",1)"
+                    Cmdsql.ExecuteNonQuery()
+                Next
+                Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
+            Catch ex As Exception
+                If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                    Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
 
 
 

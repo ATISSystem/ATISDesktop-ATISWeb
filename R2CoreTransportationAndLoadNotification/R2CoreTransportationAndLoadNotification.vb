@@ -6924,7 +6924,9 @@ Namespace SoftwareUserManagement
 
     Public MustInherit Class R2CoreTransportationAndLoadNotificationSoftwareUserTypes
         Public Shared ReadOnly Property TruckDriver As Int64 = 3
-
+        Public Shared ReadOnly Property TruckOwner As Int64 = 4
+        Public Shared ReadOnly Property TruckersAssociation As Int64 = 5
+        Public Shared ReadOnly Property TransportCompaniesAssociation As Int64 = 6
     End Class
 
 End Namespace
