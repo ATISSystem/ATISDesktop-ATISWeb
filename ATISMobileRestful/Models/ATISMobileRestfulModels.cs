@@ -80,6 +80,17 @@ namespace ATISMobileRestful.Models
         public string TruckDriver { get; set; }
     }
 
+    public class MobileProcess
+    {
+        public string PId { get; set; }
+        public string PName { get; set; }
+        public string PTitle { get; set; }
+        public string TargetMobilePage { get; set; }
+        public string Description { get; set; }
+        public Color PForeColor { get; set; }
+        public Color PBackColor { get; set; }
+    }
+
 
 
 

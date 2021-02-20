@@ -1586,7 +1586,7 @@ Namespace SoftwareUserManagement
             Try
                 Dim UserId = SoftwareUserMatching(YourMobileNumber, YourVerificationCode)
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserStatus='login',Active=1 Where UserId=" & UserId & ""
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserStatus='login',UserActive=1 Where UserId=" & UserId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
                 Return UserId

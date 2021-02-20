@@ -171,6 +171,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoadAllocationsController.cs" />
     <Compile Include="Controllers\LoadCapacitorController.cs" />
+    <Compile Include="Controllers\MobileProcessesController.cs" />
     <Compile Include="Controllers\MoneyWalletAccountingController.cs" />
     <Compile Include="Controllers\MoneyWalletChargingAPIController.cs" />
     <Compile Include="Controllers\MoneyWalletChargingMVCController.cs" />

@@ -23,7 +23,8 @@ Imports R2Core.SMSSendAndRecieved
 Imports R2Core.SMSSendAndRecieved.Exceptions
 
 Imports PcPosDll
-
+Imports R2Core.EntityRelationManagement
+Imports R2Core.MobileProcessesManagement.Exceptions
 
 Namespace MonetarySupply
 
@@ -917,7 +918,8 @@ Namespace EntityRelationManagement
 
     Public MustInherit Class R2CoreEntityRelationTypes
         Public Shared ReadOnly None As Int64 = 0
-        Public Shared ReadOnly SoftwareUser_MobileProcessGroup As Int64 = 3 
+        Public Shared ReadOnly SoftwareUser_MobileProcessGroup As Int64 = 3
+        Public Shared ReadOnly MobileProcessGroup_MobileProcess As Int64 = 4
 
     End Class
 
@@ -1267,6 +1269,171 @@ Namespace WebProcessesManagement
 End Namespace
 
 Namespace MobileProcessesManagement
+
+    Public Class R2StandardMobileProcessStructure
+        Inherits R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            PId = Int64.MinValue
+            PName = String.Empty
+            PTitle = String.Empty
+            TargetMobilePage = String.Empty
+            Description = String.Empty
+            PBackColor = Color.Black
+            PForeColor = Color.Black
+            UserId = Int64.MinValue
+            DateTimeMilladi = Now
+            DateShamsi = String.Empty
+            ViewFlag = Boolean.FalseString
+            Active = Boolean.FalseString
+            Deleted = Boolean.FalseString
+        End Sub
+
+        Public Sub New(ByVal YourPId As Int64, ByVal YourPName As String, ByVal YourPTitle As String, ByVal YourTargetMobilePage As String, ByVal YourDescription As String, YourPBackColor As Color, YourPForeColor As Color, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourPId, YourPName.Trim())
+            PId = YourPId
+            PName = YourPName
+            PTitle = YourPTitle
+            TargetMobilePage = YourTargetMobilePage
+            Description = YourDescription
+            PBackColor = YourPBackColor
+            PForeColor = YourPForeColor
+            UserId = YourUserId
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            ViewFlag = YourViewFlag
+            Active = YourActive
+            Deleted = YourDeleted
+        End Sub
+
+        Public Property PId As String
+        Public Property PName As String
+        Public Property PTitle As String
+        Public Property TargetMobilePage As String
+        Public Property Description As String
+        Public Property PBackColor As Color
+        Public Property PForeColor As Color
+        Public Property UserId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+
+
+
+
+
+    End Class
+
+    Public Class R2StandardMobileProcessGroupStructure
+        Inherits R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            PGId = Int64.MinValue
+            PGName = String.Empty
+            PGTitle = String.Empty
+            PGBackColor = Color.Black
+            PGForeColor = Color.Black
+            UserId = Int64.MinValue
+            DateTimeMilladi = Now
+            DateShamsi = String.Empty
+            ViewFlag = Boolean.FalseString
+            Active = Boolean.FalseString
+            Deleted = Boolean.FalseString
+        End Sub
+
+        Public Sub New(ByVal YourPGId As Int64, ByVal YourPGName As String, ByVal YourPGTitle As String, YourPGBackColor As Color, YourPGForeColor As Color, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourPGId, YourPGName.Trim())
+            PGId = YourPGId
+            PGName = YourPGName
+            PGTitle = YourPGTitle
+            PGBackColor = YourPGBackColor
+            PGForeColor = YourPGForeColor
+            UserId = YourUserId
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            ViewFlag = YourViewFlag
+            Active = YourActive
+            Deleted = YourDeleted
+        End Sub
+
+        Public Property PGId As String
+        Public Property PGName As String
+        Public Property PGTitle As String
+        Public Property PGBackColor As Color
+        Public Property PGForeColor As Color
+        Public Property UserId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+
+
+
+
+
+    End Class
+
+    Public NotInheritable Class R2CoreMClassMobileProcessesManagement
+
+        Public Shared Function GetListOfMobileProcessHaveUser(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2StandardMobileProcessStructure)
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                             "Select PId,PName,PTitle,TargetMobilePage,Description,PForeColor,PBackColor 
+                              from R2Primary.dbo.TblSoftwareUsers as SoftwareUser
+                                 Inner Join R2Primary.dbo.TblEntityRelations as SoftwareUserMobileProcessGroup On SoftwareUser.UserId=SoftwareUserMobileProcessGroup.E1 
+                                 Inner Join R2Primary.dbo.TblMobileProcessGroups as MobileProcessGroup On SoftwareUserMobileProcessGroup.E2=MobileProcessGroup.PGId 
+                                 Inner Join R2Primary.dbo.TblEntityRelations as MobileProcessGroupMobileProcess On MobileProcessGroup.PGId=MobileProcessGroupMobileProcess.E1  
+                                 Inner Join R2Primary.dbo.TblMobileProcesses as MobileProcesses On MobileProcessGroupMobileProcess.E2=MobileProcesses.PId 
+                              Where SoftwareUser.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUser.UserActive=1 and SoftwareUser.Deleted=0 and SoftwareUserMobileProcessGroup.ERTypeId=" & R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup & "
+                                    and SoftwareUserMobileProcessGroup.RelationActive=1 and  MobileProcessGroup.ViewFlag=1 and  MobileProcessGroup.Active=1 and MobileProcessGroup.Deleted=0 and MobileProcessGroupMobileProcess.ERTypeId=" & R2CoreEntityRelationTypes.MobileProcessGroup_MobileProcess & " 
+                                    and MobileProcessGroupMobileProcess.RelationActive=1 and MobileProcesses.ViewFlag=1 and MobileProcesses.Active=1 and MobileProcesses.Deleted=0 
+                              Order By MobileProcessGroup.PGId,MobileProcesses.PId ", 3600, Ds).GetRecordsCount <> 0 Then
+                    Dim Lst As New List(Of R2StandardMobileProcessStructure)
+                    For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                        Dim NSS As New R2StandardMobileProcessStructure
+                        NSS.PId = Ds.Tables(0).Rows(Loopx).Item("PId")
+                        NSS.PName = Ds.Tables(0).Rows(Loopx).Item("PName")
+                        NSS.PTitle = Ds.Tables(0).Rows(Loopx).Item("PTitle").trim
+                        NSS.TargetMobilePage = Ds.Tables(0).Rows(Loopx).Item("TargetMobilePage").trim
+                        NSS.Description = Ds.Tables(0).Rows(Loopx).Item("Description").trim
+                        NSS.PForeColor = Color.FromName(Ds.Tables(0).Rows(Loopx).Item("PForeColor").trim)
+                        NSS.PBackColor = Color.FromName(Ds.Tables(0).Rows(Loopx).Item("PBackColor").trim)
+                        Lst.Add(NSS)
+                    Next
+                    Return Lst
+                Else
+                    Throw New SoftwareUserHasNotAnyMobileProcessPermissionException
+                End If
+            Catch exx As SoftwareUserHasNotAnyMobileProcessPermissionException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+
+
+
+    End Class
+
+    Namespace Exceptions
+        Public Class SoftwareUserHasNotAnyMobileProcessPermissionException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "مجوز دسترسی به هیچ یک از منوهای اپلیکیشن را ندارید"
+                End Get
+            End Property
+        End Class
+
+
+    End Namespace
 
 End Namespace
 
