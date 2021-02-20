@@ -4,7 +4,7 @@ Imports System.Windows.Forms
 
 Imports R2Core.DatabaseManagement
 Imports R2Core.DateAndTimeManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.TrafficCardsManagement
 Imports R2CoreParkingSystem.UserChargeProcessManagement
@@ -92,7 +92,7 @@ Public Class UCUserChargeSavabeghCollection
         End Try
     End Sub
 
-    Public Sub UCViewSavabegh(YourNSSUser As R2CoreStandardUserStructure)
+    Public Sub UCViewSavabegh(YourNSSUser As R2CoreStandardSoftwareUserStructure)
         Try
             PnlUCs.Controls.Clear()
             UcLabelDaramad.UCValue = R2Core.PublicProc.R2CoreMClassPublicProcedures.ParseSignDigitToSignString(R2CoreParkingSystemMClassUserChargeProcessManagement.GetTotalAmountofUserChargeProcess(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, UcPersianShamsiDate1.UCGetDate.DateShamsiFull, UcPersianShamsiDate2.UCGetDate().DateShamsiFull, UcTimeEntry1.UCGetTime().Time, UcTimeEntry2.UCGetTime.Time))

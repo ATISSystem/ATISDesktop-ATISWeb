@@ -1,16 +1,16 @@
 ﻿
 Imports System.Reflection
 
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2Core.AuthenticationManagement
 Imports R2Core.ConfigurationManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI.ProcessesManagement
 
 Public Class UCProcess
     Inherits UCGeneral
 
-    Private _NSS As R2StandardProcessStructure = Nothing
+    Private _NSS As R2StandardDesktopProcessStructure = Nothing
 
     Public Sub New()
 
@@ -20,7 +20,7 @@ Public Class UCProcess
 
     End Sub
 
-    Public Sub New(YourNSS As R2StandardProcessStructure, YourColor As Color)
+    Public Sub New(YourNSS As R2StandardDesktopProcessStructure, YourColor As Color)
 
         ' This call is required by the designer.
         InitializeComponent()

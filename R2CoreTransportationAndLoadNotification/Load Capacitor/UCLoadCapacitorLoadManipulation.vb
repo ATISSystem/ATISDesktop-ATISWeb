@@ -4,7 +4,7 @@ Imports System.Reflection
 
 Imports R2Core.DateAndTimeManagement
 Imports R2CoreGUI
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
 Imports R2CoreTransportationAndLoadNotification.Goods
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad

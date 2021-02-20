@@ -4,7 +4,7 @@ Imports System.ComponentModel
 Imports System.Windows.Forms
 
 Imports R2Core.ConfigurationManagement
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 
 Public Class UCButtonCButton
     Inherits UCGeneral

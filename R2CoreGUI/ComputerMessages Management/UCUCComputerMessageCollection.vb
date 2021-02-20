@@ -5,7 +5,7 @@ Imports R2Core.ComputerMessagesManagement
 Imports R2Core.ComputersManagement
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DatabaseManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 
 Public Class UCUCComputerMessageCollection
     Inherits UCGeneral

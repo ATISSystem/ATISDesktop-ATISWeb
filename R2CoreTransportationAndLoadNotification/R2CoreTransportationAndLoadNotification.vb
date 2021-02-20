@@ -20,11 +20,12 @@ Imports R2Core.ExceptionManagement
 Imports R2Core.FileShareRawGroupsManagement
 Imports R2Core.LoggingManagement
 Imports R2Core.NetworkInternetManagement.Exceptions
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2Core.PublicProc
 Imports R2Core.R2PrimaryFileSharingWS
 Imports R2Core.ReportsManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
+Imports R2Core.EntityRelationManagement
 Imports R2CoreParkingSystem.AccountingManagement
 Imports R2CoreParkingSystem.City
 Imports R2CoreParkingSystem.BlackList
@@ -73,11 +74,10 @@ Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLading
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl.Exceptions
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControlInfraction.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadTargets.Exceptions
-Imports R2CoreTransportationAndLoadNotification.MobileUsers
-Imports R2CoreTransportationAndLoadNotification.MobileUsers.Exeptions
 Imports R2CoreTransportationAndLoadNotification.Rmto
 Imports R2CoreTransportationAndLoadNotification.TruckLoaderTypes
 Imports R2CoreTransportationAndLoadNotification.TruckLoaderTypes.Exceptions
+Imports R2CoreTransportationAndLoadNotification.EntityRelations
 
 Namespace Rmto
     Public MustInherit Class RmtoWebService
@@ -395,17 +395,20 @@ Namespace Trucks
             End Try
         End Function
 
-        Public Shared Function GetNSSTruck(YourNSSMobileUser As R2CoreTransportationAndLoadNotificationStandardMobileUserStructure) As R2CoreTransportationAndLoadNotificationStandardTruckStructure
+        Public Shared Function GetNSSTruck(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As R2CoreTransportationAndLoadNotificationStandardTruckStructure
             Try
                 Dim DS As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                        "Select Top 1 * from R2Primary.dbo.TblMobileUsers as MobileUsers
-                            Inner Join dbtransport.dbo.TbPerson as Persons On MobileUsers.MUMobileNumber Collate Arabic_CI_AI_WS=Persons.strIDNO Collate Arabic_CI_AI_WS
-	                        Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver 
-                            Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Persons.nIDPerson=CarAndPersons.nIDPerson
-	                        Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
-                            Inner Join dbtransport.dbo.tbCarType as CarTypes On Cars.snCarType=CarTypes.snCarType 
-                         Where MobileUsers.MUId=" & YourNSSMobileUser.MUId & " and CarAndPersons.snRelation=2 and Cars.ViewFlag=1 Order By Cars.nIDCar Desc", 1, DS).GetRecordsCount() = 0 Then Throw New TruckNotFoundException
+                        "Select Top 1 Cars.nIDCar,CarTypes.LoaderTypeName,strCarName,Cars.StrBodyNo
+                          from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                           Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1 
+                           Inner Join dbtransport.dbo.TbDriver as Drivers On EntityRelations.E2=Drivers.nIDDriver 
+                           Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Drivers.nIDDriver=CarAndPersons.nIDPerson
+                           Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
+                           Inner Join dbtransport.dbo.tbCarType as CarTypes On Cars.snCarType=CarTypes.snCarType 
+                         Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver & " and
+                               EntityRelations.RelationActive=1 and Cars.ViewFlag=1 
+                         Order By Cars.nIDCar Desc", 1, DS).GetRecordsCount() = 0 Then Throw New TruckNotFoundException
                 Dim NSS As R2CoreTransportationAndLoadNotificationStandardTruckStructure = New R2CoreTransportationAndLoadNotificationStandardTruckStructure
                 NSS.NSSCar = R2CoreParkingSystemMClassCars.GetNSSCar(DS.Tables(0).Rows(0).Item("nIdCar"))
                 NSS.NSSCar.snCarType = DS.Tables(0).Rows(0).Item("LoaderTypeName").trim() + " - " + DS.Tables(0).Rows(0).Item("strCarName").trim()
@@ -724,15 +727,17 @@ Namespace TruckDrivers
             End Try
         End Function
 
-        Public Shared Function GetNSSTruckDriver(YourNSSMobileUser As R2CoreTransportationAndLoadNotificationStandardMobileUserStructure) As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
+        Public Shared Function GetNSSTruckDriver(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure ) As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
             Try
                 Dim DS As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                     "Select Top 1 * from R2Primary.dbo.TblMobileUsers as MobileUsers
-                          Inner Join dbtransport.dbo.TbPerson as Persons On MobileUsers.MUMobileNumber Collate Arabic_CI_AI_WS=Persons.strIDNO Collate Arabic_CI_AI_WS
-	                      Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver 
-                          Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Persons.nIDPerson=CarAndPersons.nIDPerson
-                     Where MobileUsers.MUId=" & YourNSSMobileUser.MUId & " and CarAndPersons.snRelation=2 ", 1, DS).GetRecordsCount() = 0 Then Throw New TruckDriverNotFoundException
+                     "Select Top 1 * from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                         Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1 
+                         Inner Join dbtransport.dbo.TbDriver as Drivers On EntityRelations.E2=Drivers.nIDDriver 
+                         Inner Join dbtransport.dbo.TbPerson as Persons On Drivers.nIDDriver=Persons.nIDPerson 
+                         Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Persons.nIDPerson=CarAndPersons.nIDPerson
+                      Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and 
+                            EntityRelations.ERTypeId=" & R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver  & " and EntityRelations.RelationActive=1 and CarAndPersons.snRelation=2 ", 1, DS).GetRecordsCount() = 0 Then Throw New TruckDriverNotFoundException
                 Dim NSS As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure = New R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
                 NSS.NSSDriver = R2CoreParkingSystemMClassDrivers.GetNSSDriver(DS.Tables(0).Rows(0).Item("nIdDriver"))
                 NSS.StrSmartCardNo = DS.Tables(0).Rows(0).Item("StrSmartCardNo")
@@ -1126,7 +1131,7 @@ Namespace TransportCompanies
             End Try
         End Function
 
-        Public Shared Function GetNSSTransportCompnay(YourNSSUser As R2Core.UserManagement.R2CoreStandardUserStructure) As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure
+        Public Shared Function GetNSSTransportCompnay(YourNSSUser As R2Core.SoftwareUserManagement.R2CoreStandardSoftwareUserStructure) As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure
             Try
                 Dim DS As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
@@ -2340,7 +2345,7 @@ Namespace LoadCapacitor
                 End Try
             End Function
 
-            Public Shared Sub LoadCapacitorLoadEditing(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourUserNSS As R2CoreStandardUserStructure)
+            Public Shared Sub LoadCapacitorLoadEditing(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Dim CmdSql As New SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
@@ -2408,7 +2413,7 @@ Namespace LoadCapacitor
                 End Try
             End Sub
 
-            Public Shared Sub LoadCapacitorLoadDeleting(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourUserNSS As R2CoreStandardUserStructure)
+            Public Shared Sub LoadCapacitorLoadDeleting(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Dim CmdSql As New SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
@@ -2451,7 +2456,7 @@ Namespace LoadCapacitor
                 End Try
             End Sub
 
-            Public Shared Sub LoadCapacitorLoadCancelling(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourUserNSS As R2CoreStandardUserStructure)
+            Public Shared Sub LoadCapacitorLoadCancelling(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Dim CmdSql As New SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
@@ -2485,7 +2490,7 @@ Namespace LoadCapacitor
                 End Try
             End Sub
 
-            Public Shared Sub LoadCapacitorLoadFreeLining(YournEstelamId As Int64, YourUserNSS As R2CoreStandardUserStructure)
+            Public Shared Sub LoadCapacitorLoadFreeLining(YournEstelamId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Dim CmdSql As New SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
@@ -2530,7 +2535,7 @@ Namespace LoadCapacitor
         Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement
             Private Shared _DateTime As New R2DateTime
 
-            Public Shared Sub LoadCapacitorLoadReleasing(YournEstelamId As Int64, YourUserNSS As R2CoreStandardUserStructure)
+            Public Shared Sub LoadCapacitorLoadReleasing(YournEstelamId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Dim CmdSql As New SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
@@ -2585,7 +2590,7 @@ Namespace LoadCapacitor
                 End Try
             End Sub
 
-            Public Shared Sub LoadCapacitorLoadPermissionCancelling(YournEstelamId As Int64, YourLoadCapacitorLoadResuscitationFlag As Boolean, YourUserNSS As R2CoreStandardUserStructure)
+            Public Shared Sub LoadCapacitorLoadPermissionCancelling(YournEstelamId As Int64, YourLoadCapacitorLoadResuscitationFlag As Boolean, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Dim CmdSql As New SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
@@ -2618,7 +2623,7 @@ Namespace LoadCapacitor
                 End Try
             End Sub
 
-            Private Shared Sub LoadCapacitorLoadAllocating_(YourNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourUserNSS As R2CoreStandardUserStructure)
+            Private Shared Sub LoadCapacitorLoadAllocating_(YourNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Try
                     'کنترل وضعیت بار
                     If YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled Or YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted Or YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented Or YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow Then Throw New LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException
@@ -2629,7 +2634,7 @@ Namespace LoadCapacitor
                 End Try
             End Sub
 
-            Public Shared Sub LoadCapacitorLoadAllocating(YournEstelamId As Int64, YourUserNSS As R2CoreStandardUserStructure)
+            Public Shared Sub LoadCapacitorLoadAllocating(YournEstelamId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Try
                     Dim NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId)
                     LoadCapacitorLoadAllocating_(NSSLoadCapacitorLoad, YourUserNSS)
@@ -2638,7 +2643,7 @@ Namespace LoadCapacitor
                 End Try
             End Sub
 
-            Public Shared Sub LoadCapacitorLoadAllocating(YourNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourUserNSS As R2CoreStandardUserStructure)
+            Public Shared Sub LoadCapacitorLoadAllocating(YourNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Try
                     LoadCapacitorLoadAllocating_(YourNSSLoadCapacitorLoad, YourUserNSS)
                 Catch ex As Exception
@@ -2646,7 +2651,7 @@ Namespace LoadCapacitor
                 End Try
             End Sub
 
-            Public Shared Sub LoadCapacitorLoadAllocationCancelling(YournEstelamId As Int64, YourUserNSS As R2CoreStandardUserStructure)
+            Public Shared Sub LoadCapacitorLoadAllocationCancelling(YournEstelamId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Try
                     Dim NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId)
                     'کنترل وضعیت بار - نیازی نیست
@@ -2657,7 +2662,7 @@ Namespace LoadCapacitor
                 End Try
             End Sub
 
-            Public Shared Sub LoadCapacitorLoadSedimenting(YournEstelamId As Int64, YourUserNSS As R2CoreStandardUserStructure)
+            Public Shared Sub LoadCapacitorLoadSedimenting(YournEstelamId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Dim CmdSql As New SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
@@ -2702,7 +2707,7 @@ Namespace LoadCapacitor
                     CmdSql.Connection.Close()
 
                     For Each LoadCapcitorLoad In Lst
-                        R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(LoadCapcitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.TransferringTommorowLoads, 1, Nothing, Nothing, Nothing, R2CoreMClassLoginManagement.GetNSSSystemUser.UserId))
+                        R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(LoadCapcitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.TransferringTommorowLoads, 1, Nothing, Nothing, Nothing, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId))
                     Next
                 Catch ex As Exception
                     If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
@@ -3507,21 +3512,23 @@ Namespace Turns
             End Try
         End Function
 
-        Public Shared Function GetNSSTurn(YourNSSMobileUser As R2CoreTransportationAndLoadNotificationStandardMobileUserStructure) As R2CoreTransportationAndLoadNotificationStandardTurnStructure
+        Public Shared Function GetNSSTurn(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As R2CoreTransportationAndLoadNotificationStandardTurnStructure
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                   "Select Top 1 Users.UserName,TurnStatus.TurnStatusTitle,Persons.strPersonFullName,Cars.strCarNo+'-'+Cars.strCarSerialNo as LPString,Turns.nEnterExitId,Turns.strEnterDate,Turns.strEnterTime,Turns.nDriverCode,Turns.bFlagDriver,Turns.nUserIdEnter,Turns.OtaghdarTurnNumber,Turns.strCardno,Turns.TurnStatus
-                       from dbtransport.dbo.tbEnterExit as Turns
-                         Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnStatuses as TurnStatus On Turns.TurnStatus=TurnStatus.TurnStatusId
-                         Inner Join R2Primary.DBO.TblSoftwareUsers AS Users On Turns.nUserIdEnter=Users.UserId 
-                         Inner Join dbtransport.dbo.TbCar as Cars On Turns.strCardno=Cars.nIDCar 
-	                     Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Cars.nIDCar=CarAndPersons.nIDCar 
-	                     Inner Join dbtransport.dbo.TbDriver as Drivers On CarAndPersons.nIDPerson=Drivers.nIDDriver 
-	                     Inner Join dbtransport.dbo.TbPerson as Persons On Drivers.nIDDriver=Persons.nIDPerson
-	                     Inner Join R2Primary.dbo.TblMobileUsers as MobileUsers On Persons.strIDNO Collate Arabic_CI_AI_WS=MobileUsers.MUMobileNumber Collate Arabic_CI_AI_WS
-                       Where  (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and Cars.ViewFlag=1 
-                              and CarAndPersons.snRelation=2 and MobileUsers.MUId=" & YourNSSMobileUser.MUId & " and MobileUsers.Active=1 and MobileUsers.Deleted=0 Order By Turns.nEnterExitId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
+                   "Select Top 1 TurnCreatorUsers.UserName,TurnStatus.TurnStatusTitle,Persons.strPersonFullName,Cars.strCarNo+'-'+Cars.strCarSerialNo as LPString,Turns.nEnterExitId,Turns.strEnterDate,Turns.strEnterTime,Turns.nDriverCode,Turns.bFlagDriver,Turns.nUserIdEnter,Turns.OtaghdarTurnNumber,Turns.strCardno,Turns.TurnStatus
+                     from dbtransport.dbo.tbEnterExit as Turns
+                       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnStatuses as TurnStatus On Turns.TurnStatus=TurnStatus.TurnStatusId
+                       Inner Join R2Primary.DBO.TblSoftwareUsers AS TurnCreatorUsers On Turns.nUserIdEnter=TurnCreatorUsers.UserId 
+                       Inner Join dbtransport.dbo.TbCar as Cars On Turns.strCardno=Cars.nIDCar 
+                       Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Cars.nIDCar=CarAndPersons.nIDCar 
+                       Inner Join dbtransport.dbo.TbDriver as Drivers On CarAndPersons.nIDPerson=Drivers.nIDDriver 
+	                   Inner Join dbtransport.dbo.TbPerson as Persons On Persons.nIDPerson=Drivers.nIDDriver 
+	                   Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On Drivers.nIDDriver=EntityRelations.E2 
+	                   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On EntityRelations.E1=SoftwareUsers.UserId 
+                     Where (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and Cars.ViewFlag=1 
+                           and EntityRelations.ERTypeId=" & R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver & " and EntityRelations.RelationActive=1 and SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.Active=1 and SoftwareUsers.Deleted=0 
+                     Order By Turns.nEnterExitId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
                 Dim NSS As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure = New R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure
                 NSS.nEnterExitId = Ds.Tables(0).Rows(0).Item("nEnterExitId")
                 NSS.EnterDate = Ds.Tables(0).Rows(0).Item("StrEnterDate")
@@ -3544,27 +3551,29 @@ Namespace Turns
             End Try
         End Function
 
-        Public Shared Function GetTurns(YourNSSMobileUser As R2CoreTransportationAndLoadNotificationStandardMobileUserStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
+        Public Shared Function GetTurns(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                    "Select  (Select Count(*) from dbtransport.dbo.tbEnterExit as TurnsX
-                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SeqT On SUBSTRING(TurnsX.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS=SeqT.SeqTKeyWord Collate Arabic_CI_AI_WS
-                            Where SeqT.Active=1 and SeqT.Deleted=0 and SeqT.SeqTKeyWord Collate Arabic_CI_AI_WS=SUBSTRING(DataBox.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS and TurnsX.nEnterExitId<DataBox.nEnterExitId and (TurnsX.TurnStatus=1 or TurnsX.TurnStatus=7 or TurnsX.TurnStatus=8 or TurnsX.TurnStatus=9 or TurnsX.TurnStatus=10)) as TurnDistanceToValidity,DataBox.*
-                   from
-                       (Select Top 5 Turns.nEnterExitId,Turns.StrEnterDate,Turns.StrEnterTime,Turns.nDriverCode,Turns.bFlagDriver,Turns.nUserIdEnter,Turns.OtaghdarTurnNumber,Turns.StrCardNo,
-                                     Turns.TurnStatus,Cars.strCarNo +'-'+ Cars.strCarSerialNo as LPString,Persons.strPersonFullName,TurnStatuses.TurnStatusTitle,SoftwareUsers.UserName as Username
-                        from R2Primary.dbo.TblMobileUsers as MobileUsers
-                          Inner Join dbtransport.dbo.TbPerson as Persons On MobileUsers.MUMobileNumber Collate Arabic_CI_AI_WS=Persons.strIDNO Collate Arabic_CI_AI_WS
-                          Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver 
-                          Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Persons.nIDPerson=CarAndPersons.nIDPerson
-                          Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
-                          Inner Join dbtransport.dbo.tbCarType as CarTypes On Cars.snCarType=CarTypes.snCarType 
-                          Inner Join dbtransport.dbo.tbEnterExit as Turns On Cars.nIDCar=Turns.strCardno 
-                          Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnStatuses as TurnStatuses On Turns.TurnStatus=TurnStatuses.TurnStatusId 
-                          Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On Turns.nUserIdEnter=SoftwareUsers.UserId 
-                        Where MobileUsers.MUId=" & YourNSSMobileUser.MUId & " and CarAndPersons.snRelation=2 and Cars.ViewFlag=1 Order By Turns.nEnterExitId Desc) as DataBox
-                   Order By DataBox.nEnterExitId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SeqT On SUBSTRING(TurnsX.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS=SeqT.SeqTKeyWord Collate Arabic_CI_AI_WS
+                             Where SeqT.Active=1 and SeqT.Deleted=0 and SeqT.SeqTKeyWord Collate Arabic_CI_AI_WS=SUBSTRING(DataBox.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS and TurnsX.nEnterExitId<DataBox.nEnterExitId and (TurnsX.TurnStatus=1 or TurnsX.TurnStatus=7 or TurnsX.TurnStatus=8 or TurnsX.TurnStatus=9 or TurnsX.TurnStatus=10)) as TurnDistanceToValidity,DataBox.*
+                    from
+                      (Select Top 5 Turns.nEnterExitId,Turns.StrEnterDate,Turns.StrEnterTime,Turns.nDriverCode,Turns.bFlagDriver,Turns.nUserIdEnter,Turns.OtaghdarTurnNumber,Turns.StrCardNo,
+                                    Turns.TurnStatus,Cars.strCarNo +'-'+ Cars.strCarSerialNo as LPString,Persons.strPersonFullName,TurnStatuses.TurnStatusTitle,SoftwareUsers.UserName as Username
+                       from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+	                     Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1
+	                     Inner Join dbtransport.dbo.TbDriver as Drivers On EntityRelations.E2=Drivers.nIDDriver 
+                         Inner Join dbtransport.dbo.TbPerson as Persons On Drivers.nIDDriver=Persons.nIDPerson 
+                         Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Drivers.nIDDriver=CarAndPersons.nIDPerson
+                         Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
+                         Inner Join dbtransport.dbo.tbCarType as CarTypes On Cars.snCarType=CarTypes.snCarType 
+                         Inner Join dbtransport.dbo.tbEnterExit as Turns On Cars.nIDCar=Turns.strCardno 
+                         Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnStatuses as TurnStatuses On Turns.TurnStatus=TurnStatuses.TurnStatusId 
+                         Inner Join R2Primary.dbo.TblSoftwareUsers as TurnCreatorUsers On Turns.nUserIdEnter=TurnCreatorUsers.UserId 
+                       Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver & " and EntityRelations.RelationActive=1 and Cars.ViewFlag=1 
+	                   Order By Turns.nEnterExitId Desc) as DataBox
+                    Order By DataBox.nEnterExitId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                     Dim NSS As New R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure
@@ -4211,7 +4220,7 @@ Namespace Turns
                 End Try
             End Function
 
-            Private Shared Sub SaveTurnRegisterRequestAttachement(YourAttachement As R2CoreImage, YourTRRId As Int64, YourNSSUser As R2CoreStandardUserStructure)
+            Private Shared Sub SaveTurnRegisterRequestAttachement(YourAttachement As R2CoreImage, YourTRRId As Int64, YourNSSUser As R2CoreStandardSoftwareUserStructure)
                 Try
                     Dim FileInf = New R2CoreFile(YourTRRId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2))
                     _R2PrimaryFSWS.WebMethodSaveFile(FileShareRawGroupsManagement.R2CoreTransportationAndLoadNotificationRawGroups.TurnRegisterRequestAttachements, FileInf.FileName, YourAttachement.GetImageByte(), _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword))
@@ -4220,7 +4229,7 @@ Namespace Turns
                 End Try
             End Sub
 
-            Public Shared Function TurnRegisterRequestRegistering(YourNSSTRR As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure, YourAttachement As R2CoreImage, YourUserNSS As R2CoreStandardUserStructure) As Int64
+            Public Shared Function TurnRegisterRequestRegistering(YourNSSTRR As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure, YourAttachement As R2CoreImage, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
                 Dim CmdSql As New SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
@@ -4882,7 +4891,7 @@ Namespace LoadPermission
             End Try
         End Function
 
-        Public Shared Sub LoadPermissionRegistering(YourLoadAllocationId As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure, YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub LoadPermissionRegistering(YourLoadAllocationId As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
@@ -4907,7 +4916,7 @@ Namespace LoadPermission
                 R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.LoadCapacitorLoadReleasing(NSSLoadCapacitorLoad.nEstelamId, YourUserNSS)
                 CmdSql.CommandText = "Select nEstelamId from DBTransport.dbo.TbElam  with (tablockx) Where nEstelamId=" & YourLoadAllocationId.nEstelamId & ""
                 CmdSql.ExecuteScalar()
-                CmdSql.CommandText = "Update DBTransport.dbo.TbEnterExit Set StrBarnameNo=" & IIf(YourLoadAllocationId.UserId = R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser.UserId, R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany, R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall) & ",StrExitDate='" & _DateTime.GetCurrentDateShamsiFull() & "',StrExitTime='" & _DateTime.GetCurrentTime() & "',nCityCode=" & NSSLoadCapacitorLoad.nCityCode & ",nBarCode=" & NSSLoadCapacitorLoad.nBarCode & ",bEnterExit=1,nUserIdExit=" & YourUserNSS.UserId & ",nCompCode=" & NSSLoadCapacitorLoad.nCompCode & ",StrDriverName='" & NSSTruckDriver.NSSDriver.StrPersonFullName & "',nDriverCode=" & NSSTruckDriver.NSSDriver.nIdPerson & ",nEstelamId=" & NSSLoadCapacitorLoad.nEstelamId & ",nCarNum=" & NSSLoadCapacitorLoad.nCarNum - 1 & ",LoadPermissionStatus=" & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.Registered & " Where nEnterExitId=" & YourLoadAllocationId.TurnId & ""
+                CmdSql.CommandText = "Update DBTransport.dbo.TbEnterExit Set StrBarnameNo=" & IIf(YourLoadAllocationId.UserId = R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany, R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall) & ",StrExitDate='" & _DateTime.GetCurrentDateShamsiFull() & "',StrExitTime='" & _DateTime.GetCurrentTime() & "',nCityCode=" & NSSLoadCapacitorLoad.nCityCode & ",nBarCode=" & NSSLoadCapacitorLoad.nBarCode & ",bEnterExit=1,nUserIdExit=" & YourUserNSS.UserId & ",nCompCode=" & NSSLoadCapacitorLoad.nCompCode & ",StrDriverName='" & NSSTruckDriver.NSSDriver.StrPersonFullName & "',nDriverCode=" & NSSTruckDriver.NSSDriver.nIdPerson & ",nEstelamId=" & NSSLoadCapacitorLoad.nEstelamId & ",nCarNum=" & NSSLoadCapacitorLoad.nCarNum - 1 & ",LoadPermissionStatus=" & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.Registered & " Where nEnterExitId=" & YourLoadAllocationId.TurnId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 'ارسال تاییدیه صدور مجوز به آنلاین
@@ -4926,7 +4935,7 @@ Namespace LoadPermission
             End Try
         End Sub
 
-        Public Shared Sub LoadPermissionCancelling(YournEstelamId As Int64, YourTurnId As Int64, YourTurnResuscitationFlag As Boolean, YourLoadCapacitorLoadResuscitationFlag As Boolean, YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub LoadPermissionCancelling(YournEstelamId As Int64, YourTurnId As Int64, YourTurnResuscitationFlag As Boolean, YourLoadCapacitorLoadResuscitationFlag As Boolean, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
@@ -5640,17 +5649,19 @@ Namespace LoadAllocation
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement
         Private Shared _DateTime As New R2DateTime
 
-        Public Shared Function GetLoadAllocationsforTruckDriver(YourMobileUserId As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure)
+        Public Shared Function GetLoadAllocationsforTruckDriver(YourSoftwareUserId As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure)
             Try
                 Dim DS As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
    "Declare @LastTurnId int
-    Select Top 1 @LastTurnId=Turns.nEnterExitId from R2Primary.dbo.TblMobileUsers as MobileUsers
-       Inner Join dbtransport.dbo.TbPerson as Persons On MobileUsers.MUMobileNumber Collate Arabic_CI_AI_WS=Persons.strIDNO Collate Arabic_CI_AI_WS
-       Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Persons.nIDPerson=CarAndPersons.nIDPerson
+    Select Top 1 @LastTurnId=Turns.nEnterExitId 
+	from  R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+	   Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1 
+       Inner Join dbtransport.dbo.TbDriver as Drivers On EntityRelations.E2=Drivers.nIDDriver 
+       Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Drivers.nIDDriver=CarAndPersons.nIDPerson
        Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
        Inner Join dbtransport.dbo.tbEnterExit as Turns On Cars.nIDCar=Turns.strCardno 
-    Where MobileUsers.MUId=" & YourMobileUserId & " and CarAndPersons.snRelation=2 Order By Turns.nEnterExitId Desc
+    Where SoftwareUsers.UserId=" & YourSoftwareUserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver & " and EntityRelations.RelationActive=1 and Cars.ViewFlag=1 Order By Turns.nEnterExitId Desc
     Select LoadCapacitor.nEstelamID as LoadCapacitorLoadnEstelamId,Targets.strCityName as LoadCapacitorLoadTargetTitle,Products.strGoodName as  LoadCapacitorLoadGoodTitle,LoadCapacitor.nCarNumKol as LoadCapacitorLoadnCarNumKol,LoadCapacitor.strPriceSug as LoadCapacitorLoadStrPriceSug,LoadCapacitor.strDescription as LoadCapacitorLoadStrDescription,LoaderTypes.LoaderTypeTitle as LoadCapacitorLoadLoaderTypeTitle,
 	       LoadCapacitor.strAddress as LoadCapacitorLoadStrAddress,LoadCapacitor.dTimeElam as LoadCapacitorLoaddTimeElam,LoadCapacitor.dDateElam  as  LoadCapacitorLoaddDateElam,LoadCapacitorLoadStatuses.LoadStatusName as LoadCapacitorLoadStatusTitle,AHs.AHTitle as LoadCapacitorLoadAHTitle,AHSGs.AHSGTitle as LoadCapacitorLoadAHSGTitle,TransportCompanies.TCTitle as  TransportCompanyTitle,TransportCompanies.TCTel as  TransportCompanyTel,Turns.nEnterExitId as  TurnnEnterExitId,
 	       Turns.OtaghdarTurnNumber as TurnOtaghdarTurnNumber,Turns.strEnterDate as TurnEnterDate,Turns.strEnterTime as TurnEnterTime,Turns.strDesc as TurnStrDesc,TurnStatuses.TurnStatusTitle as TurnStatusTitle,Persons.strPersonFullName as TruckDriver,Drivers.strSmartcardNo  as TruckDriverSmartCardNo,Persons.strIDNO as TruckDriverMobileNumber,Cars.strCarNo+'-'+Cars.strCarSerialNo as TruckLPString,Cars.strBodyNo as TruckSmartCardNo,Turns.strExitDate as LoadPermissionDate,
@@ -5810,7 +5821,7 @@ Namespace LoadAllocation
             End Try
         End Function
 
-        Public Shared Function LoadAllocationRegistering(YournEstelamId As Int64, YourTurnId As Int64, YourUserNSS As R2CoreStandardUserStructure) As Int64
+        Public Shared Function LoadAllocationRegistering(YournEstelamId As Int64, YourTurnId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
@@ -5886,7 +5897,7 @@ Namespace LoadAllocation
             End Try
         End Function
 
-        Public Shared Sub LoadAllocationLoadPermissionRegistering(YourLoadAllocationId As Int64, YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub LoadAllocationLoadPermissionRegistering(YourLoadAllocationId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
@@ -5942,7 +5953,7 @@ Namespace LoadAllocation
             End Try
         End Sub
 
-        Public Shared Sub LoadAllocationCancelling(YourLoadAllocationId As Int64, YourCancellingStatus As Int64, YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub LoadAllocationCancelling(YourLoadAllocationId As Int64, YourCancellingStatus As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
@@ -6072,7 +6083,7 @@ Namespace LoadAllocation
             End Try
         End Function
 
-        Public Shared Function LoadAllocationsLoadPermissionRegistering(YourUserNSS As R2CoreStandardUserStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
+        Public Shared Function LoadAllocationsLoadPermissionRegistering(YourUserNSS As R2CoreStandardSoftwareUserStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
             Try
                 Dim AnnouncementHallsAnnouncementHallSubGroupsJOINT As List(Of R2CoreTransportationAndLoadNotificationStandardAnnouncementHallAnnouncementHallSubGroupJOINTStructure) = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetAnnouncementHallsAnnouncementHallSubGroupsJOINT()
                 Dim FailedResultLst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)()
@@ -6639,7 +6650,7 @@ End Namespace
 Namespace ProcessesManagement
 
     Public MustInherit Class R2CoreTransportationAndLoadNotificationProcesses
-        Inherits R2CoreProcesses
+        Inherits R2CoreDesktopProcesses
 
         Public Shared ReadOnly FrmcLoadPermissions As Int64 = 24
         Public Shared ReadOnly FrmcLoadCapacitor As Int64 = 44
@@ -6738,7 +6749,7 @@ Namespace LoadSedimentation
                 CmdSql.Connection.Close()
 
                 For Each LoadCapcitorLoad In Lst
-                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(LoadCapcitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Sedimenting, 1, Nothing, Nothing, Nothing, R2CoreMClassLoginManagement.GetNSSSystemUser.UserId))
+                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(LoadCapcitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Sedimenting, 1, Nothing, Nothing, Nothing, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId))
                 Next
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
@@ -6778,7 +6789,7 @@ Namespace LoadSedimentation
                     Try
                         SedimentingLoadCapacitorLoads(C.NSSAnnounementHall.AHId, C.NSSAnnouncementHallSubGroup.AHSGId)
                     Catch ex As Exception
-                        R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotification.Logging.R2CoreTransportationAndLoadNotificationLogType.LoadCapacitorSedimentingFailed, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassLoginManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
+                        R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotification.Logging.R2CoreTransportationAndLoadNotificationLogType.LoadCapacitorSedimentingFailed, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
                     End Try
                 Next
             Catch ex As Exception
@@ -6786,7 +6797,7 @@ Namespace LoadSedimentation
             End Try
         End Sub
 
-        Public Shared Sub SedimentingLoadCapacitorLoad(YournEstelamId As Int64, YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub SedimentingLoadCapacitorLoad(YournEstelamId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
@@ -6815,8 +6826,9 @@ End Namespace
 Namespace EntityRelations
 
     Public MustInherit Class R2CoreTransportationAndLoadNotificationEntityRelationTypes
-        Inherits R2Core.EntityRelations.R2CoreEntityRelationTypes
+        Inherits R2CoreEntityRelationTypes
         Public Shared ReadOnly Turn_TurnRegisterRequest As Int64 = 1
+        Public Shared ReadOnly SoftwareUser_TruckDriver As Int64 = 2
     End Class
 
 End Namespace
@@ -6877,67 +6889,23 @@ Namespace AnnouncementTiming
 
 End Namespace
 
-Namespace MobileUsers
+Namespace TerraficCardsManagement
 
-    Public Class R2CoreTransportationAndLoadNotificationStandardMobileUserStructure
-        Inherits R2StandardStructure
-
-        Public Sub New()
-            MyBase.New()
-            _MUId = Int64.MinValue
-            _MUNameFamily = String.Empty
-            _MUMobileNumber = String.Empty
-            _MUStatus = Int16.MinValue
-            _VerificationCode = String.Empty
-            _DateTimeMilladi = Now.Date
-            _DateShamsi = String.Empty
-            _ViewFlag = Boolean.FalseString
-            _Active = Boolean.FalseString
-            _Deleted = Boolean.FalseString
-        End Sub
-
-        Public Sub New(YourMUId As Int64, YourMUNameFamily As String, YourMUMobileNumber As String, YourMUStatus As String, YourVerificationCode As String, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
-            MyBase.New(YourMUId, YourMUNameFamily)
-            _MUId = YourMUId
-            _MUNameFamily = YourMUNameFamily
-            _MUMobileNumber = YourMUMobileNumber
-            _MUStatus = YourMUStatus
-            _VerificationCode = YourVerificationCode
-            _DateTimeMilladi = YourDateTimeMilladi
-            _DateShamsi = YourDateShamsi
-            _ViewFlag = YourViewFlag
-            _Active = YourActive
-            _Deleted = YourDeleted
-        End Sub
-
-        Public Property MUId As Int64
-        Public Property MUNameFamily As String
-        Public Property MUMobileNumber As String
-        Public Property MUStatus As String
-        Public Property VerificationCode As String
-        Public Property DateTimeMilladi As DateTime
-        Public Property DateShamsi As String
-        Public Property ViewFlag As Boolean
-        Public Property Active As Boolean
-        Public Property Deleted As Boolean
-
-    End Class
-
-    Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassMobileUsersManagement
-        Private Shared _DateTime As New R2DateTime
-
-        Public Shared Function GetNSSTerafficCard(YourNSSMobileUser As R2CoreTransportationAndLoadNotificationStandardMobileUserStructure) As R2CoreParkingSystemStandardTrafficCardStructure
+    Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTerraficCardsManagement
+        Public Shared Function GetNSSTerafficCard(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As R2CoreParkingSystemStandardTrafficCardStructure
             Try
                 Dim Ds As New DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                                                          "Select Top 1 TCardsRCar.CardId from R2Primary.dbo.TblMobileUsers as MobileUsers
-                          Inner Join dbtransport.dbo.TbPerson as Persons On MobileUsers.MUMobileNumber Collate Arabic_CI_AI_WS=Persons.strIDNO Collate Arabic_CI_AI_WS
-                          Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver 
-                          Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Persons.nIDPerson=CarAndPersons.nIDPerson
+                       "Select Top 1 TCardsRCar.CardId
+                        from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                          Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1 
+                          Inner Join dbtransport.dbo.TbDriver as Drivers On EntityRelations.E2=Drivers.nIDDriver 
+                          Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Drivers.nIDDriver=CarAndPersons.nIDPerson
                           Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
-						  Inner Join R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars as TCardsRCar On Cars.nIDCar=TCardsRCar.nCarId 
-                       Where MobileUsers.MUId=" & YourNSSMobileUser.MUId & " and CarAndPersons.snRelation=2 and Cars.ViewFlag=1 and TCardsRCar.RelationActive=1
-  					   Order By TCardsRCar.RelationId Desc", 10, Ds).GetRecordsCount <> 0 Then
+                          Inner Join R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars as TCardsRCar On Cars.nIDCar=TCardsRCar.nCarId 
+                        Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.RelationActive=1 and  
+                              EntityRelations.ERTypeId=" & R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver & " and Cars.ViewFlag=1 and TCardsRCar.RelationActive=1
+                        Order By TCardsRCar.RelationId Desc", 10, Ds).GetRecordsCount <> 0 Then
                     Return R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(System.Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CardId")))
                 Else
                     Throw New GetNSSException
@@ -6949,164 +6917,15 @@ Namespace MobileUsers
             End Try
         End Function
 
-        Private Shared Function GetRandomVerificationCode() As Int64
-            Try
-                Dim RandGen As New Random
-                Return RandGen.Next(10000, 100000)
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
+    End Class
+End Namespace
 
-        Public Shared Function GetNSSMobileUser(YourMUId As Int64) As R2CoreTransportationAndLoadNotificationStandardMobileUserStructure
-            Try
-                Dim DS As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMobileUsers as MUs Where MUs.MUId=" & YourMUId & "", 1, DS).GetRecordsCount() = 0 Then Throw New MobileUserNotFoundException
-                Return New R2CoreTransportationAndLoadNotificationStandardMobileUserStructure(DS.Tables(0).Rows(0).Item("MUId"), DS.Tables(0).Rows(0).Item("MUNameFamily").trim, DS.Tables(0).Rows(0).Item("MUMobileNumber").trim, DS.Tables(0).Rows(0).Item("MUStatus").trim, DS.Tables(0).Rows(0).Item("VerificationCode").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
-            Catch ex As MobileUserNotFoundException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
+Namespace SoftwareUserManagement
 
-        Public Shared Function ExistMobileUser(YourMobileNumber As String) As Boolean
-            Try
-                Dim DS As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMobileUsers as MUs Where MUs.MUMobileNumber='" & YourMobileNumber.Trim & "'", 1, DS).GetRecordsCount() = 0 Then
-                    Return False
-                Else
-                    Return True
-                End If
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Private Shared Function MobileUserMatching(YourMobileNumber As String, YourVerificationCode As String) As Int64
-            Try
-                Dim DS As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMobileUsers as MUs Where VerificationCode='" & YourVerificationCode & "' and MUMobileNumber='" & YourMobileNumber & "'", 1, DS).GetRecordsCount() = 0 Then Throw New MobileUserNotMatchException
-                Return DS.Tables(0).Rows(0).Item("MUId")
-            Catch ex As MobileUserNotMatchException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Private Shared Function InsertMobileUserFirstTime(YourMobileNumber As String, YourNameFamily As String) As String
-            Dim CmdSql As New SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
-            Try
-                Dim VerificationCode = GetRandomVerificationCode()
-                If ExistMobileUser(YourMobileNumber) Then
-                    CmdSql.Connection.Open()
-                    CmdSql.CommandText = "Update R2Primary.dbo.TblMobileUsers Set VerificationCode='" & VerificationCode.ToString & "' Where MUMobileNumber='" & YourMobileNumber & "'"
-                    CmdSql.ExecuteNonQuery()
-                    CmdSql.Connection.Close()
-                Else
-                    CmdSql.Connection.Open()
-                    CmdSql.Transaction = CmdSql.Connection.BeginTransaction
-                    CmdSql.CommandText = "Select top 1 MUId from R2Primary.dbo.TblMobileUsers with (tablockx) order by MUId desc"
-                    CmdSql.ExecuteNonQuery()
-                    CmdSql.CommandText = "Select IDENT_CURRENT('R2Primary.dbo.TblMobileUsers')"
-                    Dim myMUId As Int64 = CmdSql.ExecuteScalar + 1
-                    CmdSql.CommandText = "Insert Into R2Primary.dbo.TblMobileUsers(MUNameFamily,MUMobileNumber,MUStatus,VerificationCode,DateTimeMilladi,DateShamsi,ViewFlag,Active,Deleted) Values('" & YourNameFamily & "','" & YourMobileNumber & "','logout','" & VerificationCode & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "',1,0,0)"
-                    CmdSql.ExecuteNonQuery()
-                    CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
-                End If
-                Return VerificationCode
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then
-                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
-                End If
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Shared Function RegisterMobileUser(YourMobileNumber As String, YourNameFamily As String) As String
-            Try
-                Dim VerificationCode As String
-                If R2CoreTransportationAndLoadNotificationMClassTruckDriversManagement.IsExistTruckDriver(YourMobileNumber) Then
-                    VerificationCode = InsertMobileUserFirstTime(YourMobileNumber, YourNameFamily)
-                    Dim SMSSender As New R2CoreSMS.SMSSendAndRecieved.R2CoreSMSSendRecive
-                    SMSSender.SendSms(New R2CoreSMS.SMSSendAndRecieved.R2CoreSMSStandardSmsStructure(Nothing, YourMobileNumber, VerificationCode, 1, Nothing, 1, Nothing, Nothing))
-                    'Return VerificationCode
-                Else
-                    Throw New TruckDriverMobileNumberNotFoundException
-                End If
-            Catch ex As TruckDriverMobileNumberNotFoundException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Shared Sub UnRegisterMobileUser(YourMUId As Int64)
-            Dim CmdSql As New SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
-            Try
-                CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblMobileUsers Set MUStatus='logout',VerificationCode='',Active=0 Where MUId=" & YourMUId & ""
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Connection.Close()
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Public Shared Function ActiveMobileUser(YourMobileNumber As String, YourVerificationCode As String) As Int64
-            Dim CmdSql As New SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
-            Try
-                Dim MUId = MobileUserMatching(YourMobileNumber, YourVerificationCode)
-                CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblMobileUsers Set MUStatus='login',Active=1 Where MUId=" & MUId & ""
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Connection.Close()
-                Return MUId
-            Catch ex As MobileUserNotMatchException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
+    Public MustInherit Class R2CoreTransportationAndLoadNotificationSoftwareUserTypes
+        Public Shared ReadOnly Property TruckDriver As Int64 = 3
 
     End Class
-
-    Namespace Exeptions
-
-        Public Class MobileUserNotMatchException
-            Inherits ApplicationException
-            Public Overrides ReadOnly Property Message As String
-                Get
-                    Return "کد تبادل نادرست است"
-                End Get
-            End Property
-        End Class
-
-        Public Class MobileUserNotFoundException
-            Inherits ApplicationException
-            Public Overrides ReadOnly Property Message As String
-                Get
-                    Return "کاربر با شماره موبایل مورد نظر یافت نشد"
-                End Get
-            End Property
-        End Class
-
-        Public Class TruckDriverMobileNumberNotFoundException
-            Inherits ApplicationException
-            Public Overrides ReadOnly Property Message As String
-                Get
-                    Return "شماره موبایل مورد نظر در سامانه موجود نیست"
-                End Get
-            End Property
-        End Class
-
-    End Namespace
-
 
 End Namespace
 
@@ -7311,7 +7130,7 @@ Namespace BillOfLadingControl
                 End Try
             End Function
 
-            Public Shared Function BillOfLadingControlRegistering(YourNSSBillOfLadingControl As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure, YourNSSUser As R2CoreStandardUserStructure) As Int64
+            Public Shared Function BillOfLadingControlRegistering(YourNSSBillOfLadingControl As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure) As Int64
                 Dim CmdSql As New SqlClient.SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
@@ -7696,7 +7515,7 @@ Namespace BillOfLadingControl
                 End Try
             End Function
 
-            Public Shared Function BillOfLadingControlInfractionRegistering(YourNSSBillOfLadingControlInfraction As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlInfractionStructure, YourNSSUser As R2CoreStandardUserStructure) As Int64
+            Public Shared Function BillOfLadingControlInfractionRegistering(YourNSSBillOfLadingControlInfraction As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlInfractionStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure) As Int64
                 Dim CmdSql As New SqlClient.SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try

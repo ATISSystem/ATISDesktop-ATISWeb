@@ -2,7 +2,7 @@
 Imports System.Reflection
 Imports R2Core.ExceptionManagement
 
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2CoreGUI
 Imports R2CoreLPR.LicensePlateManagement
 Imports R2CoreParkingSystem.AccountingManagement
@@ -37,7 +37,7 @@ Public Class FrmcBlackList
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess(R2CoreMClassProcessesManagement.GetNSSProcess(R2CoreParkingSystemProcesses.FrmcBlackList))
+            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(R2CoreParkingSystemProcesses.FrmcBlackList))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

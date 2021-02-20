@@ -63,9 +63,9 @@
                     </div>
                     <div class="modal-body text-center R2FontBHomaSmall" style="word-wrap: break-word;">
                         <div class="d-flex flex-column">
-                            <span class="R2FontBHomaXLarge" style="color:crimson" id="SpanFixMessage1"></span>
+                            <span class="R2FontBHomaXLarge" style="color: crimson" id="SpanFixMessage1"></span>
                             <span class="R2FontBHomaXLarge" id="SpanDailyMessage"></span>
-                            <hr id="hr1"/>
+                            <hr id="hr1" />
                             <span class="R2FontBHomaLarge" id="SpanFixMessage2"></span>
                             <span class="R2FontBHomaLarge" id="SpanFixMessage3"></span>
                         </div>

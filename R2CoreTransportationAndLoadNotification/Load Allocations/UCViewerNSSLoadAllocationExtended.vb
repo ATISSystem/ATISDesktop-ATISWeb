@@ -6,7 +6,7 @@ Imports System.Windows.Forms
 
 Imports R2Core.ComputersManagement
 Imports R2Core.ExceptionManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreGUI
 
@@ -86,7 +86,7 @@ Public Class UCViewerNSSLoadAllocationExtended
     Private Sub UcMinimizeMaximize_UCMaximizeRequestedEvent() Handles UcMinimizeMaximize.UCMaximizeRequestedEvent
         Try
             UCRefreshExtended()
-            LabelUserName.Text = R2CoreMClassLoginManagement.GetNSSUser(UCNSSCurrent.UserId).UserName
+            LabelUserName.Text = R2CoreMClassSoftwareUsersManagement.GetNSSUser(UCNSSCurrent.UserId).UserName
             Me.Size = New Size(Me.Width, _MaxHight)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

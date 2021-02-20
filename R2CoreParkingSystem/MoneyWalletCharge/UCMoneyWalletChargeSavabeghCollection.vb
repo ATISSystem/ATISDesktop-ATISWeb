@@ -6,7 +6,7 @@ Imports System.Windows.Forms
 Imports R2Core
 Imports R2Core.DatabaseManagement
 Imports R2Core.PublicProc
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.MoneyWalletChargeManagement
 Imports R2CoreParkingSystem.TrafficCardsManagement

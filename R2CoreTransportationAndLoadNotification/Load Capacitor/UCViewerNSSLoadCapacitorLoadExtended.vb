@@ -4,7 +4,7 @@ Imports System.Drawing
 Imports System.Reflection
 Imports System.Windows.Forms
 
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
@@ -133,7 +133,7 @@ Public Class UCViewerNSSLoadCapacitorLoadExtended
             LabelStrBarName.Text = UCNSSCurrent.StrBarName
             LabelStrAddress.Text = UCNSSCurrent.StrAddress
             LabelLoadAllocationNotOK.Text = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetTotalNumberOfLoadAllocationWhichBlindfold(UCNSSCurrent.nEstelamId)
-            LabelUserName.Text = R2CoreMClassLoginManagement.GetNSSUser(UCNSSCurrent.nUserId).UserName
+            LabelUserName.Text = R2CoreMClassSoftwareUsersManagement.GetNSSUser(UCNSSCurrent.nUserId).UserName
             Dim UCAccounting As UCUCLoadCapacitorAccountingCollection = New UCUCLoadCapacitorAccountingCollection
             UCAccounting.UCViewAccounting(UCNSSCurrent.nEstelamId)
             UCAccounting.Dock = DockStyle.Fill

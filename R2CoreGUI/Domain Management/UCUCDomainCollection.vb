@@ -9,7 +9,7 @@ Imports R2Core
 Imports R2Core.BaseStandardClass
 Imports R2Core.DatabaseManagement
 Imports R2Core.ComputersManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 
 

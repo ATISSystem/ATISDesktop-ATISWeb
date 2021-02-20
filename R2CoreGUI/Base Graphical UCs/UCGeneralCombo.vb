@@ -11,7 +11,7 @@ Imports R2Core.DatabaseManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.GUIManagement
 Imports R2Core.InformationManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 
 
 Public MustInherit Class UCGeneralCombo

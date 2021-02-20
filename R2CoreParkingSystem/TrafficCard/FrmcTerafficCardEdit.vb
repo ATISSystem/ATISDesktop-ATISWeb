@@ -3,9 +3,9 @@ Imports System.Reflection
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
 
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2Core.RFIDCardsManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.TrafficCardsManagement
 Imports R2CoreParkingSystem.ProcessesManagement
@@ -32,7 +32,7 @@ Public Class FrmcTerafficCardEdit
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess(R2CoreMClassProcessesManagement.GetNSSProcess(R2CoreParkingSystemProcesses.FrmcTerafficCardEdit))
+            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(R2CoreParkingSystemProcesses.FrmcTerafficCardEdit))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

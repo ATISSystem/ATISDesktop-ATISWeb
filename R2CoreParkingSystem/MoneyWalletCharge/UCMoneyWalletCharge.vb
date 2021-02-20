@@ -9,7 +9,7 @@ Imports R2Core.ExceptionManagement
 Imports R2Core.LoggingManagement
 Imports R2Core.PublicProc
 Imports R2Core.RFIDCardsManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.AccountingManagement
 Imports R2CoreParkingSystem.ConfigurationManagement

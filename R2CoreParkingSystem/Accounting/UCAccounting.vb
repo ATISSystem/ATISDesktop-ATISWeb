@@ -4,7 +4,7 @@ Imports System.Drawing
 Imports System.Reflection
 
 Imports R2Core.PublicProc
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.AccountingManagement
 Imports R2Core.ComputersManagement
@@ -66,7 +66,7 @@ Public Class UCAccounting
     ''        UcLabelMblgh.UCValue = R2CoreMClassPublicProcedures.ParseSignDigitToSignString(YourEEAccountingStructure.MblghA)
     ''        UcLabelReminderCharge.UCValue = R2CoreMClassPublicProcedures.ParseSignDigitToSignString(YourEEAccountingStructure.ReminderChargeA)
     ''        UcLabelMaabarName.UCValue = R2CoreMClassComputersManagement.GetNSSComputer(YourEEAccountingStructure.MaabarCode).MName
-    ''        UcLabelUserName.UCValue = R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSUser(YourEEAccountingStructure.UserIdA).UserName
+    ''        UcLabelUserName.UCValue = R2Core.UserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourEEAccountingStructure.UserIdA).UserName
     ''    Catch ex As Exception
     ''        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
     ''    End Try

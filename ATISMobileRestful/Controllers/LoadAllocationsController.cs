@@ -6,11 +6,9 @@ using System.Text;
 using System.Net.Http;
 using System.Web.Http;
 
-using R2Core.UserManagement;
+using R2Core.SoftwareUserManagement;
 using R2Core.LoggingManagement;
 using R2CoreTransportationAndLoadNotification.Logging;
-using R2CoreTransportationAndLoadNotification.MobileUsers;
-using R2CoreTransportationAndLoadNotification.MobileUsers.Exeptions;
 using R2CoreTransportationAndLoadNotification.Turns;
 using R2CoreTransportationAndLoadNotification.LoadAllocation;
 using R2CoreTransportationAndLoadNotification.Turns.Exceptions;
@@ -19,26 +17,27 @@ using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2CoreTransportationAndLoadNotification.ConfigurationsManagement;
 
 using ATISMobileRestful.Models;
+using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
 
 namespace ATISMobileRestful.Controllers
 {
     public class LoadAllocationsController : ApiController
     {
         [HttpGet]
-        public MessageStruct LoadAllocationAgent(Int64 YourMUId, Int64 YournEstelamId)
+        public MessageStruct LoadAllocationAgent(Int64 YourUserId, Int64 YournEstelamId)
         {
             try
             {
-                return new MessageStruct { ErrorCode = false, Message1 = String.Empty, Message2 = String.Empty, Message3 = string.Empty };
+                //return new MessageStruct { ErrorCode = false, Message1 = String.Empty, Message2 = String.Empty, Message3 = string.Empty };
                 R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure myNSSLoadCapacitorLoad = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId);
                 //if (IsActiveLoadAllocationforThisLoad(myNSSLoadCapacitorLoad))
                 //{ }
                 Int64 myTurnId = Int64.MinValue;
                 try
-                { myTurnId = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(R2CoreTransportationAndLoadNotificationMClassMobileUsersManagement.GetNSSMobileUser(YourMUId)).nEnterExitId; }
+                { myTurnId = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId)).nEnterExitId; }
                 catch (TurnNotFoundException ex)
-                { PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequestforAjent(YourMUId, YournEstelamId, false, false, ref myTurnId); }
-                Int64 LAId = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(YournEstelamId, myTurnId, R2CoreMClassLoginManagement.GetNSSSystemUser());
+                { PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequestforAjent(YourUserId, YournEstelamId, false, false, ref myTurnId); }
+                Int64 LAId = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(YournEstelamId, myTurnId, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
                 return new MessageStruct { ErrorCode = false, Message1 = "تخصیص بار انجام شد", Message2 = LAId.ToString(), Message3 = string.Empty };
             }
             catch (Exception ex)
@@ -50,22 +49,26 @@ namespace ATISMobileRestful.Controllers
         {
             try
             {
-                R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(YourLoadAllocationId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, R2CoreMClassLoginManagement.GetNSSSystemUser());
+                R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(YourLoadAllocationId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
                 return new MessageStruct { ErrorCode = false, Message1 = "تخصیص بار کنسل شد", Message2 = YourLoadAllocationId.ToString(), Message3 = string.Empty };
             }
-            catch (TruckDriverMobileNumberNotFoundException ex)
+            catch (TimingNotReachedException ex)
+            { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
+            catch (TurnHandlingNotAllowedBecuaseTurnStatusException ex)
+            { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
+            catch (LoadAllocationCancellingNotAllowedBecauseLoadAllocationStatusException ex)
             { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
             catch (Exception ex)
             { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
         }
 
         [HttpGet]
-        public List<Models.LoadAllocationsforTruckDriver> GetLoadAllocationsforTruckDriver(Int64 YourMUId)
+        public List<Models.LoadAllocationsforTruckDriver> GetLoadAllocationsforTruckDriver(Int64 YourUserId)
         {
             List<Models.LoadAllocationsforTruckDriver> _LoadAllocations = new List<Models.LoadAllocationsforTruckDriver>();
             try
             {
-                var Lst = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocationsforTruckDriver(YourMUId);
+                var Lst = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocationsforTruckDriver(YourUserId );
                 StringBuilder SB = new StringBuilder();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {

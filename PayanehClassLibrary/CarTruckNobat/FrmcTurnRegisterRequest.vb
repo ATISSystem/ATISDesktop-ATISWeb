@@ -9,7 +9,7 @@ Imports PayanehClassLibrary.ProcessesManagement
 Imports R2Core
 Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2CoreParkingSystem.Cars
 Imports R2Core.ComputersManagement
 Imports R2CoreParkingSystem.TrafficCardsManagement
@@ -51,7 +51,7 @@ Public Class FrmcTurnRegisterRequest
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcSodoorNobat))
+            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcSodoorNobat))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -165,7 +165,7 @@ Public Class FrmcTurnRegisterRequest
             If UC.UCNSSMenu.MenuPanel = "PnlSodoorNobat" Then
                 StartReading()
             ElseIf UC.UCNSSMenu.MenuPanel = "PnlCarandDriverInformation" Then
-                R2CoreGUIMClassProcessesManagement.OpenProccess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcCarAndDriversInformation), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                R2CoreGUIMClassProcessesManagement.OpenProccess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcCarAndDriversInformation), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             ElseIf UC.UCNSSMenu.MenuPanel = "PnlAccounting" Then
                 UcAccountingCollection.UCViewAccounting(_NSSTrafficCard)
             ElseIf UC.UCNSSMenu.MenuPanel = "PnlConsole" Then

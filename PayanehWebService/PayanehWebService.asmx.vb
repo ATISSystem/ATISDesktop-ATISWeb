@@ -7,7 +7,7 @@ Imports System.Reflection
 Imports R2Core.BaseStandardClass
 Imports R2Core.ComputerMessagesManagement
 Imports R2Core.DateAndTimeManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreParkingSystem.Cars
 Imports R2CoreParkingSystem.City
 Imports PayanehClassLibrary.ReportsManagement
@@ -18,7 +18,7 @@ Imports PayanehClassLibrary.DriverTrucksManagement
 Imports R2Core.ExceptionManagement
 Imports R2Core.SecurityAlgorithmsManagement
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
-Imports R2Core.UserManagement.Exceptions
+Imports R2Core.SoftwareUserManagement.Exceptions
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadManipulation

@@ -82,8 +82,11 @@ Partial Class UCDriver
         Me.UcNumberDrivernIdPerson.Name = "UcNumberDrivernIdPerson"
         Me.UcNumberDrivernIdPerson.Size = New System.Drawing.Size(77, 25)
         Me.UcNumberDrivernIdPerson.TabIndex = 20
+        Me.UcNumberDrivernIdPerson.UCAllowedMaxNumber = CType(9223372036854775807,Long)
+        Me.UcNumberDrivernIdPerson.UCAllowedMinNumber = CType(-9223372036854775,Long)
         Me.UcNumberDrivernIdPerson.UCBackColor = System.Drawing.Color.White
         Me.UcNumberDrivernIdPerson.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcNumberDrivernIdPerson.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
         Me.UcNumberDrivernIdPerson.UCBorder = true
         Me.UcNumberDrivernIdPerson.UCBorderColor = System.Drawing.Color.Black
         Me.UcNumberDrivernIdPerson.UCEnable = false
@@ -113,8 +116,11 @@ Partial Class UCDriver
         Me.UcNumberDriverNationalCode.Name = "UcNumberDriverNationalCode"
         Me.UcNumberDriverNationalCode.Size = New System.Drawing.Size(90, 25)
         Me.UcNumberDriverNationalCode.TabIndex = 18
+        Me.UcNumberDriverNationalCode.UCAllowedMaxNumber = CType(9223372036854775807,Long)
+        Me.UcNumberDriverNationalCode.UCAllowedMinNumber = CType(-922337203685477,Long)
         Me.UcNumberDriverNationalCode.UCBackColor = System.Drawing.Color.White
         Me.UcNumberDriverNationalCode.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcNumberDriverNationalCode.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
         Me.UcNumberDriverNationalCode.UCBorder = true
         Me.UcNumberDriverNationalCode.UCBorderColor = System.Drawing.Color.Black
         Me.UcNumberDriverNationalCode.UCEnable = true
@@ -172,7 +178,7 @@ Partial Class UCDriver
         '
         Me.UcPersianTextBoxDriverName.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxDriverName.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxDriverName.Location = New System.Drawing.Point(590, 5)
+        Me.UcPersianTextBoxDriverName.Location = New System.Drawing.Point(566, 5)
         Me.UcPersianTextBoxDriverName.MaxCharacterReached = CType(50,Short)
         Me.UcPersianTextBoxDriverName.Name = "UcPersianTextBoxDriverName"
         Me.UcPersianTextBoxDriverName.Size = New System.Drawing.Size(135, 24)
@@ -196,9 +202,9 @@ Partial Class UCDriver
         Me.Label2.ForeColor = System.Drawing.Color.OrangeRed
         Me.Label2.Location = New System.Drawing.Point(508, 3)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(69, 23)
+        Me.Label2.Size = New System.Drawing.Size(42, 23)
         Me.Label2.TabIndex = 1
-        Me.Label2.Text = "کد ملی راننده"
+        Me.Label2.Text = "کد ملی"
         '
         'Label1
         '
@@ -206,11 +212,11 @@ Partial Class UCDriver
         Me.Label1.AutoSize = true
         Me.Label1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
         Me.Label1.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Label1.Location = New System.Drawing.Point(736, 4)
+        Me.Label1.Location = New System.Drawing.Point(704, 4)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(51, 23)
+        Me.Label1.Size = New System.Drawing.Size(92, 23)
         Me.Label1.TabIndex = 0
-        Me.Label1.Text = "نام راننده"
+        Me.Label1.Text = "نام و نام خانوادگی"
         '
         'Panel1
         '
@@ -271,8 +277,11 @@ Partial Class UCDriver
         Me.UcNumberLicenseNo.Name = "UcNumberLicenseNo"
         Me.UcNumberLicenseNo.Size = New System.Drawing.Size(196, 25)
         Me.UcNumberLicenseNo.TabIndex = 19
+        Me.UcNumberLicenseNo.UCAllowedMaxNumber = CType(9223372036854775807,Long)
+        Me.UcNumberLicenseNo.UCAllowedMinNumber = CType(-9223372036854775,Long)
         Me.UcNumberLicenseNo.UCBackColor = System.Drawing.Color.White
         Me.UcNumberLicenseNo.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcNumberLicenseNo.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
         Me.UcNumberLicenseNo.UCBorder = true
         Me.UcNumberLicenseNo.UCBorderColor = System.Drawing.Color.DarkGray
         Me.UcNumberLicenseNo.UCEnable = true

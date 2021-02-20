@@ -10,7 +10,7 @@ using ATISWeb.LoginManagement;
 using ATISWeb.LoginManagement.Exceptions;
 using ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement;
 using PayanehClassLibrary.LoadNotification.LoadPermission;
-using R2Core.UserManagement;
+using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2CoreTransportationAndLoadNotification.TransportCompanies;
 

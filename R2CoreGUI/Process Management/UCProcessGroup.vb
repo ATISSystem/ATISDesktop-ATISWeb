@@ -4,14 +4,14 @@ Imports System.Reflection
 Imports R2Core
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DatabaseManagement
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2CoreGUI
 
 Public Class UCProcessGroup
     Inherits UCGeneral
 
     Public Event UCClickedEvent(UC As UCProcessGroup)
-    Private _NSS As R2StandardProcessGroupStructure = Nothing
+    Private _NSS As R2StandardDesktopProcessGroupStructure = Nothing
     Private _MaxHight As Int64 = 0
 
 
@@ -32,7 +32,7 @@ Public Class UCProcessGroup
         End Set
     End Property
 
-    Public ReadOnly Property UCGetNSS() As R2StandardProcessGroupStructure
+    Public ReadOnly Property UCGetNSS() As R2StandardDesktopProcessGroupStructure
         Get
             Return _NSS
         End Get
@@ -52,7 +52,7 @@ Public Class UCProcessGroup
 
     End Sub
 
-    Public Sub New(YourNSS As R2StandardProcessGroupStructure)
+    Public Sub New(YourNSS As R2StandardDesktopProcessGroupStructure)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -87,7 +87,7 @@ Public Class UCProcessGroup
     '        Dim DS As DataSet
     '        R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblProcessGroupsRelationProcesses Where PGId=" & _NSS.PGId & " Order by PGId", 3600, DS)
     '        For Loopx As Int16 = DS.Tables(0).Rows.Count - 1 To 0 Step -1
-    '            Dim NSSProcess As R2StandardProcessStructure = R2Core.ProcessesManagement.R2CoreMClassProcessesManagement.GetNSSProcess(DS.Tables(0).Rows(Loopx).Item("PId"))
+    '            Dim NSSProcess As R2StandardDesktopProcessStructure = R2Core.DesktopProcessesManagement.R2CoreMClassDesktopProcessesManagement.GetNSSProcess(DS.Tables(0).Rows(Loopx).Item("PId"))
     '            Dim UC As UCProcess = New UCProcess(NSSProcess,_NSS.PGBackColor)
     '            UC.Dock = DockStyle.Top
     '            PnlUCProcessCollection.Controls.Add(UC)

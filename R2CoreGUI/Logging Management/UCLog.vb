@@ -3,7 +3,7 @@ Imports System.Reflection
 
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2Core.PublicProc
 
 
@@ -51,7 +51,7 @@ Public Class UCLog
             UcLabelSharh.UCValue = YourLog.Sharh
             UcLabelDateShamsi.UCValue = YourLog.DateShamsi
             UcLabelTime.UCValue = _DateTime.GetTimeOfDate(YourLog.DateTimeMilladi)
-            UcLabelUserName.UCValue = R2CoreMClassLoginManagement.GetNSSUser(YourLog.UserId).UserName.Trim
+            UcLabelUserName.UCValue = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourLog.UserId).UserName.Trim
             UcLabelOptional1.UCValue = YourLog.Optional1
             PnlMain.BackColor = R2CoreMClassLoggingManagement.GetNSSLogtype(YourLog.Logtype).LogColor
             Dim InvertColor As Color = R2CoreMClassPublicProcedures.GetInvertColor(PnlMain.BackColor)

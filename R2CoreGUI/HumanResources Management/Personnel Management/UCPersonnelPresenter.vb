@@ -1,7 +1,7 @@
 ﻿
 Imports System.Reflection
 Imports R2Core.HumanResourcesManagement.Personnel
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 
 Public Class UCPersonnelPresenter
     Inherits UCGeneral
@@ -27,7 +27,7 @@ Public Class UCPersonnelPresenter
         UcPersonnelImage.UCRefresh()
     End Sub
 
-    Public Sub UCViewPersonnel(YourNSSPersonnel As R2CoreStandardPersonnelStructure,YourNSSUser As R2CoreStandardUserStructure)
+    Public Sub UCViewPersonnel(YourNSSPersonnel As R2CoreStandardPersonnelStructure,YourNSSUser As R2CoreStandardSoftwareUserStructure)
         Try
             _CurrentNSS = YourNSSPersonnel
             UcLabelNameFamily.UCValue = YourNSSPersonnel.PNameFamily.Trim()

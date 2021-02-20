@@ -5,7 +5,7 @@ Imports System.Reflection
 Imports System.Runtime.CompilerServices
 
 Imports R2Core.ConfigurationManagement
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2Core.RFIDCardsManagement
 
 
@@ -25,13 +25,13 @@ Public Class FrmcGeneral
 
     Private WithEvents _LocalMessageCleanTimer As Windows.Forms.Timer = New Timer
     Private WithEvents _FormShownFirstTimer As Windows.Forms.Timer = New Timer
-    Private _NSSProcess As R2StandardProcessStructure
+    Private _NSSProcess As R2StandardDesktopProcessStructure
 
 
 #Region "General Properties"
 
     <Browsable(False)>
-    Public ReadOnly Property GetNSSProcess As R2StandardProcessStructure
+    Public ReadOnly Property GetNSSProcess As R2StandardDesktopProcessStructure
         Get
             Return _NSSProcess
         End Get
@@ -75,7 +75,7 @@ Public Class FrmcGeneral
 
     End Sub
 
-    Protected Sub SetProcess(YourNSSProcess As R2StandardProcessStructure)
+    Protected Sub SetProcess(YourNSSProcess As R2StandardDesktopProcessStructure)
         Try
             _NSSProcess = YourNSSProcess
             LblformPersianName.Text = YourNSSProcess.PDisplayTitle
@@ -164,7 +164,7 @@ Public Class FrmcGeneral
             If GetNSSProcess.MenusTitle = String.Empty Then Exit Sub
             For Each UC As Control In PnlHeader.Controls
                 If UC.GetType() Is GetType(UCMenu) Then
-                    If DirectCast(UC,UCMenu).UCNSSMenu.MenuPanel = YourMenuPanel Then
+                    If DirectCast(UC, UCMenu).UCNSSMenu.MenuPanel = YourMenuPanel Then
                         UC.Enabled = YourStatus
                     End If
                 End If

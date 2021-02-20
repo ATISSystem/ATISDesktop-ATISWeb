@@ -5,7 +5,7 @@ Imports System.Timers
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 
 Public Class R2PrimaryAutomatedJobs
 
@@ -25,7 +25,7 @@ Public Class R2PrimaryAutomatedJobs
             EventLog.WriteEntry("R2PrimaryAutomatedJobs", "R2PrimaryAutomatedJobs Start ...", EventLogEntryType.SuccessAudit)
 
             _DateTime = New R2DateTime()
-            R2CoreMClassLoginManagement.AuthenticationUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser())
+            R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
 
             _AutomatedJobsTimer.Interval = R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.R2PrimaryAutomatedJobsSetting, 0) * 1000
             _AutomatedJobsTimer.Enabled = True

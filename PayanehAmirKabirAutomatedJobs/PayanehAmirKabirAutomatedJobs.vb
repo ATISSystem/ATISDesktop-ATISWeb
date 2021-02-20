@@ -5,7 +5,7 @@ Imports PayanehClassLibrary.ConfigurationManagement
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
@@ -28,7 +28,7 @@ Public Class PayanehAmirKabirAutomatedJobs
             EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "PayanehAmirKabirAutomatedJobs Start ...", EventLogEntryType.SuccessAudit)
 
             _DateTime = New R2DateTime()
-            R2CoreMClassLoginManagement.AuthenticationUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser())
+            R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
 
             _AutomatedJobsTimer.Interval = R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.PayanehAmirKabirAutomatedJobsSetting, 0) * 1000
             _AutomatedJobsTimer.Enabled = True
@@ -64,7 +64,7 @@ Public Class PayanehAmirKabirAutomatedJobs
                 R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TransferringTommorowLoads:" + ex.Message.ToString, EventLogEntryType.Error)
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.TransferringTommorowLoads, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassLoginManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.TransferringTommorowLoads, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
             End Try
 
             'فراخوانی سرویس رسوب بار در سالن اعلام بار
@@ -72,15 +72,15 @@ Public Class PayanehAmirKabirAutomatedJobs
                 R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "SedimentingProcess:" + ex.Message.ToString, EventLogEntryType.Error)
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.LoadCapacitorSedimentingFailed, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassLoginManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.LoadCapacitorSedimentingFailed, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
             End Try
 
             'صدور خودکار مجوزهای سالن های اعلام بار
             Try
-                R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering(R2CoreMClassLoginManagement.GetNSSSystemUser)
+                R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.Fail, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassLoginManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.Fail, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
             End Try
 
 

@@ -9,8 +9,8 @@ Imports R2Core.ExceptionManagement
 Imports R2Core.HumanResourcesManagement.Personnel
 Imports R2Core.SecurityAlgorithmsManagement
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
-Imports R2Core.UserManagement
-Imports R2Core.UserManagement.Exceptions
+Imports R2Core.SoftwareUserManagement
+Imports R2Core.SoftwareUserManagement.Exceptions
 Imports R2CoreLPR.LicensePlateManagement
 Imports R2CoreParkingSystem.Cars
 Imports R2CoreParkingSystem.City

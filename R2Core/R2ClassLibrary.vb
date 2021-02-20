@@ -18,18 +18,15 @@ Imports R2Core.ComputersManagement
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DatabaseManagement
 Imports R2Core.DateAndTimeManagement
-Imports R2Core.EntityRelations.Exceptions
 Imports R2Core.ExceptionManagement
 Imports R2Core.FileShareRawGroupsManagement
 Imports R2Core.NetworkInternetManagement.Exceptions
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2Core.PublicProc
 Imports R2Core.R2PrimaryFileSharingWS
-Imports R2Core.UserManagement
-Imports R2Core.UserManagement.Exceptions
-
-
-
+Imports R2Core.SoftwareUserManagement
+Imports R2Core.SoftwareUserManagement.Exceptions
+Imports R2Core.SMSSendAndRecieved
 
 Public Class R2Enums
 
@@ -117,9 +114,9 @@ Namespace NetworkInternetManagement
                     Return False
                 End If
             Catch ex As PingException
-                Throw new ConnectionIsNotAvailableException
+                Throw New ConnectionIsNotAvailableException
             Catch ex As InvalidOperationException
-                Throw New  ConnectionIsNotAvailableException
+                Throw New ConnectionIsNotAvailableException
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -1042,7 +1039,7 @@ Namespace ComputerMessagesManagement
 
         Public Shared Sub SendComputerMessage(YourComputerMessage As R2StandardComputerMessageStructure)
             Try
-                SabtComputerMessage(New R2StandardComputerMessageStructure(0, YourComputerMessage.CMNote, YourComputerMessage.CMType, True, False, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, R2CoreMClassLoginManagement.GetNSSSystemUser.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), YourComputerMessage.DataStruct))
+                SabtComputerMessage(New R2StandardComputerMessageStructure(0, YourComputerMessage.CMNote, YourComputerMessage.CMType, True, False, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), YourComputerMessage.DataStruct))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -1348,375 +1345,280 @@ Namespace InformationManagement
     End Class
 End Namespace
 
-Namespace UserManagement
+Namespace SoftwareUserManagement
 
+    Public MustInherit Class R2CoreSoftwareUserTypes
+        Public Shared ReadOnly Property None As Int64 = 0
+        Public Shared ReadOnly Property General As Int64 = 1
+        Public Shared ReadOnly Property SysAdmin As Int64 = 2
 
-    Public Class R2CoreStandardUserStructure
+    End Class
+
+    Public Class R2CoreStandardSoftwareUserTypeStructure
         Inherits BaseStandardClass.R2StandardStructure
 
-        Private myUserId As Int64
-        Private myUserName As String
-        Private myUserShenaseh As String
-        Private myUserPassword As String
-        Private myUserPinCode As String
-        Private myUserCanCharge As Boolean
-        Private myUserActive As Boolean
-
-
-
-#Region "Constructing Management"
         Public Sub New()
             MyBase.New()
-            myUserId = 0 : myUserName = "" : myUserShenaseh = 0 : myUserPassword = 0 : myUserPinCode = "" : myUserCanCharge = False : myUserActive = False
+            UTId = Int64.MinValue
+            UTName = String.Empty
+            UTTitle = String.Empty
+            UTColor = Color.White
+            UserId = Int64.MinValue
+            DateTimeMilladi = Now
+            DateShamsi = String.Empty
+            ViewFlag = Boolean.FalseString
+            Active = Boolean.FalseString
+            Deleted = Boolean.FalseString
         End Sub
-        Public Sub New(ByVal UserIdd As Int64, ByVal UserNamee As String, ByVal UserShenasehh As String, ByVal UserPasswordd As String, UserPinCodee As String, ByVal UserCanChargee As Boolean, ByVal UserActivee As Boolean)
-            MyBase.New(UserIdd, UserNamee)
-            myUserId = UserIdd
-            myUserName = UserNamee
-            myUserShenaseh = UserShenasehh
-            myUserPassword = UserPasswordd
-            myUserPinCode = UserPinCodee
-            myUserCanCharge = UserCanChargee
-            myUserActive = UserActivee
+
+        Public Sub New(YourUTId As Int64, YourUTName As String, YourUTTitle As String, YourUTColor As Color, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourUTId, YourUTName)
+            UTId = YourUTId
+            UTName = YourUTName
+            UTTitle = YourUTTitle
+            UTColor = YourUTColor
+            UserId = YourUserId
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            ViewFlag = YourViewFlag
+            Active = YourActive
+            Deleted = YourDeleted
         End Sub
-#End Region
-#Region "Properting Management"
+
+        Public Property UTId As Int64
+        Public Property UTName As String
+        Public Property UTTitle As String
+        Public Property UTColor As Color
+        Public Property UserId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+    End Class
+
+    Public Class R2CoreStandardSoftwareUserStructure
+        Inherits BaseStandardClass.R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            UserId = Int64.MinValue
+            UserName = String.Empty
+            UserShenaseh = String.Empty
+            UserPassword = String.Empty
+            UserPinCode = String.Empty
+            UserCanCharge = Boolean.FalseString
+            UserActive = Boolean.FalseString
+            UserTypeId = Int64.MinValue
+            MobileNumber = String.Empty
+            UserStatus = String.Empty
+            VerificationCode = String.Empty
+            UserCreatorId = Int64.MinValue
+            DateTimeMilladi = Now
+            DateShamsi = String.Empty
+            ViewFlag = Boolean.FalseString
+            Deleted = Boolean.FalseString
+        End Sub
+
+        Public Sub New(ByVal YourUserId As Int64, ByVal YourUserName As String, ByVal YourUserShenaseh As String, ByVal YourUserPassword As String, YourUserPinCode As String, ByVal YourUserCanCharge As Boolean, ByVal YourUserActive As Boolean, YourUserTypeId As Int64, YourMobileNumber As String, YourUserStatus As String, YourVerificationCode As String, YourUserCreatorId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourUserId, YourUserName)
+            UserId = YourUserId
+            UserName = YourUserName
+            UserShenaseh = YourUserShenaseh
+            UserPassword = YourUserPassword
+            UserPinCode = YourUserPinCode
+            UserCanCharge = YourUserCanCharge
+            UserActive = YourUserActive
+            UserTypeId = YourUserTypeId
+            MobileNumber = YourMobileNumber
+            UserStatus = YourUserStatus
+            VerificationCode = YourVerificationCode
+            UserCreatorId = YourUserCreatorId
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            ViewFlag = YourViewFlag
+            Deleted = YourDeleted
+        End Sub
+
         Public Property UserId() As Int64
-            Get
-                Return myUserId
-            End Get
-            Set(ByVal Value As Int64)
-                myUserId = Value
-            End Set
-        End Property
         Public Property UserName() As String
-            Get
-                Return myUserName.Trim
-            End Get
-            Set(ByVal Value As String)
-                myUserName = Value
-            End Set
-        End Property
         Public Property UserShenaseh() As String
-            Get
-                Return myUserShenaseh.Trim()
-            End Get
-            Set(ByVal Value As String)
-                myUserShenaseh = Value
-            End Set
-        End Property
         Public Property UserPassword() As String
-            Get
-                Return myUserPassword.Trim()
-            End Get
-            Set(ByVal Value As String)
-                myUserPassword = Value
-            End Set
-        End Property
         Public Property UserPinCode() As String
-            Get
-                Return myUserPinCode.Trim()
-            End Get
-            Set(ByVal Value As String)
-                myUserPinCode = Value
-            End Set
-        End Property
         Public Property UserCanCharge() As Boolean
-            Get
-                Return myUserCanCharge
-            End Get
-            Set(ByVal Value As Boolean)
-                myUserCanCharge = Value
-            End Set
-        End Property
         Public Property UserActive() As Boolean
-            Get
-                Return myUserActive
-            End Get
-            Set(ByVal Value As Boolean)
-                myUserActive = Value
-            End Set
-        End Property
-
-#End Region
-
-
+        Public Property UserTypeId() As Int64
+        Public Property MobileNumber As String
+        Public Property UserStatus As String
+        Public Property VerificationCode As String
+        Public Property UserCreatorId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property ViewFlag As Boolean
+        Public Property Deleted As Boolean
     End Class
 
-    Public Class R2CoreQueryUser
-        Inherits R2Core.BaseStandardClass.R2QueryGeneral
+    Public Class R2CoreMClassSoftwareUsersManagement
 
-
-        Dim myUserArray As R2CoreStandardUserStructure()
-
-        Public Sub New()
-            MyBase.New()
-        End Sub
-
-        Private myUserId As Int64
-        Private myUserName As String
-        Private myUserShenaseh As String
-        Private myUserPassword As String
-        Private myUserPicCode As String
-        Private myUserCanCharge As Boolean
-        Private myUserActive As Boolean
-
-        Public Function UserName(ByVal YourUserId As Int64) As String
-            Try
-                For loopx As Int64 = 0 To Teadad - 1
-                    If myUserArray(loopx).UserId = YourUserId Then
-                        Return myUserArray(loopx).UserName.Trim
-                    End If
-                Next
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Function UserShenaseh(ByVal YourUserId As Int64) As String
-            Try
-                For loopx As Int16 = 0 To Teadad - 1
-                    If myUserArray(loopx).UserId = YourUserId Then
-                        Return myUserArray(loopx).UserShenaseh
-                    End If
-                Next
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Function UserPassword(ByVal YourUserId As Int64) As String
-            Try
-                For loopx As Int16 = 0 To Teadad - 1
-                    If myUserArray(loopx).UserId = YourUserId Then
-                        Return myUserArray(loopx).UserPassword.Trim
-                    End If
-                Next
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Function UserPinCode(ByVal YourUserId As Int64) As String
-            Try
-                For loopx As Int16 = 0 To Teadad - 1
-                    If myUserArray(loopx).UserId = YourUserId Then
-                        Return myUserArray(loopx).UserPinCode.Trim
-                    End If
-                Next
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Function UserCanCharge(ByVal YourUserId As Int64) As Boolean
-            Try
-                For loopx As Int64 = 0 To Teadad - 1
-                    If myUserArray(loopx).UserId = YourUserId Then
-                        Return myUserArray(loopx).UserCanCharge
-                    End If
-                Next
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Function UserActive(ByVal YourUserId As Int64) As Boolean
-            Try
-                For loopx As Int64 = 0 To Teadad - 1
-                    If myUserArray(loopx).UserId = YourUserId Then
-                        Return myUserArray(loopx).UserActive
-                    End If
-                Next
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-
-        Public Overrides Sub Preparing(ByVal Itemno As Short, ByVal SortOrder As R2Enums.SortOrder, Optional ByVal SearchStr As Object = "", Optional ByVal Param1 As Object = Nothing, Optional ByVal Param2 As Object = Nothing, Optional ByVal Param3 As Object = Nothing, Optional ByVal Param4 As Object = Nothing, Optional ByVal Param5 As Object = Nothing, Optional ByVal Param6 As Object = Nothing)
-            Try
-                TeadadSet = 0
-                Dim mySqlDataBox As DatabaseManagement.R2ClassSqlDataBOX
-                Dim DS As DataSet
-                Dim myOrderBy As String = IIf(SortOrder = R2Enums.SortOrder.Code, " order by Userid", " order by UserName")
-                Select Case Itemno
-                    Case 1
-                        mySqlDataBox = DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2Core.DatabaseManagement.R2PrimarySqlConnection, "select * from R2Primary.dbo.TblSoftwareUsers " + myOrderBy, 10, DS)
-                    Case 2
-                        If SearchStr.trim = "" Then
-                            mySqlDataBox = DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2Core.DatabaseManagement.R2PrimarySqlConnection, "select * from R2Primary.dbo.TblSoftwareUsers " + myOrderBy, 10, DS)
-                        Else
-                            mySqlDataBox = DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2Core.DatabaseManagement.R2PrimarySqlConnection, "select * from R2Primary.dbo.TblSoftwareUsers where  ltrim(rtrim(UserName)) like '%" & Trim(SearchStr.trim) & "%'   " + myOrderBy, 10, DS)
-                        End If
-                End Select
-                If mySqlDataBox.GetRecordsCount <> 0 Then
-                    TeadadSet = mySqlDataBox.GetRecordsCount
-                    ReDim myUserArray(mySqlDataBox.GetRecordsCount)
-                    For loopx As Int64 = 0 To mySqlDataBox.GetRecordsCount - 1
-                        myUserArray(loopx) = New R2CoreStandardUserStructure(DS.Tables(0).Rows(loopx).Item("UserId"), DS.Tables(0).Rows(loopx).Item("UserName").trim, DS.Tables(0).Rows(loopx).Item("UserShenaseh").trim, DS.Tables(0).Rows(loopx).Item("UserPassword").trim, DS.Tables(0).Rows(loopx).Item("UserPinCode").trim, DS.Tables(0).Rows(loopx).Item("UserCanCharge"), DS.Tables(0).Rows(loopx).Item("UserActive"))
-                    Next
-                End If
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Sub
-
-        Public Overrides Function GetIndexBySearchStrInStartCharacters(ByVal SearchStr As String) As Integer
-            Try
-                Dim mySearchStr As String = SearchStr.Trim
-                For loopx As Int64 = 0 To Teadad - 1
-                    If Mid(myUserArray(loopx).UserName.Trim, 1, mySearchStr.Length) = mySearchStr Then Return loopx
-                Next
-                Return -1
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Overrides Function IsValidOCode(ByVal OCodee As String) As Boolean
-            Try
-                For loopx As Int16 = 0 To Teadad - 1
-                    If myUserArray(loopx).OCode.Trim = OCodee.Trim Then Return True
-                Next
-                Return False
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Overrides Function IsValidOName(ByVal ONamee As String) As Boolean
-            Try
-                For loopx As Int16 = 0 To Teadad - 1
-                    If myUserArray(loopx).OName.Trim = ONamee.Trim Then Return True
-                Next
-                Return False
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Overrides Function GetValidOCodeFromOName(ByVal ONamee As String) As String
-            Try
-                For loopx As Int16 = 0 To Teadad - 1
-                    If myUserArray(loopx).OName.Trim = ONamee.Trim Then Return myUserArray(loopx).OCode.Trim
-                Next
-                Throw New Exception("OName Is Not Valid")
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Overrides Function GetValidONameFromOCode(ByVal OCodee As String) As String
-            Try
-                For loopx As Int16 = 0 To Teadad - 1
-                    If myUserArray(loopx).OCode.Trim = OCodee.Trim Then Return myUserArray(loopx).OName.Trim
-                Next
-                Throw New Exception("OCode Is Not Valid")
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Overrides Function IsValidOItem(ByVal OItem As String) As Boolean
-            Try
-                If IsValidOCode(OItem) = True Then
-                    Return True
-                ElseIf IsValidOName(OItem) = True Then
-                    Return True
-                Else
-                    Dim myOCode As String = Mid(OItem, 1, 2)
-                    Dim myOName As String = Mid(OItem, 2 + 1, Len(OItem))
-                    If (IsValidOCode(myOCode) = True) And (IsValidOName(myOName) = True) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                End If
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Overrides Function GetValidOCodeFromOitem(ByVal OItem As String) As String
-            Try
-                If IsValidOCode(OItem) = True Then Return OItem
-                If IsValidOName(OItem) = True Then Return GetValidOCodeFromOName(OItem)
-                If IsValidOItem(OItem) = True Then
-                    Dim myCardNo As String = Mid(OItem, 1, 2)
-                    Return myCardNo
-                Else
-                    Throw New Exception("Oitem Is Not Valid")
-                End If
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Overrides Function GetValidONameFromOitem(ByVal OItem As String) As String
-            Try
-                If IsValidOCode(OItem) = True Then Return GetValidONameFromOCode(OItem)
-                If IsValidOName(OItem) = True Then Return OItem
-                If IsValidOItem(OItem) = True Then
-                    Dim myUserId As String = Mid(OItem, 1, 2)
-                    Return GetValidONameFromOCode(myUserId)
-                Else
-                    Throw New Exception("Oitem Is Not Valid")
-                End If
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Overrides Function Getindex(ByVal OCode As String) As Long
-            Try
-                Dim myOcode As String = OCode.Trim
-                For loopx As Int64 = 0 To Teadad - 1
-                    If myUserArray(loopx).OCode.Trim = myOcode Then
-                        Return loopx
-                    End If
-                Next
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Overrides Function ExistInQueryOCode(ByVal Ocode As String) As Boolean
-            Try
-                For loopx As Int64 = 0 To Teadad - 1
-                    If myUserArray(loopx).UserId = Ocode.Trim Then
-                        Return True
-                    End If
-                Next
-                Return False
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-        Public Overrides Function ExistInQueryOName(ByVal OName As String) As Boolean
-            Try
-                For loopx As Int64 = 0 To Teadad - 1
-                    If myUserArray(loopx).UserName.Trim = OName.Trim Then
-                        Return True
-                    End If
-                Next
-                Return False
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Function
-
-
-    End Class
-
-    Public Class R2CoreMClassLoginManagement
-
-        Private Shared R2PrimaryFSWS As R2PrimaryFileSharingWS.R2PrimaryFileSharingWebService = New R2PrimaryFileSharingWebService()
+        Private Shared _DateTime As New R2DateTime
+        Private Shared R2PrimaryFSWS As R2PrimaryFileSharingWebService = New R2PrimaryFileSharingWebService()
 
         Public Shared Property GetNoneUserId As Int64 = 0
 
-        Public Shared Function IsUserRegistered(YourUserNSS As R2CoreStandardUserStructure) As Boolean
+        Private Shared Function GetNewUserPassword(YourMobileNumber As String) As String
+            Try
+                Dim Randoom As Random = New Random()
+                Randomize()
+                Dim Pass As String = String.Empty
+                Try
+                    Pass = (Randoom.Next(1000, 4543432) + Convert.ToInt64(Mid(YourMobileNumber, 4, 7))).ToString()
+                Catch ex As Exception
+                    Pass = Randoom.Next(1000, 4543432)
+                End Try
+                Return Pass
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function RegisteringSoftwareUser(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure) As Int64
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                If YourNSSSoftwareUser.MobileNumber.Trim = String.Empty Then Throw New SoftwareUserMobileNumberNeedforRegisteringException
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Select Top 1 UserId from R2Primary.dbo.TblSoftwareUsers with (tablockx) order by UserId desc"
+                CmdSql.ExecuteNonQuery()
+                Dim myUserId As Int64 = CmdSql.ExecuteScalar + 1
+                Dim myPassword As String = GetNewUserPassword(YourNSSSoftwareUser.MobileNumber)
+                CmdSql.CommandText = "Insert Into R2Primary.dbo.TblSoftwareUsers(UserId,UserName,UserShenaseh,UserPassword,UserPinCode,UserCanCharge,UserActive,UserTypeId,MobileNumber,UserStatus,VerificationCode,UserCreatorId,DateTimeMilladi,DateShamsi,ViewFlag,Deleted)
+                  Values(" & myUserId & ",'" & YourNSSSoftwareUser.UserName & "','" & YourNSSSoftwareUser.UserId & "','" & myPassword & "','',0,1," & YourNSSSoftwareUser.UserTypeId & ",'" & YourNSSSoftwareUser.MobileNumber & "',logout,''," & YourNSSUser.UserId & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull & "',1,0)"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Return myUserId
+            Catch ex As SoftwareUserMobileNumberNeedforRegisteringException
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Sub EditingSoftwareUser(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure)
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                If YourNSSSoftwareUser.MobileNumber.Trim = String.Empty Then Throw New SoftwareUserMobileNumberNeedforRegisteringException
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers 
+                        Set UserName='" & YourNSSSoftwareUser.UserName & "',UserPinCode='" & YourNSSSoftwareUser.UserPinCode & "',UserCanCharge=" & YourNSSSoftwareUser.UserCanCharge & ",UserActive=" & YourNSSSoftwareUser.UserActive & ",UserTypeId=" & YourNSSSoftwareUser.UserTypeId & ",MobileNumber='" & YourNSSSoftwareUser.MobileNumber & "',UserCreatorId=" & YourNSSUser.UserId & " 
+                        Where UserId=" & YourNSSSoftwareUser.UserId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As SoftwareUserMobileNumberNeedforRegisteringException
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Shared Sub DeletingSoftwareUser(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure)
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set Deleted=1,UserCreatorId=" & YourNSSUser.UserId & " Where UserId=" & YourNSSSoftwareUser.UserId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Shared Function RegisteringMobileNumber(YourMobileNumber As String) As String
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                Dim VerificationCode As String = GetRandomVerificationCode()
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                   "Select * from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers Where SoftwareUsers.MobileNumber='" & YourMobileNumber & "'", 0, Ds).GetRecordsCount <> 0 Then
+                    CmdSql.Connection.Open()
+                    CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set VerificationCode='" & VerificationCode & "' Where MobileNumber='" & YourMobileNumber & "'"
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.Connection.Close()
+                    Dim SMSSender As New R2CoreSMSSendRecive
+                    SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, YourMobileNumber, VerificationCode, 1, Nothing, 1, Nothing, Nothing))
+                Else
+                    Throw New MobileNumberNotFoundException
+                End If
+                Return VerificationCode
+            Catch ex As MobileNumberNotFoundException
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Sub LogoutSoftwareUser(YourUserId As Int64)
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserStatus='logout',VerificationCode='',Active=0 Where UserId=" & YourUserId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Shared Function LoginSoftwareUser(YourMobileNumber As String, YourVerificationCode As String) As Int64
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                Dim UserId = SoftwareUserMatching(YourMobileNumber, YourVerificationCode)
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserStatus='login',Active=1 Where UserId=" & UserId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+                Return UserId
+            Catch ex As SoftwareUserNotMatchException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Private Shared Function SoftwareUserMatching(YourMobileNumber As String, YourVerificationCode As String) As Int64
+            Try
+                Dim DS As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblSoftwareUsers Where VerificationCode='" & YourVerificationCode & "' and MobileNumber='" & YourMobileNumber & "' Order By UserId Desc", 1, DS).GetRecordsCount() = 0 Then Throw New SoftwareUserNotMatchException
+                Return DS.Tables(0).Rows(0).Item("UserId")
+            Catch ex As SoftwareUserNotMatchException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Private Shared Function GetRandomVerificationCode() As Int64
+            Try
+                Dim RandGen As New Random
+                Return RandGen.Next(10000, 100000)
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function IsUserRegistered(YourUserNSS As R2CoreStandardSoftwareUserStructure) As Boolean
             Try
                 AuthenticationUserbyShenasehPassword(YourUserNSS)
                 Return True
@@ -1729,7 +1631,7 @@ Namespace UserManagement
             End Try
         End Function
 
-        Public Shared Sub AuthenticationUserbyShenasehPassword(YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub AuthenticationUserbyShenasehPassword(YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Try
                 Dim DS As DataSet
                 If DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers where ltrim(rtrim(UserShenaseh))='" & YourUserNSS.UserShenaseh & "' and ltrim(rtrim(UserPassword))='" & YourUserNSS.UserPassword & "'", 1, DS).GetRecordsCount = 0 Then
@@ -1744,7 +1646,7 @@ Namespace UserManagement
             End Try
         End Sub
 
-        Public Shared Sub AuthenticationUserByPinCode(YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub AuthenticationUserByPinCode(YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Try
                 Dim DS As DataSet
                 If DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers where UserPinCode='" & YourUserNSS.UserPinCode & "'", 1, DS).GetRecordsCount = 0 Then
@@ -1759,7 +1661,7 @@ Namespace UserManagement
             End Try
         End Sub
 
-        Public Shared Function GetNSSSystemUser() As R2CoreStandardUserStructure
+        Public Shared Function GetNSSSystemUser() As R2CoreStandardSoftwareUserStructure
             Try
                 Return GetNSSUser(1)
             Catch exx As GetNSSException
@@ -1769,13 +1671,13 @@ Namespace UserManagement
             End Try
         End Function
 
-        Public Shared Function GetNSSUser(YourUserId As Int64) As R2CoreStandardUserStructure
+        Public Shared Function GetNSSUser(YourUserId As Int64) As R2CoreStandardSoftwareUserStructure
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserId=" & YourUserId & "", 1, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserId=" & YourUserId & "", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 End If
-                Return New R2CoreStandardUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"))
+                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber"), Ds.Tables(0).Rows(0).Item("UserStatus"), Ds.Tables(0).Rows(0).Item("VerificationCode"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
             Catch exx As GetNSSException
                 Throw exx
             Catch ex As Exception
@@ -1783,13 +1685,13 @@ Namespace UserManagement
             End Try
         End Function
 
-        Public Shared Function GetNSSUser(YourUserShenaseh As String, YourUserPassword As String) As R2CoreStandardUserStructure
+        Public Shared Function GetNSSUser(YourUserShenaseh As String, YourUserPassword As String) As R2CoreStandardSoftwareUserStructure
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserShenaseh='" & YourUserShenaseh.Trim() & "' and UserPassword='" & YourUserPassword.Trim() & "'", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 End If
-                Return New R2CoreStandardUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"))
+                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"),Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber"), Ds.Tables(0).Rows(0).Item("UserStatus"), Ds.Tables(0).Rows(0).Item("VerificationCode"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As GetNSSException
                 Throw ex
             Catch ex As Exception
@@ -1797,13 +1699,13 @@ Namespace UserManagement
             End Try
         End Function
 
-        Public Shared Function GetNSSUser(YourPinCode As String) As R2CoreStandardUserStructure
+        Public Shared Function GetNSSUser(YourPinCode As String) As R2CoreStandardSoftwareUserStructure
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserPinCode='" & YourPinCode.Trim() & "'", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 End If
-                Return New R2CoreStandardUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"))
+                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"),Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber"), Ds.Tables(0).Rows(0).Item("UserStatus"), Ds.Tables(0).Rows(0).Item("VerificationCode"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As GetNSSException
                 Throw ex
             Catch ex As Exception
@@ -1811,7 +1713,7 @@ Namespace UserManagement
             End Try
         End Function
 
-        Public Shared Function GetUserImage(YourNSSUserRequest As R2CoreStandardUserStructure, YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
+        Public Shared Function GetUserImage(YourNSSUserRequest As R2CoreStandardSoftwareUserStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure) As R2CoreImage
             Try
                 Return New R2CoreImage(R2PrimaryFSWS.WebMethodGetFile(R2Core.FileShareRawGroupsManagement.R2CoreRawGroups.UserImages, YourNSSUserRequest.UserId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 0), R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword)))
             Catch ex As Exception
@@ -1819,7 +1721,7 @@ Namespace UserManagement
             End Try
         End Function
 
-        Public Shared Sub ChangeUserPassword(YourNSS As R2CoreStandardUserStructure)
+        Public Shared Sub ChangeUserPassword(YourNSS As R2CoreStandardSoftwareUserStructure)
             Dim cmdsql As New SqlClient.SqlCommand
             cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
             Try
@@ -1836,6 +1738,42 @@ Namespace UserManagement
     End Class
 
     Namespace Exceptions
+
+        Public Class SoftwareUserMobileNumberNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کاربر با شماره موبایل مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+        Public Class SoftwareUserMobileNumberNeedforRegisteringException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "ورود شماره موبایل برای ثبت کاربر الزامی است"
+                End Get
+            End Property
+        End Class
+
+        Public Class MobileNumberNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "شماره موبایل مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+        Public Class SoftwareUserNotMatchException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کد تبادل نادرست است"
+                End Get
+            End Property
+        End Class
 
         Public Class UserNotExistException
             Inherits ApplicationException
@@ -1885,7 +1823,7 @@ End Namespace
 
 Namespace AuthenticationManagement
     Public MustInherit Class R2MClassAuthenticationManagement
-        Public Shared Function UserHaveProcessPermission(YourUserNSS As R2CoreStandardUserStructure, YourProcessNSS As R2StandardProcessStructure) As Boolean
+        Public Shared Function UserHaveProcessPermission(YourUserNSS As R2CoreStandardSoftwareUserStructure, YourProcessNSS As R2StandardDesktopProcessStructure) As Boolean
             Try
                 Dim DS As New DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsersRelationProcesses Where UserId='" & YourUserNSS.UserId & "' and PId='" & YourProcessNSS.PId & "'", 3600, DS).GetRecordsCount = 0 Then
@@ -1898,7 +1836,7 @@ Namespace AuthenticationManagement
             End Try
         End Function
 
-        Public Shared Function UserHaveComputerPermission(YourUserNSS As R2CoreStandardUserStructure, YourComputerNSS As R2CoreStandardComputerStructure) As Boolean
+        Public Shared Function UserHaveComputerPermission(YourUserNSS As R2CoreStandardSoftwareUserStructure, YourComputerNSS As R2CoreStandardComputerStructure) As Boolean
             Try
                 Dim DS As New DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsersRelationComputers Where UserId='" & YourUserNSS.UserId & "' and MId='" & YourComputerNSS.MId & "'", 3600, DS).GetRecordsCount = 0 Then
@@ -1911,7 +1849,7 @@ Namespace AuthenticationManagement
             End Try
         End Function
 
-        Public Shared Function ComputerHaveProcessPermission(YourComputerNSS As R2CoreStandardComputerStructure, YourProcessNSS As R2StandardProcessStructure) As Boolean
+        Public Shared Function ComputerHaveProcessPermission(YourComputerNSS As R2CoreStandardComputerStructure, YourProcessNSS As R2StandardDesktopProcessStructure) As Boolean
             Try
                 Dim DS As New DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblComputersRelationProcesses Where CId=" & YourComputerNSS.MId & " and PId=" & YourProcessNSS.PId & "", 3600, DS).GetRecordsCount = 0 Then
@@ -3183,9 +3121,9 @@ Namespace LoggingManagement
 
 End Namespace
 
-Namespace ProcessesManagement
+Namespace DesktopProcessesManagement
 
-    Public MustInherit Class R2CoreProcesses
+    Public MustInherit Class R2CoreDesktopProcesses
         Public Shared ReadOnly None As Int64 = 0
         Public Shared ReadOnly FrmcConsol As Int64 = 1
         Public Shared ReadOnly FrmcUserPasswordEdit As Int64 = 2
@@ -3196,8 +3134,8 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcPersonnelEnterExits As Int64 = 38
     End Class
 
-    Public Class R2StandardProcessStructure
-        Inherits BaseStandardClass.R2StandardStructure
+    Public Class R2StandardDesktopProcessStructure
+        Inherits R2StandardStructure
 
         Public Property PId As String = Int64.MinValue
         Public Property PName As String = String.Empty
@@ -3227,8 +3165,8 @@ Namespace ProcessesManagement
 
     End Class
 
-    Public Class R2StandardProcessGroupStructure
-        Inherits BaseStandardClass.R2StandardStructure
+    Public Class R2StandardDesktopProcessGroupStructure
+        Inherits R2StandardStructure
 
         Public Sub New()
             MyBase.New()
@@ -3262,15 +3200,15 @@ Namespace ProcessesManagement
         Dim MenuPanel As String
     End Structure
 
-    Public MustInherit Class R2CoreMClassProcessesManagement
+    Public MustInherit Class R2CoreMClassDesktopProcessesManagement
 
-        Public Shared Function GetNSSProcess(YourPId As Int64) As R2StandardProcessStructure
+        Public Shared Function GetNSSProcess(YourPId As Int64) As R2StandardDesktopProcessStructure
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblProcesses Where PId=" & YourPId & "", 3600, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblDesktopProcesses Where PId=" & YourPId & "", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New GetDataException
                 End If
-                Dim NSS As R2StandardProcessStructure = New R2StandardProcessStructure
+                Dim NSS As R2StandardDesktopProcessStructure = New R2StandardDesktopProcessStructure
                 NSS.PAssemblyDll = Ds.Tables(0).Rows(0).Item("PAssemblyDll").Trim()
                 NSS.PDisplayTitle = Ds.Tables(0).Rows(0).Item("PDisplayTitle").Trim()
                 NSS.PName = Ds.Tables(0).Rows(0).Item("PName").Trim()
@@ -3284,13 +3222,13 @@ Namespace ProcessesManagement
             End Try
         End Function
 
-        Public Shared Function GetNSSProcessGroup(YourPGId As Int64) As R2StandardProcessGroupStructure
+        Public Shared Function GetNSSProcessGroup(YourPGId As Int64) As R2StandardDesktopProcessGroupStructure
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblProcessGroups Where PGId=" & YourPGId & "", 3600, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblDesktopProcessGroups Where PGId=" & YourPGId & "", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New GetDataException
                 End If
-                Dim NSS As R2StandardProcessGroupStructure = New R2StandardProcessGroupStructure
+                Dim NSS As R2StandardDesktopProcessGroupStructure = New R2StandardDesktopProcessGroupStructure
                 NSS.PGId = Ds.Tables(0).Rows(0).Item("PGId")
                 NSS.PGName = Ds.Tables(0).Rows(0).Item("PName")
                 NSS.PGDisplayTitle = Ds.Tables(0).Rows(0).Item("PGDisplayTitle")
@@ -3302,13 +3240,13 @@ Namespace ProcessesManagement
             End Try
         End Function
 
-        Public Shared Function GetListOfProcessGroupsHaveUser(YourNSSUser As R2CoreStandardUserStructure) As List(Of R2StandardProcessGroupStructure)
+        Public Shared Function GetListOfProcessGroupsHaveUser(YourNSSUser As R2CoreStandardSoftwareUserStructure) As List(Of R2StandardDesktopProcessGroupStructure)
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * From R2Primary.dbo.TblProcessGroups Where PGID In (Select PGID From R2Primary.dbo.TblSoftwareUsersRelationProcessGroups Where UserId=" & YourNSSUser.UserId & ") Order By PGId", 3600, Ds).GetRecordsCount <> 0 Then
-                    Dim Lst As New List(Of R2StandardProcessGroupStructure)
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * From R2Primary.dbo.TblDesktopProcessGroups Where PGID In (Select PGID From R2Primary.dbo.TblSoftwareUsersRelationProcessGroups Where UserId=" & YourNSSUser.UserId & ") Order By PGId", 3600, Ds).GetRecordsCount <> 0 Then
+                    Dim Lst As New List(Of R2StandardDesktopProcessGroupStructure)
                     For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                        Dim NSS As New R2StandardProcessGroupStructure
+                        Dim NSS As New R2StandardDesktopProcessGroupStructure
                         NSS.PGDisplayTitle = Ds.Tables(0).Rows(Loopx).Item("PGDisplayTitle").trim
                         NSS.PGId = Ds.Tables(0).Rows(Loopx).Item("PGId")
                         NSS.PGName = Ds.Tables(0).Rows(Loopx).Item("PGName").trim
@@ -3873,7 +3811,7 @@ Namespace RFIDCardsManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
-        Public Shared Sub RFIDCardInitialRegister(YourCardNo As String, YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub RFIDCardInitialRegister(YourCardNo As String, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim Cmdsql As New SqlClient.SqlCommand
             Cmdsql.Connection = (New DatabaseManagement.R2PrimarySqlConnection).GetConnection
             Try
@@ -4309,7 +4247,7 @@ Namespace ReportsManagement
 
     End Class
 
-    Public Class R2CoreMClassReportsManagement
+    Public NotInheritable Class R2CoreMClassReportsManagement
         Public Shared Function GetNSSReport(YourRId As String) As R2StandardReportStructure
             Try
                 Dim Ds As DataSet
@@ -4357,7 +4295,7 @@ Namespace FileShareRawGroupsManagement
 #Region "Constructing Management"
         Public Sub New()
             MyBase.New()
-            _RGId = 0 : _RGName = String.Empty : _RGFullPath = String.Empty : _AccessType = R2CoreRawGroupsAccessType.None : _CoreName = String.Empty : _DateTimeMilladi = Now : _DateShamsi = String.Empty : _Description = String.Empty : _UserId = R2CoreMClassLoginManagement.GetNoneUserId
+            _RGId = 0 : _RGName = String.Empty : _RGFullPath = String.Empty : _AccessType = R2CoreRawGroupsAccessType.None : _CoreName = String.Empty : _DateTimeMilladi = Now : _DateShamsi = String.Empty : _Description = String.Empty : _UserId = R2CoreMClassSoftwareUsersManagement.GetNoneUserId
         End Sub
         Public Sub New(ByVal YourRGId As Int64, ByVal YourRGName As String, ByVal YourRGFullPath As String, ByVal YourAccessType As R2CoreRawGroupsAccessType, ByVal YourCoreName As String, ByVal YourDateTimeMilladi As DateTime, ByVal YourDateShamsi As String, YourDescription As String, YourUserId As Int64)
             MyBase.New(YourRGId, YourRGName)
@@ -4863,7 +4801,7 @@ Namespace HumanResourcesManagement
                 End Try
             End Function
 
-            Public Shared Function InsertPersonnel(YourNSS As R2CoreStandardPersonnelStructure, YourUserNSS As R2CoreStandardUserStructure) As Int64
+            Public Shared Function InsertPersonnel(YourNSS As R2CoreStandardPersonnelStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
                 Dim CmdSql As SqlCommand = New SqlCommand
                 CmdSql.Connection = (New DatabaseManagement.R2PrimarySqlConnection).GetConnection()
                 Try
@@ -4884,7 +4822,7 @@ Namespace HumanResourcesManagement
                 End Try
             End Function
 
-            Public Shared Sub UpdatePersonnel(YourNSS As R2CoreStandardPersonnelStructure, YourUserNSS As R2CoreStandardUserStructure)
+            Public Shared Sub UpdatePersonnel(YourNSS As R2CoreStandardPersonnelStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Dim CmdSql As SqlCommand = New SqlCommand
                 CmdSql.Connection = (New DatabaseManagement.R2PrimarySqlConnection).GetConnection()
                 Try
@@ -4901,7 +4839,7 @@ Namespace HumanResourcesManagement
                 End Try
             End Sub
 
-            Public Shared Function GetPersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure, YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
+            Public Shared Function GetPersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure) As R2CoreImage
                 Try
                     Return New R2CoreImage(_R2PrimaryFSWS.WebMethodGetFile(R2CoreRawGroups.PersonnelImages, YourNSSPersonnel.PId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 3), _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword)))
                 Catch ex As Exception
@@ -4909,7 +4847,7 @@ Namespace HumanResourcesManagement
                 End Try
             End Function
 
-            Public Shared Sub SavePersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure, YourPersonnelImage As R2CoreImage, YourNSSUser As R2CoreStandardUserStructure)
+            Public Shared Sub SavePersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure, YourPersonnelImage As R2CoreImage, YourNSSUser As R2CoreStandardSoftwareUserStructure)
                 Try
                     _R2PrimaryFSWS.WebMethodSaveFile(R2CoreRawGroups.PersonnelImages, YourNSSPersonnel.PId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 3), YourPersonnelImage.GetImageByte(), _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword))
                 Catch ex As Exception
@@ -5281,187 +5219,6 @@ Namespace SoftwareUserWorkingGroupsManagement
     End Class
 End Namespace
 
-Namespace EntityRelations
-
-    Public MustInherit Class R2CoreEntityRelationTypes
-        Public Shared ReadOnly None As Int64 = 0
-    End Class
-
-    Public Class R2StandardEntityRelationTypeStructure
-        Inherits BaseStandardClass.R2StandardStructure
-
-        Public Sub New()
-            MyBase.New()
-            _ERTypeId = Int64.MinValue
-            _ERTypeName = String.Empty
-            _ERTypeTitle = String.Empty
-            _Color = Color.Empty
-            _Core = String.Empty
-            _UserId = Int64.MinValue
-            _DateTimeMilladi = Now
-            _DateShamsi = String.Empty
-            _ViewFlag = Boolean.FalseString
-            _Active = Boolean.FalseString
-            _Deleted = Boolean.FalseString
-        End Sub
-
-        Public Sub New(YourERTypeId As Int64, YourERTypeName As String, YourERTypeTitle As String, YourColor As Color, YourCore As String, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
-            MyBase.New(YourERTypeId, YourERTypeName)
-            _ERTypeId = YourERTypeId
-            _ERTypeName = YourERTypeName
-            _ERTypeTitle = YourERTypeTitle
-            _Color = YourColor
-            _Core = YourCore
-            _UserId = YourUserId
-            _DateTimeMilladi = YourDateTimeMilladi
-            _DateShamsi = YourDateShamsi
-            _ViewFlag = YourViewFlag
-            _Active = YourActive
-            _Deleted = YourDeleted
-        End Sub
-
-        Public Property ERTypeId As Int64
-        Public Property ERTypeName As String
-        Public Property ERTypeTitle As String
-        Public Property Color As Color
-        Public Property Core As String
-        Public Property UserId As Int64
-        Public Property DateTimeMilladi As DateTime
-        Public Property DateShamsi As String
-        Public Property ViewFlag As Boolean
-        Public Property Active As Boolean
-        Public Property Deleted As Boolean
-
-    End Class
-
-    Public Class R2StandardEntityRelationStructure
-
-        Public Sub New()
-            MyBase.New()
-            _ERId = Int64.MinValue
-            _ERTypeId = Int64.MinValue
-            _E1 = Int64.MinValue
-            _E2 = Int64.MinValue
-            _RelationActive = Boolean.FalseString
-        End Sub
-
-        Public Sub New(YourERId As Int64, YourERTypeId As Int64, YourE1 As Int64, YourE2 As Int64, YourRelationActive As Boolean)
-            MyBase.New()
-            _ERId = YourERId
-            _ERTypeId = YourERTypeId
-            _E1 = YourE1
-            _E2 = YourE2
-            _RelationActive = YourRelationActive
-        End Sub
-
-        Public Property ERId As Int64
-        Public Property ERTypeId As Int64
-        Public Property E1 As Int64
-        Public Property E2 As Int64
-        Public Property RelationActive As Boolean
-
-    End Class
-
-    Public NotInheritable Class R2CoreMClassEntityRelationManagement
-        Public Shared Function GetNSSEntityRelationType(YourEntityRelationTypeId As Int64) As R2StandardEntityRelationTypeStructure
-            Try
-                Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblEntityRelationTypes as ERTypes Where ERTypes.ERTypeId=" & YourEntityRelationTypeId & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationTypeNotFoundException
-                Dim NSS = New R2StandardEntityRelationTypeStructure
-                NSS.ERTypeId = Ds.Tables(0).Rows(0).Item("ERTypeId")
-                NSS.ERTypeName = Ds.Tables(0).Rows(0).Item("ERTypeName").TRIM
-                NSS.ERTypeTitle = Ds.Tables(0).Rows(0).Item("ERTypeTitle").TRIM
-                NSS.Color = Color.FromName(Ds.Tables(0).Rows(0).Item("Color").TRIM)
-                NSS.Core = Ds.Tables(0).Rows(0).Item("Core").trim
-                NSS.UserId = Ds.Tables(0).Rows(0).Item("UserId")
-                NSS.DateTimeMilladi = Ds.Tables(0).Rows(0).Item("DateTimeMilladi")
-                NSS.DateShamsi = Ds.Tables(0).Rows(0).Item("DateShamsi").TRIM
-                NSS.ViewFlag = Ds.Tables(0).Rows(0).Item("ViewFlag")
-                NSS.Active = Ds.Tables(0).Rows(0).Item("Active")
-                NSS.Deleted = Ds.Tables(0).Rows(0).Item("Deleted")
-                Return NSS
-            Catch ex As EntityRelationTypeNotFoundException
-
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Shared Function GetNSSEntityRelation(YourEntityRelationId As Int64) As R2StandardEntityRelationStructure
-            Try
-                Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblEntityRelations as ERs Where ERs.ERId=" & YourEntityRelationId & "", 1, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
-                Dim NSS = New R2StandardEntityRelationStructure
-                NSS.ERId = Ds.Tables(0).Rows(0).Item("ERId")
-                NSS.ERTypeId = Ds.Tables(0).Rows(0).Item("ERTypeId")
-                NSS.E1 = Ds.Tables(0).Rows(0).Item("E1")
-                NSS.E2 = Ds.Tables(0).Rows(0).Item("E2")
-                NSS.RelationActive = Ds.Tables(0).Rows(0).Item("RelationActive")
-                Return NSS
-            Catch ex As EntityRelationNotFoundException
-
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Shared Function EntityRelationRegistering(YourNSSEntityRelation As R2StandardEntityRelationStructure) As Int64
-            Dim CmdSql As New SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
-            Try
-                CmdSql.Connection.Open()
-                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
-                CmdSql.CommandText = "Select Top 1 ERId From R2Primary.dbo.TblEntityRelations With (tablockx) Order By ERId Desc"
-                CmdSql.ExecuteNonQuery()
-                Dim ERIdNew As Int64 = CmdSql.ExecuteScalar() + 1
-                CmdSql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERId,ERTypeId,E1,E2,RelationActive) Values(" & ERIdNew & "," & YourNSSEntityRelation.ERTypeId & "," & YourNSSEntityRelation.E1 & "," & YourNSSEntityRelation.E2 & ",1)"
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
-                Return ERIdNew
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then
-                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
-                End If
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Shared Function GetNSSEntityRelation(YourERId1 As Int64, YourERId2 As Int64, YourERTypeId As Int64) As R2StandardEntityRelationStructure
-            Try
-                Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.E2=" & YourERId2 & " and ERs.ERTypeId=" & YourERTypeId & "", 1, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
-                Return GetNSSEntityRelation(Ds.Tables(0).Rows(0).Item("ERId"))
-            Catch ex As EntityRelationNotFoundException
-
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-    End Class
-
-    Namespace Exceptions
-        Public Class EntityRelationTypeNotFoundException
-            Inherits ApplicationException
-            Public Overrides ReadOnly Property Message As String
-                Get
-                    Return "نوع رابطه نهادی با شماره شاخص مورد نظر وجود ندارد"
-                End Get
-            End Property
-        End Class
-
-        Public Class EntityRelationNotFoundException
-            Inherits ApplicationException
-            Public Overrides ReadOnly Property Message As String
-                Get
-                    Return "رابطه نهادی با شماره شاخص مورد نظر وجود ندارد"
-                End Get
-            End Property
-        End Class
-
-    End Namespace
-
-End Namespace
 
 
 

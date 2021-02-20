@@ -4,7 +4,7 @@ Imports System.ComponentModel
 Imports System.Reflection
 
 Imports R2Core
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
@@ -103,8 +103,8 @@ Public Class UCTerafficCardViewerEditor
             OpbActive2.Checked = Not YourNSSTerafficCard.Active
             OpbNoMoney1.Checked = YourNSSTerafficCard.NoMoney
             OpbNoMoney2.Checked = Not YourNSSTerafficCard.NoMoney
-            LblUserEdit.Text = R2CoreMClassLoginManagement.GetNSSUser(YourNSSTerafficCard.UserIdEdit).UserName
-            LblUserSabt.Text = R2CoreMClassLoginManagement.GetNSSUser(YourNSSTerafficCard.UserIdSabt).UserName
+            LblUserEdit.Text = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourNSSTerafficCard.UserIdEdit).UserName
+            LblUserSabt.Text = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourNSSTerafficCard.UserIdSabt).UserName
             LblDateEdit.Text = YourNSSTerafficCard.DateShamsiEdit
             LblDateSabt.Text = YourNSSTerafficCard.DateShamsiSabt
             UcPersianTextBoxMobile.UCValue = YourNSSTerafficCard.Mobile

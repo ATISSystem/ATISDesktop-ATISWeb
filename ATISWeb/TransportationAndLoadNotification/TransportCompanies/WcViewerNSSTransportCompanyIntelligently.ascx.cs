@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 using ATISWeb.LoginManagement;
 using ATISWeb.LoginManagement.Exceptions;
 using R2CoreTransportationAndLoadNotification.TransportCompanies;
-using R2Core.UserManagement;
+using R2Core.SoftwareUserManagement;
 
 namespace ATISWeb.TransportationAndLoadNotification.TransportCompanies
 {

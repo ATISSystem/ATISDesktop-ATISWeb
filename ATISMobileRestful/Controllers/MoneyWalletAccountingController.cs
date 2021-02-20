@@ -8,19 +8,19 @@ using System.Web.Http;
 
 using R2Core.LoggingManagement;
 using R2Core.PublicProc;
+using R2Core.SoftwareUserManagement;
 using R2CoreParkingSystem.AccountingManagement;
 using R2CoreParkingSystem.TrafficCardsManagement;
 using R2CoreTransportationAndLoadNotification.Logging;
-using R2CoreTransportationAndLoadNotification.MobileUsers;
 
 namespace ATISMobileRestful.Controllers
 {
     public class MoneyWalletAccountingController : ApiController
     {
         [HttpGet]
-        public List<Models.MoneyWalletAccounting> GetMoneyWalletAccounting(Int64 YourMUId)
+        public List<Models.MoneyWalletAccounting> GetMoneyWalletAccounting(Int64 YourUserId)
         {
-            R2CoreParkingSystemStandardTrafficCardStructure NSSTrafficCard = R2CoreTransportationAndLoadNotificationMClassMobileUsersManagement.GetNSSTerafficCard(R2CoreTransportationAndLoadNotificationMClassMobileUsersManagement.GetNSSMobileUser(YourMUId));
+            R2CoreParkingSystemStandardTrafficCardStructure NSSTrafficCard =R2CoreTransportationAndLoadNotification.TerraficCardsManagement.R2CoreTransportationAndLoadNotificationMClassTerraficCardsManagement.GetNSSTerafficCard(R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId));
             List<Models.MoneyWalletAccounting> _MoneyWalletAccountings = new List<Models.MoneyWalletAccounting>();
             try
             {

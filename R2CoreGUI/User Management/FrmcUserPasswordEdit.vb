@@ -1,7 +1,7 @@
 ﻿
 Imports System.Reflection
-Imports R2Core.ProcessesManagement
-Imports R2Core.UserManagement
+Imports R2Core.DesktopProcessesManagement
+Imports R2Core.SoftwareUserManagement
 
 Public Class FrmcUserPasswordEdit
     Inherits FrmcGeneral
@@ -24,7 +24,7 @@ Public Class FrmcUserPasswordEdit
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess(      R2CoreMClassProcessesManagement.GetNSSProcess(R2CoreProcesses.FrmcUserPasswordEdit))
+            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(R2CoreDesktopProcesses.FrmcUserPasswordEdit))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -41,10 +41,10 @@ Public Class FrmcUserPasswordEdit
 
     Private Sub UcButton_UCClickedEvent() Handles UcButton.UCClickedEvent
         Try
-            R2CoreMClassLoginManagement.ChangeUserPassword(New R2CoreStandardUserStructure(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId,Nothing,Nothing,UcTextBoxNewUserPassword.UCValue,Nothing,Nothing,Nothing))
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess,"رمز عبور کاربر تغییر یافت", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+            R2CoreMClassSoftwareUsersManagement.ChangeUserPassword(New R2CoreStandardSoftwareUserStructure(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing, UcTextBoxNewUserPassword.UCValue, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "رمز عبور کاربر تغییر یافت", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
 

@@ -7,7 +7,7 @@ Imports R2Core
 Imports R2Core.DatabaseManagement
 Imports R2Core.ComputersManagement
 Imports R2Core.HumanResourcesManagement.Personnel
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 
 Public Class UCUCPersonnelCollection
     Inherits R2CoreGUI.UCGeneral
@@ -73,7 +73,7 @@ Public Class UCUCPersonnelCollection
         Cursor.Current = Cursors.Default
     End Sub
 
-    Public Sub UCViewPersonnelsByUCPersonnelPresenter(YourNSSUser As R2CoreStandardUserStructure)
+    Public Sub UCViewPersonnelsByUCPersonnelPresenter(YourNSSUser As R2CoreStandardSoftwareUserStructure)
         Try
             Cursor.Current = Cursors.WaitCursor
             Dim Lst As List(Of R2CoreStandardPersonnelStructure) = R2CorePersonnelMClassManagement.CreateListOfPersonnel(True)

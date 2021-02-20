@@ -841,10 +841,6 @@
       <Project>{68EE9753-9B39-4D0B-BFE5-0F941A5F183C}</Project>
       <Name>R2CoreParkingSystem</Name>
     </ProjectReference>
-    <ProjectReference Include="..\R2CoreSMS\R2CoreSMS.vbproj">
-      <Project>{dae8f88e-0def-46ef-a70b-9f670954dcab}</Project>
-      <Name>R2CoreSMS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\R2CoreTransportationAndLoadNotification\R2CoreTransportationAndLoadNotification.vbproj">
       <Project>{ef77b294-2e31-4914-af7b-289a6a1bf8dc}</Project>
       <Name>R2CoreTransportationAndLoadNotification</Name>
@@ -864,10 +860,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://192.168.20.3:2012/PayanehWebService.asmx">
+    <WebReferenceUrl Include="http://192.168.1.2:2012/PayanehWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\PayanehWS\</RelPath>
-      <UpdateFromURL>http://192.168.20.3:2012/PayanehWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://192.168.1.2:2012/PayanehWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -875,10 +871,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>PayanehClassLibrary_PayanehWS_PayanehWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://192.168.20.3:2010/TerminalsWebService.asmx">
+    <WebReferenceUrl Include="http://192.168.1.2:2010/TerminalsWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\TerminalsWebService\</RelPath>
-      <UpdateFromURL>http://192.168.20.3:2010/TerminalsWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://192.168.1.2:2010/TerminalsWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

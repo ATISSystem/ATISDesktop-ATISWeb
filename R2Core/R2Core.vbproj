@@ -129,6 +129,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Web References\net.sepahansms\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Web References\R2PrimaryFileSharingWS\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -161,6 +166,14 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="Web References\net.sepahansms\ReceiveSMS.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\net.sepahansms\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\net.sepahansms\smsSendWebServiceforphp.wsdl" />
     <None Include="Web References\R2PrimaryFileSharingWS\R2PrimaryFileSharingWebService.wsdl" />
     <None Include="Web References\R2PrimaryFileSharingWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
@@ -178,6 +191,7 @@
   <ItemGroup>
     <Content Include="EasyD12.dll" />
     <Content Include="MF_API.dll" />
+    <None Include="Web References\net.sepahansms\smsSendWebServiceforphp.disco" />
     <None Include="Web References\R2PrimaryWS\R2PrimaryWebService.disco" />
     <None Include="Web References\R2PrimaryFileSharingWS\R2PrimaryFileSharingWebService.disco" />
   </ItemGroup>
@@ -188,10 +202,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://192.168.20.3:2011/R2PrimaryWebService.asmx">
+    <WebReferenceUrl Include="http://192.168.1.2:2011/R2PrimaryWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\R2PrimaryWS\</RelPath>
-      <UpdateFromURL>http://192.168.20.3:2011/R2PrimaryWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://192.168.1.2:2011/R2PrimaryWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -199,16 +213,27 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>R2Core_R2PrimaryWS_R2PrimaryWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://192.168.20.3:2013/R2PrimaryFileSharingWebService.asmx">
+    <WebReferenceUrl Include="http://192.168.1.2:2013/R2PrimaryFileSharingWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\R2PrimaryFileSharingWS\</RelPath>
-      <UpdateFromURL>http://192.168.20.3:2013/R2PrimaryFileSharingWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://192.168.1.2:2013/R2PrimaryFileSharingWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>R2Core_R2PrimaryFileSharingWS_R2PrimaryFileSharingWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://sepahansms.net/smsSendWebServiceforphp.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\net.sepahansms\</RelPath>
+      <UpdateFromURL>http://sepahansms.net/smsSendWebServiceforphp.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>R2Core_net_sepahansms_smsSendWebServiceforPHP</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

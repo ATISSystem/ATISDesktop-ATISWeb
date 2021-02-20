@@ -6,8 +6,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+
 namespace ATISWeb.MenuManagement
 {
+
     public partial class WfMainMenu : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
@@ -21,7 +23,7 @@ namespace ATISWeb.MenuManagement
                 string FixMessage1 = FixMessage.Split('-')[0].Trim();
                 string FixMessage2 = FixMessage.Split('-')[1].Trim();
                 string FixMessage3 = FixMessage.Split('-')[2].Trim();
-                Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('"+ DailyMessageColor+ "','" + DailyMessage+ "','"+FixMessage1+ "','" + FixMessage2 + "','" + FixMessage3 + "');", true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('" + DailyMessageColor + "','" + DailyMessage + "','" + FixMessage1 + "','" + FixMessage2 + "','" + FixMessage3 + "');", true);
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }

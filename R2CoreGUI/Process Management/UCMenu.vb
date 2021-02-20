@@ -2,7 +2,7 @@
 Imports System.Reflection
 
 Imports R2Core.ConfigurationManagement
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 
 Public Class UCMenu
     Inherits UCGeneral

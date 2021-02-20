@@ -7,8 +7,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using R2Core.ExceptionManagement;
-using R2Core.UserManagement;
-using R2Core.UserManagement.Exceptions;
+using R2Core.SoftwareUserManagement;
+using R2Core.SoftwareUserManagement.Exceptions;
 
 namespace ATISWeb.LoginManagement
 {
@@ -36,8 +36,8 @@ namespace ATISWeb.LoginManagement
         {
             try
             {
-                R2CoreMClassLoginManagement.AuthenticationUserbyShenasehPassword(new R2CoreStandardUserStructure(0, "", TxtUserShenaseh.Text, TxtUserPassword.Text, "", false, false));
-                R2CoreStandardUserStructure NSS = R2CoreMClassLoginManagement.GetNSSUser(TxtUserShenaseh.Text, TxtUserPassword.Text);
+                R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(new R2CoreStandardSoftwareUserStructure(0, "", TxtUserShenaseh.Text, TxtUserPassword.Text, "", false, false));
+                R2CoreStandardSoftwareUserStructure NSS = R2CoreMClassSoftwareUsersManagement.GetNSSUser(TxtUserShenaseh.Text, TxtUserPassword.Text);
                 Session.Add("CurrentUser", NSS);
                 Session.Timeout = 60;
                 WcUserAuthenticationSuccessEvent?.Invoke(this, e);

@@ -45,7 +45,7 @@ Partial Class FrmcCarAndDriversInformation
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(247, 150)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-2000, -2000)
         '
         'UcTraficCard
         '

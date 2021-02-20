@@ -7,7 +7,7 @@ Imports R2Core.BaseStandardClass
 
 Imports R2Core.DatabaseManagement
 Imports R2Core.HumanResourcesManagement.Personnel
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 
 Public Class UCPersonnelImage
@@ -51,7 +51,7 @@ Public Class UCPersonnelImage
         End Try
     End Sub
 
-    Public Sub UCViewPersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure,YourNSSUser As R2CoreStandardUserStructure)
+    Public Sub UCViewPersonnelImage(YourNSSPersonnel As R2CoreStandardPersonnelStructure,YourNSSUser As R2CoreStandardSoftwareUserStructure)
         Try
             _CurrentNSS=YourNSSPersonnel
             PicPersonnel.Image = R2CorePersonnelMClassManagement.GetPersonnelImage(YourNSSPersonnel,YourNSSUser).GetImage()

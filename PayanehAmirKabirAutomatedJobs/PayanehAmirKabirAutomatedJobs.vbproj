@@ -132,10 +132,6 @@
       <Project>{8bcfe2ef-2c83-4137-baaf-87e380d41971}</Project>
       <Name>PayanehClassLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\R2CoreSMS\R2CoreSMS.vbproj">
-      <Project>{dae8f88e-0def-46ef-a70b-9f670954dcab}</Project>
-      <Name>R2CoreSMS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\R2CoreTransportationAndLoadNotification\R2CoreTransportationAndLoadNotification.vbproj">
       <Project>{ef77b294-2e31-4914-af7b-289a6a1bf8dc}</Project>
       <Name>R2CoreTransportationAndLoadNotification</Name>

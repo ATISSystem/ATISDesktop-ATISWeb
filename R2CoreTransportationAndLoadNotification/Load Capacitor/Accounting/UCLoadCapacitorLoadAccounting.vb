@@ -2,7 +2,7 @@
 Imports System.Drawing
 Imports System.Reflection
 
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorAccounting
 
@@ -53,7 +53,7 @@ Public Class UCLoadCapacitorLoadAccounting
             UcLabelAccountTitle.UCValue = NSSAccountingType.ATitle
             UcLabelDateTimeComposite.UCValue = YourNSS.DateShamsi + " - " + YourNSS.Time
             UcLabelAmount.UCValue = YourNSS.Amount
-            UcLabelUserName.UCValue = R2CoreMClassLoginManagement.GetNSSUser(YourNSS.UserId).UserName
+            UcLabelUserName.UCValue = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourNSS.UserId).UserName
             PnlMain.BackColor = Color.FromName(NSSAccountingType.Color)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

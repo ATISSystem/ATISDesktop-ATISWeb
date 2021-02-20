@@ -3,15 +3,15 @@ Imports System.Reflection
 
 Imports R2Core.AuthenticationManagement
 Imports R2Core.ComputersManagement
-Imports R2Core.ProcessesManagement
-Imports R2Core.UserManagement
+Imports R2Core.DesktopProcessesManagement
+Imports R2Core.SoftwareUserManagement
 
 
 Namespace ProcessesManagement
 
     Public Class R2CoreGUIMClassProcessesManagement
 
-        Public Shared Function OpenProccess(YourNSSProcess As R2StandardProcessStructure,YourUserNSS As R2CoreStandardUserStructure) As Form
+        Public Shared Function OpenProccess(YourNSSProcess As R2StandardDesktopProcessStructure,YourUserNSS As R2CoreStandardSoftwareUserStructure) As Form
             Try
                 If R2MClassAuthenticationManagement.UserHaveProcessPermission(YourUserNSS, YourNSSProcess) = False Then
                     Throw New AuthenticationUserHasProcessPermissionException

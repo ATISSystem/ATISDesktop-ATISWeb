@@ -5,7 +5,7 @@ Imports System.Windows.Forms
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.DatabaseManagement
 Imports R2Core.LoggingManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.AccountingManagement
 Imports R2CoreParkingSystem.BlackList

@@ -13,13 +13,16 @@ Imports R2Core.MonetaryCreditSupplySources
 Imports R2Core.LoggingManagement
 Imports R2Core.BaseStandardClass
 Imports R2Core.DateAndTimeManagement
-Imports R2Core.UserManagement
-Imports R2Core.UserManagement.Exceptions
+Imports R2Core.SoftwareUserManagement
+Imports R2Core.SoftwareUserManagement.Exceptions
 Imports R2Core.SecurityAlgorithmsManagement
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
+Imports R2Core.EntityRelationManagement.Exceptions
+Imports R2Core.PredefinedMessagesManagement.Exceptions
+Imports R2Core.SMSSendAndRecieved
+Imports R2Core.SMSSendAndRecieved.Exceptions
 
 Imports PcPosDll
-
 
 
 Namespace MonetarySupply
@@ -327,7 +330,7 @@ Namespace MonetaryCreditSupplySources
                     Try
                         Dim DataStruct As DataStruct = GetPosResultComposit(YourPosResult)
                         _TransactionId = DataStruct.Data1
-                        R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "پوز - خرید", DataStruct.Data1, DataStruct.Data2, DataStruct.Data3, DataStruct.Data4, DataStruct.Data5, R2CoreMClassLoginManagement.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                        R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "پوز - خرید", DataStruct.Data1, DataStruct.Data2, DataStruct.Data3, DataStruct.Data4, DataStruct.Data5, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                     Catch ex As Exception
                         Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                     End Try
@@ -647,8 +650,8 @@ Namespace SecurityAlgorithmsManagement
 
         Public Function Login(YourUserShenaseh As String, YourUserPassword As String) As Int64
             Try
-                R2CoreMClassLoginManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardUserStructure(Nothing, Nothing, YourUserShenaseh, YourUserPassword, Nothing, Nothing, Nothing))
-                Dim NSS = R2CoreMClassLoginManagement.GetNSSUser(YourUserShenaseh, YourUserPassword)
+                R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, YourUserShenaseh, YourUserPassword, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+                Dim NSS = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserShenaseh, YourUserPassword)
                 If _LstUsers.Exists(Function(x) x.UserId = NSS.UserId) Then
                     _LstUsers.Where(Function(x) x.UserId = NSS.UserId)(0).StartDateTime = Now
                     Return _LstUsers.Where(Function(x) x.UserId = NSS.UserId)(0).ExchangeKey
@@ -683,10 +686,10 @@ Namespace SecurityAlgorithmsManagement
             End Try
         End Sub
 
-        Public Function GetNSSUser(YourExchangeKey As Int64) As R2CoreStandardUserStructure
+        Public Function GetNSSUser(YourExchangeKey As Int64) As R2CoreStandardSoftwareUserStructure
             Try
                 AuthenticationExchangeKey(YourExchangeKey)
-                Return R2CoreMClassLoginManagement.GetNSSUser(_LstUsers.Where(Function(x) x.ExchangeKey = YourExchangeKey)(0).UserId)
+                Return R2CoreMClassSoftwareUsersManagement.GetNSSUser(_LstUsers.Where(Function(x) x.ExchangeKey = YourExchangeKey)(0).UserId)
             Catch ex As ExchangeKeyTimeRangePassedException
                 Throw ex
             Catch ex As ExchangeKeyNotExistException
@@ -735,3 +738,704 @@ Namespace SecurityAlgorithmsManagement
 
 End Namespace
 
+Namespace PredefinedMessagesManagement
+
+    Public MustInherit Class R2CorePredefinedMessages
+        Public Shared ReadOnly None As Int64 = 0
+    End Class
+
+    Public Class R2CoreStandardPredefinedMessageStructure
+
+        Public Sub New()
+            MyBase.New()
+            MsgId = Int64.MinValue
+            MsgName = String.Empty
+            MsgTitle = String.Empty
+            MsgContent = String.Empty
+            InputLanguageType = Int16.MinValue
+            MsgColor = Color.White
+            UserId = Int64.MinValue
+            DateTimeMilladi = Now
+            DateShamsi = String.Empty
+            Active = Boolean.FalseString
+            ViewFlag = Boolean.FalseString
+            Deleted = Boolean.FalseString
+        End Sub
+
+        Public Sub New(YourMsgId As Int64, YourMsgName As String, YourMsgTitle As String, YourMsgContent As String, YourInputLanguageType As Int16, YourMsgColor As Color, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
+            MyBase.New()
+            MsgId = YourMsgId
+            MsgName = YourMsgName
+            MsgTitle = YourMsgTitle
+            MsgContent = YourMsgContent
+            InputLanguageType = YourInputLanguageType
+            MsgColor = YourMsgColor
+            UserId = YourUserId
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            Active = YourActive
+            ViewFlag = YourViewFlag
+            Deleted = YourDeleted
+        End Sub
+
+        Public Property MsgId As Int64
+        Public Property MsgName As String
+        Public Property MsgTitle As String
+        Public Property MsgContent As String
+        Public Property InputLanguageType As Int16
+        Public Property MsgColor As Color
+        Public Property UserId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property Active As Boolean
+        Public Property ViewFlag As Boolean
+        Public Property Deleted As Boolean
+
+    End Class
+
+    Public NotInheritable Class R2CoreMClassPredefinedMessagesManagement
+
+        Public Shared Function GetNSS(YourMSGId As Int64) As R2CoreStandardPredefinedMessageStructure
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPredefinedMessages Where MsgId  = " & YourMSGId & " And Deleted=0", 3600, Ds).GetRecordsCount() = 0 Then Throw New PredefinedMessageNotFoundException
+                Dim NSS = New R2CoreStandardPredefinedMessageStructure
+                NSS.MsgId = Ds.Tables(0).Rows(0).Item("MsgId")
+                NSS.MsgName = Ds.Tables(0).Rows(0).Item("MsgName").trim
+                NSS.MsgTitle = Ds.Tables(0).Rows(0).Item("MsgTitle").trim
+                NSS.MsgContent = Ds.Tables(0).Rows(0).Item("MsgContent").trim
+                NSS.InputLanguageType = Ds.Tables(0).Rows(0).Item("InputLanguageType")
+                NSS.MsgColor = Color.FromName(Ds.Tables(0).Rows(0).Item("MsgColor").trim)
+                NSS.UserId = Ds.Tables(0).Rows(0).Item("UserId")
+                NSS.DateTimeMilladi = Ds.Tables(0).Rows(0).Item("DateTimeMilladi")
+                NSS.DateShamsi = Ds.Tables(0).Rows(0).Item("DateShamsi").trim
+                NSS.ViewFlag = Ds.Tables(0).Rows(0).Item("ViewFlag")
+                NSS.Active = Ds.Tables(0).Rows(0).Item("Active")
+                NSS.Deleted = Ds.Tables(0).Rows(0).Item("Deleted")
+                Return NSS
+            Catch ex As PredefinedMessageNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+
+        End Function
+
+
+
+    End Class
+
+    Namespace Exceptions
+        Public Class PredefinedMessageNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "پیام از پیش تعریف شده ای با کد شاخص مورد نظر وجود ندارد"
+                End Get
+            End Property
+        End Class
+
+
+    End Namespace
+
+End Namespace
+
+Namespace EntityManagement
+
+    Public MustInherit Class R2CoreEntities
+        Public Shared ReadOnly None As Int64 = 0
+    End Class
+
+    Public Class R2StandardEntityRelationTypeStructure
+        Inherits BaseStandardClass.R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            EntId = Int64.MinValue
+            EntName = String.Empty
+            EntTitle = String.Empty
+            TargetTable = String.Empty
+            EntColor = Color.White
+            IdFieldName = String.Empty
+            TitleFieldName = String.Empty
+            OrderFieldName = String.Empty
+            UserId = Int64.MinValue
+            DateTimeMilladi = Now
+            DateShamsi = String.Empty
+            ViewFlag = Boolean.FalseString
+            Active = Boolean.FalseString
+            Deleted = Boolean.FalseString
+        End Sub
+
+        Public Sub New(YourEntId As Int64, YourEntName As String, YourEntTitle As String, YourTargetTable As String, YourEntColor As Color, YourIdFieldName As String, YourTitleFieldName As String, YourOrderFieldName As String, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourEntId, YourEntName)
+            EntId = YourEntId
+            EntName = YourEntName
+            EntTitle = YourEntTitle
+            TargetTable = YourTargetTable
+            EntColor = YourEntColor
+            IdFieldName = YourIdFieldName
+            TitleFieldName = YourTitleFieldName
+            OrderFieldName = YourOrderFieldName
+            UserId = YourUserId
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            ViewFlag = YourViewFlag
+            Active = YourActive
+            Deleted = YourDeleted
+        End Sub
+
+        Public Property EntId As Int64
+        Public Property EntName As String
+        Public Property EntTitle As String
+        Public Property TargetTable As String
+        Public Property EntColor As Color
+        Public Property IdFieldName As String
+        Public Property TitleFieldName As String
+        Public Property OrderFieldName As String
+        Public Property UserId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+    End Class
+
+
+End Namespace
+
+Namespace EntityRelationManagement
+
+    Public Enum RelationDeactiveTypes
+        None = 0
+        E1Deactive = 1
+        E2Deactive = 2
+        BothDeactive = 3
+    End Enum
+
+    Public MustInherit Class R2CoreEntityRelationTypes
+        Public Shared ReadOnly None As Int64 = 0
+    End Class
+
+    Public Class R2StandardEntityRelationTypeStructure
+        Inherits BaseStandardClass.R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            _ERTypeId = Int64.MinValue
+            _ERTypeName = String.Empty
+            _ERTypeTitle = String.Empty
+            _Color = Color.Empty
+            _Core = String.Empty
+            _UserId = Int64.MinValue
+            _DateTimeMilladi = Now
+            _DateShamsi = String.Empty
+            _ViewFlag = Boolean.FalseString
+            _Active = Boolean.FalseString
+            _Deleted = Boolean.FalseString
+        End Sub
+
+        Public Sub New(YourERTypeId As Int64, YourERTypeName As String, YourERTypeTitle As String, YourColor As Color, YourCore As String, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourERTypeId, YourERTypeName)
+            _ERTypeId = YourERTypeId
+            _ERTypeName = YourERTypeName
+            _ERTypeTitle = YourERTypeTitle
+            _Color = YourColor
+            _Core = YourCore
+            _UserId = YourUserId
+            _DateTimeMilladi = YourDateTimeMilladi
+            _DateShamsi = YourDateShamsi
+            _ViewFlag = YourViewFlag
+            _Active = YourActive
+            _Deleted = YourDeleted
+        End Sub
+
+        Public Property ERTypeId As Int64
+        Public Property ERTypeName As String
+        Public Property ERTypeTitle As String
+        Public Property Color As Color
+        Public Property Core As String
+        Public Property UserId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+
+    End Class
+
+    Public Class R2StandardEntityRelationStructure
+
+        Public Sub New()
+            MyBase.New()
+            _ERId = Int64.MinValue
+            _ERTypeId = Int64.MinValue
+            _E1 = Int64.MinValue
+            _E2 = Int64.MinValue
+            _RelationActive = Boolean.FalseString
+        End Sub
+
+        Public Sub New(YourERId As Int64, YourERTypeId As Int64, YourE1 As Int64, YourE2 As Int64, YourRelationActive As Boolean)
+            MyBase.New()
+            _ERId = YourERId
+            _ERTypeId = YourERTypeId
+            _E1 = YourE1
+            _E2 = YourE2
+            _RelationActive = YourRelationActive
+        End Sub
+
+        Public Property ERId As Int64
+        Public Property ERTypeId As Int64
+        Public Property E1 As Int64
+        Public Property E2 As Int64
+        Public Property RelationActive As Boolean
+
+    End Class
+
+    Public NotInheritable Class R2CoreMClassEntityRelationManagement
+        Public Shared Function GetNSSEntityRelationType(YourEntityRelationTypeId As Int64) As R2StandardEntityRelationTypeStructure
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblEntityRelationTypes as ERTypes Where ERTypes.ERTypeId=" & YourEntityRelationTypeId & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationTypeNotFoundException
+                Dim NSS = New R2StandardEntityRelationTypeStructure
+                NSS.ERTypeId = Ds.Tables(0).Rows(0).Item("ERTypeId")
+                NSS.ERTypeName = Ds.Tables(0).Rows(0).Item("ERTypeName").TRIM
+                NSS.ERTypeTitle = Ds.Tables(0).Rows(0).Item("ERTypeTitle").TRIM
+                NSS.Color = Color.FromName(Ds.Tables(0).Rows(0).Item("Color").TRIM)
+                NSS.Core = Ds.Tables(0).Rows(0).Item("Core").trim
+                NSS.UserId = Ds.Tables(0).Rows(0).Item("UserId")
+                NSS.DateTimeMilladi = Ds.Tables(0).Rows(0).Item("DateTimeMilladi")
+                NSS.DateShamsi = Ds.Tables(0).Rows(0).Item("DateShamsi").TRIM
+                NSS.ViewFlag = Ds.Tables(0).Rows(0).Item("ViewFlag")
+                NSS.Active = Ds.Tables(0).Rows(0).Item("Active")
+                NSS.Deleted = Ds.Tables(0).Rows(0).Item("Deleted")
+                Return NSS
+            Catch ex As EntityRelationTypeNotFoundException
+
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function GetNSSEntityRelation(YourEntityRelationId As Int64) As R2StandardEntityRelationStructure
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblEntityRelations as ERs Where ERs.ERId=" & YourEntityRelationId & "", 1, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
+                Dim NSS = New R2StandardEntityRelationStructure
+                NSS.ERId = Ds.Tables(0).Rows(0).Item("ERId")
+                NSS.ERTypeId = Ds.Tables(0).Rows(0).Item("ERTypeId")
+                NSS.E1 = Ds.Tables(0).Rows(0).Item("E1")
+                NSS.E2 = Ds.Tables(0).Rows(0).Item("E2")
+                NSS.RelationActive = Ds.Tables(0).Rows(0).Item("RelationActive")
+                Return NSS
+            Catch ex As EntityRelationNotFoundException
+
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function RegisteringEntityRelation(YourNSSEntityRelation As R2StandardEntityRelationStructure, YourDeactive As RelationDeactiveTypes) As Int64
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
+                If YourDeactive = RelationDeactiveTypes.E1Deactive Then
+                    CmdSql.CommandText = "Update R2Primary.dbo.TblEntityRelations Set RelationActive=0 Where E1=" & YourNSSEntityRelation.E1 & " and ERTypeId=" & YourNSSEntityRelation.ERTypeId & ""
+                ElseIf YourDeactive = RelationDeactiveTypes.E2Deactive Then
+                    CmdSql.CommandText = "Update R2Primary.dbo.TblEntityRelations Set RelationActive=0 Where E2=" & YourNSSEntityRelation.E2 & " and ERTypeId=" & YourNSSEntityRelation.ERTypeId & ""
+                ElseIf YourDeactive = RelationDeactiveTypes.BothDeactive Then
+                    CmdSql.CommandText = "Update R2Primary.dbo.TblEntityRelations Set RelationActive=0 Where (E1=" & YourNSSEntityRelation.E1 & " or E2=" & YourNSSEntityRelation.E2 & ") and ERTypeId=" & YourNSSEntityRelation.ERTypeId & ""
+                ElseIf YourDeactive = RelationDeactiveTypes.None Then
+                    Throw New Exception
+                End If
+                CmdSql.ExecuteNonQuery()
+
+                CmdSql.CommandText = "Select Top 1 ERId From R2Primary.dbo.TblEntityRelations With (tablockx) Order By ERId Desc"
+                CmdSql.ExecuteNonQuery()
+                Dim ERIdNew As Int64 = CmdSql.ExecuteScalar() + 1
+                CmdSql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERId,ERTypeId,E1,E2,RelationActive) Values(" & ERIdNew & "," & YourNSSEntityRelation.ERTypeId & "," & YourNSSEntityRelation.E1 & "," & YourNSSEntityRelation.E2 & ",1)"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Return ERIdNew
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function GetNSSEntityRelation(YourERTypeId As Int64, YourERId1 As Int64, YourERId2 As Int64) As R2StandardEntityRelationStructure
+            Try
+                Dim Ds As DataSet
+                If YourERId1 = Int64.MinValue Then
+                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E2=" & YourERId2 & " and ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException 
+                    Return GetNSSEntityRelation(Ds.Tables(0).Rows(0).Item("ERId"))
+                ElseIf YourERId2 = Int64.MinValue Then
+                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException 
+                    Return GetNSSEntityRelation(Ds.Tables(0).Rows(0).Item("ERId"))
+                Else
+                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.E2=" & YourERId2 & " ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException 
+                    Return GetNSSEntityRelation(Ds.Tables(0).Rows(0).Item("ERId"))
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+
+    End Class
+
+    Namespace Exceptions
+        Public Class EntityRelationTypeNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "نوع رابطه نهادی با شماره شاخص مورد نظر وجود ندارد"
+                End Get
+            End Property
+        End Class
+
+        Public Class EntityRelationNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "رابطه نهادی با شماره شاخص مورد نظر وجود ندارد"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
+
+End Namespace
+
+Namespace PermissionManagement
+
+    Public MustInherit Class R2CorePermissionTypes
+        Public Shared ReadOnly None As Int64 = 0
+    End Class
+
+    Public Class R2StandardPermissionTypeStructure
+        Inherits BaseStandardClass.R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            PTId = Int64.MinValue
+            PTName = String.Empty
+            PTTitle = String.Empty
+            PTColor = Color.White
+            EntityTableId1 = Int64.MinValue
+            EntityTableId2 = Int64.MinValue
+            Description = String.Empty
+            UserId = Int64.MinValue
+            DateTimeMilladi = Now
+            DateShamsi = String.Empty
+            ViewFlag = Boolean.FalseString
+            Active = Boolean.FalseString
+            Deleted = Boolean.FalseString
+        End Sub
+
+        Public Sub New(YourPTId As Int64, YourPTName As String, YourPTTitle As String, YourPTColor As Color, YourEntityTableId1 As Int64, YourEntityTableId2 As Int64, YourDescription As String, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourPTId, YourPTName)
+            PTId = YourPTId
+            PTName = YourPTName
+            PTTitle = YourPTTitle
+            PTColor = YourPTColor
+            EntityTableId1 = YourEntityTableId1
+            EntityTableId2 = YourEntityTableId2
+            Description = YourDescription
+            UserId = YourUserId
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            ViewFlag = YourViewFlag
+            Active = YourActive
+            Deleted = YourDeleted
+        End Sub
+
+        Public Property PTId As Int64
+        Public Property PTName As String
+        Public Property PTTitle As String
+        Public Property PTColor As Color
+        Public Property EntityTableId1 As Int64
+        Public Property EntityTableId2 As Int64
+        Public Property Description As String
+        Public Property UserId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+
+    End Class
+
+    Public Class R2StandardPermissionStructure
+        Inherits BaseStandardClass.R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            PId = Int64.MinValue
+            EntityIdFirst = Int64.MinValue
+            EntityIdSecond = Int64.MinValue
+            PermissionTypeId = Int64.MinValue
+            RelationActive = Boolean.FalseString
+        End Sub
+
+        Public Sub New(YourPId As Int64, YourEntityIdFirst As Int64, YourEntityIdSecond As Int64, YourPermissionTypeId As Int64, YourRelationActive As Boolean)
+            MyBase.New(YourPId, String.Empty)
+            PId = YourPId
+            EntityIdFirst = YourEntityIdFirst
+            EntityIdSecond = YourEntityIdSecond
+            PermissionTypeId = YourPermissionTypeId
+            RelationActive = YourRelationActive
+        End Sub
+
+        Public Property PId As Int64
+        Public Property EntityIdFirst As Int64
+        Public Property EntityIdSecond As Int64
+        Public Property PermissionTypeId As Int64
+        Public Property RelationActive As Boolean
+
+    End Class
+
+    Public NotInheritable Class R2CoreMClassPermissionsManagement
+
+
+
+
+    End Class
+
+End Namespace
+
+Namespace WebProcessesManagement
+
+    Public MustInherit Class R2CoreWebProcessGroups
+    End Class
+
+    Public MustInherit Class R2CoreWebProcesses
+    End Class
+
+    Public NotInheritable Class R2CoreMClassWebProcessesManagement
+
+    End Class
+
+End Namespace
+
+Namespace MobileProcessesManagement
+
+End Namespace
+
+Namespace SMSSendAndRecieved
+
+    Public Enum SmsSendReciveType
+        None = 0
+        ForSend = 1
+        Recived = 2
+    End Enum
+
+    Public Class R2CoreSMSStandardSmsStructure
+
+        Public Sub New()
+            MyBase.New()
+            SmsId = Int64.MinValue
+            MobileNumber = String.Empty
+            Message = String.Empty
+            EndHours = Int16.MinValue
+            DateTimeMilladi = Now.Date
+            Active = Boolean.FalseString
+            DateShamsi = String.Empty
+            Time = String.Empty
+        End Sub
+
+        Public Sub New(ByVal YourSmsId As Int64, ByVal YourMobileNumber As String, ByVal YourMessage As String, ByVal YourEndHours As Int16, ByVal YourDateTimeMilladi As DateTime, ByVal YourActive As Boolean, ByVal YourDateShamsi As String, ByVal YourTime As String)
+            SmsId = YourSmsId
+            MobileNumber = YourMobileNumber
+            Message = YourMessage
+            EndHours = YourEndHours
+            DateTimeMilladi = YourDateTimeMilladi
+            Active = YourActive
+            DateShamsi = YourDateShamsi
+            Time = YourTime
+        End Sub
+
+        Public Property SmsId As Int64
+        Public Property MobileNumber As String
+        Public Property Message As String
+        Public Property EndHours As Int16
+        Public Property DateTimeMilladi As DateTime
+        Public Property Active As Boolean
+        Public Property DateShamsi As String
+        Public Property Time As String
+    End Class
+
+    Public Class R2CoreSMSSendRecive
+
+        Private _DateTime As New R2DateTime
+
+        Public Sub New()
+            MyBase.New()
+            Try
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub SendSms(ByVal YourNSS As R2CoreSMSStandardSmsStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                If YourNSS.MobileNumber.Trim.Length <> 11 Then Throw New MobileNumberInvallidException
+                If YourNSS.Message.Trim = "" Then Throw New SmsMessageEmptyException
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Insert Into R2PrimarySMSSystem.dbo.TblSMSWareHouse(MobileNumber,Message,EndHours,DateTimeMilladi,Active,DateShamsi,SmsType) values('" & YourNSS.MobileNumber & "','" & YourNSS.Message & "'," & YourNSS.EndHours & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "',1,'" & _DateTime.GetCurrentDateShamsiFull & "'," & SmsSendReciveType.ForSend & ")"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Sub
+
+        'Public Function RecivedSms() As R2StandardSmsRecivedStructure()
+        '    Try
+        '        DsSmsRecived.Tables.Clear()
+        '        DaSmsRecived.Fill(DsSmsRecived)
+        '        myNumberOfRecivedSms = DsSmsRecived.Tables(0).Rows.Count
+        '        ReDim SmsArray(myNumberOfRecivedSms - 1)
+        '        For loopx As Int32 = 0 To myNumberOfRecivedSms - 1
+        '            SmsArray(loopx) = New R2StandardSmsRecivedStructure(DsSmsRecived.Tables(0).Rows(loopx).Item("SMSId"), DsSmsRecived.Tables(0).Rows(loopx).Item("Mobile").trim, DsSmsRecived.Tables(0).Rows(loopx).Item("Message").trim, DsSmsRecived.Tables(0).Rows(loopx).Item("EndHours"), DsSmsRecived.Tables(0).Rows(loopx).Item("SabtDateTimeMilladi"), DsSmsRecived.Tables(0).Rows(loopx).Item("Active"), DsSmsRecived.Tables(0).Rows(loopx).Item("SabtDateShamsi"), DsSmsRecived.Tables(0).Rows(loopx).Item("SabtTime"))
+        '        Next
+        '        Return SmsArray
+        '    Catch ex As Exception
+        '        Throw New Exception("Sms.RecivedSms()." + ex.Message.ToString)
+        '    End Try
+        'End Function
+
+        'Public Sub RecivedSmsHandled(ByVal SmsId As Int64)
+        '    Dim CmdSql As New SqlClient.SqlCommand
+        '    CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+        '    Try
+        '        CmdSqlSmsSystem.Connection.Open()
+        '        CmdSqlSmsSystem.CommandText = "update TblSmsWareHouse Set Active=0 where SmsId=" & SmsId & ""
+        '        CmdSqlSmsSystem.ExecuteNonQuery()
+        '        CmdSqlSmsSystem.Connection.Close()
+        '    Catch ex As Exception
+        '        If CmdSqlSmsSystem.Connection.State <> ConnectionState.Closed Then CmdSqlSmsSystem.Connection.Close()
+        '        Throw New Exception("SmsCore.Sms.RecivedSmsHandled()." + ex.Message.ToString)
+        '    End Try
+        'End Sub
+
+
+
+
+    End Class
+
+    Public MustInherit Class R2CoreSMSMClassSMSDomainManagement
+
+        Private Shared _SepahanSMS As New net.sepahansms.smsSendWebServiceforPHP()
+        Private Shared _DateTime As New R2DateTime
+
+        Public Shared Sub SMSDomainSendRecieved()
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                'ارسالی            
+                If R2CoreMClassConfigurationManagement.GetConfigBoolean(R2CoreConfigurations.SmsSystemSetting, 0) = True Then
+                    Dim DS As DataSet
+                    R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimarySMSSystem.dbo.TblSmsWareHouse where Active=1 and SmsType=" & SmsSendReciveType.ForSend & "", 0, DS)
+                    CmdSql.Connection.Open()
+                    CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                    For Loopx As Int32 = 0 To DS.Tables(0).Rows.Count - 1
+                        Dim mySmsId As String = DS.Tables(0).Rows(Loopx).Item("SmsId")
+                        If DateDiff(DateInterval.Hour, _DateTime.GetCurrentDateTimeMilladi, Convert.ToDateTime(DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"))) <= DS.Tables(0).Rows(Loopx).Item("EndHours") Then
+                            Dim myMessage As String = DS.Tables(0).Rows(Loopx).Item("message").trim
+                            Dim myMobilenumber As String = DS.Tables(0).Rows(Loopx).Item("mobilenumber").trim
+                            Dim SmsId() As Long = _SepahanSMS.SendSms("Biinfo878", "3800000", "sepahansms", New String() {myMessage}, New String() {myMobilenumber}, "30006403868611",
+                                                     net.sepahansms.SendType.DynamicText, net.sepahansms.SmsMode.SaveInPhone)
+                            If SmsId(0) > 0 Then
+                                CmdSql.CommandText = "Update  R2PrimarySMSSystem.dbo.TblSmsWareHouse Set Active=0 where SmsId=" & mySmsId & ""
+                                CmdSql.ExecuteNonQuery()
+                            End If
+                        Else
+                            CmdSql.CommandText = "Update  R2PrimarySMSSystem.dbo.TblSmsWareHouse Set Active=0 where SmsId=" & mySmsId & ""
+                            CmdSql.ExecuteNonQuery()
+                        End If
+                    Next
+                Else
+                    Throw New SmsSystemIsDisabledException
+                End If
+
+
+                ''دریافتی
+                'ReDim ReceiveSmsOneLine(10)
+                'ReceiveSmsOneLine = SepahanSMS.GetReceiveSMSWithNumber(com.sepahansms.www.ReceiveType.UnRead, "30006016635245", Nothing, "", "")
+                'If ReceiveSmsOneLine.Length = 0 Then
+                '    EventLog.WriteEntry("SmsServiceSource", "ReceiveSmsOneLine.Length = 0", EventLogEntryType.Information)
+                '    Exit Try
+                'End If
+                'CmdSqlSmsSystem.CommandText = "select top 1 smsid from TblSmsWareHouse order by smsid desc"
+                'Dim mySmsIdStart As Int32 = CmdSqlSmsSystem.ExecuteScalar + 1
+                'For loopx As Int32 = 0 To ReceiveSmsOneLine.Length - 1
+                '    Dim SmsText As String = ReceiveSmsOneLine(loopx).SmsText
+                '    If SmsText.Trim <> "" Then
+                '        Dim myMobile As String = ReceiveSmsOneLine(loopx).FromNumber
+                '        Dim myDate As String = ReceiveSmsOneLine(loopx).Date
+                '        Dim myMessage As String = ReceiveSmsOneLine(loopx).SmsText
+                '        If ((myMessage = "Biinfo878*03*0") Or (myMessage = "Biinfo878*03*1")) And (myMobile = SmsSystemConfiguration.GetSmsSystemGeneralNumber) Then
+                '            If myMessage = "Biinfo878*03*0" Then mySendSmsStatus = False
+                '            If myMessage = "Biinfo878*03*1" Then mySendSmsStatus = True
+                '        Else
+                '            CmdSqlSmsSystem.CommandText = "insert into TblSmsWareHouse(SmsId,Mobile,Message,EndHours,SabtDateTimeMilladi,Active,SabtDateShamsi,SabtTime,SmsType) values(" & mySmsIdStart & ",'" & myMobile & "','" & myMessage & "',0,'" & myR2DateTime.GetCurrentDateTimeMilladi.ToString("yyyy-MM-dd HH:mm:ss") & "',1,'" & myDate & "','" & myR2DateTime.GetCurrentTime & "'," & SmsSendReciveType.Recived & ")"
+                '            CmdSqlSmsSystem.ExecuteNonQuery()
+                '            mySmsIdStart += 1
+                '        End If
+                '    End If
+                'Next
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As SmsSystemIsDisabledException
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+    End Class
+
+    Namespace Exceptions
+
+        Public Class MobileNumberInvallidException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "شماره موبایل نادرست است"
+                End Get
+            End Property
+        End Class
+
+        Public Class SmsSystemIsDisabledException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "سیستم اس ام اس از طریق جدول پیکربندی غیر فعال است"
+                End Get
+            End Property
+        End Class
+
+        Public Class SmsMessageEmptyException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "در پیام ارسالی متنی وجود ندارد"
+                End Get
+            End Property
+        End Class
+
+
+
+    End Namespace
+
+End Namespace

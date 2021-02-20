@@ -61,7 +61,7 @@ Public Class FrmcAttendane
             Me.Hide()
             Me.WindowState = FormWindowState.Minimized
             R2Core.RFIDCardsManagement.R2CoreRFIDCardReaderInterface.StopReading()
-     
+
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -119,7 +119,7 @@ Public Class FrmcAttendane
                 Dim params() As Object = New Object() {}
                 BeginInvoke(myDelegate, params)
             Else
-                UcPersonnelImage.UCViewPersonnelImage(YourNSSPersonnel,R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser())
+                UcPersonnelImage.UCViewPersonnelImage(YourNSSPersonnel, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
                 UcPersonnelImage.BringToFront()
             End If
             If (UcListBoxPersonnelEnterExit.InvokeRequired) Then

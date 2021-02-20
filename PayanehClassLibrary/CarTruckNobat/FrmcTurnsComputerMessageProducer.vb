@@ -2,7 +2,7 @@
 Imports System.Reflection
 
 Imports PayanehClassLibrary.ProcessesManagement
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2CoreGUI
 
 Public Class FrmcTurnsComputerMessageProducer
@@ -30,7 +30,7 @@ Public Class FrmcTurnsComputerMessageProducer
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcTurnsComputerMessageProducer))
+            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcTurnsComputerMessageProducer))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

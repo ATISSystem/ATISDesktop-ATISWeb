@@ -2,7 +2,7 @@
 Imports System.Reflection
 
 Imports R2CoreGUI
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 
 Public Class FrmcConsole
     Inherits FrmcGeneral
@@ -25,7 +25,7 @@ Public Class FrmcConsole
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess(R2CoreMClassProcessesManagement.GetNSSProcess(R2CoreProcesses.FrmcConsol))
+            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(R2CoreDesktopProcesses.FrmcConsol))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

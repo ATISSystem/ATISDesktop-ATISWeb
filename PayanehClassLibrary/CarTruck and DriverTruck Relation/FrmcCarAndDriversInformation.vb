@@ -9,14 +9,14 @@ Imports R2Core.ExceptionManagement
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.DriverTrucksManagement
 Imports R2Core.DateAndTimeManagement
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2CoreParkingSystem.Drivers
 Imports R2CoreParkingSystem.Cars
 Imports R2CoreParkingSystem.City
 Imports R2CoreParkingSystem.TrafficCardsManagement
 Imports PayanehClassLibrary.ProcessesManagement
 Imports R2Core.LoggingManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Trucks
 Imports R2CoreTransportationAndLoadNotification.Trucks.Exceptions
@@ -59,7 +59,7 @@ Public Class FrmcCarAndDriversInformation
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcCarAndDriversInformation))
+            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcCarAndDriversInformation))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -312,7 +312,7 @@ Public Class FrmcCarAndDriversInformation
     '        Dim Lst = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetAnnouncementHallsAnnouncementHallSubGroupsJOINT().Where(Function(x) x.NSSAnnounementHall.AHId = NSSAnnouncementHall.AHId)
     '        UcViewerNSSAnnouncementHallSubGroup.UCViewNSS(Lst(0).NSSAnnouncementHallSubGroup)
     '        FrmcViewLocalMessage("ارتباط ناوگان باری و سالن اعلام بار برقرار شد")
-    '        R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.RegisterRecords, "ثبت رابطه ناوگان باری و سالن اعلام بار", UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.GetCarPelakSerialComposit(), 0, 0, 0, 0, R2CoreMClassLoginManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+    '        R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.RegisterRecords, "ثبت رابطه ناوگان باری و سالن اعلام بار", UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.GetCarPelakSerialComposit(), 0, 0, 0, 0, R2CoreMClassSoftwareUsersManagement.CurrentUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
     '        UcAnnouncementHallSelection.UCRefresh()
     '    Catch ex As Exception
     '        _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

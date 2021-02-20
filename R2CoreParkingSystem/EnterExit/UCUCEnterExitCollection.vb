@@ -4,7 +4,7 @@ Imports System.Reflection
 Imports System.Windows.Forms
 
 Imports R2Core
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2Core.DatabaseManagement
 Imports R2CoreGUI
 Imports R2CoreLPR.LicensePlateManagement

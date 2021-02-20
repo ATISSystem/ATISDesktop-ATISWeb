@@ -2,7 +2,7 @@
 Imports System.Reflection
 
 Imports R2Core.ConfigurationManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 
 
 Public Class FrmcMainMenu
@@ -72,7 +72,7 @@ Public Class FrmcMainMenu
     Private Sub FrmcMainMenu_Load(sender As Object, e As EventArgs) Handles Me.Load
     End Sub
 
-    Private Sub UcUserLogin_UCUserAuthenticationSuccessEvent(NSSUser As R2CoreStandardUserStructure) Handles UcUserLogin.UCUserAuthenticationSuccessEvent
+    Private Sub UcUserLogin_UCUserAuthenticationSuccessEvent(NSSUser As R2CoreStandardSoftwareUserStructure) Handles UcUserLogin.UCUserAuthenticationSuccessEvent
         Try
             UcUserImage.UCSetUserImage(NSSUser)
             PnlUserLogin.Visible = False

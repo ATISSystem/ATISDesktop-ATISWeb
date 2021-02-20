@@ -1,13 +1,13 @@
 ﻿
 Imports System.Reflection
 
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2Core.AuthenticationManagement
 Imports R2Core.ComputersManagement
 Imports R2Core.ExceptionManagement
 Imports R2Core.PublicProc
 Imports R2Core.RFIDCardsManagement
-Imports R2Core.UserManagement.Exceptions
+Imports R2Core.SoftwareUserManagement.Exceptions
 
 
 Public Class UCUserLogin
@@ -15,7 +15,7 @@ Public Class UCUserLogin
     Implements R2CoreRFIDCardRequester
 
 
-    Public Event UCUserAuthenticationSuccessEvent(NSSUser As R2CoreStandardUserStructure)
+    Public Event UCUserAuthenticationSuccessEvent(NSSUser As R2CoreStandardSoftwareUserStructure)
 
 
 #Region "General Properties"
@@ -49,7 +49,7 @@ Public Class UCUserLogin
         End Try
     End Sub
 
-    Private Function GetUserComputerPermission(YourUserNSS As R2CoreStandardUserStructure)
+    Private Function GetUserComputerPermission(YourUserNSS As R2CoreStandardSoftwareUserStructure)
         Try
             If R2MClassAuthenticationManagement.UserHaveComputerPermission(YourUserNSS, R2CoreMClassComputersManagement.GetNSSCurrentComputer()) = False Then
                 Return False
@@ -63,8 +63,8 @@ Public Class UCUserLogin
 
     Private Sub UCAuthenticationUserByShenasehPassword()
         Try
-            R2CoreMClassLoginManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardUserStructure(0, "", UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue, "", False, False))
-            Dim NSS As R2CoreStandardUserStructure = R2CoreMClassLoginManagement.GetNSSUser(UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue)
+            R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardSoftwareUserStructure(0, "", UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue, "", False, False, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+            Dim NSS As R2CoreStandardSoftwareUserStructure = R2CoreMClassSoftwareUsersManagement.GetNSSUser(UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue)
             'بررسی مجوز کاربر برای دسترسی به کامپیوتر
             If GetUserComputerPermission(NSS) = False Then
                 UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "کاربر مجوز لازم برای دسترسی به این کامپیوتر را ندارد", R2CoreMClassComputersManagement.GetNSSCurrentComputer().MName, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -80,8 +80,8 @@ Public Class UCUserLogin
 
     Private Sub UCAuthenticationUserByPinCode(YourPinCode As String)
         Try
-            R2CoreMClassLoginManagement.AuthenticationUserByPinCode(New R2CoreStandardUserStructure(0, "", "", "", YourPinCode, False, False))
-            Dim NSS As R2CoreStandardUserStructure = R2CoreMClassLoginManagement.GetNSSUser(YourPinCode)
+            R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(New R2CoreStandardSoftwareUserStructure(0, "", "", "", YourPinCode, False, False, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+            Dim NSS As R2CoreStandardSoftwareUserStructure = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourPinCode)
             'بررسی مجوز کاربر برای دسترسی به کامپیوتر
             If GetUserComputerPermission(NSS) = False Then
                 UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "کاربر مجوز لازم برای دسترسی به این کامپیوتر را ندارد", R2CoreMClassComputersManagement.GetNSSCurrentComputer().MName, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)

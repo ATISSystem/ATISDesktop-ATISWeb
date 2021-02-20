@@ -2,7 +2,7 @@
 Imports System.Reflection
 
 Imports R2Core.HumanResourcesManagement.Personnel
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 
 Public Class FrmcPersonnelEnterExits
     Inherits FrmcGeneral
@@ -30,7 +30,7 @@ Public Class FrmcPersonnelEnterExits
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess(R2CoreMClassProcessesManagement.GetNSSProcess(R2CoreProcesses.FrmcPersonnelEnterExits))
+            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(R2CoreDesktopProcesses.FrmcPersonnelEnterExits))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

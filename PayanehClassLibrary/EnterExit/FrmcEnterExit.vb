@@ -8,7 +8,7 @@ Imports R2Core.ConfigurationManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.ExceptionManagement
 Imports R2Core.RFIDCardsManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.ConfigurationManagement
 Imports R2CoreParkingSystem.EnterExitManagement
@@ -24,7 +24,7 @@ Imports R2CoreParkingSystem.MoneyWalletManagement
 Imports R2CoreParkingSystem.DriverMonitor
 Imports R2Core.ComputersManagement
 Imports R2Core.LoggingManagement
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.ConfigurationManagement
@@ -70,7 +70,7 @@ Public Class FrmcEnterExit
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcEnterExit))
+            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcEnterExit))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -283,7 +283,7 @@ Public Class FrmcEnterExit
                     If LastTrafficCard IsNot Nothing Then
                         If _NSSTrafficCard.CardNo <> LastTrafficCard.CardNo Then
                             R2CoreParkingSystemMClassTrafficCardManagement.DisallowTerafficCard(LastTrafficCard)
-                            R2CoreParkingSystemMClassEnterExitManagement.UpdateForExit(New R2StandardEnterExitStructure(LastEnterExitId, Now, "", "", R2CaptureType.None, R2CameraType.None, Nothing, "", 0, R2EnterStatus.None, 0, 0, Nothing, _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime, R2CaptureType.None, R2CameraType.None, Nothing, LastTrafficCard.CardNo, R2CoreMClassLoginManagement.GetNSSSystemUser.UserId, R2ExitStatus.SystemExit, 0, R2CoreMClassConfigurationManagement.GetComputerCode, myLP, True))
+                            R2CoreParkingSystemMClassEnterExitManagement.UpdateForExit(New R2StandardEnterExitStructure(LastEnterExitId, Now, "", "", R2CaptureType.None, R2CameraType.None, Nothing, "", 0, R2EnterStatus.None, 0, 0, Nothing, _DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime, R2CaptureType.None, R2CameraType.None, Nothing, LastTrafficCard.CardNo, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, R2ExitStatus.SystemExit, 0, R2CoreMClassConfigurationManagement.GetComputerCode, myLP, True))
                             Dim LastTrafficCardCharge As Int64 = R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletAllMoney(LastTrafficCard, R2CoreParkingSystemAccountings.ExitSystem, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                             R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(_NSSTrafficCard, BagPayType.AddMoney, LastTrafficCardCharge, R2CoreParkingSystemAccountings.TransferallChargeToAnother, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                         End If

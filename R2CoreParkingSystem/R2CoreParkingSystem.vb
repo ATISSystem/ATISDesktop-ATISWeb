@@ -13,7 +13,7 @@ Imports AForge.Video.DirectShow
 Imports AForge.Vision.Motion
 
 Imports R2Core
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2Core.ConfigurationManagement
 Imports R2Core.BaseStandardClass
 Imports R2Core.ComputersManagement
@@ -22,7 +22,7 @@ Imports R2Core.DateAndTimeManagement
 Imports R2Core.ExceptionManagement
 Imports R2Core.FileShareRawGroupsManagement
 Imports R2Core.LoggingManagement
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2Core.R2PrimaryFileSharingWS
 Imports R2Core.MonetarySettingTools
 Imports R2CoreGUI
@@ -914,7 +914,7 @@ Namespace EnterExitManagement
             End Try
         End Function
 
-        Public Shared Sub ExitTempTerafficCard(YourTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourMblgh As Int64, YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub ExitTempTerafficCard(YourTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourMblgh As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Try
                 If YourMblgh <= R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletCharge(YourTerafficCard) Then
                     Dim LastEnterExitId As Int64
@@ -950,7 +950,7 @@ Namespace EnterExitManagement
 
         Private Shared RegisteringHandyBillsFixedCardNo As String = "94A36342"
         Private Shared RegisteringHandyBillsFixedTime As String = "08:00:00"
-        Public Shared Sub RegisteringHandyBills(YourTeadad As Int64, YourShamsiDate As R2StandardDateAndTimeStructure, YourTerafficCardType As TerafficCardType, YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub RegisteringHandyBills(YourTeadad As Int64, YourShamsiDate As R2StandardDateAndTimeStructure, YourTerafficCardType As TerafficCardType, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Try
                 Dim myMblgh As Int64 = Microsoft.VisualBasic.Switch(YourTerafficCardType = TerafficCardType.Savari, R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMblghPaye, 0), YourTerafficCardType = TerafficCardType.SixCharkh, R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMblghPaye, 2), YourTerafficCardType = TerafficCardType.TenCharkh, R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMblghPaye, 1), YourTerafficCardType = TerafficCardType.Tereili, R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMblghPaye, 3))
                 For Loopx As Int64 = 0 To YourTeadad - 1
@@ -1484,7 +1484,7 @@ Namespace TrafficCardsManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
-        Public Shared Sub TerafficCardInitialRegister(YourNSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub TerafficCardInitialRegister(YourNSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Try
                 UpdateTrafficCardType(YourNSSTerafficCard)
                 'کسر هزینه کارت تردد در صورتی که دائمی باشد و نه موقت
@@ -1878,7 +1878,7 @@ Namespace MoneyWalletManagement
 
         Private Shared _DateTime As R2DateTime = New R2DateTime
 
-        Public Shared Sub ActMoneyWalletNextStatus(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourBagType As BagPayType, YourMblgh As Int64, YourAccountCode As R2CoreParkingSystemAccountings, YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub ActMoneyWalletNextStatus(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourBagType As BagPayType, YourMblgh As Int64, YourAccountCode As R2CoreParkingSystemAccountings, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Try
                 Dim myNSSCar As R2StandardCarStructure = Nothing
                 Try
@@ -1946,7 +1946,7 @@ Namespace MoneyWalletManagement
             End Try
         End Function
 
-        Public Shared Function GetMoneyWalletAllMoney(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourAccountType As R2CoreParkingSystemAccountings, YourUserNSS As R2CoreStandardUserStructure) As Int64
+        Public Shared Function GetMoneyWalletAllMoney(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourAccountType As R2CoreParkingSystemAccountings, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Try
                 Dim myAllMoney As Int64 = GetMoneyWalletCharge(YourNSSTrafficCard)
                 If myAllMoney >= 0 Then
@@ -2148,7 +2148,7 @@ Namespace UserChargeProcessManagement
     Public Class R2CoreParkingSystemMClassUserChargeProcessManagement
         Private Shared _DateTime As R2DateTime = New R2DateTime()
 
-        Public Shared Function GetUserChargeProcessCollection(YourNSSUser As R2CoreStandardUserStructure, YourDate1 As String, YourDate2 As String, YourTime1 As String, YourTime2 As String, YourTotalNumberofRecordsRequested As Int64) As List(Of R2StandardUserChargeProcessStructure)
+        Public Shared Function GetUserChargeProcessCollection(YourNSSUser As R2CoreStandardSoftwareUserStructure, YourDate1 As String, YourDate2 As String, YourTime1 As String, YourTime2 As String, YourTotalNumberofRecordsRequested As Int64) As List(Of R2StandardUserChargeProcessStructure)
             Try
                 Dim myConcat1 As String = YourDate1 + YourTime1
                 Dim myConcat2 As String = YourDate2 + YourTime2
@@ -2167,7 +2167,7 @@ Namespace UserChargeProcessManagement
             End Try
         End Function
 
-        Public Shared Function GetTotalAmountofUserChargeProcess(YourNSSUser As R2CoreStandardUserStructure, YourDate1 As String, YourDate2 As String, YourTime1 As String, YourTime2 As String) As Int64
+        Public Shared Function GetTotalAmountofUserChargeProcess(YourNSSUser As R2CoreStandardSoftwareUserStructure, YourDate1 As String, YourDate2 As String, YourTime1 As String, YourTime2 As String) As Int64
             Try
                 Dim myConcat1 As String = YourDate1 + YourTime1
                 Dim myConcat2 As String = YourDate2 + YourTime2
@@ -2313,7 +2313,7 @@ Namespace Cars
             End Try
         End Function
 
-        Public Shared Function InsertCar(YourNSS As R2StandardCarStructure, YourUserNSS As R2CoreStandardUserStructure) As Int64
+        Public Shared Function InsertCar(YourNSS As R2StandardCarStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -2489,7 +2489,7 @@ Namespace Cars
             End Try
         End Sub
 
-        Public Shared Function GetCarEnterExitImage(YourNSSCar As R2StandardCarStructure, YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
+        Public Shared Function GetCarEnterExitImage(YourNSSCar As R2StandardCarStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure) As R2CoreImage
             Try
                 Dim _NSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(YourNSSCar.nIdCar))
                 Dim CarImage As R2CoreImage
@@ -2513,7 +2513,7 @@ Namespace Cars
             End Try
         End Function
 
-        Public Shared Function GetCarEnterExitImage(YourNSSTerraficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
+        Public Shared Function GetCarEnterExitImage(YourNSSTerraficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure) As R2CoreImage
             Try
                 Dim CarImage As R2CoreImage
                 Try
@@ -2535,7 +2535,7 @@ Namespace Cars
             End Try
         End Function
 
-        Public Shared Function GetCarEnterExitImage(YourNSSEnterExit As R2StandardEnterExitStructure, YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
+        Public Shared Function GetCarEnterExitImage(YourNSSEnterExit As R2StandardEnterExitStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure) As R2CoreImage
             Try
                 Dim CarImage As R2CoreImage
                 Try
@@ -2559,7 +2559,7 @@ Namespace Cars
             End Try
         End Function
 
-        Public Shared Sub SaveCarEnterExitImage(YourCarImage As R2CoreImage, YourNSSEnterExit As R2StandardEnterExitStructure, YourNSSUser As R2CoreStandardUserStructure)
+        Public Shared Sub SaveCarEnterExitImage(YourCarImage As R2CoreImage, YourNSSEnterExit As R2StandardEnterExitStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure)
             Try
                 SaveCarImage(YourCarImage, New R2CoreFile(YourNSSEnterExit.EnterExitId.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2)), YourNSSUser)
             Catch ex As Exception
@@ -2567,7 +2567,7 @@ Namespace Cars
             End Try
         End Sub
 
-        Private Shared Sub SaveCarImage(YourCarImage As R2CoreImage, YourFileInf As R2CoreFile, YourNSSUser As R2CoreStandardUserStructure)
+        Private Shared Sub SaveCarImage(YourCarImage As R2CoreImage, YourFileInf As R2CoreFile, YourNSSUser As R2CoreStandardSoftwareUserStructure)
             Try
                 _R2PrimaryFSWS.WebMethodSaveFile(R2CoreParkingSystemRawGroups.CarImages, YourFileInf.FileName, YourCarImage.GetImageByte(), _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword))
             Catch ex As Exception
@@ -2575,7 +2575,7 @@ Namespace Cars
             End Try
         End Sub
 
-        Private Shared Function GetCarImage(YourFileInf As R2CoreFile, YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
+        Private Shared Function GetCarImage(YourFileInf As R2CoreFile, YourNSSUser As R2CoreStandardSoftwareUserStructure) As R2CoreImage
             Try
                 If _R2PrimaryFSWS.WebMethodIOFileExist(R2CoreParkingSystemRawGroups.CarImages, YourFileInf.FileName, _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword)) = True Then
                     Return New R2CoreImage(_R2PrimaryFSWS.WebMethodGetFile(R2CoreParkingSystemRawGroups.CarImages, YourFileInf.FileName, _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword)))
@@ -2820,7 +2820,7 @@ Namespace BlackList
 
                 Dim Lst As List(Of R2StandardBlackListStructure) = New List(Of R2StandardBlackListStructure)
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    Lst.Add(New R2StandardBlackListStructure(Ds.Tables(0).Rows(Loopx).Item("nId"), Ds.Tables(0).Rows(Loopx).Item("nTruckNo"), Ds.Tables(0).Rows(Loopx).Item("nPlakSerial"), Ds.Tables(0).Rows(Loopx).Item("nPlakPlac"), Ds.Tables(0).Rows(Loopx).Item("StrDesc"), Ds.Tables(0).Rows(Loopx).Item("FlagA"), Ds.Tables(0).Rows(Loopx).Item("nAmount"), IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("StrDate"), DBNull.Value), "", Ds.Tables(0).Rows(Loopx).Item("StrDate")), IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("nUser"), DBNull.Value), R2CoreMClassLoginManagement.GetNSSSystemUser.UserId, Ds.Tables(0).Rows(Loopx).Item("nUser"))))
+                    Lst.Add(New R2StandardBlackListStructure(Ds.Tables(0).Rows(Loopx).Item("nId"), Ds.Tables(0).Rows(Loopx).Item("nTruckNo"), Ds.Tables(0).Rows(Loopx).Item("nPlakSerial"), Ds.Tables(0).Rows(Loopx).Item("nPlakPlac"), Ds.Tables(0).Rows(Loopx).Item("StrDesc"), Ds.Tables(0).Rows(Loopx).Item("FlagA"), Ds.Tables(0).Rows(Loopx).Item("nAmount"), IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("StrDate"), DBNull.Value), "", Ds.Tables(0).Rows(Loopx).Item("StrDate")), IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("nUser"), DBNull.Value), R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Ds.Tables(0).Rows(Loopx).Item("nUser"))))
                 Next
                 Return Lst
             Catch ex As Exception
@@ -2842,7 +2842,7 @@ Namespace BlackList
             End Try
         End Function
 
-        Public Shared Sub ChangeBlackListMblgh(YourNSSBlackList As R2StandardBlackListStructure, YourNewAmount As Int64, YourUserNSS As R2CoreStandardUserStructure)
+        Public Shared Sub ChangeBlackListMblgh(YourNSSBlackList As R2StandardBlackListStructure, YourNewAmount As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -3092,7 +3092,7 @@ Namespace Drivers
             End Try
         End Function
 
-        Public Shared Function GetDriverImage(YourNSSDriver As R2StandardDriverStructure, YourNSSUser As R2CoreStandardUserStructure) As R2CoreImage
+        Public Shared Function GetDriverImage(YourNSSDriver As R2StandardDriverStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure) As R2CoreImage
             Try
                 If _R2PrimaryFSWS.WebMethodIOFileExist(R2CoreParkingSystemRawGroups.DriverImages, YourNSSDriver.nIdPerson.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 1), _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword)) = False Then
                     Throw New DriverImageNotExistException
@@ -3105,7 +3105,7 @@ Namespace Drivers
             End Try
         End Function
 
-        Public Shared Sub SaveDriverImage(YourNSSDriver As R2StandardDriverStructure, YourDriverImage As R2CoreImage, YourNSSUser As R2CoreStandardUserStructure)
+        Public Shared Sub SaveDriverImage(YourNSSDriver As R2StandardDriverStructure, YourDriverImage As R2CoreImage, YourNSSUser As R2CoreStandardSoftwareUserStructure)
             Try
                 _R2PrimaryFSWS.WebMethodSaveFile(R2CoreParkingSystemRawGroups.DriverImages, YourNSSDriver.nIdPerson.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 1), YourDriverImage.GetImageByte(), _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword))
             Catch ex As Exception
@@ -3113,7 +3113,7 @@ Namespace Drivers
             End Try
         End Sub
 
-        Public Shared Sub DeleteDriverImage(YourNSSDriver As R2StandardDriverStructure, YourNSSUser As R2CoreStandardUserStructure)
+        Public Shared Sub DeleteDriverImage(YourNSSDriver As R2StandardDriverStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure)
             Try
                 _R2PrimaryFSWS.WebMethodDeleteFile(R2CoreParkingSystemRawGroups.DriverImages, YourNSSDriver.nIdPerson.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 1), _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword))
             Catch ex As Exception
@@ -3538,7 +3538,7 @@ End Namespace
 Namespace ProcessesManagement
 
     Public MustInherit Class R2CoreParkingSystemProcesses
-        Inherits R2CoreProcesses
+        Inherits R2CoreDesktopProcesses
 
         Public Shared ReadOnly FrmcBlackList As Int64 = 3
         Public Shared ReadOnly FrmcTempExitTerafficCard As Int64 = 4
@@ -3626,7 +3626,7 @@ Namespace ReportsManagement
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "delete R2PrimaryReports.dbo.TblRFIDCardChargeUserReport" : CmdSql.ExecuteNonQuery()
                 For loopx As Int16 = 0 To DS.Tables(0).Rows.Count - 1
-                    Dim myUserName As String = R2CoreMClassLoginManagement.GetNSSUser(DS.Tables(0).Rows(loopx).Item("userid")).UserName
+                    Dim myUserName As String = R2CoreMClassSoftwareUsersManagement.GetNSSUser(DS.Tables(0).Rows(loopx).Item("userid")).UserName
                     Dim myMblgh As Int64 = DS.Tables(0).Rows(loopx).Item("sumx")
                     CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblRFIDCardChargeUserReport(DateShamsi1,DateShamsi2,Time1,Time2,ReportDateShamsi,ReportTime,UserName,Mblgh) values('" & YourDateTime1.DateShamsiFull & "','" & YourDateTime2.DateShamsiFull & "','" & YourDateTime1.Time & "','" & YourDateTime2.Time & "','" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentTime & "','" & myUserName & "'," & myMblgh & ")"
                     CmdSql.ExecuteNonQuery()
@@ -3758,7 +3758,7 @@ Namespace ReportsManagement
                     If YourViewCarImages = True Then
                         Try
                             NSSEnterExit = New R2StandardEnterExitStructure(Ds.Tables(0).Rows(Loopx).Item("EnterExitId"), Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Ds.Tables(0).Rows(Loopx).Item("CardNoEnter"), Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
-                            CarImage = R2CoreParkingSystemMClassCars.GetCarEnterExitImage(NSSEnterExit, R2CoreMClassLoginManagement.GetNSSSystemUser())
+                            CarImage = R2CoreParkingSystemMClassCars.GetCarEnterExitImage(NSSEnterExit, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
                             CarImageByte = CarImage.GetImageByte()
                         Catch ex As Exception
                         End Try
@@ -3843,7 +3843,7 @@ Namespace ReportsManagement
                     If YourViewCarImages = True Then
                         Try
                             NSSEnterExit = New R2StandardEnterExitStructure(Ds.Tables(0).Rows(Loopx).Item("EnterExitId"), Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Ds.Tables(0).Rows(Loopx).Item("CardNoEnter"), Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
-                            CarImage = R2CoreParkingSystemMClassCars.GetCarEnterExitImage(NSSEnterExit, R2CoreMClassLoginManagement.GetNSSSystemUser())
+                            CarImage = R2CoreParkingSystemMClassCars.GetCarEnterExitImage(NSSEnterExit, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
                             CarImageByte = CarImage.GetImageByte()
                         Catch ex As Exception
                         End Try

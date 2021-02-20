@@ -3,7 +3,7 @@ Imports System.Reflection
 
 Imports R2CoreGUI
 Imports PayanehClassLibrary.ProcessesManagement
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 
 Public Class FrmcSedimentedLoadsReport
     Inherits FrmcGeneral
@@ -29,7 +29,7 @@ Public Class FrmcSedimentedLoadsReport
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcSedimentedLoadsReport))
+            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcSedimentedLoadsReport))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

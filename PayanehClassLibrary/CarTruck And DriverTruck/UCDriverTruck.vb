@@ -8,7 +8,11 @@ Imports R2CoreParkingSystem.Drivers
 Imports PayanehClassLibrary.DriverTrucksManagement
 Imports R2Core.NetworkInternetManagement.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Rmto
-
+Imports R2Core.SoftwareUserManagement
+Imports R2Core.EntityRelationManagement
+Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement
+Imports R2CoreTransportationAndLoadNotification.EntityRelations
+Imports R2Core.EntityRelationManagement.Exceptions
 
 Public Class UCDriverTruck
     Inherits UCGeneral
@@ -107,6 +111,17 @@ Public Class UCDriverTruck
             End If
             Dim NSSDriver As R2StandardDriverStructure = UcDriver.UCGetNSS()
             PayanehClassLibraryMClassDriverTrucksManagement.UpdateDriverTruck(New R2StandardDriverTruckStructure(NSSDriver, UcNumberStrSmartCardNo.UCValue))
+            Dim EntityRelation As R2StandardEntityRelationStructure = Nothing
+            Try
+                EntityRelation = R2CoreMClassEntityRelationManagement.GetNSSEntityRelation(R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver, Int64.MinValue, NSSDriver.nIdPerson)
+                R2CoreMClassSoftwareUsersManagement.EditingSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, String.Empty, False, 1, R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TruckDriver , NSSDriver.StrIdNo, Nothing, Nothing, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing, Nothing, Nothing), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            Catch ex As EntityRelationNotFoundException
+                R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, Nothing, Nothing, Nothing, R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TruckDriver, NSSDriver.StrIdNo, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            Catch ex As Exception
+                Throw ex
+            End Try
+            R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver,))
+
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "مشخصات راننده ناوگان باری ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exx As GetNSSException
             Throw New Exception("اطلاعات پایه راننده را ثبت کنید")
@@ -165,7 +180,7 @@ Public Class UCDriverTruck
         Catch ex As InternetIsnotAvailableException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As ConnectionIsNotAvailableException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning,  ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As GetNSSException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception

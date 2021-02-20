@@ -8,7 +8,7 @@ Imports System.Windows.Forms
 Imports PayanehClassLibrary.DriverTruckPresentManagement
 Imports R2Core.DatabaseManagement
 Imports R2Core.DateAndTimeManagement
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2Core.PublicProc
 Imports R2CoreGUI
 Imports PayanehClassLibrary.ProcessesManagement
@@ -426,7 +426,7 @@ Public Class FrmcIndigenousTrucksWithUNNativeLP
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcBoomiExceptTruck))
+            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcBoomiExceptTruck))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

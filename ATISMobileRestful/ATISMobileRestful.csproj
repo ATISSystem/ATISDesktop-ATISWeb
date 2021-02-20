@@ -171,11 +171,11 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoadAllocationsController.cs" />
     <Compile Include="Controllers\LoadCapacitorController.cs" />
-    <Compile Include="Controllers\MobileUsersController.cs" />
     <Compile Include="Controllers\MoneyWalletAccountingController.cs" />
     <Compile Include="Controllers\MoneyWalletChargingAPIController.cs" />
     <Compile Include="Controllers\MoneyWalletChargingMVCController.cs" />
     <Compile Include="Controllers\ProvincesController.cs" />
+    <Compile Include="Controllers\SoftwareUsersController.cs" />
     <Compile Include="Controllers\TruckDriversController.cs" />
     <Compile Include="Controllers\TrucksController.cs" />
     <Compile Include="Controllers\TurnsController.cs" />

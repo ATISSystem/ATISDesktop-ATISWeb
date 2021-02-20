@@ -8,6 +8,7 @@ using System.Web.Http;
 
 using R2Core.PublicProc;
 using R2Core.LoggingManagement;
+using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.Logging;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
@@ -26,7 +27,7 @@ namespace ATISMobileRestful.Controllers
             {
                 List<R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure> Lst =null;
                 Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetLoadCapacitorLoads(YourAHId, YourAHSGId, YourLoadCapacitorLoadsListType is LoadCapacitorLoadsListType.NotSedimented ? Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.AllOfLoadsWithoutSedimentedLoads) : Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.SedimentedLoads), false, true, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.TargetProvince, Int64.MinValue, YourProvinceId);
-                R2CoreMClassLoggingManagement.LogRegister(new R2CoreStandardLoggingStructure(long.MinValue, R2CoreTransportationAndLoadNotificationLogType.LoadCapacitorAccessStatistics, "آمار بازدید از بار موجود در مخزن بار", YourAHId.ToString(), YourAHSGId.ToString(), String.Empty, String.Empty, String.Empty, R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser().UserId, DateTime.Now, null));
+                R2CoreMClassLoggingManagement.LogRegister(new R2CoreStandardLoggingStructure(long.MinValue, R2CoreTransportationAndLoadNotificationLogType.LoadCapacitorAccessStatistics, "آمار بازدید از بار موجود در مخزن بار", YourAHId.ToString(), YourAHSGId.ToString(), String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId, DateTime.Now, null));
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
                     var Item = new Models.LoadCapacitorLoad();

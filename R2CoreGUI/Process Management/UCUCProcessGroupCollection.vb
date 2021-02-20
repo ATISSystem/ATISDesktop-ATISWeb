@@ -4,8 +4,8 @@ Imports System.Reflection
 Imports R2Core
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DatabaseManagement
-Imports R2Core.ProcessesManagement
-Imports R2Core.UserManagement
+Imports R2Core.DesktopProcessesManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreGUI.ProcessesManagement
 
@@ -39,7 +39,7 @@ Public Class UCUCProcessGroupCollection
     '        Dim X As Int64 = StartXPosition
     '        Dim Y As Int64 = 0
     '        Dim RowCount As Int16 = 0
-    '        Dim Lst As List(Of R2StandardProcessGroupStructure) = R2CoreMClassProcessesManagement.GetListOfProcessGroupsHaveUser(R2CoreMClassLoginManagement.CurrentUserNSS)
+    '        Dim Lst As List(Of R2StandardDesktopProcessGroupStructure) = R2CoreMClassDesktopProcessesManagement.GetListOfProcessGroupsHaveUser(R2CoreMClassSoftwareUsersManagement.CurrentUserNSS)
     '        For Loopx As Int16 = 0 To Lst.Count - 1
     '            Dim UC As UCProcessGroup = New UCProcessGroup(Lst(Loopx))
     '            AddHandler UC.UCClickedEvent, AddressOf UCProcessGroups_UCClickedEventHandler
@@ -65,7 +65,7 @@ Public Class UCUCProcessGroupCollection
         Try
             PnlUCProcessGroupCollection.SuspendLayout()
             PnlUCProcessGroupCollection.Controls.Clear()
-            Dim Lst As List(Of R2StandardProcessGroupStructure) = R2CoreMClassProcessesManagement.GetListOfProcessGroupsHaveUser(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            Dim Lst As List(Of R2StandardDesktopProcessGroupStructure) = R2CoreMClassDesktopProcessesManagement.GetListOfProcessGroupsHaveUser(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             For Loopx As Int16 = Lst.Count - 1 To 0 Step -1
                 Dim UC As UCProcessGroup = New UCProcessGroup(Lst(Loopx))
                 UC.Dock = DockStyle.Top
@@ -90,7 +90,7 @@ Public Class UCUCProcessGroupCollection
             Dim DS As DataSet
             R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblProcessGroupsRelationProcesses Where PGId=" & UC.UCGetNSS.PGId & " Order by PGId", 3600, DS)
             For Loopx As Int16 = DS.Tables(0).Rows.Count - 1 To 0 Step -1
-                Dim NSSProcess As R2StandardProcessStructure = R2Core.ProcessesManagement.R2CoreMClassProcessesManagement.GetNSSProcess(DS.Tables(0).Rows(Loopx).Item("PId"))
+                Dim NSSProcess As R2StandardDesktopProcessStructure = R2CoreMClassDesktopProcessesManagement.GetNSSProcess(DS.Tables(0).Rows(Loopx).Item("PId"))
                 Dim UCP As UCProcess = New UCProcess(NSSProcess, UC.UCGetNSS.PGBackColor)
                 UCP.Dock = DockStyle.Top
                 PnlUCs.Controls.Add(UCP)

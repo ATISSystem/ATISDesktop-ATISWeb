@@ -6,7 +6,7 @@ using ATISWeb.LoginManagement;
 using ATISWeb.LoginManagement.Exceptions;
 using R2Core.DateAndTimeManagement;
 using R2Core.PublicProc;
-using R2Core.UserManagement;
+using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls;
 using R2CoreTransportationAndLoadNotification.Goods;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions;

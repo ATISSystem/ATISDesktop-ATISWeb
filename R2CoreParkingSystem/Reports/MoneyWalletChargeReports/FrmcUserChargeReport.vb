@@ -4,8 +4,8 @@ Imports System.Reflection
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DatabaseManagement
 Imports R2Core.DateAndTimeManagement
-Imports R2Core.ProcessesManagement
-Imports R2Core.UserManagement
+Imports R2Core.DesktopProcessesManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.ProcessesManagement
 
@@ -36,7 +36,7 @@ Public Class FrmcUserChargeReport
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess( R2CoreMClassProcessesManagement.GetNSSProcess(R2CoreParkingSystemProcesses.FrmcUserChargeReport))
+            SetProcess( R2CoreMClassDesktopProcessesManagement.GetNSSProcess(R2CoreParkingSystemProcesses.FrmcUserChargeReport))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

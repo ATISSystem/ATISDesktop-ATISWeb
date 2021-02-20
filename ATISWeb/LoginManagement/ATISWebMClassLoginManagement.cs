@@ -7,18 +7,18 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using ATISWeb.LoginManagement.Exceptions;
-using R2Core.UserManagement;
+using R2Core.SoftwareUserManagement;
 
 namespace ATISWeb.LoginManagement
 {
     public class ATISWebMClassLoginManagement
     {
-        public static R2CoreStandardUserStructure GetNSSCurrentUser()
+        public static R2CoreStandardSoftwareUserStructure GetNSSCurrentUser()
         {
             try
             {
                 if (HttpContext.Current.Session["CurrentUser"] != null)
-                { return (R2CoreStandardUserStructure)HttpContext.Current.Session["CurrentUser"]; }
+                { return (R2CoreStandardSoftwareUserStructure)HttpContext.Current.Session["CurrentUser"]; }
                 throw new PleaseReloginException();
             }
             catch (PleaseReloginException ex)

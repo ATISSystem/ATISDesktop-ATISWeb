@@ -4,7 +4,7 @@ Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.BlackList
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 
 Public Class UCBlackList
     Inherits UCGeneral
@@ -38,7 +38,7 @@ Public Class UCBlackList
             UcLabelStrDesc.UCValue = YourNSSBlackList.StrDesc.Trim
             UcLabelStrDate.UCValue = YourNSSBlackList.StrDate
             UcMoneynAmount.UCValue = YourNSSBlackList.nAmount
-            UcLabelUser.UCValue = R2CoreMClassLoginManagement.GetNSSUser(YourNSSBlackList.nUser).UserName
+            UcLabelUser.UCValue = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourNSSBlackList.nUser).UserName
             UcLabelFlagA.UCValue = IIf(YourNSSBlackList.FlagA = True, "غیرفعال", "فعال")
             UcButtonPardakht.UCEnable = Not YourNSSBlackList.FlagA
         Catch ex As Exception

@@ -5,8 +5,9 @@ Imports System.Text
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.PayanehWS
 Imports PayanehClassLibrary.Rmto
+Imports R2Core.DatabaseManagement
 Imports R2Core.DateAndTimeManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
@@ -19,7 +20,7 @@ Public Class Form3
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
-            'R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser)
+            'R2CoreMClassSoftwareUsersManagement.SetCurrentUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
             'PayanehClassLibrary.Rmto.RmtoWebService.GetInf(RmtoWebService.InfoType.GET_DRIVER_BY_SHC, "1222524")
         Catch ex As Exception
@@ -233,7 +234,7 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            'R2CoreMClassLoginManagement.SetCurrentUserByPinCode(R2CoreMClassLoginManagement.GetNSSSystemUser)
+            'R2CoreMClassSoftwareUsersManagement.SetCurrentUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
             'PayanehClassLibrary.Rmto.RmtoWebService.GetInf(RmtoWebService.InfoType.GET_DRIVER_BY_SHC, "1222524")
         Catch ex As Exception
@@ -261,11 +262,11 @@ Public Class Form3
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
         Try
             'R2CoreTransportationAndLoadNotification.LoadTargets.R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetProvinces(2,7,1,1)
-            'Dim NSS As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase("2218230",R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser())
+            'Dim NSS As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase("2218230",R2Core.UserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
             Dim _WS As PayanehWS.PayanehWebService = New PayanehWS.PayanehWebService()
             'Dim ExchangeKey = _WS.WebMethodLogin("123", "1234")
             _WS.WebMethodGetnIdCarTruckBySmartCarNo("2063514", "74094")
-            'PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating("1775507", R2CoreMClassLoginManagement.GetNSSSystemUser())
+            'PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating("1775507", R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
@@ -276,7 +277,7 @@ Public Class Form3
     End Sub
 
     Private Sub Form3_Load(sender As Object, e As EventArgs) Handles Me.Load
-        'R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS=R2Core.UserManagement.R2CoreMClassLoginManagement.GetNSSSystemUser()
+        'R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS=R2Core.UserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser()
     End Sub
 
 
@@ -323,7 +324,7 @@ Public Class Form3
 
     Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
         Try
-            Dim uc As New UCBillOfLadingControl:uc.UCViewNSS(2)
+            Dim uc As New UCBillOfLadingControl : uc.UCViewNSS(2)
             Dim NSSExtended As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlExtendedStructure = uc.UCNSSCurrent
 
             MessageBox.Show(NSSExtended.BLCTitle)
@@ -336,6 +337,38 @@ Public Class Form3
         Try
             R2CoreTransportationAndLoadNotification.ReportManagement.R2CoreTransportationAndLoadNotificationReportsManagement.ReportingInformationProviderBillOfLadingControlReport(10002)
         Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub Button13_Click(sender As Object, e As EventArgs) Handles Button13.Click
+        Dim Cmdsql As New SqlClient.SqlCommand
+        Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
+        Try
+            Dim Ds As DataSet
+            R2Core.DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where MobileNumber<>'' Order By UserId", 0, Ds)
+            Cmdsql.Connection.Open()
+            Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
+            For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                Dim UserId As Int64 = Ds.Tables(0).Rows(loopx).Item("UserId")
+                Dim Randoom As Random = New Random()
+                Randomize()
+                Dim Pass As String = String.Empty
+                Try
+                    Pass = (Randoom.Next(1000, 4543432) + Convert.ToInt64(Mid(Ds.Tables(0).Rows(loopx).Item("MobileNumber").ToString(), 4, 7))).ToString()
+                Catch ex As Exception
+                    Pass=UserId 
+                End Try
+              
+                Cmdsql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserPassword='" & Pass & "' Where UserId=" & UserId & ""
+                Cmdsql.ExecuteNonQuery()
+            Next
+            Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
+            MessageBox.Show("Finished Success ...")
+        Catch ex As Exception
+            If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                Cmdsql.Connection.Close() : Cmdsql.Transaction.Rollback()
+            End If
             MessageBox.Show(ex.Message)
         End Try
     End Sub

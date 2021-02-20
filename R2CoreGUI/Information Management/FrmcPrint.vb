@@ -3,7 +3,7 @@ Imports System.Reflection
 Imports Microsoft.Reporting.WinForms
 
 Imports R2Core.ConfigurationManagement
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2Core.ReportsManagement
 
 

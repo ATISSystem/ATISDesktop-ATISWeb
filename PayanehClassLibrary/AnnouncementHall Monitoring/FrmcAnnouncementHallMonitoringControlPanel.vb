@@ -5,7 +5,7 @@ Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.ProcessesManagement
 Imports R2Core.ExceptionManagement
-Imports R2Core.ProcessesManagement
+Imports R2Core.DesktopProcessesManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.Cars
 Imports R2CoreParkingSystem.City
@@ -35,7 +35,7 @@ Public Class FrmcAnnouncementHallMonitoringControlPanel
 
     Protected Overrides Sub SetNSSProcess()
         Try
-            SetProcess(R2CoreMClassProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcAnnouncementHallMonitoringControlPanel))
+            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcAnnouncementHallMonitoringControlPanel))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

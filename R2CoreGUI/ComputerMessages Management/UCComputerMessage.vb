@@ -4,7 +4,7 @@ Imports System.Reflection
 Imports R2Core.ComputerMessagesManagement
 Imports R2Core.ComputersManagement
 Imports R2Core.ExceptionManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 
 Public Class UCComputerMessage
     Inherits UCGeneral
@@ -40,7 +40,7 @@ Public Class UCComputerMessage
             UCRefresh()
             PnlMain.BackColor =  R2CoreMClassComputerMessagesManagement.GetNSSComputerMessageType(YourNSS.CMType).SpecialColor
             UcLabelCMTypeTitle.UCValue = R2CoreMClassComputerMessagesManagement.GetNSSComputerMessageType(YourNSS.CMType).CMTypeTiltle
-            UcLabelUserName.UCValue = R2CoreMClassLoginManagement.GetNSSUser(YourNSS.UserId).UserName
+            UcLabelUserName.UCValue = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourNSS.UserId).UserName
             UcLabelComputerName.UCValue = R2CoreMClassComputersManagement.GetNSSComputer(YourNSS.ComputerId).MName
             UcLabelDateTime.UCValue = YourNSS.DateShamsi & " " & YourNSS.Time
             UcLabelCMNote.UCValue = YourNSS.CMNote

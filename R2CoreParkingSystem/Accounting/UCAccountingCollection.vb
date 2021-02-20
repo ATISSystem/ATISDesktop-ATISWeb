@@ -9,7 +9,7 @@ Imports R2CoreParkingSystem.AccountingManagement
 Imports R2CoreParkingSystem.Cars
 Imports R2CoreParkingSystem.TrafficCardsManagement
 Imports R2Core.ComputersManagement
-Imports R2Core.UserManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 
 Public Class UCAccountingCollection

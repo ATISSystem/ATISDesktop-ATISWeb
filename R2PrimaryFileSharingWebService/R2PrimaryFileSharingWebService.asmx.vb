@@ -11,8 +11,8 @@ Imports R2Core.ExceptionManagement
 Imports R2Core.FileShareRawGroupsManagement
 Imports R2Core.SecurityAlgorithmsManagement
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
-Imports R2Core.UserManagement
-Imports R2Core.UserManagement.Exceptions
+Imports R2Core.SoftwareUserManagement
+Imports R2Core.SoftwareUserManagement.Exceptions
 
 ' To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
 ' <System.Web.Script.Services.ScriptService()> _
