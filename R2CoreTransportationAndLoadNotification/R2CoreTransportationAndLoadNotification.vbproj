@@ -490,6 +490,7 @@
     <Compile Include="Goods\UCSearcherGoods.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="R2CoreTransportationAndLoadNotification-Partial.vb" />
     <Compile Include="R2CoreTransportationAndLoadNotification.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

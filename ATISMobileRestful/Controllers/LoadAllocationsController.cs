@@ -49,11 +49,11 @@ namespace ATISMobileRestful.Controllers
         }
 
         [HttpGet]
-        public MessageStruct LoadAllocationCancelling(Int64 YourLoadAllocationId)
+        public MessageStruct LoadAllocationCancelling(Int64 YourUserId, Int64 YourLoadAllocationId)
         {
             try
             {
-                R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(YourLoadAllocationId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
+                R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(YourLoadAllocationId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId));
                 return new MessageStruct { ErrorCode = false, Message1 = "تخصیص بار کنسل شد", Message2 = YourLoadAllocationId.ToString(), Message3 = string.Empty };
             }
             catch (TimingNotReachedException ex)
