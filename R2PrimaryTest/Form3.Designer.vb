@@ -41,6 +41,8 @@ Partial Class Form3
         Me.Button11 = New System.Windows.Forms.Button()
         Me.Button12 = New System.Windows.Forms.Button()
         Me.Button13 = New System.Windows.Forms.Button()
+        Me.Button14 = New System.Windows.Forms.Button()
+        Me.Button15 = New System.Windows.Forms.Button()
         Me.SuspendLayout
         '
         'Button1
@@ -216,18 +218,44 @@ Partial Class Form3
         Me.Button13.BackColor = System.Drawing.Color.DodgerBlue
         Me.Button13.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
         Me.Button13.ForeColor = System.Drawing.Color.White
-        Me.Button13.Location = New System.Drawing.Point(205, 336)
+        Me.Button13.Location = New System.Drawing.Point(296, 182)
         Me.Button13.Name = "Button13"
         Me.Button13.Size = New System.Drawing.Size(344, 41)
         Me.Button13.TabIndex = 17
-        Me.Button13.Text = "تغییر شناسه و رمز عبور کاربران"
+        Me.Button13.Text = "تغییر شناسه و رمز عبور رانندگان"
         Me.Button13.UseVisualStyleBackColor = false
+        '
+        'Button14
+        '
+        Me.Button14.BackColor = System.Drawing.Color.DeepPink
+        Me.Button14.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button14.ForeColor = System.Drawing.Color.White
+        Me.Button14.Location = New System.Drawing.Point(296, 229)
+        Me.Button14.Name = "Button14"
+        Me.Button14.Size = New System.Drawing.Size(344, 41)
+        Me.Button14.TabIndex = 18
+        Me.Button14.Text = "اعطای مجوز دسترسی به فرآیندهای موبایلی به همه رانندگان"
+        Me.Button14.UseVisualStyleBackColor = false
+        '
+        'Button15
+        '
+        Me.Button15.BackColor = System.Drawing.Color.Green
+        Me.Button15.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button15.ForeColor = System.Drawing.Color.White
+        Me.Button15.Location = New System.Drawing.Point(296, 276)
+        Me.Button15.Name = "Button15"
+        Me.Button15.Size = New System.Drawing.Size(344, 41)
+        Me.Button15.TabIndex = 19
+        Me.Button15.Text = "ایجاد ارتباط کاربران با گروههای فرآیندی موبایلی"
+        Me.Button15.UseVisualStyleBackColor = false
         '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 450)
+        Me.Controls.Add(Me.Button15)
+        Me.Controls.Add(Me.Button14)
         Me.Controls.Add(Me.Button13)
         Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.Button11)
@@ -272,4 +300,6 @@ End Sub
     Friend WithEvents Button11 As Button
     Friend WithEvents Button12 As Button
     Friend WithEvents Button13 As Button
+    Friend WithEvents Button14 As Button
+    Friend WithEvents Button15 As Button
 End Class

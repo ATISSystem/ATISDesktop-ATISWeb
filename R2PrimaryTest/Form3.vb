@@ -357,9 +357,9 @@ Public Class Form3
                 Try
                     Pass = (Randoom.Next(1000, 4543432) + Convert.ToInt64(Mid(Ds.Tables(0).Rows(loopx).Item("MobileNumber").ToString(), 4, 7))).ToString()
                 Catch ex As Exception
-                    Pass=UserId 
+                    Pass = UserId
                 End Try
-              
+
                 Cmdsql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserPassword='" & Pass & "' Where UserId=" & UserId & ""
                 Cmdsql.ExecuteNonQuery()
             Next
@@ -367,9 +367,66 @@ Public Class Form3
             MessageBox.Show("Finished Success ...")
         Catch ex As Exception
             If Cmdsql.Connection.State <> ConnectionState.Closed Then
-                Cmdsql.Connection.Close() : Cmdsql.Transaction.Rollback()
+                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
             End If
             MessageBox.Show(ex.Message)
         End Try
+    End Sub
+
+    Private Sub Button14_Click(sender As Object, e As EventArgs) Handles Button14.Click
+        Dim Cmdsql As New SqlClient.SqlCommand
+        Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
+        Try
+            Dim DsSoftwareusers As DataSet
+            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "select UserId from R2Primary.dbo.TblSoftwareUsers where UserTypeId = 3", 0, DsSoftwareusers)
+            Dim DsMobileProcess As DataSet
+            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "select PId from R2Primary.dbo.TblMobileProcesses where active=1", 0, DsMobileProcess)
+
+            Cmdsql.Connection.Open()
+            Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
+            For loopx As Int64 = 0 To DsSoftwareusers.Tables(0).Rows.Count - 1
+                For loopY As Int64 = 0 To DsMobileProcess.Tables(0).Rows.Count - 1
+                    Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblPermissions(EntityIdFirst,EntityIdSecond,PermissionTypeId,RelationActive)
+                                      values(" & DsSoftwareusers.Tables(0).Rows(loopx).Item("UserId") & "," & DsMobileProcess.Tables(0).Rows(loopY).Item("PId") & ",1,1)"
+                    Cmdsql.ExecuteNonQuery()
+                Next
+            Next
+            Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
+            MessageBox.Show("Finished Success ...")
+        Catch ex As Exception
+            If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
+            End If
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub Button15_Click(sender As Object, e As EventArgs) Handles Button15.Click
+        Dim Cmdsql As New SqlClient.SqlCommand
+        Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
+        Try
+            Dim DsSoftwareusers As DataSet
+            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "select UserId from R2Primary.dbo.TblSoftwareUsers where UserTypeId = 3", 0, DsSoftwareusers)
+            Dim DsMobileProcessGroups As DataSet
+            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "select pgid from R2Primary.dbo.TblMobileProcessGroups where Active=1", 0, DsMobileProcessGroups)
+
+            Cmdsql.Connection.Open()
+            Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
+            For loopx As Int64 = 0 To DsSoftwareusers.Tables(0).Rows.Count - 1
+                For loopY As Int64 = 0 To DsMobileProcessGroups.Tables(0).Rows.Count - 1
+                    Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERTypeId,E1,E2,RelationActive)
+                                          values(3," & DsSoftwareusers.Tables(0).Rows(loopx).Item("UserId") & "," & DsMobileProcessGroups.Tables(0).Rows(loopY).Item("pgid") & ",1)"
+                    Cmdsql.ExecuteNonQuery()
+                Next
+            Next
+            Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
+            MessageBox.Show("Finished Success ...")
+        Catch ex As Exception
+            If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
+            End If
+            MessageBox.Show(ex.Message)
+        End Try
+
     End Sub
 End Class

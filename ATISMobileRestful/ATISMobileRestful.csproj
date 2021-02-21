@@ -175,6 +175,7 @@
     <Compile Include="Controllers\MoneyWalletAccountingController.cs" />
     <Compile Include="Controllers\MoneyWalletChargingAPIController.cs" />
     <Compile Include="Controllers\MoneyWalletChargingMVCController.cs" />
+    <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\ProvincesController.cs" />
     <Compile Include="Controllers\SoftwareUsersController.cs" />
     <Compile Include="Controllers\TruckDriversController.cs" />

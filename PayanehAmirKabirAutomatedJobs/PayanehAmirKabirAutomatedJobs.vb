@@ -59,7 +59,7 @@ Public Class PayanehAmirKabirAutomatedJobs
             _AutomatedJobsTimer.Enabled = False
             _AutomatedJobsTimer.Stop()
 
-            'انتقال بار فردا به بار امروز
+            'انتقال بار با وضعیت فردا به بار با وضعیت امروز
             Try
                 R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
             Catch ex As Exception
@@ -84,11 +84,11 @@ Public Class PayanehAmirKabirAutomatedJobs
             End Try
 
 
-
+            EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "_AutomatedJobsTimer_Elapsed:Run Succefull", EventLogEntryType.SuccessAudit)
         Catch ex As Exception
             EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "_AutomatedJobsTimer_Elapsed:" + ex.Message.ToString, EventLogEntryType.Error)
         End Try
-        EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "_AutomatedJobsTimer_Elapsed:Run Succefull", EventLogEntryType.SuccessAudit)
+        
         _AutomatedJobsTimer.Enabled = True
         _AutomatedJobsTimer.Start()
     End Sub

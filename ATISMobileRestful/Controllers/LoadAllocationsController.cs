@@ -36,8 +36,12 @@ namespace ATISMobileRestful.Controllers
                 try
                 { myTurnId = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId)).nEnterExitId; }
                 catch (TurnNotFoundException ex)
-                { PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequestforAjent(YourUserId, YournEstelamId, false, false, ref myTurnId); }
-                Int64 LAId = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(YournEstelamId, myTurnId, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
+                {
+                    //کنترل کانفیگ در خصوص زیرگروههایی که مستلزم دارا بودن نوبت نیستند
+
+                    PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequestforAjent(YourUserId, YournEstelamId, false, false, ref myTurnId);
+                }
+                Int64 LAId = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(YournEstelamId, myTurnId, R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId));
                 return new MessageStruct { ErrorCode = false, Message1 = "تخصیص بار انجام شد", Message2 = LAId.ToString(), Message3 = string.Empty };
             }
             catch (Exception ex)
@@ -68,7 +72,7 @@ namespace ATISMobileRestful.Controllers
             List<Models.LoadAllocationsforTruckDriver> _LoadAllocations = new List<Models.LoadAllocationsforTruckDriver>();
             try
             {
-                var Lst = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocationsforTruckDriver(YourUserId );
+                var Lst = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocationsforTruckDriver(YourUserId);
                 StringBuilder SB = new StringBuilder();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {

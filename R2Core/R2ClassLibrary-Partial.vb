@@ -21,10 +21,11 @@ Imports R2Core.EntityRelationManagement.Exceptions
 Imports R2Core.PredefinedMessagesManagement.Exceptions
 Imports R2Core.SMSSendAndRecieved
 Imports R2Core.SMSSendAndRecieved.Exceptions
-
-Imports PcPosDll
 Imports R2Core.EntityRelationManagement
 Imports R2Core.MobileProcessesManagement.Exceptions
+
+Imports PcPosDll
+
 
 Namespace MonetarySupply
 
@@ -1228,6 +1229,7 @@ Namespace PermissionManagement
     End Class
 
     Public NotInheritable Class R2CoreMClassPermissionsManagement
+
         Public Shared Sub RegisteringPermissions(YourPermissionTypeId As Int64, YourEntityIdFirst As Int64, YourEntityIdsSecond As String())
             Dim Cmdsql As New SqlClient.SqlCommand
             Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
@@ -1248,7 +1250,20 @@ Namespace PermissionManagement
             End Try
         End Sub
 
-
+        Public Shared Function ExistPermission(YourPermissionTypeId As Int64 ,YourEntityIdFirst As Int64 ,YourEntityIdSecond As Int64 ) As Boolean 
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                      "Select * from R2Primary.dbo.TblPermissions as Permissions 
+                       Where Permissions.PermissionTypeId=" & YourPermissionTypeId & " and Permissions.RelationActive=1 and Permissions.EntityIdFirst=" & YourEntityIdFirst  & " and Permissions.EntityIdSecond=" & YourEntityIdSecond &  "", 3600, Ds).GetRecordsCount() = 0 Then
+                    Return False 
+                Else
+                    Return True 
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
     End Class
 
@@ -1399,7 +1414,7 @@ Namespace MobileProcessesManagement
                         Dim NSS As New R2StandardMobileProcessStructure
                         NSS.PId = Ds.Tables(0).Rows(Loopx).Item("PId")
                         NSS.PName = Ds.Tables(0).Rows(Loopx).Item("PName")
-                        NSS.PTitle = Ds.Tables(0).Rows(Loopx).Item("PTitle").trim
+                        NSS.PTitle ="  "+Ds.Tables(0).Rows(Loopx).Item("PTitle").ToString().trim
                         NSS.TargetMobilePage = Ds.Tables(0).Rows(Loopx).Item("TargetMobilePage").trim
                         NSS.Description = Ds.Tables(0).Rows(Loopx).Item("Description").trim
                         NSS.PForeColor = Color.FromName(Ds.Tables(0).Rows(Loopx).Item("PForeColor").trim)
