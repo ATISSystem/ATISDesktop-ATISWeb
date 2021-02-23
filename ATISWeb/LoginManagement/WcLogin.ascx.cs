@@ -36,7 +36,7 @@ namespace ATISWeb.LoginManagement
         {
             try
             {
-                R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(new R2CoreStandardSoftwareUserStructure(0, "", TxtUserShenaseh.Text, TxtUserPassword.Text, "", false, false));
+                R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(new R2CoreStandardSoftwareUserStructure(0, "", TxtUserShenaseh.Text, TxtUserPassword.Text, "", false, false, Int64.MinValue, string.Empty, string.Empty, string.Empty, Int64.MinValue, new DateTime(), null, false, false));
                 R2CoreStandardSoftwareUserStructure NSS = R2CoreMClassSoftwareUsersManagement.GetNSSUser(TxtUserShenaseh.Text, TxtUserPassword.Text);
                 Session.Add("CurrentUser", NSS);
                 Session.Timeout = 60;

@@ -2,9 +2,10 @@
 Imports System.Drawing
 Imports System.Reflection
 Imports System.Windows.Forms
-
-
+Imports R2Core.EntityRelationManagement
+Imports R2Core.EntityRelationManagement.Exceptions
 Imports R2Core.ExceptionManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.Drivers
 
@@ -30,13 +31,13 @@ Public Class UCDriver
         Set(value As Boolean)
             _UCViewButtons = value
             If value = True Then
-                UcButtonDel.Visible=True
-                UcButtonNew.Visible=True
-                UcButtonSabt.Visible=True
+                UcButtonDel.Visible = True
+                UcButtonNew.Visible = True
+                UcButtonSabt.Visible = True
             Else
-                UcButtonDel.Visible=false
-                UcButtonNew.Visible=false
-                UcButtonSabt.Visible=false
+                UcButtonDel.Visible = False
+                UcButtonNew.Visible = False
+                UcButtonSabt.Visible = False
             End If
         End Set
     End Property
@@ -59,15 +60,15 @@ Public Class UCDriver
         UcPersianTextBoxFather.UCRefresh() : UcPersianTextBoxTel.UCRefresh() : UcPersianTextBoxAddress.UCRefresh()
         UcNumberDrivernIdPerson.UCRefresh() : UcTextBoxNationalCode.UCRefresh() : UcNumberLicenseNo.UCRefresh()
         UcPersianTextBoxDriverName.Focus()
-        RaiseEvent UCRefreshedEvent
+        RaiseEvent UCRefreshedEvent()
     End Sub
 
-    Public SUB UCRefreshGeneral
+    Public Sub UCRefreshGeneral()
         UCRefresh()
         UcPersianTextBoxDriverName.UCRefresh()
         UcNumberDriverNationalCode.UCRefresh()
-        RaiseEvent UCRefreshedGeneralEvent
-    End SUB
+        RaiseEvent UCRefreshedGeneralEvent()
+    End Sub
 
     Public Sub UCViewDriverInformation(YournIdPerson As String)
         Try
@@ -108,7 +109,7 @@ Public Class UCDriver
         End Try
     End Sub
 
-    Public sub UCViewDriverInformationDirty(YourNSS As R2StandardDriverStructure)
+    Public Sub UCViewDriverInformationDirty(YourNSS As R2StandardDriverStructure)
         Try
             UcPersianTextBoxNameFamily.UCValue = YourNSS.StrPersonFullName
             UcPersianTextBoxFather.UCValue = YourNSS.StrFatherName
@@ -117,13 +118,13 @@ Public Class UCDriver
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
-    End sub
+    End Sub
 
     Private Sub UCSabtRoutin()
         Try
             'بررسی پارامترها
             If UcPersianTextBoxNameFamily.UCValue = "" Then
-                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning,"نام ونام خانوادگی راننده را وارد کنید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "نام ونام خانوادگی راننده را وارد کنید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 Exit Sub
             End If
             If UcTextBoxNationalCode.UCValue.ToString.Length <> 10 Then
@@ -131,15 +132,19 @@ Public Class UCDriver
                 Exit Sub
             End If
             If UcNumberLicenseNo.UCValue.ToString().Length <> 10 Then
-                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning,"شماره گواهینامه نادرست است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "شماره گواهینامه نادرست است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                Exit Sub
+            End If
+            If UcPersianTextBoxTel.UCValue.Trim = String.Empty Then
+                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "ورود شماره موبایل الزامی است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 Exit Sub
             End If
             If UcNumberDrivernIdPerson.UCValue = 0 Then
-                UcNumberDrivernIdPerson.UCValue = R2CoreParkingSystemMClassDrivers.InsertDriver(New R2StandardDriverStructure("", UcPersianTextBoxNameFamily.UCValue, UcTextBoxNationalCode.UCValue, UcPersianTextBoxFather.UCValue, UcPersianTextBoxAddress.UCValue, UcPersianTextBoxTel.UCValue, UcNumberLicenseNo.UCValue))
-                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess,"مشخصات راننده ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                UcNumberDrivernIdPerson.UCValue = R2CoreParkingSystemMClassDrivers.InsertDriver(New R2StandardDriverStructure("", UcPersianTextBoxNameFamily.UCValue, UcTextBoxNationalCode.UCValue, UcPersianTextBoxFather.UCValue, UcPersianTextBoxAddress.UCValue, UcPersianTextBoxTel.UCValue, UcNumberLicenseNo.UCValue), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "مشخصات راننده ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             Else
-                R2CoreParkingSystemMClassDrivers.UpdateDriver(New R2StandardDriverStructure(UcNumberDrivernIdPerson.UCValue, UcPersianTextBoxNameFamily.UCValue, UcTextBoxNationalCode.UCValue, UcPersianTextBoxFather.UCValue, UcPersianTextBoxAddress.UCValue, UcPersianTextBoxTel.UCValue, UcNumberLicenseNo.UCValue))
-                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess,"مشخصات راننده ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                R2CoreParkingSystemMClassDrivers.UpdateDriver(New R2StandardDriverStructure(UcNumberDrivernIdPerson.UCValue, UcPersianTextBoxNameFamily.UCValue, UcTextBoxNationalCode.UCValue, UcPersianTextBoxFather.UCValue, UcPersianTextBoxAddress.UCValue, UcPersianTextBoxTel.UCValue, UcNumberLicenseNo.UCValue), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "مشخصات راننده ویرایش شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             End If
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -196,7 +201,7 @@ Public Class UCDriver
             UCRefresh()
             UCViewFrmDrivers(UcNumberDriverNationalCode.UCValue, FrmcDrivers.ViewType.ByNationalCode, UcNumberDriverNationalCode)
         Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
 
@@ -205,7 +210,7 @@ Public Class UCDriver
             UCRefresh()
             UCViewFrmDrivers(UcPersianTextBoxDriverName.UCValue, FrmcDrivers.ViewType.ByNameFamily, UcPersianTextBoxDriverName)
         Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
 
@@ -217,7 +222,7 @@ Public Class UCDriver
         Try
             UCSabtRoutin()
         Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
 
@@ -225,7 +230,7 @@ Public Class UCDriver
         Try
             UCDelRoutin()
         Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
 
@@ -257,7 +262,7 @@ Public Class UCDriver
         Try
             UCSabtRoutin()
         Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
 

@@ -1493,7 +1493,7 @@ Namespace SoftwareUserManagement
                 Dim myUserId As Int64 = CmdSql.ExecuteScalar + 1
                 Dim myPassword As String = GetNewUserPassword(YourNSSSoftwareUser.MobileNumber)
                 CmdSql.CommandText = "Insert Into R2Primary.dbo.TblSoftwareUsers(UserId,UserName,UserShenaseh,UserPassword,UserPinCode,UserCanCharge,UserActive,UserTypeId,MobileNumber,UserStatus,VerificationCode,UserCreatorId,DateTimeMilladi,DateShamsi,ViewFlag,Deleted)
-                  Values(" & myUserId & ",'" & YourNSSSoftwareUser.UserName & "','" & YourNSSSoftwareUser.UserId & "','" & myPassword & "','',0,1," & YourNSSSoftwareUser.UserTypeId & ",'" & YourNSSSoftwareUser.MobileNumber & "',logout,''," & YourNSSUser.UserId & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull & "',1,0)"
+                                      Values(" & myUserId & ",'" & YourNSSSoftwareUser.UserName & "','" & myUserId & "','" & myPassword & "','" & YourNSSSoftwareUser.UserPinCode & "'," & IIf(YourNSSSoftwareUser.UserCanCharge, 1, 0) & "," & IIf(YourNSSSoftwareUser.UserActive, 1, 0) & "," & YourNSSSoftwareUser.UserTypeId & ",'" & YourNSSSoftwareUser.MobileNumber & "','logout',''," & YourNSSUser.UserId & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull & "'," & IIf(YourNSSSoftwareUser.ViewFlag, 1, 0) & ",0)"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Return myUserId
@@ -1514,7 +1514,7 @@ Namespace SoftwareUserManagement
                 If YourNSSSoftwareUser.MobileNumber.Trim = String.Empty Then Throw New SoftwareUserMobileNumberNeedforRegisteringException
                 CmdSql.Connection.Open()
                 CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers 
-                        Set UserName='" & YourNSSSoftwareUser.UserName & "',UserPinCode='" & YourNSSSoftwareUser.UserPinCode & "',UserCanCharge=" & YourNSSSoftwareUser.UserCanCharge & ",UserActive=" & YourNSSSoftwareUser.UserActive & ",UserTypeId=" & YourNSSSoftwareUser.UserTypeId & ",MobileNumber='" & YourNSSSoftwareUser.MobileNumber & "',UserCreatorId=" & YourNSSUser.UserId & " 
+                        Set UserName='" & YourNSSSoftwareUser.UserName & "',UserPinCode='" & YourNSSSoftwareUser.UserPinCode & "',UserCanCharge=" & iif(YourNSSSoftwareUser.UserCanCharge,1,0) & ",UserActive=" & iif(YourNSSSoftwareUser.UserActive,1,0) & ",UserTypeId=" & YourNSSSoftwareUser.UserTypeId & ",MobileNumber='" & YourNSSSoftwareUser.MobileNumber & "',UserCreatorId=" & YourNSSUser.UserId & " 
                         Where UserId=" & YourNSSSoftwareUser.UserId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()

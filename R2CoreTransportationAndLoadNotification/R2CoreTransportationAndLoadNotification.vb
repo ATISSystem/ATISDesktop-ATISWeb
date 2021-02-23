@@ -78,6 +78,7 @@ Imports R2CoreTransportationAndLoadNotification.Rmto
 Imports R2CoreTransportationAndLoadNotification.TruckLoaderTypes
 Imports R2CoreTransportationAndLoadNotification.TruckLoaderTypes.Exceptions
 Imports R2CoreTransportationAndLoadNotification.EntityRelations
+Imports R2CoreParkingSystem.EntityRelations
 
 Namespace Rmto
     Public MustInherit Class RmtoWebService
@@ -355,7 +356,7 @@ Namespace ConfigurationsManagement
     Public MustInherit Class R2CoreTransportationAndLoadNotificationConfigurations
         Inherits R2CoreConfigurations
 
-        Public Shared ReadOnly Property LoadCapacitorLoadNumberLimit = 54
+        Public Shared ReadOnly Property LoadCapacitorLoadRegistering = 54
         Public Shared ReadOnly Property AnnouncementHallAnnounceTime = 55
         Public Shared ReadOnly Property AnnouncementHallsTurnCancellationSetting = 56
         Public Shared ReadOnly Property AnnouncementHallsTruckDriverAttendance = 57
@@ -730,7 +731,7 @@ Namespace Turns
 	                   Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On Drivers.nIDDriver=EntityRelations.E2 
 	                   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On EntityRelations.E1=SoftwareUsers.UserId 
                      Where (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and Cars.ViewFlag=1 
-                           and EntityRelations.ERTypeId=" & R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver & " and EntityRelations.RelationActive=1 and SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.Active=1 and SoftwareUsers.Deleted=0 
+                           and EntityRelations.ERTypeId=" & R2CoreParkingSystem.EntityRelations.R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 and SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 
                      Order By Turns.nEnterExitId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
                 Dim NSS As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure = New R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure
                 NSS.nEnterExitId = Ds.Tables(0).Rows(0).Item("nEnterExitId")
@@ -774,7 +775,7 @@ Namespace Turns
                          Inner Join dbtransport.dbo.tbEnterExit as Turns On Cars.nIDCar=Turns.strCardno 
                          Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnStatuses as TurnStatuses On Turns.TurnStatus=TurnStatuses.TurnStatusId 
                          Inner Join R2Primary.dbo.TblSoftwareUsers as TurnCreatorUsers On Turns.nUserIdEnter=TurnCreatorUsers.UserId 
-                       Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver & " and EntityRelations.RelationActive=1 and Cars.ViewFlag=1 
+                       Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 and Cars.ViewFlag=1 
 	                   Order By Turns.nEnterExitId Desc) as DataBox
                     Order By DataBox.nEnterExitId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
@@ -786,9 +787,9 @@ Namespace Turns
                     NSS.NSSTruckDriver = R2CoreTransportationAndLoadNotificationMClassTruckDriversManagement.GetNSSTruckDriver(Ds.Tables(0).Rows(Loopx).Item("nDriverCode"))
                     NSS.bFlagDriver = Ds.Tables(0).Rows(Loopx).Item("bFlagDriver")
                     NSS.nUserIdEnter = Ds.Tables(0).Rows(Loopx).Item("nUserIdEnter")
-                    NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber").ToString + " : " + Ds.Tables(0).Rows(Loopx).Item("TurnDistanceToValidity").ToString
-                    NSS.StrCardNo = Ds.Tables(0).Rows(Loopx).Item("StrCardNo")
                     NSS.TurnStatus = Ds.Tables(0).Rows(Loopx).Item("TurnStatus")
+                    NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber").ToString + " : " + IIf(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTurnReadeyforLoadAllocationRegistering(NSS), Ds.Tables(0).Rows(Loopx).Item("TurnDistanceToValidity").ToString, "اعتبار ندارد")
+                    NSS.StrCardNo = Ds.Tables(0).Rows(Loopx).Item("StrCardNo")
                     NSS.LicensePlatePString = Ds.Tables(0).Rows(Loopx).Item("LPString").trim
                     NSS.TruckDriver = Ds.Tables(0).Rows(Loopx).Item("strPersonFullName").trim
                     NSS.TurnStatusTitle = Ds.Tables(0).Rows(Loopx).Item("TurnStatusTitle").trim
@@ -2012,7 +2013,6 @@ Namespace EntityRelations
     Public MustInherit Class R2CoreTransportationAndLoadNotificationEntityRelationTypes
         Inherits R2CoreEntityRelationTypes
         Public Shared ReadOnly Turn_TurnRegisterRequest As Int64 = 1
-        Public Shared ReadOnly SoftwareUser_TruckDriver As Int64 = 2
     End Class
 
 End Namespace
@@ -2032,7 +2032,7 @@ Namespace TerraficCardsManagement
                           Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
                           Inner Join R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars as TCardsRCar On Cars.nIDCar=TCardsRCar.nCarId 
                         Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.RelationActive=1 and  
-                              EntityRelations.ERTypeId=" & R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver & " and Cars.ViewFlag=1 and TCardsRCar.RelationActive=1
+                              EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and Cars.ViewFlag=1 and TCardsRCar.RelationActive=1
                         Order By TCardsRCar.RelationId Desc", 10, Ds).GetRecordsCount <> 0 Then
                     Return R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(System.Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CardId")))
                 Else
@@ -2051,7 +2051,6 @@ End Namespace
 Namespace SoftwareUserManagement
 
     Public MustInherit Class R2CoreTransportationAndLoadNotificationSoftwareUserTypes
-        Public Shared ReadOnly Property TruckDriver As Int64 = 3
         Public Shared ReadOnly Property TruckOwner As Int64 = 4
         Public Shared ReadOnly Property TruckersAssociation As Int64 = 5
         Public Shared ReadOnly Property TransportCompaniesAssociation As Int64 = 6

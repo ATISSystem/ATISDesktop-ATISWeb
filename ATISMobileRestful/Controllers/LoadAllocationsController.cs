@@ -15,9 +15,10 @@ using R2CoreTransportationAndLoadNotification.Turns.Exceptions;
 using PayanehClassLibrary.TurnRegisterRequest;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2CoreTransportationAndLoadNotification.ConfigurationsManagement;
+using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
 
 using ATISMobileRestful.Models;
-using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
+using R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions;
 
 namespace ATISMobileRestful.Controllers
 {
@@ -30,20 +31,24 @@ namespace ATISMobileRestful.Controllers
             {
                 //return new MessageStruct { ErrorCode = false, Message1 = String.Empty, Message2 = String.Empty, Message3 = string.Empty };
                 R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure myNSSLoadCapacitorLoad = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId);
-                //if (IsActiveLoadAllocationforThisLoad(myNSSLoadCapacitorLoad))
-                //{ }
                 Int64 myTurnId = Int64.MinValue;
                 try
                 { myTurnId = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId)).nEnterExitId; }
                 catch (TurnNotFoundException ex)
                 {
-                    //کنترل کانفیگ در خصوص زیرگروههایی که مستلزم دارا بودن نوبت نیستند
-
-                    PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequestforAjent(YourUserId, YournEstelamId, false, false, ref myTurnId);
+                    throw ex;
+                    //PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequestforAjent(YourUserId, YournEstelamId, false, false, ref myTurnId);
                 }
+
                 Int64 LAId = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(YournEstelamId, myTurnId, R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId));
                 return new MessageStruct { ErrorCode = false, Message1 = "تخصیص بار انجام شد", Message2 = LAId.ToString(), Message3 = string.Empty };
             }
+            catch (LoadCapacitorLoadNotFoundException ex)
+            { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
+            catch (LoadAllocationNotAllowedBecuaseAHSGLoadAllocationIsUnactiveException ex)
+            { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
+            catch (TurnNotFoundException ex)
+            { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
             catch (Exception ex)
             { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
         }
@@ -98,6 +103,8 @@ namespace ATISMobileRestful.Controllers
                 }
                 return _LoadAllocations;
             }
+            catch (LoadAllocationNotFoundException ex)
+            { return _LoadAllocations; }
             catch (Exception ex)
             { return _LoadAllocations; }
 
@@ -111,6 +118,8 @@ namespace ATISMobileRestful.Controllers
                 R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.IncreasePriority(YourLoadAllocationId);
                 return new MessageStruct { ErrorCode = false, Message1 = "افزایش اولویت انجام شد", Message2 = string.Empty, Message3 = string.Empty };
             }
+            catch (LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException ex)
+            { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
             catch (Exception ex)
             { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
         }
@@ -123,6 +132,8 @@ namespace ATISMobileRestful.Controllers
                 R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.DecreasePriority(YourLoadAllocationId);
                 return new MessageStruct { ErrorCode = false, Message1 = "کاهش اولویت انجام شد", Message2 = string.Empty, Message3 = string.Empty };
             }
+            catch (LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException ex)
+            { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
             catch (Exception ex)
             { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
         }

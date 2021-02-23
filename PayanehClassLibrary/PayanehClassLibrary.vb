@@ -20,7 +20,6 @@ Imports PayanehClassLibrary.DataBaseManagement
 Imports PayanehClassLibrary.DriverTrucksManagement
 Imports PayanehClassLibrary.LoadNotification.LoadPermission
 Imports PayanehClassLibrary.TransportCompanies
-Imports PayanehClassLibrary.TruckLoaderTypeManagement.Exceptions
 Imports R2Core
 Imports R2Core.BaseStandardClass
 Imports R2Core.ComputerMessagesManagement
@@ -69,7 +68,7 @@ Imports R2CoreTransportationAndLoadNotification.Turns.TurnPrintRequest
 Imports R2CoreTransportationAndLoadNotification.Turns.TurnRegisterRequest
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Rmto
-
+Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
 
 Namespace Logging
 
@@ -1169,7 +1168,7 @@ Namespace TurnRegisterRequest
                 'ثبت نوبت
                 YourTurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetNewTurnIdforAgent(myNSSTruck, YournEstelamId, TurnRegisterRequestId, False)
                 'ثبت رابطه نوبت با درخواست صدور نوبت از طریق فضانام مدیریت روابط نهادی
-                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, YourTurnId, TurnRegisterRequestId, Nothing),RelationDeactiveTypes.BothDeactive )
+                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, YourTurnId, TurnRegisterRequestId, Nothing), RelationDeactiveTypes.BothDeactive)
                 Return TurnRegisterRequestId
             Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
                                   OrElse TypeOf ex Is TruckNotFoundException _
@@ -1206,7 +1205,7 @@ Namespace TurnRegisterRequest
                 'ثبت نوبت
                 YourTurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetNobat(NSSTrafficCard, Nothing, TurnRegisterRequestId, YourUserNSS)
                 'ثبت رابطه نوبت با درخواست صدور نوبت از طریق فضانام مدیریت روابط نهادی
-                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, YourTurnId, TurnRegisterRequestId, Nothing),RelationDeactiveTypes.BothDeactive )
+                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, YourTurnId, TurnRegisterRequestId, Nothing), RelationDeactiveTypes.BothDeactive)
                 'درخواست چاپ نوبت
                 PayanehClassLibraryMClassCarTruckNobatManagement.NoCostTurnPrintRequest(PayanehClassLibraryMClassCarTruckNobatManagement.GetNSSCarTruckNobat(YourTurnId), YourTurnPrintRedirect)
                 Return TurnRegisterRequestId
@@ -1244,7 +1243,7 @@ Namespace TurnRegisterRequest
                 'ثبت نوبت
                 Dim YourTurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetNobat(NSSTrafficCard, Nothing, YourDataStruct.Data2, YourUserNSS)
                 'ثبت رابطه نوبت با درخواست صدور نوبت از طریق فضانام مدیریت روابط نهادی
-                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, YourTurnId, YourDataStruct.Data2, Nothing),RelationDeactiveTypes.BothDeactive )
+                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, YourTurnId, YourDataStruct.Data2, Nothing), RelationDeactiveTypes.BothDeactive)
                 'درخواست چاپ نوبت
                 R2CoreTransportationAndLoadNotificationMClassTurnPrintRequestManagement.NoCostTurnPrintRequest(YourTurnId, YourTurnPrintRedirect)
             Catch ex As Exception When TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
@@ -1279,7 +1278,7 @@ Namespace TurnRegisterRequest
                 'ثبت نوبت
                 Dim myTurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetNewReserveTurn(YourDataStruct.Data1, YourUserNSS)
                 'ثبت رابطه نوبت با درخواست صدور نوبت از طریق فضانام مدیریت روابط نهادی
-                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, myTurnId, YourDataStruct.Data1, Nothing),RelationDeactiveTypes.BothDeactive )
+                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, myTurnId, YourDataStruct.Data1, Nothing), RelationDeactiveTypes.BothDeactive)
                 'ارسال پیام به راننده
                 SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, YourDataStruct.Data3, R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 3) + ":" + myTurnId.ToString(), 12, Nothing, 1, Nothing, Nothing))
                 Dim myOutputData As New DataStruct
@@ -1541,13 +1540,15 @@ Namespace DriverTrucksManagement
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
-                If IsExistDriverTruck(YourNSS) = True Then Throw New Exception("راننده با شماره هوشمند مورد نظر قبلا ثبت شده است")
+                If IsExistDriverTruck(YourNSS) = True Then Throw New DriverTruckSmartCardNoAlreadyAvailabletException
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 Dim mynIdPerson As Int64 = YourNSS.NSSDriver.nIdPerson
                 CmdSql.CommandText = "Update TbDriver Set StrSmartCardNo='" & YourNSS.StrSmartCardNo & "' Where nIdDriver=" & mynIdPerson & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As DriverTruckSmartCardNoAlreadyAvailabletException
+                Throw ex
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -1577,10 +1578,10 @@ Namespace DriverTrucksManagement
                     NSSDriverTruck.StrSmartCardNo = Ds.Tables(0).Rows(0).Item("StrSmartCardNo")
                     Return NSSDriverTruck
                 Else
-                    Throw New GetNSSException
+                    Throw New DriverTruckInformationNotExistException
                 End If
-            Catch exx As GetNSSException
-                Throw exx
+            Catch ex As DriverTruckInformationNotExistException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -1592,10 +1593,10 @@ Namespace DriverTrucksManagement
                 If IsExistDriverTruck(NSS) = True Then
                     Dim nIdPerson As Int64 = GetNSSDriverTruckbySmartCardNo(YourSmartCardNo).NSSDriver.nIdPerson
                     NSS.NSSDriver.nIdPerson = nIdPerson
-                    R2CoreParkingSystemMClassDrivers.UpdateDriver(NSS.NSSDriver)
+                    R2CoreParkingSystemMClassDrivers.UpdateDriver(NSS.NSSDriver,R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser )
                     PayanehClassLibraryMClassDriverTrucksManagement.UpdateDriverTruck(NSS)
                 Else
-                    Dim nIdPerson As Int64 = R2CoreParkingSystemMClassDrivers.InsertDriver(NSS.NSSDriver)
+                    Dim nIdPerson As Int64 = R2CoreParkingSystemMClassDrivers.InsertDriver(NSS.NSSDriver,R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser )
                     NSS.NSSDriver.nIdPerson = nIdPerson
                     PayanehClassLibraryMClassDriverTrucksManagement.UpdateDriverTruck(NSS)
                 End If
@@ -1611,6 +1612,28 @@ Namespace DriverTrucksManagement
 
 
     End Class
+
+    Namespace Exceptions
+
+        Public Class DriverTruckSmartCardNoAlreadyAvailabletException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "راننده با شماره هوشمند مورد نظر قبلا ثبت شده است"
+                End Get
+            End Property
+        End Class
+
+        Public Class DriverTruckInformationNotExistException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "اطلاعات پایه راننده ثبت نشده است"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
 
 
 End Namespace

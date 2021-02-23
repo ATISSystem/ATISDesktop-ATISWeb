@@ -43,6 +43,8 @@ Partial Class Form3
         Me.Button13 = New System.Windows.Forms.Button()
         Me.Button14 = New System.Windows.Forms.Button()
         Me.Button15 = New System.Windows.Forms.Button()
+        Me.Button16 = New System.Windows.Forms.Button()
+        Me.UcDriverTruck1 = New PayanehClassLibrary.UCDriverTruck()
         Me.SuspendLayout
         '
         'Button1
@@ -249,11 +251,32 @@ Partial Class Form3
         Me.Button15.Text = "ایجاد ارتباط کاربران با گروههای فرآیندی موبایلی"
         Me.Button15.UseVisualStyleBackColor = false
         '
+        'Button16
+        '
+        Me.Button16.Location = New System.Drawing.Point(586, 131)
+        Me.Button16.Name = "Button16"
+        Me.Button16.Size = New System.Drawing.Size(75, 23)
+        Me.Button16.TabIndex = 20
+        Me.Button16.Text = "Button16"
+        Me.Button16.UseVisualStyleBackColor = true
+        '
+        'UcDriverTruck1
+        '
+        Me.UcDriverTruck1.BackColor = System.Drawing.Color.Transparent
+        Me.UcDriverTruck1.Location = New System.Drawing.Point(93, 41)
+        Me.UcDriverTruck1.Name = "UcDriverTruck1"
+        Me.UcDriverTruck1.Padding = New System.Windows.Forms.Padding(3)
+        Me.UcDriverTruck1.Size = New System.Drawing.Size(826, 167)
+        Me.UcDriverTruck1.TabIndex = 21
+        Me.UcDriverTruck1.UCViewButtons = true
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 450)
+        Me.Controls.Add(Me.UcDriverTruck1)
+        Me.Controls.Add(Me.Button16)
         Me.Controls.Add(Me.Button15)
         Me.Controls.Add(Me.Button14)
         Me.Controls.Add(Me.Button13)
@@ -302,4 +325,6 @@ End Sub
     Friend WithEvents Button13 As Button
     Friend WithEvents Button14 As Button
     Friend WithEvents Button15 As Button
+    Friend WithEvents Button16 As Button
+    Friend WithEvents UcDriverTruck1 As PayanehClassLibrary.UCDriverTruck
 End Class

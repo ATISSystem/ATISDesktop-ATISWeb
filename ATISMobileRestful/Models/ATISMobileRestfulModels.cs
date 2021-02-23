@@ -68,6 +68,7 @@ namespace ATISMobileRestful.Models
         public string LPString { get; set; }
         public string LoaderTitle { get; set; }
         public string SmartCardNo { get; set; }
+        public string AnnouncementHallSubGroups { get; set; }
     }
 
     public class Turns

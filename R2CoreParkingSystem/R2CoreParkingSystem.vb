@@ -43,6 +43,11 @@ Imports R2CoreParkingSystem.MoneyWalletManagement
 Imports R2CoreParkingSystem.TrafficCardsManagement
 Imports R2CoreParkingSystem.EnterExitManagement
 Imports R2CoreParkingSystem.My
+Imports R2CoreParkingSystem.SoftwareUsersManagement
+Imports R2Core.EntityRelationManagement
+Imports R2CoreParkingSystem.EntityRelations
+Imports R2Core.PermissionManagement
+Imports R2CoreParkingSystem.SoftwareUsersManagement.Exceptions
 
 Namespace DataBaseManagement
 
@@ -2998,11 +3003,10 @@ Namespace Drivers
             End Try
         End Function
 
-        Public Shared Function InsertDriver(YourNSS As R2StandardDriverStructure) As Int64
+        Public Shared Function InsertDriver(YourNSS As R2StandardDriverStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
-                ''If IsExistDriver(YourNSS) = True Then Throw New Exception("راننده با مشخصات مورد نظر قبلا ثبت شده است")
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Select top 1 * from dbtransport.dbo.tbperson with (tablockx)" : CmdSql.ExecuteNonQuery()
@@ -3013,6 +3017,18 @@ Namespace Drivers
                 CmdSql.CommandText = "Insert Into dbtransport.dbo.TbDriver(nIDDriver,StrDriverCode,strDrivingLicenceNo,strSmartcardNo) Values(" & mynIdPerson & ",0,'" & YourNSS.strDrivingLicenceNo & "','" & mynIdPerson & "')"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Dim NSSDriver = R2CoreParkingSystemMClassDrivers.GetNSSDriver(mynIdPerson)
+                Dim UserId = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, String.Empty, False, True, R2CoreParkingSystemSoftwareUserTypes.Driver, NSSDriver.StrIdNo, Nothing, Nothing, YourUserNSS.UserId, Nothing, Nothing, True, Nothing), YourUserNSS)
+                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver, UserId, NSSDriver.nIdPerson, Nothing), RelationDeactiveTypes.BothDeactive)
+                'به دست آوردن لیست فرآیندهای موبایلی قابل دسترسی برای نوع کاربر راننده و ارسال به مدیریت مجوز
+                Dim ComposeSearchString As String = R2CoreParkingSystemSoftwareUserTypes.Driver.ToString + ":"
+                Dim AllofSoftwareUserTypes1 As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesAccessMobileProcesses), ";")
+                Dim AllofMobileProcessesIds As String() = Split(Mid(AllofSoftwareUserTypes1.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes1.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+                R2CoreMClassPermissionsManagement.RegisteringPermissions(R2CorePermissionTypes.SoftwareUsersAccessMobileProcesses, UserId, AllofMobileProcessesIds)
+                'به دست آوردن لیست گروههای فرآیند موبایلی برای نوع کاربر راننده و ارسال آن به مدیریت روابط نهادی
+                Dim AllofSoftwareUserTypes2 As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesRelationMobileProcessGroups), ";")
+                Dim AllofMobileProcessGroupsIds As String() = Split(Mid(AllofSoftwareUserTypes2.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes2.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+                R2CoreMClassEntityRelationManagement.RegisteringEntityRelations(R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup, UserId, AllofMobileProcessGroupsIds)
                 Return mynIdPerson
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
@@ -3022,7 +3038,7 @@ Namespace Drivers
             End Try
         End Function
 
-        Public Shared Sub UpdateDriver(YourNSS As R2StandardDriverStructure)
+        Public Shared Sub UpdateDriver(YourNSS As R2StandardDriverStructure,YourNSSUser As R2CoreStandardSoftwareUserStructure )
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -3034,6 +3050,8 @@ Namespace Drivers
                 CmdSql.CommandText = "Update dbtransport.dbo.TbDriver Set strDrivingLicenceNo='" & YourNSS.strDrivingLicenceNo & "' Where nIdDriver=" & mynIdPerson & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Dim NSSUser = R2CoreParkingSystemMClassSoftwareUsersManagement.GetNSSSoftwareUser(mynIdPerson)
+                R2CoreMClassSoftwareUsersManagement.EditingSoftwareUser(New R2CoreStandardSoftwareUserStructure(NSSUser.UserId,YourNSS.StrPersonFullName, Nothing, Nothing, NSSUser.UserPinCode ,NSSUser.UserCanCharge , NSSUser.UserActive ,NSSUser.UserTypeId ,YourNSS.StrIdNo,NSSUser.UserStatus ,NSSUser.VerificationCode ,YourNSSUser.UserId , Nothing, Nothing, NSSUser.ViewFlag , NSSUser.Deleted ), YourNSSUser)
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -3980,6 +3998,57 @@ Namespace MonetarySettingTools
     Public MustInherit Class R2CoreParkingSystemMonetarySettingTools
         Inherits R2CoreMonetarySettingTools
         Public Shared ReadOnly Property ExitCarProcess As Int64 = 2
+    End Class
+
+End Namespace
+
+Namespace SoftwareUsersManagement
+
+    Public MustInherit Class R2CoreParkingSystemSoftwareUserTypes
+        Inherits R2CoreSoftwareUserTypes
+        Public Shared ReadOnly Property Driver As Int64 = 3
+
+    End Class
+
+    Public NotInheritable Class R2CoreParkingSystemMClassSoftwareUsersManagement
+        Public Shared Function GetNSSSoftwareUser(YourDriverId As Int64) As R2CoreStandardSoftwareUserStructure
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                         "Select Top 1 SoftwareUsers.UserId from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                                Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1 
+	                            Inner Join dbtransport.dbo.TbDriver as Drivers On EntityRelations.E2=Drivers.nIDDriver 
+                          Where SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and
+                                EntityRelations.RelationActive=1 and Drivers.nIDDriver=" & YourDriverId & "", 0, Ds).GetRecordsCount = 0 Then Throw New SoftwareUserRelatedThisDriverNotFoundException
+                Return R2CoreMClassSoftwareUsersManagement.GetNSSUser(Ds.Tables(0).Rows(0).Item("UserId"))
+            Catch ex As SoftwareUserRelatedThisDriverNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
+
+    Namespace Exceptions
+        Public Class SoftwareUserRelatedThisDriverNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "مشخصات کاربری مرتبط  با راننده مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
+
+End Namespace
+
+Namespace EntityRelations
+
+    Public MustInherit Class R2CoreParkingSystemEntityRelationTypes
+        Inherits R2CoreEntityRelationTypes
+        Public Shared ReadOnly SoftwareUser_Driver As Int64 = 2
     End Class
 
 End Namespace

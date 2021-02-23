@@ -36,7 +36,7 @@ Partial Class FrmcLoadPermissions
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(-171, -178)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1000)
         '
         'PnlLoadPermissions
         '

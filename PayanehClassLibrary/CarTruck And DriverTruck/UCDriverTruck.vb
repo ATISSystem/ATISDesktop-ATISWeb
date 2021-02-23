@@ -15,6 +15,7 @@ Imports R2CoreTransportationAndLoadNotification.EntityRelations
 Imports R2Core.EntityRelationManagement.Exceptions
 Imports R2Core.ConfigurationManagement
 Imports R2Core.PermissionManagement
+Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
 
 Public Class UCDriverTruck
     Inherits UCGeneral
@@ -113,29 +114,9 @@ Public Class UCDriverTruck
             End If
             Dim NSSDriver As R2StandardDriverStructure = UcDriver.UCGetNSS()
             PayanehClassLibraryMClassDriverTrucksManagement.UpdateDriverTruck(New R2StandardDriverTruckStructure(NSSDriver, UcNumberStrSmartCardNo.UCValue))
-            Dim EntityRelation As R2StandardEntityRelationStructure = Nothing
-            Try
-                EntityRelation = R2CoreMClassEntityRelationManagement.GetNSSEntityRelation(R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver, Int64.MinValue, NSSDriver.nIdPerson)
-                R2CoreMClassSoftwareUsersManagement.EditingSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, String.Empty, False, 1, R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TruckDriver, NSSDriver.StrIdNo, Nothing, Nothing, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing, Nothing, Nothing), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
-            Catch ex As EntityRelationNotFoundException
-                Dim UserId = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, Nothing, Nothing, Nothing, R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TruckDriver, NSSDriver.StrIdNo, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
-                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.SoftwareUser_TruckDriver, UserId, NSSDriver.nIdPerson, Nothing), RelationDeactiveTypes.BothDeactive)
-                'به دست آوردن لیست فرآیندهای موبایلی قابل دسترسی برای نوع کاربر راننده و ارسال به مدیریت مجوز
-                Dim ComposeSearchString1 As String = R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TruckDriver.ToString + ":"
-                Dim AllofSoftwareUserTypes1 As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesAccessMobileProcesses), ";")
-                Dim AllofMobileProcessesIds As String() = Split(Mid(AllofSoftwareUserTypes1.Where(Function(x) Mid(x, 1, ComposeSearchString1.Length) = ComposeSearchString1)(0), ComposeSearchString1.Length + 1, AllofSoftwareUserTypes1.Where(Function(x) Mid(x, 1, ComposeSearchString1.Length) = ComposeSearchString1)(0).Length), ",")
-                R2CoreMClassPermissionsManagement.RegisteringPermissions(R2CorePermissionTypes.SoftwareUsersAccessMobileProcesses, UserId,AllofMobileProcessesIds)
-                'به دست آوردن لیست گروههای فرآیند موبایلی برای نوع کاربر راننده و ارسال آن به مدیریت روابط نهادی
-                Dim ComposeSearchString2 As String = R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TruckDriver.ToString + ":"
-                Dim AllofSoftwareUserTypes2 As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesRelationMobileProcessGroups  ), ";")
-                Dim AllofMobileProcessGroupsIds As String() = Split(Mid(AllofSoftwareUserTypes2.Where(Function(x) Mid(x, 1, ComposeSearchString2.Length) = ComposeSearchString2)(0), ComposeSearchString2.Length + 1, AllofSoftwareUserTypes2.Where(Function(x) Mid(x, 1, ComposeSearchString2.Length) = ComposeSearchString2)(0).Length), ",")
-                R2CoreMClassEntityRelationManagement.RegisteringEntityRelations (R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup ,UserId ,AllofMobileProcessGroupsIds)
-           Catch ex As Exception
-                Throw ex
-            End Try
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "مشخصات راننده ناوگان باری ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch exx As GetNSSException
-            Throw New Exception("اطلاعات پایه راننده را ثبت کنید")
+        Catch ex As DriverTruckSmartCardNoAlreadyAvailabletException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -176,7 +157,7 @@ Public Class UCDriverTruck
                 UcDriver.UCRefreshGeneral()
                 _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbySmartCardNo(UserNumber)
                 UcDriver.UCViewDriverInformation(_CurrentNSS.NSSDriver)
-            Catch ex As GetNSSException
+            Catch ex As DriverTruckInformationNotExistException
                 If MessageBox.Show(Nothing, "اطلاعات راننده در سیستم قبلا ثبت نشده است" + vbCrLf + "اطلاعات مورد نظر را از سرویس اینترنتی دریافت میکنید؟", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly) = DialogResult.Yes Then
                     Try
                         _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSTruckDriver(RmtoWebService.GetNSSTruckDriver(UserNumber))
@@ -202,6 +183,8 @@ Public Class UCDriverTruck
     Private Sub UcButtonSabt_UC13PressedEvent() Handles UcButtonSabt.UC13PressedEvent
         Try
             UCSabtRoutin()
+        Catch ex As DriverTruckSmartCardNoAlreadyAvailabletException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -226,6 +209,8 @@ Public Class UCDriverTruck
     Private Sub UcButtonSabt_UCClickedEvent() Handles UcButtonSabt.UCClickedEvent
         Try
             UCSabtRoutin()
+        Catch ex As DriverTruckSmartCardNoAlreadyAvailabletException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

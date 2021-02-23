@@ -14,6 +14,7 @@ Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
+Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
 Imports R2CoreTransportationAndLoadNotification.Rmto
 
 Public Class Form3
@@ -277,7 +278,8 @@ Public Class Form3
     End Sub
 
     Private Sub Form3_Load(sender As Object, e As EventArgs) Handles Me.Load
-        'R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS=R2Core.UserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser()
+           R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser  )
+
     End Sub
 
 
@@ -428,5 +430,34 @@ Public Class Form3
             MessageBox.Show(ex.Message)
         End Try
 
+    End Sub
+
+    Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
+        Try
+            R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()
+            'For loopx As Int64 = 0 To 2000
+            '    Try
+            '        R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(462299, 943601, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            '    Catch ex As Exception
+            '        MessageBox.Show(ex.Message)
+            '    End Try
+
+            'Next
+
+            'R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(715,R2CoreTransportationAndLoadNotification.LoadAllocation.R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser   ,R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser )
+            'R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationLoadPermissionRegistering(713,R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser )
+            'R2CoreTransportationAndLoadNotification.Turns.R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetTurns(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(7025))
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub UcDriverTruck1_UCViewDriverTruckInformationCompleted(DriverId As String) Handles UcDriverTruck1.UCViewDriverTruckInformationCompleted
+        Try
+            
+        Catch ex As Exception
+
+        End Try
     End Sub
 End Class

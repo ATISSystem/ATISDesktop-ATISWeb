@@ -24,6 +24,7 @@ namespace ATISMobileRestful.Controllers
                 Item.LPString = "ناوگان: " + Truck.NSSCar.GetCarPelakSerialComposit();
                 Item.LoaderTitle = "بارگیر: " + Truck.NSSCar.snCarType;
                 Item.SmartCardNo = "هوشمند: " + Truck.SmartCardNo;
+                Item.AnnouncementHallSubGroups="گروه های مجاز بار : "+string.Join(",",R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetAnnouncementHallSubGroupsTitle(Truck));
                 return Item;
             }
             catch (Exception ex)

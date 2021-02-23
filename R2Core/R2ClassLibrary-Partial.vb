@@ -1060,8 +1060,9 @@ Namespace EntityRelationManagement
 
                 CmdSql.CommandText = "Select Top 1 ERId From R2Primary.dbo.TblEntityRelations With (tablockx) Order By ERId Desc"
                 CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Select IDENT_CURRENT('R2Primary.dbo.TblEntityRelations') "
                 Dim ERIdNew As Int64 = CmdSql.ExecuteScalar() + 1
-                CmdSql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERId,ERTypeId,E1,E2,RelationActive) Values(" & ERIdNew & "," & YourNSSEntityRelation.ERTypeId & "," & YourNSSEntityRelation.E1 & "," & YourNSSEntityRelation.E2 & ",1)"
+                CmdSql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERTypeId,E1,E2,RelationActive) Values(" & YourNSSEntityRelation.ERTypeId & "," & YourNSSEntityRelation.E1 & "," & YourNSSEntityRelation.E2 & ",1)"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Return ERIdNew
@@ -1086,12 +1087,14 @@ Namespace EntityRelationManagement
                     If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.E2=" & YourERId2 & " ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
                     Return GetNSSEntityRelation(Ds.Tables(0).Rows(0).Item("ERId"))
                 End If
+            Catch ex As EntityRelationNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
 
-        Public Shared Sub RegisteringEntityRelations(YourEntityRelationTypeId As Int64, YourE1Id As Int64, YourE2Ids As String())
+        Public Shared Function  RegisteringEntityRelations(YourEntityRelationTypeId As Int64, YourE1Id As Int64, YourE2Ids As String()) As Int64 
             Dim Cmdsql As New SqlClient.SqlCommand
             Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
             Try
@@ -1101,8 +1104,8 @@ Namespace EntityRelationManagement
                     Cmdsql.CommandText = "Select Top 1 ERId From R2Primary.dbo.TblEntityRelations With (tablockx) Order By ERId Desc"
                     Cmdsql.ExecuteNonQuery()
                     Dim ERIdNew As Int64 = Cmdsql.ExecuteScalar() + 1
-                    Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERId,ERTypeId,E1,E2,RelationActive)
-                                          Values(" & ERIdNew & "," & YourEntityRelationTypeId & "," & YourE1Id & "," & YourE2Ids(Loopx) & ")"
+                    Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERTypeId,E1,E2,RelationActive)
+                                          Values(" & YourEntityRelationTypeId & "," & YourE1Id & "," & YourE2Ids(Loopx) & ",1)"
                     Cmdsql.ExecuteNonQuery()
                 Next
                 Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
@@ -1112,7 +1115,7 @@ Namespace EntityRelationManagement
                 End If
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
-        End Sub
+        End Function
 
     End Class
 
@@ -1250,15 +1253,15 @@ Namespace PermissionManagement
             End Try
         End Sub
 
-        Public Shared Function ExistPermission(YourPermissionTypeId As Int64 ,YourEntityIdFirst As Int64 ,YourEntityIdSecond As Int64 ) As Boolean 
+        Public Shared Function ExistPermission(YourPermissionTypeId As Int64, YourEntityIdFirst As Int64, YourEntityIdSecond As Int64) As Boolean
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                       "Select * from R2Primary.dbo.TblPermissions as Permissions 
-                       Where Permissions.PermissionTypeId=" & YourPermissionTypeId & " and Permissions.RelationActive=1 and Permissions.EntityIdFirst=" & YourEntityIdFirst  & " and Permissions.EntityIdSecond=" & YourEntityIdSecond &  "", 3600, Ds).GetRecordsCount() = 0 Then
-                    Return False 
+                       Where Permissions.PermissionTypeId=" & YourPermissionTypeId & " and Permissions.RelationActive=1 and Permissions.EntityIdFirst=" & YourEntityIdFirst & " and Permissions.EntityIdSecond=" & YourEntityIdSecond & "", 3600, Ds).GetRecordsCount() = 0 Then
+                    Return False
                 Else
-                    Return True 
+                    Return True
                 End If
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1414,7 +1417,7 @@ Namespace MobileProcessesManagement
                         Dim NSS As New R2StandardMobileProcessStructure
                         NSS.PId = Ds.Tables(0).Rows(Loopx).Item("PId")
                         NSS.PName = Ds.Tables(0).Rows(Loopx).Item("PName")
-                        NSS.PTitle ="  "+Ds.Tables(0).Rows(Loopx).Item("PTitle").ToString().trim
+                        NSS.PTitle = "  " + Ds.Tables(0).Rows(Loopx).Item("PTitle").ToString().Trim
                         NSS.TargetMobilePage = Ds.Tables(0).Rows(Loopx).Item("TargetMobilePage").trim
                         NSS.Description = Ds.Tables(0).Rows(Loopx).Item("Description").trim
                         NSS.PForeColor = Color.FromName(Ds.Tables(0).Rows(Loopx).Item("PForeColor").trim)
