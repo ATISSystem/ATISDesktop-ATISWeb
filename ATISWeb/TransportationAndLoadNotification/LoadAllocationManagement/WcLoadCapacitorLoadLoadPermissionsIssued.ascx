@@ -16,6 +16,10 @@
                 <asp:GridView ID="GridViewLoadCapacitorLoadLoadPermissionsIssued" runat="server" dir="rtl" AutoGenerateColumns="False" BackColor="White" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CellPadding="3" ForeColor="Black" GridLines="Vertical" ShowFooter="True" ShowHeaderWhenEmpty="True" Width="100%" HorizontalAlign="Center" HeaderStyle-CssClass="R2FontBYekanSmall">
                     <AlternatingRowStyle BackColor="#CCCCCC" />
                     <Columns>
+                        <asp:BoundField ItemStyle-CssClass="R2FontBHomaSmall" HeaderText="تخصیص" DataField="LoadAllocationId">
+                            <HeaderStyle HorizontalAlign="Center" />
+                            <ItemStyle HorizontalAlign="Center" />
+                        </asp:BoundField>
                         <asp:BoundField ItemStyle-CssClass="R2FontBHomaSmall" HeaderText="ناوگان" DataField="Truck">
                             <HeaderStyle HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Center" />
@@ -60,6 +64,7 @@
                             <HeaderStyle HorizontalAlign="Center" />
                             <ItemStyle HorizontalAlign="Center" />
                         </asp:BoundField>
+                        <asp:CommandField ButtonType="Image" HeaderText="مشاهده" SelectImageUrl="~/Images/Monitor.ico" ShowSelectButton="true" Visible="true" />
                     </Columns>
                     <FooterStyle BackColor="#CCCCCC" />
                     <HeaderStyle BackColor="Black" ForeColor="White" />
@@ -71,10 +76,149 @@
                     <SortedDescendingHeaderStyle BackColor="#383838" />
                 </asp:GridView>
             </div>
+            <div class="container-fluid p-1">
+                <asp:Button runat="server" ID="BtnPrint" Visible="true" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-success" Text="چاپ مجوز" OnClientClick="return PrintLoadPermission();" />
+            </div>
+            <asp:Panel ID="PnlPrintLoadPermission" runat="server" Style="margin-left: auto; margin-right: auto;" Visible="true" Width="70%">
+                <div runat="server" style="border: solid;">
+                    <div style="text-align: center; width: 100%; font-family: 'B Homa'; font-size: x-large;">
+                        <span>پایانه امیرکبیر اصفهان</span>
+                    </div>
+                    <div style="width: 100%;">
+                        <div style="display: inline-block; float: left; font-family: 'B Homa'; font-size: smaller; margin-left: 20px; text-align: right">
+                            <span>تاریخ صدور <%=PPDS.StrExitDate%></span><br />
+                            <span>ساعت صدور <%=PPDS.StrExitTime%></span>
+                        </div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller; margin-right: 20px; text-align: right">
+                            <span>شماره مجوز <%=PPDS.nEstelamId%></span><br />
+                            <span>شماره نوبت <%=PPDS.TurnId%></span>
+                        </div>
+                    </div>
+                    <br />
+                    <div style="width: 100%; text-align: center; font-family: Titr; font-size: smaller;">
+                        <span>سیستم هوشمند صدور مجوز بارگیری</span><br />
+                        <span>((مجوز بارگیری))</span>
+                    </div>
+                    <div style="width: 100%; text-align: right; font-family: Titr; font-size: small ;"><span>شرکت/موسسه محترم <%=PPDS.CompanyName%>&nbsp;&nbsp;&nbsp;</span></div>
+                    <br />
+                    <div style="width: 100%; text-align: right;">
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>بدین وسیله یک دستگاه <%=PPDS.CarTruckLoaderTypeName%></span>&nbsp;&nbsp;</div>
+                        <div style="display: inline-block; float: right; font-family: B Homa; font-size: smaller;"><span>به شماره پلاک <%=PPDS.pelak%> - <%=PPDS.Serial%></span></div>
+                    </div>
+                    <br /><br />
+                    <div style="width: 100%; text-align: center; font-family: 'B Homa'; font-size: smaller;">
+                        <div><span>به رانندگی آقای <%=PPDS.DriverTruckFullNameFamily%> دارای گواهینامه به شماره <%=PPDS.DriverTruckDrivingLicenseNo%></span>&nbsp;&nbsp;</div>
+                    </div>
+
+                    <div style="width: 100%; text-align: right;">
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small;"><span>جهت حمل <%=PPDS.ProductName%></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small;"><span>از اصفهان به مقصد <%=PPDS.TargetCityName%></span>&nbsp;&nbsp;&nbsp;</div>
+                    </div>
+                    <br />
+                    <div style="width: 100%; text-align: right;">
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller ;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>با نرخ <%=PPDS.StrPriceSug%> ریال با مسئولیت آن شرکت/موسسه معرفی می گردد</span></div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller ;"><span></span>&nbsp;&nbsp;&nbsp;</div>
+                    </div>
+                    <br />
+                    <div style="width: 100%; text-align: center;">
+                        <div style="display: inline-block; float: right ; font-family: 'B Homa'; font-size: smaller  ;"><span><%=PPDS.StrDescription%></span></div>
+                    </div>
+                    <br />
+                    <div style="width: 100%; text-align: center;">
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small ;"><span>توجه : مجوز فوق پس از صدور تعویض نخواهد شد - دریافت نوبت بعدی از پایانه به شرط انجام سفر امکان پذیر است</span></div>
+                    </div>
+                    <br />
+                    <div style="width: 100%; text-align: center;">
+                        <div style="display: inline-block; float: left ; font-family: 'B Homa'; font-size: x-small ;"><span style="font-family: 'B Homa'; font-size: 10;">&nbsp;&nbsp;&nbsp; نام کاربر : <%=PPDS.PermissionUserName%></span></div>
+                    </div>
+                <br />
+                <br />
+                </div>
+                <br />
+                <br />
+                <div runat="server" style="border: solid;">
+                    <div style="text-align: center; width: 100%; font-family: 'B Homa'; font-size: x-large;">
+                        <span>پایانه امیرکبیر اصفهان</span>
+                    </div>
+                    <div style="width: 100%;">
+                        <div style="display: inline-block; float: left; font-family: 'B Homa'; font-size: smaller; margin-left: 20px; text-align: right">
+                            <span>تاریخ صدور <%=PPDS.StrExitDate%></span><br />
+                            <span>ساعت صدور <%=PPDS.StrExitTime%></span>
+                        </div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller; margin-right: 20px; text-align: right">
+                            <span>شماره مجوز <%=PPDS.nEstelamId%></span><br />
+                            <span>شماره نوبت <%=PPDS.TurnId%></span>
+                        </div>
+                    </div>
+                    <br />
+                    <div style="width: 100%; text-align: center; font-family: Titr; font-size: smaller;">
+                        <span>سیستم هوشمند صدور مجوز بارگیری</span><br />
+                        <span>((مجوز بارگیری))</span>
+                    </div>
+                    <div style="width: 100%; text-align: right; font-family: Titr; font-size: small ;"><span>شرکت/موسسه محترم <%=PPDS.CompanyName%>&nbsp;&nbsp;&nbsp;</span></div>
+                    <br />
+                    <div style="width: 100%; text-align: right;">
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>بدین وسیله یک دستگاه <%=PPDS.CarTruckLoaderTypeName%></span>&nbsp;&nbsp;</div>
+                        <div style="display: inline-block; float: right; font-family: B Homa; font-size: smaller;"><span>به شماره پلاک <%=PPDS.pelak%> - <%=PPDS.Serial%></span></div>
+                    </div>
+                    <br /><br />
+                    <div style="width: 100%; text-align: center; font-family: 'B Homa'; font-size: smaller;">
+                        <div><span>به رانندگی آقای <%=PPDS.DriverTruckFullNameFamily%> دارای گواهینامه به شماره <%=PPDS.DriverTruckDrivingLicenseNo%></span>&nbsp;&nbsp;</div>
+                    </div>
+
+                    <div style="width: 100%; text-align: right;">
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small;"><span>جهت حمل <%=PPDS.ProductName%></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small;"><span>از اصفهان به مقصد <%=PPDS.TargetCityName%></span>&nbsp;&nbsp;&nbsp;</div>
+                    </div>
+                    <br />
+                    <div style="width: 100%; text-align: right;">
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller ;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>با نرخ <%=PPDS.StrPriceSug%> ریال با مسئولیت آن شرکت/موسسه معرفی می گردد</span></div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller ;"><span></span>&nbsp;&nbsp;&nbsp;</div>
+                    </div>
+                    <br />
+                    <div style="width: 100%; text-align: center;">
+                        <div style="display: inline-block; float: right ; font-family: 'B Homa'; font-size: smaller  ;"><span><%=PPDS.StrDescription%></span></div>
+                    </div>
+                    <br />
+                    <div style="width: 100%; text-align: center;">
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small ;"><span>توجه : مجوز فوق پس از صدور تعویض نخواهد شد - دریافت نوبت بعدی از پایانه به شرط انجام سفر امکان پذیر است</span></div>
+                    </div>
+                    <br />
+                    <div style="width: 100%; text-align: center;">
+                        <div style="display: inline-block; float: left ; font-family: 'B Homa'; font-size: x-small ;"><span style="font-family: 'B Homa'; font-size: 10;">&nbsp;&nbsp;&nbsp; نام کاربر : <%=PPDS.PermissionUserName%></span></div>
+                    </div>
+                <br />
+                <br />
+                </div>
+            </asp:Panel>
         </ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="WcLoadCapacitorLoadsCollectionSummaryIntelligently" EventName="WcLoadCapacitorLoadSelectedEvent" />
+            <asp:AsyncPostBackTrigger ControlID="GridViewLoadCapacitorLoadLoadPermissionsIssued" EventName="SelectedIndexChanged" />
         </Triggers>
     </asp:UpdatePanel>
+
+
+    <br />
+    <br />
+    <br />
+
 </div>
+
+<script type="text/javascript">
+    function PrintLoadPermission() {
+        var panel = document.getElementById("<%=PnlPrintLoadPermission.ClientID %>");
+        var printWindow = window.open('', '', 'height=400,width=800');
+        printWindow.document.write('<html><head><title></title>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(panel.innerHTML);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        setTimeout(function () {
+            printWindow.print();
+        }, 500);
+        return false;
+    }
+</script>
+
 

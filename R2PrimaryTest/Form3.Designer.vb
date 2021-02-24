@@ -44,7 +44,7 @@ Partial Class Form3
         Me.Button14 = New System.Windows.Forms.Button()
         Me.Button15 = New System.Windows.Forms.Button()
         Me.Button16 = New System.Windows.Forms.Button()
-        Me.UcDriverTruck1 = New PayanehClassLibrary.UCDriverTruck()
+        Me.UcucLoadAllocationCollection1 = New R2CoreTransportationAndLoadNotification.UCUCLoadAllocationCollection()
         Me.SuspendLayout
         '
         'Button1
@@ -260,22 +260,22 @@ Partial Class Form3
         Me.Button16.Text = "Button16"
         Me.Button16.UseVisualStyleBackColor = true
         '
-        'UcDriverTruck1
+        'UcucLoadAllocationCollection1
         '
-        Me.UcDriverTruck1.BackColor = System.Drawing.Color.Transparent
-        Me.UcDriverTruck1.Location = New System.Drawing.Point(93, 41)
-        Me.UcDriverTruck1.Name = "UcDriverTruck1"
-        Me.UcDriverTruck1.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcDriverTruck1.Size = New System.Drawing.Size(826, 167)
-        Me.UcDriverTruck1.TabIndex = 21
-        Me.UcDriverTruck1.UCViewButtons = true
+        Me.UcucLoadAllocationCollection1.BackColor = System.Drawing.Color.Transparent
+        Me.UcucLoadAllocationCollection1.Location = New System.Drawing.Point(132, 31)
+        Me.UcucLoadAllocationCollection1.Name = "UcucLoadAllocationCollection1"
+        Me.UcucLoadAllocationCollection1.Size = New System.Drawing.Size(497, 373)
+        Me.UcucLoadAllocationCollection1.TabIndex = 21
+        Me.UcucLoadAllocationCollection1.UCTargetUCforViewing = "R2CoreTransportationAndLoadNotification.UCViewerNSSLoadAllocationPriorityAppliedE"& _ 
+    "xtended"
         '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 450)
-        Me.Controls.Add(Me.UcDriverTruck1)
+        Me.Controls.Add(Me.UcucLoadAllocationCollection1)
         Me.Controls.Add(Me.Button16)
         Me.Controls.Add(Me.Button15)
         Me.Controls.Add(Me.Button14)
@@ -326,5 +326,5 @@ End Sub
     Friend WithEvents Button14 As Button
     Friend WithEvents Button15 As Button
     Friend WithEvents Button16 As Button
-    Friend WithEvents UcDriverTruck1 As PayanehClassLibrary.UCDriverTruck
+    Friend WithEvents UcucLoadAllocationCollection1 As R2CoreTransportationAndLoadNotification.UCUCLoadAllocationCollection
 End Class

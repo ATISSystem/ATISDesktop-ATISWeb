@@ -2,6 +2,7 @@
 Imports System.Drawing
 Imports System.Reflection
 Imports System.Windows.Forms
+Imports System.ComponentModel
 
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
@@ -11,9 +12,14 @@ Public Class UCUCLoadAllocationCollection
 
     Public Event UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
     Public Event UCViewCollectionCompeletedEvent()
+    Public Event UCDecreasedPriorityEvent()
+    Public Event UCIncreasedPriorityEvent()
+
 
 
 #Region "General Properties"
+
+
 #End Region
 
 #Region "Subroutins And Functions"
@@ -34,7 +40,7 @@ Public Class UCUCLoadAllocationCollection
         Try
             UCRefresh()
             Lst = YourCollection
-            If Lst.Count < 1 Then 
+            If Lst.Count < 1 Then
                 RaiseEvent UCViewCollectionCompeletedEvent()
                 Exit Sub
             End If
@@ -53,10 +59,11 @@ Public Class UCUCLoadAllocationCollection
     Private Delegate Sub UCViewCollectionDelegate()
     Private Sub UCViewCollection()
         Try
-            ''Cursor.Current = Cursors.WaitCursor
             Dim UC As UCViewerNSSLoadAllocationExtended = New UCViewerNSSLoadAllocationExtended()
             UC.UCViewNSS(Lst(_Counter))
             UC.Dock = DockStyle.Top
+            AddHandler UC.UCIncreasedPriorityEvent, AddressOf UCs_UCIncreasedPriorityEvent
+            AddHandler UC.UCDecreasedPriorityEvent, AddressOf UCs_UCDecreasedPriorityEvent
             AddHandler UC.UCClickedEvent, AddressOf UCs_UCClickedEvent
             If PnlUCs.InvokeRequired Then
                 PnlUCs.Invoke(New UCViewCollectionDelegate(AddressOf UCViewCollection))
@@ -67,7 +74,7 @@ Public Class UCUCLoadAllocationCollection
             ''Cursor.Current = Cursors.Default
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
-        ''Cursor.Current = Cursors.Default
+
     End Sub
 
     Public Overloads Sub UCRefreshGeneral()
@@ -121,6 +128,23 @@ Public Class UCUCLoadAllocationCollection
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
+
+    Private Sub UCs_UCDecreasedPriorityEvent()
+        Try
+            RaiseEvent UCDecreasedPriorityEvent()
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub UCs_UCIncreasedPriorityEvent()
+        Try
+            RaiseEvent UCIncreasedPriorityEvent()
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
 
 #End Region
 

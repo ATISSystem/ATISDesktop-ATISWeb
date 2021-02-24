@@ -244,6 +244,12 @@
     <Compile Include="Load Allocations\FrmcLoadAllocations.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Load Allocations\FrmcTruckDriverLoadAllocationsPriorityApplied.Designer.vb">
+      <DependentUpon>FrmcTruckDriverLoadAllocationsPriorityApplied.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Allocations\FrmcTruckDriverLoadAllocationsPriorityApplied.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Load Allocations\UCLoadAllocation.Designer.vb">
       <DependentUpon>UCLoadAllocation.vb</DependentUpon>
     </Compile>
@@ -651,6 +657,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Load Allocations\FrmcLoadAllocations.resx">
       <DependentUpon>FrmcLoadAllocations.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Allocations\FrmcTruckDriverLoadAllocationsPriorityApplied.resx">
+      <DependentUpon>FrmcTruckDriverLoadAllocationsPriorityApplied.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Load Allocations\UCLoadAllocation.resx">
       <DependentUpon>UCLoadAllocation.vb</DependentUpon>

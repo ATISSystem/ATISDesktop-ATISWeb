@@ -10,6 +10,9 @@ using System.Web.UI.WebControls;
 using R2CoreTransportationAndLoadNotification.LoadPermission;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
+using R2CoreTransportationAndLoadNotification.LoadAllocation;
+using PayanehClassLibrary.LoadNotification.LoadPermission;
+using static ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement.WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -36,6 +39,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
             {
                 var Lst = R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement.GetLoadPermissionsIssued(YournEstelamId);
                 DataTable dt = new DataTable();
+                dt.Columns.Add(new DataColumn("LoadAllocationId", typeof(string)));
                 dt.Columns.Add(new DataColumn("StrDescription", typeof(string)));
                 dt.Columns.Add(new DataColumn("IssuedLocation", typeof(string)));
                 dt.Columns.Add(new DataColumn("strAddress", typeof(string)));
@@ -51,6 +55,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 for (int i = 0; i <= Lst.Count - 1; i++)
                 {
                     DataRow dr = dt.NewRow();
+                    dr["LoadAllocationId"] = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(Lst[i].nEstelamId, Lst[i].TurnId).LAId.ToString();
                     dr["StrDescription"] = Lst[i].StrDescription.Trim();
                     dr["IssuedLocation"] = Lst[i].IssuedLocation.Trim();
                     dr["strAddress"] = Lst[i].strAddress.Trim();
@@ -86,6 +91,22 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
             {
                 if (!IsPostBack) { WcLoadCapacitorLoadsCollectionSummaryIntelligently.WcViewInformation(); }
                 WcLoadCapacitorLoadsCollectionSummaryIntelligently.WcLoadCapacitorLoadSelectedEvent += WcLoadCapacitorLoadsCollectionSummaryIntelligently_WcLoadCapacitorLoadSelectedEvent;
+                GridViewLoadCapacitorLoadLoadPermissionsIssued.SelectedIndexChanged += GridViewLoadCapacitorLoadLoadPermissionsIssued_SelectedIndexChanged;
+            }
+            catch (Exception ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
+        }
+
+        public PermissionPrintingDataStructure PPDS = new PermissionPrintingDataStructure();
+        private void GridViewLoadCapacitorLoadLoadPermissionsIssued_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Int64 LAId = Int64.Parse(GridViewLoadCapacitorLoadLoadPermissionsIssued.SelectedRow.Cells[0].Text);
+                var NSS = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(LAId);
+                PermissionPrinting.GetInformationforRemotePermissionPrinting(NSS.nEstelamId, NSS.TurnId, ref PPDS.StrExitDate, ref PPDS.StrExitTime, ref PPDS.nEstelamId, ref PPDS.TurnId, ref PPDS.CompanyName, ref PPDS.CarTruckLoaderTypeName, ref PPDS.pelak, ref PPDS.Serial, ref PPDS.DriverTruckFullNameFamily, ref PPDS.DriverTruckDrivingLicenseNo, ref PPDS.ProductName, ref PPDS.TargetCityName, ref PPDS.StrPriceSug, ref PPDS.StrDescription, ref PPDS.PermissionUserName, ref PPDS.OtherNote);
+                PPDS.TurnId = NSS.TurnId.ToString();
+                PPDS.nEstelamId = NSS.nEstelamId.ToString();
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
@@ -98,6 +119,12 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }
+
+
+
+
+
+
 
         #endregion
 

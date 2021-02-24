@@ -108,6 +108,8 @@
     <Content Include="fonts\Yekan.svg" />
     <Content Include="Images\2-2.jpg" />
     <Content Include="Images\3520962.jpg" />
+    <Content Include="Images\Monitor.ico" />
+    <Content Include="Images\PrinterIcon.ico" />
     <Content Include="Images\ATISDesktop.png" />
     <Content Include="Images\ATISMobile.jpg" />
     <Content Include="Images\ATISWeb.jpg" />

@@ -324,7 +324,7 @@ Namespace Logging
         Public Shared ReadOnly Property LoadAllocationsAccessStatistics As Int64 = 14
         Public Shared ReadOnly Property TransferringTommorowLoads As Int64 = 15
         Public Shared ReadOnly Property ATISMobileMoneyWalletsCharging As Int64 = 16
-
+        Public Shared ReadOnly Property LoadAllocationsLoadPermissionRegisteringFailed As Int64 =19
     End Class
 
 End Namespace
@@ -2000,6 +2000,7 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcLoadCapacitor As Int64 = 44
         Public Shared ReadOnly FrmcLoadAllocations As Int64 = 45
         Public Shared ReadOnly FrmcBillOfLadingControl As Int64 = 62
+        Public Shared ReadOnly FrmcTruckDriverLoadAllocationsPriorityApplied As Int64 = 63
 
     End Class
 

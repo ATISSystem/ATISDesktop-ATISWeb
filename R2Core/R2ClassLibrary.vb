@@ -2214,7 +2214,7 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property R2PrimaryAutomatedJobsSetting As Int64 = 70
         Public Shared ReadOnly Property SoftwareUserTypesAccessMobileProcesses As Int64 = 72
         Public Shared ReadOnly Property SoftwareUserTypesRelationMobileProcessGroups As Int64 = 73
-
+        Public Shared ReadOnly Property PublicMessagesforSoftWareUsers As Int64 = 74
 
     End Class
 

@@ -16,6 +16,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
 Imports R2CoreTransportationAndLoadNotification.Rmto
+Imports R2CoreTransportationAndLoadNotification.Turns
 
 Public Class Form3
 
@@ -278,7 +279,7 @@ Public Class Form3
     End Sub
 
     Private Sub Form3_Load(sender As Object, e As EventArgs) Handles Me.Load
-           R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser  )
+        R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
 
     End Sub
 
@@ -434,7 +435,8 @@ Public Class Form3
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()
+
+            'R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()
             'For loopx As Int64 = 0 To 2000
             '    Try
             '        R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(462299, 943601, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
@@ -453,9 +455,9 @@ Public Class Form3
         End Try
     End Sub
 
-    Private Sub UcDriverTruck1_UCViewDriverTruckInformationCompleted(DriverId As String) Handles UcDriverTruck1.UCViewDriverTruckInformationCompleted
+    Private Sub UcDriverTruck1_UCViewDriverTruckInformationCompleted(DriverId As String)
         Try
-            
+
         Catch ex As Exception
 
         End Try

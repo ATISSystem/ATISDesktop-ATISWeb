@@ -75,7 +75,10 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
         public PermissionPrintingDataStructure PPDS = new PermissionPrintingDataStructure();
         private void BtnPrint_Click(object sender, EventArgs e)
         {
-            try { Page.ClientScript.RegisterStartupScript(GetType(), "hwa", "$('#AlertShower').modal('show');", true); }
+            try
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "hwa", "$('#AlertShower').modal('show');", true);
+            }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }

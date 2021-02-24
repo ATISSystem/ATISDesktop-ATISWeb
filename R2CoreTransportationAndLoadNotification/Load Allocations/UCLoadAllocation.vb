@@ -16,6 +16,8 @@ Public Class UCLoadAllocation
     Protected Event UCViewNSSRequested(NSSCurrent As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
     Protected Event UCViewNSSLoadCapacitorLoadRequestedEvent(NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure)
     Protected Event UCViewNSSTurnRequestedEvent(NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure)
+    Public Event UCClickedEvent(UC As UCLoadAllocation)
+
 
 #Region "General Properties"
 
@@ -89,6 +91,11 @@ Public Class UCLoadAllocation
 #End Region
 
 #Region "Events"
+
+    Protected Sub UCOnClickedEvent(YourUC As UCLoadAllocation )
+        RaiseEvent UCClickedEvent(YourUC)
+    End Sub
+
 #End Region
 
 #Region "Event Handlers"

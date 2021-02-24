@@ -29,7 +29,9 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelLoadPermissionResult = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.PnlTop = New System.Windows.Forms.Panel()
+        Me.PicDecreasePriority = New System.Windows.Forms.PictureBox()
         Me.PicBoxLoadAllocationCancellation = New System.Windows.Forms.PictureBox()
+        Me.PicIncreasePriority = New System.Windows.Forms.PictureBox()
         Me.UcMinimizeMaximize = New R2CoreGUI.UCMinimizeMaximize()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -50,16 +52,20 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.PnlOutter.SuspendLayout
         Me.PnlInner.SuspendLayout
         Me.PnlTop.SuspendLayout
+        CType(Me.PicDecreasePriority,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.PicBoxLoadAllocationCancellation,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.PicIncreasePriority,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'PnlMain
         '
+        Me.PnlMain.BackColor = System.Drawing.Color.Transparent
         Me.PnlMain.Controls.Add(Me.PnlOutter)
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(10, 10)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(873, 69)
+        Me.PnlMain.Padding = New System.Windows.Forms.Padding(4)
+        Me.PnlMain.Size = New System.Drawing.Size(983, 70)
         Me.PnlMain.TabIndex = 0
         '
         'PnlOutter
@@ -68,10 +74,10 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.PnlOutter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlOutter.Controls.Add(Me.PnlInner)
         Me.PnlOutter.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PnlOutter.Location = New System.Drawing.Point(0, 0)
+        Me.PnlOutter.Location = New System.Drawing.Point(4, 4)
         Me.PnlOutter.Name = "PnlOutter"
         Me.PnlOutter.Padding = New System.Windows.Forms.Padding(4)
-        Me.PnlOutter.Size = New System.Drawing.Size(873, 69)
+        Me.PnlOutter.Size = New System.Drawing.Size(975, 62)
         Me.PnlOutter.TabIndex = 0
         '
         'PnlInner
@@ -85,7 +91,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.PnlInner.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlInner.Location = New System.Drawing.Point(4, 4)
         Me.PnlInner.Name = "PnlInner"
-        Me.PnlInner.Size = New System.Drawing.Size(863, 59)
+        Me.PnlInner.Size = New System.Drawing.Size(965, 52)
         Me.PnlInner.TabIndex = 0
         '
         'LabelLoadPermissionResult
@@ -98,7 +104,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelLoadPermissionResult.ForeColor = System.Drawing.Color.Red
         Me.LabelLoadPermissionResult.Location = New System.Drawing.Point(3, 78)
         Me.LabelLoadPermissionResult.Name = "LabelLoadPermissionResult"
-        Me.LabelLoadPermissionResult.Size = New System.Drawing.Size(750, 22)
+        Me.LabelLoadPermissionResult.Size = New System.Drawing.Size(852, 22)
         Me.LabelLoadPermissionResult.TabIndex = 64
         Me.LabelLoadPermissionResult.Text = "پیام دلیل عدم صدور مجوز بارگیری"
         Me.LabelLoadPermissionResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -111,7 +117,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.Label8.ForeColor = System.Drawing.Color.DarkGray
         Me.Label8.Location = New System.Drawing.Point(7, 60)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(746, 23)
+        Me.Label8.Size = New System.Drawing.Size(848, 23)
         Me.Label8.TabIndex = 62
         Me.Label8.Text = "توضیحات"
         Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -121,7 +127,9 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.PnlTop.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PnlTop.BackColor = System.Drawing.Color.Honeydew
+        Me.PnlTop.Controls.Add(Me.PicDecreasePriority)
         Me.PnlTop.Controls.Add(Me.PicBoxLoadAllocationCancellation)
+        Me.PnlTop.Controls.Add(Me.PicIncreasePriority)
         Me.PnlTop.Controls.Add(Me.UcMinimizeMaximize)
         Me.PnlTop.Controls.Add(Me.Label7)
         Me.PnlTop.Controls.Add(Me.Label5)
@@ -138,8 +146,20 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.PnlTop.Controls.Add(Me.LabelLoadAllocationStatus)
         Me.PnlTop.Location = New System.Drawing.Point(3, 3)
         Me.PnlTop.Name = "PnlTop"
-        Me.PnlTop.Size = New System.Drawing.Size(857, 60)
+        Me.PnlTop.Size = New System.Drawing.Size(959, 60)
         Me.PnlTop.TabIndex = 1
+        '
+        'PicDecreasePriority
+        '
+        Me.PicDecreasePriority.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PicDecreasePriority.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PicDecreasePriority.Image = CType(resources.GetObject("PicDecreasePriority.Image"),System.Drawing.Image)
+        Me.PicDecreasePriority.Location = New System.Drawing.Point(911, 1)
+        Me.PicDecreasePriority.Name = "PicDecreasePriority"
+        Me.PicDecreasePriority.Size = New System.Drawing.Size(20, 21)
+        Me.PicDecreasePriority.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PicDecreasePriority.TabIndex = 5
+        Me.PicDecreasePriority.TabStop = false
         '
         'PicBoxLoadAllocationCancellation
         '
@@ -151,6 +171,18 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.PicBoxLoadAllocationCancellation.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PicBoxLoadAllocationCancellation.TabIndex = 64
         Me.PicBoxLoadAllocationCancellation.TabStop = false
+        '
+        'PicIncreasePriority
+        '
+        Me.PicIncreasePriority.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PicIncreasePriority.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PicIncreasePriority.Image = CType(resources.GetObject("PicIncreasePriority.Image"),System.Drawing.Image)
+        Me.PicIncreasePriority.Location = New System.Drawing.Point(934, 1)
+        Me.PicIncreasePriority.Name = "PicIncreasePriority"
+        Me.PicIncreasePriority.Size = New System.Drawing.Size(20, 21)
+        Me.PicIncreasePriority.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PicIncreasePriority.TabIndex = 4
+        Me.PicIncreasePriority.TabStop = false
         '
         'UcMinimizeMaximize
         '
@@ -224,7 +256,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.Label1.ForeColor = System.Drawing.Color.DarkGray
         Me.Label1.Location = New System.Drawing.Point(671, -6)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(182, 23)
+        Me.Label1.Size = New System.Drawing.Size(284, 23)
         Me.Label1.TabIndex = 35
         Me.Label1.Text = "شرکت حمل ونقل"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -239,7 +271,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelTransportCompanyTitle.ForeColor = System.Drawing.Color.DarkBlue
         Me.LabelTransportCompanyTitle.Location = New System.Drawing.Point(671, 12)
         Me.LabelTransportCompanyTitle.Name = "LabelTransportCompanyTitle"
-        Me.LabelTransportCompanyTitle.Size = New System.Drawing.Size(183, 23)
+        Me.LabelTransportCompanyTitle.Size = New System.Drawing.Size(285, 23)
         Me.LabelTransportCompanyTitle.TabIndex = 56
         Me.LabelTransportCompanyTitle.Text = "شرکت حمل ونقل"
         Me.LabelTransportCompanyTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -306,7 +338,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelStrDescription.ForeColor = System.Drawing.Color.Blue
         Me.LabelStrDescription.Location = New System.Drawing.Point(37, 31)
         Me.LabelStrDescription.Name = "LabelStrDescription"
-        Me.LabelStrDescription.Size = New System.Drawing.Size(817, 22)
+        Me.LabelStrDescription.Size = New System.Drawing.Size(919, 22)
         Me.LabelStrDescription.TabIndex = 63
         Me.LabelStrDescription.Text = "منم مشستی مشسنیتمشسنیت شمسینتشمس نیتمشسی"
         Me.LabelStrDescription.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -329,7 +361,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.Label6.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
         Me.Label6.ForeColor = System.Drawing.Color.DarkGray
-        Me.Label6.Location = New System.Drawing.Point(755, 60)
+        Me.Label6.Location = New System.Drawing.Point(857, 60)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(105, 23)
         Me.Label6.TabIndex = 40
@@ -343,7 +375,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelUserName.Cursor = System.Windows.Forms.Cursors.Hand
         Me.LabelUserName.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LabelUserName.ForeColor = System.Drawing.Color.Black
-        Me.LabelUserName.Location = New System.Drawing.Point(759, 78)
+        Me.LabelUserName.Location = New System.Drawing.Point(861, 78)
         Me.LabelUserName.Name = "LabelUserName"
         Me.LabelUserName.Size = New System.Drawing.Size(98, 21)
         Me.LabelUserName.TabIndex = 61
@@ -358,12 +390,14 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCViewerNSSLoadAllocationExtended"
         Me.Padding = New System.Windows.Forms.Padding(10)
-        Me.Size = New System.Drawing.Size(893, 89)
+        Me.Size = New System.Drawing.Size(1003, 90)
         Me.PnlMain.ResumeLayout(false)
         Me.PnlOutter.ResumeLayout(false)
         Me.PnlInner.ResumeLayout(false)
         Me.PnlTop.ResumeLayout(false)
+        CType(Me.PicDecreasePriority,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.PicBoxLoadAllocationCancellation,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.PicIncreasePriority,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
 
 End Sub
@@ -391,4 +425,6 @@ End Sub
     Friend WithEvents LabelLoadPermissionResult As System.Windows.Forms.Label
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents PicBoxLoadAllocationCancellation As Windows.Forms.PictureBox
+    Friend WithEvents PicDecreasePriority As Windows.Forms.PictureBox
+    Friend WithEvents PicIncreasePriority As Windows.Forms.PictureBox
 End Class

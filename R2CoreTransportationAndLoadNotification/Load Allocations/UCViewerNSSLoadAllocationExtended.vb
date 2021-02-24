@@ -9,16 +9,19 @@ Imports R2Core.ExceptionManagement
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreGUI
+Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
 
 Public Class UCViewerNSSLoadAllocationExtended
     Inherits UCLoadAllocation
 
-    Public Event UCClickedEvent(UC As UCLoadAllocation)
 
 
 
     Private Const _MaxHight As Int64 = 139
     Private Const _MinHight As Int64 = 89
+
+    Public Event UCDecreasedPriorityEvent()
+    Public Event UCIncreasedPriorityEvent()
 
 #Region "General Properties"
 
@@ -77,7 +80,7 @@ Public Class UCViewerNSSLoadAllocationExtended
 
     Private Sub Labels_Click(sender As Object, e As EventArgs) Handles LabelTransportCompanyTitle.Click, LabelGoodTitle.Click, LabelLoadTargetTitle.Click, LabelTruck.Click, LabelDriverTruck.Click, LabelLoadAllocationStatus.Click
         Try
-            RaiseEvent UCClickedEvent(Me)
+            UCOnClickedEvent(Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -112,6 +115,7 @@ Public Class UCViewerNSSLoadAllocationExtended
             LabelLoadAllocationStatus.Text = NSS.LoadAllocationStatus
             LabelStrDescription.Text = NSS.StrDescription
             LabelLoadPermissionResult.Text = NSS.LANote
+            PnlMain.BackColor = NSS.LAStatusColor
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -120,9 +124,35 @@ Public Class UCViewerNSSLoadAllocationExtended
 
     Private Sub PicBoxLoadAllocationCancellation_Click(sender As Object, e As EventArgs) Handles PicBoxLoadAllocationCancellation.Click
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(UCNSSCurrent.LAId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(UCNSSCurrent.LAId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(UCNSSCurrent.LAId))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخصیص بار کنسل شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub PicDecreasePriority_Click(sender As Object, e As EventArgs) Handles PicDecreasePriority.Click
+        Try
+            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.DecreasePriority(UCNSSCurrent.LAId)
+            RaiseEvent UCDecreasedPriorityEvent()
+        Catch ex As LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage , Nothing, Me)
+        Catch ex As TimingNotReachedException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage , Nothing, Me)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub PicIncreasePriority_Click(sender As Object, e As EventArgs) Handles PicIncreasePriority.Click
+        Try
+            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.IncreasePriority(UCNSSCurrent.LAId)
+            RaiseEvent UCIncreasedPriorityEvent()
+        Catch ex As LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage , Nothing, Me)
+        Catch ex As TimingNotReachedException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage , Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
