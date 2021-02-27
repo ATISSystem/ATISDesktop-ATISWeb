@@ -532,4 +532,13 @@ Public Class Form3
         End Try
 
     End Sub
+
+    Private Sub Button19_Click(sender As Object, e As EventArgs) Handles Button19.Click
+        Try
+            R2Core.SMSSendAndRecieved.R2CoreSMSMClassSMSDomainManagement.SMSDomainSendRecieved()
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message )
+        End Try
+    End Sub
 End Class

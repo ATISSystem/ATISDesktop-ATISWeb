@@ -5,6 +5,7 @@ Imports System.Timers
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
+Imports R2Core.SMSSendAndRecieved
 Imports R2Core.SoftwareUserManagement
 
 Public Class R2PrimaryAutomatedJobs
@@ -58,7 +59,7 @@ Public Class R2PrimaryAutomatedJobs
 
             'ارسال اس ام اس های اکتیو سازی کاربران موبایل آتیس موبایل
             Try
-                R2CoreSMS.SMSSendAndRecieved.R2CoreSMSMClassSMSDomainManagement.SMSDomainSendRecieved()
+                R2CoreSMSMClassSMSDomainManagement.SMSDomainSendRecieved()
             Catch ex As Exception
                 EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSDomainSendRecieved:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try

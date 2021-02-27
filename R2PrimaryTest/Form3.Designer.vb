@@ -46,6 +46,7 @@ Partial Class Form3
         Me.Button16 = New System.Windows.Forms.Button()
         Me.Button17 = New System.Windows.Forms.Button()
         Me.Button18 = New System.Windows.Forms.Button()
+        Me.Button19 = New System.Windows.Forms.Button()
         Me.SuspendLayout
         '
         'Button1
@@ -285,11 +286,23 @@ Partial Class Form3
         Me.Button18.Text = "ایجاد روابط نهادی شرکت های حمل ونقل با گروههای وب"
         Me.Button18.UseVisualStyleBackColor = false
         '
+        'Button19
+        '
+        Me.Button19.BackColor = System.Drawing.Color.Tomato
+        Me.Button19.Font = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button19.Location = New System.Drawing.Point(646, 182)
+        Me.Button19.Name = "Button19"
+        Me.Button19.Size = New System.Drawing.Size(162, 41)
+        Me.Button19.TabIndex = 23
+        Me.Button19.Text = "تست اس ام اس"
+        Me.Button19.UseVisualStyleBackColor = false
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 450)
+        Me.Controls.Add(Me.Button19)
         Me.Controls.Add(Me.Button18)
         Me.Controls.Add(Me.Button17)
         Me.Controls.Add(Me.Button16)
@@ -344,4 +357,5 @@ End Sub
     Friend WithEvents Button16 As Button
     Friend WithEvents Button17 As Button
     Friend WithEvents Button18 As Button
+    Friend WithEvents Button19 As Button
 End Class

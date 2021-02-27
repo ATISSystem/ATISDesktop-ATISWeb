@@ -47,11 +47,9 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="R2Core">
+    <Reference Include="R2Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\R2Core\bin\Debug\R2Core.dll</HintPath>
-    </Reference>
-    <Reference Include="R2CoreSMS">
-      <HintPath>..\R2CoreSMS\bin\Debug\R2CoreSMS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />

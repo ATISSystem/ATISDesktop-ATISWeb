@@ -22,24 +22,18 @@
         "Entry"
         {
         "MsmKey" = "8:_0D7140024116FB46B1D2E66634A25321"
-        "OwnerKey" = "8:_B848278FD6EA87EDFF2395DC2C2CC7CE"
+        "OwnerKey" = "8:_9F2E884311D947C1B63DE69FD95D0916"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_0D7140024116FB46B1D2E66634A25321"
-        "OwnerKey" = "8:_26B752DA7E804C099653C89B72BC6F49"
+        "OwnerKey" = "8:_B848278FD6EA87EDFF2395DC2C2CC7CE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_1DECBE8205854FB8A858384A73F57082"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_26B752DA7E804C099653C89B72BC6F49"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -52,13 +46,13 @@
         "Entry"
         {
         "MsmKey" = "8:_2EFD3CE0D354F0F5823A9272086EC8EA"
-        "OwnerKey" = "8:_7A571D0E0417CEDAC96195E952A94B21"
+        "OwnerKey" = "8:_9F2E884311D947C1B63DE69FD95D0916"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_2EFD3CE0D354F0F5823A9272086EC8EA"
-        "OwnerKey" = "8:_26B752DA7E804C099653C89B72BC6F49"
+        "OwnerKey" = "8:_7A571D0E0417CEDAC96195E952A94B21"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -70,13 +64,7 @@
         "Entry"
         {
         "MsmKey" = "8:_3C868C4D7E9C7A9D96F4A15F84C5FD2C"
-        "OwnerKey" = "8:_26B752DA7E804C099653C89B72BC6F49"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_48B5412C8CDDDCF1A6B167C8755A81EC"
-        "OwnerKey" = "8:_26B752DA7E804C099653C89B72BC6F49"
+        "OwnerKey" = "8:_9F2E884311D947C1B63DE69FD95D0916"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -94,13 +82,7 @@
         "Entry"
         {
         "MsmKey" = "8:_7A571D0E0417CEDAC96195E952A94B21"
-        "OwnerKey" = "8:_48B5412C8CDDDCF1A6B167C8755A81EC"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_7A571D0E0417CEDAC96195E952A94B21"
-        "OwnerKey" = "8:_26B752DA7E804C099653C89B72BC6F49"
+        "OwnerKey" = "8:_9F2E884311D947C1B63DE69FD95D0916"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -117,14 +99,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A953CBC7B254454A25A05311FB793BAD"
-        "OwnerKey" = "8:_7A571D0E0417CEDAC96195E952A94B21"
+        "MsmKey" = "8:_9F2E884311D947C1B63DE69FD95D0916"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_A953CBC7B254454A25A05311FB793BAD"
-        "OwnerKey" = "8:_26B752DA7E804C099653C89B72BC6F49"
+        "OwnerKey" = "8:_9F2E884311D947C1B63DE69FD95D0916"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A953CBC7B254454A25A05311FB793BAD"
+        "OwnerKey" = "8:_7A571D0E0417CEDAC96195E952A94B21"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -136,19 +124,19 @@
         "Entry"
         {
         "MsmKey" = "8:_B848278FD6EA87EDFF2395DC2C2CC7CE"
-        "OwnerKey" = "8:_7A571D0E0417CEDAC96195E952A94B21"
+        "OwnerKey" = "8:_9F2E884311D947C1B63DE69FD95D0916"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_B848278FD6EA87EDFF2395DC2C2CC7CE"
-        "OwnerKey" = "8:_26B752DA7E804C099653C89B72BC6F49"
+        "OwnerKey" = "8:_7A571D0E0417CEDAC96195E952A94B21"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_BAF8D319BA39BA434AA0A76D5E0BB1CC"
-        "OwnerKey" = "8:_26B752DA7E804C099653C89B72BC6F49"
+        "OwnerKey" = "8:_9F2E884311D947C1B63DE69FD95D0916"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -160,13 +148,13 @@
         "Entry"
         {
         "MsmKey" = "8:_D9A475E1C0F6B9714CC8C2D5F4B8D503"
-        "OwnerKey" = "8:_7A571D0E0417CEDAC96195E952A94B21"
+        "OwnerKey" = "8:_9F2E884311D947C1B63DE69FD95D0916"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D9A475E1C0F6B9714CC8C2D5F4B8D503"
-        "OwnerKey" = "8:_26B752DA7E804C099653C89B72BC6F49"
+        "OwnerKey" = "8:_7A571D0E0417CEDAC96195E952A94B21"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -196,13 +184,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_26B752DA7E804C099653C89B72BC6F49"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_48B5412C8CDDDCF1A6B167C8755A81EC"
+        "OwnerKey" = "8:_9F2E884311D947C1B63DE69FD95D0916"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -319,59 +301,59 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_13916D478DFE48148C3CDC2F396247BC"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_7E57B26E914E4D69BFA3799D448EBE29"
             {
             "Name" = "8:Primary output from R2PrimaryAutomatedJobs (Active)"
             "Condition" = "8:"
-            "Object" = "8:_26B752DA7E804C099653C89B72BC6F49"
+            "Object" = "8:_9F2E884311D947C1B63DE69FD95D0916"
             "FileType" = "3:2"
             "InstallAction" = "3:1"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_DF60278F_FA81_40F3_81E9_617D1086B74B"
+            "Identifier" = "8:_6A3BF127_4405_4410_AB5E_A801DED574E0"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_26053BF14EBE4209BD238164941311FC"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_C5389F9E882042AB9A5385FBD1A79C3D"
             {
             "Name" = "8:Primary output from R2PrimaryAutomatedJobs (Active)"
             "Condition" = "8:"
-            "Object" = "8:_26B752DA7E804C099653C89B72BC6F49"
+            "Object" = "8:_9F2E884311D947C1B63DE69FD95D0916"
             "FileType" = "3:2"
             "InstallAction" = "3:3"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_316F758D_258A_421F_9EE2_4895979984B3"
+            "Identifier" = "8:_5E5F865F_9BB0_444A_A1CA_7A9E354E02F9"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_78F52E2E171C4259AF5AB769C79415A3"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_CC45FD71E24043D3B3AF105A953BA898"
             {
             "Name" = "8:Primary output from R2PrimaryAutomatedJobs (Active)"
             "Condition" = "8:"
-            "Object" = "8:_26B752DA7E804C099653C89B72BC6F49"
-            "FileType" = "3:2"
-            "InstallAction" = "3:2"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_5390D9EB_29F5_473C_A1D4_99FEAEF95077"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_D4CFBEB0CE8F421AB6FF62761EC6F5B2"
-            {
-            "Name" = "8:Primary output from R2PrimaryAutomatedJobs (Active)"
-            "Condition" = "8:"
-            "Object" = "8:_26B752DA7E804C099653C89B72BC6F49"
+            "Object" = "8:_9F2E884311D947C1B63DE69FD95D0916"
             "FileType" = "3:2"
             "InstallAction" = "3:4"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_B2BE35FC_9AB6_4013_B769_8E21D72F90D9"
+            "Identifier" = "8:_6F6716DC_E1AA_4DD6_9439_956A9AD6DEB3"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_D1C7630E06944A11BB06D718697A7C2E"
+            {
+            "Name" = "8:Primary output from R2PrimaryAutomatedJobs (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_9F2E884311D947C1B63DE69FD95D0916"
+            "FileType" = "3:2"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_5B638332_0422_4D4F_95B6_6E461BC0CC5A"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
@@ -534,37 +516,6 @@
                     }
                 }
             "SourcePath" = "8:Suprema.UFMatcher.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_A3111D9EDF0242D7819B4634A919004F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_48B5412C8CDDDCF1A6B167C8755A81EC"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:R2CoreSMS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_48B5412C8CDDDCF1A6B167C8755A81EC"
-                    {
-                    "Name" = "8:R2CoreSMS.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:R2CoreSMS.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_A3111D9EDF0242D7819B4634A919004F"
@@ -1504,7 +1455,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_26B752DA7E804C099653C89B72BC6F49"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9F2E884311D947C1B63DE69FD95D0916"
             {
             "SourcePath" = "8:..\\R2PrimaryAutomatedJobs\\obj\\Debug\\R2PrimaryAutomatedJobs.exe"
             "TargetName" = "8:"

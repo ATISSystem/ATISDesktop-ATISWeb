@@ -18,11 +18,10 @@ namespace ATISMobileRestful.Controllers
     {
         R2DateTime _DateTime = new R2DateTime();
         [HttpGet]
-        public MessageStruct GetPublicMessage(Int64 YourUserId)
+        public MessageStruct GetPublicMessage()
         {
             try
             {
-                R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId);
                 string[] AllConfig = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.PublicMessagesforSoftWareUsers).Split(';');
                 string Message = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.PublicMessagesforSoftWareUsers, 1);
                 string ExpirationDate = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.PublicMessagesforSoftWareUsers, 0);

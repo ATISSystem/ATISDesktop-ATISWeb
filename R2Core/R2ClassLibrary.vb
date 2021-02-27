@@ -36,7 +36,6 @@ Public Class R2Enums
         OnlyChar = 2
         Any = 3
     End Enum
-
     Public Enum R2CoreColor
         None = 0
         Black = 1
