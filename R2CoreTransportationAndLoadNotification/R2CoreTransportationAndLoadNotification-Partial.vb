@@ -4020,6 +4020,12 @@ Namespace LoadAllocation
                 Dim NSSThisLoadAllocation As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure = GetNSSLoadAllocation(YourLAId)
                 Dim NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(NSSThisLoadAllocation.nEstelamId)
                 Dim NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(NSSThisLoadAllocation.TurnId)
+                'آیا زمان تخصیص بار برای زیرگروه سالن مورد نظر فرارسیده است
+                If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
+                    If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationTime Then
+                        Throw New TimingNotReachedException
+                    End If
+                End If
                 'محدودیت نوبت در تغییر اولویت تخصیص
                 If NSSTurn.TurnStatus = TurnStatuses.UsedLoadPermissionRegistered Or
                    NSSTurn.TurnStatus = TurnStatuses.TurnExpired Or
@@ -4028,12 +4034,6 @@ Namespace LoadAllocation
                    NSSTurn.TurnStatus = TurnStatuses.CancelledUnderScore Or
                    NSSTurn.TurnStatus = TurnStatuses.CancelledUser Then
                     Throw New LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException
-                End If
-                'آیا زمان تخصیص بار برای زیرگروه سالن مورد نظر فرارسیده است
-                If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
-                    If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationTime Then
-                        Throw New TimingNotReachedException
-                    End If
                 End If
                 Dim DS As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
@@ -4069,6 +4069,12 @@ Namespace LoadAllocation
                 Dim NSSThisLoadAllocation As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure = GetNSSLoadAllocation(YourLAId)
                 Dim NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(NSSThisLoadAllocation.nEstelamId)
                 Dim NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(NSSThisLoadAllocation.TurnId)
+                'آیا زمان تخصیص بار برای زیرگروه سالن مورد نظر فرارسیده است
+                If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
+                    If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationTime Then
+                        Throw New TimingNotReachedException
+                    End If
+                End If
                 'محدودیت نوبت در تغییر اولویت تخصیص
                 If NSSTurn.TurnStatus = TurnStatuses.UsedLoadPermissionRegistered Or
                    NSSTurn.TurnStatus = TurnStatuses.TurnExpired Or
@@ -4079,12 +4085,6 @@ Namespace LoadAllocation
                     Throw New LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException
                 End If
 
-                'آیا زمان تخصیص بار برای زیرگروه سالن مورد نظر فرارسیده است
-                If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
-                    If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationTime Then
-                        Throw New TimingNotReachedException
-                    End If
-                End If
                 Dim DS As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                        "Select Top 1 LoadAllocations.LAId from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations

@@ -44,7 +44,8 @@ Partial Class Form3
         Me.Button14 = New System.Windows.Forms.Button()
         Me.Button15 = New System.Windows.Forms.Button()
         Me.Button16 = New System.Windows.Forms.Button()
-        Me.UcucLoadAllocationCollection1 = New R2CoreTransportationAndLoadNotification.UCUCLoadAllocationCollection()
+        Me.Button17 = New System.Windows.Forms.Button()
+        Me.Button18 = New System.Windows.Forms.Button()
         Me.SuspendLayout
         '
         'Button1
@@ -260,22 +261,37 @@ Partial Class Form3
         Me.Button16.Text = "Button16"
         Me.Button16.UseVisualStyleBackColor = true
         '
-        'UcucLoadAllocationCollection1
+        'Button17
         '
-        Me.UcucLoadAllocationCollection1.BackColor = System.Drawing.Color.Transparent
-        Me.UcucLoadAllocationCollection1.Location = New System.Drawing.Point(132, 31)
-        Me.UcucLoadAllocationCollection1.Name = "UcucLoadAllocationCollection1"
-        Me.UcucLoadAllocationCollection1.Size = New System.Drawing.Size(497, 373)
-        Me.UcucLoadAllocationCollection1.TabIndex = 21
-        Me.UcucLoadAllocationCollection1.UCTargetUCforViewing = "R2CoreTransportationAndLoadNotification.UCViewerNSSLoadAllocationPriorityAppliedE"& _ 
-    "xtended"
+        Me.Button17.BackColor = System.Drawing.Color.Purple
+        Me.Button17.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button17.ForeColor = System.Drawing.Color.White
+        Me.Button17.Location = New System.Drawing.Point(296, 323)
+        Me.Button17.Name = "Button17"
+        Me.Button17.Size = New System.Drawing.Size(344, 41)
+        Me.Button17.TabIndex = 21
+        Me.Button17.Text = "ایجاد مجوزهای فرآیندی وب شرکت های حمل و نقلی"
+        Me.Button17.UseVisualStyleBackColor = false
+        '
+        'Button18
+        '
+        Me.Button18.BackColor = System.Drawing.Color.Purple
+        Me.Button18.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button18.ForeColor = System.Drawing.Color.White
+        Me.Button18.Location = New System.Drawing.Point(296, 370)
+        Me.Button18.Name = "Button18"
+        Me.Button18.Size = New System.Drawing.Size(344, 41)
+        Me.Button18.TabIndex = 22
+        Me.Button18.Text = "ایجاد روابط نهادی شرکت های حمل ونقل با گروههای وب"
+        Me.Button18.UseVisualStyleBackColor = false
         '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 450)
-        Me.Controls.Add(Me.UcucLoadAllocationCollection1)
+        Me.Controls.Add(Me.Button18)
+        Me.Controls.Add(Me.Button17)
         Me.Controls.Add(Me.Button16)
         Me.Controls.Add(Me.Button15)
         Me.Controls.Add(Me.Button14)
@@ -326,5 +342,6 @@ End Sub
     Friend WithEvents Button14 As Button
     Friend WithEvents Button15 As Button
     Friend WithEvents Button16 As Button
-    Friend WithEvents UcucLoadAllocationCollection1 As R2CoreTransportationAndLoadNotification.UCUCLoadAllocationCollection
+    Friend WithEvents Button17 As Button
+    Friend WithEvents Button18 As Button
 End Class

@@ -20,7 +20,7 @@
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
-<body class="bg-light">
+<body class=" bg-white">
     <form id="form1" runat="server">
         <TWebControl:WcAlertShower runat="server" ID="WcAlertShower" />
 
@@ -31,15 +31,6 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a  class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color:rgba(0, 0, 0, 0.2);" href="/TransportationAndLoadNotification/LoadCapacitorManagement/WfTommorowLoadsManipulation.aspx">بار فردا</a>
-                        </li>
-                        <li class="nav-item">
-                            <a  class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color:rgba(0, 0, 0, 0.2);" href="/TransportationAndLoadNotification/LoadAllocationManagement/WfLoadCapacitorLoadLoadAllocationLoadPermissionIssue.aspx">تخصیص بار رسوبی</a>
-                        </li>
-                        <li class="nav-item">
-                            <a  class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color:rgba(0, 0, 0, 0.2);" href="/TransportationAndLoadNotification/LoadCapacitorManagement/WfLoadCapacitorLoadManipulation.aspx">اعلام بار</a>
-                        </li>
                         <li class="nav-item">
                             <a  class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color:rgba(0, 0, 0, 0.2);" href="/MenuManagement/WfMainMenu.aspx">منوی اصلی</a>
                         </li>
@@ -52,8 +43,8 @@
         </div>
         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         </asp:ContentPlaceHolder>
-        <footer class="mt-lg-5">
-            <div class="bg-light" style="min-height: 250px;"></div>
+        <footer class="mt-lg-5" >
+            <div class=" bg-white" style="min-height: 250px;"></div>
         </footer>
     </form>
 

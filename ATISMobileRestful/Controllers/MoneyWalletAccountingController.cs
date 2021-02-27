@@ -12,6 +12,9 @@ using R2Core.SoftwareUserManagement;
 using R2CoreParkingSystem.AccountingManagement;
 using R2CoreParkingSystem.TrafficCardsManagement;
 using R2CoreTransportationAndLoadNotification.Logging;
+using ATISMobileRestful.Models;
+using R2CoreTransportationAndLoadNotification.TerraficCardsManagement;
+using R2CoreParkingSystem.MoneyWalletManagement;
 
 namespace ATISMobileRestful.Controllers
 {
@@ -20,7 +23,7 @@ namespace ATISMobileRestful.Controllers
         [HttpGet]
         public List<Models.MoneyWalletAccounting> GetMoneyWalletAccounting(Int64 YourUserId)
         {
-            R2CoreParkingSystemStandardTrafficCardStructure NSSTrafficCard =R2CoreTransportationAndLoadNotification.TerraficCardsManagement.R2CoreTransportationAndLoadNotificationMClassTerraficCardsManagement.GetNSSTerafficCard(R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId));
+            R2CoreParkingSystemStandardTrafficCardStructure NSSTrafficCard = R2CoreTransportationAndLoadNotification.TerraficCardsManagement.R2CoreTransportationAndLoadNotificationMClassTerraficCardsManagement.GetNSSTerafficCard(R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId));
             List<Models.MoneyWalletAccounting> _MoneyWalletAccountings = new List<Models.MoneyWalletAccounting>();
             try
             {
@@ -43,6 +46,19 @@ namespace ATISMobileRestful.Controllers
             }
             catch (Exception ex)
             { return _MoneyWalletAccountings; }
+        }
+
+        [HttpGet]
+        public MessageStruct GetMoneyWalletIDandReminderCharge(Int64 YourUserId)
+        {
+            try
+            {
+                R2CoreParkingSystemStandardTrafficCardStructure NSSTrafficCard = R2CoreTransportationAndLoadNotificationMClassTerraficCardsManagement.GetNSSTerafficCard(R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId));
+                Int64 ReminderCharge = R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletCharge(NSSTrafficCard);
+                return new MessageStruct { ErrorCode = false, Message1 = NSSTrafficCard.CardNo, Message2 = ReminderCharge.ToString(), Message3 = string.Empty };
+            }
+            catch (Exception ex)
+            { throw ex; }
         }
 
     }

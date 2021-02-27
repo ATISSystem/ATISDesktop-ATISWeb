@@ -1514,7 +1514,7 @@ Namespace SoftwareUserManagement
                 If YourNSSSoftwareUser.MobileNumber.Trim = String.Empty Then Throw New SoftwareUserMobileNumberNeedforRegisteringException
                 CmdSql.Connection.Open()
                 CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers 
-                        Set UserName='" & YourNSSSoftwareUser.UserName & "',UserPinCode='" & YourNSSSoftwareUser.UserPinCode & "',UserCanCharge=" & iif(YourNSSSoftwareUser.UserCanCharge,1,0) & ",UserActive=" & iif(YourNSSSoftwareUser.UserActive,1,0) & ",UserTypeId=" & YourNSSSoftwareUser.UserTypeId & ",MobileNumber='" & YourNSSSoftwareUser.MobileNumber & "',UserCreatorId=" & YourNSSUser.UserId & " 
+                        Set UserName='" & YourNSSSoftwareUser.UserName & "',UserPinCode='" & YourNSSSoftwareUser.UserPinCode & "',UserCanCharge=" & IIf(YourNSSSoftwareUser.UserCanCharge, 1, 0) & ",UserActive=" & IIf(YourNSSSoftwareUser.UserActive, 1, 0) & ",UserTypeId=" & YourNSSSoftwareUser.UserTypeId & ",MobileNumber='" & YourNSSSoftwareUser.MobileNumber & "',UserCreatorId=" & YourNSSUser.UserId & " 
                         Where UserId=" & YourNSSSoftwareUser.UserId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
@@ -1675,10 +1675,10 @@ Namespace SoftwareUserManagement
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserId=" & YourUserId & "", 1, Ds).GetRecordsCount() = 0 Then
-                    Throw New GetNSSException
+                    Throw New UserIdNotExistException
                 End If
                 Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber"), Ds.Tables(0).Rows(0).Item("UserStatus"), Ds.Tables(0).Rows(0).Item("VerificationCode"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
-            Catch exx As GetNSSException
+            Catch exx As UserIdNotExistException
                 Throw exx
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1792,6 +1792,16 @@ Namespace SoftwareUserManagement
                 End Get
             End Property
         End Class
+
+        Public Class UserIdNotExistException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کاربری با کد ارسالی در سیستم وجود ندارد"
+                End Get
+            End Property
+        End Class
+
 
 
     End Namespace
@@ -2473,6 +2483,29 @@ Namespace ConfigurationManagement
 End Namespace
 
 Namespace DateAndTimeManagement
+
+    Public NotInheritable Class R2CoreMclassDateAndTimeManagement
+        Public Shared Function GetPersianDaysDiffDate(YourDate1 As String, YourDate2 As String) As Int64
+            Try
+                Dim year1 As Int64 = Convert.ToInt64(YourDate1.Substring(0, 4))
+                Dim month1 As Int64 = Convert.ToInt64(YourDate1.Substring(5, 2))
+                Dim day1 As Int64 = Convert.ToInt64(YourDate1.Substring(8, 2))
+
+                Dim year2 As Int64 = Convert.ToInt64(YourDate2.Substring(0, 4))
+                Dim month2 As Int64 = Convert.ToInt64(YourDate2.Substring(5, 2))
+                Dim day2 As Int64 = Convert.ToInt64(YourDate2.Substring(8, 2))
+
+                Dim Calendar As System.Globalization.PersianCalendar = New System.Globalization.PersianCalendar()
+                Dim dt1 As DateTime = Calendar.ToDateTime(year1, month1, day1, 0, 0, 0, 0)
+                Dim dt2 As DateTime = Calendar.ToDateTime(year2, month2, day2, 0, 0, 0, 0)
+                Dim ts As TimeSpan = dt2.Subtract(dt1)
+                Return ts.Days
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+    End Class
+
     Public Class R2StandardDateAndTimeStructure
 
         Private myDateTimeMilladi As DateTime

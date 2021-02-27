@@ -19,6 +19,7 @@ Imports R2CoreTransportationAndLoadNotification.Rmto
 Imports R2CoreTransportationAndLoadNotification.Turns
 
 Public Class Form3
+    Private _DateTime As R2DateTime = New R2DateTime
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
@@ -435,7 +436,7 @@ Public Class Form3
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
         Try
-
+            MessageBox.Show(R2CoreMclassDateAndTimeManagement.GetPersianDaysDiffDate(_DateTime.GetCurrentDateShamsiFull(), "1399/12/07"))
             'R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()
             'For loopx As Int64 = 0 To 2000
             '    Try
@@ -461,5 +462,74 @@ Public Class Form3
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Private Sub Button17_Click(sender As Object, e As EventArgs) Handles Button17.Click
+        Dim Cmdsql As New SqlClient.SqlCommand
+        Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
+        Try
+            Dim DsCoUsers As New DataSet
+            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                    "Select SoftwareUsers.UserId from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies
+                       Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On TransportCompanies.TCId=SoftwareUsers.UserShenaseh", 0, DsCoUsers)
+            Cmdsql.Connection.Open()
+            Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
+            For Loopx As Int64 = 0 To DsCoUsers.Tables(0).Rows.Count - 1
+                Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblPermissions(EntityIdFirst,EntityIdSecond,PermissionTypeId,RelationActive)
+                                      values(" & DsCoUsers.Tables(0).Rows(Loopx).Item("UserId") & ",1,2,1)"
+                Cmdsql.ExecuteNonQuery()
+                Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblPermissions(EntityIdFirst,EntityIdSecond,PermissionTypeId,RelationActive)
+                                      values(" & DsCoUsers.Tables(0).Rows(Loopx).Item("UserId") & ",2,2,1)"
+                Cmdsql.ExecuteNonQuery()
+                Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblPermissions(EntityIdFirst,EntityIdSecond,PermissionTypeId,RelationActive)
+                                      values(" & DsCoUsers.Tables(0).Rows(Loopx).Item("UserId") & ",3,2,1)"
+                Cmdsql.ExecuteNonQuery()
+                Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblPermissions(EntityIdFirst,EntityIdSecond,PermissionTypeId,RelationActive)
+                                      values(" & DsCoUsers.Tables(0).Rows(Loopx).Item("UserId") & ",4,2,1)"
+                Cmdsql.ExecuteNonQuery()
+            Next
+            Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
+            MessageBox.Show("Finished ...")
+        Catch ex As Exception
+            If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
+            End If
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub Button18_Click(sender As Object, e As EventArgs) Handles Button18.Click
+        Dim Cmdsql As New SqlClient.SqlCommand
+        Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
+        Try
+            Dim DsCoUsers As New DataSet
+            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                    "Select SoftwareUsers.UserId from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies
+                       Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On TransportCompanies.TCId=SoftwareUsers.UserShenaseh", 0, DsCoUsers)
+            Cmdsql.Connection.Open()
+            Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
+            For Loopx As Int64 = 0 To DsCoUsers.Tables(0).Rows.Count - 1
+                Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERTypeId,E1,E2,RelationActive)
+                                      Values(6," & DsCoUsers.Tables(0).Rows(Loopx).Item("UserId") & ",1,1)"
+                Cmdsql.ExecuteNonQuery()
+                Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERTypeId,E1,E2,RelationActive)
+                                      Values(6," & DsCoUsers.Tables(0).Rows(Loopx).Item("UserId") & ",2,1)"
+                Cmdsql.ExecuteNonQuery()
+                Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERTypeId,E1,E2,RelationActive)
+                                      Values(6," & DsCoUsers.Tables(0).Rows(Loopx).Item("UserId") & ",3,1)"
+                Cmdsql.ExecuteNonQuery()
+                Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERTypeId,E1,E2,RelationActive)
+                                      Values(6," & DsCoUsers.Tables(0).Rows(Loopx).Item("UserId") & ",4,1)"
+                Cmdsql.ExecuteNonQuery()
+            Next
+            Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
+            MessageBox.Show("Finished ...")
+        Catch ex As Exception
+            If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
+            End If
+            MessageBox.Show(ex.Message)
+        End Try
+
     End Sub
 End Class

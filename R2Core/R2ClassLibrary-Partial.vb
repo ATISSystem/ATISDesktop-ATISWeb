@@ -25,7 +25,7 @@ Imports R2Core.EntityRelationManagement
 Imports R2Core.MobileProcessesManagement.Exceptions
 
 Imports PcPosDll
-
+Imports R2Core.WebProcessesManagement.Exceptions
 
 Namespace MonetarySupply
 
@@ -921,6 +921,8 @@ Namespace EntityRelationManagement
         Public Shared ReadOnly None As Int64 = 0
         Public Shared ReadOnly SoftwareUser_MobileProcessGroup As Int64 = 3
         Public Shared ReadOnly MobileProcessGroup_MobileProcess As Int64 = 4
+        Public Shared ReadOnly WebProcessGroup_WebProcess As Int64 = 5
+        Public Shared ReadOnly SoftwareUser_WebProcessGroup As Int64 = 6
 
     End Class
 
@@ -1094,7 +1096,7 @@ Namespace EntityRelationManagement
             End Try
         End Function
 
-        Public Shared Function  RegisteringEntityRelations(YourEntityRelationTypeId As Int64, YourE1Id As Int64, YourE2Ids As String()) As Int64 
+        Public Shared Function RegisteringEntityRelations(YourEntityRelationTypeId As Int64, YourE1Id As Int64, YourE2Ids As String()) As Int64
             Dim Cmdsql As New SqlClient.SqlCommand
             Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
             Try
@@ -1147,6 +1149,7 @@ Namespace PermissionManagement
     Public MustInherit Class R2CorePermissionTypes
         Public Shared ReadOnly None As Int64 = 0
         Public Shared ReadOnly SoftwareUsersAccessMobileProcesses As Int64 = 1
+        Public Shared ReadOnly SoftwareUsersAccessWebProcesses As Int64 = 2
     End Class
 
     Public Class R2StandardPermissionTypeStructure
@@ -1274,15 +1277,176 @@ End Namespace
 
 Namespace WebProcessesManagement
 
+    Public Class R2StandardWebProcessStructure
+        Inherits R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            PId = Int64.MinValue
+            PName = String.Empty
+            PTitle = String.Empty
+            TargetWfProcess = String.Empty
+            Description = String.Empty
+            PBackColor = Color.Black
+            PForeColor = Color.Black
+            UserId = Int64.MinValue
+            DateTimeMilladi = Now
+            DateShamsi = String.Empty
+            ViewFlag = Boolean.FalseString
+            Active = Boolean.FalseString
+            Deleted = Boolean.FalseString
+        End Sub
+
+        Public Sub New(ByVal YourPId As Int64, ByVal YourPName As String, ByVal YourPTitle As String, ByVal YourTargetWfProcess As String, ByVal YourDescription As String, YourPBackColor As Color, YourPForeColor As Color, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourPId, YourPName.Trim())
+            PId = YourPId
+            PName = YourPName
+            PTitle = YourPTitle
+            TargetWfProcess = YourTargetWfProcess
+            Description = YourDescription
+            PBackColor = YourPBackColor
+            PForeColor = YourPForeColor
+            UserId = YourUserId
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            ViewFlag = YourViewFlag
+            Active = YourActive
+            Deleted = YourDeleted
+        End Sub
+
+        Public Property PId As String
+        Public Property PName As String
+        Public Property PTitle As String
+        Public Property TargetWfProcess As String
+        Public Property Description As String
+        Public Property PBackColor As Color
+        Public Property PForeColor As Color
+        Public Property UserId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+
+
+
+
+
+    End Class
+
+    Public Class R2StandardWebProcessGroupStructure
+        Inherits R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            PGId = Int64.MinValue
+            PGName = String.Empty
+            PGTitle = String.Empty
+            PGBackColor = Color.Black
+            PGForeColor = Color.Black
+            UserId = Int64.MinValue
+            DateTimeMilladi = Now
+            DateShamsi = String.Empty
+            ViewFlag = Boolean.FalseString
+            Active = Boolean.FalseString
+            Deleted = Boolean.FalseString
+        End Sub
+
+        Public Sub New(ByVal YourPGId As Int64, ByVal YourPGName As String, ByVal YourPGTitle As String, YourPGBackColor As Color, YourPGForeColor As Color, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourPGId, YourPGName.Trim())
+            PGId = YourPGId
+            PGName = YourPGName
+            PGTitle = YourPGTitle
+            PGBackColor = YourPGBackColor
+            PGForeColor = YourPGForeColor
+            UserId = YourUserId
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            ViewFlag = YourViewFlag
+            Active = YourActive
+            Deleted = YourDeleted
+        End Sub
+
+        Public Property PGId As String
+        Public Property PGName As String
+        Public Property PGTitle As String
+        Public Property PGBackColor As Color
+        Public Property PGForeColor As Color
+        Public Property UserId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+
+
+
+
+
+    End Class
+
     Public MustInherit Class R2CoreWebProcessGroups
     End Class
 
-    Public MustInherit Class R2CoreWebProcesses
-    End Class
-
     Public NotInheritable Class R2CoreMClassWebProcessesManagement
+        Public Shared Function GetWebProcesses(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2StandardWebProcessStructure)
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                 "Select WebProcesses.* 
+                   from R2Primary.dbo.TblSoftwareUsers as SoftwareUser
+                     Inner Join R2Primary.dbo.TblEntityRelations as SoftwareUserWebProcessGroup On SoftwareUser.UserId=SoftwareUserWebProcessGroup.E1 
+                     Inner Join R2Primary.dbo.TblWebProcessGroups as WebProcessGroup On SoftwareUserWebProcessGroup.E2=WebProcessGroup.PGId 
+                     Inner Join R2Primary.dbo.TblEntityRelations as WebProcessGroupWebProcess On WebProcessGroup.PGId=WebProcessGroupWebProcess.E1  
+                     Inner Join R2Primary.dbo.TblWebProcesses as WebProcesses On WebProcessGroupWebProcess.E2=WebProcesses.PId 
+                   Where SoftwareUser.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUser.UserActive=1 and SoftwareUser.Deleted=0 and SoftwareUserWebProcessGroup.ERTypeId=" & R2CoreEntityRelationTypes.SoftwareUser_WebProcessGroup & "
+                         and SoftwareUserWebProcessGroup.RelationActive=1 and  WebProcessGroup.ViewFlag=1 and  WebProcessGroup.Active=1 and WebProcessGroup.Deleted=0 and WebProcessGroupWebProcess.ERTypeId=" & R2CoreEntityRelationTypes.WebProcessGroup_WebProcess & "  
+                         and WebProcessGroupWebProcess.RelationActive=1 and WebProcesses.ViewFlag=1 and WebProcesses.Active=1 and WebProcesses.Deleted=0 
+                   Order By WebProcessGroup.PGId,WebProcesses.PId ", 3600, Ds).GetRecordsCount <> 0 Then
+                    Dim Lst As New List(Of R2StandardWebProcessStructure)
+                    For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                        Dim NSS As New R2StandardWebProcessStructure
+                        NSS.PId = Ds.Tables(0).Rows(Loopx).Item("PId")
+                        NSS.PName = Ds.Tables(0).Rows(Loopx).Item("PName")
+                        NSS.PTitle = "  " + Ds.Tables(0).Rows(Loopx).Item("PTitle").ToString().Trim
+                        NSS.Description = Ds.Tables(0).Rows(Loopx).Item("Description").trim
+                        NSS.PForeColor = Color.FromName(Ds.Tables(0).Rows(Loopx).Item("PForeColor").trim)
+                        NSS.PBackColor = Color.FromName(Ds.Tables(0).Rows(Loopx).Item("PBackColor").trim)
+                        NSS.TargetWfProcess = Ds.Tables(0).Rows(Loopx).Item("TargetWfProcess").trim
+                        NSS.UserId = Ds.Tables(0).Rows(Loopx).Item("UserId")
+                        NSS.DateTimeMilladi = Ds.Tables(0).Rows(Loopx).Item("DateTimeMilladi")
+                        NSS.DateShamsi = Ds.Tables(0).Rows(Loopx).Item("DateShamsi").trim
+                        NSS.Active = Ds.Tables(0).Rows(Loopx).Item("Active")
+                        NSS.ViewFlag = Ds.Tables(0).Rows(Loopx).Item("ViewFlag")
+                        NSS.Deleted = Ds.Tables(0).Rows(Loopx).Item("Deleted")
+                        Lst.Add(NSS)
+                    Next
+                    Return Lst
+                Else
+                    Throw New SoftwareUserHasNotAnyWebProcessPermissionException
+                End If
+            Catch exx As SoftwareUserHasNotAnyWebProcessPermissionException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
     End Class
+
+    Namespace Exceptions
+        Public Class SoftwareUserHasNotAnyWebProcessPermissionException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "مجوز دسترسی به هیچ یک از منوهای سایت را ندارید"
+                End Get
+            End Property
+        End Class
+
+
+    End Namespace
+
 
 End Namespace
 
@@ -1398,7 +1562,7 @@ Namespace MobileProcessesManagement
 
     Public NotInheritable Class R2CoreMClassMobileProcessesManagement
 
-        Public Shared Function GetListOfMobileProcessHaveUser(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2StandardMobileProcessStructure)
+        Public Shared Function GetMobileProcesses(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2StandardMobileProcessStructure)
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,

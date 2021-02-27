@@ -1,54 +1,20 @@
 ﻿<%@ Page Title="آتیس وب | منوی اصلی" Language="C#" MasterPageFile="~/DomainSite.Master" AutoEventWireup="true" CodeBehind="WfMainMenu.aspx.cs" Inherits="ATISWeb.MenuManagement.WfMainMenu" %>
 
 <%@ Register TagPrefix="TWebControl" TagName="WcAlertShower" Src="~/AlertManagement/WcAlertShower.ascx" %>
+<%@ Register TagPrefix="TWebC" TagName="WcLogin" Src="~/MenuManagement/WcProcess.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="container-fluid p-0">
-        <div class="d-flex flex-row justify-content-around">
-            <div class="col-lg-3">
-                <div class="card" style="width: 18rem;">
-                    <img src="/Images/Header2.jpg" class="card-img-top" alt="...">
-                    <div class="card-body text-right">
-                        <h5 class="card-title text-right R2FontBYekanLarge">تغییر رمز عبور</h5>
-                        <p class="card-text text-right R2FontBYekanSmall">از طریق این منو امکان تغییر رمز عبور وجود دارد.پس از تغییر رمز از سیستم خارج شوید و مجددا وارد شوید تا از صحت رمز عبور جدید اطمینان یابید</p>
-                        <a href="/LoginManagement/WfChangePasswordofCurrentUser.aspx" class="btn btn-primary R2FontBYekanMedium mb-2">تغییر رمز عبور</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card" style="width: 18rem;">
-                    <img src="/Images/Header2.jpg" class="card-img-top" alt="...">
-                    <div class="card-body text-right">
-                        <h5 class="card-title text-right R2FontBYekanLarge">بار فردا</h5>
-                        <p class="card-text text-right R2FontBYekanSmall">از طریق این منو امکان ثبت،ویرایش ،حذف و مشاهده بارفردا وجود دارد.عملیات مذکور از پایان اعلام بار تا پایان روز امکان پذیر است</p>
-                        <a href="/TransportationAndLoadNotification/LoadCapacitorManagement/WfTommorowLoadsManipulation.aspx" class="btn btn-primary R2FontBYekanMedium mb-2">ثبت ، ویرایش و حذف بار فردا</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card" style="width: 18rem;">
-                    <img src="/Images/Header2.jpg" class="card-img-top" alt="...">
-                    <div class="card-body text-right">
-                        <h5 class="card-title text-right R2FontBYekanLarge">تخصیص بار رسوبی</h5>
-                        <p class="card-text text-right R2FontBYekanSmall">از طریق این منو می توانید بارهای رسوب شده خود را مشاهده نموده و در صورت نیاز با داشتن اطلاعات هوشمند ناوگان و راننده تخصیص صادر نمایید</p>
-                        <a href="/TransportationAndLoadNotification/LoadAllocationManagement/WfLoadCapacitorLoadLoadAllocationLoadPermissionIssue.aspx" class="btn btn-primary R2FontBYekanMedium">مشاهده بار رسوبی - تخصیص بار</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card" style="width: 18rem;">
-                    <img src="/Images/Header2.jpg" class="card-img-top" alt="...">
-                    <div class="card-body text-right">
-                        <h5 class="card-title text-right R2FontBYekanLarge">اعلام بار</h5>
-                        <p class="card-text text-right R2FontBYekanSmall">از طریق این منو می توانید بار خود را ثبت،ویرایش و یا حذف نمایید.ثبت،ویرایش و حذف بار حداکثر تا شروع اعلام بار امکان پذیر است</p>
-                        <a href="/TransportationAndLoadNotification/LoadCapacitorManagement/WfLoadCapacitorLoadManipulation.aspx" class="btn btn-primary R2FontBYekanMedium mb-2">ثبت ، ویرایش و حذف بار</a>
-                    </div>
-                </div>
-            </div>
+        <div class="table table-responsive-lg border" >
+            <asp:Table ID="TblProcesses" runat="server"  CellSpacing="0" CellPadding="0" BorderStyle="None" CssClass="table border-white text-center table-borderless bg-white" HorizontalAlign="Center" style="">
+                <asp:TableHeaderRow runat="server" CssClass="bg-primary border border-danger" ForeColor="White">
+                </asp:TableHeaderRow>
+            </asp:Table>
         </div>
+
     </div>
 
     <div class="container">

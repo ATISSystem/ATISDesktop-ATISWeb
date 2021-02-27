@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATISWeb", "ATISWeb\ATISWeb.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATISMobileRestful", "ATISMobileRestful\ATISMobileRestful.csproj", "{2FBBFF1B-4081-4073-BE24-13791B29E1EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R2WebCoreUI", "R2WebCoreUI\R2WebCoreUI.csproj", "{8E2075B9-8AD8-48E2-9A7D-0DA0AC4CDDC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,10 @@ Global
 		{2FBBFF1B-4081-4073-BE24-13791B29E1EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FBBFF1B-4081-4073-BE24-13791B29E1EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FBBFF1B-4081-4073-BE24-13791B29E1EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E2075B9-8AD8-48E2-9A7D-0DA0AC4CDDC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E2075B9-8AD8-48E2-9A7D-0DA0AC4CDDC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E2075B9-8AD8-48E2-9A7D-0DA0AC4CDDC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E2075B9-8AD8-48E2-9A7D-0DA0AC4CDDC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

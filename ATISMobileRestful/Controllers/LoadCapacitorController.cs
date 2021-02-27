@@ -14,18 +14,20 @@ using R2CoreTransportationAndLoadNotification.AnnouncementHalls;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 
 using ATISMobileRestful.Models;
+using R2Core.SoftwareUserManagement.Exceptions;
 
 namespace ATISMobileRestful.Controllers
 {
     public class LoadCapacitorController : ApiController
     {
         [HttpGet]
-        public List<Models.LoadCapacitorLoad> GetLoadCapacitorLoads(Int64 YourAHId, Int64 YourAHSGId, Int64 YourProvinceId = Int64.MinValue, LoadCapacitorLoadsListType YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.NotSedimented)
+        public List<Models.LoadCapacitorLoad> GetLoadCapacitorLoads(Int64 YourUserId, Int64 YourAHId, Int64 YourAHSGId, Int64 YourProvinceId = Int64.MinValue, LoadCapacitorLoadsListType YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.NotSedimented)
         {
             List<Models.LoadCapacitorLoad> _Loads = new List<Models.LoadCapacitorLoad>();
             try
             {
-                List<R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure> Lst =null;
+                R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId);
+                List<R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure> Lst = null;
                 Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetLoadCapacitorLoads(YourAHId, YourAHSGId, YourLoadCapacitorLoadsListType is LoadCapacitorLoadsListType.NotSedimented ? Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.AllOfLoadsWithoutSedimentedLoads) : Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.SedimentedLoads), false, true, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.TargetProvince, Int64.MinValue, YourProvinceId);
                 R2CoreMClassLoggingManagement.LogRegister(new R2CoreStandardLoggingStructure(long.MinValue, R2CoreTransportationAndLoadNotificationLogType.LoadCapacitorAccessStatistics, "آمار بازدید از بار موجود در مخزن بار", YourAHId.ToString(), YourAHSGId.ToString(), String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId, DateTime.Now, null));
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
@@ -39,8 +41,10 @@ namespace ATISMobileRestful.Controllers
                 }
                 return _Loads;
             }
+            catch (UserIdNotExistException ex)
+            { throw ex; }
             catch (Exception ex)
-            { return _Loads; }
+            { throw ex; }
         }
 
     }
