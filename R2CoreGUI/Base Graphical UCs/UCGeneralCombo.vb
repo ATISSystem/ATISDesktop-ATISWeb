@@ -217,7 +217,7 @@ Public MustInherit Class UCGeneralCombo
         Try
             Updating(R2Enums.UCComboStateDecision.Sorting)
         Catch ex As Exception
-            FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, R2MClassInformationManagement.QueryPersianMessage.PersianMessage(PersianMessages.DataRetrivingFromDBMSError), FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+            FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
     Private Sub PicRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PicRefresh.Click

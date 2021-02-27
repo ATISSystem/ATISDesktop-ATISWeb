@@ -108,6 +108,7 @@
     <Content Include="fonts\Yekan.svg" />
     <Content Include="Images\2-2.jpg" />
     <Content Include="Images\3520962.jpg" />
+    <Content Include="Images\ATISMobilePresentation.mp4" />
     <Content Include="Images\Monitor.ico" />
     <Content Include="Images\PrinterIcon.ico" />
     <Content Include="Images\ATISDesktop.png" />
@@ -182,6 +183,7 @@
     <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TransportationAndLoadNotification\LoadCapacitorMonitoringManagement\WfLoadCapacitorMonitoringMuted.aspx" />
     <Content Include="WfSiteUnderConstructionAlert.aspx" />
     <Content Include="libman.json" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
@@ -430,6 +432,13 @@
     </Compile>
     <Compile Include="TransportationAndLoadNotification\LoadCapacitorManagement\WfTommorowLoadsManipulation.aspx.designer.cs">
       <DependentUpon>WfTommorowLoadsManipulation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TransportationAndLoadNotification\LoadCapacitorMonitoringManagement\WfLoadCapacitorMonitoringMuted.aspx.cs">
+      <DependentUpon>WfLoadCapacitorMonitoringMuted.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TransportationAndLoadNotification\LoadCapacitorMonitoringManagement\WfLoadCapacitorMonitoringMuted.aspx.designer.cs">
+      <DependentUpon>WfLoadCapacitorMonitoringMuted.aspx</DependentUpon>
     </Compile>
     <Compile Include="TransportationAndLoadNotification\SmartCards\WcSmartCardsInquiry.ascx.cs">
       <DependentUpon>WcSmartCardsInquiry.ascx</DependentUpon>

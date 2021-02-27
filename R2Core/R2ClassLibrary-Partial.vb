@@ -1832,3 +1832,7 @@ Namespace SMSSendAndRecieved
     End Namespace
 
 End Namespace
+
+Namespace WhatsAppMessenger
+
+End Namespace

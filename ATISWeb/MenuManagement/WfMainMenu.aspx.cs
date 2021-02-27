@@ -51,7 +51,7 @@ namespace ATISWeb.MenuManagement
             {
                 var Lst = R2CoreMClassWebProcessesManagement.GetWebProcesses(ATISWebMClassLoginManagement.GetNSSCurrentUser());
                 int X = Lst.Count - 1;
-                while (X >0 )
+                while (X >=0 )
                 {
                     TableRow tempRow = new TableRow();
                     if (X >= 0)
