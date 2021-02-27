@@ -23,7 +23,7 @@ namespace ATISMobileRestful.Controllers
             try
             {
                 List<R2StandardMobileProcessStructure> Lst = null;
-                Lst = R2CoreMClassMobileProcessesManagement.GetListOfMobileProcessHaveUser(R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourSoftwareUserId));
+                Lst = R2CoreMClassMobileProcessesManagement.GetMobileProcesses(R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourSoftwareUserId));
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
                     var Item = new MobileProcess();
