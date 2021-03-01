@@ -5,6 +5,7 @@ Imports System.Reflection
 Imports R2Core.DesktopProcessesManagement
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.ConfigurationsManagement
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
 Imports R2CoreTransportationAndLoadNotification.ProcessesManagement
 
 Public Class FrmcLoadCapacitorMonitoring
@@ -24,8 +25,16 @@ Public Class FrmcLoadCapacitorMonitoring
         Try
             InitializeSpecial()
             FrmRefresh()
-            UcucLoadCapacitorLoadCollectionAdvance.UCTimerInterval = R2Core.ConfigurationManagement.R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallMonitoring, 0)
-            UcucLoadCapacitorLoadCollectionAdvance.UCViewnCarNumZero = False
+            UcucLoadCapacitorLoadCollection.UCTimerInterval = R2Core.ConfigurationManagement.R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallMonitoring, 0)
+            ViewInformation()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub ViewInformation()
+        Try
+            UcucLoadCapacitorLoadCollection.UCViewCollection(R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetLoadCapacitorLoadsforMonitoring(AnnouncementHalls.AnnouncementHalls.Zobi))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -41,6 +50,14 @@ Public Class FrmcLoadCapacitorMonitoring
 
     Public Sub FrmRefresh()
         Try
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub UcucLoadCapacitorLoadCollection_UCViewInformationCompletedEvent() Handles UcucLoadCapacitorLoadCollection.UCViewInformationCompletedEvent
+        Try
+            ViewInformation()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

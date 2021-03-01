@@ -27,7 +27,7 @@ Partial Class FrmcLoadCapacitorMonitoring
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.PnlMonitoring = New System.Windows.Forms.Panel()
-        Me.UcucLoadCapacitorLoadCollectionAdvance = New R2CoreTransportationAndLoadNotification.UCUCLoadCapacitorLoadCollectionAdvance()
+        Me.UcucLoadCapacitorLoadCollection = New R2CoreTransportationAndLoadNotification.UCUCLoadCapacitorLoadCollection()
         Me.PnlMonitoring.SuspendLayout
         Me.SuspendLayout
         '
@@ -42,25 +42,23 @@ Partial Class FrmcLoadCapacitorMonitoring
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PnlMonitoring.BackColor = System.Drawing.Color.Transparent
         Me.PnlMonitoring.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PnlMonitoring.Controls.Add(Me.UcucLoadCapacitorLoadCollectionAdvance)
+        Me.PnlMonitoring.Controls.Add(Me.UcucLoadCapacitorLoadCollection)
         Me.PnlMonitoring.Location = New System.Drawing.Point(5, 50)
         Me.PnlMonitoring.Name = "PnlMonitoring"
         Me.PnlMonitoring.Size = New System.Drawing.Size(995, 512)
         Me.PnlMonitoring.TabIndex = 49
         '
-        'UcucLoadCapacitorLoadCollectionAdvance
+        'UcucLoadCapacitorLoadCollection
         '
-        Me.UcucLoadCapacitorLoadCollectionAdvance.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+        Me.UcucLoadCapacitorLoadCollection.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
             Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcucLoadCapacitorLoadCollectionAdvance.BackColor = System.Drawing.Color.Transparent
-        Me.UcucLoadCapacitorLoadCollectionAdvance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcucLoadCapacitorLoadCollectionAdvance.Location = New System.Drawing.Point(1, 3)
-        Me.UcucLoadCapacitorLoadCollectionAdvance.Name = "UcucLoadCapacitorLoadCollectionAdvance"
-        Me.UcucLoadCapacitorLoadCollectionAdvance.Size = New System.Drawing.Size(992, 507)
-        Me.UcucLoadCapacitorLoadCollectionAdvance.TabIndex = 0
-        Me.UcucLoadCapacitorLoadCollectionAdvance.UCTimerInterval = CType(5000,Long)
-        Me.UcucLoadCapacitorLoadCollectionAdvance.UCViewnCarNumZero = true
+        Me.UcucLoadCapacitorLoadCollection.BackColor = System.Drawing.Color.Transparent
+        Me.UcucLoadCapacitorLoadCollection.Location = New System.Drawing.Point(1, 3)
+        Me.UcucLoadCapacitorLoadCollection.Name = "UcucLoadCapacitorLoadCollection"
+        Me.UcucLoadCapacitorLoadCollection.Size = New System.Drawing.Size(990, 504)
+        Me.UcucLoadCapacitorLoadCollection.TabIndex = 0
+        Me.UcucLoadCapacitorLoadCollection.UCTimerInterval = CType(3000,Long)
         '
         'FrmcLoadCapacitorMonitoring
         '
@@ -78,5 +76,5 @@ Partial Class FrmcLoadCapacitorMonitoring
 End Sub
 
     Friend WithEvents PnlMonitoring As Windows.Forms.Panel
-    Friend WithEvents UcucLoadCapacitorLoadCollectionAdvance As UCUCLoadCapacitorLoadCollectionAdvance
+    Friend WithEvents UcucLoadCapacitorLoadCollection As UCUCLoadCapacitorLoadCollection
 End Class
