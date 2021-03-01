@@ -324,7 +324,7 @@ Namespace Logging
         Public Shared ReadOnly Property LoadAllocationsAccessStatistics As Int64 = 14
         Public Shared ReadOnly Property TransferringTommorowLoads As Int64 = 15
         Public Shared ReadOnly Property ATISMobileMoneyWalletsCharging As Int64 = 16
-        Public Shared ReadOnly Property LoadAllocationsLoadPermissionRegisteringFailed As Int64 =19
+        Public Shared ReadOnly Property LoadAllocationsLoadPermissionRegisteringFailed As Int64 = 19
     End Class
 
 End Namespace
@@ -355,7 +355,7 @@ End Namespace
 Namespace ConfigurationsManagement
     Public MustInherit Class R2CoreTransportationAndLoadNotificationConfigurations
         Inherits R2CoreConfigurations
-
+        Public Shared ReadOnly Property AnnouncementHallMonitoring = 52
         Public Shared ReadOnly Property LoadCapacitorLoadRegistering = 54
         Public Shared ReadOnly Property AnnouncementHallAnnounceTime = 55
         Public Shared ReadOnly Property AnnouncementHallsTurnCancellationSetting = 56
@@ -2001,6 +2001,7 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcLoadAllocations As Int64 = 45
         Public Shared ReadOnly FrmcBillOfLadingControl As Int64 = 62
         Public Shared ReadOnly FrmcTruckDriverLoadAllocationsPriorityApplied As Int64 = 63
+        Public Shared ReadOnly FrmcLoadCapacitorMonitoring As Int64 = 64
 
     End Class
 

@@ -322,6 +322,12 @@
     <Compile Include="Load Capacitor\FrmcLoadCapacitor.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Load Capacitor\LoadCapacitorMonitoring\FrmcLoadCapacitorMonitoring.Designer.vb">
+      <DependentUpon>FrmcLoadCapacitorMonitoring.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\LoadCapacitorMonitoring\FrmcLoadCapacitorMonitoring.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Load Capacitor\UCLoadCapacitorLoad.Designer.vb">
       <DependentUpon>UCLoadCapacitorLoad.vb</DependentUpon>
     </Compile>
@@ -697,6 +703,9 @@
     <EmbeddedResource Include="Load Capacitor\FrmcLoadCapacitor.resx">
       <DependentUpon>FrmcLoadCapacitor.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\LoadCapacitorMonitoring\FrmcLoadCapacitorMonitoring.resx">
+      <DependentUpon>FrmcLoadCapacitorMonitoring.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Load Capacitor\UCLoadCapacitorLoad.resx">
       <DependentUpon>UCLoadCapacitorLoad.vb</DependentUpon>
     </EmbeddedResource>
@@ -883,6 +892,7 @@
       <CachedSettingsPropName>R2CoreTransportationAndLoadNotification_RmtoWS_PKG_RMTO_WSService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

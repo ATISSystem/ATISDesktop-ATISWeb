@@ -12,9 +12,22 @@ Public Class UCUCLoadCapacitorLoadCollection
     Private ReadOnly _FrmMessageDialog As New FrmcMessageDialog
     Public Event UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure)
     Public Event UCOrderingOptionChangedEvent(OrderingOption As R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions)
+    Public Event UCViewInformationCompletedEvent()
 
 
 #Region "General Properties"
+
+    Private _UCTimerInterval As Int64
+    Public Property UCTimerInterval() As Int64
+        Get
+            Return _UCTimerInterval
+        End Get
+        Set(value As Int64)
+            _UCTimerInterval = value
+
+        End Set
+    End Property
+
 #End Region
 
 #Region "Subroutins And Functions"
@@ -40,7 +53,7 @@ Public Class UCUCLoadCapacitorLoadCollection
             _Counter = Lst.Count - 1
 
             _TTimer = New Timer()
-            _TTimer.Interval = 1
+            _TTimer.Interval = UCTimerInterval
             _TTimer.Enabled = True
             _TTimer.Start()
         Catch ex As Exception
@@ -101,7 +114,10 @@ Public Class UCUCLoadCapacitorLoadCollection
             UCViewCollection()
 
             _Counter = _Counter - 1
-            If _Counter = -1 Then Exit Sub
+            If _Counter = -1 Then
+                RaiseEvent UCViewInformationCompletedEvent()
+                Exit Sub
+            End If
 
             _TTimer.Enabled = True
             _TTimer.Start()

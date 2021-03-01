@@ -14,7 +14,7 @@ Public Class UCUCLoadAllocationCollection
     Public Event UCViewCollectionCompeletedEvent()
     Public Event UCDecreasedPriorityEvent()
     Public Event UCIncreasedPriorityEvent()
-
+    Public Event UCLoadAllocationCancelationEvent()
 
 
 #Region "General Properties"
@@ -64,6 +64,7 @@ Public Class UCUCLoadAllocationCollection
             UC.Dock = DockStyle.Top
             AddHandler UC.UCIncreasedPriorityEvent, AddressOf UCs_UCIncreasedPriorityEvent
             AddHandler UC.UCDecreasedPriorityEvent, AddressOf UCs_UCDecreasedPriorityEvent
+
             AddHandler UC.UCClickedEvent, AddressOf UCs_UCClickedEvent
             If PnlUCs.InvokeRequired Then
                 PnlUCs.Invoke(New UCViewCollectionDelegate(AddressOf UCViewCollection))
@@ -145,6 +146,13 @@ Public Class UCUCLoadAllocationCollection
         End Try
     End Sub
 
+    Private Sub UCs_UCLoadAllocationCancelationEvent()
+        Try
+            RaiseEvent UCLoadAllocationCancelationEvent()
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
 
 #End Region
 

@@ -344,12 +344,13 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         Me.LabelnEstelamId.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.LabelnEstelamId.BackColor = System.Drawing.Color.Transparent
         Me.LabelnEstelamId.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelnEstelamId.Font = New System.Drawing.Font("Alborz Titr", 9.749999!)
+        Me.LabelnEstelamId.Font = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
         Me.LabelnEstelamId.ForeColor = System.Drawing.Color.Red
-        Me.LabelnEstelamId.Location = New System.Drawing.Point(832, 12)
+        Me.LabelnEstelamId.Location = New System.Drawing.Point(832, 15)
         Me.LabelnEstelamId.Name = "LabelnEstelamId"
         Me.LabelnEstelamId.Size = New System.Drawing.Size(78, 23)
         Me.LabelnEstelamId.TabIndex = 55
+        Me.LabelnEstelamId.Text = "486523"
         Me.LabelnEstelamId.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'LabelTransportCompanyTitle
@@ -358,60 +359,65 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.LabelTransportCompanyTitle.BackColor = System.Drawing.Color.Transparent
         Me.LabelTransportCompanyTitle.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelTransportCompanyTitle.Font = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LabelTransportCompanyTitle.Font = New System.Drawing.Font("IRMehr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelTransportCompanyTitle.ForeColor = System.Drawing.Color.DarkBlue
         Me.LabelTransportCompanyTitle.Location = New System.Drawing.Point(631, 12)
         Me.LabelTransportCompanyTitle.Name = "LabelTransportCompanyTitle"
         Me.LabelTransportCompanyTitle.Size = New System.Drawing.Size(195, 23)
         Me.LabelTransportCompanyTitle.TabIndex = 56
+        Me.LabelTransportCompanyTitle.Text = "شمشاد ترابر سپاهان"
         Me.LabelTransportCompanyTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'LabelGoodTitle
         '
         Me.LabelGoodTitle.BackColor = System.Drawing.Color.Transparent
         Me.LabelGoodTitle.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelGoodTitle.Font = New System.Drawing.Font("IRMehr", 9.75!)
+        Me.LabelGoodTitle.Font = New System.Drawing.Font("IRMehr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelGoodTitle.ForeColor = System.Drawing.Color.Black
         Me.LabelGoodTitle.Location = New System.Drawing.Point(498, 12)
         Me.LabelGoodTitle.Name = "LabelGoodTitle"
         Me.LabelGoodTitle.Size = New System.Drawing.Size(142, 23)
         Me.LabelGoodTitle.TabIndex = 57
+        Me.LabelGoodTitle.Text = "تیرآن 14"
         Me.LabelGoodTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'LabelLoadTargetTitle
         '
         Me.LabelLoadTargetTitle.BackColor = System.Drawing.Color.Transparent
         Me.LabelLoadTargetTitle.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelLoadTargetTitle.Font = New System.Drawing.Font("IRMehr", 9.75!)
+        Me.LabelLoadTargetTitle.Font = New System.Drawing.Font("IRMehr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelLoadTargetTitle.ForeColor = System.Drawing.Color.Black
         Me.LabelLoadTargetTitle.Location = New System.Drawing.Point(363, 12)
         Me.LabelLoadTargetTitle.Name = "LabelLoadTargetTitle"
         Me.LabelLoadTargetTitle.Size = New System.Drawing.Size(129, 23)
         Me.LabelLoadTargetTitle.TabIndex = 58
+        Me.LabelLoadTargetTitle.Text = "آبادان"
         Me.LabelLoadTargetTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'LabelnCarNumKol
         '
         Me.LabelnCarNumKol.BackColor = System.Drawing.Color.Transparent
         Me.LabelnCarNumKol.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelnCarNumKol.Font = New System.Drawing.Font("Alborz Titr", 9.749999!)
+        Me.LabelnCarNumKol.Font = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
         Me.LabelnCarNumKol.ForeColor = System.Drawing.Color.Red
-        Me.LabelnCarNumKol.Location = New System.Drawing.Point(305, 12)
+        Me.LabelnCarNumKol.Location = New System.Drawing.Point(305, 14)
         Me.LabelnCarNumKol.Name = "LabelnCarNumKol"
         Me.LabelnCarNumKol.Size = New System.Drawing.Size(52, 23)
         Me.LabelnCarNumKol.TabIndex = 59
+        Me.LabelnCarNumKol.Text = "20"
         Me.LabelnCarNumKol.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'LabelTransportPrice
         '
         Me.LabelTransportPrice.BackColor = System.Drawing.Color.Transparent
         Me.LabelTransportPrice.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelTransportPrice.Font = New System.Drawing.Font("Alborz Titr", 9.749999!)
+        Me.LabelTransportPrice.Font = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
         Me.LabelTransportPrice.ForeColor = System.Drawing.Color.Black
-        Me.LabelTransportPrice.Location = New System.Drawing.Point(199, 12)
+        Me.LabelTransportPrice.Location = New System.Drawing.Point(199, 16)
         Me.LabelTransportPrice.Name = "LabelTransportPrice"
         Me.LabelTransportPrice.Size = New System.Drawing.Size(100, 23)
         Me.LabelTransportPrice.TabIndex = 60
+        Me.LabelTransportPrice.Text = "3123123123123"
         Me.LabelTransportPrice.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'LabelLoaderTypeTitle
@@ -444,12 +450,13 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         Me.LabelnCarNum.BackColor = System.Drawing.Color.Transparent
         Me.LabelnCarNum.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelnCarNum.Font = New System.Drawing.Font("Alborz Titr", 9.749999!)
+        Me.LabelnCarNum.Font = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
         Me.LabelnCarNum.ForeColor = System.Drawing.Color.Red
-        Me.LabelnCarNum.Location = New System.Drawing.Point(4, 12)
+        Me.LabelnCarNum.Location = New System.Drawing.Point(4, 15)
         Me.LabelnCarNum.Name = "LabelnCarNum"
         Me.LabelnCarNum.Size = New System.Drawing.Size(62, 23)
         Me.LabelnCarNum.TabIndex = 62
+        Me.LabelnCarNum.Text = "4"
         Me.LabelnCarNum.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'LabelDateTimeComposite

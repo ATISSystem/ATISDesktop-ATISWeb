@@ -9,6 +9,7 @@ Imports R2Core.DatabaseManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
+Imports R2CoreParkingSystem.Drivers
 Imports R2CoreTransportationAndLoadNotification
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
@@ -264,11 +265,15 @@ Public Class Form3
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
         Try
+            Dim NSS = R2CoreParkingSystemMClassDrivers.GetNSSDriver(78616)
+            NSS.StrIdNo = "09130843148"
+            R2CoreParkingSystemMClassDrivers.UpdateDriver(NSS, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+
             'R2CoreTransportationAndLoadNotification.LoadTargets.R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetProvinces(2,7,1,1)
             'Dim NSS As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase("2218230",R2Core.UserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
-            Dim _WS As PayanehWS.PayanehWebService = New PayanehWS.PayanehWebService()
+            'Dim _WS As PayanehWS.PayanehWebService = New PayanehWS.PayanehWebService()
             'Dim ExchangeKey = _WS.WebMethodLogin("123", "1234")
-            _WS.WebMethodGetnIdCarTruckBySmartCarNo("2063514", "74094")
+            '_WS.WebMethodGetnIdCarTruckBySmartCarNo("2063514", "74094")
             'PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating("1775507", R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -436,7 +441,9 @@ Public Class Form3
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
         Try
-            MessageBox.Show(R2CoreMclassDateAndTimeManagement.GetPersianDaysDiffDate(_DateTime.GetCurrentDateShamsiFull(), "1399/12/07"))
+            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+
+            'MessageBox.Show(R2CoreMclassDateAndTimeManagement.GetPersianDaysDiffDate(_DateTime.GetCurrentDateShamsiFull(), "1399/12/07"))
             'R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()
             'For loopx As Int64 = 0 To 2000
             '    Try
@@ -538,7 +545,7 @@ Public Class Form3
             R2Core.SMSSendAndRecieved.R2CoreSMSMClassSMSDomainManagement.SMSDomainSendRecieved()
 
         Catch ex As Exception
-            MessageBox.Show(ex.Message )
+            MessageBox.Show(ex.Message)
         End Try
     End Sub
 End Class

@@ -64,7 +64,9 @@ Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
     Private Sub UcucLoadCapacitorLoadCollectionAdvance_UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure) Handles UcucLoadCapacitorLoadCollectionAdvance.UCSelectedNSSChangedEvent
         Try
             R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(NSS.nEstelamId, UcViewerNSSTurnDataEntry.UCNSSCurrent.nEnterExitId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            UcucLoadAllocationCollection.UCRefreshGeneral()
             UcucLoadAllocationCollection.UCViewCollection(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocations(UcViewerNSSTurnDataEntry.UCNSSCurrent))
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخصیص بارانجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception When TypeOf ex Is AnnouncementHallSubGroupUnActiveException _
          OrElse TypeOf ex Is TimingNotReachedException _
          OrElse TypeOf ex Is TurnNotFoundException _
@@ -85,9 +87,9 @@ Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
     Private Sub UcViewerNSSTurnDataEntry_UCNSSCurrentChanged(NSSCurrent As R2CoreTransportationAndLoadNotificationStandardTurnStructure) Handles UcViewerNSSTurnDataEntry.UCNSSCurrentChanged
         Try
             If IsNothing(NSSCurrent) Then Return
+            UcucLoadAllocationCollection.UCRefreshGeneral()
             UcucLoadAllocationCollection.UCViewCollection(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocations(UcViewerNSSTurnDataEntry.UCNSSCurrent))
         Catch ex As LoadAllocationNotFoundException
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -95,9 +97,9 @@ Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
 
     Private Sub UcucLoadAllocationCollection_UCDecreasedPriorityEvent() Handles UcucLoadAllocationCollection.UCDecreasedPriorityEvent
         Try
+            UcucLoadAllocationCollection.UCRefreshGeneral()
             UcucLoadAllocationCollection.UCViewCollection(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocations(UcViewerNSSTurnDataEntry.UCNSSCurrent))
         Catch ex As LoadAllocationNotFoundException
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -105,9 +107,19 @@ Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
 
     Private Sub UcucLoadAllocationCollection_UCIncreasedPriorityEvent() Handles UcucLoadAllocationCollection.UCIncreasedPriorityEvent
         Try
+            UcucLoadAllocationCollection.UCRefreshGeneral()
             UcucLoadAllocationCollection.UCViewCollection(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocations(UcViewerNSSTurnDataEntry.UCNSSCurrent))
         Catch ex As LoadAllocationNotFoundException
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub UcucLoadAllocationCollection_UCLoadAllocationCancelationEvent() Handles UcucLoadAllocationCollection.UCLoadAllocationCancelationEvent
+        Try
+            UcucLoadAllocationCollection.UCRefreshGeneral()
+            UcucLoadAllocationCollection.UCViewCollection(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocations(UcViewerNSSTurnDataEntry.UCNSSCurrent))
+        Catch ex As LoadAllocationNotFoundException
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
