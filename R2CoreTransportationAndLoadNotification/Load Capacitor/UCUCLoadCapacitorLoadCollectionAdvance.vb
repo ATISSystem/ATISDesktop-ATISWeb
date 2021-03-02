@@ -1,6 +1,7 @@
 ﻿
 Imports System.Reflection
 Imports System.Timers
+
 Imports R2Core.BaseStandardClass
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
@@ -123,7 +124,7 @@ Public Class UCUCLoadCapacitorLoadCollectionAdvance
 
     Private Sub UcucLoadCapacitorLoadCollection_UCViewInformationCompletedEvent() Handles UcucLoadCapacitorLoadCollection.UCViewInformationCompletedEvent
         Try
-            UCViewCollection()
+            RaiseEvent UCViewInformationCompletedEvent 
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

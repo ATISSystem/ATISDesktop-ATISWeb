@@ -17,7 +17,7 @@ Public Class UCUCLoadCapacitorLoadCollection
 
 #Region "General Properties"
 
-    Private _UCTimerInterval As Int64
+    Private _UCTimerInterval As Int64=1
     Public Property UCTimerInterval() As Int64
         Get
             Return _UCTimerInterval

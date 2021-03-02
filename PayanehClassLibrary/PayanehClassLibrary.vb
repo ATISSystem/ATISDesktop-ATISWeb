@@ -3705,7 +3705,7 @@ Namespace ReportsManagement
                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocationStatuses as LoadAllocationStatuses On LoadAllocations.LAStatusId=LoadAllocationStatuses.LoadAllocationStatusId
                           Where Turns.strExitDate>='" & YourDate1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDate2.DateShamsiFull & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and
                                 LoadAllocations.LAStatusId=2 and SUBSTRING(Turns.OtaghdarTurnNumber,1,1)='" & YourSequentialTurnKeyWord & "'
-                          Order By PersonFullName"
+                          Order By LoadAllocations.DateTimeMilladi"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             Catch ex As Exception

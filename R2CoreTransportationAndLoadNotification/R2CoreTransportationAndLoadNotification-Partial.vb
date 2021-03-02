@@ -995,7 +995,7 @@ Namespace LoadCapacitor
                               Inner Join dbtransport.dbo.tbCity as City On Elam.nCityCode=City.nCityCode 
                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderType On Elam.nTruckType=LoaderType.LoaderTypeId 
                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces on City.nProvince=Provinces.ProvinceId 
-                           Where Elam.dDateElam ='" & _DateTime.GetCurrentDateShamsiFull() & "' and Elam.AHId=" & YourAHId & "" 
+                           Where Elam.dDateElam ='" & _DateTime.GetCurrentDateShamsiFull() & "' and Elam.AHId=" & YourAHId & ""
                     Sql = Sql + " And Elam.LoadStatus<>3 And Elam.LoadStatus<>4 And Elam.LoadStatus<>6"
                     Sql = Sql + " And Elam.nCarNum>0"
                     Sql = Sql + " and Elam.LoadStatus<>5"
@@ -3823,6 +3823,7 @@ Namespace LoadAllocation
                 CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations Set LAStatusId=" & YourLoadAllocationStatusId & "Where LAId=" & YourLoadAllocationId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
+                RePrioritize (R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(YourLoadAllocationId ).TurnId ))
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
