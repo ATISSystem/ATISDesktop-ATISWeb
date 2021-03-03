@@ -2146,7 +2146,6 @@ Namespace AnnouncementHalls
                     Lst.Add(NSS)
                 Next
                 Return Lst
-
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -3794,7 +3793,10 @@ Namespace LoadAllocation
                 If Not (NSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed Or NSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.Registered Or NSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionCancelled) Then Throw New LoadAllocationCancellingNotAllowedBecauseLoadAllocationStatusException
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
-                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations Set LAStatusId=" & YourCancellingStatus & ",LANote='" & NSSLoadAllocationStatus.LoadAllocationStatusTitle & "'  Where LAId=" & YourLoadAllocationId & ""
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
+                                        Set LAStatusId=" & YourCancellingStatus & ",LANote='" & NSSLoadAllocationStatus.LoadAllocationStatusTitle & "',
+                                            DateTimeMilladi='" & _DateTime.GetCurrentDateTimeMilladiFormated & "',DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "',Time='" & _DateTime.GetCurrentTime & "'  
+                                      Where LAId=" & YourLoadAllocationId & ""
                 CmdSql.ExecuteNonQuery()
                 R2CoreTransportationAndLoadNotificationMClassTurnsManagement.LoadAllocationCancelling(NSSLoadAllocation.TurnId)
                 R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.LoadCapacitorLoadAllocationCancelling(NSSLoadAllocation.nEstelamId, YourUserNSS)
@@ -3820,10 +3822,12 @@ Namespace LoadAllocation
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations Set LAStatusId=" & YourLoadAllocationStatusId & "Where LAId=" & YourLoadAllocationId & ""
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations
+                                        Set LAStatusId=" & YourLoadAllocationStatusId & ",DateTimeMilladi='" & _DateTime.GetCurrentDateTimeMilladiFormated & "',DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "',Time='" & _DateTime.GetCurrentTime & "'
+                                      Where LAId=" & YourLoadAllocationId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
-                RePrioritize (R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(YourLoadAllocationId ).TurnId ))
+                RePrioritize(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(YourLoadAllocationId).TurnId))
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -3908,6 +3912,37 @@ Namespace LoadAllocation
             End Try
         End Function
 
+        Public Shared Sub CancellingFailedLoadAllocations()
+            Dim Cmdsql As New SqlClient.SqlCommand
+            Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                Dim AnnouncementHallsAnnouncementHallSubGroupsJOINT As List(Of R2CoreTransportationAndLoadNotificationStandardAnnouncementHallAnnouncementHallSubGroupJOINTStructure) = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetAnnouncementHallsAnnouncementHallSubGroupsJOINT()
+                Cmdsql.Connection.Open()
+                Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
+                For LoopAnnouncementHallsAnnouncementHallSubGroupsJOINT As Int64 = 0 To AnnouncementHallsAnnouncementHallSubGroupsJOINT.Count - 1
+                    Dim AHId As Int64 = AnnouncementHallsAnnouncementHallSubGroupsJOINT(LoopAnnouncementHallsAnnouncementHallSubGroupsJOINT).NSSAnnounementHall.AHId
+                    Dim AHSGId As Int64 = AnnouncementHallsAnnouncementHallSubGroupsJOINT(LoopAnnouncementHallsAnnouncementHallSubGroupsJOINT).NSSAnnouncementHallSubGroup.AHSGId
+                    'کنترل تایمینگ - آیا زمان صدور مجوز برای زیرگروه سالن مورد نظر فرارسیده است
+                    If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.IsTimingActive(AHId, AHSGId) Then
+                        'If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.GetTiming(AHId, AHSGId) = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionProcess Then
+                            Cmdsql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
+                                                      Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledSystem & ",LANote='کنسلی سیستمی',
+                                                          DateTimeMilladi='" & _DateTime.GetCurrentDateTimeMilladiFormated & "',DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "',Time='" & _DateTime.GetCurrentTime & "'
+                                                  Where LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed  & " and DateShamsi='" & _DateTime.GetCurrentDateShamsiFull  & "'"
+                            Cmdsql.ExecuteNonQuery()
+                        'End If
+                    End If
+                Next
+                Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
+            Catch ex As Exception
+                If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                    Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+
+        End Sub
+
         Public Shared Sub LoadAllocationLoadPermissionRegistering(YourLoadAllocationId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
@@ -3918,7 +3953,9 @@ Namespace LoadAllocation
                 Try
                     R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement.LoadPermissionRegistering(NSSLoadAllocation, YourUserNSS)
                     CmdSql.Connection.Open()
-                    CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & ",LANote='مجوز صادر شده'  Where LAId=" & YourLoadAllocationId & ""
+                    CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
+                                              Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & ",LANote='مجوز صادر شده',DateTimeMilladi='" & _DateTime.GetCurrentDateTimeMilladiFormated & "',DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "',Time='" & _DateTime.GetCurrentTime & "' 
+                                          Where LAId=" & YourLoadAllocationId & ""
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Connection.Close()
                 Catch ex As Exception When TypeOf ex Is TurnHandlingNotAllowedBecuaseTurnStatusException OrElse TypeOf ex Is LoadPermisionRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException OrElse TypeOf ex Is LoadPermisionRegisteringFailedBecauseTurnIsNotReadyException OrElse TypeOf ex Is PresentNotRegisteredInLast30MinuteException OrElse TypeOf ex Is PresentsNotEnoughException OrElse TypeOf ex Is LoadPermisionRegisteringFailedBecauseBlackListException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is LoadCapacitorLoadReleaseNotAllowedBecuasenCarNumException OrElse TypeOf ex Is LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException OrElse TypeOf ex Is LoadCapacitorLoadReleaseTimeNotReachedException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is GetDataException OrElse TypeOf ex Is AnnouncementHallSubGroupNotFoundException OrElse TypeOf ex Is AnnouncementHallSubGroupRelationTruckNotExistException
@@ -3929,7 +3966,10 @@ Namespace LoadAllocation
                     End If
                     'مارک تخصیص به حالت فی لد Falied
                     CmdSql.Connection.Open()
-                    CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed & ",LANote='" & ex.Message & "' Where LAId=" & YourLoadAllocationId & ""
+                    CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
+                                                  Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed & ",LANote='" & ex.Message & "',
+                                                      DateTimeMilladi='" & _DateTime.GetCurrentDateTimeMilladiFormated & "',DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "',Time='" & _DateTime.GetCurrentTime & "' 
+                                          Where LAId=" & YourLoadAllocationId & ""
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Connection.Close()
                     Throw ex

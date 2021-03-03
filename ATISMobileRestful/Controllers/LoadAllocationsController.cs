@@ -30,7 +30,7 @@ namespace ATISMobileRestful.Controllers
             try
             {
                 var NSSLoadCapacitorLoad = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId);
-                if (NSSLoadCapacitorLoad.AHId == 2 & NSSLoadCapacitorLoad.AHSGId == 7)
+                if (NSSLoadCapacitorLoad.AHId == 2 & (NSSLoadCapacitorLoad.AHSGId == 7 || NSSLoadCapacitorLoad.AHSGId == 8 || NSSLoadCapacitorLoad.AHSGId == 9 || NSSLoadCapacitorLoad.AHSGId == 14)) 
                 { }
                 else
                 { return new MessageStruct { ErrorCode = false, Message1 = String.Empty, Message2 = String.Empty, Message3 = string.Empty }; }

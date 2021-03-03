@@ -238,8 +238,10 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
+            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.CancellingFailedLoadAllocations()
+
             'R2CoreMClassSoftwareUsersManagement.SetCurrentUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
-            R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
+            'R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
             'PayanehClassLibrary.Rmto.RmtoWebService.GetInf(RmtoWebService.InfoType.GET_DRIVER_BY_SHC, "1222524")
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -440,6 +442,7 @@ Public Class Form3
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
         Try
+            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.CancellingFailedLoadAllocations()
             R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
 
             'MessageBox.Show(R2CoreMclassDateAndTimeManagement.GetPersianDaysDiffDate(_DateTime.GetCurrentDateShamsiFull(), "1399/12/07"))

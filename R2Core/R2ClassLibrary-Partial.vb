@@ -1744,7 +1744,7 @@ Namespace SMSSendAndRecieved
                         If DateDiff(DateInterval.Hour, _DateTime.GetCurrentDateTimeMilladi, Convert.ToDateTime(DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"))) <= DS.Tables(0).Rows(Loopx).Item("EndHours") Then
                             Dim myMessage As String = DS.Tables(0).Rows(Loopx).Item("message").trim
                             Dim myMobilenumber As String = DS.Tables(0).Rows(Loopx).Item("mobilenumber").trim
-                            Dim SmsId() As Long = _SepahanSMS.SendSms("Biinfo878", "3800000", "sepahansms", New String() {myMessage}, New String() {myMobilenumber}, "30006403868611",
+                            Dim SmsId() As Long = _SepahanSMS.SendSms("Biinfo878", "Biinfo878aB", "sepahansms", New String() {myMessage}, New String() {myMobilenumber}, "30006403868611",
                                                      net.sepahansms.SendType.DynamicText, net.sepahansms.SmsMode.SaveInPhone)
                             If SmsId(0) > 0 Then
                                 CmdSql.CommandText = "Update  R2PrimarySMSSystem.dbo.TblSmsWareHouse Set Active=0 where SmsId=" & mySmsId & ""
