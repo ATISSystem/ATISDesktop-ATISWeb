@@ -1737,8 +1737,7 @@ Namespace SMSSendAndRecieved
                 If R2CoreMClassConfigurationManagement.GetConfigBoolean(R2CoreConfigurations.SmsSystemSetting, 0) = True Then
                     Dim DS As DataSet
                     R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimarySMSSystem.dbo.TblSmsWareHouse where Active=1 and SmsType=" & SmsSendReciveType.ForSend & "", 0, DS)
-                    CmdSql.Connection.Open()
-                    CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+
                     For Loopx As Int32 = 0 To DS.Tables(0).Rows.Count - 1
                         Dim mySmsId As String = DS.Tables(0).Rows(Loopx).Item("SmsId")
                         If DateDiff(DateInterval.Hour, _DateTime.GetCurrentDateTimeMilladi, Convert.ToDateTime(DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"))) <= DS.Tables(0).Rows(Loopx).Item("EndHours") Then
@@ -1747,12 +1746,16 @@ Namespace SMSSendAndRecieved
                             Dim SmsId() As Long = _SepahanSMS.SendSms("Biinfo878", "Biinfo878aB", "sepahansms", New String() {myMessage}, New String() {myMobilenumber}, "30006403868611",
                                                      net.sepahansms.SendType.DynamicText, net.sepahansms.SmsMode.SaveInPhone)
                             If SmsId(0) > 0 Then
+                                CmdSql.Connection.Open()
                                 CmdSql.CommandText = "Update  R2PrimarySMSSystem.dbo.TblSmsWareHouse Set Active=0 where SmsId=" & mySmsId & ""
                                 CmdSql.ExecuteNonQuery()
+                                CmdSql.Connection.Close()
                             End If
                         Else
+                            CmdSql.Connection.Open()
                             CmdSql.CommandText = "Update  R2PrimarySMSSystem.dbo.TblSmsWareHouse Set Active=0 where SmsId=" & mySmsId & ""
                             CmdSql.ExecuteNonQuery()
+                            CmdSql.Connection.Close()
                         End If
                     Next
                 Else
@@ -1785,13 +1788,12 @@ Namespace SMSSendAndRecieved
                 '        End If
                 '    End If
                 'Next
-                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+
             Catch ex As SmsSystemIsDisabledException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw ex
             Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then
-                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
-                End If
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub

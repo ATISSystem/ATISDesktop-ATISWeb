@@ -5,11 +5,16 @@ Imports System.Text
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.PayanehWS
 Imports PayanehClassLibrary.Rmto
+Imports R2Core.ConfigurationManagement
 Imports R2Core.DatabaseManagement
 Imports R2Core.DateAndTimeManagement
+Imports R2Core.EntityRelationManagement
+Imports R2Core.PermissionManagement
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.Drivers
+Imports R2CoreParkingSystem.EntityRelations
+Imports R2CoreParkingSystem.SoftwareUsersManagement
 Imports R2CoreTransportationAndLoadNotification
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
@@ -238,8 +243,32 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.CancellingFailedLoadAllocations()
+            Dim Ds As DataSet
+            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                   "Select Distinct strPersonFullName,strIDNO from dbtransport.dbo.TbPerson as Persons
+                    Where Persons.strIDNO collate Arabic_CI_AI_WS not in (Select Distinct MobileNumber collate Arabic_CI_AI_WS 
+                                                                          from R2Primary.dbo.TblSoftwareUsers 
+														                  Where ltrim(rtrim(mobilenumber))<>'' and UserTypeId=3) 
+    	                 and ltrim(rtrim(Persons.strIDNO))<>'' and len(Persons.strIDNO)=11", 0, Ds)
+            Dim NSSUserCreator = R2CoreMClassSoftwareUsersManagement.GetNSSUser(21)
+            For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                Dim NSSUser = New R2CoreStandardSoftwareUserStructure(Nothing, Ds.Tables(0).Rows(loopx).Item("strPersonFullName").trim, String.Empty, String.Empty, String.Empty, False, True, 3, Ds.Tables(0).Rows(loopx).Item("strIDNO").trim, "logout", String.Empty, 21, Nothing, Nothing, True, False)
+                Dim UserId As Int64 = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(NSSUser, NSSUserCreator)
+                Dim NSSEn = New R2StandardEntityRelationStructure(Nothing, R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver, UserId, Ds.Tables(0).Rows(loopx).Item("nIdPerson"), True)
+                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(NSSEn, RelationDeactiveTypes.BothDeactive)
+                'به دست آوردن لیست فرآیندهای موبایلی قابل دسترسی برای نوع کاربر راننده و ارسال به مدیریت مجوز
+                Dim ComposeSearchString As String = R2CoreParkingSystemSoftwareUserTypes.Driver.ToString + ":"
+                Dim AllofSoftwareUserTypes1 As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesAccessMobileProcesses), ";")
+                Dim AllofMobileProcessesIds As String() = Split(Mid(AllofSoftwareUserTypes1.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes1.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+                R2CoreMClassPermissionsManagement.RegisteringPermissions(R2CorePermissionTypes.SoftwareUsersAccessMobileProcesses, UserId, AllofMobileProcessesIds)
+                'به دست آوردن لیست گروههای فرآیند موبایلی برای نوع کاربر راننده و ارسال آن به مدیریت روابط نهادی
+                Dim AllofSoftwareUserTypes2 As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesRelationMobileProcessGroups), ";")
+                Dim AllofMobileProcessGroupsIds As String() = Split(Mid(AllofSoftwareUserTypes2.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes2.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+                R2CoreMClassEntityRelationManagement.RegisteringEntityRelations(R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup, UserId, AllofMobileProcessGroupsIds)
+            Next
+            MessageBox.Show("Count : "+Ds.Tables(0).Rows.Count.ToString())
 
+            'R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.CancellingFailedLoadAllocations()
             'R2CoreMClassSoftwareUsersManagement.SetCurrentUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             'R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
             'PayanehClassLibrary.Rmto.RmtoWebService.GetInf(RmtoWebService.InfoType.GET_DRIVER_BY_SHC, "1222524")
