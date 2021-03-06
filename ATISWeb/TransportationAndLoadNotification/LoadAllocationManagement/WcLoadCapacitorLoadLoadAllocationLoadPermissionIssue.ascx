@@ -41,7 +41,8 @@
                             <span>ساعت صدور <%=PPDS.StrExitTime%></span>
                         </div>
                         <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: medium; margin-right: 20px; text-align: right">
-                            <span>شماره مجوز <%=PPDS.nEstelamId%></span><br />
+                            <span>شماره تخصیص <%=PPDS.LAId%></span><br />
+                            <span>کدمخزن بار <%=PPDS.nEstelamId%></span><br />
                             <span>شماره نوبت <%=PPDS.TurnId%></span>
                         </div>
                     </div>

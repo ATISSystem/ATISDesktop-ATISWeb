@@ -78,6 +78,7 @@ Partial Class UCCarTruckNobat
         'UcButtonResuscitationNobat
         '
         Me.UcButtonResuscitationNobat.BackColor = System.Drawing.Color.Transparent
+        Me.UcButtonResuscitationNobat.Enabled = false
         Me.UcButtonResuscitationNobat.Location = New System.Drawing.Point(107, 3)
         Me.UcButtonResuscitationNobat.Name = "UcButtonResuscitationNobat"
         Me.UcButtonResuscitationNobat.Padding = New System.Windows.Forms.Padding(1)
@@ -89,6 +90,7 @@ Partial Class UCCarTruckNobat
         Me.UcButtonResuscitationNobat.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
         Me.UcButtonResuscitationNobat.UCForeColor = System.Drawing.Color.White
         Me.UcButtonResuscitationNobat.UCValue = "احیاء"
+        Me.UcButtonResuscitationNobat.Visible = false
         '
         'UcButtonEbtalNobat
         '

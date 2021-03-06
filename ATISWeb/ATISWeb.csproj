@@ -440,6 +440,7 @@
     <Compile Include="TransportationAndLoadNotification\LoadCapacitorMonitoringManagement\WfLoadCapacitorMonitoringMuted.aspx.designer.cs">
       <DependentUpon>WfLoadCapacitorMonitoringMuted.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TransportationAndLoadNotification\LoadPermissionManagement\ATISWebLoadPermissionManagement.cs" />
     <Compile Include="TransportationAndLoadNotification\SmartCards\WcSmartCardsInquiry.ascx.cs">
       <DependentUpon>WcSmartCardsInquiry.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

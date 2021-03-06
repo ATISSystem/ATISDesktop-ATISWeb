@@ -75,9 +75,8 @@ Public Class PayanehAmirKabirAutomatedJobs
                 R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.LoadCapacitorSedimentingFailed, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
             End Try
 
-            'فرآیند کنسلی سیستمی مجوزهای بار مارک شده فیلد که دوباره در فرآیند صدور مجوز وارد نشوند و صدور خودکار مجوزهای سالن های اعلام بار
+            'صدور خودکار مجوزهای سالن های اعلام بار
             Try
-                R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.CancellingFailedLoadAllocations()
                 R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)

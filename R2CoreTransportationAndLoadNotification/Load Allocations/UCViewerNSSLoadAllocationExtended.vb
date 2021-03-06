@@ -22,7 +22,7 @@ Public Class UCViewerNSSLoadAllocationExtended
 
     Public Event UCDecreasedPriorityEvent()
     Public Event UCIncreasedPriorityEvent()
-    Public event UCLoadAllocationCancelation()
+    Public Event UCLoadAllocationCancelation()
 
 #Region "General Properties"
 
@@ -53,6 +53,7 @@ Public Class UCViewerNSSLoadAllocationExtended
         Try
             LabelTransportCompanyTitle.Text = String.Empty
             LabelGoodTitle.Text = String.Empty
+            LabelnEstelamId.Text = String.Empty
             LabelLoadTargetTitle.Text = String.Empty
             LabelTruck.Text = String.Empty
             LabelDriverTruck.Text = String.Empty
@@ -79,7 +80,7 @@ Public Class UCViewerNSSLoadAllocationExtended
 
 #Region "Event Handlers"
 
-    Private Sub Labels_Click(sender As Object, e As EventArgs) Handles LabelTransportCompanyTitle.Click, LabelGoodTitle.Click, LabelLoadTargetTitle.Click, LabelTruck.Click, LabelDriverTruck.Click, LabelLoadAllocationStatus.Click
+    Private Sub Labels_Click(sender As Object, e As EventArgs) Handles LabelTransportCompanyTitle.Click, LabelGoodTitle.Click, LabelLoadTargetTitle.Click, LabelTruck.Click, LabelDriverTruck.Click, LabelLoadAllocationStatus.Click, LabelnEstelamId.Click
         Try
             UCOnClickedEvent(Me)
         Catch ex As Exception
@@ -110,6 +111,7 @@ Public Class UCViewerNSSLoadAllocationExtended
             Dim NSS As R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedStructure = UCNSSCurrent
             LabelTransportCompanyTitle.Text = NSS.TransportCompanyTitle
             LabelGoodTitle.Text = NSS.GoodTitle
+            LabelnEstelamId.Text=NSS.nEstelamId 
             LabelLoadTargetTitle.Text = NSS.LoadTargetTitle
             LabelTruck.Text = NSS.Truck
             LabelDriverTruck.Text = NSS.TruckDriver
@@ -129,6 +131,8 @@ Public Class UCViewerNSSLoadAllocationExtended
             UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(UCNSSCurrent.LAId))
             RaiseEvent UCLoadAllocationCancelation()
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخصیص بار کنسل شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As LoadAllocationCancellingNotAllowedBecauseTurnStatusException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -139,9 +143,9 @@ Public Class UCViewerNSSLoadAllocationExtended
             R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.DecreasePriority(UCNSSCurrent.LAId)
             RaiseEvent UCDecreasedPriorityEvent()
         Catch ex As LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage , Nothing, Me)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As TimingNotReachedException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage , Nothing, Me)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -152,9 +156,9 @@ Public Class UCViewerNSSLoadAllocationExtended
             R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.IncreasePriority(UCNSSCurrent.LAId)
             RaiseEvent UCIncreasedPriorityEvent()
         Catch ex As LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage , Nothing, Me)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As TimingNotReachedException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage , Nothing, Me)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

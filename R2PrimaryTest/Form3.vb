@@ -18,7 +18,9 @@ Imports R2CoreParkingSystem.SoftwareUsersManagement
 Imports R2CoreTransportationAndLoadNotification
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
+Imports R2CoreTransportationAndLoadNotification.ConfigurationsManagement
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
+Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
 Imports R2CoreTransportationAndLoadNotification.Rmto
@@ -243,38 +245,49 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            Dim Ds As DataSet
-            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                   "Select Distinct strPersonFullName,strIDNO from dbtransport.dbo.TbPerson as Persons
-                    Where Persons.strIDNO collate Arabic_CI_AI_WS not in (Select Distinct MobileNumber collate Arabic_CI_AI_WS 
-                                                                          from R2Primary.dbo.TblSoftwareUsers 
-														                  Where ltrim(rtrim(mobilenumber))<>'' and UserTypeId=3) 
-    	                 and ltrim(rtrim(Persons.strIDNO))<>'' and len(Persons.strIDNO)=11", 0, Ds)
-            Dim NSSUserCreator = R2CoreMClassSoftwareUsersManagement.GetNSSUser(21)
-            For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                Dim NSSUser = New R2CoreStandardSoftwareUserStructure(Nothing, Ds.Tables(0).Rows(loopx).Item("strPersonFullName").trim, String.Empty, String.Empty, String.Empty, False, True, 3, Ds.Tables(0).Rows(loopx).Item("strIDNO").trim, "logout", String.Empty, 21, Nothing, Nothing, True, False)
-                Dim UserId As Int64 = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(NSSUser, NSSUserCreator)
-                Dim NSSEn = New R2StandardEntityRelationStructure(Nothing, R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver, UserId, Ds.Tables(0).Rows(loopx).Item("nIdPerson"), True)
-                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(NSSEn, RelationDeactiveTypes.BothDeactive)
-                'به دست آوردن لیست فرآیندهای موبایلی قابل دسترسی برای نوع کاربر راننده و ارسال به مدیریت مجوز
-                Dim ComposeSearchString As String = R2CoreParkingSystemSoftwareUserTypes.Driver.ToString + ":"
-                Dim AllofSoftwareUserTypes1 As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesAccessMobileProcesses), ";")
-                Dim AllofMobileProcessesIds As String() = Split(Mid(AllofSoftwareUserTypes1.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes1.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
-                R2CoreMClassPermissionsManagement.RegisteringPermissions(R2CorePermissionTypes.SoftwareUsersAccessMobileProcesses, UserId, AllofMobileProcessesIds)
-                'به دست آوردن لیست گروههای فرآیند موبایلی برای نوع کاربر راننده و ارسال آن به مدیریت روابط نهادی
-                Dim AllofSoftwareUserTypes2 As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesRelationMobileProcessGroups), ";")
-                Dim AllofMobileProcessGroupsIds As String() = Split(Mid(AllofSoftwareUserTypes2.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes2.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
-                R2CoreMClassEntityRelationManagement.RegisteringEntityRelations(R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup, UserId, AllofMobileProcessGroupsIds)
-            Next
-            MessageBox.Show("Count : "+Ds.Tables(0).Rows.Count.ToString())
+            Dim NSSLoadAllocation = R2CoreTransportationAndLoadNotification.LoadAllocation.R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(10725)
 
-            'R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.CancellingFailedLoadAllocations()
-            'R2CoreMClassSoftwareUsersManagement.SetCurrentUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
-            'R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
-            'PayanehClassLibrary.Rmto.RmtoWebService.GetInf(RmtoWebService.InfoType.GET_DRIVER_BY_SHC, "1222524")
+            If DateDiff(DateInterval.Minute, NSSLoadAllocation.DateTimeMilladi, _DateTime.GetCurrentDateTimeMilladi()) >= R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadAllocationsLoadPermissionRegisteringSetting, 1) Then
+                R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(NSSLoadAllocation.LAId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledSystem, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+                Throw New LoadAllocationMaxDelayFailedReachedException
+            End If
+
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
+        'Try
+        '    Dim Ds As DataSet
+        '    R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+        '           "Select Distinct strPersonFullName,strIDNO from dbtransport.dbo.TbPerson as Persons
+        '            Where Persons.strIDNO collate Arabic_CI_AI_WS not in (Select Distinct MobileNumber collate Arabic_CI_AI_WS 
+        '                                                                  from R2Primary.dbo.TblSoftwareUsers 
+        '						                  Where ltrim(rtrim(mobilenumber))<>'' and UserTypeId=3) 
+        '              and ltrim(rtrim(Persons.strIDNO))<>'' and len(Persons.strIDNO)=11", 0, Ds)
+        '    Dim NSSUserCreator = R2CoreMClassSoftwareUsersManagement.GetNSSUser(21)
+        '    For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+        '        Dim NSSUser = New R2CoreStandardSoftwareUserStructure(Nothing, Ds.Tables(0).Rows(loopx).Item("strPersonFullName").trim, String.Empty, String.Empty, String.Empty, False, True, 3, Ds.Tables(0).Rows(loopx).Item("strIDNO").trim, "logout", String.Empty, 21, Nothing, Nothing, True, False)
+        '        Dim UserId As Int64 = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(NSSUser, NSSUserCreator)
+        '        Dim NSSEn = New R2StandardEntityRelationStructure(Nothing, R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver, UserId, Ds.Tables(0).Rows(loopx).Item("nIdPerson"), True)
+        '        R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(NSSEn, RelationDeactiveTypes.BothDeactive)
+        '        'به دست آوردن لیست فرآیندهای موبایلی قابل دسترسی برای نوع کاربر راننده و ارسال به مدیریت مجوز
+        '        Dim ComposeSearchString As String = R2CoreParkingSystemSoftwareUserTypes.Driver.ToString + ":"
+        '        Dim AllofSoftwareUserTypes1 As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesAccessMobileProcesses), ";")
+        '        Dim AllofMobileProcessesIds As String() = Split(Mid(AllofSoftwareUserTypes1.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes1.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+        '        R2CoreMClassPermissionsManagement.RegisteringPermissions(R2CorePermissionTypes.SoftwareUsersAccessMobileProcesses, UserId, AllofMobileProcessesIds)
+        '        'به دست آوردن لیست گروههای فرآیند موبایلی برای نوع کاربر راننده و ارسال آن به مدیریت روابط نهادی
+        '        Dim AllofSoftwareUserTypes2 As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesRelationMobileProcessGroups), ";")
+        '        Dim AllofMobileProcessGroupsIds As String() = Split(Mid(AllofSoftwareUserTypes2.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes2.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+        '        R2CoreMClassEntityRelationManagement.RegisteringEntityRelations(R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup, UserId, AllofMobileProcessGroupsIds)
+        '    Next
+        '    MessageBox.Show("Count : "+Ds.Tables(0).Rows.Count.ToString())
+
+        '    'R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.CancellingFailedLoadAllocations()
+        '    'R2CoreMClassSoftwareUsersManagement.SetCurrentUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+        '    'R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
+        '    'PayanehClassLibrary.Rmto.RmtoWebService.GetInf(RmtoWebService.InfoType.GET_DRIVER_BY_SHC, "1222524")
+        'Catch ex As Exception
+        '    MessageBox.Show(ex.Message)
+        'End Try
 
     End Sub
 
@@ -471,7 +484,6 @@ Public Class Form3
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.CancellingFailedLoadAllocations()
             R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
 
             'MessageBox.Show(R2CoreMclassDateAndTimeManagement.GetPersianDaysDiffDate(_DateTime.GetCurrentDateShamsiFull(), "1399/12/07"))

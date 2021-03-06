@@ -74,6 +74,8 @@ namespace ATISMobileRestful.Controllers
             { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
             catch (LoadAllocationCancellingNotAllowedBecauseLoadAllocationStatusException ex)
             { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
+            catch (LoadAllocationCancellingNotAllowedBecauseTurnStatusException ex)
+            { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
             catch (Exception ex)
             { return new MessageStruct { ErrorCode = true, Message1 = ex.Message, Message2 = string.Empty, Message3 = string.Empty }; }
         }

@@ -69,6 +69,7 @@ Imports R2CoreTransportationAndLoadNotification.Turns.TurnRegisterRequest
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Rmto
 Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
+Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 
 Namespace Logging
 
@@ -1593,10 +1594,10 @@ Namespace DriverTrucksManagement
                 If IsExistDriverTruck(NSS) = True Then
                     Dim nIdPerson As Int64 = GetNSSDriverTruckbySmartCardNo(YourSmartCardNo).NSSDriver.nIdPerson
                     NSS.NSSDriver.nIdPerson = nIdPerson
-                    R2CoreParkingSystemMClassDrivers.UpdateDriver(NSS.NSSDriver,R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser )
+                    R2CoreParkingSystemMClassDrivers.UpdateDriver(NSS.NSSDriver, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
                     PayanehClassLibraryMClassDriverTrucksManagement.UpdateDriverTruck(NSS)
                 Else
-                    Dim nIdPerson As Int64 = R2CoreParkingSystemMClassDrivers.InsertDriver(NSS.NSSDriver,R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser )
+                    Dim nIdPerson As Int64 = R2CoreParkingSystemMClassDrivers.InsertDriver(NSS.NSSDriver, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
                     NSS.NSSDriver.nIdPerson = nIdPerson
                     PayanehClassLibraryMClassDriverTrucksManagement.UpdateDriverTruck(NSS)
                 End If
@@ -3692,9 +3693,10 @@ Namespace ReportsManagement
                 CmdSql.CommandText = "
                         Insert Into R2PrimaryReports.dbo.TblLoadPermissionIssuedOrderByPriorityReport
                           Select Turns.OtaghdarTurnNumber,ltrim(rtrim(Replace(Persons.strPersonFullName ,';',' '))) as PersonFullName,Trucks.strCarNo+'-'+Trucks.strCarSerialNo as Truck,LoadAllocations.LAId,LoadAllocations.Priority,Loads.nEstelamID,
-                                 Products.strGoodName,LoadTargets.strCityName,Turns.strExitDate+'-'+strExitTime as LoadPermissionDateTime,TransportCompanies.TCTitle
+                                 Products.strGoodName,LoadTargets.strCityName,Turns.strExitDate+'-'+strExitTime as LoadPermissionDateTime,TransportCompanies.TCTitle,AnnouncementHallSubGroups.AHSGTitle 
                           from dbtransport.dbo.tbEnterExit as Turns
                             Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID=Loads.nEstelamID
+                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On Loads.AHSGId=AnnouncementHallSubGroups.AHSGId 
 							Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Loads.nCompCode=TransportCompanies.TCId 
                             Inner Join dbtransport.dbo.tbCity as LoadTargets On Loads.nCityCode=LoadTargets.nCityCode
                             Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode=Products.strGoodCode
@@ -4735,7 +4737,7 @@ Namespace LoadNotification.LoadPermission
         Private Shared _ExitDate, _ExitTime As String
         Private Shared _LoadPermissionUserExit As String
 
-        Public Shared Sub GetInformationforRemotePermissionPrinting(YournEstelamId As Int64, YourTurnId As Int64, ByRef StrExitDate As String, ByRef StrExitTime As String, ByRef nEstelamId As String, ByRef TurnId As String, ByRef CompanyName As String, ByRef CarTruckLoaderTypeName As String, ByRef Pelak As String, ByRef Serial As String, ByRef DriverTruckFullNameFamily As String, ByRef DriverTruckDrivingLicenseNo As String, ByRef ProductName As String, ByRef TargetCityName As String, ByRef StrPriceSug As String, ByRef StrDescription As String, ByRef PermissionUserName As String, ByRef OtherNote As String)
+        Public Shared Sub GetInformationforRemotePermissionPrinting(YournEstelamId As Int64, YourTurnId As Int64, ByRef StrExitDate As String, ByRef StrExitTime As String, ByRef nEstelamId As String, ByRef TurnId As String, ByRef CompanyName As String, ByRef CarTruckLoaderTypeName As String, ByRef Pelak As String, ByRef Serial As String, ByRef DriverTruckFullNameFamily As String, ByRef DriverTruckDrivingLicenseNo As String, ByRef ProductName As String, ByRef TargetCityName As String, ByRef StrPriceSug As String, ByRef StrDescription As String, ByRef PermissionUserName As String, ByRef OtherNote As String, ByRef LAId As String)
             Try
                 _NSSCarTruckNobat = PayanehClassLibraryMClassCarTruckNobatManagement.GetNSSCarTruckNobat(YourTurnId)
                 _NSSTransportCompanyStandardLoadCapacitorLoad = TransportCompaniesLoadCapacitorLoadManipulation.GetNSSTransportCompanyLoadCapacitorLoad(YournEstelamId)
@@ -4746,6 +4748,13 @@ Namespace LoadNotification.LoadPermission
                 PermissionUserName = LoadNotificationLoadPermissionManagement.GetLoadPermissionInf(YournEstelamId, YourTurnId).Data3
                 nEstelamId = YournEstelamId
                 TurnId = YourTurnId
+                Try
+                    LAId = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(YournEstelamId, YourTurnId).LAId.ToString()
+                Catch exx As LoadAllocationNotFoundException
+                    LAId = 0
+                Catch ex As Exception
+                    Throw ex
+                End Try
                 CompanyName = TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompanyName(_NSSTransportCompanyStandardLoadCapacitorLoad.nCompCode)
                 CarTruckLoaderTypeName = R2CoreParkingSystem.CarType.R2CoreParkingSystemMClassCarType.GetCarTypeNameFromsnCarType(_NSSCarTruck.NSSCar.snCarType)
                 Pelak = _NSSCarTruck.NSSCar.StrCarNo

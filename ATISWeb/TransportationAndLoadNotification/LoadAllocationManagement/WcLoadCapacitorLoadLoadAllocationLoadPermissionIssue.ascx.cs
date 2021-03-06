@@ -13,7 +13,8 @@ using PayanehClassLibrary.LoadNotification.LoadPermission;
 using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2CoreTransportationAndLoadNotification.TransportCompanies;
-
+using R2CoreTransportationAndLoadNotification.LoadPermission.LoadPermissionPrinting;
+using ATISWeb.TransportationAndLoadNotification.LoadPermissionManagement.LoadPermissionPrinting;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -21,25 +22,6 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
     {
 
         #region "General Properties"
-        public struct PermissionPrintingDataStructure
-        {
-            public string TurnId;
-            public string nEstelamId;
-            public string StrExitDate;
-            public string StrExitTime;
-            public string CompanyName;
-            public string CarTruckLoaderTypeName;
-            public string pelak;
-            public string Serial;
-            public string DriverTruckFullNameFamily;
-            public string DriverTruckDrivingLicenseNo;
-            public string ProductName;
-            public string TargetCityName;
-            public string StrPriceSug;
-            public string StrDescription;
-            public string PermissionUserName;
-            public string OtherNote;
-        }
 
         #endregion
 
@@ -100,7 +82,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 Int64 mynEstelamId = WcViewerNSSLoadCapacitorLoad.WcGetNSSCurrent.nEstelamId;
                 LoadNotificationLoadPermissionManagement.CarTruckRelationDriverTruck(WcSmartCardsInquiry.WcGetTruckSmartCardNo(), WcSmartCardsInquiry.WcGetTruckDriverSmartCardNo(), ATISWebMClassLoginManagement.GetNSSCurrentUser());
                 Int64 myTurnId = LoadNotificationLoadPermissionManagement.TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(myCompanyCode, mynEstelamId, WcSmartCardsInquiry.WcGetTruckSmartCardNo(), WcSmartCardsInquiry.WcGetTruckDriverSmartCardNo(), ATISWebMClassLoginManagement.GetNSSCurrentUser());
-                PermissionPrinting.GetInformationforRemotePermissionPrinting(mynEstelamId, myTurnId, ref PPDS.StrExitDate, ref PPDS.StrExitTime, ref PPDS.nEstelamId, ref PPDS.TurnId, ref PPDS.CompanyName, ref PPDS.CarTruckLoaderTypeName, ref PPDS.pelak, ref PPDS.Serial, ref PPDS.DriverTruckFullNameFamily, ref PPDS.DriverTruckDrivingLicenseNo, ref PPDS.ProductName, ref PPDS.TargetCityName, ref PPDS.StrPriceSug, ref PPDS.StrDescription, ref PPDS.PermissionUserName, ref PPDS.OtherNote);
+                PermissionPrinting.GetInformationforRemotePermissionPrinting(mynEstelamId, myTurnId, ref PPDS.StrExitDate, ref PPDS.StrExitTime, ref PPDS.nEstelamId, ref PPDS.TurnId, ref PPDS.CompanyName, ref PPDS.CarTruckLoaderTypeName, ref PPDS.pelak, ref PPDS.Serial, ref PPDS.DriverTruckFullNameFamily, ref PPDS.DriverTruckDrivingLicenseNo, ref PPDS.ProductName, ref PPDS.TargetCityName, ref PPDS.StrPriceSug, ref PPDS.StrDescription, ref PPDS.PermissionUserName, ref PPDS.OtherNote,ref PPDS.LAId);
                 PPDS.TurnId = myTurnId.ToString();
                 PPDS.nEstelamId = mynEstelamId.ToString();
             }

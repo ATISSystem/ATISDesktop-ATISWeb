@@ -90,8 +90,8 @@
                             <span>ساعت صدور <%=PPDS.StrExitTime%></span>
                         </div>
                         <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller; margin-right: 20px; text-align: right">
-                            <span>شماره تخصیص <%=PPDS.%></span><br />
-                            <span>کد مخزن <%=PPDS.nEstelamId%></span><br />
+                            <span>شماره تخصیص <%=PPDS.LAId%></span><br />
+                            <span>کد مخزن بار <%=PPDS.nEstelamId%></span><br />
                             <span>شماره نوبت <%=PPDS.TurnId%></span>
                         </div>
                     </div>
@@ -100,13 +100,14 @@
                         <span>سیستم هوشمند صدور مجوز بارگیری</span><br />
                         <span>((مجوز بارگیری))</span>
                     </div>
-                    <div style="width: 100%; text-align: right; font-family: Titr; font-size: small ;"><span>شرکت/موسسه محترم <%=PPDS.CompanyName%>&nbsp;&nbsp;&nbsp;</span></div>
+                    <div style="width: 100%; text-align: right; font-family: Titr; font-size: small;"><span>شرکت/موسسه محترم <%=PPDS.CompanyName%>&nbsp;&nbsp;&nbsp;</span></div>
                     <br />
                     <div style="width: 100%; text-align: right;">
                         <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>بدین وسیله یک دستگاه <%=PPDS.CarTruckLoaderTypeName%></span>&nbsp;&nbsp;</div>
                         <div style="display: inline-block; float: right; font-family: B Homa; font-size: smaller;"><span>به شماره پلاک <%=PPDS.pelak%> - <%=PPDS.Serial%></span></div>
                     </div>
-                    <br /><br />
+                    <br />
+                    <br />
                     <div style="width: 100%; text-align: center; font-family: 'B Homa'; font-size: smaller;">
                         <div><span>به رانندگی آقای <%=PPDS.DriverTruckFullNameFamily%> دارای گواهینامه به شماره <%=PPDS.DriverTruckDrivingLicenseNo%></span>&nbsp;&nbsp;</div>
                     </div>
@@ -117,23 +118,23 @@
                     </div>
                     <br />
                     <div style="width: 100%; text-align: right;">
-                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller ;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>با نرخ <%=PPDS.StrPriceSug%> ریال با مسئولیت آن شرکت/موسسه معرفی می گردد</span></div>
-                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller ;"><span></span>&nbsp;&nbsp;&nbsp;</div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>با نرخ <%=PPDS.StrPriceSug%> ریال با مسئولیت آن شرکت/موسسه معرفی می گردد</span></div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span></span>&nbsp;&nbsp;&nbsp;</div>
                     </div>
                     <br />
                     <div style="width: 100%; text-align: center;">
-                        <div style="display: inline-block; float: right ; font-family: 'B Homa'; font-size: smaller  ;"><span><%=PPDS.StrDescription%></span></div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span><%=PPDS.StrDescription%></span></div>
                     </div>
                     <br />
                     <div style="width: 100%; text-align: center;">
-                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small ;"><span>توجه : مجوز فوق پس از صدور تعویض نخواهد شد - دریافت نوبت بعدی از پایانه به شرط انجام سفر امکان پذیر است</span></div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small;"><span>توجه : مجوز فوق پس از صدور تعویض نخواهد شد - دریافت نوبت بعدی از پایانه به شرط انجام سفر امکان پذیر است</span></div>
                     </div>
                     <br />
                     <div style="width: 100%; text-align: center;">
-                        <div style="display: inline-block; float: left ; font-family: 'B Homa'; font-size: x-small ;"><span style="font-family: 'B Homa'; font-size: 10;">&nbsp;&nbsp;&nbsp; نام کاربر : <%=PPDS.PermissionUserName%></span></div>
+                        <div style="display: inline-block; float: left; font-family: 'B Homa'; font-size: x-small;"><span style="font-family: 'B Homa'; font-size: 10;">&nbsp;&nbsp;&nbsp; نام کاربر : <%=PPDS.PermissionUserName%></span></div>
                     </div>
-                <br />
-                <br />
+                    <br />
+                    <br />
                 </div>
                 <br />
                 <br />
@@ -147,7 +148,8 @@
                             <span>ساعت صدور <%=PPDS.StrExitTime%></span>
                         </div>
                         <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller; margin-right: 20px; text-align: right">
-                            <span>شماره مجوز <%=PPDS.nEstelamId%></span><br />
+                            <span>شماره تخصیص <%=PPDS.LAId%></span><br />
+                            <span>کد مخزن بار <%=PPDS.nEstelamId%></span><br />
                             <span>شماره نوبت <%=PPDS.TurnId%></span>
                         </div>
                     </div>
@@ -156,13 +158,14 @@
                         <span>سیستم هوشمند صدور مجوز بارگیری</span><br />
                         <span>((مجوز بارگیری))</span>
                     </div>
-                    <div style="width: 100%; text-align: right; font-family: Titr; font-size: small ;"><span>شرکت/موسسه محترم <%=PPDS.CompanyName%>&nbsp;&nbsp;&nbsp;</span></div>
+                    <div style="width: 100%; text-align: right; font-family: Titr; font-size: small;"><span>شرکت/موسسه محترم <%=PPDS.CompanyName%>&nbsp;&nbsp;&nbsp;</span></div>
                     <br />
                     <div style="width: 100%; text-align: right;">
                         <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>بدین وسیله یک دستگاه <%=PPDS.CarTruckLoaderTypeName%></span>&nbsp;&nbsp;</div>
                         <div style="display: inline-block; float: right; font-family: B Homa; font-size: smaller;"><span>به شماره پلاک <%=PPDS.pelak%> - <%=PPDS.Serial%></span></div>
                     </div>
-                    <br /><br />
+                    <br />
+                    <br />
                     <div style="width: 100%; text-align: center; font-family: 'B Homa'; font-size: smaller;">
                         <div><span>به رانندگی آقای <%=PPDS.DriverTruckFullNameFamily%> دارای گواهینامه به شماره <%=PPDS.DriverTruckDrivingLicenseNo%></span>&nbsp;&nbsp;</div>
                     </div>
@@ -173,23 +176,23 @@
                     </div>
                     <br />
                     <div style="width: 100%; text-align: right;">
-                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller ;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>با نرخ <%=PPDS.StrPriceSug%> ریال با مسئولیت آن شرکت/موسسه معرفی می گردد</span></div>
-                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller ;"><span></span>&nbsp;&nbsp;&nbsp;</div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>با نرخ <%=PPDS.StrPriceSug%> ریال با مسئولیت آن شرکت/موسسه معرفی می گردد</span></div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span></span>&nbsp;&nbsp;&nbsp;</div>
                     </div>
                     <br />
                     <div style="width: 100%; text-align: center;">
-                        <div style="display: inline-block; float: right ; font-family: 'B Homa'; font-size: smaller  ;"><span><%=PPDS.StrDescription%></span></div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span><%=PPDS.StrDescription%></span></div>
                     </div>
                     <br />
                     <div style="width: 100%; text-align: center;">
-                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small ;"><span>توجه : مجوز فوق پس از صدور تعویض نخواهد شد - دریافت نوبت بعدی از پایانه به شرط انجام سفر امکان پذیر است</span></div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small;"><span>توجه : مجوز فوق پس از صدور تعویض نخواهد شد - دریافت نوبت بعدی از پایانه به شرط انجام سفر امکان پذیر است</span></div>
                     </div>
                     <br />
                     <div style="width: 100%; text-align: center;">
-                        <div style="display: inline-block; float: left ; font-family: 'B Homa'; font-size: x-small ;"><span style="font-family: 'B Homa'; font-size: 10;">&nbsp;&nbsp;&nbsp; نام کاربر : <%=PPDS.PermissionUserName%></span></div>
+                        <div style="display: inline-block; float: left; font-family: 'B Homa'; font-size: x-small;"><span style="font-family: 'B Homa'; font-size: 10;">&nbsp;&nbsp;&nbsp; نام کاربر : <%=PPDS.PermissionUserName%></span></div>
                     </div>
-                <br />
-                <br />
+                    <br />
+                    <br />
                 </div>
             </asp:Panel>
         </ContentTemplate>

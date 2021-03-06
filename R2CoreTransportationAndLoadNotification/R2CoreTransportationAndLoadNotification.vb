@@ -356,7 +356,7 @@ Namespace ConfigurationsManagement
     Public MustInherit Class R2CoreTransportationAndLoadNotificationConfigurations
         Inherits R2CoreConfigurations
         Public Shared ReadOnly Property AnnouncementHallMonitoring = 52
-        Public Shared ReadOnly Property LoadCapacitorLoadRegistering = 54
+        Public Shared ReadOnly Property LoadCapacitorLoadManipulationSetting = 54
         Public Shared ReadOnly Property AnnouncementHallAnnounceTime = 55
         Public Shared ReadOnly Property AnnouncementHallsTurnCancellationSetting = 56
         Public Shared ReadOnly Property AnnouncementHallsTruckDriverAttendance = 57
