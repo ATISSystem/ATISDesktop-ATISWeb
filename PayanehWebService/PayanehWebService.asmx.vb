@@ -63,10 +63,10 @@ Public Class PayanehWebService
     End Function
 
     <WebMethod()>
-    Public Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport(YourDateTimeMilladi1 As DateTime, YourDateShamsiFull1 As String, YourTime1 As String, YourDateTimeMilladi2 As DateTime, YourDateShamsiFull2 As String, YourTime2 As String, YourSequentialTurnKeyWord As String, YourExchangeKey As Int64)
+    Public Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport(YourDateTimeMilladi1 As DateTime, YourDateShamsiFull1 As String, YourTime1 As String, YourDateTimeMilladi2 As DateTime, YourDateShamsiFull2 As String, YourTime2 As String, YourAHId As Int64 ,YourAHSGId As Int64, YourExchangeKey As Int64)
         Try
             _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)
-            PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderLoadPermissionIssuedOrderByPriorityReport(New R2StandardDateAndTimeStructure(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1), New R2StandardDateAndTimeStructure(YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2), YourSequentialTurnKeyWord)
+            PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderLoadPermissionIssuedOrderByPriorityReport(New R2StandardDateAndTimeStructure(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1), New R2StandardDateAndTimeStructure(YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2),YourAHId,YourAHSGId)
         Catch ex As ExchangeKeyTimeRangePassedException
             Throw ex
         Catch ex As ExchangeKeyNotExistException

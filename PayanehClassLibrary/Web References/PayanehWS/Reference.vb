@@ -222,21 +222,21 @@ Namespace PayanehWS
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerLoadPermissionsIssuedOrde"& _ 
             "rByPriorityReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourSequentialTurnKeyWord As String, ByVal YourExchangeKey As Long)
-            Me.Invoke("WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourSequentialTurnKeyWord, YourExchangeKey})
+        Public Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourAHId As Long, ByVal YourAHSGId As Long, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourAHId, YourAHSGId, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourSequentialTurnKeyWord As String, ByVal YourExchangeKey As Long)
-            Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourSequentialTurnKeyWord, YourExchangeKey, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourAHId As Long, ByVal YourAHSGId As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourAHId, YourAHSGId, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourSequentialTurnKeyWord As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
+        Public Overloads Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourAHId As Long, ByVal YourAHSGId As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted Is Nothing) Then
                 Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourSequentialTurnKeyWord, YourExchangeKey}, Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourAHId, YourAHSGId, YourExchangeKey}, Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted(ByVal arg As Object)

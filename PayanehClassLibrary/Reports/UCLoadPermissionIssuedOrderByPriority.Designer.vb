@@ -24,18 +24,15 @@ Partial Class UCLoadPermissionIssuedOrderByPriority
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1 As R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure = New R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure()
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PnlReportObjects = New System.Windows.Forms.Panel()
-        Me.UcDateTimeHolder = New R2CoreGUI.UCDateTimeHolder()
-        Me.UcucSequentialTurnCollection = New R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection()
-        Me.UcLabelTop = New R2CoreGUI.UCLabel()
-        Me.AlphaGradientPanel1 = New BlueActivity.Controls.AlphaGradientPanel()
         Me.ColorWithAlpha1 = New BlueActivity.Controls.ColorWithAlpha()
         Me.ColorWithAlpha2 = New BlueActivity.Controls.ColorWithAlpha()
+        Me.UcDateTimeHolder = New R2CoreGUI.UCDateTimeHolder()
+        Me.UcLabelTop = New R2CoreGUI.UCLabel()
+        Me.UcAnnouncementHallSelection = New R2CoreTransportationAndLoadNotification.UCAnnouncementHallSelection()
         Me.PnlMain.SuspendLayout
         Me.PnlReportObjects.SuspendLayout
-        Me.AlphaGradientPanel1.SuspendLayout
         Me.SuspendLayout
         '
         'PnlMain
@@ -45,24 +42,34 @@ Partial Class UCLoadPermissionIssuedOrderByPriority
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(918, 367)
+        Me.PnlMain.Size = New System.Drawing.Size(918, 393)
         Me.PnlMain.TabIndex = 0
         '
         'PnlReportObjects
         '
-        Me.PnlReportObjects.Controls.Add(Me.AlphaGradientPanel1)
+        Me.PnlReportObjects.Controls.Add(Me.UcAnnouncementHallSelection)
         Me.PnlReportObjects.Controls.Add(Me.UcDateTimeHolder)
         Me.PnlReportObjects.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlReportObjects.Location = New System.Drawing.Point(0, 52)
         Me.PnlReportObjects.Name = "PnlReportObjects"
-        Me.PnlReportObjects.Size = New System.Drawing.Size(918, 315)
+        Me.PnlReportObjects.Size = New System.Drawing.Size(918, 341)
         Me.PnlReportObjects.TabIndex = 353
+        '
+        'ColorWithAlpha1
+        '
+        Me.ColorWithAlpha1.Alpha = 255
+        Me.ColorWithAlpha1.Color = System.Drawing.Color.Transparent
+        '
+        'ColorWithAlpha2
+        '
+        Me.ColorWithAlpha2.Alpha = 255
+        Me.ColorWithAlpha2.Color = System.Drawing.Color.Transparent
         '
         'UcDateTimeHolder
         '
         Me.UcDateTimeHolder.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcDateTimeHolder.BackColor = System.Drawing.Color.Transparent
-        Me.UcDateTimeHolder.Location = New System.Drawing.Point(355, 71)
+        Me.UcDateTimeHolder.Location = New System.Drawing.Point(348, 112)
         Me.UcDateTimeHolder.Name = "UcDateTimeHolder"
         Me.UcDateTimeHolder.Padding = New System.Windows.Forms.Padding(3)
         Me.UcDateTimeHolder.Size = New System.Drawing.Size(209, 193)
@@ -71,25 +78,6 @@ Partial Class UCLoadPermissionIssuedOrderByPriority
         Me.UcDateTimeHolder.UCTime1 = "00:00:00"
         Me.UcDateTimeHolder.UCTime2 = "23:59:59"
         Me.UcDateTimeHolder.UCViewTitle = false
-        '
-        'UcucSequentialTurnCollection
-        '
-        Me.UcucSequentialTurnCollection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcucSequentialTurnCollection.BackColor = System.Drawing.Color.Transparent
-        Me.UcucSequentialTurnCollection.Location = New System.Drawing.Point(6, 3)
-        Me.UcucSequentialTurnCollection.Name = "UcucSequentialTurnCollection"
-        Me.UcucSequentialTurnCollection.Size = New System.Drawing.Size(692, 26)
-        Me.UcucSequentialTurnCollection.TabIndex = 0
-        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.Active = true
-        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.Deleted = false
-        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnColor = "Yellow"
-        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnId = CType(2,Long)
-        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnKeyWord = "T"
-        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnTitle = "تسلسل نوبت جاده ای"
-        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.ViewFlag = true
-        Me.UcucSequentialTurnCollection.UCCurrentNSS = R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1
-        Me.UcucSequentialTurnCollection.UCSimulatedSequentialTurnId = CType(2,Long)
         '
         'UcLabelTop
         '
@@ -108,49 +96,13 @@ Partial Class UCLoadPermissionIssuedOrderByPriority
         Me.UcLabelTop.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelTop.UCValue = "گزارش مجوزهای صادرشده به ترتیب زمان و اولویت انتخابی"
         '
-        'AlphaGradientPanel1
+        'UcAnnouncementHallSelection
         '
-        Me.AlphaGradientPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.AlphaGradientPanel1.BackColor = System.Drawing.Color.Transparent
-        Me.AlphaGradientPanel1.Border = true
-        Me.AlphaGradientPanel1.BorderColor = System.Drawing.Color.Black
-        Me.AlphaGradientPanel1.Colors.Add(Me.ColorWithAlpha1)
-        Me.AlphaGradientPanel1.Colors.Add(Me.ColorWithAlpha2)
-        Me.AlphaGradientPanel1.ContentPadding = New System.Windows.Forms.Padding(0)
-        Me.AlphaGradientPanel1.Controls.Add(Me.UcucSequentialTurnCollection)
-        Me.AlphaGradientPanel1.CornerRadius = 5
-        Me.AlphaGradientPanel1.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
-            Or BlueActivity.Controls.Corner.BottomLeft)  _
-            Or BlueActivity.Controls.Corner.BottomRight),BlueActivity.Controls.Corner)
-        Me.AlphaGradientPanel1.Gradient = true
-        Me.AlphaGradientPanel1.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.AlphaGradientPanel1.GradientOffset = 1!
-        Me.AlphaGradientPanel1.GradientSize = New System.Drawing.Size(0, 0)
-        Me.AlphaGradientPanel1.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.AlphaGradientPanel1.Grayscale = false
-        Me.AlphaGradientPanel1.Image = Nothing
-        Me.AlphaGradientPanel1.ImageAlpha = 75
-        Me.AlphaGradientPanel1.ImagePadding = New System.Windows.Forms.Padding(5)
-        Me.AlphaGradientPanel1.ImagePosition = BlueActivity.Controls.ImagePosition.BottomRight
-        Me.AlphaGradientPanel1.ImageSize = New System.Drawing.Size(48, 48)
-        Me.AlphaGradientPanel1.Location = New System.Drawing.Point(109, 32)
-        Me.AlphaGradientPanel1.Name = "AlphaGradientPanel1"
-        Me.AlphaGradientPanel1.Rounded = true
-        Me.AlphaGradientPanel1.Size = New System.Drawing.Size(701, 33)
-        Me.AlphaGradientPanel1.TabIndex = 1
-        '
-        'ColorWithAlpha1
-        '
-        Me.ColorWithAlpha1.Alpha = 255
-        Me.ColorWithAlpha1.Color = System.Drawing.Color.Transparent
-        Me.ColorWithAlpha1.Parent = Me.AlphaGradientPanel1
-        '
-        'ColorWithAlpha2
-        '
-        Me.ColorWithAlpha2.Alpha = 255
-        Me.ColorWithAlpha2.Color = System.Drawing.Color.Transparent
-        Me.ColorWithAlpha2.Parent = Me.AlphaGradientPanel1
+        Me.UcAnnouncementHallSelection.BackColor = System.Drawing.Color.Transparent
+        Me.UcAnnouncementHallSelection.Location = New System.Drawing.Point(30, 18)
+        Me.UcAnnouncementHallSelection.Name = "UcAnnouncementHallSelection"
+        Me.UcAnnouncementHallSelection.Size = New System.Drawing.Size(859, 80)
+        Me.UcAnnouncementHallSelection.TabIndex = 8
         '
         'UCLoadPermissionIssuedOrderByPriority
         '
@@ -159,10 +111,9 @@ Partial Class UCLoadPermissionIssuedOrderByPriority
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCLoadPermissionIssuedOrderByPriority"
-        Me.Size = New System.Drawing.Size(918, 367)
+        Me.Size = New System.Drawing.Size(918, 393)
         Me.PnlMain.ResumeLayout(false)
         Me.PnlReportObjects.ResumeLayout(false)
-        Me.AlphaGradientPanel1.ResumeLayout(false)
         Me.ResumeLayout(false)
 
 End Sub
@@ -170,9 +121,8 @@ End Sub
     Friend WithEvents PnlMain As Windows.Forms.Panel
     Friend WithEvents UcLabelTop As R2CoreGUI.UCLabel
     Friend WithEvents PnlReportObjects As Windows.Forms.Panel
-    Friend WithEvents UcucSequentialTurnCollection As R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection
     Friend WithEvents UcDateTimeHolder As R2CoreGUI.UCDateTimeHolder
-    Friend WithEvents AlphaGradientPanel1 As BlueActivity.Controls.AlphaGradientPanel
     Friend WithEvents ColorWithAlpha1 As BlueActivity.Controls.ColorWithAlpha
     Friend WithEvents ColorWithAlpha2 As BlueActivity.Controls.ColorWithAlpha
+    Friend WithEvents UcAnnouncementHallSelection As R2CoreTransportationAndLoadNotification.UCAnnouncementHallSelection
 End Class

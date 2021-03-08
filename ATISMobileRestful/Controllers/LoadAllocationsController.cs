@@ -41,7 +41,7 @@ namespace ATISMobileRestful.Controllers
                 { myTurnId = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId)).nEnterExitId; }
                 catch (TurnNotFoundException ex)
                 {
-                    throw ;
+                    throw ex;
                     //PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequestforAjent(YourUserId, YournEstelamId, false, false, ref myTurnId);
                 }
                 catch (Exception ex)

@@ -1419,7 +1419,7 @@ Namespace LoadCapacitor
                     'بررسی اینکه آیا برای زیرگروه مربوطه امکان ثبت بار وجود دارد یا نه
                     If Not ISActiveLoadCapacitorLoadRegistering(YourNSS) Then Throw New LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException
                     'کنترل تعداد بار
-                    If YourNSS.nCarNumKol > R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.LoadCapacitorLoadManipulationSetting , 0) Then Throw New LoadCapacitorLoadNumberOverLimitException
+                    If YourNSS.nCarNumKol > R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.LoadCapacitorLoadManipulationSetting, 0) Then Throw New LoadCapacitorLoadNumberOverLimitException
                     If YourNSS.nCarNumKol < 1 Then Throw New LoadCapacitorLoadnCarNumKolCanNotBeZeroException
                     'کنترل اکتیو بودن شرکت حمل و نقل
                     If R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.ISTransportCompanyActive(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(YourNSS.nCompCode, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)) = False Then Throw New TransportCompanyISNotActiveException
@@ -1510,7 +1510,7 @@ Namespace LoadCapacitor
                         If R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then Throw New LoadCapacitorLoadEditTimePassedException
                     End If
                     'کنترل تعداد بار
-                    If YourNSS.nCarNumKol > R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.LoadCapacitorLoadManipulationSetting , 0) Then Throw New LoadCapacitorLoadNumberOverLimitException
+                    If YourNSS.nCarNumKol > R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.LoadCapacitorLoadManipulationSetting, 0) Then Throw New LoadCapacitorLoadNumberOverLimitException
                     If YourNSS.nCarNumKol = 0 Then Throw New LoadCapacitorLoadnCarNumKolCanNotBeZeroException
                     'کنترل اکتیو بودن شرکت حمل و نقل
                     If R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.ISTransportCompanyActive(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(YourNSS.nCompCode, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)) = False Then Throw New TransportCompanyISNotActiveException
@@ -3480,6 +3480,7 @@ Namespace LoadAllocation
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement
         Private Shared _DateTime As New R2DateTime
 
+
         Public Shared Function GetLoadAllocationsforTruckDriver(YourSoftwareUserId As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure)
             Try
                 Dim DS As DataSet
@@ -3514,8 +3515,8 @@ Namespace LoadAllocation
        Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver 
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On LoadCapacitor.nCompCode=TransportCompanies.TCId 
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadPermissionStatuses as LoadPermissionStatuses On Turns.LoadPermissionStatus=LoadPermissionStatuses.LoadPermissionStatusId 
-    Where Turns.nEnterExitId=@LastTurnId and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=2 or LoadAllocations.LAStatusId=3) and CarAndPersons.snRelation=2 and AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "'
-    Order By LoadAllocations.Priority Asc", 0, DS).GetRecordsCount() = 0 Then Throw New LoadAllocationNotFoundException
+    Where Turns.nEnterExitId=@LastTurnId and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=2 or LoadAllocations.LAStatusId=3) and CarAndPersons.snRelation=2 and AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "' 
+    Order By LoadAllocations.LAStatusId Asc,LoadAllocations.Priority Asc", 0, DS).GetRecordsCount() = 0 Then Throw New LoadAllocationNotFoundException
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                     Dim NSS As New R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure
@@ -3568,55 +3569,10 @@ Namespace LoadAllocation
 
         Public Shared Function GetLoadAllocations(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
             Try
-                Dim DS As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-   "Select LoadAllocations.LAId as  LoadAllocationId,LoadCapacitor.nEstelamID as LoadCapacitorLoadnEstelamId,Turns.nEnterExitId as  TurnnEnterExitId,LoadAllocations.LAStatusId,
-	       LoadAllocations.LANote as LoadAllocationNote,LoadAllocations.Priority as LoadAllocationPriority,LoadAllocations.DateTimeMilladi,LoadAllocations.DateShamsi as LoadAllocationDateShamsi,
-		   LoadAllocations.Time as LoadAllocationTime,LoadAllocations.UserId,TransportCompanies.TCTitle as  TransportCompanyTitle,Products.strGoodName as  LoadCapacitorLoadGoodTitle,
-		   Targets.strCityName as LoadCapacitorLoadTargetTitle,Persons.strPersonFullName as TruckDriver,Cars.strCarNo+'-'+Cars.strCarSerialNo as TruckLPString,LoadAllocationStatuses.LoadAllocationStatusTitle as  LoadAllocationStatusTitle,
-		   LoadCapacitor.strDescription as LoadCapacitorLoadStrDescription,LoadAllocationStatuses.LoadAllocationStatusColor as  LoadAllocationStatusColor
-    from dbtransport.dbo.tbEnterExit as Turns
-       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnStatuses as TurnStatuses On Turns.TurnStatus=TurnStatuses.TurnStatusId 
-       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId
-       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocationStatuses as LoadAllocationStatuses On LoadAllocations.LAStatusId=LoadAllocationStatuses.LoadAllocationStatusId 
-       Inner Join dbtransport.dbo.tbElam as LoadCapacitor On LoadAllocations.nEstelamId=LoadCapacitor.nEstelamID 
-       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On LoadCapacitor.AHId=AHs.AHId 
-       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs on LoadCapacitor.AHSGId=AHSGs.AHSGId 
-       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On LoadCapacitor.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
-       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderTypes On LoadCapacitor.nTruckType=LoaderTypes.LoaderTypeId 
-       Inner Join dbtransport.dbo.tbProducts as Products On LoadCapacitor.nBarcode=Products.strGoodCode 
-       Inner Join dbtransport.dbo.tbCity as Targets On LoadCapacitor.nCityCode=Targets.nCityCode 
-       Inner Join dbtransport.dbo.TbCar as Cars on Turns.strCardno=Cars.nIDCar 
-       Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Cars.nIDCar=CarAndPersons.nIDCar 
-       Inner Join dbtransport.dbo.TbPerson as Persons On CarAndPersons.nIDPerson=Persons.nIDPerson 
-       Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver 
-       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On LoadCapacitor.nCompCode=TransportCompanies.TCId 
-    Where Turns.nEnterExitId=" & YourNSSTurn.nEnterExitId & " and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=2 or LoadAllocations.LAStatusId=3) and CarAndPersons.snRelation=2 and AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0
-    Order By LoadAllocations.Priority Asc", 0, DS).GetRecordsCount() = 0 Then Throw New LoadAllocationNotFoundException
-                Dim Lst = New List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
-                For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                    Dim NSS As New R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedStructure
-                    NSS.DateShamsi = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadAllocationDateShamsi"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("LoadAllocationDateShamsi"))
-                    NSS.DateTimeMilladi = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DBNull.Value), Now, DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"))
-                    NSS.LAId = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadAllocationId"), DBNull.Value), 0, DS.Tables(0).Rows(Loopx).Item("LoadAllocationId"))
-                    NSS.LANote = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadAllocationNote"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("LoadAllocationNote").trim)
-                    NSS.LAStatusId = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LAStatusId"), DBNull.Value), 0, DS.Tables(0).Rows(Loopx).Item("LAStatusId"))
-                    NSS.nEstelamId = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadnEstelamId"), DBNull.Value), 0, DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadnEstelamId"))
-                    NSS.Priority = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadAllocationPriority"), DBNull.Value), 0, DS.Tables(0).Rows(Loopx).Item("LoadAllocationPriority"))
-                    NSS.Time = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadAllocationTime"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("LoadAllocationTime"))
-                    NSS.TurnId = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("TurnnEnterExitId"), DBNull.Value), 0, DS.Tables(0).Rows(Loopx).Item("TurnnEnterExitId"))
-                    NSS.UserId = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("UserId"), DBNull.Value), 0, DS.Tables(0).Rows(Loopx).Item("UserId"))
-                    NSS.GoodTitle = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadGoodTitle"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadGoodTitle"))
-                    NSS.LoadAllocationStatus = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadAllocationStatusTitle"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("LoadAllocationStatusTitle"))
-                    NSS.LoadTargetTitle = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadTargetTitle"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadTargetTitle"))
-                    NSS.StrDescription = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadStrDescription"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadStrDescription").trim)
-                    NSS.TransportCompanyTitle = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("TransportCompanyTitle"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("TransportCompanyTitle").trim)
-                    NSS.Truck = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("TruckLPString"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("TruckLPString"))
-                    NSS.TruckDriver = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("TruckDriver"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("TruckDriver"))
-                    NSS.LAStatusColor = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadAllocationStatusColor"), DBNull.Value), Color.White, Color.FromName(DS.Tables(0).Rows(Loopx).Item("LoadAllocationStatusColor").trim))
-                    Lst.Add(NSS)
-                Next
-                Return Lst
+                Dim LST = GetLoadAllocationsforTruckDriver(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSSoftwareUser(YourNSSTurn))
+                Return LST.Cast(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)().ToList()
+            Catch ex As SoftwareUserRelatedTurnNotFoundException
+                Throw ex
             Catch ex As LoadAllocationNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -3690,7 +3646,9 @@ Namespace LoadAllocation
                 Dim DS As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                      "Select * from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations
-                      Where LoadAllocations.nEstelamId=" & YournEstelamId & " and LoadAllocations.TurnId=" & YourTurnId & " and (LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.Registered & " or LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed & ")", 0, DS).GetRecordsCount() = 0 Then
+                      Where LoadAllocations.nEstelamId=" & YournEstelamId & " and LoadAllocations.TurnId=" & YourTurnId & " and 
+                            LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.Registered & " and 
+                            LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "'", 0, DS).GetRecordsCount() = 0 Then
                     Return False
                 Else
                     Return True
@@ -3704,8 +3662,8 @@ Namespace LoadAllocation
             Try
                 Dim DS As DataSet
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                     "Select count(*) As Counting from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations
-                      Where LoadAllocations.TurnId=" & YourTurnId & " and (LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.Registered & " or LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed & ")", 0, DS)
+                     "Select Count(*) As Counting from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations
+                      Where LoadAllocations.TurnId=" & YourTurnId & " and LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.Registered & "", 0, DS)
                 Return DS.Tables(0).Rows(0).Item("Counting")
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -3720,7 +3678,7 @@ Namespace LoadAllocation
                 Dim NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroup(NSSLoadCapacitorLoad.AHSGId)
                 Dim NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHall(NSSLoadCapacitorLoad.AHId)
                 If NSSAnnouncementHallSubGroup.Active = 0 Then Throw New AnnouncementHallSubGroupUnActiveException
-                Dim NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = Turns.R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(YourTurnId)
+                Dim NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(YourTurnId)
                 Dim NSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(NSSTurn)
                 'بررسی بار فردا
                 If NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow Then Throw New UnableAllocatingTommorowLoadException
@@ -3761,7 +3719,7 @@ Namespace LoadAllocation
                 CmdSql.CommandText = "Select IDENT_CURRENT('R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations') "
                 Dim LAIdNew As Int64 = CmdSql.ExecuteScalar() + 1
                 CmdSql.CommandText = "Select Top 1 LoadAllocations.Priority from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations
-                                      Where LoadAllocations.TurnId=" & YourTurnId & " and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=3)
+                                      Where LoadAllocations.TurnId=" & YourTurnId & " and LoadAllocations.LAStatusId=1 and LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "'
                                       Order By LoadAllocations.Priority Asc"
                 Dim Obj = CmdSql.ExecuteScalar
                 Dim Priority As Int16 = IIf(Object.Equals(Obj, Nothing), 1, Convert.ToInt16(Obj) + 1)
@@ -3810,13 +3768,11 @@ Namespace LoadAllocation
                         End If
                     End If
                 End If
-                'کنترل وضعیت نوبت
-                If NSSTurn.TurnStatus = TurnStatuses.UsedLoadPermissionRegistered Or NSSTurn.TurnStatus = TurnStatuses.TurnExpired Or
-                    NSSTurn.TurnStatus = TurnStatuses.CancelledUser Or NSSTurn.TurnStatus = TurnStatuses.CancelledUnderScore Or
-                    NSSTurn.TurnStatus = TurnStatuses.CancelledSystem Or NSSTurn.TurnStatus = TurnStatuses.CancelledLoadPermissionCancelled Then Throw New LoadAllocationCancellingNotAllowedBecauseTurnStatusException
+                'محدودیت نوبت در کنسلی تخصیص
+                If Not R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTurnReadyforLoadAllocationChangePriorityandCancelling(NSSTurn) Then Throw New LoadAllocationCancellingNotAllowedBecauseTurnStatusException
                 'کنترل وضعیت تخصیص بار
-                Dim NSSLoadAllocationStatus As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStatusStructure = GetNSSLoadAllocationStatus(YourCancellingStatus)
                 If Not (NSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed Or NSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.Registered Or NSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionCancelled) Then Throw New LoadAllocationCancellingNotAllowedBecauseLoadAllocationStatusException
+                Dim NSSLoadAllocationStatus As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStatusStructure = GetNSSLoadAllocationStatus(YourCancellingStatus)
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
                 CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
@@ -3827,11 +3783,11 @@ Namespace LoadAllocation
                 R2CoreTransportationAndLoadNotificationMClassTurnsManagement.LoadAllocationCancelling(NSSLoadAllocation.TurnId)
                 R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.LoadCapacitorLoadAllocationCancelling(NSSLoadAllocation.nEstelamId, YourUserNSS)
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
-                RePrioritize(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(NSSLoadAllocation.TurnId))
+                RePrioritize(NSSTurn)
             Catch ex As Exception When TypeOf ex Is TimingNotReachedException _
-                OrElse TypeOf ex Is TurnHandlingNotAllowedBecuaseTurnStatusException _
-                OrElse TypeOf ex Is LoadAllocationCancellingNotAllowedBecauseLoadAllocationStatusException _
-                OrElse TypeOf ex Is LoadAllocationCancellingNotAllowedBecauseTurnStatusException
+                                OrElse TypeOf ex Is TurnHandlingNotAllowedBecuaseTurnStatusException _
+                                OrElse TypeOf ex Is LoadAllocationCancellingNotAllowedBecauseLoadAllocationStatusException _
+                                OrElse TypeOf ex Is LoadAllocationCancellingNotAllowedBecauseTurnStatusException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                 End If
@@ -3864,7 +3820,9 @@ Namespace LoadAllocation
         Public Shared Function GetTotalNumberOfLoadAllocationWhichBlindfold(YournEstelamId As Int64) As Int64 'تخصیص بلاتکلیف
             Try
                 Dim DS As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Count(*) as Count from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations Where nEstelamId=" & YournEstelamId & " and (LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed & " or LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.Registered & ") ", 1, DS).GetRecordsCount() = 0 Then Return 0
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, 
+                        "Select Count(*) as Count from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
+                         Where nEstelamId=" & YournEstelamId & " and LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.Registered & "", 0, DS).GetRecordsCount() = 0 Then Return 0
                 Return DS.Tables(0).Rows(0).Item(("Count"))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -4083,18 +4041,13 @@ Namespace LoadAllocation
                     End If
                 End If
                 'محدودیت نوبت در تغییر اولویت تخصیص
-                If NSSTurn.TurnStatus = TurnStatuses.UsedLoadPermissionRegistered Or
-                   NSSTurn.TurnStatus = TurnStatuses.TurnExpired Or
-                   NSSTurn.TurnStatus = TurnStatuses.CancelledLoadPermissionCancelled Or
-                   NSSTurn.TurnStatus = TurnStatuses.CancelledSystem Or
-                   NSSTurn.TurnStatus = TurnStatuses.CancelledUnderScore Or
-                   NSSTurn.TurnStatus = TurnStatuses.CancelledUser Then
-                    Throw New LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException
-                End If
+                If Not R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTurnReadyforLoadAllocationChangePriorityandCancelling(NSSTurn) Then Throw New LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException
                 Dim DS As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                        "Select Top 1 LoadAllocations.LAId from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations
-                        Where LoadAllocations.TurnId=" & NSSThisLoadAllocation.TurnId & " and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=3) and LoadAllocations.Priority<" & NSSThisLoadAllocation.Priority & " Order By LoadAllocations.Priority Desc", 0, DS).GetRecordsCount = 0 Then
+                        Where LoadAllocations.TurnId=" & NSSThisLoadAllocation.TurnId & " and LoadAllocations.LAStatusId=1 and 
+                              LoadAllocations.Priority<" & NSSThisLoadAllocation.Priority & "  and LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "'  
+                        Order By LoadAllocations.Priority Desc", 0, DS).GetRecordsCount = 0 Then
                     Exit Sub
                 Else
                     Dim NSSTargetLoadAllocation As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure = GetNSSLoadAllocation(DS.Tables(0).Rows(0).Item("LAId"))
@@ -4132,19 +4085,13 @@ Namespace LoadAllocation
                     End If
                 End If
                 'محدودیت نوبت در تغییر اولویت تخصیص
-                If NSSTurn.TurnStatus = TurnStatuses.UsedLoadPermissionRegistered Or
-                   NSSTurn.TurnStatus = TurnStatuses.TurnExpired Or
-                   NSSTurn.TurnStatus = TurnStatuses.CancelledLoadPermissionCancelled Or
-                   NSSTurn.TurnStatus = TurnStatuses.CancelledSystem Or
-                   NSSTurn.TurnStatus = TurnStatuses.CancelledUnderScore Or
-                   NSSTurn.TurnStatus = TurnStatuses.CancelledUser Then
-                    Throw New LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException
-                End If
-
+                If Not R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTurnReadyforLoadAllocationChangePriorityandCancelling(NSSTurn) Then Throw New LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException
                 Dim DS As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                        "Select Top 1 LoadAllocations.LAId from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations
-                        Where LoadAllocations.TurnId=" & NSSThisLoadAllocation.TurnId & " and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=3) and LoadAllocations.Priority>" & NSSThisLoadAllocation.Priority & " Order By LoadAllocations.Priority Asc", 0, DS).GetRecordsCount = 0 Then
+                        Where LoadAllocations.TurnId=" & NSSThisLoadAllocation.TurnId & " and LoadAllocations.LAStatusId=1 and 
+                              LoadAllocations.Priority>" & NSSThisLoadAllocation.Priority & " and LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "'
+                        Order By LoadAllocations.Priority Asc", 0, DS).GetRecordsCount = 0 Then
                     Exit Sub
                 Else
                     Dim NSSTargetLoadAllocation As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure = GetNSSLoadAllocation(DS.Tables(0).Rows(0).Item("LAId"))
@@ -4175,7 +4122,9 @@ Namespace LoadAllocation
                 Dim DS As DataSet
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                        "Select LoadAllocations.LAId from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations
-                        Where LoadAllocations.TurnId=" & YourNSSTurn.nEnterExitId & " and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=3) Order By LoadAllocations.Priority Asc", 0, DS)
+                        Where LoadAllocations.TurnId=" & YourNSSTurn.nEnterExitId & " and LoadAllocations.LAStatusId=1 and 
+                              LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "' 
+                        Order By LoadAllocations.Priority Asc", 0, DS)
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1

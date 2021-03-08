@@ -755,6 +755,27 @@ Namespace Turns
             End Try
         End Function
 
+        Public Shared Function GetNSSSoftwareUser(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure)
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                     "Select Top 1 SoftwareUsers.UserId from dbtransport.dbo.tbEnterExit as Turns
+                        Inner Join dbtransport.dbo.TbCar as Trucks On Turns.strCardno=Trucks.nIDCar 
+                    	Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Trucks.nIDCar=CarAndPersons.nIDCar 
+	                    Inner Join dbtransport.dbo.TbDriver as Drivers On CarAndPersons.nIDPerson=Drivers.nIDDriver 
+	                    Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On Drivers.nIDDriver=EntityRelations.E2 
+	                    Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On EntityRelations.E1=SoftwareUsers.UserId 
+                      Where  Trucks.ViewFlag=1 and CarAndPersons.snRelation=2 and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and
+                             EntityRelations.RelationActive=1 and SoftwareUsers.Deleted=0 and SoftwareUsers.UserTypeId=" & R2CoreParkingSystem.SoftwareUsersManagement.R2CoreParkingSystemSoftwareUserTypes.Driver & " and 
+                             Turns.nEnterExitId=" & YourNSSTurn.nEnterExitId & "", 0, Ds).GetRecordsCount = 0 Then Throw New SoftwareUserRelatedTurnNotFoundException
+                Return R2CoreMClassSoftwareUsersManagement.GetNSSUser(Ds.Tables(0).Rows(0).Item("UserId"))
+            Catch ex As SoftwareUserRelatedTurnNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Shared Function GetTurns(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
             Try
                 Dim Ds As DataSet
@@ -1053,10 +1074,25 @@ Namespace Turns
 
         Private Shared Function IsTurnReadeyforLoadAllocationRegistering_(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure) As Boolean
             Try
+
                 If YourNSSTurn.TurnStatus = TurnStatuses.Registered Or YourNSSTurn.TurnStatus = TurnStatuses.UsedLoadAllocationRegistered Or YourNSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadAllocationCancelled Or YourNSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadPermissionCancelled Or YourNSSTurn.TurnStatus = TurnStatuses.ResuscitationUser Then
                     Return True
                 Else
                     Return False
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function IsTurnReadyforLoadAllocationChangePriorityandCancelling(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure)
+            Try
+                If YourNSSTurn.TurnStatus = TurnStatuses.UsedLoadPermissionRegistered Or YourNSSTurn.TurnStatus = TurnStatuses.TurnExpired Or
+                   YourNSSTurn.TurnStatus = TurnStatuses.CancelledLoadPermissionCancelled Or YourNSSTurn.TurnStatus = TurnStatuses.CancelledSystem Or
+                   YourNSSTurn.TurnStatus = TurnStatuses.CancelledUnderScore Or YourNSSTurn.TurnStatus = TurnStatuses.CancelledUser Then
+                    Return False
+                Else
+                    Return True
                 End If
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1748,6 +1784,15 @@ Namespace Turns
             Public Overrides ReadOnly Property Message As String
                 Get
                     Return "درخواست صدور نوبت با شماره شاخص مورد نظر وجود ندارد"
+                End Get
+            End Property
+        End Class
+
+        Public Class SoftwareUserRelatedTurnNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کاربری (راننده) مرتبط با نوبت مورد نظر وجود ندارد"
                 End Get
             End Property
         End Class

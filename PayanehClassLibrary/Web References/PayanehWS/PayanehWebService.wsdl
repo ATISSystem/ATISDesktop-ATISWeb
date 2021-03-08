@@ -49,7 +49,8 @@
             <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
             <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="YourSequentialTurnKeyWord" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourAHId" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourAHSGId" type="s:long" />
             <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
           </s:sequence>
         </s:complexType>
