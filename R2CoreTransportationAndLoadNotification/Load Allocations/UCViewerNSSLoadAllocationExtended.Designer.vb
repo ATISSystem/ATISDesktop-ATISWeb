@@ -52,6 +52,8 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelLoadAllocationStatus = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.LabelUserName = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.LabelPriority = New System.Windows.Forms.Label()
         Me.PnlMain.SuspendLayout
         Me.PnlOutter.SuspendLayout
         Me.PnlInner.SuspendLayout
@@ -131,6 +133,8 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.PnlTop.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PnlTop.BackColor = System.Drawing.Color.Honeydew
+        Me.PnlTop.Controls.Add(Me.LabelPriority)
+        Me.PnlTop.Controls.Add(Me.Label11)
         Me.PnlTop.Controls.Add(Me.LabelLAId)
         Me.PnlTop.Controls.Add(Me.Label10)
         Me.PnlTop.Controls.Add(Me.LabelnEstelamId)
@@ -161,9 +165,9 @@ Partial Class UCViewerNSSLoadAllocationExtended
         '
         Me.LabelLAId.BackColor = System.Drawing.Color.Transparent
         Me.LabelLAId.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelLAId.Font = New System.Drawing.Font("IRMehr", 9.75!)
+        Me.LabelLAId.Font = New System.Drawing.Font("IRMehr", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelLAId.ForeColor = System.Drawing.Color.Red
-        Me.LabelLAId.Location = New System.Drawing.Point(713, 12)
+        Me.LabelLAId.Location = New System.Drawing.Point(712, 12)
         Me.LabelLAId.Name = "LabelLAId"
         Me.LabelLAId.Size = New System.Drawing.Size(65, 23)
         Me.LabelLAId.TabIndex = 68
@@ -185,9 +189,9 @@ Partial Class UCViewerNSSLoadAllocationExtended
         '
         Me.LabelnEstelamId.BackColor = System.Drawing.Color.Transparent
         Me.LabelnEstelamId.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelnEstelamId.Font = New System.Drawing.Font("IRMehr", 9.75!)
+        Me.LabelnEstelamId.Font = New System.Drawing.Font("IRMehr", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.LabelnEstelamId.ForeColor = System.Drawing.Color.Red
-        Me.LabelnEstelamId.Location = New System.Drawing.Point(639, 12)
+        Me.LabelnEstelamId.Location = New System.Drawing.Point(638, 12)
         Me.LabelnEstelamId.Name = "LabelnEstelamId"
         Me.LabelnEstelamId.Size = New System.Drawing.Size(68, 23)
         Me.LabelnEstelamId.TabIndex = 66
@@ -264,9 +268,9 @@ Partial Class UCViewerNSSLoadAllocationExtended
         '
         Me.Label5.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
         Me.Label5.ForeColor = System.Drawing.Color.DarkGray
-        Me.Label5.Location = New System.Drawing.Point(107, -6)
+        Me.Label5.Location = New System.Drawing.Point(161, -6)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(185, 23)
+        Me.Label5.Size = New System.Drawing.Size(131, 23)
         Me.Label5.TabIndex = 39
         Me.Label5.Text = "راننده"
         Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -377,9 +381,9 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelDriverTruck.Cursor = System.Windows.Forms.Cursors.Hand
         Me.LabelDriverTruck.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LabelDriverTruck.ForeColor = System.Drawing.Color.Black
-        Me.LabelDriverTruck.Location = New System.Drawing.Point(107, 12)
+        Me.LabelDriverTruck.Location = New System.Drawing.Point(157, 12)
         Me.LabelDriverTruck.Name = "LabelDriverTruck"
-        Me.LabelDriverTruck.Size = New System.Drawing.Size(185, 23)
+        Me.LabelDriverTruck.Size = New System.Drawing.Size(135, 23)
         Me.LabelDriverTruck.TabIndex = 60
         Me.LabelDriverTruck.Text = "مرتضی شهمرادی"
         Me.LabelDriverTruck.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -438,6 +442,30 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelUserName.Text = "تیموری"
         Me.LabelUserName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'Label11
+        '
+        Me.Label11.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label11.ForeColor = System.Drawing.Color.DarkGray
+        Me.Label11.Location = New System.Drawing.Point(107, -6)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(44, 23)
+        Me.Label11.TabIndex = 69
+        Me.Label11.Text = "اولویت"
+        Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'LabelPriority
+        '
+        Me.LabelPriority.BackColor = System.Drawing.Color.Transparent
+        Me.LabelPriority.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.LabelPriority.Font = New System.Drawing.Font("IRMehr", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LabelPriority.ForeColor = System.Drawing.Color.Red
+        Me.LabelPriority.Location = New System.Drawing.Point(107, 12)
+        Me.LabelPriority.Name = "LabelPriority"
+        Me.LabelPriority.Size = New System.Drawing.Size(44, 23)
+        Me.LabelPriority.TabIndex = 70
+        Me.LabelPriority.Text = "5"
+        Me.LabelPriority.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'UCViewerNSSLoadAllocationExtended
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -487,4 +515,6 @@ End Sub
     Friend WithEvents Label9 As Windows.Forms.Label
     Friend WithEvents LabelLAId As Windows.Forms.Label
     Friend WithEvents Label10 As Windows.Forms.Label
+    Friend WithEvents LabelPriority As Windows.Forms.Label
+    Friend WithEvents Label11 As Windows.Forms.Label
 End Class

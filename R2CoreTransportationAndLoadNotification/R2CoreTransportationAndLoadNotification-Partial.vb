@@ -3998,9 +3998,9 @@ Namespace LoadAllocation
                     Dim AHSGId As Int64 = AnnouncementHallsAnnouncementHallSubGroupsJOINT(LoopAnnouncementHallsAnnouncementHallSubGroupsJOINT).NSSAnnouncementHallSubGroup.AHSGId
                     'کنترل تایمینگ - آیا زمان صدور مجوز برای زیرگروه سالن مورد نظر فرارسیده است
                     If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.IsTimingActive(AHId, AHSGId) Then
-                        'If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.GetTiming(AHId, AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionProcess Then
-                        '    Continue For
-                        'End If
+                        If R2CoreTransportationAndLoadNotificationMClassAnnouncementTimingManagement.GetTiming(AHId, AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering  Then
+                            Continue For
+                        End If
                     End If
                     Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure) = GetLoadAllocationsforLoadPermissionRegistering(AHId, AHSGId)
                     Dim NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = Nothing
