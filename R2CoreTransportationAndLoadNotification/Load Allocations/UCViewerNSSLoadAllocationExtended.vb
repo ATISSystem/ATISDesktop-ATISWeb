@@ -91,7 +91,7 @@ Public Class UCViewerNSSLoadAllocationExtended
     Private Sub UcMinimizeMaximize_UCMaximizeRequestedEvent() Handles UcMinimizeMaximize.UCMaximizeRequestedEvent
         Try
             UCRefreshExtended()
-            LabelUserName.Text = R2CoreMClassSoftwareUsersManagement.GetNSSUser(UCNSSCurrent.UserId).UserName
+            LabelUserName.Text = R2CoreMClassSoftwareUsersManagement.GetNSSUser(UCNSSCurrent.UserId).UserName.Trim 
             Me.Size = New Size(Me.Width, _MaxHight)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
@@ -109,15 +109,16 @@ Public Class UCViewerNSSLoadAllocationExtended
     Private Sub UCViewerNSSLoadAllocationExtended_UCViewNSSRequested() Handles Me.UCViewNSSRequested
         Try
             Dim NSS As R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedStructure = UCNSSCurrent
-            LabelTransportCompanyTitle.Text = NSS.TransportCompanyTitle
-            LabelGoodTitle.Text = NSS.GoodTitle
-            LabelnEstelamId.Text=NSS.nEstelamId 
-            LabelLoadTargetTitle.Text = NSS.LoadTargetTitle
-            LabelTruck.Text = NSS.Truck
-            LabelDriverTruck.Text = NSS.TruckDriver
-            LabelLoadAllocationStatus.Text = NSS.LoadAllocationStatus
-            LabelStrDescription.Text = NSS.StrDescription
-            LabelLoadPermissionResult.Text = NSS.LANote
+            LabelTransportCompanyTitle.Text = NSS.TCTitle.Trim
+            LabelLAId.Text=NSS.LAId 
+            LabelGoodTitle.Text = NSS.GoodTitle.Trim
+            LabelnEstelamId.Text = NSS.nEstelamId
+            LabelLoadTargetTitle.Text = NSS.LoadTargetTitle.Trim
+            LabelTruck.Text = NSS.Truck.Trim
+            LabelDriverTruck.Text = NSS.TruckDriverFullNameFamily.Trim
+            LabelLoadAllocationStatus.Text = NSS.LoadAllocationStatus.Trim 
+            LabelStrDescription.Text = NSS.StrDescription.Trim
+            LabelLoadPermissionResult.Text = NSS.LANote.Trim
             PnlMain.BackColor = NSS.LAStatusColor
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

@@ -79,6 +79,9 @@ Imports R2CoreTransportationAndLoadNotification.TruckLoaderTypes
 Imports R2CoreTransportationAndLoadNotification.TruckLoaderTypes.Exceptions
 Imports R2CoreTransportationAndLoadNotification.EntityRelations
 Imports R2CoreParkingSystem.EntityRelations
+Imports R2CoreParkingSystem.RequesterManagement
+Imports R2CoreParkingSystem.PermissionManagement
+Imports R2CoreParkingSystem.EntityManagement
 
 Namespace Rmto
     Public MustInherit Class RmtoWebService
@@ -755,7 +758,7 @@ Namespace Turns
             End Try
         End Function
 
-        Public Shared Function GetNSSSoftwareUser(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure)
+        Public Shared Function GetNSSSoftwareUser(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure) As R2CoreStandardSoftwareUserStructure
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
@@ -2790,9 +2793,46 @@ Namespace BillOfLadingControl
 
 End Namespace
 
+Namespace RequesterManagement
+
+    Public MustInherit Class R2CoreTransportationAndLoadNotificationRequesters
+        Inherits R2CoreParkingSystemRequesters
+
+        Public Shared ReadOnly ATISRestfullLoadAllocationRegisteringAgent As Int64 = 1
+        Public Shared ReadOnly UCLoadAllocationManipulation As Int64 = 2
+        Public Shared ReadOnly FrmcTruckDriverLoadAllocationsPriorityApplied As Int64 = 3
+
+
+    End Class
 
 
 
+End Namespace
+
+Namespace PermissionManagement
+
+    Public MustInherit Class R2CoreTransportationAndLoadNotificationPermissionTypes
+        Inherits R2CoreParkingSystemPermissionTypes
+
+        Public Shared ReadOnly RequestersAllowAHSGIdLoadAllocationRegistering As Int64 = 3
+
+    End Class
+
+End Namespace
+
+Namespace EntityManagement
+
+    Public MustInherit Class R2CoreTransportationAndLoadNotificationEntities
+        Inherits R2CoreParkingSystemEntities
+
+        Public Shared ReadOnly Requesters As Int64 = 4
+        Public Shared ReadOnly AnnouncementHallSubGroups As Int64 = 5
+
+    End Class
+
+
+
+End Namespace
 
 
 

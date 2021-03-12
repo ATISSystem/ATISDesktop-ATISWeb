@@ -48,6 +48,7 @@ Imports R2Core.EntityRelationManagement
 Imports R2CoreParkingSystem.EntityRelations
 Imports R2Core.PermissionManagement
 Imports R2CoreParkingSystem.SoftwareUsersManagement.Exceptions
+Imports R2Core.RequesterManagement
 
 Namespace DataBaseManagement
 
@@ -4071,3 +4072,33 @@ Namespace EntityRelations
     End Class
 
 End Namespace
+
+Namespace RequesterManagement
+
+    Public MustInherit Class R2CoreParkingSystemRequesters
+        Inherits R2CoreRequesters
+
+    End Class
+
+
+
+End Namespace
+
+Namespace PermissionManagement
+
+    Public MustInherit Class R2CoreParkingSystemPermissionTypes
+    End Class
+
+
+End Namespace
+
+Namespace EntityManagement
+
+    Public MustInherit Class R2CoreParkingSystemEntities
+       
+    End Class
+
+
+
+End Namespace
+

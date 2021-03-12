@@ -26,11 +26,11 @@ Partial Class UCLoadPermissionIssuedOrderByPriority
     Private Sub InitializeComponent()
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PnlReportObjects = New System.Windows.Forms.Panel()
-        Me.ColorWithAlpha1 = New BlueActivity.Controls.ColorWithAlpha()
-        Me.ColorWithAlpha2 = New BlueActivity.Controls.ColorWithAlpha()
+        Me.UcAnnouncementHallSelection = New R2CoreTransportationAndLoadNotification.UCAnnouncementHallSelection()
         Me.UcDateTimeHolder = New R2CoreGUI.UCDateTimeHolder()
         Me.UcLabelTop = New R2CoreGUI.UCLabel()
-        Me.UcAnnouncementHallSelection = New R2CoreTransportationAndLoadNotification.UCAnnouncementHallSelection()
+        Me.ColorWithAlpha1 = New BlueActivity.Controls.ColorWithAlpha()
+        Me.ColorWithAlpha2 = New BlueActivity.Controls.ColorWithAlpha()
         Me.PnlMain.SuspendLayout
         Me.PnlReportObjects.SuspendLayout
         Me.SuspendLayout
@@ -55,15 +55,14 @@ Partial Class UCLoadPermissionIssuedOrderByPriority
         Me.PnlReportObjects.Size = New System.Drawing.Size(918, 341)
         Me.PnlReportObjects.TabIndex = 353
         '
-        'ColorWithAlpha1
+        'UcAnnouncementHallSelection
         '
-        Me.ColorWithAlpha1.Alpha = 255
-        Me.ColorWithAlpha1.Color = System.Drawing.Color.Transparent
-        '
-        'ColorWithAlpha2
-        '
-        Me.ColorWithAlpha2.Alpha = 255
-        Me.ColorWithAlpha2.Color = System.Drawing.Color.Transparent
+        Me.UcAnnouncementHallSelection.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcAnnouncementHallSelection.BackColor = System.Drawing.Color.Transparent
+        Me.UcAnnouncementHallSelection.Location = New System.Drawing.Point(30, 18)
+        Me.UcAnnouncementHallSelection.Name = "UcAnnouncementHallSelection"
+        Me.UcAnnouncementHallSelection.Size = New System.Drawing.Size(859, 80)
+        Me.UcAnnouncementHallSelection.TabIndex = 8
         '
         'UcDateTimeHolder
         '
@@ -96,13 +95,17 @@ Partial Class UCLoadPermissionIssuedOrderByPriority
         Me.UcLabelTop.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelTop.UCValue = "گزارش مجوزهای صادرشده به ترتیب زمان و اولویت انتخابی"
         '
-        'UcAnnouncementHallSelection
+        'ColorWithAlpha1
         '
-        Me.UcAnnouncementHallSelection.BackColor = System.Drawing.Color.Transparent
-        Me.UcAnnouncementHallSelection.Location = New System.Drawing.Point(30, 18)
-        Me.UcAnnouncementHallSelection.Name = "UcAnnouncementHallSelection"
-        Me.UcAnnouncementHallSelection.Size = New System.Drawing.Size(859, 80)
-        Me.UcAnnouncementHallSelection.TabIndex = 8
+        Me.ColorWithAlpha1.Alpha = 255
+        Me.ColorWithAlpha1.Color = System.Drawing.Color.Transparent
+        Me.ColorWithAlpha1.Parent = Nothing
+        '
+        'ColorWithAlpha2
+        '
+        Me.ColorWithAlpha2.Alpha = 255
+        Me.ColorWithAlpha2.Color = System.Drawing.Color.Transparent
+        Me.ColorWithAlpha2.Parent = Nothing
         '
         'UCLoadPermissionIssuedOrderByPriority
         '

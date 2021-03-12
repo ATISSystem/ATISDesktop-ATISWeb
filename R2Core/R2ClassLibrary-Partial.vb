@@ -1838,3 +1838,70 @@ End Namespace
 Namespace WhatsAppMessenger
 
 End Namespace
+
+Namespace RequesterManagement
+
+    Public MustInherit Class R2CoreRequesterTypes
+        Public Shared ReadOnly None As Int64 = 0
+        Public Shared ReadOnly Desktop As Int64 = 1
+        Public Shared ReadOnly Web As Int64 = 2
+        Public Shared ReadOnly Mobile As Int64 = 3
+    End Class
+
+    Public MustInherit Class R2CoreRequesters
+        Public Shared ReadOnly None As Int64 = 0
+    End Class
+
+    Public Class R2StandardRequesterStructure
+        Inherits R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            RqId = Int64.MinValue
+            RqName = String.Empty
+            RqTitle = String.Empty
+            RqTypeId = Int64.MinValue 
+            Description = String.Empty
+            UserId = Int64.MinValue
+            DateTimeMilladi = Now
+            DateShamsi = String.Empty
+            ViewFlag = Boolean.FalseString
+            Active = Boolean.FalseString
+            Deleted = Boolean.FalseString
+        End Sub
+
+        Public Sub New(ByVal YourRqId As Int64, ByVal YourRqName As String, ByVal YourRqTitle As String, ByVal YourRqTypeId As Int64, ByVal YourDescription As String, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourRqId, YourRqName.Trim())
+            RqId = YourRqId
+            RqName = YourRqName
+            RqTitle = YourRqTitle
+            RqTypeId = YourRqTypeId
+            Description = YourDescription
+            UserId = YourUserId
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            ViewFlag = YourViewFlag
+            Active = YourActive
+            Deleted = YourDeleted
+        End Sub
+
+        Public Property RqId As Int64
+        Public Property RqName As String
+        Public Property RqTitle As String
+        Public Property RqTypeId As Int64
+        Public Property Description As String
+        Public Property UserId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+
+
+
+
+
+    End Class
+
+
+End Namespace

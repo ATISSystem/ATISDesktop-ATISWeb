@@ -53,7 +53,7 @@ Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
         End Try
     End Sub
 
-    Private Sub UcViewLoadAllocations()
+    Private Sub ViewLoadAllocations()
         Try
             If IsNothing(UcViewerNSSTurnDataEntry.UCNSSCurrent) Then Return
             UcucLoadAllocationCollection.UCRefreshGeneral()
@@ -77,11 +77,13 @@ Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
 
     Private Sub UcucLoadCapacitorLoadCollectionAdvance_UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure) Handles UcucLoadCapacitorLoadCollectionAdvance.UCSelectedNSSChangedEvent
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(NSS.nEstelamId, UcViewerNSSTurnDataEntry.UCNSSCurrent.nEnterExitId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(NSS.nEstelamId, UcViewerNSSTurnDataEntry.UCNSSCurrent.nEnterExitId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, R2CoreTransportationAndLoadNotification.RequesterManagement.R2CoreTransportationAndLoadNotificationRequesters.FrmcTruckDriverLoadAllocationsPriorityApplied)
             UcucLoadAllocationCollection.UCRefreshGeneral()
             UcucLoadAllocationCollection.UCViewCollection(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocations(UcViewerNSSTurnDataEntry.UCNSSCurrent))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخصیص بارانجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception When TypeOf ex Is AnnouncementHallSubGroupUnActiveException _
+         OrElse TypeOf ex Is LoadAllocationRegisteringReachedEndTimeException _
+         OrElse TypeOf ex Is RequesterHasNotPermissionforLoadAllocationRegisteringException _
          OrElse TypeOf ex Is TimingNotReachedException _
          OrElse TypeOf ex Is TurnNotFoundException _
          OrElse TypeOf ex Is LoadAllocationMaximumAllowedNumberReachedException _
@@ -100,7 +102,7 @@ Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
 
     Private Sub UcViewerNSSTurnDataEntry_UCNSSCurrentChanged(NSSCurrent As R2CoreTransportationAndLoadNotificationStandardTurnStructure) Handles UcViewerNSSTurnDataEntry.UCNSSCurrentChanged
         Try
-            UcViewLoadAllocations()
+            ViewLoadAllocations()
         Catch ex As SoftwareUserRelatedTurnNotFoundException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadAllocationNotFoundException
@@ -147,7 +149,7 @@ Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
     Private Sub FrmcTruckDriverLoadAllocationsPriorityApplied__MenuRunRequestedEvent(UC As UCMenu) Handles Me._MenuRunRequestedEvent
         Try
             If UC.UCNSSMenu.MenuPanel = "PnlLoadAllocationsPriorityApplied" Then
-                UcViewLoadAllocations()
+                ViewLoadAllocations()
             End If
         Catch ex As SoftwareUserRelatedTurnNotFoundException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)

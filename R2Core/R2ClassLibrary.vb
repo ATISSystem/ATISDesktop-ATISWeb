@@ -1263,13 +1263,17 @@ Namespace SoftwareUserManagement
                 Dim VerificationCode As String = GetRandomVerificationCode()
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                   "Select * from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers Where SoftwareUsers.MobileNumber='" & YourMobileNumber & "'", 0, Ds).GetRecordsCount <> 0 Then
+                   "Select Top 1 SoftwareUsers.UserId,SoftwareUsers.MobileNumber from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers 
+                    Where SoftwareUsers.MobileNumber='" & YourMobileNumber & "' 
+                    Order By SoftwareUsers.UserId Desc", 0, Ds).GetRecordsCount <> 0 Then
                     CmdSql.Connection.Open()
-                    CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set VerificationCode='" & VerificationCode & "' Where MobileNumber='" & YourMobileNumber & "'"
+                    CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers 
+                                          Set VerificationCode='" & VerificationCode & "' 
+                                          Where UserId=" & Ds.Tables(0).Rows(0).Item("UserId")  & "" 
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Connection.Close()
                     Dim SMSSender As New R2CoreSMSSendRecive
-                    SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, YourMobileNumber, VerificationCode, 1, Nothing, 1, Nothing, Nothing))
+                    SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing,Ds.Tables(0).Rows(0).Item("MobileNumber"), VerificationCode, 1, Nothing, 1, Nothing, Nothing))
                 Else
                     Throw New MobileNumberNotFoundException
                 End If
