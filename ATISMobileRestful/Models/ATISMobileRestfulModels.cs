@@ -92,6 +92,8 @@ namespace ATISMobileRestful.Models
         public Color PBackColor { get; set; }
     }
 
+    public class PermissionsIssued
+    { public string ReportItemHeader { get; set; } public string ReportItemDetails { get; set; } }
 
 
 

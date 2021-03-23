@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using R2Core.DateAndTimeManagement;
 using R2Core.LoggingManagement;
 using R2Core.SoftwareUserManagement;
 using R2CoreParkingSystem.AccountingManagement;
@@ -12,14 +13,19 @@ using R2CoreParkingSystem.MoneyWalletManagement;
 using R2CoreParkingSystem.TrafficCardsManagement;
 
 
-namespace ATISMobileRestful.Controllers
+namespace ATISMobileRestful.Controllers.MoneyWalletManagement
 {
     public class MoneyWalletChargingMVCController : Controller
     {
-        R2Core.DateAndTimeManagement.R2DateTime _R2DateTime = new R2Core.DateAndTimeManagement.R2DateTime();
+        private R2DateTime _R2DateTime = new R2DateTime();
 
         public ActionResult PaymentVerification(Int64 YourUserId, Int64 YourAmount)
         {
+            var InstanceTrafficCards = new R2CoreTransportationAndLoadNotification.TerraficCardsManagement.R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
+            var InstanceMoneyWallets = new R2CoreParkingSystemInstanceMoneyWalletManager();
+            var InstanceMoneyWalletCharge = new R2CoreParkingSystemInstanceMoneyWalletChargeManager();
+            var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+            var InstanceLogging = new R2CoreInstanceLoggingManager();
             try
             {
                 if (Request.QueryString["Status"] != "" && Request.QueryString["Status"] != null && Request.QueryString["Authority"] != "" && Request.QueryString["Authority"] != null)
@@ -33,12 +39,12 @@ namespace ATISMobileRestful.Controllers
                         if (Status == 100)
                         {
                             Int64 Amount = YourAmount * 10;
-                            R2CoreParkingSystemStandardTrafficCardStructure NSSTrafficCard =R2CoreTransportationAndLoadNotification.TerraficCardsManagement.R2CoreTransportationAndLoadNotificationMClassTerraficCardsManagement.GetNSSTerafficCard(R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId));
-                            Int64 CurrentCharge = R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletCharge(NSSTrafficCard);
-                            R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.AddMoney, Amount, R2CoreParkingSystemAccountings.ChargeType, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
-                            R2CoreParkingSystemMClassMoneyWalletChargeManagement.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, Amount, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime()));
-                            R2CoreMClassLoggingManagement.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreTransportationAndLoadNotification.Logging.R2CoreTransportationAndLoadNotificationLogType.ATISMobileMoneyWalletsCharging, "شارژ کیف پول از طریق سایت آتیس", NSSTrafficCard.CardNo, YourUserId.ToString(), Amount.ToString(), String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId, _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull()));
-                            Int64 LastCharge = R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletCharge(NSSTrafficCard);
+                           var NSSTrafficCard = InstanceTrafficCards.GetNSSTerafficCard(InstanceSoftwareUsers.GetNSSUser(YourUserId));
+                            Int64 CurrentCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
+                            InstanceMoneyWallets.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.AddMoney, Amount, R2CoreParkingSystemAccountings.ChargeType, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
+                            InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, Amount, InstanceSoftwareUsers.GetNSSSystemUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime()));
+                            InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreTransportationAndLoadNotification.Logging.R2CoreTransportationAndLoadNotificationLogType.ATISMobileMoneyWalletsCharging, "شارژ کیف پول از طریق سایت آتیس", NSSTrafficCard.CardNo, YourUserId.ToString(), Amount.ToString(), String.Empty, String.Empty, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull()));
+                            Int64 LastCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
                             ViewBag.IsSuccess = true; ViewBag.RefId = RefID;
                             ViewBag.Message1 = NSSTrafficCard.CardNo + "شاخص کیف پول: ";
                             ViewBag.Message2 = CurrentCharge.ToString() + "موجودی قبلی: ";

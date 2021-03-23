@@ -26,6 +26,8 @@ Imports R2Core.MobileProcessesManagement.Exceptions
 
 Imports PcPosDll
 Imports R2Core.WebProcessesManagement.Exceptions
+Imports System.Security.Cryptography
+Imports System.Text
 
 Namespace MonetarySupply
 
@@ -652,7 +654,7 @@ Namespace SecurityAlgorithmsManagement
 
         Public Function Login(YourUserShenaseh As String, YourUserPassword As String) As Int64
             Try
-                R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, YourUserShenaseh, YourUserPassword, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+                R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, Nothing, YourUserShenaseh, YourUserPassword, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
                 Dim NSS = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserShenaseh, YourUserPassword)
                 If _LstUsers.Exists(Function(x) x.UserId = NSS.UserId) Then
                     _LstUsers.Where(Function(x) x.UserId = NSS.UserId)(0).StartDateTime = Now
@@ -734,6 +736,52 @@ Namespace SecurityAlgorithmsManagement
                     Return "مدت زمان مجاز به پایان رسیده است"
                 End Get
             End Property
+        End Class
+
+    End Namespace
+
+    Namespace Hashing
+        Public Class SHAHasher
+
+            Public Function GenerateSHA256String(ByVal inputString) As String
+                Dim sha256 As SHA256 = SHA256Managed.Create()
+                Dim bytes As Byte() = Encoding.UTF8.GetBytes(inputString)
+                Dim hash As Byte() = sha256.ComputeHash(bytes)
+                Dim stringBuilder As New StringBuilder()
+
+                For i As Integer = 0 To hash.Length - 1
+                    stringBuilder.Append(hash(i).ToString("X2"))
+                Next
+
+                Return stringBuilder.ToString()
+            End Function
+
+            Public Function GenerateSHA512String(ByVal inputString) As String
+                Dim sha512 As SHA512 = SHA512Managed.Create()
+                Dim bytes As Byte() = Encoding.UTF8.GetBytes(inputString)
+                Dim hash As Byte() = sha512.ComputeHash(bytes)
+                Dim stringBuilder As New StringBuilder()
+
+                For i As Integer = 0 To hash.Length - 1
+                    stringBuilder.Append(hash(i).ToString("X2"))
+                Next
+
+                Return stringBuilder.ToString()
+            End Function
+
+        End Class
+
+        Public Class MD5Hasher
+            Public Function GenerateMD5String(ByVal inputString) As String
+                Dim md5Obj As New Security.Cryptography.MD5CryptoServiceProvider
+                Dim bytesToHash() As Byte = System.Text.Encoding.UTF8.GetBytes(inputString)
+                bytesToHash = md5Obj.ComputeHash(bytesToHash)
+                Dim strResult As String = ""
+                For Each b As Byte In bytesToHash
+                    strResult += b.ToString("x2")
+                Next
+                Return strResult
+            End Function
         End Class
 
     End Namespace
@@ -1234,6 +1282,25 @@ Namespace PermissionManagement
 
     End Class
 
+    Public Class R2CoreInstansePermissionsManager
+        Public Function ExistPermission(YourPermissionTypeId As Int64, YourEntityIdFirst As Int64, YourEntityIdSecond As Int64) As Boolean
+            Try
+                Dim Instanse = New R2CoreInstanseSqlDataBOXManager
+                Dim Ds As DataSet
+                If Instanse.GetDataBOX(New R2PrimarySqlConnection,
+                      "Select * from R2Primary.dbo.TblPermissions as Permissions 
+                       Where Permissions.PermissionTypeId=" & YourPermissionTypeId & " and Permissions.RelationActive=1 and Permissions.EntityIdFirst=" & YourEntityIdFirst & " and Permissions.EntityIdSecond=" & YourEntityIdSecond & "", 3600, Ds).GetRecordsCount() = 0 Then
+                    Return False
+                Else
+                    Return True
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
+
     Public NotInheritable Class R2CoreMClassPermissionsManagement
 
         Public Shared Sub RegisteringPermissions(YourPermissionTypeId As Int64, YourEntityIdFirst As Int64, YourEntityIdsSecond As String())
@@ -1461,6 +1528,7 @@ Namespace MobileProcessesManagement
             PName = String.Empty
             PTitle = String.Empty
             TargetMobilePage = String.Empty
+            TargetMobilePageDelegate=String.Empty 
             Description = String.Empty
             PBackColor = Color.Black
             PForeColor = Color.Black
@@ -1472,12 +1540,13 @@ Namespace MobileProcessesManagement
             Deleted = Boolean.FalseString
         End Sub
 
-        Public Sub New(ByVal YourPId As Int64, ByVal YourPName As String, ByVal YourPTitle As String, ByVal YourTargetMobilePage As String, ByVal YourDescription As String, YourPBackColor As Color, YourPForeColor As Color, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+        Public Sub New(ByVal YourPId As Int64, ByVal YourPName As String, ByVal YourPTitle As String, ByVal YourTargetMobilePage As String,YourTargetMobilePageDelegate As String  ,ByVal YourDescription As String, YourPBackColor As Color, YourPForeColor As Color, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
             MyBase.New(YourPId, YourPName.Trim())
             PId = YourPId
             PName = YourPName
             PTitle = YourPTitle
             TargetMobilePage = YourTargetMobilePage
+            TargetMobilePageDelegate=YourTargetMobilePageDelegate 
             Description = YourDescription
             PBackColor = YourPBackColor
             PForeColor = YourPForeColor
@@ -1493,6 +1562,7 @@ Namespace MobileProcessesManagement
         Public Property PName As String
         Public Property PTitle As String
         Public Property TargetMobilePage As String
+        Public Property TargetMobilePageDelegate As String
         Public Property Description As String
         Public Property PBackColor As Color
         Public Property PForeColor As Color
@@ -1560,13 +1630,13 @@ Namespace MobileProcessesManagement
 
     End Class
 
-    Public NotInheritable Class R2CoreMClassMobileProcessesManagement
-
-        Public Shared Function GetMobileProcesses(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2StandardMobileProcessStructure)
+    Public Class R2CoreInstanceMobileProcessesManager
+        Public Function GetMobileProcesses(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2StandardMobileProcessStructure)
             Try
+                Dim Instanse = New R2CoreInstanseSqlDataBOXManager
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                             "Select PId,PName,PTitle,TargetMobilePage,Description,PForeColor,PBackColor 
+                If Instanse.GetDataBOX(New R2PrimarySqlConnection,
+                             "Select PId,PName,PTitle,TargetMobilePage,TargetMobilePageDelegate,Description,PForeColor,PBackColor 
                               from R2Primary.dbo.TblSoftwareUsers as SoftwareUser
                                  Inner Join R2Primary.dbo.TblEntityRelations as SoftwareUserMobileProcessGroup On SoftwareUser.UserId=SoftwareUserMobileProcessGroup.E1 
                                  Inner Join R2Primary.dbo.TblMobileProcessGroups as MobileProcessGroup On SoftwareUserMobileProcessGroup.E2=MobileProcessGroup.PGId 
@@ -1583,6 +1653,49 @@ Namespace MobileProcessesManagement
                         NSS.PName = Ds.Tables(0).Rows(Loopx).Item("PName")
                         NSS.PTitle = "  " + Ds.Tables(0).Rows(Loopx).Item("PTitle").ToString().Trim
                         NSS.TargetMobilePage = Ds.Tables(0).Rows(Loopx).Item("TargetMobilePage").trim
+                        NSS.TargetMobilePageDelegate = Ds.Tables(0).Rows(Loopx).Item("TargetMobilePageDelegate").trim
+                        NSS.Description = Ds.Tables(0).Rows(Loopx).Item("Description").trim
+                        NSS.PForeColor = Color.FromName(Ds.Tables(0).Rows(Loopx).Item("PForeColor").trim)
+                        NSS.PBackColor = Color.FromName(Ds.Tables(0).Rows(Loopx).Item("PBackColor").trim)
+                        Lst.Add(NSS)
+                    Next
+                    Return Lst
+                Else
+                    Throw New SoftwareUserHasNotAnyMobileProcessPermissionException
+                End If
+            Catch exx As SoftwareUserHasNotAnyMobileProcessPermissionException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
+
+    Public NotInheritable Class R2CoreMClassMobileProcessesManagement
+
+        Public Shared Function GetMobileProcesses(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2StandardMobileProcessStructure)
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                             "Select PId,PName,PTitle,TargetMobilePage,TargetMobilePageDelegate,Description,PForeColor,PBackColor 
+                              from R2Primary.dbo.TblSoftwareUsers as SoftwareUser
+                                 Inner Join R2Primary.dbo.TblEntityRelations as SoftwareUserMobileProcessGroup On SoftwareUser.UserId=SoftwareUserMobileProcessGroup.E1 
+                                 Inner Join R2Primary.dbo.TblMobileProcessGroups as MobileProcessGroup On SoftwareUserMobileProcessGroup.E2=MobileProcessGroup.PGId 
+                                 Inner Join R2Primary.dbo.TblEntityRelations as MobileProcessGroupMobileProcess On MobileProcessGroup.PGId=MobileProcessGroupMobileProcess.E1  
+                                 Inner Join R2Primary.dbo.TblMobileProcesses as MobileProcesses On MobileProcessGroupMobileProcess.E2=MobileProcesses.PId 
+                              Where SoftwareUser.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUser.UserActive=1 and SoftwareUser.Deleted=0 and SoftwareUserMobileProcessGroup.ERTypeId=" & R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup & "
+                                    and SoftwareUserMobileProcessGroup.RelationActive=1 and  MobileProcessGroup.ViewFlag=1 and  MobileProcessGroup.Active=1 and MobileProcessGroup.Deleted=0 and MobileProcessGroupMobileProcess.ERTypeId=" & R2CoreEntityRelationTypes.MobileProcessGroup_MobileProcess & " 
+                                    and MobileProcessGroupMobileProcess.RelationActive=1 and MobileProcesses.ViewFlag=1 and MobileProcesses.Active=1 and MobileProcesses.Deleted=0 
+                              Order By MobileProcessGroup.PGId,MobileProcesses.PId ", 3600, Ds).GetRecordsCount <> 0 Then
+                    Dim Lst As New List(Of R2StandardMobileProcessStructure)
+                    For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                        Dim NSS As New R2StandardMobileProcessStructure
+                        NSS.PId = Ds.Tables(0).Rows(Loopx).Item("PId")
+                        NSS.PName = Ds.Tables(0).Rows(Loopx).Item("PName")
+                        NSS.PTitle = "  " + Ds.Tables(0).Rows(Loopx).Item("PTitle").ToString().Trim
+                        NSS.TargetMobilePage = Ds.Tables(0).Rows(Loopx).Item("TargetMobilePage").trim
+                        NSS.TargetMobilePageDelegate  = Ds.Tables(0).Rows(Loopx).Item("TargetMobilePageDelegate").trim
                         NSS.Description = Ds.Tables(0).Rows(Loopx).Item("Description").trim
                         NSS.PForeColor = Color.FromName(Ds.Tables(0).Rows(Loopx).Item("PForeColor").trim)
                         NSS.PBackColor = Color.FromName(Ds.Tables(0).Rows(Loopx).Item("PBackColor").trim)
@@ -1860,7 +1973,7 @@ Namespace RequesterManagement
             RqId = Int64.MinValue
             RqName = String.Empty
             RqTitle = String.Empty
-            RqTypeId = Int64.MinValue 
+            RqTypeId = Int64.MinValue
             Description = String.Empty
             UserId = Int64.MinValue
             DateTimeMilladi = Now

@@ -5,22 +5,34 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Security;
+using System.Text;
+using Newtonsoft.Json;
+
 using R2Core.LoggingManagement;
 using R2CoreTransportationAndLoadNotification.Turns;
 using R2CoreTransportationAndLoadNotification.Logging;
 using R2Core.SoftwareUserManagement;
+using ATISMobileRestful.Exceptions;
+using R2Core.SoftwareUserManagement.Exceptions;
 
-namespace ATISMobileRestful.Controllers
+namespace ATISMobileRestful.Controllers.TurnManagement
 {
     public class TurnsController : ApiController
     {
         [HttpGet]
-        public List<Models.Turns> GetTurns(Int64 YourUserId)
+        public HttpResponseMessage GetTurns()
         {
-            List<Models.Turns> _Turns = new List<Models.Turns>();
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
-                var Lst = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetTurns(R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserId));
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClient3PartHashed(Request);
+
+                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
+                var InstanseSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceTurns = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
+                var Lst = InstanceTurns.GetTurns(InstanseSoftwareUsers.GetNSSUser(ApiKey.FirstOrDefault()));
+                List<Models.Turns> _Turns = new List<Models.Turns>();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
                     var Item = new Models.Turns();
@@ -34,10 +46,17 @@ namespace ATISMobileRestful.Controllers
                     Item.TruckDriver = "راننده: " + Lst[Loopx].TruckDriver.Trim();
                     _Turns.Add(Item);
                 }
-                return _Turns;
+
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(_Turns), Encoding.UTF8, "application/json");
+                return response;
             }
+            catch (WebApiClientUnAuthorizedException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (UserNotExistByApiKeyException ex)
+            { return WebAPi.CreateContentMessage(ex); }
             catch (Exception ex)
-            { return _Turns; }
+            { return WebAPi.CreateContentMessage(ex); }
         }
 
     }

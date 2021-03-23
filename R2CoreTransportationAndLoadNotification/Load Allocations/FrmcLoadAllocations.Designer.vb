@@ -44,7 +44,7 @@ Partial Class FrmcLoadAllocations
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(288, 137)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1000)
         '
         'PnlLoadAllocation
         '

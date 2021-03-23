@@ -63,7 +63,7 @@ Public Class UCUserLogin
 
     Private Sub UCAuthenticationUserByShenasehPassword()
         Try
-            R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardSoftwareUserStructure(0, "", UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue, "", False, False, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+            R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardSoftwareUserStructure(0,Nothing, "", UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue, "", False, False, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
             Dim NSS As R2CoreStandardSoftwareUserStructure = R2CoreMClassSoftwareUsersManagement.GetNSSUser(UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue)
             'بررسی مجوز کاربر برای دسترسی به کامپیوتر
             If GetUserComputerPermission(NSS) = False Then
@@ -80,7 +80,7 @@ Public Class UCUserLogin
 
     Private Sub UCAuthenticationUserByPinCode(YourPinCode As String)
         Try
-            R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(New R2CoreStandardSoftwareUserStructure(0, "", "", "", YourPinCode, False, False, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+            R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(New R2CoreStandardSoftwareUserStructure(0,Nothing, "", "", "", YourPinCode, False, False, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
             Dim NSS As R2CoreStandardSoftwareUserStructure = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourPinCode)
             'بررسی مجوز کاربر برای دسترسی به کامپیوتر
             If GetUserComputerPermission(NSS) = False Then

@@ -27,6 +27,8 @@ Partial Class UCDriver
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Dim CBlendItems1 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.UcNumberDrivernIdPerson = New R2CoreGUI.UCNumber()
         Me.Label9 = New System.Windows.Forms.Label()
@@ -38,6 +40,7 @@ Partial Class UCDriver
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.CButtonSendSmsLast5Digit = New CButtonLib.CButton()
         Me.UcTextBoxNationalCode = New R2CoreGUI.UCTextBox()
         Me.UcNumberLicenseNo = New R2CoreGUI.UCNumber()
         Me.Label8 = New System.Windows.Forms.Label()
@@ -224,6 +227,7 @@ Partial Class UCDriver
             Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.CButtonSendSmsLast5Digit)
         Me.Panel1.Controls.Add(Me.UcTextBoxNationalCode)
         Me.Panel1.Controls.Add(Me.UcNumberLicenseNo)
         Me.Panel1.Controls.Add(Me.Label8)
@@ -240,6 +244,23 @@ Partial Class UCDriver
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(799, 72)
         Me.Panel1.TabIndex = 0
+        '
+        'CButtonSendSmsLast5Digit
+        '
+        Me.CButtonSendSmsLast5Digit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        CBlendItems1.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems1.iPoint = New Single() {0!, 0.5!, 1!}
+        Me.CButtonSendSmsLast5Digit.ColorFillBlend = CBlendItems1
+        Me.CButtonSendSmsLast5Digit.Corners.LowerRight = 11
+        Me.CButtonSendSmsLast5Digit.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CButtonSendSmsLast5Digit.DesignerSelected = true
+        Me.CButtonSendSmsLast5Digit.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.CButtonSendSmsLast5Digit.ImageIndex = 0
+        Me.CButtonSendSmsLast5Digit.Location = New System.Drawing.Point(12, 44)
+        Me.CButtonSendSmsLast5Digit.Name = "CButtonSendSmsLast5Digit"
+        Me.CButtonSendSmsLast5Digit.Size = New System.Drawing.Size(101, 22)
+        Me.CButtonSendSmsLast5Digit.TabIndex = 21
+        Me.CButtonSendSmsLast5Digit.Text = "ارسال رمز شخصی"
         '
         'UcTextBoxNationalCode
         '
@@ -272,10 +293,10 @@ Partial Class UCDriver
         Me.UcNumberLicenseNo.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.UcNumberLicenseNo.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
-        Me.UcNumberLicenseNo.Location = New System.Drawing.Point(16, 44)
+        Me.UcNumberLicenseNo.Location = New System.Drawing.Point(120, 42)
         Me.UcNumberLicenseNo.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberLicenseNo.Name = "UcNumberLicenseNo"
-        Me.UcNumberLicenseNo.Size = New System.Drawing.Size(196, 25)
+        Me.UcNumberLicenseNo.Size = New System.Drawing.Size(210, 25)
         Me.UcNumberLicenseNo.TabIndex = 19
         Me.UcNumberLicenseNo.UCAllowedMaxNumber = CType(9223372036854775807,Long)
         Me.UcNumberLicenseNo.UCAllowedMinNumber = CType(-9223372036854775,Long)
@@ -295,7 +316,7 @@ Partial Class UCDriver
         Me.Label8.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.Label8.AutoSize = true
         Me.Label8.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.Label8.Location = New System.Drawing.Point(213, 44)
+        Me.Label8.Location = New System.Drawing.Point(331, 44)
         Me.Label8.Name = "Label8"
         Me.Label8.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label8.Size = New System.Drawing.Size(61, 23)
@@ -347,10 +368,10 @@ Partial Class UCDriver
         Me.UcPersianTextBoxTel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxTel.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxTel.Location = New System.Drawing.Point(16, 16)
+        Me.UcPersianTextBoxTel.Location = New System.Drawing.Point(12, 16)
         Me.UcPersianTextBoxTel.MaxCharacterReached = CType(50,Short)
         Me.UcPersianTextBoxTel.Name = "UcPersianTextBoxTel"
-        Me.UcPersianTextBoxTel.Size = New System.Drawing.Size(196, 24)
+        Me.UcPersianTextBoxTel.Size = New System.Drawing.Size(200, 24)
         Me.UcPersianTextBoxTel.TabIndex = 14
         Me.UcPersianTextBoxTel.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBoxTel.UCBorder = true
@@ -367,10 +388,10 @@ Partial Class UCDriver
         '
         Me.UcPersianTextBoxAddress.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxAddress.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxAddress.Location = New System.Drawing.Point(280, 43)
+        Me.UcPersianTextBoxAddress.Location = New System.Drawing.Point(397, 43)
         Me.UcPersianTextBoxAddress.MaxCharacterReached = CType(50,Short)
         Me.UcPersianTextBoxAddress.Name = "UcPersianTextBoxAddress"
-        Me.UcPersianTextBoxAddress.Size = New System.Drawing.Size(404, 24)
+        Me.UcPersianTextBoxAddress.Size = New System.Drawing.Size(287, 24)
         Me.UcPersianTextBoxAddress.TabIndex = 7
         Me.UcPersianTextBoxAddress.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBoxAddress.UCBorder = true
@@ -483,4 +504,5 @@ End Sub
     Friend WithEvents UcNumberDrivernIdPerson As R2CoreGUI.UCNumber
     Friend WithEvents Label9 As Label
     Friend WithEvents UcTextBoxNationalCode As UCTextBox
+    Friend WithEvents CButtonSendSmsLast5Digit As CButtonLib.CButton
 End Class

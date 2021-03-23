@@ -2,13 +2,15 @@
 Imports System.Drawing
 Imports System.Reflection
 Imports System.Windows.Forms
+
 Imports R2Core.EntityRelationManagement
 Imports R2Core.EntityRelationManagement.Exceptions
 Imports R2Core.ExceptionManagement
+Imports R2Core.SMSSendAndRecieved
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.Drivers
-
+Imports R2CoreParkingSystem.SoftwareUsersManagement
 
 Public Class UCDriver
     Inherits UCGeneral
@@ -60,6 +62,7 @@ Public Class UCDriver
         UcPersianTextBoxFather.UCRefresh() : UcPersianTextBoxTel.UCRefresh() : UcPersianTextBoxAddress.UCRefresh()
         UcNumberDrivernIdPerson.UCRefresh() : UcTextBoxNationalCode.UCRefresh() : UcNumberLicenseNo.UCRefresh()
         UcPersianTextBoxDriverName.Focus()
+        CButtonSendSmsLast5Digit.Enabled=True 
         RaiseEvent UCRefreshedEvent()
     End Sub
 
@@ -261,6 +264,19 @@ Public Class UCDriver
     Private Sub UcButtonSabt_UC13PressedEvent() Handles UcButtonSabt.UC13PressedEvent
         Try
             UCSabtRoutin()
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub CButtonSendSmsLast5Digit_Click(sender As Object, e As EventArgs) Handles CButtonSendSmsLast5Digit.Click
+        Dim InstanceSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
+        Try
+            CButtonSendSmsLast5Digit.Enabled=False 
+            Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
+            Dim SMSSender As New R2CoreSMSSendRecive
+            SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, NSSSoftwareUser.MobileNumber, NSSSoftwareUser.UserPassword, 1, Nothing, 1, Nothing, Nothing))
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "رمز شخصی ارسال شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

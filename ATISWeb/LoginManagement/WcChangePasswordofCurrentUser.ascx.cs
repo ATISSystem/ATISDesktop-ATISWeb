@@ -36,13 +36,13 @@ namespace ATISWeb.LoginManagement
 
                 if (ATISWebMClassLoginManagement.GetNSSCurrentUser().UserPassword == TxtCurrentUserPassword.Text)
                 {
-                    if (R2CoreMClassSoftwareUsersManagement.IsUserRegistered(new R2CoreStandardSoftwareUserStructure(0, string.Empty, ATISWebMClassLoginManagement.GetNSSCurrentUser().UserShenaseh, TxtNewUserPassword.Text.Trim(), null, false, false,Int64.MinValue  , null, null, null, Int64.MinValue, new DateTime() , null, false  ,false   )))
+                    if (R2CoreMClassSoftwareUsersManagement.IsUserRegistered(new R2CoreStandardSoftwareUserStructure(0,string.Empty , string.Empty, ATISWebMClassLoginManagement.GetNSSCurrentUser().UserShenaseh, TxtNewUserPassword.Text.Trim(), null, false, false,Int64.MinValue  , null, null, null, Int64.MinValue, new DateTime() , null, false  ,false   )))
                     {
                         Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + "رمز عبور جدید مورد تایید نیست" + "');", true);
                         return;
                     }
 
-                    R2CoreMClassSoftwareUsersManagement.ChangeUserPassword(new R2CoreStandardSoftwareUserStructure(ATISWebMClassLoginManagement.GetNSSCurrentUser().UserId, null, null, TxtNewUserPassword.Text.Trim(), null, false, false, Int64.MinValue, null, null, null, Int64.MinValue, new DateTime(), null, false, false));
+                    R2CoreMClassSoftwareUsersManagement.ChangeUserPassword(new R2CoreStandardSoftwareUserStructure(ATISWebMClassLoginManagement.GetNSSCurrentUser().UserId,string.Empty , null, null, TxtNewUserPassword.Text.Trim(), null, false, false, Int64.MinValue, null, null, null, Int64.MinValue, new DateTime(), null, false, false));
                     Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "رمز عبور تغییر یافت" + "');", true);
                 }
                 else { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + "رمز عبور فعلی کاربر نادرست است" + "');", true); }

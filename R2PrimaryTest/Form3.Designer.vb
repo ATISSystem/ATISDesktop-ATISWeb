@@ -47,6 +47,8 @@ Partial Class Form3
         Me.Button17 = New System.Windows.Forms.Button()
         Me.Button18 = New System.Windows.Forms.Button()
         Me.Button19 = New System.Windows.Forms.Button()
+        Me.Button20 = New System.Windows.Forms.Button()
+        Me.Button21 = New System.Windows.Forms.Button()
         Me.SuspendLayout
         '
         'Button1
@@ -297,11 +299,37 @@ Partial Class Form3
         Me.Button19.Text = "تست اس ام اس"
         Me.Button19.UseVisualStyleBackColor = false
         '
+        'Button20
+        '
+        Me.Button20.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.Button20.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button20.ForeColor = System.Drawing.Color.White
+        Me.Button20.Location = New System.Drawing.Point(317, 2)
+        Me.Button20.Name = "Button20"
+        Me.Button20.Size = New System.Drawing.Size(344, 41)
+        Me.Button20.TabIndex = 24
+        Me.Button20.Text = "تبدیل کد کاربری به هش"
+        Me.Button20.UseVisualStyleBackColor = false
+        '
+        'Button21
+        '
+        Me.Button21.BackColor = System.Drawing.Color.MediumSlateBlue
+        Me.Button21.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button21.ForeColor = System.Drawing.Color.White
+        Me.Button21.Location = New System.Drawing.Point(317, 50)
+        Me.Button21.Name = "Button21"
+        Me.Button21.Size = New System.Drawing.Size(344, 32)
+        Me.Button21.TabIndex = 25
+        Me.Button21.Text = "تبدیل کد بار به هش"
+        Me.Button21.UseVisualStyleBackColor = false
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 450)
+        Me.Controls.Add(Me.Button21)
+        Me.Controls.Add(Me.Button20)
         Me.Controls.Add(Me.Button19)
         Me.Controls.Add(Me.Button18)
         Me.Controls.Add(Me.Button17)
@@ -358,4 +386,6 @@ End Sub
     Friend WithEvents Button17 As Button
     Friend WithEvents Button18 As Button
     Friend WithEvents Button19 As Button
+    Friend WithEvents Button20 As Button
+    Friend WithEvents Button21 As Button
 End Class

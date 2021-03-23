@@ -162,28 +162,32 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="ATISMobileWebApi.cs" />
     <Compile Include="Connected Services\ServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AnnouncementHallsManagement\AnnouncementHallsController.cs" />
+    <Compile Include="Controllers\ATISMobileWebApiManagement\ATISMobileWebApiController.cs" />
     <Compile Include="Controllers\DefaulttController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LoadAllocationsController.cs" />
-    <Compile Include="Controllers\LoadCapacitorController.cs" />
-    <Compile Include="Controllers\MobileProcessesController.cs" />
-    <Compile Include="Controllers\MoneyWalletAccountingController.cs" />
-    <Compile Include="Controllers\MoneyWalletChargingAPIController.cs" />
-    <Compile Include="Controllers\MoneyWalletChargingMVCController.cs" />
-    <Compile Include="Controllers\PermissionsController.cs" />
-    <Compile Include="Controllers\ProvincesController.cs" />
-    <Compile Include="Controllers\PublicMessagesController.cs" />
-    <Compile Include="Controllers\SoftwareUsersController.cs" />
-    <Compile Include="Controllers\TruckDriversController.cs" />
-    <Compile Include="Controllers\TrucksController.cs" />
-    <Compile Include="Controllers\TurnsController.cs" />
+    <Compile Include="Controllers\LoadAllocationManagement\LoadAllocationsController.cs" />
+    <Compile Include="Controllers\LoadCapacitorManagement\LoadCapacitorController.cs" />
+    <Compile Include="Controllers\MobileProcessManagement\MobileProcessesController.cs" />
+    <Compile Include="Controllers\MoneyWalletManagement\MoneyWalletAccountingController.cs" />
+    <Compile Include="Controllers\MoneyWalletManagement\MoneyWalletChargingAPIController.cs" />
+    <Compile Include="Controllers\MoneyWalletManagement\MoneyWalletChargingMVCController.cs" />
+    <Compile Include="Controllers\PermissionManagement\PermissionsController.cs" />
+    <Compile Include="Controllers\ProvinceManagement\ProvincesController.cs" />
+    <Compile Include="Controllers\PublicMessageManagement\PublicMessagesController.cs" />
+    <Compile Include="Controllers\ReportManagement\ReportsController.cs" />
+    <Compile Include="Controllers\SoftwareUserManagement\SoftwareUsersController.cs" />
+    <Compile Include="Controllers\TruckDriverManagement\TruckDriversController.cs" />
+    <Compile Include="Controllers\TruckManagement\TrucksController.cs" />
+    <Compile Include="Controllers\TurnManagement\TurnsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="Controllers\VersionControlController.cs" />
+    <Compile Include="Controllers\VersionControlManagement\VersionControlController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -416,6 +420,7 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

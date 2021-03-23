@@ -10,6 +10,7 @@ Imports R2Core.DatabaseManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.EntityRelationManagement
 Imports R2Core.PermissionManagement
+Imports R2Core.SecurityAlgorithmsManagement.Hashing
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.Drivers
@@ -246,6 +247,9 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
+
+            'Dim X As ATISMobileRestful.ATISMobileWebApi
+            'X.AuthenticateClient("8de86f1ac66204ac60bafb945479878a", "05bfadf5ce2f37098f0ba1c264553227")
             R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(TextBoxConcat1.Text, 943601, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent)
             'R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.RegisteringMobileNumber("09132043148")
             'R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocationsforTruckDriver(7025)
@@ -333,6 +337,7 @@ Public Class Form3
     End Sub
 
     Private Sub Form3_Load(sender As Object, e As EventArgs) Handles Me.Load
+
         R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
 
     End Sub
@@ -595,5 +600,55 @@ Public Class Form3
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
+    End Sub
+
+    Private Sub Button20_Click(sender As Object, e As EventArgs) Handles Button20.Click
+        Dim Cmdsql As New SqlClient.SqlCommand
+        Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
+        Try
+            Dim Hasher = New MD5Hasher
+            Dim Ds As DataSet
+            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select UserId from R2primary.dbo.tblsoftwareusers", 0, Ds)
+            Cmdsql.Connection.Open()
+            Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
+            For loopx As Int16 = 0 To Ds.Tables(0).Rows.Count - 1
+                Dim UserId As Int64 = Ds.Tables(0).Rows(loopx).Item("UserId")
+                Cmdsql.CommandText = "Update r2primary.dbo.tblsoftwareusers set apikey='" & Hasher.GenerateMD5String(UserId) & "'
+                                      Where Userid=" & UserId & ""
+                Cmdsql.ExecuteNonQuery()
+            Next
+            Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
+            MessageBox.Show("Finished ...")
+        Catch ex As Exception
+            If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
+            End If
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub Button21_Click(sender As Object, e As EventArgs) Handles Button21.Click
+        Dim Cmdsql As New SqlClient.SqlCommand
+        Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
+        Try
+            Dim Hasher = New MD5Hasher
+            Dim Ds As DataSet
+            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select nEstelamId from dbtransport.dbo.tbelam order by nEstelamId desc", 0, Ds)
+            Cmdsql.Connection.Open()
+            For loopx As Int64  = 0 To Ds.Tables(0).Rows.Count - 1
+                Dim nEstelamId As Int64 = Ds.Tables(0).Rows(loopx).Item("nEstelamId")
+                Cmdsql.CommandText = "Update dbtransport.dbo.tbelam set nEstelamkey='" & Hasher.GenerateMD5String(nEstelamId) & "'
+                                      Where nEstelamId=" & nEstelamId & ""
+                Cmdsql.ExecuteNonQuery()
+            Next
+            Cmdsql.Connection.Close()
+            MessageBox.Show("Finished ...")
+        Catch ex As Exception
+            If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                Cmdsql.Connection.Close()
+            End If
+            MessageBox.Show(ex.Message)
+        End Try
+
     End Sub
 End Class
