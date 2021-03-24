@@ -424,6 +424,26 @@ Namespace ConfigurationsManagement
             End Try
         End Function
 
+        Public Function GetConfigBoolean(YourCId As Int64, YourAHId As Int64, YourIndex As Int64) As Boolean
+            Try
+                Return GetConfig(YourCId, YourAHId, YourIndex)
+            Catch exx As ConfigurationOfAnnouncementHallNotFoundException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetConfigString(YourCId As Int64, YourAHId As Int64, YourIndex As Int64) As String
+            Try
+                Return GetConfig(YourCId, YourAHId, YourIndex).trim
+            Catch exx As ConfigurationOfAnnouncementHallNotFoundException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
     End Class
 
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement
@@ -932,6 +952,11 @@ Namespace Turns
                 CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " Where nEnterExitId=" & YourNSSTurn.nEnterExitId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw ex
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -1002,6 +1027,8 @@ Namespace Turns
                 CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " Where nEnterExitId=" & NSSTurn.nEnterExitId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As TurnNotFoundException
+                Throw ex
             Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
                 Throw ex
             Catch ex As Exception
@@ -1012,7 +1039,71 @@ Namespace Turns
             End Try
         End Sub
 
+        Public Function GetNSSTruck(YourTurnId As Int64) As R2CoreTransportationAndLoadNotificationStandardTruckStructure
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
+                Dim Ds As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 StrCardNo from dbtransport.dbo.TbEnterExit Where nEnterExitId=" & YourTurnId & "", 0, Ds).GetRecordsCount() = 0 Then
+                    Throw New RelationBetweenTurnAndTruckNotFoundException
+                End If
+                Return InstanceTrucks.GetNSSTruck(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("StrCardNo")))
+            Catch exx As RelationBetweenTurnAndTruckNotFoundException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
+        Public Function IsTurnReadeyforLoadPermissionRegistering(YourTurnId As Int64) As Boolean
+            Try
+                Dim InstanceTurn = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim NSSTurn = InstanceTurn.GetNSSTurn(YourTurnId)
+                If NSSTurn.TurnStatus = TurnStatuses.UsedLoadAllocationRegistered Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadAllocationCancelled Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadPermissionCancelled Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationUser Then
+                    Return True
+                Else
+                    Return False
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Sub LoadPermissionRegistering(YourTurnId As Int64)
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                Dim InstanceTurn = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim InstanceTruck = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
+                Dim NSSTurn = InstanceTurn.GetNSSTurn(YourTurnId)
+                Dim NSSTruck = InstanceTruck.GetNSSTruck(NSSTurn)
+                'کنترل وضعیت نوبت
+                If Not (NSSTurn.TurnStatus = TurnStatuses.UsedLoadAllocationRegistered Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadAllocationCancelled Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadPermissionCancelled) Then Throw New TurnHandlingNotAllowedBecuaseTurnStatusException
+                'تغییر وضعیت نوبت
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
+                CmdSql.CommandText = "Select Top 1 nEnterExitId From dbtransport.dbo.TbEnterExit with (tablockx) Where nEnterExitId=" & YourTurnId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.UsedLoadPermissionRegistered & ",bFlag=1,bFlagDriver=1 Where nEnterExitId=" & NSSTurn.nEnterExitId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As GetNSSException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw ex
+            Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
     End Class
 
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTurnsManagement
@@ -2121,6 +2212,121 @@ Namespace Turns
 End Namespace
 
 Namespace TurnAttendance
+
+    Public Class R2CoreTransportationAndLoadNotificationInstanceTurnAttendanceManager
+        Private _DateTime As New R2DateTime
+
+        Public Function IsPresentRegisteredInLast30Minute(YourNSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, ByVal YourTurnId As UInt64) As Boolean
+            Try
+                Dim InstanceSqlDataBox = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceConfigurationOfAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager
+                Dim Ds As DataSet
+                If InstanceSqlDataBox.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 DateTimeMilladi From R2PrimaryTransportationAndLoadNotification.dbo.TblTruckDriverPresent Where (NobatId=" & YourTurnId & ") and (DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "') Order By DateTimeMilladi Desc", 1, Ds).GetRecordsCount() = 0 Then
+                    Return False
+                Else
+                    Dim Last30Minute As Int64 = InstanceConfigurationOfAnnouncementHalls.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, YourNSSAnnouncementHall.AHId, 1)
+                    If DateDiff(DateInterval.Hour, Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), _DateTime.GetCurrentDateTimeMilladi) <= Last30Minute Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetTurnDateTimeDiferenceToToday(YourTurnId As Int64) As Int64
+            Try
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim InstancePublicProcedures = New R2CoreInstancePublicProceduresManager
+                Dim NSSTurn = InstanceTurns.GetNSSTurn(YourTurnId)
+                Dim TurnDateTime As String = _DateTime.GetMilladiDateTimeFromDateShamsiFull(NSSTurn.EnterDate, NSSTurn.EnterTime)
+                Return InstancePublicProcedures.GetDateDiff(DateInterval.Day, TurnDateTime, _DateTime.GetCurrentDateTimeMilladiFormated())
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetTotalNumberOfPresentRegistered(YourTurnId As Int64) As Int64
+            Try
+                Dim InstanceSqlDataBox = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim NSSTurn = InstanceTurns.GetNSSTurn(YourTurnId)
+                Dim DS As DataSet
+                Return InstanceSqlDataBox.GetDataBOX(New R2PrimarySqlConnection, "Select Count(*) AS M From R2PrimaryTransportationAndLoadNotification.dbo.TblTruckDriverPresent Where (NobatId=" & YourTurnId & ") And (DateShamsi<>'" & NSSTurn.EnterDate & "') GROUP BY DateShamsi", 1, DS).GetRecordsCount()
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetTotalNumberOfNeededPresent(YourNSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, ByVal YourTurnId As Int64) As UInt16
+            Try
+                Dim InstanceTruck = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim InstanceConfigurationOfAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager
+                Dim InstanceIndigenousTrucks = New R2CoreTransportationAndLoadNotificationInstanceIndigenousTrucksManager
+                Dim InstanceDateAndTimePersianCalendar = New R2CoreInstanceDateAndTimePersianCalendarManager
+                Dim NSSTruck = InstanceTruck.GetNSSTruck(YourTurnId)
+                Dim NSSTurn = InstanceTurns.GetNSSTurn(YourTurnId)
+                'درصورتی که کنترل حاضری سالن مورد نظر غیرفعال باشد تعداد حاضری مورد نیاز 0 است
+                If Not InstanceConfigurationOfAnnouncementHalls.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, YourNSSAnnouncementHall.AHId, 0) Then Return 0
+                'درصورتی که در محدوده خاصی زمانی کانفیگ شده عدم کنترل حاضری سالن مورد نظر باشیم تعداد حاضری مورد نیاز 0 است
+                Dim PresentControlStartTime As String = InstanceConfigurationOfAnnouncementHalls.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, YourNSSAnnouncementHall.AHId, 3)
+                Dim PresentControlEndTime As String = InstanceConfigurationOfAnnouncementHalls.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, YourNSSAnnouncementHall.AHId, 2)
+                If Not ((_DateTime.GetCurrentTime() >= PresentControlStartTime) And (_DateTime.GetCurrentTime() <= PresentControlEndTime)) Then Return 0
+                'اگر ناوگان بومی باشد یا بومی با پلاک غیربومی باشد تعداد حاضری مورد نیاز از کانفیگ بدست می آید
+                'درغیر اینصورت طبق فرمول پیشنهاد شده انجام می شود
+                If InstanceIndigenousTrucks.IsIndigenousTruck(NSSTruck) Then
+                    Return InstanceConfigurationOfAnnouncementHalls.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, YourNSSAnnouncementHall.AHId, 4)
+                Else
+                    If YourNSSAnnouncementHall.AHId = AnnouncementHalls.AnnouncementHalls.Zobi Then
+                        'غير بومي ها در سالن ذوبی به تعداد اختلاف تاريخ صدور مجوز با تاريخ صدور نوبت باید حاضری داشته باشند
+                        Return GetTurnDateTimeDiferenceToToday(YourTurnId) - InstanceDateAndTimePersianCalendar.GetHoliDayNumber(NSSTurn.EnterDate, _DateTime.GetCurrentDateShamsiFull)
+                    ElseIf YourNSSAnnouncementHall.AHId = AnnouncementHalls.AnnouncementHalls.Anbari Then
+                        Return InstanceConfigurationOfAnnouncementHalls.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, YourNSSAnnouncementHall.AHId, 5)
+                    ElseIf YourNSSAnnouncementHall.AHId = AnnouncementHalls.AnnouncementHalls.Otaghdar Then
+                        Return InstanceConfigurationOfAnnouncementHalls.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, YourNSSAnnouncementHall.AHId, 5)
+                    ElseIf YourNSSAnnouncementHall.AHId = AnnouncementHalls.AnnouncementHalls.Shahri Then
+                        Return InstanceConfigurationOfAnnouncementHalls.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, YourNSSAnnouncementHall.AHId, 5)
+                    End If
+                End If
+            Catch ex As AnnouncementHallSubGroupNotFoundException
+                Throw ex
+            Catch ex As AnnouncementHallSubGroupRelationTruckNotExistException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function IsAmountOfTurnPresentsEnough(ByVal YourNSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, ByVal YourTurnId As UInt64) As Boolean
+            Try
+                'آیا آخرین حاضری نوبت در 30 دقیقه یا 3 ساعت اخیر مطابق پیکربندی سیستم ثبت شده است یا نه
+                If IsPresentRegisteredInLast30Minute(YourNSSAnnouncementHall, YourTurnId) = False Then Throw New PresentNotRegisteredInLast30MinuteException
+                'روزی که نوبت صادر شده نیازی به حاضری نیست
+                If GetTurnDateTimeDiferenceToToday(YourTurnId) = 0 Then Return True
+                'کنترل تعداد حاضری نوبت
+                If GetTotalNumberOfPresentRegistered(YourTurnId) >= GetTotalNumberOfNeededPresent(YourNSSAnnouncementHall, YourTurnId) Then
+                    Return True
+                Else
+                    Throw New PresentsNotEnoughException
+                End If
+            Catch ex As AnnouncementHallSubGroupNotFoundException
+                Throw ex
+            Catch ex As AnnouncementHallSubGroupRelationTruckNotExistException
+                Throw ex
+            Catch exxx As PresentsNotEnoughException
+                Throw exxx
+            Catch exx As PresentNotRegisteredInLast30MinuteException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
+
     Public MustInherit Class R2CoreTransportationAndLoadNotificationMClassTurnAttendanceManagement
         Private Shared _DateTime As New R2DateTime
 
@@ -2387,8 +2593,8 @@ Namespace TerraficCardsManagement
 
     Public Class R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager
         Public Function GetNSSTerafficCard(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As R2CoreParkingSystemStandardTrafficCardStructure
-            Dim InstanceSqlDataBOX=New R2CoreInstanseSqlDataBOXManager 
-            Dim InstanceTrafficCards=New R2CoreParkingSystemInstanceTrafficCardsManager 
+            Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+            Dim InstanceTrafficCards = New R2CoreParkingSystemInstanceTrafficCardsManager
             Try
                 Dim Ds As New DataSet
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,

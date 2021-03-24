@@ -2481,6 +2481,25 @@ Namespace Cars
             End Try
         End Function
 
+        Public Function GetnIdPersonFirst(YournIdCar As Int64) As Int64
+            Try
+                Dim da As New SqlDataAdapter : Dim ds As New DataSet
+                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=2) Order By dDate Desc")
+                da.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
+                ds.Tables.Clear()
+                If da.Fill(ds) <> 0 Then
+                    Return ds.Tables(0).Rows(0).Item("nIdPerson")
+                Else
+                    Throw New GetDataException
+                End If
+            Catch exx As GetDataException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+
     End Class
 
     Public Class R2CoreParkingSystemMClassCars
@@ -3009,6 +3028,40 @@ Namespace BlackList
 
     End Class
 
+    Public Class R2CoreParkingSystemInstanceBlackListManager
+        Private _DateTime As New R2DateTime
+
+        Public Enum R2CoreParkingSystemBlackListType
+            None = 0
+            AllBlackLists = 1
+            ActiveBlackLists = 2
+        End Enum
+
+        Public Function GetBlackList(YourNSSCar As R2StandardCarStructure, YourBlackListType As R2CoreParkingSystemBlackListType) As List(Of R2StandardBlackListStructure)
+            Try
+                Dim InstanceSqlDataBox = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                Dim Ds As DataSet
+                If YourBlackListType = R2CoreParkingSystemBlackListType.ActiveBlackLists Then
+                    InstanceSqlDataBox.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbBlackList Where ltrim(rtrim(nTruckNo))='" & YourNSSCar.StrCarNo & "' and ltrim(rtrim(nPlakSerial))='" & YourNSSCar.StrCarSerialNo & "' and nPlakPlac=" & YourNSSCar.nIdCity & " and flaga=0 Order By nId Desc", 1, Ds)
+                ElseIf YourBlackListType = R2CoreParkingSystemBlackListType.AllBlackLists Then
+                    InstanceSqlDataBox.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbBlackList Where ltrim(rtrim(nTruckNo))='" & YourNSSCar.StrCarNo & "' and ltrim(rtrim(nPlakSerial))='" & YourNSSCar.StrCarSerialNo & "' and nPlakPlac=" & YourNSSCar.nIdCity & " Order By nId Desc", 1, Ds)
+                Else
+                    Return Nothing
+                End If
+
+                Dim Lst As List(Of R2StandardBlackListStructure) = New List(Of R2StandardBlackListStructure)
+                For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                    Lst.Add(New R2StandardBlackListStructure(Ds.Tables(0).Rows(Loopx).Item("nId"), Ds.Tables(0).Rows(Loopx).Item("nTruckNo"), Ds.Tables(0).Rows(Loopx).Item("nPlakSerial"), Ds.Tables(0).Rows(Loopx).Item("nPlakPlac"), Ds.Tables(0).Rows(Loopx).Item("StrDesc"), Ds.Tables(0).Rows(Loopx).Item("FlagA"), Ds.Tables(0).Rows(Loopx).Item("nAmount"), IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("StrDate"), DBNull.Value), "", Ds.Tables(0).Rows(Loopx).Item("StrDate")), IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("nUser"), DBNull.Value), InstanceSoftwareUsers.GetNSSSystemUser.UserId, Ds.Tables(0).Rows(Loopx).Item("nUser"))))
+                Next
+                Return Lst
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
+
     Public Class R2CoreParkingSystemMClassBlackList
 
         Private Shared _DateTime As New R2DateTime
@@ -3254,7 +3307,7 @@ Namespace Drivers
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Dim NSSDriver = R2CoreParkingSystemMClassDrivers.GetNSSDriver(mynIdPerson)
-                Dim UserId = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, String.Empty, False, True, R2CoreParkingSystemSoftwareUserTypes.Driver, NSSDriver.StrIdNo, Nothing, Nothing, YourUserNSS.UserId , Nothing, Nothing, True, Nothing), YourUserNSS)
+                Dim UserId = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, String.Empty, False, True, R2CoreParkingSystemSoftwareUserTypes.Driver, NSSDriver.StrIdNo, Nothing, Nothing, YourUserNSS.UserId, Nothing, Nothing, True, Nothing), YourUserNSS)
                 R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver, UserId, NSSDriver.nIdPerson, Nothing), RelationDeactiveTypes.BothDeactive)
                 'به دست آوردن لیست فرآیندهای موبایلی قابل دسترسی برای نوع کاربر راننده و ارسال به مدیریت مجوز
                 Dim ComposeSearchString As String = R2CoreParkingSystemSoftwareUserTypes.Driver.ToString + ":"
@@ -4267,8 +4320,8 @@ Namespace SoftwareUsersManagement
 
     Public Class R2CoreParkingSystemInstanceSoftwareUsersManager
         Public Function GetNSSSoftwareUser(YourDriverId As Int64) As R2CoreStandardSoftwareUserStructure
-            Dim InstanceSqlDataBOX As new R2CoreInstanseSqlDataBOXManager 
-            Dim InstanceSoftwareUser As New R2CoreInstanseSoftwareUsersManager 
+            Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
+            Dim InstanceSoftwareUser As New R2CoreInstanseSoftwareUsersManager
             Try
                 Dim Ds As DataSet
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
@@ -4277,7 +4330,7 @@ Namespace SoftwareUsersManagement
 	                            Inner Join dbtransport.dbo.TbDriver as Drivers On EntityRelations.E2=Drivers.nIDDriver 
                           Where SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and
                                 EntityRelations.RelationActive=1 and Drivers.nIDDriver=" & YourDriverId & "", 0, Ds).GetRecordsCount = 0 Then Throw New SoftwareUserRelatedThisDriverNotFoundException
-                Return InstanceSoftwareUser.GetNSSUser(Convert.ToInt64( Ds.Tables(0).Rows(0).Item("UserId")))
+                Return InstanceSoftwareUser.GetNSSUser(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("UserId")))
             Catch ex As SoftwareUserRelatedThisDriverNotFoundException
                 Throw ex
             Catch ex As Exception

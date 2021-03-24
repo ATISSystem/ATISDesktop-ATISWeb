@@ -494,7 +494,8 @@ Public Class Form3
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            Dim Instance=New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager 
+            Instance.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
 
             'MessageBox.Show(R2CoreMclassDateAndTimeManagement.GetPersianDaysDiffDate(_DateTime.GetCurrentDateShamsiFull(), "1399/12/07"))
             'R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()
@@ -633,7 +634,7 @@ Public Class Form3
         Try
             Dim Hasher = New MD5Hasher
             Dim Ds As DataSet
-            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select nEstelamId from dbtransport.dbo.tbelam order by nEstelamId desc", 0, Ds)
+            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select nEstelamId from dbtransport.dbo.tbelam order by nEstelamId asc", 0, Ds)
             Cmdsql.Connection.Open()
             For loopx As Int64  = 0 To Ds.Tables(0).Rows.Count - 1
                 Dim nEstelamId As Int64 = Ds.Tables(0).Rows(loopx).Item("nEstelamId")

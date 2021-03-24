@@ -22,22 +22,31 @@ using R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions;
 using R2CoreTransportationAndLoadNotification.RequesterManagement;
 using ATISMobileRestful.Exceptions;
 using R2Core.SoftwareUserManagement.Exceptions;
+using R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions;
+using ATISMobileRestful.Logging;
+using R2Core.DateAndTimeManagement;
 
 namespace ATISMobileRestful.Controllers.LoadAllocationManagement
 {
     public class LoadAllocationsController : ApiController
     {
+        R2DateTime _DateTime = new R2DateTime();
+
         [HttpPost]
         public HttpResponseMessage LoadAllocationAgent()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClient4PartHashed(Request);
 
                 Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
                 Request.Headers.TryGetValues("nEstelamKey", out IEnumerable<string> nEstelamKey);
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientIp, "آی پی کلاینت تخصیص بار", WebAPi.GetClientIpAddress(Request), "ApiKey:" + ApiKey.FirstOrDefault(), "nEstelamKey:" + nEstelamKey.FirstOrDefault(), string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
 
                 var InstanceSoftwareUser = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
@@ -52,6 +61,8 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                     myTurnId = InstanceTurns.GetNSSTurn(NSSSoftwareuser).nEnterExitId;
                 }
                 catch (TurnNotFoundException ex)
+                { throw ex; }
+                catch (TruckDriverNotFoundException ex)
                 { throw ex; }
                 catch (Exception ex)
                 { throw ex; }
@@ -75,6 +86,12 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             { return WebAPi.CreateContentMessage(ex); }
             catch (WebApiClientUnAuthorizedException ex)
             { return WebAPi.CreateContentMessage(ex); }
+            catch (TruckDriverNotFoundException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (UserLast5DigitNotMatchingException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (UserIdNotExistException ex)
+            { return WebAPi.CreateContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateContentMessage(ex); }
         }
@@ -85,12 +102,15 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClient4PartHashed(Request);
 
                 Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
                 Request.Headers.TryGetValues("LoadAllocationId", out IEnumerable<string> LoadAllocationId);
-                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientIp, "آی پی کلاینت کنسلی بار", WebAPi.GetClientIpAddress(Request), "ApiKey:" + ApiKey.FirstOrDefault(), "LoadAllocationId:" + LoadAllocationId.FirstOrDefault(), string.Empty, string.Empty, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
                 InstanceLoadAllocation.LoadAllocationCancelling(Convert.ToInt64(LoadAllocationId.FirstOrDefault()), R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, InstanceSoftwareUsers.GetNSSUser(ApiKey.FirstOrDefault()));
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
@@ -107,6 +127,16 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             catch (LoadAllocationCancellingNotAllowedBecauseTurnStatusException ex)
             { return WebAPi.CreateContentMessage(ex); }
             catch (UserNotExistByApiKeyException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (UserLast5DigitNotMatchingException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (UserIdNotExistException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (LoadAllocationNotFoundException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (LoadCapacitorLoadNotFoundException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (TurnNotFoundException ex)
             { return WebAPi.CreateContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateContentMessage(ex); }
@@ -163,10 +193,15 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClient4PartHashed(Request);
 
+                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
                 Request.Headers.TryGetValues("LoadAllocationId", out IEnumerable<string> LoadAllocationId);
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientIp, "آی پی کلاینت افزایش اولویت", WebAPi.GetClientIpAddress(Request), "ApiKey:" + ApiKey.FirstOrDefault(), "LoadAllocationId:" + LoadAllocationId.FirstOrDefault(), string.Empty, string.Empty, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
                 InstanceLoadAllocation.IncreasePriority(Convert.ToInt64(LoadAllocationId.FirstOrDefault()));
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
@@ -178,6 +213,18 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             { return WebAPi.CreateContentMessage(ex); }
             catch (WebApiClientUnAuthorizedException ex)
             { return WebAPi.CreateContentMessage(ex); }
+            catch (UserLast5DigitNotMatchingException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (UserIdNotExistException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (TimingNotReachedException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (LoadAllocationNotFoundException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (LoadCapacitorLoadNotFoundException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (TurnNotFoundException ex)
+            { return WebAPi.CreateContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateContentMessage(ex); }
         }
@@ -188,11 +235,16 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
+
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClient4PartHashed(Request);
 
+                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
                 Request.Headers.TryGetValues("LoadAllocationId", out IEnumerable<string> LoadAllocationId);
-                var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientIp, "آی پی کلاینت کاهش اولویت", WebAPi.GetClientIpAddress(Request), "ApiKey:" + ApiKey.FirstOrDefault(), "LoadAllocationId:" + LoadAllocationId.FirstOrDefault(), string.Empty, string.Empty, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
                 InstanceLoadAllocation.DecreasePriority(Convert.ToInt64(LoadAllocationId.FirstOrDefault()));
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
@@ -202,6 +254,16 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             catch (LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException ex)
             { return WebAPi.CreateContentMessage(ex); }
             catch (WebApiClientUnAuthorizedException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (UserLast5DigitNotMatchingException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (TimingNotReachedException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (LoadCapacitorLoadNotFoundException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (LoadAllocationNotFoundException ex)
+            { return WebAPi.CreateContentMessage(ex); }
+            catch (TurnNotFoundException ex)
             { return WebAPi.CreateContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateContentMessage(ex); }

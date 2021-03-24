@@ -215,6 +215,29 @@ Namespace PublicProc
             Return foreColor
         End Function
 
+        Private DaDiff As New SqlClient.SqlDataAdapter
+        Private DsDiff As New DataSet
+        Public Function GetDateDiff(YourDateInterval As Microsoft.VisualBasic.DateInterval, ByVal YourMilladiDate1 As Date, ByVal YourMilladiDate2 As Date) As Long
+            Try
+                If YourDateInterval = DateInterval.Day Then
+                    DaDiff.SelectCommand = New SqlClient.SqlCommand("select DateDiff(Day ,'" & YourMilladiDate1.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "' ,'" & YourMilladiDate2.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "' ) AS DD")
+                ElseIf YourDateInterval = DateInterval.Minute Then
+                    DaDiff.SelectCommand = New SqlClient.SqlCommand("select DateDiff(Minute ,'" & YourMilladiDate1.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "' ,'" & YourMilladiDate2.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "' ) AS DD")
+                ElseIf YourDateInterval = DateInterval.Hour Then
+                    DaDiff.SelectCommand = New SqlClient.SqlCommand("select DateDiff(Hour ,'" & YourMilladiDate1.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "' ,'" & YourMilladiDate2.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "' ) AS DD")
+                ElseIf YourDateInterval = DateInterval.Second Then
+                    DaDiff.SelectCommand = New SqlClient.SqlCommand("select DateDiff(Second ,'" & YourMilladiDate1.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "' ,'" & YourMilladiDate2.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "' ) AS DD")
+                End If
+                DaDiff.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
+                DsDiff.Tables.Clear()
+                DaDiff.Fill(DsDiff)
+                Return DsDiff.Tables(0).Rows(0).Item("DD")
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+
     End Class
 
     Public Class R2CoreMClassPublicProcedures
@@ -1363,10 +1386,13 @@ Namespace SoftwareUserManagement
 
         Public Function GetNSSSystemUser() As R2CoreStandardSoftwareUserStructure
             Try
-                Return GetNSSUser(1)
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim Ds As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserId=1", 3600, Ds).GetRecordsCount() = 0 Then
+                    Throw New UserIdNotExistException
+                End If
+                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber"), Ds.Tables(0).Rows(0).Item("UserStatus"), Ds.Tables(0).Rows(0).Item("VerificationCode"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As UserIdNotExistException
-                Throw ex
-            Catch ex As GetNSSException
                 Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1377,7 +1403,7 @@ Namespace SoftwareUserManagement
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim Ds As DataSet
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserId=" & YourUserId & "", 1, Ds).GetRecordsCount() = 0 Then
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserId=" & YourUserId & "", 0, Ds).GetRecordsCount() = 0 Then
                     Throw New UserIdNotExistException
                 End If
                 Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber"), Ds.Tables(0).Rows(0).Item("UserStatus"), Ds.Tables(0).Rows(0).Item("VerificationCode"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
@@ -1738,7 +1764,7 @@ Namespace SoftwareUserManagement
             'به دلیل جلوگیری از هکر و امنیت کاربر ، رمز شخصی توسط خود کاربر ارسال می گردد 
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "خطای امنیتی کد : 39 رمز شخصی مورد تایید نیست"
+                    Return "خطای امنیتی کد : 39 رمز شخصی را از طریق منوی مربوطه وارد نمایید"
                 End Get
             End Property
         End Class
@@ -3020,6 +3046,20 @@ Namespace DateAndTimeManagement
                 None = 0
                 Holiday = 1
             End Enum
+
+            Public Class R2CoreInstanceDateAndTimePersianCalendarManager
+                Public Function GetHoliDayNumber(ByVal YourShamsiDate1 As String, ByVal YourShamsiDate2 As String) As UInteger
+                    Try
+                        Dim InstanceSqlDataBOX =New R2CoreInstanseSqlDataBOXManager 
+                        Dim Ds As DataSet
+                        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Count(*) AS Counting from R2Primary.dbo.TblPersianCalendar where (dateshamsi>'" & YourShamsiDate1 & "') and (dateshamsi<'" & YourShamsiDate2 & "')  and PCType=1", 1, Ds)
+                        Return Ds.Tables(0).Rows(0).Item("Counting")
+                    Catch ex As Exception
+                        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                    End Try
+                End Function
+
+            End Class
 
             Public NotInheritable Class R2CoreDateAndTimePersianCalendarManagement
                 Public Shared Function GetHoliDayNumber(ByVal YourShamsiDate1 As String, ByVal YourShamsiDate2 As String) As UInteger

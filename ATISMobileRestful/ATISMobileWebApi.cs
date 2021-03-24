@@ -13,6 +13,7 @@ using R2Core.LoggingManagement;
 using R2CoreTransportationAndLoadNotification.Logging;
 using R2Core.SoftwareUserManagement;
 using R2Core.SoftwareUserManagement.Exceptions;
+using ATISMobileRestful.Logging;
 
 namespace ATISMobileRestful
 {
@@ -35,7 +36,6 @@ namespace ATISMobileRestful
 
         public void AuthenticateClient2PartHashed(HttpRequestMessage YourRequest)
         {
-
             try
             {
                 YourRequest.Headers.TryGetValues("AuthCode", out IEnumerable<string> AuthCode);
@@ -108,7 +108,42 @@ namespace ATISMobileRestful
             return response;
         }
 
+        private const string HttpContext = "MS_HttpContext";
+        private const string RemoteEndpointMessage = "System.ServiceModel.Channels.RemoteEndpointMessageProperty";
+        public string GetClientIpAddress(HttpRequestMessage request)
+        {
+            if (request.Properties.ContainsKey(HttpContext))
+            {
+                dynamic ctx = request.Properties[HttpContext];
+                if (ctx != null)
+                {
+                    return ctx.Request.UserHostAddress;
+                }
+            }
+
+            if (request.Properties.ContainsKey(RemoteEndpointMessage))
+            {
+                dynamic remoteEndpoint = request.Properties[RemoteEndpointMessage];
+                if (remoteEndpoint != null)
+                {
+                    return remoteEndpoint.Address;
+                }
+            }
+
+            return null;
+        }
+
+
     }
+    namespace Logging
+    {
+        public abstract class ATISMobileWebApiLogTypes : R2CoreTransportationAndLoadNotificationLogType 
+        {
+            public static Int64 WebApiClientIp = 20;
+        }
+
+    }
+
 
     namespace Exceptions
     {
