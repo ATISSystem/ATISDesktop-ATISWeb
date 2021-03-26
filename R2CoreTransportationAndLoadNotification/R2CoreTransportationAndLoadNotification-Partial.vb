@@ -3689,7 +3689,7 @@ Namespace LoadPermission
                                   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId
                                   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocationStatuses as LoadAllocationStatuses On LoadAllocations.LAStatusId=LoadAllocationStatuses.LoadAllocationStatusId
                                  Where LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull() & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and  LoadAllocations.LAStatusId=2 and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & " 
-                                 Order By LoadAllocations.DateTimeMilladi Desc"
+                                 Order By LoadAllocations.TurnId,LoadAllocations.Priority"
                 Dim Ds As DataSet
                 InstanceSqlDataBox.GetDataBOX(New R2PrimarySqlConnection, SqlString, 0, Ds)
                 Dim Lst = New List(Of KeyValuePair(Of String, String))
@@ -3731,6 +3731,7 @@ Namespace LoadPermission
                 'کنترل لیست سیاه
                 Dim BlackList = InstanceBlackList.GetBlackList(New R2StandardCarStructure(NSSTruck.NSSCar.nIdCar, NSSTruck.NSSCar.snCarType, NSSTruck.NSSCar.StrCarNo, NSSTruck.NSSCar.StrCarSerialNo, NSSTruck.NSSCar.nIdCity), R2CoreParkingSystemMClassBlackList.R2CoreParkingSystemBlackListType.ActiveBlackLists)
                 If BlackList.Count <> 0 Then Throw New LoadPermisionRegisteringFailedBecauseBlackListException(BlackList(0).StrDesc)
+
                 'کنترل حاضری راننده باری
                 If InstanceConfigurationOfAnnouncementHalls.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, NSSLoadCapacitorLoad.AHId, 0) = True Then
                     InstanceTurnAttendance.IsAmountOfTurnPresentsEnough(InstanceAnnouncementHalls.GetNSSAnnouncementHall(NSSLoadCapacitorLoad.AHId), YourLoadAllocationId.TurnId)
@@ -4950,6 +4951,7 @@ Namespace LoadAllocation
                 Dim InstanceConfigurationOfAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager
                 Dim InstanceTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                 Dim InstanceLoadCapacitorLoadOtherThanManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadOtherThanManipulationManager
+                Dim InstanceBlackList = New R2CoreParkingSystemInstanceBlackListManager
 
                 Dim NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(YournEstelamId)
                 Dim NSSAnnouncementHallSubGroup = InstanceAnnouncementHall.GetNSSAnnouncementHallSubGroup(NSSLoadCapacitorLoad.AHSGId)
@@ -4959,6 +4961,10 @@ Namespace LoadAllocation
                 Dim NSSTruck = InstanceTruck.GetNSSTruck(NSSTurn)
                 'کنترل مجوز دسترسی رکستر برای تخصیص بار برای بار با زیرگروه مورد نظر
                 If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.RequestersAllowAHSGIdLoadAllocationRegistering, YourRequesterId, NSSAnnouncementHallSubGroup.AHSGId) Then Throw New RequesterHasNotPermissionforLoadAllocationRegisteringException
+                'کنترل لیست سیاه
+                Dim NSSBlackList As R2StandardBlackListStructure = Nothing
+                Dim HasBlackList = InstanceBlackList.HasCarBlackList(NSSTruck.NSSCar, NSSBlackList)
+                If HasBlackList Then Throw New LoadAllocationNotAllowedBecauseCarHasBlackListException(NSSBlackList.StrDesc)
                 'بررسی بار فردا
                 If NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow Then Throw New UnableAllocatingTommorowLoadException
                 'بررسی این که تخصیص بار برای زیرگروه مورد نظر فعال باشد
@@ -5025,6 +5031,7 @@ Namespace LoadAllocation
                 OrElse TypeOf ex Is LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException _
                 OrElse TypeOf ex Is RegisteredLoadAllocationIsRepetitiousException _
                 OrElse TypeOf ex Is RequesterHasNotPermissionforLoadAllocationRegisteringException _
+                OrElse TypeOf ex Is LoadAllocationNotAllowedBecauseCarHasBlackListException _
                 OrElse TypeOf ex Is TimingNotReachedException _
                 OrElse TypeOf ex Is TurnNotFoundException _
                 OrElse TypeOf ex Is TruckNotFoundException _
@@ -5478,7 +5485,7 @@ Namespace LoadAllocation
                         Try
                             If NSSLoadAllocation.LAStatusId <> R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed Then
                                 If InstanceConfigurationOfAnnouncementHalls.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadPermissionsSetting, NSSLoadCapacitorLoad.AHId, 2) Then
-                                    Dim InstanceFailedLoadAllocationAnnouncePrinting=New R2CoreTransportationAndLoadNotificationInstanceFailedLoadAllocationAnnouncePrintingManager
+                                    Dim InstanceFailedLoadAllocationAnnouncePrinting = New R2CoreTransportationAndLoadNotificationInstanceFailedLoadAllocationAnnouncePrintingManager
                                     InstanceFailedLoadAllocationAnnouncePrinting.PrintFailedLoadAllocation(Lst(Loopx).LAId)
                                     Threading.Thread.Sleep(InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadAllocationsLoadPermissionRegisteringSetting, 0))
                                 End If
@@ -6699,6 +6706,20 @@ Namespace LoadAllocation
             Public Overrides ReadOnly Property Message As String
                 Get
                     Return "سقف تعداد تخصیص کامل شده است"
+                End Get
+            End Property
+        End Class
+
+        Public Class LoadAllocationNotAllowedBecauseCarHasBlackListException
+            Inherits ApplicationException
+            Private _Message As String = String.Empty
+            Public Sub New(YourMessage As String)
+                _Message = YourMessage
+            End Sub
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "امکان صدور تخصیص وجود ندارد" + vbCrLf + _Message + vbCrLf + "خودرو در لیست سیاه قرار دارد"
                 End Get
             End Property
         End Class

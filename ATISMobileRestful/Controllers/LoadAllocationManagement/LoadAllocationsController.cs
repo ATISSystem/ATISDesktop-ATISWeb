@@ -72,6 +72,8 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
+            catch (LoadAllocationNotAllowedBecauseCarHasBlackListException ex)
+            { return WebAPi.CreateContentMessage(ex); }
             catch (LoadAllocationRegisteringReachedEndTimeException ex)
             { return WebAPi.CreateContentMessage(ex); }
             catch (RequesterHasNotPermissionforLoadAllocationRegisteringException ex)

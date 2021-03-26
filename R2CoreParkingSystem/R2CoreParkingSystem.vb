@@ -3060,6 +3060,25 @@ Namespace BlackList
             End Try
         End Function
 
+        Public Function HasCarBlackList(YourNSSCar As R2StandardCarStructure, ByRef YourNSSBlackList As R2StandardBlackListStructure) As Boolean
+            Try
+                Dim InstanceSqlDataBox = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                Dim Ds As DataSet
+                If InstanceSqlDataBox.GetDataBOX(New R2ClassSqlConnectionSepas, "
+                  Select Top 1 * from dbtransport.dbo.TbBlackList Where ltrim(rtrim(nTruckNo))='" & YourNSSCar.StrCarNo & "' 
+                     and ltrim(rtrim(nPlakSerial))='" & YourNSSCar.StrCarSerialNo & "' and 
+                     nPlakPlac=" & YourNSSCar.nIdCity & " and flaga=0 Order By nId Desc", 1, Ds).GetRecordsCount <> 0 Then
+                    YourNSSBlackList = New R2StandardBlackListStructure(Ds.Tables(0).Rows(0).Item("nId"), Ds.Tables(0).Rows(0).Item("nTruckNo"), Ds.Tables(0).Rows(0).Item("nPlakSerial"), Ds.Tables(0).Rows(0).Item("nPlakPlac"), Ds.Tables(0).Rows(0).Item("StrDesc"), Ds.Tables(0).Rows(0).Item("FlagA"), Ds.Tables(0).Rows(0).Item("nAmount"), IIf(Object.Equals(Ds.Tables(0).Rows(0).Item("StrDate"), DBNull.Value), "", Ds.Tables(0).Rows(0).Item("StrDate")), IIf(Object.Equals(Ds.Tables(0).Rows(0).Item("nUser"), DBNull.Value), InstanceSoftwareUsers.GetNSSSystemUser.UserId, Ds.Tables(0).Rows(0).Item("nUser")))
+                    Return True
+                Else
+                    Return False
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
     End Class
 
     Public Class R2CoreParkingSystemMClassBlackList

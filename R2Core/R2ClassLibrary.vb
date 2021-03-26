@@ -1764,7 +1764,7 @@ Namespace SoftwareUserManagement
             'به دلیل جلوگیری از هکر و امنیت کاربر ، رمز شخصی توسط خود کاربر ارسال می گردد 
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "خطای امنیتی کد : 39 رمز شخصی را از طریق منوی مربوطه وارد نمایید"
+                    Return "خطای امنیتی کد : 39 رمز شخصی به درستی وارد نشده است"
                 End Get
             End Property
         End Class

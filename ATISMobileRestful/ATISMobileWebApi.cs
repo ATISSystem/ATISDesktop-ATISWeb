@@ -135,6 +135,7 @@ namespace ATISMobileRestful
 
 
     }
+
     namespace Logging
     {
         public abstract class ATISMobileWebApiLogTypes : R2CoreTransportationAndLoadNotificationLogType 
@@ -143,7 +144,6 @@ namespace ATISMobileRestful
         }
 
     }
-
 
     namespace Exceptions
     {

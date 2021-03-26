@@ -13,6 +13,7 @@ Imports R2Core.PermissionManagement
 Imports R2Core.SecurityAlgorithmsManagement.Hashing
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
+Imports R2CoreParkingSystem.BlackList
 Imports R2CoreParkingSystem.Drivers
 Imports R2CoreParkingSystem.EntityRelations
 Imports R2CoreParkingSystem.SoftwareUsersManagement
@@ -26,6 +27,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadO
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
 Imports R2CoreTransportationAndLoadNotification.RequesterManagement
 Imports R2CoreTransportationAndLoadNotification.Rmto
+Imports R2CoreTransportationAndLoadNotification.Trucks
 Imports R2CoreTransportationAndLoadNotification.Turns
 
 Public Class Form3
@@ -247,10 +249,21 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
+            Dim InstanceBlackList = New R2CoreParkingSystemInstanceBlackListManager
+            Dim InstanceTruck = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
+            Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+            Dim NSSTurn = InstanceTurns.GetNSSTurn(421803)
+            Dim NSSTruck = InstanceTruck.GetNSSTruck(NSSTurn)
+
+            'کنترل لیست سیاه
+            Dim NSSBlackList As R2StandardBlackListStructure = Nothing
+            Dim HasBlackList = InstanceBlackList.HasCarBlackList(NSSTruck.NSSCar, NSSBlackList)
+            If HasBlackList Then Throw New LoadAllocationNotAllowedBecauseCarHasBlackListException(NSSBlackList.StrDesc)
+
 
             'Dim X As ATISMobileRestful.ATISMobileWebApi
             'X.AuthenticateClient("8de86f1ac66204ac60bafb945479878a", "05bfadf5ce2f37098f0ba1c264553227")
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(TextBoxConcat1.Text, 943601, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent)
+            'R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(TextBoxConcat1.Text, 943601, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent)
             'R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.RegisteringMobileNumber("09132043148")
             'R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocationsforTruckDriver(7025)
             'R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocations(R2CoreTransportationAndLoadNotification.Turns.R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(943601))
@@ -494,7 +507,7 @@ Public Class Form3
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
         Try
-            Dim Instance=New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager 
+            Dim Instance = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
             Instance.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
 
             'MessageBox.Show(R2CoreMclassDateAndTimeManagement.GetPersianDaysDiffDate(_DateTime.GetCurrentDateShamsiFull(), "1399/12/07"))
@@ -636,7 +649,7 @@ Public Class Form3
             Dim Ds As DataSet
             R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select nEstelamId from dbtransport.dbo.tbelam order by nEstelamId asc", 0, Ds)
             Cmdsql.Connection.Open()
-            For loopx As Int64  = 0 To Ds.Tables(0).Rows.Count - 1
+            For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                 Dim nEstelamId As Int64 = Ds.Tables(0).Rows(loopx).Item("nEstelamId")
                 Cmdsql.CommandText = "Update dbtransport.dbo.tbelam set nEstelamkey='" & Hasher.GenerateMD5String(nEstelamId) & "'
                                       Where nEstelamId=" & nEstelamId & ""
