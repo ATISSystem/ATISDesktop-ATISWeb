@@ -1284,7 +1284,7 @@ Namespace SoftwareUserManagement
                 Dim Ds As DataSet
                 If Instanse.GetDataBOX(New R2PrimarySqlConnection,
                    "Select Top 1 SoftwareUsers.UserId,SoftwareUsers.MobileNumber from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers 
-                    Where SoftwareUsers.MobileNumber='" & YourMobileNumber & "' 
+                    Where SoftwareUsers.MobileNumber='" & YourMobileNumber & "' and UserActive=1  
                     Order By SoftwareUsers.UserId Desc", 0, Ds).GetRecordsCount <> 0 Then
                     CmdSql.Connection.Open()
                     CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers 

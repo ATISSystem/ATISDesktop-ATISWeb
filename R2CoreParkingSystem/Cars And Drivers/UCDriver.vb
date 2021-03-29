@@ -36,10 +36,12 @@ Public Class UCDriver
                 UcButtonDel.Visible = True
                 UcButtonNew.Visible = True
                 UcButtonSabt.Visible = True
+                CButtonSendSmsLast5Digit.Visible=True 
             Else
                 UcButtonDel.Visible = False
                 UcButtonNew.Visible = False
                 UcButtonSabt.Visible = False
+                CButtonSendSmsLast5Digit.Visible=False 
             End If
         End Set
     End Property

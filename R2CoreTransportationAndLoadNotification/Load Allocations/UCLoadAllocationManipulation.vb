@@ -15,6 +15,7 @@ Public Class UCLoadAllocationManipulation
 
     Public Event UCLoadAllocationRegisteredEvent(NSS As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
     Public Event UCLoadAllocationCancelledEvent(NSS As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
+    Public Event UCTurnIdEnteredEvent(NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure)
 
 
 
@@ -150,7 +151,12 @@ Public Class UCLoadAllocationManipulation
     End Sub
 
     Private Sub UcViewerNSSTurnDataEntry_UC13PressedEvent() Handles UcViewerNSSTurnDataEntry.UC13PressedEvent
-        UcButtonLoadAllocationRegistering.UCFocus()
+        Try
+            UcButtonLoadAllocationRegistering.UCFocus()
+            RaiseEvent UCTurnIdEnteredEvent(UcViewerNSSTurnDataEntry.UCNSSCurrent)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
     End Sub
 
     Private Sub UCLoadAllocationManipulation_UCViewNSSTurnRequestedEvent(NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure) Handles Me.UCViewNSSTurnRequestedEvent

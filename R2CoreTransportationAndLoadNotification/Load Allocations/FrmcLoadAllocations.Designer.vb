@@ -36,6 +36,7 @@ Partial Class FrmcLoadAllocations
         Me.ColorWithAlpha3 = New BlueActivity.Controls.ColorWithAlpha()
         Me.ColorWithAlpha4 = New BlueActivity.Controls.ColorWithAlpha()
         Me.UcucLoadCapacitorLoadCollectionAdvance = New R2CoreTransportationAndLoadNotification.UCUCLoadCapacitorLoadCollectionAdvance()
+        Me.UcucLoadAllocationCollection = New R2CoreTransportationAndLoadNotification.UCUCLoadAllocationCollection()
         Me.PnlLoadAllocation.SuspendLayout
         Me.PnlLoadAllocationRecords.SuspendLayout
         Me.PnlLoadCapacitorLoadsStatistics.SuspendLayout
@@ -54,6 +55,7 @@ Partial Class FrmcLoadAllocations
         Me.PnlLoadAllocation.BackColor = System.Drawing.Color.Transparent
         Me.PnlLoadAllocation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlLoadAllocation.Controls.Add(Me.UcLoadAllocationManipulationByLoadCapacitorLoads)
+        Me.PnlLoadAllocation.Controls.Add(Me.UcucLoadAllocationCollection)
         Me.PnlLoadAllocation.Location = New System.Drawing.Point(5, 50)
         Me.PnlLoadAllocation.Name = "PnlLoadAllocation"
         Me.PnlLoadAllocation.Size = New System.Drawing.Size(995, 512)
@@ -203,14 +205,27 @@ Partial Class FrmcLoadAllocations
         Me.UcucLoadCapacitorLoadCollectionAdvance.Name = "UcucLoadCapacitorLoadCollectionAdvance"
         Me.UcucLoadCapacitorLoadCollectionAdvance.Size = New System.Drawing.Size(995, 512)
         Me.UcucLoadCapacitorLoadCollectionAdvance.TabIndex = 0
+        Me.UcucLoadCapacitorLoadCollectionAdvance.UCTimerInterval = CType(1,Long)
+        Me.UcucLoadCapacitorLoadCollectionAdvance.UCViewnCarNumZero = true
+        '
+        'UcucLoadAllocationCollection
+        '
+        Me.UcucLoadAllocationCollection.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcucLoadAllocationCollection.BackColor = System.Drawing.Color.Transparent
+        Me.UcucLoadAllocationCollection.Location = New System.Drawing.Point(3, 130)
+        Me.UcucLoadAllocationCollection.Name = "UcucLoadAllocationCollection"
+        Me.UcucLoadAllocationCollection.Size = New System.Drawing.Size(984, 370)
+        Me.UcucLoadAllocationCollection.TabIndex = 1
         '
         'FrmcLoadAllocations
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
-        Me.Controls.Add(Me.PnlLoadCapacitor)
         Me.Controls.Add(Me.PnlLoadAllocation)
+        Me.Controls.Add(Me.PnlLoadCapacitor)
         Me.Controls.Add(Me.PnlLoadAllocationRecords)
         Me.Controls.Add(Me.PnlLoadCapacitorLoadsStatistics)
         Me.Location = New System.Drawing.Point(0, 0)
@@ -218,8 +233,8 @@ Partial Class FrmcLoadAllocations
         Me.Text = "FrmcLoadAllocations"
         Me.Controls.SetChildIndex(Me.PnlLoadCapacitorLoadsStatistics, 0)
         Me.Controls.SetChildIndex(Me.PnlLoadAllocationRecords, 0)
-        Me.Controls.SetChildIndex(Me.PnlLoadAllocation, 0)
         Me.Controls.SetChildIndex(Me.PnlLoadCapacitor, 0)
+        Me.Controls.SetChildIndex(Me.PnlLoadAllocation, 0)
         Me.PnlLoadAllocation.ResumeLayout(false)
         Me.PnlLoadAllocationRecords.ResumeLayout(false)
         Me.PnlLoadCapacitorLoadsStatistics.ResumeLayout(false)
@@ -239,4 +254,5 @@ End Sub
     Friend WithEvents ColorWithAlpha3 As BlueActivity.Controls.ColorWithAlpha
     Friend WithEvents ColorWithAlpha4 As BlueActivity.Controls.ColorWithAlpha
     Friend WithEvents UcucLoadCapacitorLoadCollectionAdvance As UCUCLoadCapacitorLoadCollectionAdvance
+    Friend WithEvents UcucLoadAllocationCollection As UCUCLoadAllocationCollection
 End Class

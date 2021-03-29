@@ -3,10 +3,12 @@ Imports System.Reflection
 
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
+Imports R2CoreTransportationAndLoadNotification.Turns
 
 Public Class UCLoadAllocationManipulationByLoadCapacitorLoads
     Inherits UCGeneralExtended
 
+    Public Event UCTurnIdEnteredEvent(NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure)
 
 #Region "General Properties"
 #End Region
@@ -21,13 +23,14 @@ Public Class UCLoadAllocationManipulationByLoadCapacitorLoads
 
     End Sub
 
-    Public sub UCViewNSSLoadCapacitorLoad(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure)
+    Public Sub UCViewNSSLoadCapacitorLoad(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure)
         Try
             UcLoadAllocationManipulation.UCViewNSSLoadCapacitorLoad(YourNSS)
         Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
-    End sub
+    End Sub
+
 
 #End Region
 
@@ -35,6 +38,15 @@ Public Class UCLoadAllocationManipulationByLoadCapacitorLoads
 #End Region
 
 #Region "Event Handlers"
+
+    Private Sub UcLoadAllocationManipulation_UCTurnIdEnteredEvent(NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure) Handles UcLoadAllocationManipulation.UCTurnIdEnteredEvent
+        Try
+            RaiseEvent UCTurnIdEnteredEvent(NSSTurn)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
 #End Region
 
 #Region "Override Methods"

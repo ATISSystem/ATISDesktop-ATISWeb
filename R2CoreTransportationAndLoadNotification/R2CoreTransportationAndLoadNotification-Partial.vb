@@ -5453,9 +5453,9 @@ Namespace LoadAllocation
                     Dim AHSGId As Int64 = NSSLoadCapacitorLoad.AHSGId
                     'کنترل تایمینگ - آیا زمان صدور مجوز برای زیرگروه سالن مورد نظر فرارسیده است
                     If InstanceTiming.IsTimingActive(AHId, AHSGId) Then
-                        If InstanceTiming.GetTiming(AHId, AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering Then
-                            Continue For
-                        End If
+                        'If InstanceTiming.GetTiming(AHId, AHSGId) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering Then
+                        '    Continue For
+                        'End If
                     End If
 
                     Dim NSSLoadAllocation = Lst(Loopx)
@@ -5545,7 +5545,7 @@ Namespace LoadAllocation
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On LoadCapacitor.nCompCode=TransportCompanies.TCId 
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadPermissionStatuses as LoadPermissionStatuses On Turns.LoadPermissionStatus=LoadPermissionStatuses.LoadPermissionStatusId 
     Where Turns.nEnterExitId=" & IIf(YourTurnId = Int64.MinValue, "@LastTurnId", YourTurnId) & " and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=2 or LoadAllocations.LAStatusId=3 or LoadAllocations.LAStatusId=5) and CarAndPersons.snRelation=2 and AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "' 
-    Order By LoadAllocations.LAStatusId Asc,LoadAllocations.Priority Asc", 0, DS).GetRecordsCount() = 0 Then Throw New LoadAllocationNotFoundException
+    Order By LoadAllocations.LAStatusId Asc,LoadAllocations.Priority Asc", 0, DS).GetRecordsCount() = 0 Then Throw New LoadAllocationsNotFoundException
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                     Dim NSS As New R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure
@@ -5607,7 +5607,7 @@ Namespace LoadAllocation
                     Lst.Add(NSS)
                 Next
                 Return Lst
-            Catch ex As LoadAllocationNotFoundException
+            Catch ex As LoadAllocationsNotFoundException
                 Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -5620,7 +5620,7 @@ Namespace LoadAllocation
                 Return LST.Cast(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)().ToList()
             Catch ex As SoftwareUserRelatedTurnNotFoundException
                 Throw ex
-            Catch ex As LoadAllocationNotFoundException
+            Catch ex As LoadAllocationsNotFoundException
                 Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -6625,7 +6625,17 @@ Namespace LoadAllocation
 
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "موردی یافت نشد"
+                    Return "تخصیص با مشخصات مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+        Public Class LoadAllocationsNotFoundException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "سابقه تخصیص بار یافت نشد"
                 End Get
             End Property
         End Class
@@ -7196,7 +7206,7 @@ Namespace LoadTargets
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "موردی یافت نشد"
+                    Return "مقصدی برای استان مورد نظر یافت نشد"
                 End Get
             End Property
         End Class

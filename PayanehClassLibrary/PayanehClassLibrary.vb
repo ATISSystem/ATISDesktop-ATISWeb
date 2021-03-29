@@ -2893,8 +2893,16 @@ Namespace ReportsManagement
             CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
             Try
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
-                'Da.SelectCommand = New SqlClient.SqlCommand("SELECT DISTINCT dbo.tbProducts.strGoodName AS strBarName, dbo.tbCompany.strCompName,dbo.tbElam.dDateElam,dbo.TbCar.strCarSerialNo AS strserialNo, dbo.TbCar.strCarNo AS strTruckNo,tbCity_2.strCityName,dbo.tbNiaz.nEstelamID,dbo.TbENTEREXIT.strDRIVERName AS strdriverName,dbo.tbElam.dDateExit,dbo.tbEnterExit.nEnterExitId FROM         dbo.tbCity tbCity_2 RIGHT OUTER JOIN   dbo.tbElam INNER JOIN  dbo.tbCompany ON dbo.tbElam.nCompCode = dbo.tbCompany.nCompCode INNER JOIN dbo.tbNiaz ON dbo.tbElam.nEstelamID = dbo.tbNiaz.nEstelamID INNER JOIN dbo.TbCar ON dbo.tbNiaz.strCardNo = dbo.TbCar.nIDCar INNER JOIN  dbo.tbEnterExit ON dbo.tbNiaz.strCardNo = dbo.tbEnterExit.strCardno AND dbo.tbNiaz.nEstelamID = dbo.tbEnterExit.nEstelamID LEFT OUTER JOIN dbo.tbProducts ON dbo.tbElam.nBarcode = dbo.tbProducts.strGoodCode LEFT OUTER JOIN  dbo.TbCarAndPerson INNER JOIN  dbo.TbPerson ON dbo.TbCarAndPerson.nIDPerson = dbo.TbPerson.nIDPerson ON dbo.TbCar.nIDCar = dbo.TbCarAndPerson.nIDCar ON tbCity_2.nCityCode = dbo.tbElam.nCityCode LEFT OUTER JOIN dbo.tbUser ON dbo.tbElam.nUserID = dbo.tbUser.nUserID LEFT OUTER JOIN dbo.tbCarType ON dbo.TbCar.snCarType = dbo.tbCarType.snCarType LEFT OUTER JOIN dbo.tbCity tbCity_1 ON dbo.TbCar.nIDCity = tbCity_1.nCityCode  WHERE (tbperson.nIDPerson=" & YourDriverId & ") and  (ddateelam>='" & YourDateTime1.DateShamsiFull & "')  and  (ddateelam<='" & YourDateTime2.DateShamsiFull & "')  order by strTruckNo,ddateelam")
-                Da.SelectCommand = New SqlClient.SqlCommand("select e.strDriverName,c.strCarNo,c.strCarSerialNo,co.strCompName,e.strExitDate,e.nEstelamID,e.nEnterExitId,ci.strCityName,p.strGoodName,e.strBarnameNo as LoadPermissionLocation from tbenterexit as e inner join tbcar as C on E.strCardno=C.nIDCar INNER JOIN tbCompany as Co on E.nCompCode=CO.nCompCode INNER JOIN tbCity as Ci on e.nCityCode=CI.nCityCode INNER join tbProducts as P on e.nBarCode=p.strGoodCode where e.nDriverCode='" & YourDriverId & "' and e.strExitDate>='" & YourDateTime1.DateShamsiFull & "' and e.strExitDate<='" & YourDateTime2.DateShamsiFull & "' Order By E.nEnterExitId Desc")
+                Da.SelectCommand = New SqlClient.SqlCommand("
+                  Select LoadAllocations.LAId,Turns.strDriverName,c.strCarNo,c.strCarSerialNo,co.strCompName,Turns.strExitDate,Turns.nEstelamID,Turns.nEnterExitId,ci.strCityName,p.strGoodName,Turns.strBarnameNo as LoadPermissionLocation 
+                  from tbenterexit as Turns
+	                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId 
+	                 Inner Join tbcar as C on Turns.strCardno=C.nIDCar 
+	                 Inner Join tbCompany as Co on Turns.nCompCode=CO.nCompCode 
+	                 Inner Join tbCity as Ci on Turns.nCityCode=CI.nCityCode 
+	                 Inner Join tbProducts as P on Turns.nBarCode=p.strGoodCode 
+                  where Turns.nDriverCode='" & YourDriverId & "' and Turns.strExitDate>='" & YourDateTime1.DateShamsiFull  & "' and Turns.strExitDate<='" & YourDateTime2.DateShamsiFull  & "'  and LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded  & " 
+                  Order By Turns.nEnterExitId Desc")
                 Da.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
                 Da.Fill(Ds)
 
@@ -2915,7 +2923,8 @@ Namespace ReportsManagement
                     Dim myStrCityName As String = Ds.Tables(0).Rows(Loopx).Item("strCityName").trim
                     Dim myStrBarname As String = Ds.Tables(0).Rows(Loopx).Item("strGoodName").trim
                     Dim myLoadPermissionLocation As String = IIf(Ds.Tables(0).Rows(Loopx).Item("LoadPermissionLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall, "سالن اعلام بار", "سیستم")
-                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblDriverTruckLoadsReport(Radifx,StrDriverName,StrTruckNo,StrSerialNo,StrCompName,dDateElam,nEstelamId,dDateExit,nEnterExitId,StrCityName,StrBarName,LoadPermissionLocation) values(" & Loopx & ",'" & myStrDrivername & "','" & myStrTruckno & "','" & myStrSerialno & "','" & myStrCompname & "','" & mydDateElam & "','" & mynEstelamid & "','" & mydDateExit & "','" & mynEnterExitId & "','" & myStrCityName & "','" & myStrBarname & "','" & myLoadPermissionLocation & "')"
+                    Dim myLoadAllocationId As Int64=Ds.Tables(0).Rows(Loopx).Item("LAId")
+                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblDriverTruckLoadsReport(Radifx,StrDriverName,StrTruckNo,StrSerialNo,StrCompName,dDateElam,nEstelamId,dDateExit,nEnterExitId,StrCityName,StrBarName,LoadPermissionLocation,LoadAllocationId) values(" & Loopx & ",'" & myStrDrivername & "','" & myStrTruckno & "','" & myStrSerialno & "','" & myStrCompname & "','" & mydDateElam & "','" & mynEstelamid & "','" & mydDateExit & "','" & mynEnterExitId & "','" & myStrCityName & "','" & myStrBarname & "','" & myLoadPermissionLocation & "'," & myLoadAllocationId  & ")"
                     CmdSql.ExecuteNonQuery()
                 Next
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
