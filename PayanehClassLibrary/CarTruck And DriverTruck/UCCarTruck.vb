@@ -6,7 +6,7 @@ Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.Cars
 Imports PayanehClassLibrary.CarTrucksManagement
-Imports PayanehClassLibrary.Rmto
+
 
 Public Class UCCarTruck
     Inherits UCGeneral

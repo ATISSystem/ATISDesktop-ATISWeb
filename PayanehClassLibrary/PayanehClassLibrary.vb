@@ -2748,7 +2748,7 @@ Namespace ReportsManagement
                     Dim myJamKol As Int64 = 0
 
                     'شش چرخ یا دو محور
-                    Da.SelectCommand.CommandText = "Select Count(*) as Total,Sum(E.MblghA) as Jam FROM R2Primary.dbo.TblAccounting as E inner join (SELECT CARDID,CARDTYPE FROM R2Primary.dbo.TblRFIDCards ) as R on E.CardId=R.CardId WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And ((E.EEAccountingProcessType=1) or (E.EEAccountingProcessType=17) or (E.EEAccountingProcessType=8) or (E.EEAccountingProcessType=11))  And ((E.MblghA=40000) Or (E.MblghA=43600) Or (E.MblghA=45000) Or (E.MblghA=65400))"
+                    Da.SelectCommand.CommandText = "Select Count(*) as Total,Sum(E.MblghA) as Jam FROM R2Primary.dbo.TblAccounting as E inner join (SELECT CARDID,CARDTYPE FROM R2Primary.dbo.TblRFIDCards ) as R on E.CardId=R.CardId WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And ((E.EEAccountingProcessType=1) or (E.EEAccountingProcessType=17) or (E.EEAccountingProcessType=8) or (E.EEAccountingProcessType=11))  And ((E.MblghA=40000) Or (E.MblghA=43600) Or (E.MblghA=45000) Or (E.MblghA=65400) Or (E.MblghA=85020))"
                     DSSixCharkh.Tables.Clear()
                     Da.Fill(DSSixCharkh)
                     mySixCharkhEnterTotal = DSSixCharkh.Tables(0).Rows(0).Item("Total")
@@ -2763,7 +2763,7 @@ Namespace ReportsManagement
                     End If
 
                     'سواری
-                    Da.SelectCommand.CommandText = "Select Count(*) as Total,Sum(E.MblghA) as Jam FROM R2Primary.dbo.TblAccounting as E inner join (SELECT CARDID,CARDTYPE FROM R2Primary.dbo.TblRFIDCards ) as R on E.CardId=R.CardId WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And ((E.EEAccountingProcessType=1) or (E.EEAccountingProcessType=17))  And ((E.MblghA=14170) Or (E.MblghA=15000) Or (E.MblghA=21255))"
+                    Da.SelectCommand.CommandText = "Select Count(*) as Total,Sum(E.MblghA) as Jam FROM R2Primary.dbo.TblAccounting as E inner join (SELECT CARDID,CARDTYPE FROM R2Primary.dbo.TblRFIDCards ) as R on E.CardId=R.CardId WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And ((E.EEAccountingProcessType=1) or (E.EEAccountingProcessType=17))  And ((E.MblghA=14170) Or (E.MblghA=15000) Or (E.MblghA=21255) Or (E.MblghA=27250))"
                     DSSavari.Tables.Clear()
                     Da.Fill(DSSavari)
                     mySavariEnterTotal = DSSavari.Tables(0).Rows(0).Item("Total")
@@ -2779,7 +2779,7 @@ Namespace ReportsManagement
 
                     'ده و چرخ تریلی یا سه محور به بالا
                     'Da.SelectCommand.CommandText = "Select Count(*) as Total,Sum(E.MblghA) as Jam FROM R2Primary.dbo.TblAccounting as E inner join (SELECT CARDID,CARDTYPE FROM R2Primary.dbo.TblRFIDCards ) as R on E.CardId=R.CardId WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And ((E.EEAccountingProcessType=1) OR (E.EEAccountingProcessType=7) OR (E.EEAccountingProcessType=8) OR (E.EEAccountingProcessType=11)) And (R.CardType=" & TerafficCardType.TenCharkh & " or R.CardType=" & TerafficCardType.Tereili & ")"
-                    Da.SelectCommand.CommandText = "Select Count(*) as Total,Sum(E.MblghA) as Jam fROM R2Primary.dbo.TblAccounting as E WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And ((E.EEAccountingProcessType=1) OR (E.EEAccountingProcessType=17) or (E.EEAccountingProcessType=7) OR (E.EEAccountingProcessType=8) OR (E.EEAccountingProcessType=11)) And ((E.MblghA=60000) or (E.MblghA=59950) or (E.MblghA=81750))"
+                    Da.SelectCommand.CommandText = "Select Count(*) as Total,Sum(E.MblghA) as Jam fROM R2Primary.dbo.TblAccounting as E WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And ((E.EEAccountingProcessType=1) OR (E.EEAccountingProcessType=17) or (E.EEAccountingProcessType=7) OR (E.EEAccountingProcessType=8) OR (E.EEAccountingProcessType=11)) And ((E.MblghA=60000) or (E.MblghA=59950) or (E.MblghA=81750) or (E.MblghA=105730))"
                     DSTereiliTenCharkh.Tables.Clear()
                     Dim C As Color = Color.BlanchedAlmond
                     Da.Fill(DSTereiliTenCharkh)
@@ -2894,7 +2894,7 @@ Namespace ReportsManagement
             Try
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 Da.SelectCommand = New SqlClient.SqlCommand("
-                  Select LoadAllocations.LAId,Turns.strDriverName,c.strCarNo,c.strCarSerialNo,co.strCompName,Turns.strExitDate,Turns.nEstelamID,Turns.nEnterExitId,ci.strCityName,p.strGoodName,Turns.strBarnameNo as LoadPermissionLocation 
+                  Select LoadAllocations.LAId,Turns.strDriverName,c.strCarNo,c.strCarSerialNo,co.strCompName,Turns.strExitDate,Turns.nEstelamID,Turns.OtaghdarTurnNumber,ci.strCityName,p.strGoodName,Turns.strBarnameNo as LoadPermissionLocation 
                   from tbenterexit as Turns
 	                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId 
 	                 Inner Join tbcar as C on Turns.strCardno=C.nIDCar 
@@ -2919,12 +2919,12 @@ Namespace ReportsManagement
                     Dim mydDateElam As String = Ds.Tables(0).Rows(Loopx).Item("strExitDate").trim
                     Dim mynEstelamid As String = Ds.Tables(0).Rows(Loopx).Item("nEstelamID")
                     Dim mydDateExit As String = Ds.Tables(0).Rows(Loopx).Item("strExitDate").trim
-                    Dim mynEnterExitId As String = System.Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nEnterExitId"))
+                    Dim myOtaghdarTurnNumber As String = Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber")
                     Dim myStrCityName As String = Ds.Tables(0).Rows(Loopx).Item("strCityName").trim
                     Dim myStrBarname As String = Ds.Tables(0).Rows(Loopx).Item("strGoodName").trim
                     Dim myLoadPermissionLocation As String = IIf(Ds.Tables(0).Rows(Loopx).Item("LoadPermissionLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall, "سالن اعلام بار", "سیستم")
                     Dim myLoadAllocationId As Int64=Ds.Tables(0).Rows(Loopx).Item("LAId")
-                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblDriverTruckLoadsReport(Radifx,StrDriverName,StrTruckNo,StrSerialNo,StrCompName,dDateElam,nEstelamId,dDateExit,nEnterExitId,StrCityName,StrBarName,LoadPermissionLocation,LoadAllocationId) values(" & Loopx & ",'" & myStrDrivername & "','" & myStrTruckno & "','" & myStrSerialno & "','" & myStrCompname & "','" & mydDateElam & "','" & mynEstelamid & "','" & mydDateExit & "','" & mynEnterExitId & "','" & myStrCityName & "','" & myStrBarname & "','" & myLoadPermissionLocation & "'," & myLoadAllocationId  & ")"
+                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblDriverTruckLoadsReport(Radifx,StrDriverName,StrTruckNo,StrSerialNo,StrCompName,dDateElam,nEstelamId,dDateExit,OtaghdarTurnNumber,StrCityName,StrBarName,LoadPermissionLocation,LoadAllocationId) values(" & Loopx & ",'" & myStrDrivername & "','" & myStrTruckno & "','" & myStrSerialno & "','" & myStrCompname & "','" & mydDateElam & "','" & mynEstelamid & "','" & mydDateExit & "','" & myOtaghdarTurnNumber & "','" & myStrCityName & "','" & myStrBarname & "','" & myLoadPermissionLocation & "'," & myLoadAllocationId  & ")"
                     CmdSql.ExecuteNonQuery()
                 Next
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()

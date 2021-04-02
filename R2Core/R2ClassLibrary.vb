@@ -3050,7 +3050,7 @@ Namespace DateAndTimeManagement
             Public Class R2CoreInstanceDateAndTimePersianCalendarManager
                 Public Function GetHoliDayNumber(ByVal YourShamsiDate1 As String, ByVal YourShamsiDate2 As String) As UInteger
                     Try
-                        Dim InstanceSqlDataBOX =New R2CoreInstanseSqlDataBOXManager 
+                        Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                         Dim Ds As DataSet
                         InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Count(*) AS Counting from R2Primary.dbo.TblPersianCalendar where (dateshamsi>'" & YourShamsiDate1 & "') and (dateshamsi<'" & YourShamsiDate2 & "')  and PCType=1", 1, Ds)
                         Return Ds.Tables(0).Rows(0).Item("Counting")
@@ -3506,9 +3506,20 @@ Namespace ExceptionManagement
 
     Public Class DataEntryException
         Inherits ApplicationException
+
+        Private _Message=String.Empty 
+
+        Public sub New
+            _Message="اطلاعات وارد شده صحیح نیست"
+        End sub
+
+        Public sub New(YourMessage As String )
+            _Message=YourMessage
+        End sub
+
         Public Overrides ReadOnly Property Message As String
             Get
-                Return "اطلاعات وارد شده صحیح نیست"
+                Return _Message 
             End Get
         End Property
     End Class
