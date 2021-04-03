@@ -49,6 +49,7 @@ Partial Class Form3
         Me.Button19 = New System.Windows.Forms.Button()
         Me.Button20 = New System.Windows.Forms.Button()
         Me.Button21 = New System.Windows.Forms.Button()
+        Me.UcTurnsCancellation1 = New PayanehClassLibrary.UCTurnsCancellation()
         Me.SuspendLayout
         '
         'Button1
@@ -323,11 +324,21 @@ Partial Class Form3
         Me.Button21.Text = "تبدیل کد بار به هش"
         Me.Button21.UseVisualStyleBackColor = false
         '
+        'UcTurnsCancellation1
+        '
+        Me.UcTurnsCancellation1.BackColor = System.Drawing.Color.Transparent
+        Me.UcTurnsCancellation1.Location = New System.Drawing.Point(116, 2)
+        Me.UcTurnsCancellation1.Name = "UcTurnsCancellation1"
+        Me.UcTurnsCancellation1.Size = New System.Drawing.Size(829, 409)
+        Me.UcTurnsCancellation1.TabIndex = 26
+        Me.UcTurnsCancellation1.UCViewTitle = true
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 450)
+        Me.Controls.Add(Me.UcTurnsCancellation1)
         Me.Controls.Add(Me.Button21)
         Me.Controls.Add(Me.Button20)
         Me.Controls.Add(Me.Button19)
@@ -388,4 +399,5 @@ End Sub
     Friend WithEvents Button19 As Button
     Friend WithEvents Button20 As Button
     Friend WithEvents Button21 As Button
+    Friend WithEvents UcTurnsCancellation1 As PayanehClassLibrary.UCTurnsCancellation
 End Class

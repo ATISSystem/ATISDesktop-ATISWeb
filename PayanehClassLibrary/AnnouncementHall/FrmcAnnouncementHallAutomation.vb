@@ -54,17 +54,6 @@ Public Class FrmcAnnouncementHallAutomation
 
 #Region "Event Handlers"
 
-    Private Sub UcButtonTurnsCancellation_UCClickedEvent() Handles UcButtonTurnsCancellation.UCClickedEvent
-        Try
-            Cursor.Current = Cursors.WaitCursor
-            PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellation(UcLstViewerAllOfnEnterExitId.UCGetSelectedValue(), UcLstViewerAllOfnEnterExitId.UCGetSelectedAnnouncementHall, UcLstViewerAllOfnEnterExitId.UCGetSelectedAnnouncementHallSubGroup)
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ابطال گروهی نوبت ها انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch ex As Exception
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-        Cursor.Current = Cursors.Default
-    End Sub
-
     Private Sub UcCar_UCViewCarInformationCompleted(CarId As String) Handles UcCar.UCViewCarInformationCompleted
         Try
             Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(CarId)

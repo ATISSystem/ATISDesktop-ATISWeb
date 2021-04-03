@@ -270,14 +270,14 @@ Namespace CarTruckNobatManagement
                 Dim SeqTKeyWord As String = R2CoreTransportationAndLoadNotificationMClassSequentialTurnsManagement.GetNSSSequentialTurn(YourNSSAnnouncementHall).SequentialTurnKeyWord
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "
-                       Select Cast(Substring(Turns.OtaghdarTurnNumber,7,20) as int) as OtaghdarTurnNumber,Turns.StrEnterDate from dbtransport.dbo.TbEnterExit as Turns
+                       Select Substring(Turns.OtaghdarTurnNumber,7,6) as OtaghdarTurnNumber,Turns.StrEnterDate from dbtransport.dbo.TbEnterExit as Turns
                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCars On Turns.strCardno=AHSGRCars.CarId 
                         Where bFlagDriver=0 and AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and Substring(OtaghdarTurnNumber,1,1)='" & SeqTKeyWord & "' and AHSGRCars.RelationActive=1 Order By nEnterExitId", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New GetDataException
                 End If
                 Dim Lst As List(Of String) = New List(Of String)
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    Lst.Add(CType(Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber"), Int64) & "  -  " & CType(Ds.Tables(0).Rows(Loopx).Item("StrEnterDate"), String))
+                    Lst.Add(CType(Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber"), String) & "  -  " & CType(Ds.Tables(0).Rows(Loopx).Item("StrEnterDate"), String))
                 Next
                 Return Lst
             Catch exx As GetDataException
@@ -882,7 +882,7 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
-        Public Shared Sub TurnsCancellation(YourTopnEnterExitId As Int64, YourNSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, YourNSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure)
+        Public Shared Sub TurnsCancellation(YourTopSequentialTurnNumber As String , YourNSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, YourNSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure, YourYearShamsi As String)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -891,7 +891,7 @@ Namespace CarTruckNobatManagement
                 Da.SelectCommand = New SqlClient.SqlCommand("
                        Select nEnterExitId from dbtransport.dbo.TbEnterExit as Turns
                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCars On Turns.strCardno=AHSGRCars.CarId 
-                        Where (SUBSTRING(Turns.OtaghdarTurnNumber,7,20) < = " & YourTopnEnterExitId & ") and 
+                        Where (SUBSTRING(Turns.OtaghdarTurnNumber,2,20) < = '" & YourYearShamsi+"/"+ YourTopSequentialTurnNumber & "') and 
                               (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and 
                               AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and 
                               AHSGRCars.RelationActive=1
@@ -906,7 +906,7 @@ Namespace CarTruckNobatManagement
                                         Where nEnterExitId In   
                                           (Select nEnterExitId from dbtransport.dbo.TbEnterExit as Turns
                                                  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCars On Turns.strCardno=AHSGRCars.CarId 
-                                           Where (SUBSTRING(Turns.OtaghdarTurnNumber,7,20) < = " & YourTopnEnterExitId & ") and 
+                                           Where (SUBSTRING(Turns.OtaghdarTurnNumber,2,20) < = '" & YourYearShamsi+"/"+ YourTopSequentialTurnNumber & "') and 
                                                  (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and 
                                                  AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and 
                                                  AHSGRCars.RelationActive=1)"
@@ -2901,7 +2901,7 @@ Namespace ReportsManagement
 	                 Inner Join tbCompany as Co on Turns.nCompCode=CO.nCompCode 
 	                 Inner Join tbCity as Ci on Turns.nCityCode=CI.nCityCode 
 	                 Inner Join tbProducts as P on Turns.nBarCode=p.strGoodCode 
-                  where Turns.nDriverCode='" & YourDriverId & "' and Turns.strExitDate>='" & YourDateTime1.DateShamsiFull  & "' and Turns.strExitDate<='" & YourDateTime2.DateShamsiFull  & "'  and LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded  & " 
+                  where Turns.nDriverCode='" & YourDriverId & "' and Turns.strExitDate>='" & YourDateTime1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDateTime2.DateShamsiFull & "'  and LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & " 
                   Order By Turns.nEnterExitId Desc")
                 Da.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
                 Da.Fill(Ds)
@@ -2923,8 +2923,8 @@ Namespace ReportsManagement
                     Dim myStrCityName As String = Ds.Tables(0).Rows(Loopx).Item("strCityName").trim
                     Dim myStrBarname As String = Ds.Tables(0).Rows(Loopx).Item("strGoodName").trim
                     Dim myLoadPermissionLocation As String = IIf(Ds.Tables(0).Rows(Loopx).Item("LoadPermissionLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall, "سالن اعلام بار", "سیستم")
-                    Dim myLoadAllocationId As Int64=Ds.Tables(0).Rows(Loopx).Item("LAId")
-                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblDriverTruckLoadsReport(Radifx,StrDriverName,StrTruckNo,StrSerialNo,StrCompName,dDateElam,nEstelamId,dDateExit,OtaghdarTurnNumber,StrCityName,StrBarName,LoadPermissionLocation,LoadAllocationId) values(" & Loopx & ",'" & myStrDrivername & "','" & myStrTruckno & "','" & myStrSerialno & "','" & myStrCompname & "','" & mydDateElam & "','" & mynEstelamid & "','" & mydDateExit & "','" & myOtaghdarTurnNumber & "','" & myStrCityName & "','" & myStrBarname & "','" & myLoadPermissionLocation & "'," & myLoadAllocationId  & ")"
+                    Dim myLoadAllocationId As Int64 = Ds.Tables(0).Rows(Loopx).Item("LAId")
+                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblDriverTruckLoadsReport(Radifx,StrDriverName,StrTruckNo,StrSerialNo,StrCompName,dDateElam,nEstelamId,dDateExit,OtaghdarTurnNumber,StrCityName,StrBarName,LoadPermissionLocation,LoadAllocationId) values(" & Loopx & ",'" & myStrDrivername & "','" & myStrTruckno & "','" & myStrSerialno & "','" & myStrCompname & "','" & mydDateElam & "','" & mynEstelamid & "','" & mydDateExit & "','" & myOtaghdarTurnNumber & "','" & myStrCityName & "','" & myStrBarname & "','" & myLoadPermissionLocation & "'," & myLoadAllocationId & ")"
                     CmdSql.ExecuteNonQuery()
                 Next
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -3691,7 +3691,7 @@ Namespace ReportsManagement
             End Try
         End Sub
 
-        Public Shared Sub ReportingInformationProviderLoadPermissionIssuedOrderByPriorityReport(YourDate1 As R2StandardDateAndTimeStructure, YourDate2 As R2StandardDateAndTimeStructure, YourAHId As Int64,YourAHSGId As Int64 )
+        Public Shared Sub ReportingInformationProviderLoadPermissionIssuedOrderByPriorityReport(YourDate1 As R2StandardDateAndTimeStructure, YourDate2 As R2StandardDateAndTimeStructure, YourAHId As Int64, YourAHSGId As Int64)
             'گزارش مجوزهای صادر شده برای نوبت ها به ترتیب زمان صدور مجوز و اولویت انتخابی
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()

@@ -545,6 +545,12 @@
     <Compile Include="Transport Companies\UCSearcherTransportCompanies.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Turns\UCTurnsCancellation.Designer.vb">
+      <DependentUpon>UCTurnsCancellation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Turns\UCTurnsCancellation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="TWS\TWSMClassAuthenticationManagement.vb" />
     <Compile Include="TWS\UcSingleLogHolder.Designer.vb">
       <DependentUpon>UcSingleLogHolder.vb</DependentUpon>
@@ -792,6 +798,9 @@
     <EmbeddedResource Include="Transport Companies\UCSearcherTransportCompanies.resx">
       <DependentUpon>UCSearcherTransportCompanies.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Turns\UCTurnsCancellation.resx">
+      <DependentUpon>UCTurnsCancellation.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TWS\UcSingleLogHolder.resx">
       <DependentUpon>UcSingleLogHolder.vb</DependentUpon>
     </EmbeddedResource>
@@ -905,6 +914,7 @@
     <Content Include="CarTruckLoad\EnterExit.sql" />
     <None Include="Web References\PayanehWS\PayanehWebService.disco" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

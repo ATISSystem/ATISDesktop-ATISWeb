@@ -23,9 +23,6 @@ Public Class UCLstViewerAllOfnEnterExitId
 
         ' Add any initialization after the InitializeComponent() call.
         Try
-
-        Catch exx As GetDataException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "اطلاعات مورد جستجو وجود ندارد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -50,10 +47,22 @@ Public Class UCLstViewerAllOfnEnterExitId
         End Try
     End Sub
 
-    Public Function UCGetSelectedValue() As Int64
+    Public Function UCGetSelectedSequentialTurnNumber() As String
         Try
             If LstViewerAllOfnEnterExitId.SelectedIndex >= 0 Then
-                Return SPLIT(LstViewerAllOfnEnterExitId.Items(LstViewerAllOfnEnterExitId.SelectedIndex),"-")(0)
+                Return Split(LstViewerAllOfnEnterExitId.Items(LstViewerAllOfnEnterExitId.SelectedIndex), "-")(0).Trim
+            Else
+                Throw New Exception("شماره اعتبار را انتخاب نمایید")
+            End If
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Function
+
+    Public Function UCGetSelectedTargetYear() As String
+        Try
+            If LstViewerAllOfnEnterExitId.SelectedIndex >= 0 Then
+                Return Mid(Split(LstViewerAllOfnEnterExitId.Items(LstViewerAllOfnEnterExitId.SelectedIndex), "-")(1).Trim,1,4)
             Else
                 Throw New Exception("شماره اعتبار را انتخاب نمایید")
             End If

@@ -35,11 +35,6 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.UcucCarTruckNobatCollection = New PayanehClassLibrary.UCUCCarTruckNobatCollection()
         Me.UcCar = New R2CoreParkingSystem.UCCar()
         Me.PnlTurnsCancellation = New System.Windows.Forms.Panel()
-        Me.UcLabel5 = New R2CoreGUI.UCLabel()
-        Me.UcLstViewerAllOfnEnterExitId = New PayanehClassLibrary.UCLstViewerAllOfnEnterExitId()
-        Me.UcLabel2 = New R2CoreGUI.UCLabel()
-        Me.UcLabel1 = New R2CoreGUI.UCLabel()
-        Me.UcButtonTurnsCancellation = New R2CoreGUI.UCButton()
         Me.PnlEnterExitReport = New System.Windows.Forms.Panel()
         Me.UcucEnterExitCollection = New R2CoreParkingSystem.UCUCEnterExitCollection()
         Me.PnlSediment = New System.Windows.Forms.Panel()
@@ -47,6 +42,7 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.UcSedimentalLoadControlPanel = New PayanehClassLibrary.UCSedimentalLoadControlPanel()
         Me.PNLTWS = New System.Windows.Forms.Panel()
         Me.UctwsReport = New PayanehClassLibrary.UCTWSReport()
+        Me.UcTurnsCancellation = New PayanehClassLibrary.UCTurnsCancellation()
         Me.PnlSodoorAndPrintNobatRequest.SuspendLayout
         Me.PnlTurnResuscitationCancellation.SuspendLayout
         Me.PnlTurnsCancellation.SuspendLayout
@@ -85,8 +81,8 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.UcComputerMessageProducerSodoorNobat.Size = New System.Drawing.Size(919, 267)
         Me.UcComputerMessageProducerSodoorNobat.TabIndex = 2
         Me.UcComputerMessageProducerSodoorNobat.UCCMNote = ""
-        Me.UcComputerMessageProducerSodoorNobat.UCTitle =""
         Me.UcComputerMessageProducerSodoorNobat.UCSendIsActive = false
+        Me.UcComputerMessageProducerSodoorNobat.UCTitle = ""
         '
         'UcComputerMessageProducerPrintNobat
         '
@@ -99,8 +95,8 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.UcComputerMessageProducerPrintNobat.Size = New System.Drawing.Size(921, 265)
         Me.UcComputerMessageProducerPrintNobat.TabIndex = 1
         Me.UcComputerMessageProducerPrintNobat.UCCMNote = ""
-        Me.UcComputerMessageProducerPrintNobat.UCtitle = ""
         Me.UcComputerMessageProducerPrintNobat.UCSendIsActive = false
+        Me.UcComputerMessageProducerPrintNobat.UCTitle = ""
         '
         'PnlTurnResuscitationCancellation
         '
@@ -191,92 +187,11 @@ Partial Class FrmcAnnouncementHallAutomation
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PnlTurnsCancellation.BackColor = System.Drawing.Color.Transparent
         Me.PnlTurnsCancellation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PnlTurnsCancellation.Controls.Add(Me.UcLabel5)
-        Me.PnlTurnsCancellation.Controls.Add(Me.UcLstViewerAllOfnEnterExitId)
-        Me.PnlTurnsCancellation.Controls.Add(Me.UcLabel2)
-        Me.PnlTurnsCancellation.Controls.Add(Me.UcLabel1)
-        Me.PnlTurnsCancellation.Controls.Add(Me.UcButtonTurnsCancellation)
+        Me.PnlTurnsCancellation.Controls.Add(Me.UcTurnsCancellation)
         Me.PnlTurnsCancellation.Location = New System.Drawing.Point(5, 50)
         Me.PnlTurnsCancellation.Name = "PnlTurnsCancellation"
         Me.PnlTurnsCancellation.Size = New System.Drawing.Size(995, 512)
         Me.PnlTurnsCancellation.TabIndex = 203
-        '
-        'UcLabel5
-        '
-        Me.UcLabel5._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabel5._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabel5.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcLabel5.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel5.Location = New System.Drawing.Point(667, 8)
-        Me.UcLabel5.Name = "UcLabel5"
-        Me.UcLabel5.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabel5.Size = New System.Drawing.Size(297, 47)
-        Me.UcLabel5.TabIndex = 11
-        Me.UcLabel5.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel5.UCFont = New System.Drawing.Font("B Homa", 20.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcLabel5.UCForeColor = System.Drawing.Color.Black
-        Me.UcLabel5.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.UcLabel5.UCValue = "ابطال گروهی نوبت ها"
-        '
-        'UcLstViewerAllOfnEnterExitId
-        '
-        Me.UcLstViewerAllOfnEnterExitId.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcLstViewerAllOfnEnterExitId.BackColor = System.Drawing.Color.Transparent
-        Me.UcLstViewerAllOfnEnterExitId.Location = New System.Drawing.Point(10, 127)
-        Me.UcLstViewerAllOfnEnterExitId.Name = "UcLstViewerAllOfnEnterExitId"
-        Me.UcLstViewerAllOfnEnterExitId.Padding = New System.Windows.Forms.Padding(10)
-        Me.UcLstViewerAllOfnEnterExitId.Size = New System.Drawing.Size(973, 306)
-        Me.UcLstViewerAllOfnEnterExitId.TabIndex = 6
-        '
-        'UcLabel2
-        '
-        Me.UcLabel2._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabel2._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabel2.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcLabel2.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel2.Location = New System.Drawing.Point(461, 89)
-        Me.UcLabel2.Name = "UcLabel2"
-        Me.UcLabel2.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabel2.Size = New System.Drawing.Size(471, 32)
-        Me.UcLabel2.TabIndex = 5
-        Me.UcLabel2.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel2.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcLabel2.UCForeColor = System.Drawing.Color.Red
-        Me.UcLabel2.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.UcLabel2.UCValue = "(دقت کنید که کلیه نوبت های کمتر از اعتبار (و شامل اعتبار) باطل می گردند)"
-        '
-        'UcLabel1
-        '
-        Me.UcLabel1._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabel1.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel1.Location = New System.Drawing.Point(632, 61)
-        Me.UcLabel1.Name = "UcLabel1"
-        Me.UcLabel1.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabel1.Size = New System.Drawing.Size(297, 32)
-        Me.UcLabel1.TabIndex = 3
-        Me.UcLabel1.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel1.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcLabel1.UCForeColor = System.Drawing.Color.Black
-        Me.UcLabel1.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.UcLabel1.UCValue = "شماره نوبت اعتبار را از لیست انتخاب نمایید"
-        '
-        'UcButtonTurnsCancellation
-        '
-        Me.UcButtonTurnsCancellation.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcButtonTurnsCancellation.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonTurnsCancellation.Location = New System.Drawing.Point(437, 429)
-        Me.UcButtonTurnsCancellation.Name = "UcButtonTurnsCancellation"
-        Me.UcButtonTurnsCancellation.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcButtonTurnsCancellation.Size = New System.Drawing.Size(118, 49)
-        Me.UcButtonTurnsCancellation.TabIndex = 1
-        Me.UcButtonTurnsCancellation.UCBackColor = System.Drawing.Color.OrangeRed
-        Me.UcButtonTurnsCancellation.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonTurnsCancellation.UCEnable = true
-        Me.UcButtonTurnsCancellation.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcButtonTurnsCancellation.UCForeColor = System.Drawing.Color.White
-        Me.UcButtonTurnsCancellation.UCValue = "ابطال گروهی"
         '
         'PnlEnterExitReport
         '
@@ -359,25 +274,37 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.UctwsReport.Size = New System.Drawing.Size(993, 510)
         Me.UctwsReport.TabIndex = 0
         '
+        'UcTurnsCancellation
+        '
+        Me.UcTurnsCancellation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
+            Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTurnsCancellation.BackColor = System.Drawing.Color.Transparent
+        Me.UcTurnsCancellation.Location = New System.Drawing.Point(6, 3)
+        Me.UcTurnsCancellation.Name = "UcTurnsCancellation"
+        Me.UcTurnsCancellation.Size = New System.Drawing.Size(980, 502)
+        Me.UcTurnsCancellation.TabIndex = 0
+        Me.UcTurnsCancellation.UCViewTitle = true
+        '
         'FrmcAnnouncementHallAutomation
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
         Me.Controls.Add(Me.PnlTurnResuscitationCancellation)
+        Me.Controls.Add(Me.PnlTurnsCancellation)
         Me.Controls.Add(Me.PnlSodoorAndPrintNobatRequest)
         Me.Controls.Add(Me.PnlEnterExitReport)
         Me.Controls.Add(Me.PNLTWS)
         Me.Controls.Add(Me.PnlSediment)
-        Me.Controls.Add(Me.PnlTurnsCancellation)
         Me.Location = New System.Drawing.Point(0, 0)
         Me.Name = "FrmcAnnouncementHallAutomation"
         Me.Text = "FrmcAnnouncementHallAutomation"
-        Me.Controls.SetChildIndex(Me.PnlTurnsCancellation, 0)
         Me.Controls.SetChildIndex(Me.PnlSediment, 0)
         Me.Controls.SetChildIndex(Me.PNLTWS, 0)
         Me.Controls.SetChildIndex(Me.PnlEnterExitReport, 0)
         Me.Controls.SetChildIndex(Me.PnlSodoorAndPrintNobatRequest, 0)
+        Me.Controls.SetChildIndex(Me.PnlTurnsCancellation, 0)
         Me.Controls.SetChildIndex(Me.PnlTurnResuscitationCancellation, 0)
         Me.PnlSodoorAndPrintNobatRequest.ResumeLayout(false)
         Me.PnlTurnResuscitationCancellation.ResumeLayout(false)
@@ -398,17 +325,13 @@ End Sub
     Friend WithEvents UcCarAndDriverPresenter As R2CoreParkingSystem.UCCarAndDriverPresenter
     Friend WithEvents UcCarEnterExitStatus As R2CoreParkingSystem.UCCarEnterExitStatus
     Friend WithEvents PnlTurnsCancellation As System.Windows.Forms.Panel
-    Friend WithEvents UcLabel1 As UCLabel
-    Friend WithEvents UcButtonTurnsCancellation As UCButton
-    Friend WithEvents UcLabel2 As UCLabel
-    Friend WithEvents UcLstViewerAllOfnEnterExitId As UCLstViewerAllOfnEnterExitId
     Friend WithEvents PnlEnterExitReport As System.Windows.Forms.Panel
     Friend WithEvents UcucEnterExitCollection As R2CoreParkingSystem.UCUCEnterExitCollection
-    Friend WithEvents UcLabel5 As UCLabel
     Friend WithEvents PnlSediment As System.Windows.Forms.Panel
     Friend WithEvents PNLTWS As System.Windows.Forms.Panel
     Friend WithEvents UctwsReport As UCTWSReport
     Friend WithEvents UcSedimentalLoadControlPanel As UCSedimentalLoadControlPanel
     Friend WithEvents UcResuscitationSedimentedLoadbynEstelamId As UCResuscitationSedimentedLoadbynEstelamId
     Friend WithEvents UcViewerTankTreiler As UCViewerTankTreiler
+    Friend WithEvents UcTurnsCancellation As UCTurnsCancellation
 End Class
