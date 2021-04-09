@@ -274,12 +274,6 @@
     <Compile Include="Load Allocations\UCLoadAllocationManipulation.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Load Allocations\UCLoadAllocationsAutomation.Designer.vb">
-      <DependentUpon>UCLoadAllocationsAutomation.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Load Allocations\UCLoadAllocationsAutomation.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Load Allocations\UCLoadAllocationStatus.Designer.vb">
       <DependentUpon>UCLoadAllocationStatus.vb</DependentUpon>
     </Compile>
@@ -684,9 +678,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Load Allocations\UCLoadAllocationManipulation.resx">
       <DependentUpon>UCLoadAllocationManipulation.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Load Allocations\UCLoadAllocationsAutomation.resx">
-      <DependentUpon>UCLoadAllocationsAutomation.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Load Allocations\UCLoadAllocationStatus.resx">
       <DependentUpon>UCLoadAllocationStatus.vb</DependentUpon>

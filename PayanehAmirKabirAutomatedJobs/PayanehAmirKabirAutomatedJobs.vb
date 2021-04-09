@@ -77,7 +77,10 @@ Public Class PayanehAmirKabirAutomatedJobs
 
             'صدور خودکار مجوزهای سالن های اعلام بار
             Try
-                R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+                Dim Instance = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+                Instance.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+                Instance = Nothing
+                'R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
                 R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.LoadAllocationsLoadPermissionRegisteringFailed, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
@@ -88,7 +91,7 @@ Public Class PayanehAmirKabirAutomatedJobs
         Catch ex As Exception
             EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "_AutomatedJobsTimer_Elapsed:" + ex.Message.ToString, EventLogEntryType.Error)
         End Try
-        
+
         _AutomatedJobsTimer.Enabled = True
         _AutomatedJobsTimer.Start()
     End Sub

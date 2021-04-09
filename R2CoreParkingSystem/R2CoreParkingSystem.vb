@@ -3362,7 +3362,7 @@ Namespace Drivers
                 Dim NSSUser As R2CoreStandardSoftwareUserStructure
                 Try
                     NSSUser = R2CoreParkingSystemMClassSoftwareUsersManagement.GetNSSSoftwareUser(mynIdPerson)
-                    R2CoreMClassSoftwareUsersManagement.EditingSoftwareUser(New R2CoreStandardSoftwareUserStructure(NSSUser.UserId, Nothing, YourNSS.StrPersonFullName, Nothing, Nothing, NSSUser.UserPinCode, NSSUser.UserCanCharge, NSSUser.UserActive, NSSUser.UserTypeId, YourNSS.StrIdNo, NSSUser.UserStatus, NSSUser.VerificationCode, YourNSSUser.UserId, Nothing, Nothing, NSSUser.ViewFlag, NSSUser.Deleted), YourNSSUser)
+                    R2CoreMClassSoftwareUsersManagement.EditingSoftwareUser(New R2CoreStandardSoftwareUserStructure(NSSUser.UserId, Nothing, YourNSS.StrPersonFullName, Nothing, Nothing, NSSUser.UserPinCode, NSSUser.UserCanCharge, True , NSSUser.UserTypeId, YourNSS.StrIdNo, NSSUser.UserStatus, NSSUser.VerificationCode, YourNSSUser.UserId, Nothing, Nothing, NSSUser.ViewFlag, NSSUser.Deleted), YourNSSUser)
                 Catch ex As SoftwareUserRelatedThisDriverNotFoundException
                     Dim NSSDriverTemp = R2CoreParkingSystemMClassDrivers.GetNSSDriver(YourNSS.nIdPerson)
                     Dim UserId = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, NSSDriverTemp.StrPersonFullName, Nothing, Nothing, String.Empty, False, True, R2CoreParkingSystemSoftwareUserTypes.Driver, NSSDriverTemp.StrIdNo, Nothing, Nothing, YourNSSUser.UserId, Nothing, Nothing, True, Nothing), YourNSSUser)
