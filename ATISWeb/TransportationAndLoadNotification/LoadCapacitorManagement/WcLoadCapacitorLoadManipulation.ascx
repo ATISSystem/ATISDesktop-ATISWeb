@@ -41,10 +41,10 @@
         <div class="container-fluid p-1">
             <div class="d-flex flex-row">
                 <asp:Button runat="server" ID="BtnLoadRegistering" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-success" Text="ثبت بار" />
-                <asp:Button runat="server" ID="BtnLoadEditing" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-light" Style="color:black" Text="ویرایش بار" />
+                <asp:Button runat="server" ID="BtnLoadEditing" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-light" Style="color: black" Text="ویرایش بار" />
                 <asp:Button runat="server" ID="BtnLoadDeleting" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-danger" Text="حذف بار" />
-                <asp:Button runat="server" ID="BtnLoadCancelling" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-secondary" Text="کنسلی بار" Enabled="False"/>
-                <asp:Button runat="server" ID="BtnNewLoad" CssClass="btn btn-info mr-2 R2FontBYekanSmall bg-warning" Style="color:black" Text="بار جدید" />
+                <asp:Button runat="server" ID="BtnLoadCancelling" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-secondary" Text="کنسلی بار" Enabled="False" />
+                <asp:Button runat="server" ID="BtnNewLoad" CssClass="btn btn-info mr-2 R2FontBYekanSmall bg-warning" Style="color: black" Text="بار جدید" />
             </div>
         </div>
         <div class="container-fluid p-1">
@@ -129,6 +129,23 @@
                             <asp:TextBox runat="server" ID="TxtLoadReciever" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
                             <div class="input-group-append">
                                 <span class="input-group-text R2FontBHomaSmall" style="background-color: yellow; color: blue">گیرنده</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid p-1">
+                    <div class="d-flex flex-row-reverse">
+                        <div class="input-group col-sm-6 col-lg-6 border">
+                            <div class="form-check" style="direction: rtl">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                <label class="form-check-label R2FontBHomaSmall mr-3" for="flexRadioDefault2">بار عادی</label>
+                            </div>
+                            <div class="form-check mr-5" dir="rtl">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                <label class="form-check-label R2FontBHomaSmall mr-3" for="flexRadioDefault1">بار با شرایط خاص</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text R2FontBHomaSmall" style="background-color: yellow; color: blue">مشخصات بار: </span>
                             </div>
                         </div>
                     </div>

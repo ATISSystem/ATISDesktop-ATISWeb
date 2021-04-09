@@ -249,16 +249,17 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            Dim InstanceBlackList = New R2CoreParkingSystemInstanceBlackListManager
-            Dim InstanceTruck = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
-            Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
-            Dim NSSTurn = InstanceTurns.GetNSSTurn(421803)
-            Dim NSSTruck = InstanceTruck.GetNSSTruck(NSSTurn)
+            PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderContractorCompanyFinancialReport (New R2StandardDateAndTimeStructure(Nothing ,"1399/01/01","00:00:00"),New R2StandardDateAndTimeStructure(Nothing ,"1400/12/01","23:59:59"),False )
+            'Dim InstanceBlackList = New R2CoreParkingSystemInstanceBlackListManager
+            'Dim InstanceTruck = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
+            'Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+            'Dim NSSTurn = InstanceTurns.GetNSSTurn(421803)
+            'Dim NSSTruck = InstanceTruck.GetNSSTruck(NSSTurn)
 
-            'کنترل لیست سیاه
-            Dim NSSBlackList As R2StandardBlackListStructure = Nothing
-            Dim HasBlackList = InstanceBlackList.HasCarBlackList(NSSTruck.NSSCar, NSSBlackList)
-            If HasBlackList Then Throw New LoadAllocationNotAllowedBecauseCarHasBlackListException(NSSBlackList.StrDesc)
+            ''کنترل لیست سیاه
+            'Dim NSSBlackList As R2StandardBlackListStructure = Nothing
+            'Dim HasBlackList = InstanceBlackList.HasCarBlackList(NSSTruck.NSSCar, NSSBlackList)
+            'If HasBlackList Then Throw New LoadAllocationNotAllowedBecauseCarHasBlackListException(NSSBlackList.StrDesc)
 
 
             'Dim X As ATISMobileRestful.ATISMobileWebApi

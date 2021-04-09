@@ -882,7 +882,7 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
-        Public Shared Sub TurnsCancellation(YourTopSequentialTurnNumber As String , YourNSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, YourNSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure, YourYearShamsi As String)
+        Public Shared Sub TurnsCancellation(YourTopSequentialTurnNumber As String, YourNSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, YourNSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure, YourYearShamsi As String)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -891,7 +891,7 @@ Namespace CarTruckNobatManagement
                 Da.SelectCommand = New SqlClient.SqlCommand("
                        Select nEnterExitId from dbtransport.dbo.TbEnterExit as Turns
                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCars On Turns.strCardno=AHSGRCars.CarId 
-                        Where (SUBSTRING(Turns.OtaghdarTurnNumber,2,20) < = '" & YourYearShamsi+"/"+ YourTopSequentialTurnNumber & "') and 
+                        Where (SUBSTRING(Turns.OtaghdarTurnNumber,2,20) < = '" & YourYearShamsi + "/" + YourTopSequentialTurnNumber & "') and 
                               (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and 
                               AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and 
                               AHSGRCars.RelationActive=1
@@ -906,7 +906,7 @@ Namespace CarTruckNobatManagement
                                         Where nEnterExitId In   
                                           (Select nEnterExitId from dbtransport.dbo.TbEnterExit as Turns
                                                  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCars On Turns.strCardno=AHSGRCars.CarId 
-                                           Where (SUBSTRING(Turns.OtaghdarTurnNumber,2,20) < = '" & YourYearShamsi+"/"+ YourTopSequentialTurnNumber & "') and 
+                                           Where (SUBSTRING(Turns.OtaghdarTurnNumber,2,20) < = '" & YourYearShamsi + "/" + YourTopSequentialTurnNumber & "') and 
                                                  (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and 
                                                  AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and 
                                                  AHSGRCars.RelationActive=1)"
@@ -2698,135 +2698,143 @@ Namespace ReportsManagement
 
         Private Shared _DateTime As New R2DateTime
 
-
         Public Shared Sub ReportingInformationProviderContractorCompanyFinancialReport(YourDateTime1 As R2StandardDateAndTimeStructure, YourDateTime2 As R2StandardDateAndTimeStructure, YourVatStatus As Boolean)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
             Try
                 Dim _DateTime As R2DateTime = New R2DateTime
-                Dim myMahName As String = _DateTime.GetPersianMonthName(YourDateTime1.DateShamsiFull)
-                CmdSql.Connection.Open()
-                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
-                CmdSql.CommandText = "delete R2PrimaryReports.dbo.TblEnterExitByMblghReport" : CmdSql.ExecuteNonQuery()
+                Dim myMahName As String = _DateTime.GetPersianMonthName(YourDateTime2.DateShamsiFull)
+                Dim myDateShamsi1 As String = YourDateTime1.DateShamsiFull
+                Dim myDateShamsi2 As String = YourDateTime2.DateShamsiFull
+                Dim myConcat1 As String = myDateShamsi1.Replace("/", "") + YourDateTime1.Time.Replace(":", "")
+                Dim myConcat2 As String = myDateShamsi2.Replace("/", "") + YourDateTime2.Time.Replace(":", "")
+
                 Dim Da As New SqlClient.SqlDataAdapter
                 Da.SelectCommand = New SqlClient.SqlCommand
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
-
-                Dim myDateShamsi1 As String = YourDateTime1.DateShamsiFull
-                Dim myDateShamsi2 As String = YourDateTime2.DateShamsiFull
-
                 Dim DSSixCharkh As New DataSet
                 Dim DSSavari As New DataSet
                 Dim DSTereiliTenCharkh As New DataSet
                 Dim DSExit As New DataSet
                 Dim DSReturnAmount As New DataSet
-                Dim myReturnAmount As Int64 = 0
-                Dim myConcat1 As String = myDateShamsi1.Replace("/", "") + YourDateTime1.Time.Replace(":", "")
-                Dim myConcat2 As String = myDateShamsi1.Replace("/", "") + YourDateTime2.Time.Replace(":", "")
+
+                'شش چرخ یا دو محور
+                Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
+                                                    Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
+                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=8) or (Accounting.EEAccountingProcessType=11))  And ((Accounting.MblghA=40000) Or (Accounting.MblghA=43600) Or (Accounting.MblghA=45000) Or (Accounting.MblghA=65400) Or (Accounting.MblghA=85020))
+                                                    Group By DateShamsiA"
+                DSSixCharkh.Tables.Clear()
+                Da.Fill(DSSixCharkh)
+                'سواری
+                Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
+                                                    Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
+                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17))  And ((Accounting.MblghA=14170) Or (Accounting.MblghA=15000) Or (Accounting.MblghA=21255) Or (Accounting.MblghA=27250))
+                                                    Group By DateShamsiA"
+                DSSavari.Tables.Clear()
+                Da.Fill(DSSavari)
+                'ده و چرخ تریلی یا سه محور به بالا
+                Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
+                                                    Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
+                                                          and ((Accounting.EEAccountingProcessType=1) OR (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=7) OR (Accounting.EEAccountingProcessType=8) OR (Accounting.EEAccountingProcessType=11)) And ((Accounting.MblghA=60000) or (Accounting.MblghA=59950) or (Accounting.MblghA=81750) or (Accounting.MblghA=105730))
+                                                    Group By DateShamsiA"
+                DSTereiliTenCharkh.Tables.Clear()
+                Da.Fill(DSTereiliTenCharkh)
+                'خروج
+                Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
+                                                    Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
+                                                          And (Accounting.EEAccountingProcessType=2)
+                                                    Group By DateShamsiA"
+                DSExit.Tables.Clear()
+                Da.Fill(DSExit)
+                'بازگشت مبلغ
+                Da.SelectCommand.CommandText = "Select Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
+                                                Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
+                                                      And (Accounting.EEAccountingProcessType=15)"
+                DSReturnAmount.Tables.Clear()
+                Da.Fill(DSReturnAmount)
+
+                Dim myJamKol As Int64 = 0
                 Dim myCurrentDate As String = myDateShamsi1
-
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblEnterExitByMblghReport" : CmdSql.ExecuteNonQuery()
                 Do
-
-                    'If myDateShamsi1 = "1396/05/01" Then
-                    '    myConcat1 = myDateShamsi1.Replace("/", "") + "00:00:00"
-                    'Else
-                    '    myConcat1 = myDateShamsi1.Replace("/", "") + YourDateTime1.Time.Replace(":", "")
-                    'End If
-                    'If myDateShamsi2 = "1396/05/01" Then
-                    '    myConcat2 = myDateShamsi1.Replace("/", "") + "23:59:59"
-                    'Else
-                    '    myConcat2 = myDateShamsi1.Replace("/", "") + YourDateTime2.Time.Replace(":", "")
-                    'End If
-
-                    Dim mySixCharkhEnterTotal As Int64 = 0
-                    Dim mySixCharkhEnterJam As Int64 = 0
-                    Dim mySavariEnterTotal As Int64 = 0
-                    Dim mySavariEnterJam As Int64 = 0
-                    Dim myTereiliTenCharkhEnterTotal As Int64 = 0
-                    Dim myTereiliTenCharkhEnterJam As Int64 = 0
-                    Dim myExitJam As Int64 = 0
-                    Dim myJamKol As Int64 = 0
-
-                    'شش چرخ یا دو محور
-                    Da.SelectCommand.CommandText = "Select Count(*) as Total,Sum(E.MblghA) as Jam FROM R2Primary.dbo.TblAccounting as E inner join (SELECT CARDID,CARDTYPE FROM R2Primary.dbo.TblRFIDCards ) as R on E.CardId=R.CardId WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And ((E.EEAccountingProcessType=1) or (E.EEAccountingProcessType=17) or (E.EEAccountingProcessType=8) or (E.EEAccountingProcessType=11))  And ((E.MblghA=40000) Or (E.MblghA=43600) Or (E.MblghA=45000) Or (E.MblghA=65400) Or (E.MblghA=85020))"
-                    DSSixCharkh.Tables.Clear()
-                    Da.Fill(DSSixCharkh)
-                    mySixCharkhEnterTotal = DSSixCharkh.Tables(0).Rows(0).Item("Total")
-                    If Not DBNull.Value.Equals(DSSixCharkh.Tables(0).Rows(0).Item("Jam")) Then
+                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblEnterExitByMblghReport(DateShamsi1,DateShamsi2,Time1,Time2,ReportDateShamsi,ReportTime,DateShamsi,SixCharkhEnterTotal,SixCharkhEnterJam,SavariEnterTotal,SavariEnterJam,TereiliTenCharkhEnterTotal,TereiliTenCharkhEnterJam,ExitJam,JamKol,MahName,ReturnAmount) values('" & YourDateTime1.DateShamsiFull & "','" & YourDateTime2.DateShamsiFull & "','" & YourDateTime1.Time & "','" & YourDateTime2.Time & "','" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentTime & "','" & myCurrentDate & "',0,0,0,0,0,0,0,0" & ",'" & myMahName & "',0)"
+                    CmdSql.ExecuteNonQuery()
+                    myCurrentDate = R2Core.PublicProc.R2CoreMClassPublicProcedures.GetNextShamsiDate(myCurrentDate)
+                Loop While myCurrentDate.Replace("/", "") <= YourDateTime2.DateShamsiFull.Replace("/", "")
+                'نوشتن سواری
+                Dim mySavariEnterTotal As Int64 = 0
+                Dim mySavariEnterJam As Int64 = 0
+                For Loopx As Int64 = 0 To DSSavari.Tables(0).Rows.Count - 1
+                    mySavariEnterTotal = DSSavari.Tables(0).Rows(Loopx).Item("Total")
+                    If Not DBNull.Value.Equals(DSSavari.Tables(0).Rows(Loopx).Item("Jam")) Then
                         If YourVatStatus = False Then
-                            mySixCharkhEnterJam = DSSixCharkh.Tables(0).Rows(0).Item("Jam")
+                            mySavariEnterJam = DSSavari.Tables(0).Rows(Loopx).Item("Jam")
                         Else
-                            'mySixCharkhEnterJam = R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMblghApproved, 2) * mySixCharkhEnterTotal
-                            mySixCharkhEnterJam = DSSixCharkh.Tables(0).Rows(0).Item("Jam") * 100 / 109
-                        End If
-                        myJamKol += mySixCharkhEnterJam
-                    End If
-
-                    'سواری
-                    Da.SelectCommand.CommandText = "Select Count(*) as Total,Sum(E.MblghA) as Jam FROM R2Primary.dbo.TblAccounting as E inner join (SELECT CARDID,CARDTYPE FROM R2Primary.dbo.TblRFIDCards ) as R on E.CardId=R.CardId WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And ((E.EEAccountingProcessType=1) or (E.EEAccountingProcessType=17))  And ((E.MblghA=14170) Or (E.MblghA=15000) Or (E.MblghA=21255) Or (E.MblghA=27250))"
-                    DSSavari.Tables.Clear()
-                    Da.Fill(DSSavari)
-                    mySavariEnterTotal = DSSavari.Tables(0).Rows(0).Item("Total")
-                    If Not DBNull.Value.Equals(DSSavari.Tables(0).Rows(0).Item("Jam")) Then
-                        If YourVatStatus = False Then
-                            mySavariEnterJam = DSSavari.Tables(0).Rows(0).Item("Jam")
-                        Else
-                            'mySavariEnterJam = R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMblghApproved, 0) * mySavariEnterTotal
-                            mySavariEnterJam = DSSavari.Tables(0).Rows(0).Item("Jam") * 100 / 109
+                            mySavariEnterJam = DSSavari.Tables(0).Rows(Loopx).Item("Jam") * 100 / 109
                         End If
                         myJamKol += mySavariEnterJam
                     End If
-
-                    'ده و چرخ تریلی یا سه محور به بالا
-                    'Da.SelectCommand.CommandText = "Select Count(*) as Total,Sum(E.MblghA) as Jam FROM R2Primary.dbo.TblAccounting as E inner join (SELECT CARDID,CARDTYPE FROM R2Primary.dbo.TblRFIDCards ) as R on E.CardId=R.CardId WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And ((E.EEAccountingProcessType=1) OR (E.EEAccountingProcessType=7) OR (E.EEAccountingProcessType=8) OR (E.EEAccountingProcessType=11)) And (R.CardType=" & TerafficCardType.TenCharkh & " or R.CardType=" & TerafficCardType.Tereili & ")"
-                    Da.SelectCommand.CommandText = "Select Count(*) as Total,Sum(E.MblghA) as Jam fROM R2Primary.dbo.TblAccounting as E WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And ((E.EEAccountingProcessType=1) OR (E.EEAccountingProcessType=17) or (E.EEAccountingProcessType=7) OR (E.EEAccountingProcessType=8) OR (E.EEAccountingProcessType=11)) And ((E.MblghA=60000) or (E.MblghA=59950) or (E.MblghA=81750) or (E.MblghA=105730))"
-                    DSTereiliTenCharkh.Tables.Clear()
-                    Dim C As Color = Color.BlanchedAlmond
-                    Da.Fill(DSTereiliTenCharkh)
-                    myTereiliTenCharkhEnterTotal = DSTereiliTenCharkh.Tables(0).Rows(0).Item("Total")
-                    If Not DBNull.Value.Equals(DSTereiliTenCharkh.Tables(0).Rows(0).Item("Jam")) Then
+                    CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblEnterExitByMblghReport Set SavariEnterTotal=" & mySavariEnterTotal & ",SavariEnterJam=" & mySavariEnterJam & " Where DateShamsi='" & DSSavari.Tables(0).Rows(Loopx).Item("DateShamsiA").trim & "'"
+                    CmdSql.ExecuteNonQuery()
+                Next
+                'نوشتن 6 چرخ
+                Dim mySixCharkhEnterTotal As Int64 = 0
+                Dim mySixCharkhEnterJam As Int64 = 0
+                For Loopx As Int64 = 0 To DSSixCharkh.Tables(0).Rows.Count - 1
+                    mySixCharkhEnterTotal = DSSixCharkh.Tables(0).Rows(Loopx).Item("Total")
+                    If Not DBNull.Value.Equals(DSSixCharkh.Tables(0).Rows(Loopx).Item("Jam")) Then
                         If YourVatStatus = False Then
-                            myTereiliTenCharkhEnterJam = DSTereiliTenCharkh.Tables(0).Rows(0).Item("Jam")
+                            mySixCharkhEnterJam = DSSixCharkh.Tables(0).Rows(Loopx).Item("Jam")
                         Else
-                            'myTereiliTenCharkhEnterJam = R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.TarrifsMblghApproved, 3) * myTereiliTenCharkhEnterTotal
-                            myTereiliTenCharkhEnterJam = DSTereiliTenCharkh.Tables(0).Rows(0).Item("Jam") * 100 / 109
+                            mySixCharkhEnterJam = DSSixCharkh.Tables(0).Rows(Loopx).Item("Jam") * 100 / 109
+                        End If
+                        myJamKol += mySixCharkhEnterJam
+                    End If
+                    CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblEnterExitByMblghReport Set SixCharkhEnterTotal=" & mySixCharkhEnterTotal & ",SixCharkhEnterJam=" & mySixCharkhEnterJam & " Where DateShamsi='" & DSSixCharkh.Tables(0).Rows(Loopx).Item("DateShamsiA").trim & "'"
+                    CmdSql.ExecuteNonQuery()
+                Next
+                'نوشتن 10 چرخ و تریلی
+                Dim myTereiliTenCharkhEnterTotal As Int64 = 0
+                Dim myTereiliTenCharkhEnterJam As Int64 = 0
+                For Loopx As Int64 = 0 To DSTereiliTenCharkh.Tables(0).Rows.Count - 1
+                    myTereiliTenCharkhEnterTotal = DSTereiliTenCharkh.Tables(0).Rows(Loopx).Item("Total")
+                    If Not DBNull.Value.Equals(DSTereiliTenCharkh.Tables(0).Rows(Loopx).Item("Jam")) Then
+                        If YourVatStatus = False Then
+                            myTereiliTenCharkhEnterJam = DSTereiliTenCharkh.Tables(0).Rows(Loopx).Item("Jam")
+                        Else
+                            myTereiliTenCharkhEnterJam = DSTereiliTenCharkh.Tables(0).Rows(Loopx).Item("Jam") * 100 / 109
                         End If
                         myJamKol += myTereiliTenCharkhEnterJam
                     End If
-
-                    'خروج
-                    Da.SelectCommand.CommandText = "Select Sum(E.MblghA) as Jam FROM R2Primary.dbo.TblAccounting as E inner join (SELECT CARDID,CARDTYPE FROM R2Primary.dbo.TblRFIDCards ) as R on E.CardId=R.CardId WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And (E.EEAccountingProcessType=2)"
-                    DSExit.Tables.Clear()
-                    Da.Fill(DSExit)
-                    If Not DBNull.Value.Equals(DSExit.Tables(0).Rows(0).Item("Jam")) Then
+                    CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblEnterExitByMblghReport Set TereiliTenCharkhEnterTotal=" & myTereiliTenCharkhEnterTotal & ",TereiliTenCharkhEnterJam=" & myTereiliTenCharkhEnterJam & " Where DateShamsi='" & DSTereiliTenCharkh.Tables(0).Rows(Loopx).Item("DateShamsiA").trim & "'"
+                    CmdSql.ExecuteNonQuery()
+                Next
+                'نوشتن خروجی یا همان مازاد
+                Dim myExitJam As Int64 = 0
+                For Loopx As Int64 = 0 To DSExit.Tables(0).Rows.Count - 1
+                    If Not DBNull.Value.Equals(DSExit.Tables(0).Rows(Loopx).Item("Jam")) Then
                         If YourVatStatus = False Then
-                            myExitJam = DSExit.Tables(0).Rows(0).Item("Jam")
+                            myExitJam = DSExit.Tables(0).Rows(Loopx).Item("Jam")
                         Else
-                            myExitJam = (DSExit.Tables(0).Rows(0).Item("Jam") * 100 / 109)
+                            myExitJam = (DSExit.Tables(0).Rows(Loopx).Item("Jam") * 100 / 109)
                         End If
                         myJamKol += myExitJam
                     End If
-                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblEnterExitByMblghReport(DateShamsi1,DateShamsi2,Time1,Time2,ReportDateShamsi,ReportTime,DateShamsi,SixCharkhEnterTotal,SixCharkhEnterJam,SavariEnterTotal,SavariEnterJam,TereiliTenCharkhEnterTotal,TereiliTenCharkhEnterJam,ExitJam,JamKol,MahName,ReturnAmount) values('" & YourDateTime1.DateShamsiFull & "','" & YourDateTime2.DateShamsiFull & "','" & YourDateTime1.Time & "','" & YourDateTime2.Time & "','" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentTime & "','" & myCurrentDate & "'," & mySixCharkhEnterTotal & "," & mySixCharkhEnterJam & "," & mySavariEnterTotal & "," & mySavariEnterJam & "," & myTereiliTenCharkhEnterTotal & "," & myTereiliTenCharkhEnterJam & "," & myExitJam & "," & myJamKol & ",'" & myMahName & "',0)"
+                    CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblEnterExitByMblghReport Set ExitJam=" & myExitJam & " Where DateShamsi='" & DSExit.Tables(0).Rows(Loopx).Item("DateShamsiA").trim & "'"
                     CmdSql.ExecuteNonQuery()
-
-                    'بازگشت مبلغ
-                    Da.SelectCommand.CommandText = "Select Sum(E.MblghA) as Jam FROM R2Primary.dbo.TblAccounting as E inner join (SELECT CARDID,CARDTYPE FROM R2Primary.dbo.TblRFIDCards ) as R on E.CardId=R.CardId WHERE (((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,':',''))>='" & myConcat1 & "') And ((Replace(E.DateShamsiA,'/','')+Replace(E.TimeA,'/',''))<='" & myConcat2 & "')) And (E.EEAccountingProcessType=15)"
-                    DSReturnAmount.Tables.Clear()
-                    Da.Fill(DSReturnAmount)
-                    If Not DBNull.Value.Equals(DSReturnAmount.Tables(0).Rows(0).Item("Jam")) Then
-                        If YourVatStatus = False Then
-                            myReturnAmount = myReturnAmount + DSReturnAmount.Tables(0).Rows(0).Item("Jam")
-                        Else
-                            myReturnAmount = myReturnAmount + (DSReturnAmount.Tables(0).Rows(0).Item("Jam") * 100 / 109)
-                        End If
+                Next
+                'نوشتن بازگشت مبلغ
+                Dim myReturnAmount As Int64 = 0
+                If Not DBNull.Value.Equals(DSReturnAmount.Tables(0).Rows(0).Item("Jam")) Then
+                    If YourVatStatus = False Then
+                        myReturnAmount = DSReturnAmount.Tables(0).Rows(0).Item("Jam")
+                    Else
+                        myReturnAmount =DSReturnAmount.Tables(0).Rows(0).Item("Jam") * 100 / 109
                     End If
-                    myCurrentDate = R2Core.PublicProc.R2CoreMClassPublicProcedures.GetNextShamsiDate(myCurrentDate)
-                    myConcat1 = myCurrentDate.Replace("/", "") + YourDateTime1.Time.Replace(":", "")
-                    myConcat2 = myCurrentDate.Replace("/", "") + YourDateTime2.Time.Replace(":", "")
-                Loop While myCurrentDate.Replace("/", "") <= YourDateTime2.DateShamsiFull.Replace("/", "")
-
-                'ثبت جمع کل مبالغ بازگشت شده
-                CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblEnterExitByMblghReport Set ReturnAmount = " & myReturnAmount & ""
+                End If
+                CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblEnterExitByMblghReport Set ReturnAmount=" & myReturnAmount & ""
                 CmdSql.ExecuteNonQuery()
 
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()

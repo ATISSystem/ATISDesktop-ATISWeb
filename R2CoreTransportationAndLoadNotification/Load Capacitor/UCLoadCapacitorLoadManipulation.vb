@@ -29,9 +29,6 @@ Public Class UCLoadCapacitorLoadManipulation
 
 #Region "General Properties"
 
-
-
-
     Private _DisableUCSearcherLoadSources As Boolean = True
     <Browsable(False)>
     Public Property DisableUCSearcherLoadSources() As Boolean
@@ -62,7 +59,7 @@ Public Class UCLoadCapacitorLoadManipulation
 
     End Sub
 
-    Public Sub UCRefreshGeneral()
+    Public Overrides Sub UCRefreshGeneral()
         Try
             MyBase.UCRefreshGeneral()
             UCRefresh()
@@ -86,6 +83,7 @@ Public Class UCLoadCapacitorLoadManipulation
             UcSearcherGoods.UCRefreshGeneral()
             UcSearcherLoadTargets.UCRefreshGeneral()
             UcSearcherLoaderTypes.UCRefreshGeneral()
+            UcSpecialLoadSelector.UCRefreshGeneral()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -99,6 +97,7 @@ Public Class UCLoadCapacitorLoadManipulation
 #End Region
 
 #Region "Event Handlers"
+
     Private Sub UCLoadCapacitorLoadManipulation_UCNSSCurrentChanged(NSSCurrent As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure) Handles Me.UCNSSCurrentChanged
     End Sub
 
@@ -118,6 +117,7 @@ Public Class UCLoadCapacitorLoadManipulation
             UcSearcherLoaderTypes.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoaderTypesManagement.GetNSSLoaderType(UCNSSCurrent.nTruckType))
             UcPersianTextBoxAddress.UCValue = UCNSSCurrent.StrAddress
             UcPersianTextBoxStrDescription.UCValue = UCNSSCurrent.StrDescription
+            UcSpecialLoadSelector.UCViewInformation(UCNSSCurrent)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -137,17 +137,19 @@ Public Class UCLoadCapacitorLoadManipulation
             Dim NSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure
             If UcNumbernEstelamId.UCValue = 0 Then
                 'ثبت بار جدید
-                NSS = New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, String.Empty, UcPersianTextBoxStrBarname.UCValue, UcSearcherLoadTargets.UCGetSelectedNSS.OCode, UcSearcherGoods.UCGetSelectedNSS.OCode, UcSearcherTransportCompanies.UCGetSelectedNSS.OCode, UcSearcherLoaderTypes.UCGetSelectedNSS.OCode, UcPersianTextBoxAddress.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, UcNumbernCarNumKol.UCValue, UcNumberTransportPrice.UCValue, UcPersianTextBoxStrDescription.UCValue, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), UcNumbernCarNumKol.UCValue, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, UcSearcherLoadSources.UCGetSelectedNSS.OCode, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHId, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHSGId)
+                NSS = New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, String.Empty, UcPersianTextBoxStrBarname.UCValue, UcSearcherLoadTargets.UCGetSelectedNSS.OCode, UcSearcherGoods.UCGetSelectedNSS.OCode, UcSearcherTransportCompanies.UCGetSelectedNSS.OCode, UcSpecialLoadSelector.UCIsSpecialLoad, UcSearcherLoaderTypes.UCGetSelectedNSS.OCode, UcPersianTextBoxAddress.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, UcNumbernCarNumKol.UCValue, UcNumberTransportPrice.UCValue, UcPersianTextBoxStrDescription.UCValue, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), UcNumbernCarNumKol.UCValue, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, UcSearcherLoadSources.UCGetSelectedNSS.OCode, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHId, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHSGId)
                 UcNumbernEstelamId.UCValue = InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadRegistering(NSS)
                 RaiseEvent UCLoadCapacitorLoadRegisteredEvent(UCNSSCurrent)
             Else
                 'ویرایش اطلاعات بار
-                NSS = New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(UcNumbernEstelamId.UCValue, String.Empty, UcPersianTextBoxStrBarname.UCValue, UcSearcherLoadTargets.UCGetSelectedNSS.OCode, UcSearcherGoods.UCGetSelectedNSS.OCode, UcSearcherTransportCompanies.UCGetSelectedNSS.OCode, UcSearcherLoaderTypes.UCGetSelectedNSS.OCode, UcPersianTextBoxAddress.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, UcNumbernCarNumKol.UCValue, UcNumberTransportPrice.UCValue, UcPersianTextBoxStrDescription.UCValue, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), UcNumbernCarNumKol.UCValue, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, UcSearcherLoadSources.UCGetSelectedNSS.OCode, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHId, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHSGId)
+                NSS = New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(UcNumbernEstelamId.UCValue, String.Empty, UcPersianTextBoxStrBarname.UCValue, UcSearcherLoadTargets.UCGetSelectedNSS.OCode, UcSearcherGoods.UCGetSelectedNSS.OCode, UcSearcherTransportCompanies.UCGetSelectedNSS.OCode, UcSpecialLoadSelector.UCIsSpecialLoad, UcSearcherLoaderTypes.UCGetSelectedNSS.OCode, UcPersianTextBoxAddress.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, UcNumbernCarNumKol.UCValue, UcNumberTransportPrice.UCValue, UcPersianTextBoxStrDescription.UCValue, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), UcNumbernCarNumKol.UCValue, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, UcSearcherLoadSources.UCGetSelectedNSS.OCode, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHId, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHSGId)
                 R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManipulationManagement.LoadCapacitorLoadEditing(NSS, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                 RaiseEvent UCLoadCapacitorLoadEditedEvent(UCNSSCurrent)
             End If
             UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ثبت بار انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As PleaseSelectSpecialLoadRadioButtonException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
