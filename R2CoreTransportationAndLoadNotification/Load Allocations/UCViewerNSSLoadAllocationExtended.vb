@@ -130,7 +130,8 @@ Public Class UCViewerNSSLoadAllocationExtended
 
     Private Sub PicBoxLoadAllocationCancellation_Click(sender As Object, e As EventArgs) Handles PicBoxLoadAllocationCancellation.Click
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(UCNSSCurrent.LAId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+            InstanceLoadAllocation.LoadAllocationCancelling(UCNSSCurrent.LAId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(UCNSSCurrent.LAId))
             RaiseEvent UCLoadAllocationCancelation()
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخصیص بار کنسل شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -143,7 +144,8 @@ Public Class UCViewerNSSLoadAllocationExtended
 
     Private Sub PicDecreasePriority_Click(sender As Object, e As EventArgs) Handles PicDecreasePriority.Click
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.DecreasePriority(UCNSSCurrent.LAId)
+            Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+            InstanceLoadAllocation.DecreasePriority(UCNSSCurrent.LAId)
             RaiseEvent UCDecreasedPriorityEvent()
         Catch ex As LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -156,7 +158,8 @@ Public Class UCViewerNSSLoadAllocationExtended
 
     Private Sub PicIncreasePriority_Click(sender As Object, e As EventArgs) Handles PicIncreasePriority.Click
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.IncreasePriority(UCNSSCurrent.LAId)
+            Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+            InstanceLoadAllocation.IncreasePriority(UCNSSCurrent.LAId)
             RaiseEvent UCIncreasedPriorityEvent()
         Catch ex As LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)

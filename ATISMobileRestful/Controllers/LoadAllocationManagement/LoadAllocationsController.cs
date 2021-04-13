@@ -53,6 +53,9 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 var NSSSoftwareuser = InstanceSoftwareUser.GetNSSUser(ApiKey.FirstOrDefault());
                 var NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamKey.FirstOrDefault());
 
+                if (NSSLoadCapacitorLoad.LoadStatus == R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented)
+                { throw new Exception("تخصیص بار رسوبی تا اطلاع ثانوی ممکن نیست"); }
+
 
                 Int64 myTurnId = Int64.MinValue;
                 try

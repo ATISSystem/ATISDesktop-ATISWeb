@@ -67,7 +67,6 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelNoeBar1 = New R2CoreTransportationAndLoadNotification.UCLabelNoeBar()
         Me.UcLabel1 = New R2CoreGUI.UCLabel()
         Me.UcucLoadCapacitorAccountingCollection = New R2CoreTransportationAndLoadNotification.UCUCLoadCapacitorAccountingCollection()
-        Me.UcSpecialLoadSelector = New R2CoreTransportationAndLoadNotification.UCSpecialLoadSelector()
         Me.PnlMain.SuspendLayout
         Me.Panel1.SuspendLayout
         Me.Panel2.SuspendLayout
@@ -81,7 +80,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(5, 5)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(1061, 218)
+        Me.PnlMain.Size = New System.Drawing.Size(1061, 183)
         Me.PnlMain.TabIndex = 0
         '
         'Panel1
@@ -93,7 +92,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Padding = New System.Windows.Forms.Padding(2)
-        Me.Panel1.Size = New System.Drawing.Size(1061, 218)
+        Me.Panel1.Size = New System.Drawing.Size(1061, 183)
         Me.Panel1.TabIndex = 0
         '
         'Panel2
@@ -120,14 +119,14 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel2.Location = New System.Drawing.Point(2, 2)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(1055, 212)
+        Me.Panel2.Size = New System.Drawing.Size(1055, 177)
         Me.Panel2.TabIndex = 0
         '
         'UcButtonLoadCapacitorLoadSedimentation
         '
         Me.UcButtonLoadCapacitorLoadSedimentation.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.UcButtonLoadCapacitorLoadSedimentation.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonLoadCapacitorLoadSedimentation.Location = New System.Drawing.Point(422, 178)
+        Me.UcButtonLoadCapacitorLoadSedimentation.Location = New System.Drawing.Point(422, 143)
         Me.UcButtonLoadCapacitorLoadSedimentation.Name = "UcButtonLoadCapacitorLoadSedimentation"
         Me.UcButtonLoadCapacitorLoadSedimentation.Padding = New System.Windows.Forms.Padding(1)
         Me.UcButtonLoadCapacitorLoadSedimentation.Size = New System.Drawing.Size(83, 30)
@@ -183,7 +182,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcButtonLoadCapacitorAccounting.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.UcButtonLoadCapacitorAccounting.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonLoadCapacitorAccounting.Location = New System.Drawing.Point(315, 178)
+        Me.UcButtonLoadCapacitorAccounting.Location = New System.Drawing.Point(315, 143)
         Me.UcButtonLoadCapacitorAccounting.Name = "UcButtonLoadCapacitorAccounting"
         Me.UcButtonLoadCapacitorAccounting.Padding = New System.Windows.Forms.Padding(1)
         Me.UcButtonLoadCapacitorAccounting.Size = New System.Drawing.Size(107, 30)
@@ -214,7 +213,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcButtonLoadPermissions.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.UcButtonLoadPermissions.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonLoadPermissions.Location = New System.Drawing.Point(11, 178)
+        Me.UcButtonLoadPermissions.Location = New System.Drawing.Point(11, 143)
         Me.UcButtonLoadPermissions.Name = "UcButtonLoadPermissions"
         Me.UcButtonLoadPermissions.Padding = New System.Windows.Forms.Padding(1)
         Me.UcButtonLoadPermissions.Size = New System.Drawing.Size(138, 30)
@@ -276,7 +275,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcButtonLoadCapacitorLoadFreeLining.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.UcButtonLoadCapacitorLoadFreeLining.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonLoadCapacitorLoadFreeLining.Location = New System.Drawing.Point(148, 178)
+        Me.UcButtonLoadCapacitorLoadFreeLining.Location = New System.Drawing.Point(148, 143)
         Me.UcButtonLoadCapacitorLoadFreeLining.Name = "UcButtonLoadCapacitorLoadFreeLining"
         Me.UcButtonLoadCapacitorLoadFreeLining.Padding = New System.Windows.Forms.Padding(1)
         Me.UcButtonLoadCapacitorLoadFreeLining.Size = New System.Drawing.Size(89, 30)
@@ -292,7 +291,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcButtonLoadCapacitorLoadCancelling.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.UcButtonLoadCapacitorLoadCancelling.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonLoadCapacitorLoadCancelling.Location = New System.Drawing.Point(236, 178)
+        Me.UcButtonLoadCapacitorLoadCancelling.Location = New System.Drawing.Point(236, 143)
         Me.UcButtonLoadCapacitorLoadCancelling.Name = "UcButtonLoadCapacitorLoadCancelling"
         Me.UcButtonLoadCapacitorLoadCancelling.Padding = New System.Windows.Forms.Padding(1)
         Me.UcButtonLoadCapacitorLoadCancelling.Size = New System.Drawing.Size(79, 30)
@@ -398,7 +397,6 @@ Partial Class UCLoadCapacitorLoadManipulation
             Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PnlHolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PnlHolder.Controls.Add(Me.UcSpecialLoadSelector)
         Me.PnlHolder.Controls.Add(Me.UcSearcherTransportCompanies)
         Me.PnlHolder.Controls.Add(Me.UcSearcherLoaderTypes)
         Me.PnlHolder.Controls.Add(Me.UcSearcherLoadSources)
@@ -421,7 +419,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.PnlHolder.Controls.Add(Me.UcLabel1)
         Me.PnlHolder.Location = New System.Drawing.Point(3, 24)
         Me.PnlHolder.Name = "PnlHolder"
-        Me.PnlHolder.Size = New System.Drawing.Size(1049, 170)
+        Me.PnlHolder.Size = New System.Drawing.Size(1049, 135)
         Me.PnlHolder.TabIndex = 0
         '
         'UcSearcherTransportCompanies
@@ -521,7 +519,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         'UcPersianTextBoxStrDescription
         '
         Me.UcPersianTextBoxStrDescription.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxStrDescription.Location = New System.Drawing.Point(7, 120)
+        Me.UcPersianTextBoxStrDescription.Location = New System.Drawing.Point(7, 84)
         Me.UcPersianTextBoxStrDescription.MaxCharacterReached = CType(50,Short)
         Me.UcPersianTextBoxStrDescription.Name = "UcPersianTextBoxStrDescription"
         Me.UcPersianTextBoxStrDescription.Size = New System.Drawing.Size(541, 28)
@@ -542,7 +540,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcPersianTextBoxAddress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxAddress.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxAddress.Location = New System.Drawing.Point(609, 120)
+        Me.UcPersianTextBoxAddress.Location = New System.Drawing.Point(609, 84)
         Me.UcPersianTextBoxAddress.MaxCharacterReached = CType(50,Short)
         Me.UcPersianTextBoxAddress.Name = "UcPersianTextBoxAddress"
         Me.UcPersianTextBoxAddress.Size = New System.Drawing.Size(341, 28)
@@ -728,7 +726,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabel3._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabel3._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel3.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel3.Location = New System.Drawing.Point(547, 117)
+        Me.UcLabel3.Location = New System.Drawing.Point(547, 81)
         Me.UcLabel3.Name = "UcLabel3"
         Me.UcLabel3.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabel3.Size = New System.Drawing.Size(56, 32)
@@ -745,7 +743,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabel2._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.UcLabel2.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel2.Location = New System.Drawing.Point(950, 117)
+        Me.UcLabel2.Location = New System.Drawing.Point(950, 81)
         Me.UcLabel2.Name = "UcLabel2"
         Me.UcLabel2.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabel2.Size = New System.Drawing.Size(39, 32)
@@ -796,18 +794,9 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcucLoadCapacitorAccountingCollection.Dock = System.Windows.Forms.DockStyle.Fill
         Me.UcucLoadCapacitorAccountingCollection.Location = New System.Drawing.Point(0, 0)
         Me.UcucLoadCapacitorAccountingCollection.Name = "UcucLoadCapacitorAccountingCollection"
-        Me.UcucLoadCapacitorAccountingCollection.Size = New System.Drawing.Size(1061, 218)
+        Me.UcucLoadCapacitorAccountingCollection.Size = New System.Drawing.Size(1061, 183)
         Me.UcucLoadCapacitorAccountingCollection.TabIndex = 1
         Me.UcucLoadCapacitorAccountingCollection.UCViewUCPictureExit = true
-        '
-        'UcSpecialLoadSelector
-        '
-        Me.UcSpecialLoadSelector.BackColor = System.Drawing.Color.Transparent
-        Me.UcSpecialLoadSelector.Location = New System.Drawing.Point(283, 82)
-        Me.UcSpecialLoadSelector.Name = "UcSpecialLoadSelector"
-        Me.UcSpecialLoadSelector.Padding = New System.Windows.Forms.Padding(2)
-        Me.UcSpecialLoadSelector.Size = New System.Drawing.Size(266, 35)
-        Me.UcSpecialLoadSelector.TabIndex = 20
         '
         'UCLoadCapacitorLoadManipulation
         '
@@ -817,7 +806,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCLoadCapacitorLoadManipulation"
         Me.Padding = New System.Windows.Forms.Padding(5)
-        Me.Size = New System.Drawing.Size(1071, 228)
+        Me.Size = New System.Drawing.Size(1071, 193)
         Me.PnlMain.ResumeLayout(false)
         Me.Panel1.ResumeLayout(false)
         Me.Panel2.ResumeLayout(false)
@@ -869,5 +858,4 @@ End Sub
     Friend WithEvents UcButtonLoadCapacitorAccounting As R2CoreGUI.UCButton
     Friend WithEvents UcucLoadCapacitorAccountingCollection As UCUCLoadCapacitorAccountingCollection
     Friend WithEvents UcButtonLoadCapacitorLoadSedimentation As R2CoreGUI.UCButton
-    Friend WithEvents UcSpecialLoadSelector As UCSpecialLoadSelector
 End Class

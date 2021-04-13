@@ -106,7 +106,8 @@ Public Class UCLoadAllocationManipulation
             UcButtonLoadAllocationRegistering.UCEnable = False
             UcButtonNew.UCEnable = True
             UcButtonNewnEstelamIdRemain.UCEnable = True
-            UcNumberLoadAllocationId.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationRegistering(UcViewerNSSLoadCapacitorLoadDataEntry.UCNSSCurrent.nEstelamId, UcViewerNSSTurnDataEntry.UCNSSCurrent.nEnterExitId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, R2CoreTransportationAndLoadNotification.RequesterManagement.R2CoreTransportationAndLoadNotificationRequesters.UCLoadAllocationManipulation)
+            Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+            UcNumberLoadAllocationId.UCValue = InstanceLoadAllocation.LoadAllocationRegistering(UcViewerNSSLoadCapacitorLoadDataEntry.UCNSSCurrent.nEstelamId, UcViewerNSSTurnDataEntry.UCNSSCurrent.nEnterExitId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, R2CoreTransportationAndLoadNotification.RequesterManagement.R2CoreTransportationAndLoadNotificationRequesters.UCLoadAllocationManipulation)
             UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(UcNumberLoadAllocationId.UCValue))
             RaiseEvent UCLoadAllocationRegisteredEvent(UCNSSCurrent)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخصیص بارانجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -123,8 +124,9 @@ Public Class UCLoadAllocationManipulation
 
     Private Sub UcButtonLoadAllocationCancelling_UCClickedEvent() Handles UcButtonLoadAllocationCancelling.UCClickedEvent
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(UcNumberLoadAllocationId.UCValue, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
-            UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(UcNumberLoadAllocationId.UCValue))
+            Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+            InstanceLoadAllocation.LoadAllocationCancelling(UcNumberLoadAllocationId.UCValue, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            UCViewNSS(InstanceLoadAllocation.GetNSSLoadAllocation(UcNumberLoadAllocationId.UCValue))
             RaiseEvent UCLoadAllocationCancelledEvent(UCNSSCurrent)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخصیص بار کنسل شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadAllocationCancellingNotAllowedBecauseLoadAllocationStatusException

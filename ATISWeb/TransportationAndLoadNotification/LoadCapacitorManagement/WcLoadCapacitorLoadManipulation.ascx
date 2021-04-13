@@ -135,23 +135,6 @@
                 </div>
                 <div class="container-fluid p-1">
                     <div class="d-flex flex-row-reverse">
-                        <div class="input-group col-sm-6 col-lg-6 border">
-                            <div class="form-check" style="direction: rtl">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                                <label class="form-check-label R2FontBHomaSmall mr-3" for="flexRadioDefault2">بار عادی</label>
-                            </div>
-                            <div class="form-check mr-5" dir="rtl">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                <label class="form-check-label R2FontBHomaSmall mr-3" for="flexRadioDefault1">بار با شرایط خاص</label>
-                            </div>
-                            <div class="input-group-append">
-                                <span class="input-group-text R2FontBHomaSmall" style="background-color: yellow; color: blue">مشخصات بار: </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container-fluid p-1">
-                    <div class="d-flex flex-row-reverse">
                         <div class="input-group col-sm-6 col-lg-6">
                             <asp:TextBox runat="server" ID="TxtAddress" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
                             <div class="input-group-append">

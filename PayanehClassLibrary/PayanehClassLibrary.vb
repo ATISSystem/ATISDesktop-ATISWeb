@@ -292,7 +292,7 @@ Namespace CarTruckNobatManagement
                 Dim Da As New SqlDataAdapter : Dim Ds As New DataSet
                 Da.SelectCommand = New SqlCommand("Select Top 1 * from dbtransport.dbo.TbEnterExit as E 
                                                      Inner join TbCity as C on E.nCityCode=C.nCityCode 
-                                                   Where E.StrCardNo=" & YournIdCar & " and E.TurnStatus=" & TurnStatuses.UsedLoadPermissionRegistered & "  
+                                                   Where E.StrCardNo=" & YournIdCar & " and ((E.TurnStatus=" & TurnStatuses.UsedLoadPermissionRegistered & ")  or (E.TurnStatus=" & TurnStatuses.CancelledLoadPermissionCancelled & "))
                                                    Order By nEnterExitId Desc")
                 Da.SelectCommand.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
                 Ds.Tables.Clear()
