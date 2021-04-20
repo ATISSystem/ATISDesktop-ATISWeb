@@ -109,6 +109,7 @@
     <Content Include="Images\2-2.jpg" />
     <Content Include="Images\3520962.jpg" />
     <Content Include="Images\ATISMobilePresentation.mp4" />
+    <Content Include="Images\Button-Refresh-icon.png" />
     <Content Include="Images\Monitor.ico" />
     <Content Include="Images\PrinterIcon.ico" />
     <Content Include="Images\ATISDesktop.png" />
@@ -118,6 +119,8 @@
     <Content Include="Images\Header2.jpg" />
     <Content Include="Images\Header3.jpg" />
     <Content Include="Images\PayanehAmirKabir.jpg" />
+    <Content Include="Images\refresh-icon %281%29.png" />
+    <Content Include="Images\Refresh-icon.png" />
     <Content Include="Images\—Pngtree—abstract blue and white background_322099.png" />
     <Content Include="LoginManagement\WcChangePasswordofCurrentUser.ascx" />
     <Content Include="LoginManagement\WcLogin.ascx" />

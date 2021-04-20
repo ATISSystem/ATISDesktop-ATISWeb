@@ -1,9 +1,12 @@
 ﻿
 Imports System.Drawing
+Imports System.Drawing.Imaging
 Imports System.Reflection
 Imports System.Windows.Forms
 Imports System.Timers
 Imports System.ComponentModel
+Imports System.Security.Cryptography
+Imports System.Text
 
 Imports R2Core.ComputersManagement
 Imports R2Core.ConfigurationManagement
@@ -23,11 +26,10 @@ Imports R2Core.SMSSendAndRecieved
 Imports R2Core.SMSSendAndRecieved.Exceptions
 Imports R2Core.EntityRelationManagement
 Imports R2Core.MobileProcessesManagement.Exceptions
+Imports R2Core.WebProcessesManagement.Exceptions
 
 Imports PcPosDll
-Imports R2Core.WebProcessesManagement.Exceptions
-Imports System.Security.Cryptography
-Imports System.Text
+
 
 Namespace MonetarySupply
 
@@ -719,27 +721,6 @@ Namespace SecurityAlgorithmsManagement
 
     End Class
 
-    Namespace Exceptions
-        Public Class ExchangeKeyNotExistException
-            Inherits ApplicationException
-            Public Overrides ReadOnly Property Message As String
-                Get
-                    Return "کلید تبادل مورد نظر نامعتبر نیست"
-                End Get
-            End Property
-        End Class
-
-        Public Class ExchangeKeyTimeRangePassedException
-            Inherits ApplicationException
-            Public Overrides ReadOnly Property Message As String
-                Get
-                    Return "مدت زمان مجاز به پایان رسیده است"
-                End Get
-            End Property
-        End Class
-
-    End Namespace
-
     Namespace Hashing
         Public Class SHAHasher
 
@@ -785,6 +766,163 @@ Namespace SecurityAlgorithmsManagement
         End Class
 
     End Namespace
+
+    Namespace Captcha
+        Public Class R2CoreInstanceCaptchaManager
+
+            Dim bmpCaptcha As Bitmap
+            Dim iBMPHeight As Integer = 50
+            Dim iBMPWidth As Integer = 150
+            Dim sLeftMargin As Single = 5
+            Dim sTopMargin As Single = 10
+            Dim g As Graphics
+            Dim sWord As String
+            Dim sLetter As String
+            Dim sfLetter As SizeF
+            Dim rfLetter As RectangleF
+            Dim sX1 As Single = 0
+            Dim sY1 As Single = 0
+            Dim sX2 As Single = 0
+            Dim sY2 As Single = 0
+            Dim sTemp As Single
+            Dim iAngle As Integer
+            Dim sOffset As Single
+
+            Public Function GenerateCaptcha(ByVal sWord As String) As Bitmap
+                Dim ixr As Integer
+                bmpCaptcha = New Bitmap(iBMPWidth, iBMPHeight,
+                        Drawing.Imaging.PixelFormat.Format16bppRgb555)
+                g = Graphics.FromImage(bmpCaptcha)
+                Dim drawBackground As New SolidBrush(Color.LawnGreen   )
+                g.FillRectangle(drawBackground, New Rectangle(0, 0, iBMPWidth, iBMPHeight))
+
+                ' Create font and brush.
+                Dim drawFont As New Font("Times New Roman",17)
+                Dim drawBrush As New SolidBrush(Color.Black   )
+                Dim strFormat As New StringFormat(StringFormatFlags.FitBlackBox)
+                sfLetter = New SizeF(30, 30)
+                ' Draw string to screen.
+                For ixr = 0 To sWord.Length - 1
+                    sLetter = sWord.Substring(ixr, 1)
+                    g = Graphics.FromImage(bmpCaptcha)
+                    rfLetter = New RectangleF(sLeftMargin, sTopMargin, 30, 30)
+                    sfLetter = g.MeasureString(sLetter, drawFont, sfLetter, strFormat)
+                    iAngle = RndInterval(0, 20) - 10
+                    With rfLetter
+                        sOffset = sLeftMargin * Math.Tan(iAngle * Math.PI / 180)
+                        .Y = sTopMargin - sOffset
+                        .Width = sfLetter.Width + 10
+                        .Height = sfLetter.Height
+                    End With
+                    g.RotateTransform(iAngle)
+                    g.DrawString(sLetter, drawFont, drawBrush, rfLetter)
+                    sLeftMargin += sfLetter.Width + 2
+                Next
+                Dim drawPen As Pen = New Pen(Color.Crimson, 1)
+                For ixr = 0 To 3
+                    sX1 = sX2
+                    Do While Math.Abs(sX1 - sX2) < iBMPWidth * 0.5
+                        sX1 = RndInterval(2, iBMPWidth - 2)
+                        sX2 = RndInterval(2, iBMPWidth - 2)
+                    Loop
+                    sY1 = sY2
+                    Do While Math.Abs(sY1 - sY2) < iBMPHeight * 0.5
+                        sY1 = RndInterval(2, iBMPHeight - 2)
+                        sY2 = RndInterval(2, iBMPHeight - 2)
+                    Loop
+                    If RndInterval(0, 2) > 1 Then
+                        sTemp = sX1
+                        sX1 = sX2
+                        sX2 = sTemp
+                    End If
+                    If RndInterval(0, 2) > 1 Then
+                        sTemp = sY1
+                        sY1 = sY2
+                        sY2 = sTemp
+                    End If
+
+                    g.DrawLine(drawPen, sX1, sY1, sX2, sY2)
+                Next
+                g.Dispose()
+                Return bmpCaptcha
+            End Function
+            Public Function GenerateFakeWord(ByVal iLengthRequired As Integer) As String
+                Dim sVowels As String = "AEIOU"
+                Dim sConsonants As String = "BCDFGHJKLMNPQRSTVWXYZ"
+                Dim iNbrVowels As Integer
+                Dim iNbrConsonants As Integer
+                Dim sWord As String
+                Dim bUseVowel As Boolean
+                Dim iWordLength As Integer
+                Dim sPattern As String
+                iNbrVowels = 0
+                iNbrConsonants = 0
+                bUseVowel = False
+                sWord = ""
+                Randomize()
+                For iWordLength = 1 To iLengthRequired
+                    If (iWordLength = 2) Or ((iLengthRequired > 1) And (iWordLength = iLengthRequired)) Then
+                        bUseVowel = Not bUseVowel
+                    ElseIf (iNbrVowels < 2) And (iNbrConsonants < 2) Then
+                        bUseVowel = ((Rnd(1) * 2) > 1)
+                    ElseIf (iNbrVowels < 2) Then
+                        bUseVowel = True
+                    ElseIf (iNbrConsonants < 2) Then
+                        bUseVowel = False
+                    End If
+
+                    sPattern = IIf(bUseVowel, sVowels, sConsonants)
+                    sWord = sWord & sPattern.Substring(Int(Rnd(1) * sPattern.Length), 1)
+                    If bUseVowel Then
+                        iNbrVowels = iNbrVowels + 1
+                        iNbrConsonants = 0
+                    Else
+                        iNbrVowels = 0
+                        iNbrConsonants = iNbrConsonants + 1
+                    End If
+                Next
+                Return sWord
+            End Function
+            Private Function RndInterval(ByVal iMin As Integer, ByVal iMax As Integer) As Integer
+                Randomize()
+                Return Int(((iMax - iMin + 1) * Rnd()) + iMin)
+            End Function
+
+        End Class
+
+    End Namespace
+
+    Namespace Exceptions
+
+        Public Class CaptchaWordNotCorrectException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "متن تصویر امنیتی به درستی وارد نشده است"
+                End Get
+            End Property
+        End Class
+
+        Public Class ExchangeKeyNotExistException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کلید تبادل مورد نظر نامعتبر نیست"
+                End Get
+            End Property
+        End Class
+
+        Public Class ExchangeKeyTimeRangePassedException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "مدت زمان مجاز به پایان رسیده است"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
+
 
 End Namespace
 
@@ -1528,7 +1666,7 @@ Namespace MobileProcessesManagement
             PName = String.Empty
             PTitle = String.Empty
             TargetMobilePage = String.Empty
-            TargetMobilePageDelegate=String.Empty 
+            TargetMobilePageDelegate = String.Empty
             Description = String.Empty
             PBackColor = Color.Black
             PForeColor = Color.Black
@@ -1540,13 +1678,13 @@ Namespace MobileProcessesManagement
             Deleted = Boolean.FalseString
         End Sub
 
-        Public Sub New(ByVal YourPId As Int64, ByVal YourPName As String, ByVal YourPTitle As String, ByVal YourTargetMobilePage As String,YourTargetMobilePageDelegate As String  ,ByVal YourDescription As String, YourPBackColor As Color, YourPForeColor As Color, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+        Public Sub New(ByVal YourPId As Int64, ByVal YourPName As String, ByVal YourPTitle As String, ByVal YourTargetMobilePage As String, YourTargetMobilePageDelegate As String, ByVal YourDescription As String, YourPBackColor As Color, YourPForeColor As Color, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
             MyBase.New(YourPId, YourPName.Trim())
             PId = YourPId
             PName = YourPName
             PTitle = YourPTitle
             TargetMobilePage = YourTargetMobilePage
-            TargetMobilePageDelegate=YourTargetMobilePageDelegate 
+            TargetMobilePageDelegate = YourTargetMobilePageDelegate
             Description = YourDescription
             PBackColor = YourPBackColor
             PForeColor = YourPForeColor
@@ -1695,7 +1833,7 @@ Namespace MobileProcessesManagement
                         NSS.PName = Ds.Tables(0).Rows(Loopx).Item("PName")
                         NSS.PTitle = "  " + Ds.Tables(0).Rows(Loopx).Item("PTitle").ToString().Trim
                         NSS.TargetMobilePage = Ds.Tables(0).Rows(Loopx).Item("TargetMobilePage").trim
-                        NSS.TargetMobilePageDelegate  = Ds.Tables(0).Rows(Loopx).Item("TargetMobilePageDelegate").trim
+                        NSS.TargetMobilePageDelegate = Ds.Tables(0).Rows(Loopx).Item("TargetMobilePageDelegate").trim
                         NSS.Description = Ds.Tables(0).Rows(Loopx).Item("Description").trim
                         NSS.PForeColor = Color.FromName(Ds.Tables(0).Rows(Loopx).Item("PForeColor").trim)
                         NSS.PBackColor = Color.FromName(Ds.Tables(0).Rows(Loopx).Item("PBackColor").trim)

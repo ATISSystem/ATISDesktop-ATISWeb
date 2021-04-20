@@ -1399,6 +1399,7 @@ Namespace LoadCapacitor
                     'کنترل وضعیت بار
                     If Not (NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered Or NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.FreeLined) Then Return False
                     'کنترل تعداد بار
+                    Threading.Thread.Sleep(250)
                     If NSSLoadCapacitorLoad.nCarNum < 1 Then Return False
                     Return True
                 Catch ex As Exception
@@ -1978,7 +1979,8 @@ Namespace LoadCapacitor
                     Else
                         Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                         If InstanceAnnouncementTiming.IsTimingActive(YourNSS.AHId, YourNSS.AHSGId) Then
-                            If InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime) <> (R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses And R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Then
+                            Dim Timing = InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime)
+                            If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Then
                                 Throw New LoadCapacitorLoadRegisterTimePassedException
                             End If
                         Else
@@ -2075,7 +2077,8 @@ Namespace LoadCapacitor
                     Else
                         Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                         If InstanceAnnouncementTiming.IsTimingActive(YourNSS.AHId, YourNSS.AHSGId) Then
-                            If InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime) <> (R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses And R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Then
+                            Dim Timing = InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime)
+                            If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Then
                                 Throw New LoadCapacitorLoadEditTimePassedException
                             End If
                         Else
@@ -2196,7 +2199,8 @@ Namespace LoadCapacitor
                     Else
                         Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                         If InstanceAnnouncementTiming.IsTimingActive(YourNSS.AHId, YourNSS.AHSGId) Then
-                            If InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime) <> (R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses And R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Then
+                            Dim Timing = InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime)
+                            If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Then
                                 Throw New LoadCapacitorLoadDeleteTimePassedException
                             End If
                         Else
@@ -2780,7 +2784,7 @@ Namespace LoadCapacitor
                         R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.LoadPermissionCancelling, 1, Nothing, Nothing, Nothing, YourUserNSS.UserId))
                     Else
                         'عدم بازگردانی بار و کنسلی کل بار باقیمانده
-                        Dim InstanceLoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager 
+                        Dim InstanceLoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
                         InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadCancelling(NSSLoadCapacitorLoad, YourUserNSS)
                         R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.LoadPermissionCancelling, 1, Nothing, Nothing, Nothing, YourUserNSS.UserId))
                         R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Cancelling, NSSLoadCapacitorLoad.nCarNum + 1, Nothing, Nothing, Nothing, YourUserNSS.UserId))

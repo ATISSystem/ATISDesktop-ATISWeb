@@ -4,10 +4,10 @@ Imports System.Globalization
 Imports System.Text
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.PayanehWS
-Imports PayanehClassLibrary.Rmto
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DatabaseManagement
 Imports R2Core.DateAndTimeManagement
+Imports R2Core.DateAndTimeManagement.CalendarManagement.PersianCalendar
 Imports R2Core.EntityRelationManagement
 Imports R2Core.PermissionManagement
 Imports R2Core.SecurityAlgorithmsManagement.Hashing
@@ -249,7 +249,10 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderContractorCompanyFinancialReport (New R2StandardDateAndTimeStructure(Nothing ,"1399/01/01","00:00:00"),New R2StandardDateAndTimeStructure(Nothing ,"1400/12/01","23:59:59"),False )
+            MessageBox.Show(DateTime.Now.TimeOfDay.Minutes Mod 10) 
+            'Dim Instance = New R2CoreInstanceDateAndTimePersianCalendarManager
+            'MessageBox.Show(Instance.GetFirstDateShamsiInRangeWithoutHoliday(TextBoxConcat1.Text ,6)) 
+            'PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderContractorCompanyFinancialReport (New R2StandardDateAndTimeStructure(Nothing ,"1399/01/01","00:00:00"),New R2StandardDateAndTimeStructure(Nothing ,"1400/12/01","23:59:59"),False )
             'Dim InstanceBlackList = New R2CoreParkingSystemInstanceBlackListManager
             'Dim InstanceTruck = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
             'Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager

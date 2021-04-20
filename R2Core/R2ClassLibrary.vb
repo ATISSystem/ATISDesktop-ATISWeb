@@ -2613,6 +2613,7 @@ Namespace DateAndTimeManagement
                 myDateTimeMilladi = Value
             End Set
         End Property
+
         Public Property DateShamsiFull() As String
             Get
                 Return myDateShamsiFull
@@ -2621,6 +2622,7 @@ Namespace DateAndTimeManagement
                 myDateShamsiFull = Value
             End Set
         End Property
+
         Public Property Time() As String
             Get
                 Return myTime
@@ -3041,6 +3043,7 @@ Namespace DateAndTimeManagement
     End Class
 
     Namespace CalendarManagement
+
         Namespace PersianCalendar
             Public Enum PersianCalendarType
                 None = 0
@@ -3048,6 +3051,8 @@ Namespace DateAndTimeManagement
             End Enum
 
             Public Class R2CoreInstanceDateAndTimePersianCalendarManager
+                Private _DateTime = New R2DateTime
+
                 Public Function GetHoliDayNumber(ByVal YourShamsiDate1 As String, ByVal YourShamsiDate2 As String) As UInteger
                     Try
                         Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
@@ -3056,6 +3061,26 @@ Namespace DateAndTimeManagement
                         Return Ds.Tables(0).Rows(0).Item("Counting")
                     Catch ex As Exception
                         Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                    End Try
+                End Function
+
+                Public Function GetFirstDateShamsiInRangeWithoutHoliday(YourTopBaseDateShamsi As String, YourTotalDay As Int64) As String
+                    Try
+                        If Not _DateTime.ChekDateShamsiFullSyntax(YourTopBaseDateShamsi) Then Throw New ShamsiDateSyntaxNotValidException
+                        Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
+                        Dim Ds As DataSet = Nothing
+                        Dim Count = R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                                "Select Top " & YourTotalDay & " DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
+                                 Where PCType=0 and DateShamsi<='" & YourTopBaseDateShamsi & "'
+                                 Order By DateShamsi Desc", 3600, Ds).GetRecordsCount()
+                        If Count <> YourTotalDay Then Throw New FirstDateShamsiInRangeWithoutHolidayException
+                        Return Ds.Tables(0).Rows(Count - 1).Item("DateShamsi")
+                    Catch ex As ShamsiDateSyntaxNotValidException
+                        Throw ex
+                    Catch ex As FirstDateShamsiInRangeWithoutHolidayException
+                        Throw ex
+                    Catch ex As Exception
+                        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
                     End Try
                 End Function
 
@@ -3109,6 +3134,16 @@ Namespace DateAndTimeManagement
         Public Overrides ReadOnly Property Message As String
             Get
                 Return "فرمت ساعت نادرست است"
+            End Get
+        End Property
+    End Class
+
+    Public Class FirstDateShamsiInRangeWithoutHolidayException
+        Inherits ApplicationException
+
+        Public Overrides ReadOnly Property Message As String
+            Get
+                Return "یافتن اولین تاریخ در محدوده درخواستی برای روزهای بدون تعطیل با خطای اساسی مواجه شد"
             End Get
         End Property
     End Class
@@ -3507,19 +3542,19 @@ Namespace ExceptionManagement
     Public Class DataEntryException
         Inherits ApplicationException
 
-        Private _Message=String.Empty 
+        Private _Message = String.Empty
 
-        Public sub New
-            _Message="اطلاعات وارد شده صحیح نیست"
-        End sub
+        Public Sub New()
+            _Message = "اطلاعات وارد شده صحیح نیست"
+        End Sub
 
-        Public sub New(YourMessage As String )
-            _Message=YourMessage
-        End sub
+        Public Sub New(YourMessage As String)
+            _Message = YourMessage
+        End Sub
 
         Public Overrides ReadOnly Property Message As String
             Get
-                Return _Message 
+                Return _Message
             End Get
         End Property
     End Class

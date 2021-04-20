@@ -1,7 +1,8 @@
 ﻿
 Imports System.Timers
-
+Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.ConfigurationManagement
+Imports PayanehClassLibrary.Logging
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
@@ -16,6 +17,7 @@ Public Class PayanehAmirKabirAutomatedJobs
 
     Private WithEvents _AutomatedJobsTimer As System.Timers.Timer = New System.Timers.Timer
     Private _DateTime As R2DateTime
+    Private _lastTurnsCancellationDateTime As R2StandardDateAndTimeStructure = New R2StandardDateAndTimeStructure
 
     Protected Overrides Sub OnStart(ByVal args() As String)
         ' Add code here to start your service. This method should set things
@@ -86,8 +88,15 @@ Public Class PayanehAmirKabirAutomatedJobs
                 R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.LoadAllocationsLoadPermissionRegisteringFailed, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
             End Try
 
+            Try
+                _lastTurnsCancellationDateTime = PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellationBaseOnDuration(_lastTurnsCancellationDateTime)
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TurnsCancellation:" + ex.Message.ToString, EventLogEntryType.Error)
+                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, PayanehClassLibraryLogType.TurnsCancellationBaseOnDuration, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
+            End Try
 
-            EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "_AutomatedJobsTimer_Elapsed:Run Succefull", EventLogEntryType.SuccessAudit)
+            'هر 5 دقیقه یک لاگ برای کنترل صحت عملکرد سرویس
+            If DateTime.Now.TimeOfDay.Minutes Mod 5 = 0 Then EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "_AutomatedJobsTimer_Elapsed:Run Succefull", EventLogEntryType.SuccessAudit)
         Catch ex As Exception
             EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "_AutomatedJobsTimer_Elapsed:" + ex.Message.ToString, EventLogEntryType.Error)
         End Try
