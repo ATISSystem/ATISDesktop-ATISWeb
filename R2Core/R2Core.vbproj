@@ -213,10 +213,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>R2Core_R2PrimaryWS_R2PrimaryWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://192.168.1.2:2013/R2PrimaryFileSharingWebService.asmx">
+    <WebReferenceUrl Include="http://192.168.85.16:2013/R2PrimaryFileSharingWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\R2PrimaryFileSharingWS\</RelPath>
-      <UpdateFromURL>http://192.168.1.2:2013/R2PrimaryFileSharingWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://192.168.85.16:2013/R2PrimaryFileSharingWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
