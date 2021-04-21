@@ -2340,6 +2340,29 @@ Namespace ConfigurationManagement
             End Try
         End Function
 
+        Public Function GetConfigBoolean(YourCId As Int64, YourIndex As Int64) As Boolean
+            Try
+                Return GetConfig(YourCId, YourIndex)
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetConfigString(YourCId As Int64, YourIndex As Int64) As String
+            Try
+                Return GetConfig(YourCId, YourIndex).trim
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetConfigString(YourCId As Int64) As String
+            Try
+                Return GetConfig(YourCId).trim
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
     End Class
 

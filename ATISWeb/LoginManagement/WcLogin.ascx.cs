@@ -45,7 +45,7 @@ namespace ATISWeb.LoginManagement
         #endregion
 
         #region "Event Handlers"
-          
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -77,7 +77,12 @@ namespace ATISWeb.LoginManagement
                 Session.Timeout = 60;
                 WcUserAuthenticationSuccessEvent?.Invoke(this, e);
             }
-            catch (Exception ex) when (ex is CaptchaWordNotCorrectException || ex is UserIsNotActiveException || ex is UserNotExistException || ex is GetNSSException)
+            catch (CaptchaWordNotCorrectException ex)
+            {
+                FillCaptcha();
+                Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true);
+            }
+            catch (Exception ex) when (ex is UserIsNotActiveException || ex is UserNotExistException || ex is GetNSSException)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }

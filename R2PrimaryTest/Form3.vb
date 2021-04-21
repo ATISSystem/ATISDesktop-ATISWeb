@@ -249,7 +249,8 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            MessageBox.Show(DateTime.Now.TimeOfDay.Minutes Mod 10) 
+            PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellationBaseOnDuration()
+            'MessageBox.Show(DateTime.Now.TimeOfDay.Minutes Mod 10) 
             'Dim Instance = New R2CoreInstanceDateAndTimePersianCalendarManager
             'MessageBox.Show(Instance.GetFirstDateShamsiInRangeWithoutHoliday(TextBoxConcat1.Text ,6)) 
             'PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderContractorCompanyFinancialReport (New R2StandardDateAndTimeStructure(Nothing ,"1399/01/01","00:00:00"),New R2StandardDateAndTimeStructure(Nothing ,"1400/12/01","23:59:59"),False )

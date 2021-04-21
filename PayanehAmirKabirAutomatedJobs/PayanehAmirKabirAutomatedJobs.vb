@@ -17,7 +17,7 @@ Public Class PayanehAmirKabirAutomatedJobs
 
     Private WithEvents _AutomatedJobsTimer As System.Timers.Timer = New System.Timers.Timer
     Private _DateTime As R2DateTime
-    Private _lastTurnsCancellationDateTime As R2StandardDateAndTimeStructure = New R2StandardDateAndTimeStructure
+   
 
     Protected Overrides Sub OnStart(ByVal args() As String)
         ' Add code here to start your service. This method should set things
@@ -82,14 +82,14 @@ Public Class PayanehAmirKabirAutomatedJobs
                 Dim Instance = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
                 Instance.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
                 Instance = Nothing
-                'R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
                 R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.LoadAllocationsLoadPermissionRegisteringFailed, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
             End Try
 
+            'ابطال گروهی نوبت ها
             Try
-                _lastTurnsCancellationDateTime = PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellationBaseOnDuration(_lastTurnsCancellationDateTime)
+                PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellationBaseOnDuration()
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TurnsCancellation:" + ex.Message.ToString, EventLogEntryType.Error)
                 R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, PayanehClassLibraryLogType.TurnsCancellationBaseOnDuration, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))

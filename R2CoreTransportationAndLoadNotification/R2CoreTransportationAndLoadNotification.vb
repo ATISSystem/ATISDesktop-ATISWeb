@@ -1109,7 +1109,7 @@ Namespace Turns
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
-                Dim InstanceTurns =New R2CoreTransportationAndLoadNotificationInstanceTurnsManager 
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
                 Dim NSSTurn = InstanceTurns.GetNSSTurn(YourTurnId)
                 'کنترل وضعیت نوبت
                 If Not (NSSTurn.TurnStatus = TurnStatuses.UsedLoadPermissionRegistered) Then Throw New TurnHandlingNotAllowedBecuaseTurnStatusException
@@ -1973,6 +1973,47 @@ Namespace Turns
             Public Property Active As Boolean
             Public Property ViewFlag As Boolean
             Public Property Deleted As Boolean
+
+        End Class
+
+        Public Class R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager
+
+            Public Function GetSequentialTurns() As List(Of R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure)
+                Try
+                    Dim Ds As DataSet
+                    R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                        "Select Distinct SeqT.SeqTId,SeqT.SeqTTitle,SeqT.SeqTColor,SeqT.SeqTKeyWord,SeqT.Active,SeqT.ViewFlag,SeqT.Deleted 
+                         from R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SeqT
+                         Where SeqT.Deleted=0 and SeqT.Active=1", 3600, Ds)
+                    Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure)
+                    For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                        Lst.Add(New R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure(Ds.Tables(0).Rows(Loopx).Item("SeqTId"), Ds.Tables(0).Rows(Loopx).Item("SeqTTitle").trim, Ds.Tables(0).Rows(Loopx).Item("SeqTColor").trim, Ds.Tables(0).Rows(Loopx).Item("SeqTKeyWord"), Ds.Tables(0).Rows(Loopx).Item("ViewFlag"), Ds.Tables(0).Rows(Loopx).Item("Active"), Ds.Tables(0).Rows(Loopx).Item("Deleted")))
+                    Next
+                    Return Lst
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function GetSequentialTurns(YourNSSComputer As R2CoreStandardComputerStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure)
+                Try
+                    Dim DS As DataSet
+                    R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                        "Select Distinct SeqT.SeqTId,SeqT.SeqTTitle,SeqT.SeqTColor,SeqT.SeqTKeyWord,SeqT.Active,SeqT.ViewFlag,SeqT.Deleted from R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SeqT
+                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationSequentialTurns as AHRSeqT On SeqT.SeqTId=AHRSeqT.SeqTId
+                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AH On AHRSeqT.AHId=AH.AHId
+                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationComputers as AHRComp On AH.AHId=AHRComp.AHId
+                            Inner Join R2Primary.dbo.TblComputers as Comp On AHRComp.ComId=Comp.MId
+                          Where AHRComp.RelationActive=1 and AH.Deleted=0 and AHRSeqT.RelationActive=1 and SeqT.Deleted=0 and SeqT.ViewFlag=1 and Comp.MId=" & YourNSSComputer.MId & "", 3600, DS)
+                    Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure)
+                    For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                        Lst.Add(New R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure(DS.Tables(0).Rows(Loopx).Item("SeqTId"), DS.Tables(0).Rows(Loopx).Item("SeqTTitle").trim, DS.Tables(0).Rows(Loopx).Item("SeqTColor").trim, DS.Tables(0).Rows(Loopx).Item("SeqTKeyWord"), DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
+                    Next
+                    Return Lst
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
 
         End Class
 
