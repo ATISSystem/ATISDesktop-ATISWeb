@@ -49,7 +49,8 @@ Partial Class Form3
         Me.Button19 = New System.Windows.Forms.Button()
         Me.Button20 = New System.Windows.Forms.Button()
         Me.Button21 = New System.Windows.Forms.Button()
-        Me.SuspendLayout
+        Me.Button22 = New System.Windows.Forms.Button()
+        Me.SuspendLayout()
         '
         'Button1
         '
@@ -58,7 +59,7 @@ Partial Class Form3
         Me.Button1.Size = New System.Drawing.Size(75, 23)
         Me.Button1.TabIndex = 0
         Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = true
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'Button2
         '
@@ -67,22 +68,22 @@ Partial Class Form3
         Me.Button2.Size = New System.Drawing.Size(75, 23)
         Me.Button2.TabIndex = 1
         Me.Button2.Text = "Button2"
-        Me.Button2.UseVisualStyleBackColor = true
+        Me.Button2.UseVisualStyleBackColor = True
         '
         'Button3
         '
         Me.Button3.BackColor = System.Drawing.Color.Tomato
-        Me.Button3.Font = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button3.Font = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Button3.Location = New System.Drawing.Point(323, 114)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(162, 55)
         Me.Button3.TabIndex = 2
         Me.Button3.Text = "شروع "
-        Me.Button3.UseVisualStyleBackColor = false
+        Me.Button3.UseVisualStyleBackColor = False
         '
         'TextBoxConcat1
         '
-        Me.TextBoxConcat1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.TextBoxConcat1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.TextBoxConcat1.Location = New System.Drawing.Point(279, 86)
         Me.TextBoxConcat1.Name = "TextBoxConcat1"
         Me.TextBoxConcat1.Size = New System.Drawing.Size(122, 22)
@@ -92,7 +93,7 @@ Partial Class Form3
         '
         'TextBoxConcat2
         '
-        Me.TextBoxConcat2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.TextBoxConcat2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.TextBoxConcat2.Location = New System.Drawing.Point(407, 86)
         Me.TextBoxConcat2.Name = "TextBoxConcat2"
         Me.TextBoxConcat2.Size = New System.Drawing.Size(122, 22)
@@ -102,7 +103,7 @@ Partial Class Form3
         '
         'TextBoxTerraficCardTypeSqlString
         '
-        Me.TextBoxTerraficCardTypeSqlString.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.TextBoxTerraficCardTypeSqlString.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.TextBoxTerraficCardTypeSqlString.Location = New System.Drawing.Point(51, 60)
         Me.TextBoxTerraficCardTypeSqlString.Name = "TextBoxTerraficCardTypeSqlString"
         Me.TextBoxTerraficCardTypeSqlString.Size = New System.Drawing.Size(701, 22)
@@ -112,9 +113,9 @@ Partial Class Form3
         '
         'TextBoxReport
         '
-        Me.TextBoxReport.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.TextBoxReport.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.TextBoxReport.Location = New System.Drawing.Point(51, 175)
-        Me.TextBoxReport.Multiline = true
+        Me.TextBoxReport.Multiline = True
         Me.TextBoxReport.Name = "TextBoxReport"
         Me.TextBoxReport.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.TextBoxReport.Size = New System.Drawing.Size(692, 122)
@@ -124,9 +125,9 @@ Partial Class Form3
         '
         'TextBoxResult
         '
-        Me.TextBoxResult.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.TextBoxResult.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.TextBoxResult.Location = New System.Drawing.Point(51, 303)
-        Me.TextBoxResult.Multiline = true
+        Me.TextBoxResult.Multiline = True
         Me.TextBoxResult.Name = "TextBoxResult"
         Me.TextBoxResult.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.TextBoxResult.Size = New System.Drawing.Size(692, 122)
@@ -141,7 +142,7 @@ Partial Class Form3
         Me.Button4.Size = New System.Drawing.Size(75, 23)
         Me.Button4.TabIndex = 8
         Me.Button4.Text = "Button4"
-        Me.Button4.UseVisualStyleBackColor = true
+        Me.Button4.UseVisualStyleBackColor = True
         '
         'Button5
         '
@@ -150,7 +151,7 @@ Partial Class Form3
         Me.Button5.Size = New System.Drawing.Size(75, 23)
         Me.Button5.TabIndex = 9
         Me.Button5.Text = "Button5"
-        Me.Button5.UseVisualStyleBackColor = true
+        Me.Button5.UseVisualStyleBackColor = True
         '
         'Button6
         '
@@ -159,7 +160,7 @@ Partial Class Form3
         Me.Button6.Size = New System.Drawing.Size(75, 23)
         Me.Button6.TabIndex = 10
         Me.Button6.Text = "Button6"
-        Me.Button6.UseVisualStyleBackColor = true
+        Me.Button6.UseVisualStyleBackColor = True
         '
         'Button7
         '
@@ -168,7 +169,7 @@ Partial Class Form3
         Me.Button7.Size = New System.Drawing.Size(75, 23)
         Me.Button7.TabIndex = 11
         Me.Button7.Text = "Button7"
-        Me.Button7.UseVisualStyleBackColor = true
+        Me.Button7.UseVisualStyleBackColor = True
         '
         'Button8
         '
@@ -177,7 +178,7 @@ Partial Class Form3
         Me.Button8.Size = New System.Drawing.Size(75, 23)
         Me.Button8.TabIndex = 12
         Me.Button8.Text = "Button8"
-        Me.Button8.UseVisualStyleBackColor = true
+        Me.Button8.UseVisualStyleBackColor = True
         '
         'Button9
         '
@@ -186,7 +187,7 @@ Partial Class Form3
         Me.Button9.Size = New System.Drawing.Size(344, 31)
         Me.Button9.TabIndex = 13
         Me.Button9.Text = "انتقال شهری - آهن آلات"
-        Me.Button9.UseVisualStyleBackColor = true
+        Me.Button9.UseVisualStyleBackColor = True
         '
         'OleDbConnection1
         '
@@ -199,7 +200,7 @@ Partial Class Form3
         Me.Button10.Size = New System.Drawing.Size(344, 31)
         Me.Button10.TabIndex = 14
         Me.Button10.Text = "SmartCard test"
-        Me.Button10.UseVisualStyleBackColor = true
+        Me.Button10.UseVisualStyleBackColor = True
         '
         'Button11
         '
@@ -208,7 +209,7 @@ Partial Class Form3
         Me.Button11.Size = New System.Drawing.Size(344, 31)
         Me.Button11.TabIndex = 15
         Me.Button11.Text = "SmartCard test"
-        Me.Button11.UseVisualStyleBackColor = true
+        Me.Button11.UseVisualStyleBackColor = True
         '
         'Button12
         '
@@ -217,43 +218,43 @@ Partial Class Form3
         Me.Button12.Size = New System.Drawing.Size(344, 31)
         Me.Button12.TabIndex = 16
         Me.Button12.Text = "SmartCard test"
-        Me.Button12.UseVisualStyleBackColor = true
+        Me.Button12.UseVisualStyleBackColor = True
         '
         'Button13
         '
         Me.Button13.BackColor = System.Drawing.Color.DodgerBlue
-        Me.Button13.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button13.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Button13.ForeColor = System.Drawing.Color.White
         Me.Button13.Location = New System.Drawing.Point(296, 182)
         Me.Button13.Name = "Button13"
         Me.Button13.Size = New System.Drawing.Size(344, 41)
         Me.Button13.TabIndex = 17
         Me.Button13.Text = "تغییر شناسه و رمز عبور رانندگان"
-        Me.Button13.UseVisualStyleBackColor = false
+        Me.Button13.UseVisualStyleBackColor = False
         '
         'Button14
         '
         Me.Button14.BackColor = System.Drawing.Color.DeepPink
-        Me.Button14.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button14.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Button14.ForeColor = System.Drawing.Color.White
         Me.Button14.Location = New System.Drawing.Point(296, 229)
         Me.Button14.Name = "Button14"
         Me.Button14.Size = New System.Drawing.Size(344, 41)
         Me.Button14.TabIndex = 18
         Me.Button14.Text = "اعطای مجوز دسترسی به فرآیندهای موبایلی به همه رانندگان"
-        Me.Button14.UseVisualStyleBackColor = false
+        Me.Button14.UseVisualStyleBackColor = False
         '
         'Button15
         '
         Me.Button15.BackColor = System.Drawing.Color.Green
-        Me.Button15.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button15.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Button15.ForeColor = System.Drawing.Color.White
         Me.Button15.Location = New System.Drawing.Point(296, 276)
         Me.Button15.Name = "Button15"
         Me.Button15.Size = New System.Drawing.Size(344, 41)
         Me.Button15.TabIndex = 19
         Me.Button15.Text = "ایجاد ارتباط کاربران با گروههای فرآیندی موبایلی"
-        Me.Button15.UseVisualStyleBackColor = false
+        Me.Button15.UseVisualStyleBackColor = False
         '
         'Button16
         '
@@ -262,72 +263,82 @@ Partial Class Form3
         Me.Button16.Size = New System.Drawing.Size(75, 23)
         Me.Button16.TabIndex = 20
         Me.Button16.Text = "Button16"
-        Me.Button16.UseVisualStyleBackColor = true
+        Me.Button16.UseVisualStyleBackColor = True
         '
         'Button17
         '
         Me.Button17.BackColor = System.Drawing.Color.Purple
-        Me.Button17.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button17.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Button17.ForeColor = System.Drawing.Color.White
         Me.Button17.Location = New System.Drawing.Point(296, 323)
         Me.Button17.Name = "Button17"
         Me.Button17.Size = New System.Drawing.Size(344, 41)
         Me.Button17.TabIndex = 21
         Me.Button17.Text = "ایجاد مجوزهای فرآیندی وب شرکت های حمل و نقلی"
-        Me.Button17.UseVisualStyleBackColor = false
+        Me.Button17.UseVisualStyleBackColor = False
         '
         'Button18
         '
         Me.Button18.BackColor = System.Drawing.Color.Purple
-        Me.Button18.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button18.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Button18.ForeColor = System.Drawing.Color.White
         Me.Button18.Location = New System.Drawing.Point(296, 370)
         Me.Button18.Name = "Button18"
         Me.Button18.Size = New System.Drawing.Size(344, 41)
         Me.Button18.TabIndex = 22
         Me.Button18.Text = "ایجاد روابط نهادی شرکت های حمل ونقل با گروههای وب"
-        Me.Button18.UseVisualStyleBackColor = false
+        Me.Button18.UseVisualStyleBackColor = False
         '
         'Button19
         '
         Me.Button19.BackColor = System.Drawing.Color.Purple
-        Me.Button19.Font = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button19.Font = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Button19.Location = New System.Drawing.Point(646, 182)
         Me.Button19.Name = "Button19"
         Me.Button19.Size = New System.Drawing.Size(162, 41)
         Me.Button19.TabIndex = 23
         Me.Button19.Text = "تست اس ام اس"
-        Me.Button19.UseVisualStyleBackColor = false
+        Me.Button19.UseVisualStyleBackColor = False
         '
         'Button20
         '
         Me.Button20.BackColor = System.Drawing.Color.MediumSlateBlue
-        Me.Button20.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button20.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Button20.ForeColor = System.Drawing.Color.White
         Me.Button20.Location = New System.Drawing.Point(317, 2)
         Me.Button20.Name = "Button20"
         Me.Button20.Size = New System.Drawing.Size(344, 41)
         Me.Button20.TabIndex = 24
         Me.Button20.Text = "تبدیل کد کاربری به هش"
-        Me.Button20.UseVisualStyleBackColor = false
+        Me.Button20.UseVisualStyleBackColor = False
         '
         'Button21
         '
         Me.Button21.BackColor = System.Drawing.Color.MediumSlateBlue
-        Me.Button21.Font = New System.Drawing.Font("Microsoft Sans Serif", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Button21.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Button21.ForeColor = System.Drawing.Color.White
         Me.Button21.Location = New System.Drawing.Point(317, 50)
         Me.Button21.Name = "Button21"
         Me.Button21.Size = New System.Drawing.Size(344, 32)
         Me.Button21.TabIndex = 25
         Me.Button21.Text = "تبدیل کد بار به هش"
-        Me.Button21.UseVisualStyleBackColor = false
+        Me.Button21.UseVisualStyleBackColor = False
+        '
+        'Button22
+        '
+        Me.Button22.Location = New System.Drawing.Point(51, 102)
+        Me.Button22.Name = "Button22"
+        Me.Button22.Size = New System.Drawing.Size(75, 23)
+        Me.Button22.TabIndex = 26
+        Me.Button22.Text = "Button22"
+        Me.Button22.UseVisualStyleBackColor = True
         '
         'Form3
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 450)
+        Me.Controls.Add(Me.Button22)
         Me.Controls.Add(Me.Button21)
         Me.Controls.Add(Me.Button20)
         Me.Controls.Add(Me.Button19)
@@ -388,4 +399,5 @@ End Sub
     Friend WithEvents Button19 As Button
     Friend WithEvents Button20 As Button
     Friend WithEvents Button21 As Button
+    Friend WithEvents Button22 As Button
 End Class
