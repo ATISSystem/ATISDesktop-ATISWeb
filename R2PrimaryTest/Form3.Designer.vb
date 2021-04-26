@@ -50,6 +50,7 @@ Partial Class Form3
         Me.Button20 = New System.Windows.Forms.Button()
         Me.Button21 = New System.Windows.Forms.Button()
         Me.Button22 = New System.Windows.Forms.Button()
+        Me.Button23 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Button1
@@ -333,11 +334,22 @@ Partial Class Form3
         Me.Button22.Text = "Button22"
         Me.Button22.UseVisualStyleBackColor = True
         '
+        'Button23
+        '
+        Me.Button23.BackColor = System.Drawing.Color.Gray
+        Me.Button23.Location = New System.Drawing.Point(51, 160)
+        Me.Button23.Name = "Button23"
+        Me.Button23.Size = New System.Drawing.Size(75, 23)
+        Me.Button23.TabIndex = 27
+        Me.Button23.Text = "Button23"
+        Me.Button23.UseVisualStyleBackColor = False
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 450)
+        Me.Controls.Add(Me.Button23)
         Me.Controls.Add(Me.Button22)
         Me.Controls.Add(Me.Button21)
         Me.Controls.Add(Me.Button20)
@@ -400,4 +412,5 @@ End Sub
     Friend WithEvents Button20 As Button
     Friend WithEvents Button21 As Button
     Friend WithEvents Button22 As Button
+    Friend WithEvents Button23 As Button
 End Class
