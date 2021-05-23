@@ -12,7 +12,7 @@
 <body>
     <form id="form1" runat="server">
         <asp:ScriptManager ID="scriptManagerReport" runat="server"></asp:ScriptManager>
-        <rsweb:reportviewer runat="server" visible="false" showprintbutton="true" width="99.9%" height="100%" asyncrendering="true" zoommode="Percent" keepsessionalive="true" id="rvSiteMapping" sizetoreportcontent="false"></rsweb:reportviewer>
+        <rsweb:reportviewer runat="server" visible="false" showprintbutton="true" width="99.9%" height="100%" asyncrendering="true" zoommode="Percent" keepsessionalive="true" id="rvSiteMapping" sizetoreportcontent="false" ProcessingMode="Remote"></rsweb:reportviewer>
 
         <div>
         </div>

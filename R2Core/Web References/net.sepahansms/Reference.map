@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Results>
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://sepahansms.net/smsSendWebServiceforphp.asmx?disco" filename="smsSendWebServiceforphp.disco" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://sepahansms.net/smsSendWebServiceforphp.asmx?wsdl" filename="smsSendWebServiceforphp.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://www.sepahansms.com/smssendwebserviceforphp.asmx?wsdl" filename="smssendwebserviceforphp.wsdl" />
   </Results>
 </DiscoveryClientResultsFile>

@@ -1971,7 +1971,6 @@ Namespace DatabaseManagement
                 myStartTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
                 Dim da As New SqlClient.SqlDataAdapter
                 da.SelectCommand = New SqlClient.SqlCommand(mySqlString)
-                'da.SelectCommand.Connection = New SqlClient.SqlConnection("Data Source=.\sql2008r2;Initial Catalog=ParkingSystemSharing;Integrated Security=True")
                 da.SelectCommand.Connection = myR2ClassSqlConnection.GetConnection
                 myDS.Tables.Clear()
                 myRecordsCount = da.Fill(myDS)
@@ -2457,29 +2456,34 @@ Namespace ConfigurationManagement
             End Try
         End Function
 
-        Public Shared Function GetAppConfigValue(ByVal ART As ApplicationRegistryType, ByVal YourKeyName As String, ByVal YourValueName As String) As String
-            If ART = ApplicationRegistryType.Publiq Then
-                Return Registry.GetValue("HKEY_CURRENT_USER\ThisMachineConfigure\Public\" + YourKeyName, YourValueName, "")
-            ElseIf ART = ApplicationRegistryType.Special Then
-                Return Registry.GetValue("HKEY_CURRENT_USER\ThisMachineConfigure\Special\" + YourKeyName, YourValueName, "")
-            End If
-        End Function
-
         Private Shared myMainDatabaseName As String = Nothing
         Private Shared myDefaultConnectionString As String = Nothing
         Private Shared myComputerCode As String
-        Private Shared myClientType As R2CoreClientType = R2CoreClientType.None
 
+
+        Public Shared Sub FillPublicVariables()
+            Try
+                Dim fs As New System.IO.FileStream(System.Environment.CurrentDirectory + "\" + "Timciens.txt", IO.FileMode.Open, IO.FileAccess.Read)
+                Dim sr As New System.IO.StreamReader(fs)
+                sr.BaseStream.Seek(0, IO.SeekOrigin.Begin)
+                myComputerCode = Convert.ToInt64(Mid(sr.ReadLine, 3, 3))
+                myMainDatabaseName = Split(Mid(sr.ReadLine, 31, 100), "#")(0)
+                Dim DSTemp = Split(Mid(sr.ReadLine, 15, 100), "#")(0)
+                Dim PasswordTemp = Split(Mid(sr.ReadLine, 4, 100), "#")(0)
+                myDefaultConnectionString = "Data Source=@DS;Initial Catalog=@;Persist Security Info=True;User ID=sa;Password=@Password".Replace("@DS", DSTemp).Replace("@Password", PasswordTemp)
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Sub
 
         Public Shared Function GetMainDatabaseName() As String
             Try
-                'Return "ParkingSystem"
-                If myMainDatabaseName = Nothing Then
-                    myMainDatabaseName = GetAppConfigValue(ApplicationRegistryType.Publiq, "MainDatabaseName", "R2PrimaryMainDataBaseName")
-                    If myMainDatabaseName Is Nothing Then
-                        Throw New Exception("اشکال در محتوای رجیستری")
-                    End If
-                End If
+                If myMainDatabaseName = Nothing Then FillPublicVariables()
+                '    myMainDatabaseName = GetAppConfigValue(ApplicationRegistryType.Publiq, "MainDatabaseName", "R2PrimaryMainDataBaseName")
+                '    If myMainDatabaseName Is Nothing Then
+                '        Throw New Exception("اشکال در محتوای رجیستری")
+                '    End If
+                'End If
                 Return myMainDatabaseName
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
@@ -2488,13 +2492,12 @@ Namespace ConfigurationManagement
 
         Public Shared Function GetDefaultConnectionString() As String
             Try
-                'Return "Data Source=172.26.29.18;Initial Catalog=@;Persist Security Info=True;User ID=sa;Password=Biinfo878"
-                If myDefaultConnectionString = Nothing Then
-                    myDefaultConnectionString = GetAppConfigValue(ApplicationRegistryType.Publiq, "DefaultConnectionString", "DefaultConnectionString")
-                    If myDefaultConnectionString Is Nothing Then
-                        Throw New Exception("اشکال در محتوای رجیستری")
-                    End If
-                End If
+                If myDefaultConnectionString = Nothing Then FillPublicVariables()
+                '    myDefaultConnectionString = GetAppConfigValue(ApplicationRegistryType.Publiq, "DefaultConnectionString", "DefaultConnectionString")
+                '    If myDefaultConnectionString Is Nothing Then
+                '        Throw New Exception("اشکال در محتوای رجیستری")
+                '    End If
+                'End If
                 Return myDefaultConnectionString
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
@@ -2503,31 +2506,13 @@ Namespace ConfigurationManagement
 
         Public Shared Function GetComputerCode() As String
             Try
-                'Return 21
-                If myComputerCode = Nothing Then
-                    myComputerCode = R2CoreMClassConfigurationManagement.GetAppConfigValue(ApplicationRegistryType.Publiq, "ComputerCode", "ComputerCode")
-                    If myComputerCode Is Nothing Then
-                        Throw New Exception("اشکال در محتوای رجیستری")
-                    End If
-                End If
+                If myComputerCode = Nothing Then FillPublicVariables()
+                '    myComputerCode = R2CoreMClassConfigurationManagement.GetAppConfigValue(ApplicationRegistryType.Publiq, "ComputerCode", "ComputerCode")
+                '    If myComputerCode Is Nothing Then
+                '        Throw New Exception("اشکال در محتوای رجیستری")
+                '    End If
+                'End If
                 Return myComputerCode
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Enum R2CoreClientType
-            None = 0
-            Local = 1
-            Remote = 2
-        End Enum
-        Public Shared Function GetClientType() As R2CoreClientType
-            Try
-                If myClientType = Nothing Then
-                    Dim RegTemp As String = R2CoreMClassConfigurationManagement.GetAppConfigValue(ApplicationRegistryType.Publiq, "ClientType", "ClientType")
-                    myClientType = [Enum].Parse(GetType(R2CoreClientType), RegTemp)
-                End If
-                Return myClientType
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -2578,12 +2563,8 @@ Namespace ConfigurationManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
-    End Class
 
-    Public Enum ApplicationRegistryType
-        Publiq = 0
-        Special = 1
-    End Enum
+    End Class
 
 End Namespace
 

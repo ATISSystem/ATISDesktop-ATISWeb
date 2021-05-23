@@ -1,5 +1,6 @@
 ﻿
 Imports System.Timers
+
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.ConfigurationManagement
 Imports PayanehClassLibrary.Logging
@@ -17,7 +18,7 @@ Public Class PayanehAmirKabirAutomatedJobs
 
     Private WithEvents _AutomatedJobsTimer As System.Timers.Timer = New System.Timers.Timer
     Private _DateTime As R2DateTime
-   
+
 
     Protected Overrides Sub OnStart(ByVal args() As String)
         ' Add code here to start your service. This method should set things
@@ -66,7 +67,6 @@ Public Class PayanehAmirKabirAutomatedJobs
                 R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TransferringTommorowLoads:" + ex.Message.ToString, EventLogEntryType.Error)
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.TransferringTommorowLoads, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
             End Try
 
             'فراخوانی سرویس رسوب بار در سالن اعلام بار
@@ -74,17 +74,17 @@ Public Class PayanehAmirKabirAutomatedJobs
                 R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "SedimentingProcess:" + ex.Message.ToString, EventLogEntryType.Error)
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.LoadCapacitorSedimentingFailed, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
             End Try
 
             'صدور خودکار مجوزهای سالن های اعلام بار
             Try
-                Dim Instance = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
-                Instance.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
-                Instance = Nothing
+                Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                InstanceLoadAllocation.LoadAllocationsLoadPermissionRegistering(InstanceSoftwareUsers.GetNSSSystemUser())
+                InstanceSoftwareUsers = Nothing
+                InstanceLoadAllocation = Nothing
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.LoadAllocationsLoadPermissionRegisteringFailed, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
             End Try
 
             'ابطال گروهی نوبت ها
@@ -92,11 +92,8 @@ Public Class PayanehAmirKabirAutomatedJobs
                 PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellationBaseOnDuration()
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TurnsCancellation:" + ex.Message.ToString, EventLogEntryType.Error)
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, PayanehClassLibraryLogType.TurnsCancellationBaseOnDuration, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
             End Try
 
-            'هر 5 دقیقه یک لاگ برای کنترل صحت عملکرد سرویس
-            If DateTime.Now.TimeOfDay.Minutes Mod 5 = 0 Then EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "_AutomatedJobsTimer_Elapsed:Run Succefull", EventLogEntryType.SuccessAudit)
         Catch ex As Exception
             EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "_AutomatedJobsTimer_Elapsed:" + ex.Message.ToString, EventLogEntryType.Error)
         End Try

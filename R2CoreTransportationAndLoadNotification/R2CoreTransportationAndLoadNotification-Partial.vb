@@ -5331,7 +5331,6 @@ Namespace LoadAllocation
                 'کنترل تکراری نبودن تخصیص بار - تخصیص فعال
                 If ExistRegisteredLoadAllocation(YournEstelamId, YourTurnId) Then Throw New RegisteredLoadAllocationIsRepetitiousException
                 'کنترل حداکثر تعداد مجاز تخصیص برای راننده - مثلا حداکثر می تواند 10 مورد تخصیص فعال داشته باشد
-                'باید دقت کرد تخصیص ناموفق جزو این دسته نیست و سرویس خودکار صدور مجوز گروهی می تواند آن تخصیص را در صدور مجوز هنوز هم شرکت بدهد
                 If GetTotalNumberOfRegisteredLoadAllocations(YourTurnId) = InstanceConfigurationOfAnnouncementHalls.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadAllocationsLoadPermissionRegisteringSetting, NSSLoadCapacitorLoad.AHId, 0) Then Throw New LoadAllocationMaximumAllowedNumberReachedException
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction()

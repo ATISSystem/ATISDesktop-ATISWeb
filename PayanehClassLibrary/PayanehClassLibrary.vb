@@ -986,6 +986,10 @@ Namespace CarTruckNobatManagement
                     End If
                 Next
                 _TurnsCancellationBaseOnDurationProcessExcecutedFlag = True
+            Catch ex As ShamsiDateSyntaxNotValidException
+                Throw ex
+            Catch ex As FirstDateShamsiInRangeWithoutHolidayException
+                Throw ex
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

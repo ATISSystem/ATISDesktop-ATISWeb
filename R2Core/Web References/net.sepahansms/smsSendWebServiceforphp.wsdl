@@ -959,10 +959,10 @@
   </wsdl:binding>
   <wsdl:service name="smsSendWebServiceforPHP">
     <wsdl:port name="smsSendWebServiceforPHPSoap" binding="tns:smsSendWebServiceforPHPSoap">
-      <soap:address location="http://sepahansms.net/smsSendWebServiceforphp.asmx" />
+      <soap:address location="http://www.sepahansms.com/smssendwebserviceforphp.asmx" />
     </wsdl:port>
     <wsdl:port name="smsSendWebServiceforPHPSoap12" binding="tns:smsSendWebServiceforPHPSoap12">
-      <soap12:address location="http://sepahansms.net/smsSendWebServiceforphp.asmx" />
+      <soap12:address location="http://www.sepahansms.com/smssendwebserviceforphp.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

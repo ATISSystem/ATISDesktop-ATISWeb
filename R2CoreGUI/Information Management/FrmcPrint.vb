@@ -72,12 +72,8 @@ Public Class FrmcPrint
             ReportViewer.ProcessingMode = Microsoft.Reporting.WinForms.ProcessingMode.Remote
             ReportViewer.ZoomMode=ZoomMode.PageWidth
             ReportViewer.ServerReport.ReportPath =NSS.ReportServerPath +NSS.RFullName
-            If R2CoreMClassConfigurationManagement.GetClientType() = R2CoreMClassConfigurationManagement.R2CoreClientType.Remote Then
-                ReportViewer.ServerReport.ReportServerUrl = New System.Uri(Split(NSS.ReportServerURL, ";")(1), System.UriKind.Absolute)
-            ElseIf R2CoreMClassConfigurationManagement.GetClientType() = R2CoreMClassConfigurationManagement.R2CoreClientType.Local Then
-                ReportViewer.ServerReport.ReportServerUrl = New System.Uri(Split(NSS.ReportServerURL, ";")(0), System.UriKind.Absolute)
-            End If
-            Dim ReportServerCredentialUserName As String =Split(NSS.ReportServerCredential,";")(0)
+            ReportViewer.ServerReport.ReportServerUrl = New System.Uri(NSS.ReportServerURL, System.UriKind.Absolute)
+            Dim ReportServerCredentialUserName As String = Split(NSS.ReportServerCredential, ";")(0)
             Dim ReportServerCredentialPassword As String =Split(NSS.ReportServerCredential,";")(1)
             ReportViewer.ServerReport.ReportServerCredentials.NetworkCredentials = new System.Net.NetworkCredential(ReportServerCredentialUserName, ReportServerCredentialPassword)
             ReportViewer.RefreshReport()

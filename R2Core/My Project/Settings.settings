@@ -9,7 +9,7 @@
       <Value Profile="(Default)">http://192.168.1.2:2011/R2PrimaryWebService.asmx</Value>
     </Setting>
     <Setting Name="R2Core_net_sepahansms_smsSendWebServiceforPHP" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://sepahansms.net/smsSendWebServiceforphp.asmx</Value>
+      <Value Profile="(Default)">http://www.sepahansms.com/smssendwebserviceforphp.asmx</Value>
     </Setting>
   </Settings>
 </SettingsFile>
