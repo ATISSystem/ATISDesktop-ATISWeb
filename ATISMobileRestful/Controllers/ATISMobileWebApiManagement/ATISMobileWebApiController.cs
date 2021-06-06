@@ -23,9 +23,9 @@ namespace ATISMobileRestful.Controllers.ATISMobileWebApiManagement
                 return response;
             }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
     }
 }

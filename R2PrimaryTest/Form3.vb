@@ -425,23 +425,20 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
+            Dim AES As New R2Core.SecurityAlgorithmsManagement.AESAlgorithms.AESAlgorithmsManager
+            Dim Hasher As New R2Core.SecurityAlgorithmsManagement.Hashing.SHAHasher()
             Dim Ds As DataSet
-            R2Core.DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where MobileNumber<>'' Order By UserId", 0, Ds)
+            R2Core.DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserTypeId=3 Order By UserId", 0, Ds)
             Cmdsql.Connection.Open()
             Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
             For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                 Dim UserId As Int64 = Ds.Tables(0).Rows(loopx).Item("UserId")
-                Dim Randoom As Random = New Random()
-                Randomize()
-                Dim Pass As String = String.Empty
-                Try
-                    Pass = (Randoom.Next(1000, 4543432) + Convert.ToInt64(Mid(Ds.Tables(0).Rows(loopx).Item("MobileNumber").ToString(), 4, 7))).ToString()
-                Catch ex As Exception
-                    Pass = UserId
-                End Try
-
-                Cmdsql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserPassword='" & Pass & "' Where UserId=" & UserId & ""
+                Dim UIdSalt As String = AES.GetSalt(64)
+                Dim APIKey = Hasher.GenerateSHA256String(UserId.ToString + UIdSalt)
+                Cmdsql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UIdSalt='" & UIdSalt & "',APIKey='" & APIKey & "' Where UserId=" & UserId & ""
                 Cmdsql.ExecuteNonQuery()
+
+
             Next
             Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
             MessageBox.Show("Finished Success ...")
@@ -457,19 +454,16 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
-            Dim DsSoftwareusers As DataSet
-            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "select UserId from R2Primary.dbo.TblSoftwareUsers where UserTypeId = 3", 0, DsSoftwareusers)
-            Dim DsMobileProcess As DataSet
-            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "select PId from R2Primary.dbo.TblMobileProcesses where active=1", 0, DsMobileProcess)
-
+            Dim AES As New R2Core.SecurityAlgorithmsManagement.AESAlgorithms.AESAlgorithmsManager
+            Dim Ds As DataSet
+            R2Core.DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserTypeId=3 Order By UserId", 0, Ds)
             Cmdsql.Connection.Open()
             Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
-            For loopx As Int64 = 0 To DsSoftwareusers.Tables(0).Rows.Count - 1
-                For loopY As Int64 = 0 To DsMobileProcess.Tables(0).Rows.Count - 1
-                    Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblPermissions(EntityIdFirst,EntityIdSecond,PermissionTypeId,RelationActive)
-                                      values(" & DsSoftwareusers.Tables(0).Rows(loopx).Item("UserId") & "," & DsMobileProcess.Tables(0).Rows(loopY).Item("PId") & ",1,1)"
-                    Cmdsql.ExecuteNonQuery()
-                Next
+            For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                Dim UserId As Int64 = Ds.Tables(0).Rows(loopx).Item("UserId")
+                Dim UserShenaseh As String = AES.GetRandomNumericCode(1000, 9999)
+                Cmdsql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserShenaseh='" & UserShenaseh & "' Where UserId=" & UserId & ""
+                Cmdsql.ExecuteNonQuery()
             Next
             Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
             MessageBox.Show("Finished Success ...")
@@ -485,19 +479,16 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
-            Dim DsSoftwareusers As DataSet
-            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "select UserId from R2Primary.dbo.TblSoftwareUsers where UserTypeId = 3", 0, DsSoftwareusers)
-            Dim DsMobileProcessGroups As DataSet
-            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "select pgid from R2Primary.dbo.TblMobileProcessGroups where Active=1", 0, DsMobileProcessGroups)
-
+            Dim AES As New R2Core.SecurityAlgorithmsManagement.AESAlgorithms.AESAlgorithmsManager
+            Dim Ds As DataSet
+            R2Core.DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserTypeId=3 Order By UserId", 0, Ds)
             Cmdsql.Connection.Open()
             Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
-            For loopx As Int64 = 0 To DsSoftwareusers.Tables(0).Rows.Count - 1
-                For loopY As Int64 = 0 To DsMobileProcessGroups.Tables(0).Rows.Count - 1
-                    Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERTypeId,E1,E2,RelationActive)
-                                          values(3," & DsSoftwareusers.Tables(0).Rows(loopx).Item("UserId") & "," & DsMobileProcessGroups.Tables(0).Rows(loopY).Item("pgid") & ",1)"
-                    Cmdsql.ExecuteNonQuery()
-                Next
+            For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                Dim UserId As Int64 = Ds.Tables(0).Rows(loopx).Item("UserId")
+                Dim UserPassword As String = AES.GetRandomNumericCode(10000000, 99999999)
+                Cmdsql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserPassword='" & UserPassword & "' Where UserId=" & UserId & ""
+                Cmdsql.ExecuteNonQuery()
             Next
             Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
             MessageBox.Show("Finished Success ...")

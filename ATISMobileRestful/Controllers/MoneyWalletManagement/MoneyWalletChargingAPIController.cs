@@ -11,11 +11,19 @@ using ATISMobileRestful.Exceptions;
 using ATISMobileRestful.Models;
 using R2Core.SoftwareUserManagement;
 using R2Core.SoftwareUserManagement.Exceptions;
+using R2Core.LoggingManagement;
+using R2Core.ConfigurationManagement;
+using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
+using R2Core.SecurityAlgorithmsManagement.Hashing;
+using ATISMobileRestful.Logging;
+using R2Core.DateAndTimeManagement;
 
 namespace ATISMobileRestful.Controllers.MoneyWalletManagement
 {
     public class MoneyWalletChargingAPIController : ApiController
     {
+        R2DateTime _DateTime = new R2DateTime();
+
         [HttpPost]
         public HttpResponseMessage PaymentRequest()
         {
@@ -23,15 +31,21 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient4PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
-                Request.Headers.TryGetValues("Amount", out IEnumerable<string> Amount);
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var Amount = Content.Split(';')[2];
+
                 var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
                 System.Net.ServicePointManager.Expect100Continue = false;
                 ServiceReference.PaymentGatewayImplementationServicePortTypeClient zp = new ServiceReference.PaymentGatewayImplementationServicePortTypeClient();
                 string Authority;
-                int Status = zp.PaymentRequest("aed16bb9-485a-416d-9891-d0b8d2bc98cc", Convert.ToInt32(Amount.FirstOrDefault()), "درخواست پرداخت-زرین پال-آتیس", String.Empty, String.Empty, "http://ATISMobile.ir:38468/MoneyWalletChargingMVC/PaymentVerification/?YourUserId=" + InstanceSoftwareUsers.GetNSSUser(ApiKey.FirstOrDefault()).UserId.ToString()  + "&YourAmount=" + Amount.FirstOrDefault(), out Authority);
+                int Status = zp.PaymentRequest("aed16bb9-485a-416d-9891-d0b8d2bc98cc", Convert.ToInt32(Amount), "درخواست پرداخت-زرین پال-آتیس", String.Empty, String.Empty, "http://ATISMobile.ir:38468/MoneyWalletChargingMVC/PaymentVerification/?YourAPIKey=" + NSSSoftwareuser.ApiKey  + "&YourAmount=" + Amount, out Authority);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 if (Status == 100)
                 { response.Content=new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = Authority, Message2 = "https://www.zarinpal.com/pg/StartPay/", Message3 = string.Empty }),Encoding.UTF8,"application/json"); }
@@ -40,11 +54,11 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 return response;
             }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByApiKeyException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
     }

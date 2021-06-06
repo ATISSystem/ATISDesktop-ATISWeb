@@ -11,23 +11,31 @@ using R2CoreTransportationAndLoadNotification.LoadPermission;
 using ATISMobileRestful.Exceptions;
 using R2Core.LoggingManagement;
 using R2Core.SoftwareUserManagement;
+using R2Core.DateAndTimeManagement;
+using R2Core.ConfigurationManagement;
+using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
+using R2Core.SecurityAlgorithmsManagement.Hashing;
+using ATISMobileRestful.Logging;
 
 namespace ATISMobileRestful.Controllers.ReportManagement
 {
     public class ReportsController : ApiController
     {
-        [HttpGet]
+        R2DateTime _DateTime = new R2DateTime();
+
+        [HttpPost]
         public HttpResponseMessage GetLoadPermissionsIssuedOrderByPriorityReport()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient3PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientLoadPermissionsIssuedOrderByPriorityReportRequest);
 
-                Request.Headers.TryGetValues("AHSGId", out IEnumerable<string> AHSGId);
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var AHSGId = Content.Split(';')[2];
                 var InstanceReport = new R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager();
-                List<KeyValuePair<string, string>> Lst = InstanceReport.ReportingInformationProviderLoadPermissionsIssuedOrderByPriorityReport(Convert.ToInt64(AHSGId.FirstOrDefault()));
+                List<KeyValuePair<string, string>> Lst = InstanceReport.ReportingInformationProviderLoadPermissionsIssuedOrderByPriorityReport(Convert.ToInt64(AHSGId));
                 List<Models.PermissionsIssued> _PermissionsIssued = new List<Models.PermissionsIssued>();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
@@ -41,9 +49,9 @@ namespace ATISMobileRestful.Controllers.ReportManagement
                 return response;
             }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
     }
 }

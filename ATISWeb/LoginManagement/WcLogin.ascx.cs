@@ -71,7 +71,7 @@ namespace ATISWeb.LoginManagement
             try
             {
                 if (Session["_CaptchaWord"].ToString() != TxtCaptcha.Text) { throw new CaptchaWordNotCorrectException(); }
-                R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(new R2CoreStandardSoftwareUserStructure(0, string.Empty, "", TxtUserShenaseh.Text, TxtUserPassword.Text, "", false, false, Int64.MinValue, string.Empty, string.Empty, string.Empty, Int64.MinValue, new DateTime(), null, false, false));
+                R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(new R2CoreStandardSoftwareUserStructure(0, string.Empty, string.Empty, "", TxtUserShenaseh.Text, TxtUserPassword.Text, string.Empty, "", false, false, Int64.MinValue, string.Empty, string.Empty, string.Empty, new DateTime(), string.Empty, new DateTime(), 0, string.Empty, new DateTime(), 0, string.Empty,false, Int64.MinValue, new DateTime(), null, false, false));
                 R2CoreStandardSoftwareUserStructure NSS = R2CoreMClassSoftwareUsersManagement.GetNSSUser(TxtUserShenaseh.Text, TxtUserPassword.Text);
                 Session.Add("CurrentUser", NSS);
                 Session.Timeout = 60;

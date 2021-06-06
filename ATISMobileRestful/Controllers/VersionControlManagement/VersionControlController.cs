@@ -11,11 +11,17 @@ using Newtonsoft.Json;
 
 using ATISMobileRestful.Models;
 using ATISMobileRestful.Exceptions;
+using R2Core.LoggingManagement;
+using R2Core.SoftwareUserManagement;
+using ATISMobileRestful.Logging;
+using R2Core.DateAndTimeManagement;
 
 namespace ATISMobileRestful.Controllers.VersionControlManagement
 {
     public class VersionControlController : ApiController
     {
+        R2DateTime _DateTime = new R2DateTime();
+
         [HttpGet]
         public HttpResponseMessage HaveNewerVersion()
         {
@@ -23,9 +29,11 @@ namespace ATISMobileRestful.Controllers.VersionControlManagement
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient2PartHashed(Request);
+                //باید در فایروال از اتک جلوگیری شود
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientVersionControlRequest , InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientVersionControlRequest ).LogTitle, WebAPi.GetClientIpAddress(Request), String.Empty, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
 
-                Request.Headers.TryGetValues("AuthCode", out IEnumerable<string> AuthCode);
                 //کنترل اطلاعات ورژن ارسالی و ورژن موجود روی سایت
                 string WebApiVersionNumber = File.ReadAllText(HttpContext.Current.Server.MapPath("~/App_Data/NewerVersionInfo.txt"), Encoding.UTF8).Split(';')[0].Split(':')[1].Trim();
                 string WebApiVersionName = File.ReadAllText(HttpContext.Current.Server.MapPath("~/App_Data/NewerVersionInfo.txt"), Encoding.UTF8).Split(';')[1].Split(':')[1].Trim();
@@ -38,34 +46,8 @@ namespace ATISMobileRestful.Controllers.VersionControlManagement
                 { response.Content = new StringContent(JsonConvert.SerializeObject(Boolean.FalseString), Encoding.UTF8, "application/json"); }
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
-
-        [HttpGet]
-        public HttpResponseMessage GetAppLastVersionNumber()
-        {
-            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
-            try
-            {
-                //تایید اعتبار کلاینت
-                 WebAPi.AuthenticateClient2PartHashed(Request);
-
-                string WebApiVersionNumber = File.ReadAllText(HttpContext.Current.Server.MapPath("~/App_Data/NewerVersionInfo.txt"), Encoding.UTF8).Split(';')[0].Split(':')[1];
-                string WebApiVersionName = File.ReadAllText(HttpContext.Current.Server.MapPath("~/App_Data/NewerVersionInfo.txt"), Encoding.UTF8).Split(';')[1].Split(':')[1];
-                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-                response.Content = new StringContent(JsonConvert.SerializeObject(WebApiVersionNumber), Encoding.UTF8, "application/json");
-                return response;
-            }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
-            catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
-        }
-
-
-
     }
 }

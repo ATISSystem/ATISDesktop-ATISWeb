@@ -14,24 +14,24 @@ using R2CoreTransportationAndLoadNotification.Logging;
 using R2Core.SoftwareUserManagement;
 using ATISMobileRestful.Exceptions;
 using R2Core.SoftwareUserManagement.Exceptions;
+using ATISMobileRestful.Logging;
 
 namespace ATISMobileRestful.Controllers.TurnManagement
 {
     public class TurnsController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage GetTurns()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient3PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientTurnsRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
-                var InstanseSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanceTurns = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
-                var Lst = InstanceTurns.GetTurns(InstanseSoftwareUsers.GetNSSUser(ApiKey.FirstOrDefault()));
+                var Lst = InstanceTurns.GetTurns(NSSSoftwareuser);
                 List<Models.Turns> _Turns = new List<Models.Turns>();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
@@ -52,11 +52,11 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                 return response;
             }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (UserNotExistByApiKeyException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
     }

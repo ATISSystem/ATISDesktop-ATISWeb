@@ -28,6 +28,9 @@ Imports R2Core.SoftwareUserManagement
 Imports R2Core.SoftwareUserManagement.Exceptions
 Imports R2Core.SMSSendAndRecieved
 Imports R2Core.SecurityAlgorithmsManagement.Hashing
+Imports R2Core.LoggingManagement.ExceptionManagemen
+Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
+Imports R2Core.SecurityAlgorithmsManagement.Captcha
 
 Public Class R2Enums
 
@@ -1192,9 +1195,11 @@ Namespace SoftwareUserManagement
             MyBase.New()
             UserId = Int64.MinValue
             ApiKey = String.Empty
+            APIKeyExpiration = String.Empty
             UserName = String.Empty
             UserShenaseh = String.Empty
             UserPassword = String.Empty
+            UserPasswordExpiration = String.Empty
             UserPinCode = String.Empty
             UserCanCharge = Boolean.FalseString
             UserActive = Boolean.FalseString
@@ -1202,20 +1207,38 @@ Namespace SoftwareUserManagement
             MobileNumber = String.Empty
             UserStatus = String.Empty
             VerificationCode = String.Empty
+            VerificationCodeTimeStamp = String.Empty
+            Nonce = String.Empty
+            NonceTimeStamp = DateTime.Now
+            NonceCount = Int64.MinValue
+            PersonalNonce = String.Empty
+            PersonalNonceTimeStamp = DateTime.Now
+            PersonalNonceCount = Int64.MinValue
+            Captcha = String.Empty
+            CaptchaValid = Boolean.FalseString
             UserCreatorId = Int64.MinValue
-            DateTimeMilladi = Now
+            DateTimeMilladi = DateTime.Now
             DateShamsi = String.Empty
             ViewFlag = Boolean.FalseString
             Deleted = Boolean.FalseString
         End Sub
 
-        Public Sub New(ByVal YourUserId As Int64, YourApiKey As String, ByVal YourUserName As String, ByVal YourUserShenaseh As String, ByVal YourUserPassword As String, YourUserPinCode As String, ByVal YourUserCanCharge As Boolean, ByVal YourUserActive As Boolean, YourUserTypeId As Int64, YourMobileNumber As String, YourUserStatus As String, YourVerificationCode As String, YourUserCreatorId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourDeleted As Boolean)
+        Public Sub New(ByVal YourUserId As Int64, YourApiKey As String, YourAPIKeyExpiration As String,
+                       ByVal YourUserName As String, ByVal YourUserShenaseh As String, ByVal YourUserPassword As String,
+                       YourUserPasswordExpiration As String, YourUserPinCode As String, ByVal YourUserCanCharge As Boolean,
+                       ByVal YourUserActive As Boolean, YourUserTypeId As Int64, YourMobileNumber As String, YourUserStatus As String,
+                       YourVerificationCode As String, YourVerificationCodeTimeStamp As DateTime, YourNonce As String,
+                        YourNonceTimeStamp As DateTime, YourNonceCount As Int64, YourPersonalNonce As String, YourPersonalNonceTimeStamp As DateTime,
+                       YourPersonalNonceCount As Int64, YourCaptcha As String, YourCaptchaValid As Boolean, YourUserCreatorId As Int64,
+                       YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourViewFlag As Boolean, YourDeleted As Boolean)
             MyBase.New(YourUserId, YourUserName)
             UserId = YourUserId
             ApiKey = YourApiKey
+            APIKeyExpiration = YourAPIKeyExpiration
             UserName = YourUserName
             UserShenaseh = YourUserShenaseh
             UserPassword = YourUserPassword
+            UserPasswordExpiration = YourUserPasswordExpiration
             UserPinCode = YourUserPinCode
             UserCanCharge = YourUserCanCharge
             UserActive = YourUserActive
@@ -1223,6 +1246,15 @@ Namespace SoftwareUserManagement
             MobileNumber = YourMobileNumber
             UserStatus = YourUserStatus
             VerificationCode = YourVerificationCode
+            VerificationCodeTimeStamp = YourVerificationCodeTimeStamp
+            Nonce = YourNonce
+            NonceTimeStamp = YourNonceTimeStamp
+            NonceCount = YourNonceCount
+            PersonalNonce = YourPersonalNonce
+            PersonalNonceTimeStamp = YourPersonalNonceTimeStamp
+            PersonalNonceCount = YourPersonalNonceCount
+            Captcha = YourCaptcha
+            CaptchaValid = YourCaptchaValid
             UserCreatorId = YourUserCreatorId
             DateTimeMilladi = YourDateTimeMilladi
             DateShamsi = YourDateShamsi
@@ -1230,11 +1262,13 @@ Namespace SoftwareUserManagement
             Deleted = YourDeleted
         End Sub
 
-        Public Property UserId() As Int64
-        Public Property ApiKey() As String
-        Public Property UserName() As String
-        Public Property UserShenaseh() As String
-        Public Property UserPassword() As String
+        Public Property UserId As Int64
+        Public Property ApiKey As String
+        Public Property APIKeyExpiration As String
+        Public Property UserName As String
+        Public Property UserShenaseh As String
+        Public Property UserPassword As String
+        Public Property UserPasswordExpiration As String
         Public Property UserPinCode() As String
         Public Property UserCanCharge() As Boolean
         Public Property UserActive() As Boolean
@@ -1242,6 +1276,15 @@ Namespace SoftwareUserManagement
         Public Property MobileNumber As String
         Public Property UserStatus As String
         Public Property VerificationCode As String
+        Public Property VerificationCodeTimeStamp As DateTime
+        Public Property Nonce As String
+        Public Property NonceTimeStamp As DateTime
+        Public Property NonceCount As Int64
+        Public Property PersonalNonce As String
+        Public Property PersonalNonceTimeStamp As DateTime
+        Public Property PersonalNonceCount As Int64
+        Public Property Captcha As String
+        Public Property CaptchaValid As Boolean
         Public Property UserCreatorId As Int64
         Public Property DateTimeMilladi As DateTime
         Public Property DateShamsi As String
@@ -1249,7 +1292,24 @@ Namespace SoftwareUserManagement
         Public Property Deleted As Boolean
     End Class
 
+    Public Class R2CoreSoftwareUserMobile
+        Public Sub New(YourMobileNumber)
+            SoftwareUserMobileNumber = YourMobileNumber
+        End Sub
+
+        Private _SoftwareUserMobileNumber = String.Empty
+        Public Property SoftwareUserMobileNumber As String
+            Get
+                Return _SoftwareUserMobileNumber
+            End Get
+            Set(value As String)
+                _SoftwareUserMobileNumber = value
+            End Set
+        End Property
+    End Class
+
     Public Class R2CoreInstanseSoftwareUsersManager
+        Private _DateTime As New R2DateTime
 
         Public Function GetNSSUser(YourApiKey As String) As R2CoreStandardSoftwareUserStructure
             Try
@@ -1258,7 +1318,7 @@ Namespace SoftwareUserManagement
                 If Instanse.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where ApiKey='" & YourApiKey & "'", 0, Ds).GetRecordsCount() = 0 Then
                     Throw New UserNotExistByApiKeyException
                 End If
-                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber"), Ds.Tables(0).Rows(0).Item("UserStatus"), Ds.Tables(0).Rows(0).Item("VerificationCode"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration"), Ds.Tables(0).Rows(0).Item("UserName").trim, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("Nonce"), Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce"), Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("PersonalNonceCount"), Ds.Tables(0).Rows(0).Item("Captcha"), Ds.Tables(0).Rows(0).Item("CaptchaValid"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
             Catch exx As UserNotExistByApiKeyException
                 Throw exx
             Catch ex As Exception
@@ -1266,10 +1326,46 @@ Namespace SoftwareUserManagement
             End Try
         End Function
 
-        Private Function GetRandomVerificationCode() As Int64
+        Public Function GetNSSUser(YourSoftWareUserMobile As R2CoreSoftwareUserMobile) As R2CoreStandardSoftwareUserStructure
             Try
-                Dim RandGen As New Random
-                Return RandGen.Next(10000, 100000)
+                Dim Instanse = New R2CoreInstanseSqlDataBOXManager
+                Dim Ds As DataSet
+                If Instanse.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where MobileNumber='" & YourSoftWareUserMobile.SoftwareUserMobileNumber & "'", 0, Ds).GetRecordsCount() = 0 Then
+                    Throw New UserNotExistByMobileNumberException
+                End If
+                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration"), Ds.Tables(0).Rows(0).Item("UserName").trim, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("Nonce"), Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce"), Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("PersonalNonceCount"), Ds.Tables(0).Rows(0).Item("Captcha"), Ds.Tables(0).Rows(0).Item("CaptchaValid"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
+            Catch exx As UserNotExistByMobileNumberException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSUser(YourUserId As Int64) As R2CoreStandardSoftwareUserStructure
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim Ds As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserId=" & YourUserId & "", 0, Ds).GetRecordsCount() = 0 Then
+                    Throw New UserIdNotExistException
+                End If
+                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration"), Ds.Tables(0).Rows(0).Item("UserName").trim, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("Nonce"), Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce"), Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("PersonalNonceCount"), Ds.Tables(0).Rows(0).Item("Captcha"), Ds.Tables(0).Rows(0).Item("CaptchaValid"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
+            Catch ex As UserIdNotExistException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSSystemUser() As R2CoreStandardSoftwareUserStructure
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim Ds As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select UserId from R2Primary.dbo.TblSoftwareUsers Where UserId=1", 3600, Ds).GetRecordsCount() = 0 Then
+                    Throw New UserIdNotExistException
+                End If
+                Return GetNSSUser(System.Convert.ToInt64(Ds.Tables(0).Rows(0).Item("UserId")))
+            Catch ex As UserIdNotExistException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -1279,16 +1375,17 @@ Namespace SoftwareUserManagement
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
-                Dim VerificationCode As String = GetRandomVerificationCode()
-                Dim Instanse = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceAESAlgorithms As New AESAlgorithmsManager
+                Dim VerificationCode As String = InstanceAESAlgorithms.GetRandomNumericCode(10000000, 99999999)
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim Ds As DataSet
-                If Instanse.GetDataBOX(New R2PrimarySqlConnection,
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
                    "Select Top 1 SoftwareUsers.UserId,SoftwareUsers.MobileNumber from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers 
-                    Where SoftwareUsers.MobileNumber='" & YourMobileNumber & "' and UserActive=1  
+                    Where SoftwareUsers.MobileNumber='" & YourMobileNumber & "' and UserActive=1 
                     Order By SoftwareUsers.UserId Desc", 0, Ds).GetRecordsCount <> 0 Then
                     CmdSql.Connection.Open()
                     CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers 
-                                          Set VerificationCode='" & VerificationCode & "' 
+                                          Set VerificationCode='" & VerificationCode & "',VerificationCodeTimeStamp='" & _DateTime.GetCurrentDateTimeMilladiFormated & "' 
                                           Where UserId=" & Ds.Tables(0).Rows(0).Item("UserId") & ""
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Connection.Close()
@@ -1311,7 +1408,7 @@ Namespace SoftwareUserManagement
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserStatus='logout',VerificationCode='',UserActive=0 Where UserId=" & YourUserId & ""
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserStatus='logout' Where UserId=" & YourUserId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception
@@ -1320,100 +1417,153 @@ Namespace SoftwareUserManagement
             End Try
         End Sub
 
-        Public Function LoginSoftwareUser(YourMobileNumber As String, YourVerificationCode As String) As Int64
+        Public Sub LoginSoftwareUser(YourMobileNumber As String)
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
-                Dim UserId = SoftwareUserMatching(YourMobileNumber, YourVerificationCode)
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserStatus='login',UserActive=1 Where UserId=" & UserId & ""
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserStatus='login' Where MobileNumber='" & YourMobileNumber & "'"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
-                Return UserId
-            Catch ex As SoftwareUserNotMatchException
-                Throw ex
             Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
-        End Function
+        End Sub
 
-        Private Function SoftwareUserMatching(YourMobileNumber As String, YourVerificationCode As String) As Int64
+        Public Sub AuthenticationUserByMobileNumber(YourSoftwareUserMobile As R2CoreSoftwareUserMobile)
             Try
-                Dim Instanse As R2CoreInstanseSqlDataBOXManager = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanseSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet
-                If Instanse.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblSoftwareUsers Where VerificationCode='" & YourVerificationCode & "' and MobileNumber='" & YourMobileNumber & "' Order By UserId Desc", 0, DS).GetRecordsCount() = 0 Then Throw New SoftwareUserNotMatchException
-                Return DS.Tables(0).Rows(0).Item("UserId")
-            Catch ex As SoftwareUserNotMatchException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Function AuthenticationUserByApiKey(YourApiKey As String) As R2CoreStandardSoftwareUserStructure
-            Try
-                Dim Instanse As R2CoreInstanseSqlDataBOXManager = New R2CoreInstanseSqlDataBOXManager
-                Dim DS As DataSet
-                If Instanse.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers where ApiKey='" & YourApiKey & "'", 3600, DS).GetRecordsCount = 0 Then
-                    Throw New UserNotExistByApiKeyException
+                If InstanseSqlDataBOX.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection,
+                         "Select * from R2Primary.dbo.TblSoftwareUsers where MobileNumber='" & YourSoftwareUserMobile.SoftwareUserMobileNumber & "'", 1, DS).GetRecordsCount = 0 Then
+                    Throw New UserNotExistException
                 Else
                     If DS.Tables(0).Rows(0).Item("UserActive") = False Then Throw New UserIsNotActiveException
                 End If
-                Return GetNSSUser(YourApiKey)
-            Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistByApiKeyException OrElse TypeOf (ex) Is GetNSSException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Sub AuthenticationUserByApiKey(YourApiKey As String, YourLast5DigitHashed As String)
-            Try
-                Dim NSSSoftwareUser = AuthenticationUserByApiKey(YourApiKey)
-                Dim myMD5Hasher = New MD5Hasher
-                Dim RealLast5DigitHashed = myMD5Hasher.GenerateMD5String(NSSSoftwareUser.UserPassword.Trim())
-                If YourLast5DigitHashed <> RealLast5DigitHashed Then Throw New UserLast5DigitNotMatchingException
-            Catch ex As UserLast5DigitNotMatchingException
-                Throw ex
-            Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException _
-                                OrElse TypeOf (ex) Is UserNotExistByApiKeyException _
-                                OrElse TypeOf (ex) Is GetNSSException
+            Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
                 Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
 
-        Public Function GetNSSSystemUser() As R2CoreStandardSoftwareUserStructure
+        Public Function GetNonceforSoftwareUser(YourSoftwareUserMobile As R2CoreSoftwareUserMobile) As String
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
-                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
-                Dim Ds As DataSet
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserId=1", 3600, Ds).GetRecordsCount() = 0 Then
-                    Throw New UserIdNotExistException
-                End If
-                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber"), Ds.Tables(0).Rows(0).Item("UserStatus"), Ds.Tables(0).Rows(0).Item("VerificationCode"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
-            Catch ex As UserIdNotExistException
+                AuthenticationUserByMobileNumber(YourSoftwareUserMobile)
+                Dim InstanceAESAlgorithms = New AESAlgorithmsManager
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim Nonce = InstanceAESAlgorithms.GetNonce(InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.PublicSecurityConfiguration, 0))
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set Nonce='" & Nonce & "',NonceCount=" & InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.PublicSecurityConfiguration, 1) & ",NonceTimeStamp='" & _DateTime.GetCurrentDateTimeMilladiFormated & "' Where MobileNumber='" & YourSoftwareUserMobile.SoftwareUserMobileNumber & "'"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+                Return Nonce
+            Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException
                 Throw ex
             Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
 
-        Public Function GetNSSUser(YourUserId As Int64) As R2CoreStandardSoftwareUserStructure
+        Public Sub DecreaseNonceCountforSoftwareUser(YourSoftwareUserMobile As R2CoreSoftwareUserMobile)
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
-                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
-                Dim Ds As DataSet
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserId=" & YourUserId & "", 0, Ds).GetRecordsCount() = 0 Then
-                    Throw New UserIdNotExistException
-                End If
-                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey"), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber"), Ds.Tables(0).Rows(0).Item("UserStatus"), Ds.Tables(0).Rows(0).Item("VerificationCode"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
-            Catch ex As UserIdNotExistException
+                AuthenticationUserByMobileNumber(YourSoftwareUserMobile)
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set NonceCount=NonceCount-1 Where MobileNumber='" & YourSoftwareUserMobile.SoftwareUserMobileNumber & "'"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException
                 Throw ex
             Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Function GetPersonalNonceforSoftwareUser(YourSoftwareUserMobile As R2CoreSoftwareUserMobile) As String
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                AuthenticationUserByMobileNumber(YourSoftwareUserMobile)
+                Dim InstanceAESAlgorithms = New AESAlgorithmsManager
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim PersonalNonce = InstanceAESAlgorithms.GetNonce(InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 3))
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set PersonalNonce='" & PersonalNonce & "',PersonalNonceCount=" & InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 4) & ",PersonalNonceTimeStamp='" & _DateTime.GetCurrentDateTimeMilladiFormated & "' Where MobileNumber='" & YourSoftwareUserMobile.SoftwareUserMobileNumber & "'"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+                Return PersonalNonce
+            Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
 
+        Public Function GetCaptchaforSoftwareUser(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As String
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                AuthenticationUserByMobileNumber(New R2CoreSoftwareUserMobile(YourNSSSoftwareUser.MobileNumber))
+                Dim InstanceCaptcha = New R2CoreInstanceCaptchaManager
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim Captcha = InstanceCaptcha.GenerateFakeWord(InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 6))
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set Captcha='" & Captcha & "',CaptchaValid=1 Where MobileNumber='" & YourNSSSoftwareUser.MobileNumber & "'"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+                Return Captcha
+            Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function CaptchaInvalidateforSoftwareUser(YourSoftwareUserMobile As R2CoreSoftwareUserMobile) As String
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                AuthenticationUserByMobileNumber(YourSoftwareUserMobile)
+                Dim InstanceCaptcha = New R2CoreInstanceCaptchaManager
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim Captcha = InstanceCaptcha.GenerateFakeWord(InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 6))
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set Captcha='',CaptchaValid=0 Where MobileNumber='" & YourSoftwareUserMobile.SoftwareUserMobileNumber & "'"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+                Return Captcha
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Sub AuthenticationUserByUserShenasehUserPasswordCaptcha(YourSoftwareUserMobile As R2CoreSoftwareUserMobile, YourUserShenaseh As String, YourUserPassword As String, YourCaptcha As String)
+            Try
+                Dim InstanseSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim DS As DataSet
+                If InstanseSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                         "Select * from R2Primary.dbo.TblSoftwareUsers 
+                          Where MobileNumber='" & YourSoftwareUserMobile.SoftwareUserMobileNumber & "' and UserShenaseh='" & YourUserShenaseh & "' and UserPassword='" & YourUserPassword & "' and Captcha='" & YourCaptcha & "' and CaptchaValid=1", 0, DS).GetRecordsCount = 0 Then
+                    Throw New UserNotExistException
+                Else
+                    If DS.Tables(0).Rows(0).Item("UserActive") = False Then Throw New UserIsNotActiveException
+                End If
+            Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
 
 
     End Class
@@ -1425,36 +1575,28 @@ Namespace SoftwareUserManagement
 
         Public Shared Property GetNoneUserId As Int64 = 0
 
-        Private Shared Function GetNewUserPassword(YourMobileNumber As String) As String
-            Try
-                Dim Randoom As Random = New Random()
-                Randomize()
-                Dim Pass As String = String.Empty
-                Try
-                    Pass = (Randoom.Next(1000, 4543432) + Convert.ToInt64(Mid(YourMobileNumber, 4, 7))).ToString()
-                Catch ex As Exception
-                    Pass = Randoom.Next(1000, 4543432)
-                End Try
-                Return Pass
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
         Public Shared Function RegisteringSoftwareUser(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure) As Int64
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Dim AES As New R2Core.SecurityAlgorithmsManagement.AESAlgorithms.AESAlgorithmsManager
+            Dim Hasher = New R2Core.SecurityAlgorithmsManagement.Hashing.SHAHasher
             Try
                 If YourNSSSoftwareUser.MobileNumber.Trim = String.Empty Then Throw New SoftwareUserMobileNumberNeedforRegisteringException
+                Dim InstanceConfiguration As New R2CoreInstanceConfigurationManager
+                Dim APIKeyExpiration As String = _DateTime.GetNextShamsiMonth(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime), InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 1)).DateShamsiFull
+                Dim UserPasswordExpiration As String = _DateTime.GetNextShamsiMonth(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime), InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 2)).DateShamsiFull
+                Dim myShenaseh As String = AES.GetRandomNumericCode(1000, 9999)
+                Dim myPassword As String = AES.GetRandomNumericCode(10000000, 99999999)
+                Dim UIdSalt As String = AES.GetSalt(64)
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Select Top 1 UserId from R2Primary.dbo.TblSoftwareUsers with (tablockx) order by UserId desc"
                 CmdSql.ExecuteNonQuery()
                 Dim myUserId As Int64 = CmdSql.ExecuteScalar + 1
-                Dim myPassword As String = GetNewUserPassword(YourNSSSoftwareUser.MobileNumber)
-                Dim Hasher = New R2Core.SecurityAlgorithmsManagement.Hashing.MD5Hasher
-                CmdSql.CommandText = "Insert Into R2Primary.dbo.TblSoftwareUsers(UserId,ApiKey,UserName,UserShenaseh,UserPassword,UserPinCode,UserCanCharge,UserActive,UserTypeId,MobileNumber,UserStatus,VerificationCode,UserCreatorId,DateTimeMilladi,DateShamsi,ViewFlag,Deleted)
-                                      Values(" & myUserId & ",'" & Hasher.GenerateMD5String(myUserId) & "','" & YourNSSSoftwareUser.UserName & "','" & myUserId & "','" & myPassword & "','" & YourNSSSoftwareUser.UserPinCode & "'," & IIf(YourNSSSoftwareUser.UserCanCharge, 1, 0) & "," & IIf(YourNSSSoftwareUser.UserActive, 1, 0) & "," & YourNSSSoftwareUser.UserTypeId & ",'" & YourNSSSoftwareUser.MobileNumber & "','logout',''," & YourNSSUser.UserId & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull & "'," & IIf(YourNSSSoftwareUser.ViewFlag, 1, 0) & ",0)"
+                Dim APIKey = Hasher.GenerateSHA256String(myUserId.ToString + UIdSalt)
+
+                CmdSql.CommandText = "Insert Into R2Primary.dbo.TblSoftwareUsers(UserId,ApiKey,APIKeyExpiration,UserName,UserShenaseh,UserPassword,UserPasswordExpiration,UserPinCode,UserCanCharge,UserActive,UserTypeId,MobileNumber,UserStatus,VerificationCode,VerificationCodeTimeStamp,Nonce,NonceTimeStamp,NonceCount,PersonalNonce,PersonalNonceTimeStamp,PersonalNonceCount,Captcha,CaptchaValid,UserCreatorId,DateTimeMilladi,DateShamsi,ViewFlag,Deleted)
+                                      Values(" & myUserId & ",'" & APIKey & "','" & APIKeyExpiration & "','" & YourNSSSoftwareUser.UserName & "','" & myShenaseh & "','" & myPassword & "','" & UserPasswordExpiration & "','" & YourNSSSoftwareUser.UserPinCode & "'," & IIf(YourNSSSoftwareUser.UserCanCharge, 1, 0) & "," & IIf(YourNSSSoftwareUser.UserActive, 1, 0) & "," & YourNSSSoftwareUser.UserTypeId & ",'" & YourNSSSoftwareUser.MobileNumber & "','logout','','" & _DateTime.GetCurrentDateTimeMilladiFormated & "','','" & _DateTime.GetCurrentDateTimeMilladiFormated & "',0,'','" & _DateTime.GetCurrentDateTimeMilladiFormated & "',0,'',0," & YourNSSUser.UserId & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull & "'," & IIf(YourNSSSoftwareUser.ViewFlag, 1, 0) & ",0)"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Return myUserId
@@ -1486,102 +1628,6 @@ Namespace SoftwareUserManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
-
-        Public Shared Sub DeletingSoftwareUser(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure)
-            Dim CmdSql As New SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
-            Try
-                CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set Deleted=1,UserCreatorId=" & YourNSSUser.UserId & " Where UserId=" & YourNSSSoftwareUser.UserId & ""
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Connection.Close()
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Public Shared Function RegisteringMobileNumber(YourMobileNumber As String) As String
-            Dim CmdSql As New SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
-            Try
-                Dim VerificationCode As String = GetRandomVerificationCode()
-                Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                   "Select Top 1 SoftwareUsers.UserId,SoftwareUsers.MobileNumber from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers 
-                    Where SoftwareUsers.MobileNumber='" & YourMobileNumber & "' 
-                    Order By SoftwareUsers.UserId Desc", 0, Ds).GetRecordsCount <> 0 Then
-                    CmdSql.Connection.Open()
-                    CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers 
-                                          Set VerificationCode='" & VerificationCode & "' 
-                                          Where UserId=" & Ds.Tables(0).Rows(0).Item("UserId") & ""
-                    CmdSql.ExecuteNonQuery()
-                    CmdSql.Connection.Close()
-                    Dim SMSSender As New R2CoreSMSSendRecive
-                    SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, Ds.Tables(0).Rows(0).Item("MobileNumber"), VerificationCode, 1, Nothing, 1, Nothing, Nothing))
-                Else
-                    Throw New MobileNumberNotFoundException
-                End If
-                Return VerificationCode
-            Catch ex As MobileNumberNotFoundException
-                Throw ex
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Shared Sub LogoutSoftwareUser(YourUserId As Int64)
-            Dim CmdSql As New SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
-            Try
-                CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserStatus='logout',VerificationCode='',Active=0 Where UserId=" & YourUserId & ""
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Connection.Close()
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Public Shared Function LoginSoftwareUser(YourMobileNumber As String, YourVerificationCode As String) As Int64
-            Dim CmdSql As New SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
-            Try
-                Dim UserId = SoftwareUserMatching(YourMobileNumber, YourVerificationCode)
-                CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserStatus='login',UserActive=1 Where UserId=" & UserId & ""
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Connection.Close()
-                Return UserId
-            Catch ex As SoftwareUserNotMatchException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Private Shared Function SoftwareUserMatching(YourMobileNumber As String, YourVerificationCode As String) As Int64
-            Try
-                Dim DS As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblSoftwareUsers Where VerificationCode='" & YourVerificationCode & "' and MobileNumber='" & YourMobileNumber & "' Order By UserId Desc", 1, DS).GetRecordsCount() = 0 Then Throw New SoftwareUserNotMatchException
-                Return DS.Tables(0).Rows(0).Item("UserId")
-            Catch ex As SoftwareUserNotMatchException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Private Shared Function GetRandomVerificationCode() As Int64
-            Try
-                Dim RandGen As New Random
-                Return RandGen.Next(10000, 100000)
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
 
         Public Shared Function IsUserRegistered(YourUserNSS As R2CoreStandardSoftwareUserStructure) As Boolean
             Try
@@ -1642,7 +1688,7 @@ Namespace SoftwareUserManagement
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserId=" & YourUserId & "", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New UserIdNotExistException
                 End If
-                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim(), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber"), Ds.Tables(0).Rows(0).Item("UserStatus"), Ds.Tables(0).Rows(0).Item("VerificationCode"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration"), Ds.Tables(0).Rows(0).Item("UserName").trim, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("Nonce"), Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce"), Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("PersonalNonceCount"), Ds.Tables(0).Rows(0).Item("Captcha"), Ds.Tables(0).Rows(0).Item("CaptchaValid"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
             Catch exx As UserIdNotExistException
                 Throw exx
             Catch ex As Exception
@@ -1656,7 +1702,7 @@ Namespace SoftwareUserManagement
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserShenaseh='" & YourUserShenaseh.Trim() & "' and UserPassword='" & YourUserPassword.Trim() & "'", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 End If
-                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim(), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber"), Ds.Tables(0).Rows(0).Item("UserStatus"), Ds.Tables(0).Rows(0).Item("VerificationCode"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration"), Ds.Tables(0).Rows(0).Item("UserName").trim, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("Nonce"), Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce"), Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("PersonalNonceCount"), Ds.Tables(0).Rows(0).Item("Captcha"), Ds.Tables(0).Rows(0).Item("CaptchaValid"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As GetNSSException
                 Throw ex
             Catch ex As Exception
@@ -1670,7 +1716,7 @@ Namespace SoftwareUserManagement
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserPinCode='" & YourPinCode.Trim() & "'", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 End If
-                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim(), Ds.Tables(0).Rows(0).Item("UserName"), Ds.Tables(0).Rows(0).Item("UserShenaseh"), Ds.Tables(0).Rows(0).Item("UserPassword"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber"), Ds.Tables(0).Rows(0).Item("UserStatus"), Ds.Tables(0).Rows(0).Item("VerificationCode"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration"), Ds.Tables(0).Rows(0).Item("UserName").trim, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("Nonce"), Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce"), Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("PersonalNonceCount"), Ds.Tables(0).Rows(0).Item("Captcha"), Ds.Tables(0).Rows(0).Item("CaptchaValid"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As GetNSSException
                 Throw ex
             Catch ex As Exception
@@ -1749,18 +1795,27 @@ Namespace SoftwareUserManagement
             End Property
         End Class
 
+        Public Class UserNotExistByMobileNumberException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کاربری با شماره موبایل مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
         Public Class UserNotExistException
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "کاربری با کلید خصوصی ارسالی یافت نشد"
+                    Return "کاربری با مشخصات ارسالی یافت نشد"
                 End Get
             End Property
         End Class
 
         Public Class UserLast5DigitNotMatchingException
             Inherits ApplicationException
-            'رمز شخصی همان 5 رقم آخر شماره موبایل و یا پسوورد کاربری است
+            'رمز شخصی همان پسوورد کاربری است
             'به دلیل جلوگیری از هکر و امنیت کاربر ، رمز شخصی توسط خود کاربر ارسال می گردد 
             Public Overrides ReadOnly Property Message As String
                 Get
@@ -2268,6 +2323,8 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property SoftwareUserTypesAccessMobileProcesses As Int64 = 72
         Public Shared ReadOnly Property SoftwareUserTypesRelationMobileProcessGroups As Int64 = 73
         Public Shared ReadOnly Property PublicMessagesforSoftWareUsers As Int64 = 74
+        Public Shared ReadOnly Property DefaultConfigurationOfSoftwareUserSecurity As Int64 = 76
+        Public Shared ReadOnly Property PublicSecurityConfiguration As Int64 = 77
 
     End Class
 
@@ -2463,13 +2520,13 @@ Namespace ConfigurationManagement
 
         Public Shared Sub FillPublicVariables()
             Try
-                Dim fs As New System.IO.FileStream(System.Environment.CurrentDirectory + "\" + "Timciens.txt", IO.FileMode.Open, IO.FileAccess.Read)
+                Dim fs As New System.IO.FileStream(My.Application.Info.DirectoryPath + "\" + "Timciens.txt", IO.FileMode.Open, IO.FileAccess.Read)
                 Dim sr As New System.IO.StreamReader(fs)
                 sr.BaseStream.Seek(0, IO.SeekOrigin.Begin)
                 myComputerCode = Convert.ToInt64(Mid(sr.ReadLine, 3, 3))
-                myMainDatabaseName = Split(Mid(sr.ReadLine, 31, 100), "#")(0)
-                Dim DSTemp = Split(Mid(sr.ReadLine, 15, 100), "#")(0)
-                Dim PasswordTemp = Split(Mid(sr.ReadLine, 4, 100), "#")(0)
+                myMainDatabaseName = Split(Mid(sr.ReadLine, 31, 100), "$")(0)
+                Dim DSTemp = Split(Mid(sr.ReadLine, 15, 100), "$")(0)
+                Dim PasswordTemp = Split(Mid(sr.ReadLine, 4, 100), "$")(0)
                 myDefaultConnectionString = "Data Source=@DS;Initial Catalog=@;Persist Security Info=True;User ID=sa;Password=@Password".Replace("@DS", DSTemp).Replace("@Password", PasswordTemp)
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
@@ -2704,6 +2761,15 @@ Namespace DateAndTimeManagement
         Public Function GetMilladiDateTimeFromDateShamsiFull(ByVal YourShamsiDateFull As String, YourTime As String) As Date
             Try
                 Return PC.ToDateTime(Mid(YourShamsiDateFull, 1, 4), Mid(YourShamsiDateFull, 6, 2), Mid(YourShamsiDateFull, 9, 2), Mid(YourTime, 1, 2), Mid(YourTime, 4, 2), Mid(YourTime, 7, 2), 0)
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Function
+        Public Function GetNextShamsiMonth(YourShamsiDate As R2StandardDateAndTimeStructure, YourNextMonth As Int16) As R2StandardDateAndTimeStructure
+            Try
+                Dim MilladiTemp As DateTime = GetMilladiDateTimeFromDateShamsiFull(YourShamsiDate.DateShamsiFull, YourShamsiDate.Time)
+                MilladiTemp = MilladiTemp.AddMonths(YourNextMonth)
+                Return New R2StandardDateAndTimeStructure(Nothing, ConvertToShamsiDateFull(MilladiTemp), Nothing)
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
@@ -3278,6 +3344,19 @@ Namespace LoggingManagement
             End Try
         End Sub
 
+        Public Function GetNSSLogType(YourTypeId As Int64) As R2CoreStandardLogTypeStructure
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim DS As DataSet = Nothing
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblLoggingTypes Where LogId=" & YourTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New LoggingTypeNotFoundException
+                Return New R2CoreStandardLogTypeStructure(DS.Tables(0).Rows(0).Item("LogId"), DS.Tables(0).Rows(0).Item("LogName").trim, DS.Tables(0).Rows(0).Item("LogTitle").trim, Color.FromName(DS.Tables(0).Rows(0).Item("LogColor").trim), DS.Tables(0).Rows(0).Item("Core").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
+            Catch ex As LoggingTypeNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+
+        End Function
     End Class
 
     Public Class R2CoreMClassLoggingManagement
@@ -3321,6 +3400,19 @@ Namespace LoggingManagement
 
 
     End Class
+
+    Namespace ExceptionManagemen
+        Public Class LoggingTypeNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "نوع لاگ با شاخص مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
+
 
 End Namespace
 

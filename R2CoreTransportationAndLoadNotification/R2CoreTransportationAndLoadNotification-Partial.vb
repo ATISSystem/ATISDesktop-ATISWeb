@@ -1935,10 +1935,6 @@ Namespace LoadCapacitor
 
     End Namespace
 
-    Namespace SpecialLoads
-
-    End Namespace
-
     Namespace LoadCapacitorLoadManipulation
         Public Class R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
             Private _DateTime As New R2DateTime
@@ -2005,11 +2001,11 @@ Namespace LoadCapacitor
                     CmdSql.ExecuteNonQuery()
                     CmdSql.CommandText = "Select IDENT_CURRENT('dbtransport.dbo.TbElam') "
                     Dim nEstelamIdNew As Int64 = CmdSql.ExecuteScalar() + 1
-                    Dim Hasher = New R2Core.SecurityAlgorithmsManagement.Hashing.MD5Hasher
+                    Dim Hasher = New R2Core.SecurityAlgorithmsManagement.Hashing.SHAHasher
                     If TommorowLoadRegisteringFlag Then
-                        CmdSql.CommandText = "Insert Into dbtransport.dbo.TbElam(nEstelamKey,StrBarName,nCityCode,nBarCode,bFlag,nCompCode,bFlagbarType,nTruckType,nCarNum,StrAddress,nUserId,dDateElam,dTimeElam,nCarNumKol,StrPriceSug,StrDescription,LoadStatus,nBarSource,AHId,AHSGId) Values('" & Hasher.GenerateMD5String(nEstelamIdNew) & "','" & YourNSS.StrBarName & "'," & YourNSS.nCityCode & "," & YourNSS.nBarCode & ",0," & YourNSS.nCompCode & ",0," & YourNSS.nTruckType & "," & YourNSS.nCarNumKol & ",'" & YourNSS.StrAddress & "'," & YourNSS.nUserId & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "'," & YourNSS.nCarNumKol & "," & Tarrif & ",'" & YourNSS.StrDescription & "'," & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow & ",21310000," & NSSAnnouncementHall.AHId & "," & NSSAnnouncementHallSubGroup.AHSGId & ")"
+                        CmdSql.CommandText = "Insert Into dbtransport.dbo.TbElam(nEstelamKey,StrBarName,nCityCode,nBarCode,bFlag,nCompCode,bFlagbarType,nTruckType,nCarNum,StrAddress,nUserId,dDateElam,dTimeElam,nCarNumKol,StrPriceSug,StrDescription,LoadStatus,nBarSource,AHId,AHSGId) Values('" & Hasher.GenerateSHA256String(nEstelamIdNew) & "','" & YourNSS.StrBarName & "'," & YourNSS.nCityCode & "," & YourNSS.nBarCode & ",0," & YourNSS.nCompCode & ",0," & YourNSS.nTruckType & "," & YourNSS.nCarNumKol & ",'" & YourNSS.StrAddress & "'," & YourNSS.nUserId & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "'," & YourNSS.nCarNumKol & "," & Tarrif & ",'" & YourNSS.StrDescription & "'," & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow & ",21310000," & NSSAnnouncementHall.AHId & "," & NSSAnnouncementHallSubGroup.AHSGId & ")"
                     Else
-                        CmdSql.CommandText = "Insert Into dbtransport.dbo.TbElam(nEstelamKey,StrBarName,nCityCode,nBarCode,bFlag,nCompCode,bFlagbarType,nTruckType,nCarNum,StrAddress,nUserId,dDateElam,dTimeElam,nCarNumKol,StrPriceSug,StrDescription,LoadStatus,nBarSource,AHId,AHSGId) Values('" & Hasher.GenerateMD5String(nEstelamIdNew) & "','" & YourNSS.StrBarName & "'," & YourNSS.nCityCode & "," & YourNSS.nBarCode & ",0," & YourNSS.nCompCode & ",0," & YourNSS.nTruckType & "," & YourNSS.nCarNumKol & ",'" & YourNSS.StrAddress & "'," & YourNSS.nUserId & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "'," & YourNSS.nCarNumKol & "," & Tarrif & ",'" & YourNSS.StrDescription & "'," & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered & ",21310000," & NSSAnnouncementHall.AHId & "," & NSSAnnouncementHallSubGroup.AHSGId & ")"
+                        CmdSql.CommandText = "Insert Into dbtransport.dbo.TbElam(nEstelamKey,StrBarName,nCityCode,nBarCode,bFlag,nCompCode,bFlagbarType,nTruckType,nCarNum,StrAddress,nUserId,dDateElam,dTimeElam,nCarNumKol,StrPriceSug,StrDescription,LoadStatus,nBarSource,AHId,AHSGId) Values('" & Hasher.GenerateSHA256String(nEstelamIdNew) & "','" & YourNSS.StrBarName & "'," & YourNSS.nCityCode & "," & YourNSS.nBarCode & ",0," & YourNSS.nCompCode & ",0," & YourNSS.nTruckType & "," & YourNSS.nCarNumKol & ",'" & YourNSS.StrAddress & "'," & YourNSS.nUserId & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "'," & YourNSS.nCarNumKol & "," & Tarrif & ",'" & YourNSS.StrDescription & "'," & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered & ",21310000," & NSSAnnouncementHall.AHId & "," & NSSAnnouncementHallSubGroup.AHSGId & ")"
                     End If
                     CmdSql.ExecuteNonQuery()
                     'ثبت اکانت
@@ -7586,6 +7582,20 @@ Namespace LoaderTypes
         End Class
 
     End Namespace
+
+
+End Namespace
+
+Namespace BlackIPs
+    Public MustInherit Class R2CoreTransportationAndLoadNotificationBlackIPTypes
+
+    End Class
+
+    Public Class R2CoreInstanceBlackIPsManager
+        Private _DateTime As New R2DateTime
+
+
+    End Class
 
 
 End Namespace

@@ -10,19 +10,20 @@ using Newtonsoft.Json;
 
 using ATISMobileRestful.Exceptions;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls;
+using ATISMobileRestful.Logging;
 
 namespace ATISMobileRestful.Controllers.AnnouncementHallsManagement
 {
     public class AnnouncementHallsController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage GetAnnouncementHallsAnnouncementhAllSubGroupsJOINT()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient3PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientAnnouncementHallSubGroupsRequest);
 
                 var InstanceAnnouncementHalls = new R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager();
                 var Lst = InstanceAnnouncementHalls.GetAnnouncementHallsAnnouncementHallSubGroupsJOINT();
@@ -35,9 +36,9 @@ namespace ATISMobileRestful.Controllers.AnnouncementHallsManagement
                 return response;
             }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
     }

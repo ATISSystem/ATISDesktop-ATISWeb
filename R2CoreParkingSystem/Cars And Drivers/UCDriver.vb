@@ -277,7 +277,8 @@ Public Class UCDriver
             CButtonSendSmsLast5Digit.Enabled=False 
             Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
             Dim SMSSender As New R2CoreSMSSendRecive
-            SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, NSSSoftwareUser.MobileNumber, NSSSoftwareUser.UserPassword, 1, Nothing, 1, Nothing, Nothing))
+            Dim SMSMessage = "شناسه شخصی:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز شخصی:" + NSSSoftwareUser.UserPassword
+            SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, 1, Nothing, Nothing))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "رمز شخصی ارسال شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

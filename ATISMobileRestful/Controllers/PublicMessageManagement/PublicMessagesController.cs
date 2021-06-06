@@ -11,6 +11,9 @@ using ATISMobileRestful.Exceptions;
 using R2Core.ConfigurationManagement;
 using R2Core.DateAndTimeManagement;
 using R2Core.SoftwareUserManagement.Exceptions;
+using R2Core.LoggingManagement;
+using ATISMobileRestful.Logging;
+using R2Core.SoftwareUserManagement;
 
 namespace ATISMobileRestful.Controllers.PublicMessageManagement
 {
@@ -25,7 +28,10 @@ namespace ATISMobileRestful.Controllers.PublicMessageManagement
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient2PartHashed(Request);
+                //باید در فایروال از اتک جلوگیری شود
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientPublicMessageRequest ,InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientPublicMessageRequest).LogTitle, WebAPi.GetClientIpAddress(Request),String.Empty, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
 
                 string[] AllConfig = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.PublicMessagesforSoftWareUsers).Split(';');
                 string Message = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.PublicMessagesforSoftWareUsers, 1);
@@ -37,39 +43,8 @@ namespace ATISMobileRestful.Controllers.PublicMessageManagement
                 { response.Content = new StringContent(JsonConvert.SerializeObject(string.Empty), Encoding.UTF8, "application/json"); }
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
-            catch (UserIdNotExistException ex)
-            { return WebAPi.CreateContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
-        }
-
-        [HttpGet]
-        public HttpResponseMessage GetPublicAnotation()
-        {
-            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
-            try
-            {
-                //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient2PartHashed(Request);
-
-                string[] AllConfig = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.PublicMessagesforSoftWareUsers).Split(';');
-                string Message = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.PublicMessagesforSoftWareUsers, 1);
-                string ExpirationDate = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.PublicMessagesforSoftWareUsers, 0);
-                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-                if (R2CoreMclassDateAndTimeManagement.GetPersianDaysDiffDate(_DateTime.GetCurrentDateShamsiFull(), ExpirationDate) >= 0)
-                { response.Content = new StringContent(JsonConvert.SerializeObject(Message), Encoding.UTF8, "application/json"); }
-                else
-                { response.Content = new StringContent(JsonConvert.SerializeObject(string.Empty), Encoding.UTF8, "application/json"); }
-                return response;
-            }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
-            catch (UserIdNotExistException ex)
-            { return WebAPi.CreateContentMessage(ex); }
-            catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
     }
 }

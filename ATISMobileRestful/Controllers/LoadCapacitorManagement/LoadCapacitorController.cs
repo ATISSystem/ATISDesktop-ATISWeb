@@ -17,32 +17,35 @@ using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using ATISMobileRestful.Models;
 using R2Core.SoftwareUserManagement.Exceptions;
 using ATISMobileRestful.Exceptions;
+using ATISMobileRestful.Logging;
+using R2Core.ConfigurationManagement;
+using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
+using R2Core.SecurityAlgorithmsManagement.Hashing;
+using R2Core.DateAndTimeManagement;
 
 namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
 {
     public class LoadCapacitorController : ApiController
     {
-        [HttpGet]
+        R2DateTime _DateTime = new R2DateTime();
+
+        [HttpPost]
         public HttpResponseMessage GetLoadCapacitorLoads()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient3PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNonceWith4Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientLoadsReviewRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
-                Request.Headers.TryGetValues("AHId", out IEnumerable<string> AHId);
-                Request.Headers.TryGetValues("AHSGId", out IEnumerable<string> AHSGId);
-                Request.Headers.TryGetValues("ProvinceId", out IEnumerable<string> ProvinceId);
-                Request.Headers.TryGetValues("ListType", out IEnumerable<string> ListType);
-
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var AHId = Content.Split(';')[2];
+                var AHSGId = Content.Split(';')[3];
+                var ProvinceId = Content.Split(';')[4];
+                var ListType = Content.Split(';')[5];
                 var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
-                Int64 ListTypeConv =Convert.ToInt64(ListType.FirstOrDefault()) == (long)LoadCapacitorLoadsListType.NotSedimented ? Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.AllOfLoadsWithoutSedimentedLoads) : Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.SedimentedLoads);
-                var Lst = InstanceLoadCapacitorLoad.GetLoadCapacitorLoads(Convert.ToInt64(AHId.FirstOrDefault()), Convert.ToInt64(AHSGId.FirstOrDefault()), ListTypeConv, false, true, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.TargetProvince, Int64.MinValue, Convert.ToInt64(ProvinceId.FirstOrDefault()));
-                var InstanceLogging = new R2CoreInstanceLoggingManager();
-                var InstanseSoftwareUser = new R2CoreInstanseSoftwareUsersManager();
-                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(long.MinValue, R2CoreTransportationAndLoadNotificationLogType.LoadCapacitorAccessStatistics, "آمار بازدید از بار موجود در مخزن بار", AHId.FirstOrDefault(), AHSGId.FirstOrDefault(), String.Empty, String.Empty, String.Empty, InstanseSoftwareUser.GetNSSSystemUser().UserId, DateTime.Now, null));
+                Int64 ListTypeConv = Convert.ToInt64(ListType) == (long)LoadCapacitorLoadsListType.NotSedimented ? Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.AllOfLoadsWithoutSedimentedLoads) : Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.SedimentedLoads);
+                var Lst = InstanceLoadCapacitorLoad.GetLoadCapacitorLoads(Convert.ToInt64(AHId), Convert.ToInt64(AHSGId), ListTypeConv, false, true, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.TargetProvince, Int64.MinValue, Convert.ToInt64(ProvinceId));
                 List<Models.LoadCapacitorLoad> _Loads = new List<Models.LoadCapacitorLoad>();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
@@ -53,17 +56,16 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                     Item.Description = Lst[Loopx].StrDescription.Trim() + " " + Lst[Loopx].StrBarName.Trim() + " " + Lst[Loopx].StrAddress.Trim();
                     _Loads.Add(Item);
                 }
-
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(_Loads), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch(UserIdNotExistException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            catch (UserNotExistByMobileNumberException ex)
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
     }

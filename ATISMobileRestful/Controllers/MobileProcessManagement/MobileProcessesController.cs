@@ -14,32 +14,38 @@ using R2Core.MobileProcessesManagement;
 using R2Core.MobileProcessesManagement.Exceptions;
 using R2Core.SoftwareUserManagement;
 using R2Core.SoftwareUserManagement.Exceptions;
+using R2Core.DateAndTimeManagement;
+using R2Core.LoggingManagement;
+using R2Core.ConfigurationManagement;
+using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
+using ATISMobileRestful.Logging;
 
 namespace ATISMobileRestful.Controllers.MobileProcessManagement
 {
     public class MobileProcessesController : ApiController
     {
-        [HttpGet]
+        R2DateTime _DateTime = new R2DateTime();
+
+        [HttpPost]
         public HttpResponseMessage GetMobileProcesses()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient3PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientMobileProccessesRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 R2CoreInstanceMobileProcessesManager InstanceMobileProcesses = new R2CoreInstanceMobileProcessesManager();
-                R2CoreInstanseSoftwareUsersManager InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
                 List<MobileProcess> _MobileProcesses = new List<MobileProcess>();
-                var Lst = InstanceMobileProcesses.GetMobileProcesses(InstanceSoftwareUsers.GetNSSUser(ApiKey.FirstOrDefault()));
+                var Lst = InstanceMobileProcesses.GetMobileProcesses(NSSSoftwareuser);
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
                     var Item = new MobileProcess();
                     Item.PId = Lst[Loopx].PId;
                     Item.PName = Lst[Loopx].PName;
                     Item.PTitle = Lst[Loopx].PTitle;
-                    Item.TargetMobilePage = Lst[Loopx].TargetMobilePageDelegate ;
+                    Item.TargetMobilePage = Lst[Loopx].TargetMobilePageDelegate;
                     Item.Description = Lst[Loopx].Description;
                     Item.PForeColor = Lst[Loopx].PForeColor;
                     Item.PBackColor = Lst[Loopx].PBackColor;
@@ -50,13 +56,13 @@ namespace ATISMobileRestful.Controllers.MobileProcessManagement
                 return response;
             }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (SoftwareUserHasNotAnyMobileProcessPermissionException ex)
-            { return WebAPi.CreateContentMessage(ex); }
-            catch(UserNotExistByApiKeyException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
+            catch (UserNotExistByMobileNumberException ex)
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
     }
 }

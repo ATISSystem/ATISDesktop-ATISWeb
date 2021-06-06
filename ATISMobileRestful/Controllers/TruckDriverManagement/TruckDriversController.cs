@@ -15,24 +15,24 @@ using R2Core.SoftwareUserManagement;
 using ATISMobileRestful.Exceptions;
 using R2Core.SoftwareUserManagement.Exceptions;
 using R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions;
+using ATISMobileRestful.Logging;
 
 namespace ATISMobileRestful.Controllers.TruckDriverManagement
 {
     public class TruckDriversController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage GetTruckDriver()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient3PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientTruckDriverRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
-                var InstanseSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanseTruckDrivers = new R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager();
-                var TruckDriver = InstanseTruckDrivers.GetNSSTruckDriver(InstanseSoftwareUsers.GetNSSUser(ApiKey.FirstOrDefault()));
+                var TruckDriver = InstanseTruckDrivers.GetNSSTruckDriver(NSSSoftwareuser);
                 var Item = new Models.TruckDriver();
                 Item.NameFamily = TruckDriver.NSSDriver.StrPersonFullName;
                 Item.FatherName = "فرزند: " + TruckDriver.NSSDriver.StrFatherName;
@@ -48,13 +48,13 @@ namespace ATISMobileRestful.Controllers.TruckDriverManagement
                 return response;
             }
             catch (TruckDriverNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
-            catch (UserNotExistByApiKeyException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserNotExistByMobileNumberException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
     }

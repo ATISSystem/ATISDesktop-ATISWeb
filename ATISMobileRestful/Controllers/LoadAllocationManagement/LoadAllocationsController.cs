@@ -25,6 +25,9 @@ using R2Core.SoftwareUserManagement.Exceptions;
 using R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions;
 using ATISMobileRestful.Logging;
 using R2Core.DateAndTimeManagement;
+using R2Core.ConfigurationManagement;
+using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
+using R2Core.SecurityAlgorithmsManagement.Hashing;
 
 namespace ATISMobileRestful.Controllers.LoadAllocationManagement
 {
@@ -38,24 +41,20 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
-                var InstanceLogging = new R2CoreInstanceLoggingManager();
-                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
-
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient4PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientLoadAllocationRegisteringRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
-                Request.Headers.TryGetValues("nEstelamKey", out IEnumerable<string> nEstelamKey);
-                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientIp, "آی پی کلاینت تخصیص بار", WebAPi.GetClientIpAddress(Request), "ApiKey:" + ApiKey.FirstOrDefault(), "nEstelamKey:" + nEstelamKey.FirstOrDefault(), string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
-
-                var InstanceSoftwareUser = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var nEstelamId = Content.Split(';')[2];
                 var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
-                var NSSSoftwareuser = InstanceSoftwareUser.GetNSSUser(ApiKey.FirstOrDefault());
-                var NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamKey.FirstOrDefault());
-
+                var NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamId).nEstelamKey);
                 if (NSSLoadCapacitorLoad.LoadStatus == R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented)
                 { throw new Exception("تخصیص بار رسوبی تا اطلاع ثانوی ممکن نیست"); }
-
 
                 Int64 myTurnId = Int64.MinValue;
                 try
@@ -63,10 +62,6 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                     var InstanceTurns = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
                     myTurnId = InstanceTurns.GetNSSTurn(NSSSoftwareuser).nEnterExitId;
                 }
-                catch (TurnNotFoundException ex)
-                { throw ex; }
-                catch (TruckDriverNotFoundException ex)
-                { throw ex; }
                 catch (Exception ex)
                 { throw ex; }
 
@@ -76,91 +71,92 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 return response;
             }
             catch (LoadAllocationNotAllowedBecauseCarHasBlackListException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationRegisteringReachedEndTimeException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (RequesterHasNotPermissionforLoadAllocationRegisteringException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadCapacitorLoadNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationNotAllowedBecuaseAHSGLoadAllocationIsUnactiveException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TurnNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByApiKeyException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TruckDriverNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserLast5DigitNotMatchingException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserIdNotExistException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
-        [HttpDelete]
+        [HttpPost]
         public HttpResponseMessage LoadAllocationCancelling()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
-                var InstanceLogging = new R2CoreInstanceLoggingManager();
-                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient4PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientLoadAllocationCancellingRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
-                Request.Headers.TryGetValues("LoadAllocationId", out IEnumerable<string> LoadAllocationId);
-                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientIp, "آی پی کلاینت کنسلی بار", WebAPi.GetClientIpAddress(Request), "ApiKey:" + ApiKey.FirstOrDefault(), "LoadAllocationId:" + LoadAllocationId.FirstOrDefault(), string.Empty, string.Empty, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var LoadAllocationId = Content.Split(';')[2];
+
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                InstanceLoadAllocation.LoadAllocationCancelling(Convert.ToInt64(LoadAllocationId.FirstOrDefault()), R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, InstanceSoftwareUsers.GetNSSUser(ApiKey.FirstOrDefault()));
+                InstanceLoadAllocation.LoadAllocationCancelling(Convert.ToInt64(LoadAllocationId), R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, NSSSoftwareuser);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TimingNotReachedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TurnHandlingNotAllowedBecuaseTurnStatusException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationCancellingNotAllowedBecauseLoadAllocationStatusException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationCancellingNotAllowedBecauseTurnStatusException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByApiKeyException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserLast5DigitNotMatchingException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserIdNotExistException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadCapacitorLoadNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TurnNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
-        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage GetLoadAllocationsforTruckDriver()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient3PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientLoadAllocationsRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
-                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
                 List<Models.LoadAllocationsforTruckDriver> _LoadAllocations = new List<Models.LoadAllocationsforTruckDriver>();
-                var Lst = InstanceLoadAllocation.GetLoadAllocationsforTruckDriver(InstanceSoftwareUsers.GetNSSUser(ApiKey.FirstOrDefault()).UserId);
+                var Lst = InstanceLoadAllocation.GetLoadAllocationsforTruckDriver(NSSSoftwareuser.UserId);
                 StringBuilder SB = new StringBuilder();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
@@ -183,95 +179,99 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 return response;
             }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByApiKeyException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
-        [HttpPut]
+        [HttpPost]
         public HttpResponseMessage IncreasePriority()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
-                var InstanceLogging = new R2CoreInstanceLoggingManager();
-                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient4PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientIncreasePriorityRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
-                Request.Headers.TryGetValues("LoadAllocationId", out IEnumerable<string> LoadAllocationId);
-                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientIp, "آی پی کلاینت افزایش اولویت", WebAPi.GetClientIpAddress(Request), "ApiKey:" + ApiKey.FirstOrDefault(), "LoadAllocationId:" + LoadAllocationId.FirstOrDefault(), string.Empty, string.Empty, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var LoadAllocationId = Content.Split(';')[2];
+
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                InstanceLoadAllocation.IncreasePriority(Convert.ToInt64(LoadAllocationId.FirstOrDefault()));
+                InstanceLoadAllocation.IncreasePriority(Convert.ToInt64(LoadAllocationId));
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
             catch (LoadAllocationChangePriorityNotAllowedBecauseLoadAllocationStatusException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserLast5DigitNotMatchingException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserIdNotExistException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TimingNotReachedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadCapacitorLoadNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TurnNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
-        [HttpPut]
+        [HttpPost]
         public HttpResponseMessage DecreasePriority()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
-                var InstanceLogging = new R2CoreInstanceLoggingManager();
-                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-                var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient4PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientDecreasePriorityRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
-                Request.Headers.TryGetValues("LoadAllocationId", out IEnumerable<string> LoadAllocationId);
-                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientIp, "آی پی کلاینت کاهش اولویت", WebAPi.GetClientIpAddress(Request), "ApiKey:" + ApiKey.FirstOrDefault(), "LoadAllocationId:" + LoadAllocationId.FirstOrDefault(), string.Empty, string.Empty, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
-                InstanceLoadAllocation.DecreasePriority(Convert.ToInt64(LoadAllocationId.FirstOrDefault()));
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var LoadAllocationId = Content.Split(';')[2];
+
+                var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
+                InstanceLoadAllocation.DecreasePriority(Convert.ToInt64(LoadAllocationId));
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
             catch (LoadAllocationChangePriorityNotAllowedBecauseLoadAllocationStatusException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserLast5DigitNotMatchingException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TimingNotReachedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadCapacitorLoadNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TurnNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
 

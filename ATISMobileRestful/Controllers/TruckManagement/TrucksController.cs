@@ -17,6 +17,7 @@ using PayanehClassLibrary.AnnouncementHallsManagement.AnnouncementHalls;
 using R2CoreTransportationAndLoadNotification.Trucks.Exceptions;
 using R2Core.ExceptionManagement;
 using R2Core.SoftwareUserManagement.Exceptions;
+using ATISMobileRestful.Logging;
 
 namespace ATISMobileRestful.Controllers.TruckManagement
 {
@@ -29,37 +30,35 @@ namespace ATISMobileRestful.Controllers.TruckManagement
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient3PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientTruckRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
-                var InstanseSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
-                var Truck = InstanceTrucks.GetNSSTruck(InstanseSoftwareUsers.GetNSSUser(ApiKey.FirstOrDefault()));
+                var Truck = InstanceTrucks.GetNSSTruck(NSSSoftwareuser);
                 var Item = new Models.Truck();
                 Item.TruckId = "کد ناوگان: " + Truck.NSSCar.nIdCar;
                 Item.LPString = "ناوگان: " + Truck.NSSCar.GetCarPelakSerialComposit();
                 Item.LoaderTitle = "بارگیر: " + Truck.NSSCar.snCarType;
                 Item.SmartCardNo = "هوشمند: " + Truck.SmartCardNo;
                 Item.AnnouncementHallSubGroups = "گروه های مجاز بار : " + string.Join(",", InstanceTrucks.GetAnnouncementHallSubGroupsTitle(Truck));
-
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(Item), Encoding.UTF8, "application/json");
                 return response;
             }
             catch (AnnouncementHallSubGroupNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (AnnouncementHallSubGroupRelationTruckNotExistException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (GetNSSException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (TruckNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
-            catch (UserNotExistByApiKeyException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
+            catch (UserNotExistByMobileNumberException ex)
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
     }

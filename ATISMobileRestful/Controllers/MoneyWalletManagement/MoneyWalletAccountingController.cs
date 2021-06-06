@@ -19,26 +19,26 @@ using R2CoreTransportationAndLoadNotification.TerraficCardsManagement;
 using R2CoreParkingSystem.MoneyWalletManagement;
 using ATISMobileRestful.Exceptions;
 using R2Core.SoftwareUserManagement.Exceptions;
+using ATISMobileRestful.Logging;
 
 namespace ATISMobileRestful.Controllers.MoneyWalletManagement
 {
     public class MoneyWalletAccountingController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage GetMoneyWalletAccounting()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient3PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletAccountingRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
                 var InstanceTerraficCards = new R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
-                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                var NSSSoftwareUser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanceAccounting = new R2CoreParkingSystemInstanceAccountingManager();
                 var InstancePublicProcedures = new R2CoreInstancePublicProceduresManager();
-                var NSSTrafficCard = InstanceTerraficCards.GetNSSTerafficCard(InstanceSoftwareUsers.GetNSSUser(ApiKey.FirstOrDefault()));
+                var NSSTrafficCard = InstanceTerraficCards.GetNSSTerafficCard(NSSSoftwareUser);
                 List<Models.MoneyWalletAccounting> _MoneyWalletAccountings = new List<Models.MoneyWalletAccounting>();
                 var Lst = InstanceAccounting.GetAccountingCollection(NSSTrafficCard, 50);
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
@@ -61,27 +61,26 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 return response;
             }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByApiKeyException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
-        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage GetMoneyWalletIDandReminderCharge()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient3PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletIDandReminderChargeRequest);
 
-                Request.Headers.TryGetValues("ApiKey", out IEnumerable<string> ApiKey);
                 var InstanceTerraficCards = new R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
-                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                var NSSSoftwareUser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanceMoneyWallets = new R2CoreParkingSystemInstanceMoneyWalletManager();
-                var NSSTrafficCard = InstanceTerraficCards.GetNSSTerafficCard(InstanceSoftwareUsers.GetNSSUser(ApiKey.FirstOrDefault()));
+                var NSSTrafficCard = InstanceTerraficCards.GetNSSTerafficCard(NSSSoftwareUser);
                 Int64 ReminderCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
 
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
@@ -89,11 +88,11 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 return response;
             }
             catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByApiKeyException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
     }

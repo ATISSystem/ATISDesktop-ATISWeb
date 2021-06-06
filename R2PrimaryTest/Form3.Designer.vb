@@ -231,7 +231,7 @@ Partial Class Form3
         Me.Button13.Name = "Button13"
         Me.Button13.Size = New System.Drawing.Size(344, 41)
         Me.Button13.TabIndex = 17
-        Me.Button13.Text = "تغییر شناسه و رمز عبور رانندگان"
+        Me.Button13.Text = "Generate UIdSalt , APIKey"
         Me.Button13.UseVisualStyleBackColor = False
         '
         'Button14
@@ -243,7 +243,7 @@ Partial Class Form3
         Me.Button14.Name = "Button14"
         Me.Button14.Size = New System.Drawing.Size(344, 41)
         Me.Button14.TabIndex = 18
-        Me.Button14.Text = "اعطای مجوز دسترسی به فرآیندهای موبایلی به همه رانندگان"
+        Me.Button14.Text = "UserShenaseh"
         Me.Button14.UseVisualStyleBackColor = False
         '
         'Button15
@@ -255,7 +255,7 @@ Partial Class Form3
         Me.Button15.Name = "Button15"
         Me.Button15.Size = New System.Drawing.Size(344, 41)
         Me.Button15.TabIndex = 19
-        Me.Button15.Text = "ایجاد ارتباط کاربران با گروههای فرآیندی موبایلی"
+        Me.Button15.Text = "UserPassword"
         Me.Button15.UseVisualStyleBackColor = False
         '
         'Button16
@@ -272,9 +272,9 @@ Partial Class Form3
         Me.Button17.BackColor = System.Drawing.Color.Purple
         Me.Button17.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Button17.ForeColor = System.Drawing.Color.White
-        Me.Button17.Location = New System.Drawing.Point(296, 323)
+        Me.Button17.Location = New System.Drawing.Point(12, 346)
         Me.Button17.Name = "Button17"
-        Me.Button17.Size = New System.Drawing.Size(344, 41)
+        Me.Button17.Size = New System.Drawing.Size(154, 41)
         Me.Button17.TabIndex = 21
         Me.Button17.Text = "ایجاد مجوزهای فرآیندی وب شرکت های حمل و نقلی"
         Me.Button17.UseVisualStyleBackColor = False
@@ -284,9 +284,9 @@ Partial Class Form3
         Me.Button18.BackColor = System.Drawing.Color.Purple
         Me.Button18.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Button18.ForeColor = System.Drawing.Color.White
-        Me.Button18.Location = New System.Drawing.Point(296, 370)
+        Me.Button18.Location = New System.Drawing.Point(12, 393)
         Me.Button18.Name = "Button18"
-        Me.Button18.Size = New System.Drawing.Size(344, 41)
+        Me.Button18.Size = New System.Drawing.Size(154, 41)
         Me.Button18.TabIndex = 22
         Me.Button18.Text = "ایجاد روابط نهادی شرکت های حمل ونقل با گروههای وب"
         Me.Button18.UseVisualStyleBackColor = False
@@ -295,7 +295,7 @@ Partial Class Form3
         '
         Me.Button19.BackColor = System.Drawing.Color.Purple
         Me.Button19.Font = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Button19.Location = New System.Drawing.Point(646, 182)
+        Me.Button19.Location = New System.Drawing.Point(12, 303)
         Me.Button19.Name = "Button19"
         Me.Button19.Size = New System.Drawing.Size(162, 41)
         Me.Button19.TabIndex = 23

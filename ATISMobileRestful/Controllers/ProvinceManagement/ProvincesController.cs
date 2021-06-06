@@ -16,27 +16,36 @@ using R2CoreTransportationAndLoadNotification.LoadTargets;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadManipulation;
 using R2CoreTransportationAndLoadNotification.LoadTargets.Exceptions;
+using ATISMobileRestful.Logging;
+using R2Core.ConfigurationManagement;
+using R2Core.SoftwareUserManagement;
+using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
+using R2Core.SecurityAlgorithmsManagement.Hashing;
+using ATISMobileRestful.Exceptions;
+using R2Core.DateAndTimeManagement;
 
 namespace ATISMobileRestful.Controllers.ProvinceManagement
 {
     public class ProvincesController : ApiController
     {
-        [HttpGet]
+        R2DateTime _DateTime = new R2DateTime();
+
+        [HttpPost]
         public HttpResponseMessage GetProvinces()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClient3PartHashed(Request);
+                WebAPi.AuthenticateClientApikeyNonceWith3Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientProvincesRequest);
 
-                Request.Headers.TryGetValues("AHId", out IEnumerable<string> AHId);
-                Request.Headers.TryGetValues("AHSGId", out IEnumerable<string> AHSGId);
-                Request.Headers.TryGetValues("LoadCapacitorLoadsListType", out IEnumerable<string> LoadCapacitorLoadsListType);
-
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var AHId = Content.Split(';')[2];
+                var AHSGId = Content.Split(';')[3];
+                var LoadCapacitorLoadsListType = Content.Split(';')[4];
                 List<Models.Province> _Provinces = new List<Models.Province>();
                 var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
-                var Lst = InstanceLoadCapacitorLoad.GetProvincesWithNumberOfLoads(Convert.ToInt64(AHId.FirstOrDefault()), Convert.ToInt64(AHSGId.FirstOrDefault()), Convert.ToInt64(LoadCapacitorLoadsListType.FirstOrDefault()));
+                var Lst = InstanceLoadCapacitorLoad.GetProvincesWithNumberOfLoads(Convert.ToInt64(AHId), Convert.ToInt64(AHSGId), Convert.ToInt64(LoadCapacitorLoadsListType));
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
                     var Item = new Models.Province();
@@ -48,12 +57,12 @@ namespace ATISMobileRestful.Controllers.ProvinceManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(_Provinces), Encoding.UTF8, "application/json");
                 return response;
             }
+            catch (WebApiClientUnAuthorizedException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadTargetsforProvinceNotFoundException ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { return WebAPi.CreateContentMessage(ex); }
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
-
-
     }
 }

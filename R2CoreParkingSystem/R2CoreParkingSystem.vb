@@ -3326,7 +3326,7 @@ Namespace Drivers
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Dim NSSDriver = R2CoreParkingSystemMClassDrivers.GetNSSDriver(mynIdPerson)
-                Dim UserId = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, String.Empty, False, True, R2CoreParkingSystemSoftwareUserTypes.Driver, NSSDriver.StrIdNo, Nothing, Nothing, YourUserNSS.UserId, Nothing, Nothing, True, Nothing), YourUserNSS)
+                Dim UserId = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, Nothing, NSSDriver.StrPersonFullName, Nothing, Nothing, Nothing, String.Empty, False, True, R2CoreParkingSystemSoftwareUserTypes.Driver, NSSDriver.StrIdNo, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, YourUserNSS.UserId, Nothing, Nothing, True, Nothing), YourUserNSS)
                 R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver, UserId, NSSDriver.nIdPerson, Nothing), RelationDeactiveTypes.BothDeactive)
                 'به دست آوردن لیست فرآیندهای موبایلی قابل دسترسی برای نوع کاربر راننده و ارسال به مدیریت مجوز
                 Dim ComposeSearchString As String = R2CoreParkingSystemSoftwareUserTypes.Driver.ToString + ":"
@@ -3362,10 +3362,10 @@ Namespace Drivers
                 Dim NSSUser As R2CoreStandardSoftwareUserStructure
                 Try
                     NSSUser = R2CoreParkingSystemMClassSoftwareUsersManagement.GetNSSSoftwareUser(mynIdPerson)
-                    R2CoreMClassSoftwareUsersManagement.EditingSoftwareUser(New R2CoreStandardSoftwareUserStructure(NSSUser.UserId, Nothing, YourNSS.StrPersonFullName, Nothing, Nothing, NSSUser.UserPinCode, NSSUser.UserCanCharge, True , NSSUser.UserTypeId, YourNSS.StrIdNo, NSSUser.UserStatus, NSSUser.VerificationCode, YourNSSUser.UserId, Nothing, Nothing, NSSUser.ViewFlag, NSSUser.Deleted), YourNSSUser)
+                    R2CoreMClassSoftwareUsersManagement.EditingSoftwareUser(New R2CoreStandardSoftwareUserStructure(NSSUser.UserId, Nothing, Nothing, YourNSS.StrPersonFullName, Nothing, Nothing, Nothing, NSSUser.UserPinCode, NSSUser.UserCanCharge, True, NSSUser.UserTypeId, YourNSS.StrIdNo, NSSUser.UserStatus, String.Empty, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, YourNSSUser.UserId, Nothing, Nothing, NSSUser.ViewFlag, NSSUser.Deleted), YourNSSUser)
                 Catch ex As SoftwareUserRelatedThisDriverNotFoundException
                     Dim NSSDriverTemp = R2CoreParkingSystemMClassDrivers.GetNSSDriver(YourNSS.nIdPerson)
-                    Dim UserId = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, NSSDriverTemp.StrPersonFullName, Nothing, Nothing, String.Empty, False, True, R2CoreParkingSystemSoftwareUserTypes.Driver, NSSDriverTemp.StrIdNo, Nothing, Nothing, YourNSSUser.UserId, Nothing, Nothing, True, Nothing), YourNSSUser)
+                    Dim UserId = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, Nothing, NSSDriverTemp.StrPersonFullName, Nothing, Nothing, Nothing, String.Empty, False, True, R2CoreParkingSystemSoftwareUserTypes.Driver, NSSDriverTemp.StrIdNo, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, YourNSSUser.UserId, Nothing, Nothing, True, Nothing), YourNSSUser)
                     R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver, UserId, NSSDriverTemp.nIdPerson, Nothing), RelationDeactiveTypes.BothDeactive)
                     'به دست آوردن لیست فرآیندهای موبایلی قابل دسترسی برای نوع کاربر راننده و ارسال به مدیریت مجوز
                     Dim ComposeSearchString As String = R2CoreParkingSystemSoftwareUserTypes.Driver.ToString + ":"

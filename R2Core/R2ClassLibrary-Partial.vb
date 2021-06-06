@@ -29,7 +29,8 @@ Imports R2Core.MobileProcessesManagement.Exceptions
 Imports R2Core.WebProcessesManagement.Exceptions
 
 Imports PcPosDll
-
+Imports R2Core.BlackIPs.Exceptions
+Imports System.Threading
 
 Namespace MonetarySupply
 
@@ -656,7 +657,7 @@ Namespace SecurityAlgorithmsManagement
 
         Public Function Login(YourUserShenaseh As String, YourUserPassword As String) As Int64
             Try
-                R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, Nothing, YourUserShenaseh, YourUserPassword, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+                R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, Nothing, Nothing, YourUserShenaseh, YourUserPassword, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
                 Dim NSS = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserShenaseh, YourUserPassword)
                 If _LstUsers.Exists(Function(x) x.UserId = NSS.UserId) Then
                     _LstUsers.Where(Function(x) x.UserId = NSS.UserId)(0).StartDateTime = Now
@@ -750,6 +751,20 @@ Namespace SecurityAlgorithmsManagement
                 Return stringBuilder.ToString()
             End Function
 
+            Public Function ComputeSha256Hash(YourrawData As String) As String
+                Try
+                    Dim sha256Hash As SHA256 = SHA256.Create()
+                    Dim bytes As Byte() = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(YourrawData))
+                    Dim builder As StringBuilder = New StringBuilder()
+                    For i As Int64 = 0 To bytes.Length - 1
+                        builder.Append(bytes(i).ToString("x2"))
+                    Next
+                    Return builder.ToString()
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
         End Class
 
         Public Class MD5Hasher
@@ -763,6 +778,104 @@ Namespace SecurityAlgorithmsManagement
                 Next
                 Return strResult
             End Function
+        End Class
+
+    End Namespace
+
+    Namespace AESAlgorithms
+        Public Class AESAlgorithmsManager
+
+            Private ValidChars As String = "%$#@^&!~()-+*=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            Private Function GenerateRandomString(YourLength As Int32) As String
+                Try
+                    Dim Random As Random = New Random(DateTime.UtcNow.Millisecond)
+                    Dim RandomString = New StringBuilder()
+                    For Loopi As Int32 = 0 To YourLength - 1
+                        RandomString.Append(ValidChars(Random.Next(0, ValidChars.Length - 1)))
+                    Next
+                    Return RandomString.ToString()
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Private UserPasswordValidChars As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            Public Function GenerateUserPassword(YourLength As Int32) As String
+                Try
+                    Dim Random As Random = New Random(DateTime.UtcNow.Millisecond)
+                    Dim NonceString = New StringBuilder()
+                    For Loopi As Int32 = 0 To YourLength - 1
+                        NonceString.Append(UserPasswordValidChars(Random.Next(0, UserPasswordValidChars.Length - 1)))
+                    Next
+                    Return NonceString.ToString()
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function GetNonce(YourLength As Int32) As String
+                Try
+                    Return GenerateRandomString(YourLength)
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function GetSalt(YourLength As Int32) As String
+                Try
+                    Return GenerateRandomString(YourLength)
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function Encrypt(YourInput As String, YourKey As String) As String
+                Try
+
+                    Dim inputArray As Byte() = UTF8Encoding.UTF8.GetBytes(YourInput)
+                    Dim tripleDES As TripleDESCryptoServiceProvider = New TripleDESCryptoServiceProvider()
+                    tripleDES.Key = UTF8Encoding.UTF8.GetBytes(YourKey)
+                    tripleDES.Mode = CipherMode.ECB
+                    tripleDES.Padding = PaddingMode.PKCS7
+                    Dim cTransform As ICryptoTransform = tripleDES.CreateEncryptor()
+                    Dim resultArray As Byte() = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length)
+                    tripleDES.Clear()
+                    Return Convert.ToBase64String(resultArray, 0, resultArray.Length)
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function Decrypt(YourInput As String, YourKey As String) As String
+                Try
+                    Dim inputArray As Byte() = Convert.FromBase64String(YourInput)
+                    Dim TripleDES As TripleDESCryptoServiceProvider = New TripleDESCryptoServiceProvider()
+                    TripleDES.Key = UTF8Encoding.UTF8.GetBytes(YourKey)
+                    TripleDES.Mode = CipherMode.ECB
+                    TripleDES.Padding = PaddingMode.PKCS7
+                    Dim cTransform As ICryptoTransform = TripleDES.CreateDecryptor()
+                    Dim resultArray As Byte() = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length)
+                    TripleDES.Clear()
+                    Return UTF8Encoding.UTF8.GetString(resultArray)
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function GetRandomNumericCode(YourFirstValue As Int64, YourSecondValue As Int64) As Int64
+                Try
+                    Thread.Sleep(1)
+                    Dim RandGen As New Random(DateTime.Now.Ticks)
+                    Return RandGen.Next(YourFirstValue, YourSecondValue)
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+
+
+
+
         End Class
 
     End Namespace
@@ -793,12 +906,12 @@ Namespace SecurityAlgorithmsManagement
                 bmpCaptcha = New Bitmap(iBMPWidth, iBMPHeight,
                         Drawing.Imaging.PixelFormat.Format16bppRgb555)
                 g = Graphics.FromImage(bmpCaptcha)
-                Dim drawBackground As New SolidBrush(Color.LawnGreen   )
+                Dim drawBackground As New SolidBrush(Color.LawnGreen)
                 g.FillRectangle(drawBackground, New Rectangle(0, 0, iBMPWidth, iBMPHeight))
 
                 ' Create font and brush.
-                Dim drawFont As New Font("Times New Roman",17)
-                Dim drawBrush As New SolidBrush(Color.Black   )
+                Dim drawFont As New Font("Times New Roman", 17)
+                Dim drawBrush As New SolidBrush(Color.Black)
                 Dim strFormat As New StringFormat(StringFormatFlags.FitBlackBox)
                 sfLetter = New SizeF(30, 30)
                 ' Draw string to screen.
@@ -859,7 +972,7 @@ Namespace SecurityAlgorithmsManagement
                 iNbrConsonants = 0
                 bUseVowel = False
                 sWord = ""
-                Randomize()
+                Randomize(DateTime.UtcNow.Millisecond)
                 For iWordLength = 1 To iLengthRequired
                     If (iWordLength = 2) Or ((iLengthRequired > 1) And (iWordLength = iLengthRequired)) Then
                         bUseVowel = Not bUseVowel
@@ -1994,7 +2107,7 @@ Namespace SMSSendAndRecieved
                         If DateDiff(DateInterval.Hour, _DateTime.GetCurrentDateTimeMilladi, Convert.ToDateTime(DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"))) <= DS.Tables(0).Rows(Loopx).Item("EndHours") Then
                             Dim myMessage As String = DS.Tables(0).Rows(Loopx).Item("message").trim
                             Dim myMobilenumber As String = DS.Tables(0).Rows(Loopx).Item("mobilenumber").trim
-                            Dim SmsId() As Long = _SepahanSMS.SendSms("Biinfo878", "Biinfo878aB", "sepahansms", New String() {myMessage}, New String() {myMobilenumber}, "30006403868611",
+                            Dim SmsId() As Long = _SepahanSMS.SendSms("Biinfo878", "bF=7A=E4sR$Bw58!Zu$U", "sepahansms", New String() {myMessage}, New String() {myMobilenumber}, "30006403868611",
                                                      net.sepahansms.SendType.DynamicText, net.sepahansms.SmsMode.SaveInPhone)
                             If SmsId(0) > 0 Then
                                 CmdSql.Connection.Open()
@@ -2153,6 +2266,182 @@ Namespace RequesterManagement
 
 
     End Class
+
+
+End Namespace
+
+Namespace BlackIPs
+    Public MustInherit Class R2CoreBlackIPTypes
+        Public Shared ReadOnly None As Int64 = 0
+    End Class
+
+    Public Class R2StandardBlackIPTypeStructure
+        Inherits R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            BIPTypeId = Int64.MinValue
+            BIPName = String.Empty
+            BlackMinutes = Int64.MinValue
+            Color = Color.Black
+            Description = String.Empty
+        End Sub
+
+        Public Sub New(ByVal YourBIPTypeId As Int64, ByVal YourBIPName As String, ByVal YourBlackMinutes As Int64, ByVal YourColor As Color, ByVal YourDescription As String)
+            MyBase.New(YourBIPTypeId, YourBIPName.Trim())
+            BIPTypeId = YourBIPTypeId
+            BIPName = YourBIPName
+            BlackMinutes = YourBlackMinutes
+            Color = YourColor
+            Description = YourDescription
+        End Sub
+
+
+        Public Property BIPTypeId As Int64
+        Public Property BIPName As String
+        Public Property BlackMinutes As Int64
+        Public Property Color As Color
+        Public Property Description As String
+
+
+    End Class
+
+    Public Class R2StandardBlackIPStructure
+        Inherits R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            IPId = Int64.MinValue
+            IP = String.Empty
+            TypeId = Int64.MinValue
+            LockStatus = Boolean.FalseString
+            LockMinutes = Int64.MinValue
+            DateTimeMilladi = DateTime.Now
+            DateShamsi = String.Empty
+        End Sub
+
+        Public Sub New(ByVal YourIPId As Int64, ByVal YourIP As String, ByVal YourTypeId As Int64, ByVal YourLockStatus As Boolean, ByVal YourLockMinutes As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String)
+            MyBase.New(YourIPId, YourIP.Trim())
+            IPId = YourIPId
+            IP = YourIP
+            TypeId = YourTypeId
+            LockStatus = YourLockStatus
+            LockMinutes = YourLockMinutes
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+        End Sub
+
+
+        Public Property IPId As Int64
+        Public Property IP As String
+        Public Property TypeId As Int64
+        Public Property LockStatus As Boolean
+        Public Property LockMinutes As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+
+
+
+    End Class
+
+    Public Class R2CoreInstanceBlackIPsManager
+        Private _DateTime As New R2DateTime
+
+        Public Function GetNSSBlackIPType(YourTypeId As Int64) As R2StandardBlackIPTypeStructure
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim DS As DataSet = Nothing
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblBlackIPTypes Where BIPTypeId=" & YourTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New BlackIPTypeNotFoundException
+                Return New R2StandardBlackIPTypeStructure(YourTypeId, DS.Tables(0).Rows(0).Item("BIPName").trim, DS.Tables(0).Rows(0).Item("BlackMinutes"), Color.FromName(DS.Tables(0).Rows(0).Item("Color").trim), DS.Tables(0).Rows(0).Item("Description").trim)
+            Catch ex As BlackIPTypeNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Private Sub RegisterIP(YourNSS As R2StandardBlackIPStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Insert Into R2Primary.dbo.TblBlackIPs(IP,TypeId,LockStatus,LockMinutes,DateTimeMilladi,DateShamsi) Values('" & YourNSS.IP & "'," & YourNSS.TypeId & "," & IIf(YourNSS.LockStatus = True, 1, 0) & "," & YourNSS.LockMinutes & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull() & "')"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub RegisterThisIP(YourIP As String, YourTypeId As Int64)
+            Try
+                RegisterIP(New R2StandardBlackIPStructure(0, YourIP, YourTypeId, True, GetNSSBlackIPType(YourTypeId).BlackMinutes, Nothing, Nothing))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Function IsBlackIPActive(YourNSS As R2StandardBlackIPStructure)
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim DS As DataSet = Nothing
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                        "Select * from R2Primary.dbo.TblBlackIPs 
+                         Where IP='" & YourNSS.IP & "' AND LockStatus=1 AND DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes", 0, DS).GetRecordsCount = 0 Then Return True
+                Return False
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Sub UnLockBlackIP(YourNSS As R2StandardBlackIPStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblBlackIPs Set LockStatus=0 Where IP='" & YourNSS.IP & "'"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Function GetBlackListforThisIP(YourIP As String, YourTypeId As Int64) As List(Of R2StandardBlackIPStructure)
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim Lst As New List(Of R2StandardBlackIPStructure)
+                Dim DS As DataSet = Nothing
+                InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                        "Select * from R2Primary.dbo.TblBlackIPs 
+                         Where IP='" & YourIP & "' and LockStatus=1 and TypeId=" & YourTypeId & " and 
+                               DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes order By DateTimeMilladi Desc", 0, DS)
+                For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                    Dim NSS = New R2StandardBlackIPStructure(DS.Tables(0).Rows(Loopx).Item("IPId"), DS.Tables(0).Rows(Loopx).Item("IP"), DS.Tables(0).Rows(Loopx).Item("TypeId"), DS.Tables(0).Rows(Loopx).Item("LockStatus"), DS.Tables(0).Rows(Loopx).Item("LockMinutes"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi"))
+                    Lst.Add(NSS)
+                Next
+                Return Lst
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
+
+    Namespace Exceptions
+        Public Class BlackIPTypeNotFoundException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "نوع آی پی سیاه با شاخص مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
 
 
 End Namespace
