@@ -19,6 +19,7 @@ using R2Core.SoftwareUserManagement.Exceptions;
 using ATISMobileRestful.Logging;
 using R2Core.ConfigurationManagement;
 using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
+using R2Core.BlackIPs;
 
 namespace ATISMobileRestful
 {
@@ -50,8 +51,10 @@ namespace ATISMobileRestful
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceAES = new AESAlgorithmsManager();
-                var InstanceHash = new R2Core.SecurityAlgorithmsManagement.Hashing.SHAHasher();
+                var InstanceHash = new SHAHasher();
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 var IP = GetClientIpAddress(YourRequest);
+                InstanceBlackIP.AuthorizationIP(IP);
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
@@ -59,7 +62,7 @@ namespace ATISMobileRestful
                 InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientLoginRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientLoginRequest).LogTitle, IP, MobileNumber, Hash, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
                 if (Hash != InstanceHash.GenerateSHA256String(NSSSoftwareuser.VerificationCode + NSSSoftwareuser.Nonce))
                 { throw new WebApiClientSecurityHashInvalidException(); };
-                if (NSSSoftwareuser.VerificationCodeTimeStamp.Subtract(_DateTime.GetCurrentDateTimeMilladi()).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity , 7))
+                if (NSSSoftwareuser.VerificationCodeTimeStamp.Subtract(_DateTime.GetCurrentDateTimeMilladi()).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 7))
                 { throw new WebApiClientVerificationCodeExpiredException(); };
                 if (NSSSoftwareuser.NonceTimeStamp.Subtract(_DateTime.GetCurrentDateTimeMilladi()).TotalSeconds < InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 7))
                 { throw new WebApiClientSoftwareUserNonceExpiredException(); };
@@ -80,8 +83,10 @@ namespace ATISMobileRestful
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceAES = new AESAlgorithmsManager();
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 var InstanceHash = new SHAHasher();
                 var IP = GetClientIpAddress(YourRequest);
+                InstanceBlackIP.AuthorizationIP(IP);
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
@@ -113,7 +118,9 @@ namespace ATISMobileRestful
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceAES = new AESAlgorithmsManager();
                 var InstanceHash = new SHAHasher();
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 var IP = GetClientIpAddress(YourRequest);
+                InstanceBlackIP.AuthorizationIP(IP);
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
@@ -146,7 +153,9 @@ namespace ATISMobileRestful
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceAES = new AESAlgorithmsManager();
                 var InstanceHash = new SHAHasher();
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 var IP = GetClientIpAddress(YourRequest);
+                InstanceBlackIP.AuthorizationIP(IP);
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
@@ -183,7 +192,9 @@ namespace ATISMobileRestful
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceAES = new AESAlgorithmsManager();
                 var InstanceHash = new SHAHasher();
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 var IP = GetClientIpAddress(YourRequest);
+                InstanceBlackIP.AuthorizationIP(IP);
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
@@ -220,7 +231,9 @@ namespace ATISMobileRestful
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceAES = new AESAlgorithmsManager();
                 var InstanceHash = new SHAHasher();
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 var IP = GetClientIpAddress(YourRequest);
+                InstanceBlackIP.AuthorizationIP(IP);
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));

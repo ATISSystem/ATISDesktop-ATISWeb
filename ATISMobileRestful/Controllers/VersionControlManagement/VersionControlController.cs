@@ -15,6 +15,7 @@ using R2Core.LoggingManagement;
 using R2Core.SoftwareUserManagement;
 using ATISMobileRestful.Logging;
 using R2Core.DateAndTimeManagement;
+using R2Core.BlackIPs;
 
 namespace ATISMobileRestful.Controllers.VersionControlManagement
 {
@@ -29,10 +30,12 @@ namespace ATISMobileRestful.Controllers.VersionControlManagement
             try
             {
                 //تایید اعتبار کلاینت
-                //باید در فایروال از اتک جلوگیری شود
+                var IP = WebAPi.GetClientIpAddress(Request);
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+                InstanceBlackIP.AuthorizationIP(IP);
                 var InstanceLogging = new R2CoreInstanceLoggingManager();
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
-                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientVersionControlRequest , InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientVersionControlRequest ).LogTitle, WebAPi.GetClientIpAddress(Request), String.Empty, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientVersionControlRequest , InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientVersionControlRequest ).LogTitle, IP, String.Empty, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
 
                 //کنترل اطلاعات ورژن ارسالی و ورژن موجود روی سایت
                 string WebApiVersionNumber = File.ReadAllText(HttpContext.Current.Server.MapPath("~/App_Data/NewerVersionInfo.txt"), Encoding.UTF8).Split(';')[0].Split(':')[1].Trim();

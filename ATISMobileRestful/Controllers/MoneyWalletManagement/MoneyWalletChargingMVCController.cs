@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 
 using ATISMobileRestful.Logging;
+using R2Core.BlackIPs;
 using R2Core.DateAndTimeManagement;
 using R2Core.LoggingManagement;
 using R2Core.SoftwareUserManagement;
@@ -25,13 +26,17 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
 
             try
-            {
+            {  
+                //تایید اعتبار کلاینت
+                var IP = Request.UserHostAddress;
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+                InstanceBlackIP.AuthorizationIP(IP);
+
                 var InstanceTrafficCards = new R2CoreTransportationAndLoadNotification.TerraficCardsManagement.R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
                 var InstanceMoneyWallets = new R2CoreParkingSystemInstanceMoneyWalletManager();
                 var InstanceMoneyWalletCharge = new R2CoreParkingSystemInstanceMoneyWalletChargeManager();
                 var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceLogging = new R2CoreInstanceLoggingManager();
-
                 if (Request.QueryString["Status"] != "" && Request.QueryString["Status"] != null && Request.QueryString["Authority"] != "" && Request.QueryString["Authority"] != null)
                 {
                     if (Request.QueryString["Status"].ToString().Equals("OK"))
@@ -48,7 +53,7 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                             Int64 CurrentCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
                             InstanceMoneyWallets.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.AddMoney, Amount, R2CoreParkingSystemAccountings.ChargeType, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
                             InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, Amount, InstanceSoftwareUsers.GetNSSSystemUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime()));
-                            InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest).LogTitle, Request.UserHostAddress, "ApiKey=" + YourApiKey , "Amount="+ Amount.ToString(), "Authority=" + Request.QueryString["Authority"], "RefID=" + RefID.ToString(), InstanceSoftwareUsers.GetNSSSystemUser().UserId, _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull()));
+                            InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest).LogTitle, Request.UserHostAddress, "ApiKey=" + YourApiKey, "Amount=" + Amount.ToString(), "Authority=" + Request.QueryString["Authority"], "RefID=" + RefID.ToString(), InstanceSoftwareUsers.GetNSSSystemUser().UserId, _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull()));
                             Int64 LastCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
                             ViewBag.IsSuccess = true; ViewBag.RefId = RefID;
                             ViewBag.Message1 = NSSTrafficCard.CardNo + "شاخص کیف پول: ";

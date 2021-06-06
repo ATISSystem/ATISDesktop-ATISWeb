@@ -2395,6 +2395,16 @@ Namespace BlackIPs
             End Try
         End Function
 
+        Public Function AuthorizationIP(YourIP As String)
+            Try
+                If IsBlackIPActive(New R2StandardBlackIPStructure(0, YourIP, Nothing, Nothing, Nothing, Nothing, Nothing)) Then Throw New AuthorizationIPIsBlackException
+            Catch ex As AuthorizationIPIsBlackException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Sub UnLockBlackIP(YourNSS As R2StandardBlackIPStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
@@ -2437,6 +2447,16 @@ Namespace BlackIPs
             Public Overrides ReadOnly Property Message As String
                 Get
                     Return "نوع آی پی سیاه با شاخص مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+        Public Class AuthorizationIPIsBlackException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "امکان ارتباط تا لحظاتی دیگر امکان پذیر نخواهد بود"
                 End Get
             End Property
         End Class

@@ -20,6 +20,7 @@ using R2Core.DateAndTimeManagement;
 using System.Data;
 using R2Core.SecurityAlgorithmsManagement.Captcha;
 using ATISMobileRestful.SecurityAlgorithms;
+using R2Core.BlackIPs;
 
 namespace ATISMobileRestful.Controllers.SoftwareUserManagement
 {
@@ -34,10 +35,12 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
             try
             {
                 //تایید اعتبار کلاینت
+                var IP = WebAPi.GetClientIpAddress(Request);
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+                InstanceBlackIP.AuthorizationIP(IP);
                 var InstanceLogging = new R2CoreInstanceLoggingManager();
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
-                var IP = WebAPi.GetClientIpAddress(Request);
                 var MobileNumber = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientRegisterMobileNumberRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientRegisterMobileNumberRequest).LogTitle, IP, MobileNumber, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
 
@@ -112,11 +115,13 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
             try
             {
                 //تایید اعتبار کلاینت
+                var IP = WebAPi.GetClientIpAddress(Request);
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+                InstanceBlackIP.AuthorizationIP(IP);
                 var InstanceLogging = new R2CoreInstanceLoggingManager();
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceAES = new AESAlgorithmsManager();
-                var IP = WebAPi.GetClientIpAddress(Request);
                 var MobileNumber = InstanceAES.Decrypt(JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result), InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientNonceRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientNonceRequest).LogTitle, IP, MobileNumber, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
 

@@ -1,5 +1,6 @@
 ﻿using ATISMobileRestful.Exceptions;
 using Newtonsoft.Json;
+using R2Core.BlackIPs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,12 @@ namespace ATISMobileRestful.Controllers.ATISMobileWebApiManagement
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
-            {  
+            {
+                //تایید اعتبار کلاینت
+                var IP = WebAPi.GetClientIpAddress(Request);
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+                InstanceBlackIP.AuthorizationIP(IP);
+
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject("ATISMobileWebAPiIsLive"), Encoding.UTF8, "application/json");
                 return response;

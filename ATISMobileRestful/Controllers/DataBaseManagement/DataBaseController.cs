@@ -12,6 +12,7 @@ using R2Core.LoggingManagement;
 using R2Core.SoftwareUserManagement;
 using ATISMobileRestful.Logging;
 using R2Core.DateAndTimeManagement;
+using R2Core.BlackIPs;
 
 namespace ATISMobileRestful.Controllers.DataBaseManagement
 {
@@ -26,7 +27,9 @@ namespace ATISMobileRestful.Controllers.DataBaseManagement
             try
             {
                 //تایید اعتبار کلاینت
-                //باید در فایروال از اتک جلوگیری شود
+                var IP = WebAPi.GetClientIpAddress(Request);
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+                InstanceBlackIP.AuthorizationIP(IP);
                 var InstanceLogging = new R2CoreInstanceLoggingManager();
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientConfirmAMUStatusRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientConfirmAMUStatusRequest).LogTitle, WebAPi.GetClientIpAddress(Request), String.Empty, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
