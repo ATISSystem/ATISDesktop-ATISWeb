@@ -52,6 +52,7 @@ Partial Class Form3
         Me.Button22 = New System.Windows.Forms.Button()
         Me.Button23 = New System.Windows.Forms.Button()
         Me.Button24 = New System.Windows.Forms.Button()
+        Me.Button25 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Button1
@@ -355,11 +356,24 @@ Partial Class Form3
         Me.Button24.Text = "Button24"
         Me.Button24.UseVisualStyleBackColor = False
         '
+        'Button25
+        '
+        Me.Button25.BackColor = System.Drawing.Color.Green
+        Me.Button25.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Button25.ForeColor = System.Drawing.Color.White
+        Me.Button25.Location = New System.Drawing.Point(12, 256)
+        Me.Button25.Name = "Button25"
+        Me.Button25.Size = New System.Drawing.Size(66, 41)
+        Me.Button25.TabIndex = 29
+        Me.Button25.Text = "UserPassword"
+        Me.Button25.UseVisualStyleBackColor = False
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1041, 450)
+        Me.Controls.Add(Me.Button25)
         Me.Controls.Add(Me.Button24)
         Me.Controls.Add(Me.Button23)
         Me.Controls.Add(Me.Button22)
@@ -426,4 +440,5 @@ End Sub
     Friend WithEvents Button22 As Button
     Friend WithEvents Button23 As Button
     Friend WithEvents Button24 As Button
+    Friend WithEvents Button25 As Button
 End Class
