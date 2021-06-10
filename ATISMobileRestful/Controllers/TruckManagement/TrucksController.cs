@@ -18,12 +18,14 @@ using R2CoreTransportationAndLoadNotification.Trucks.Exceptions;
 using R2Core.ExceptionManagement;
 using R2Core.SoftwareUserManagement.Exceptions;
 using ATISMobileRestful.Logging;
+using R2Core.PermissionManagement;
+using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
 
 namespace ATISMobileRestful.Controllers.TruckManagement
 {
     public class TrucksController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage GetTruck()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
@@ -54,8 +56,6 @@ namespace ATISMobileRestful.Controllers.TruckManagement
             catch (TruckNotFoundException ex)
             { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (UserNotExistByMobileNumberException ex)
-            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
-            catch (WebApiClientUnAuthorizedException ex)
             { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }

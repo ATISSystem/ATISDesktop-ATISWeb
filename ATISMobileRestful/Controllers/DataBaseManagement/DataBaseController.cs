@@ -20,19 +20,14 @@ namespace ATISMobileRestful.Controllers.DataBaseManagement
     {
         R2DateTime _DateTime = new R2DateTime();
 
-        [HttpGet]
+        [HttpPost]
         public HttpResponseMessage ConfirmAMUStatus()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
                 //تایید اعتبار کلاینت
-                var IP = WebAPi.GetClientIpAddress(Request);
-                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
-                InstanceBlackIP.AuthorizationIP(IP);
-                var InstanceLogging = new R2CoreInstanceLoggingManager();
-                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
-                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientConfirmAMUStatusRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientConfirmAMUStatusRequest).LogTitle, WebAPi.GetClientIpAddress(Request), String.Empty, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                WebAPi.AuthenticateClient(Request, ATISMobileWebApiLogTypes.WebApiClientConfirmAMUStatusRequest);
 
                 string AMUStatus = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 bool Confirmed = false;

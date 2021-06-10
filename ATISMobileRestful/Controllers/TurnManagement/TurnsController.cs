@@ -15,6 +15,8 @@ using R2Core.SoftwareUserManagement;
 using ATISMobileRestful.Exceptions;
 using R2Core.SoftwareUserManagement.Exceptions;
 using ATISMobileRestful.Logging;
+using R2Core.PermissionManagement;
+using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
 
 namespace ATISMobileRestful.Controllers.TurnManagement
 {
@@ -51,8 +53,6 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(_Turns), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (UserNotExistByApiKeyException ex)
             { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (Exception ex)

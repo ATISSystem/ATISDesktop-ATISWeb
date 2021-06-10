@@ -31,6 +31,9 @@ Imports R2Core.WebProcessesManagement.Exceptions
 Imports PcPosDll
 Imports R2Core.BlackIPs.Exceptions
 Imports System.Threading
+Imports R2Core.PredefinedMessagesManagement
+Imports R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms.Exceptions
+Imports R2Core.PermissionManagement.Exceptions
 
 Namespace MonetarySupply
 
@@ -732,7 +735,7 @@ Namespace SecurityAlgorithmsManagement
                 Dim stringBuilder As New StringBuilder()
 
                 For i As Integer = 0 To hash.Length - 1
-                    stringBuilder.Append(hash(i).ToString("X2"))
+                    stringBuilder.Append(hash(i).ToString("x2"))
                 Next
 
                 Return stringBuilder.ToString()
@@ -745,9 +748,8 @@ Namespace SecurityAlgorithmsManagement
                 Dim stringBuilder As New StringBuilder()
 
                 For i As Integer = 0 To hash.Length - 1
-                    stringBuilder.Append(hash(i).ToString("X2"))
+                    stringBuilder.Append(hash(i).ToString("x2"))
                 Next
-
                 Return stringBuilder.ToString()
             End Function
 
@@ -799,15 +801,15 @@ Namespace SecurityAlgorithmsManagement
                 End Try
             End Function
 
-            Private UserPasswordValidChars As String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            Public Function GenerateUserPassword(YourLength As Int32) As String
+            Private VerificationCodeValidChars As String = "%$#@^&!~()-+*=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            Public Function GenerateVerificationCode(YourLength As Int32) As String
                 Try
                     Dim Random As Random = New Random(DateTime.UtcNow.Millisecond)
-                    Dim NonceString = New StringBuilder()
+                    Dim SBVerificationCode = New StringBuilder()
                     For Loopi As Int32 = 0 To YourLength - 1
-                        NonceString.Append(UserPasswordValidChars(Random.Next(0, UserPasswordValidChars.Length - 1)))
+                        SBVerificationCode.Append(VerificationCodeValidChars(Random.Next(0, VerificationCodeValidChars.Length - 1)))
                     Next
-                    Return NonceString.ToString()
+                    Return SBVerificationCode.ToString()
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
@@ -833,13 +835,15 @@ Namespace SecurityAlgorithmsManagement
                 Try
 
                     Dim inputArray As Byte() = UTF8Encoding.UTF8.GetBytes(YourInput)
-                    Dim tripleDES As TripleDESCryptoServiceProvider = New TripleDESCryptoServiceProvider()
-                    tripleDES.Key = UTF8Encoding.UTF8.GetBytes(YourKey)
-                    tripleDES.Mode = CipherMode.ECB
-                    tripleDES.Padding = PaddingMode.PKCS7
-                    Dim cTransform As ICryptoTransform = tripleDES.CreateEncryptor()
+                    Dim AES As AesCryptoServiceProvider = New AesCryptoServiceProvider
+                    AES.KeySize = 256
+                    AES.Key = UTF8Encoding.UTF8.GetBytes(YourKey)
+                    AES.Mode = CipherMode.ECB
+                    AES.Padding = PaddingMode.PKCS7
+                    AES.IV = {150, 9, 112, 39, 32, 5, 136, 254, 251, 43, 44, 191, 217, 236, 3, 106}
+                    Dim cTransform As ICryptoTransform = AES.CreateEncryptor()
                     Dim resultArray As Byte() = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length)
-                    tripleDES.Clear()
+                    AES.Clear()
                     Return Convert.ToBase64String(resultArray, 0, resultArray.Length)
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -849,13 +853,15 @@ Namespace SecurityAlgorithmsManagement
             Public Function Decrypt(YourInput As String, YourKey As String) As String
                 Try
                     Dim inputArray As Byte() = Convert.FromBase64String(YourInput)
-                    Dim TripleDES As TripleDESCryptoServiceProvider = New TripleDESCryptoServiceProvider()
-                    TripleDES.Key = UTF8Encoding.UTF8.GetBytes(YourKey)
-                    TripleDES.Mode = CipherMode.ECB
-                    TripleDES.Padding = PaddingMode.PKCS7
-                    Dim cTransform As ICryptoTransform = TripleDES.CreateDecryptor()
+                    Dim AES As AesCryptoServiceProvider = New AesCryptoServiceProvider()
+                    AES.KeySize = 256
+                    AES.Key = UTF8Encoding.UTF8.GetBytes(YourKey)
+                    AES.Mode = CipherMode.ECB
+                    AES.Padding = PaddingMode.PKCS7
+                    AES.IV = {150, 9, 112, 39, 32, 5, 136, 254, 251, 43, 44, 191, 217, 236, 3, 106}
+                    Dim cTransform As ICryptoTransform = AES.CreateDecryptor()
                     Dim resultArray As Byte() = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length)
-                    TripleDES.Clear()
+                    AES.Clear()
                     Return UTF8Encoding.UTF8.GetString(resultArray)
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -865,7 +871,7 @@ Namespace SecurityAlgorithmsManagement
             Public Function GetRandomNumericCode(YourFirstValue As Int64, YourSecondValue As Int64) As Int64
                 Try
                     Thread.Sleep(1)
-                    Dim RandGen As New Random(DateTime.Now.Ticks)
+                    Dim RandGen As New Random(DateTime.Now.Millisecond)
                     Return RandGen.Next(YourFirstValue, YourSecondValue)
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1005,6 +1011,36 @@ Namespace SecurityAlgorithmsManagement
 
     End Namespace
 
+    Namespace ExpressionValidationAlgorithms
+        Public Class ExpressionValidationAlgorithmsManager
+            Public Sub ValidationMobileNumber(YourValue As String)
+                Try
+                    If YourValue.Length <> 11 Then Throw New MobileNumberIsInvalidException
+                    If Not IsNumeric(YourValue) Then Throw New MobileNumberIsInvalidException
+                Catch ex As MobileNumberIsInvalidException
+                    Throw ex
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+        End Class
+
+        Namespace Exceptions
+            Public Class MobileNumberIsInvalidException
+                Inherits ApplicationException
+
+                Public Overrides ReadOnly Property Message As String
+                    Get
+                        'شماره موبایل صحیح نیست
+                        Return (New R2CoreMClassPredefinedMessagesManager).GetNSS(R2CorePredefinedMessages.MobileNumberIsInvalid).MsgContent
+                    End Get
+                End Property
+            End Class
+
+        End Namespace
+
+    End Namespace
+
     Namespace Exceptions
 
         Public Class CaptchaWordNotCorrectException
@@ -1043,6 +1079,21 @@ Namespace PredefinedMessagesManagement
 
     Public MustInherit Class R2CorePredefinedMessages
         Public Shared ReadOnly None As Int64 = 0
+        Public Shared ReadOnly IPISBlack As Int64 = 1
+        Public Shared ReadOnly BlackIPTypeNotFound As Int64 = 2
+        Public Shared ReadOnly MobileNumberIsInvalid As Int64 = 3
+        Public Shared ReadOnly MobileNumberNotFoundException As Int64 = 6
+        Public Shared ReadOnly SecurityHashInvalid As Int64 = 7
+        Public Shared ReadOnly SoftwareUserAPIKeyExpired As Int64 = 8
+        Public Shared ReadOnly SoftwareUserIsLogout As Int64 = 9
+        Public Shared ReadOnly CaptchaInvalid As Int64 = 10
+        Public Shared ReadOnly NonceExpired As Int64 = 11
+        Public Shared ReadOnly SoftWareUserPasswordExpired As Int64 = 12
+        Public Shared ReadOnly VerificationCodeExpired As Int64 = 13
+        Public Shared ReadOnly PersonalNonceExpired As Int64 = 14
+
+
+
     End Class
 
     Public Class R2CoreStandardPredefinedMessageStructure
@@ -1053,6 +1104,7 @@ Namespace PredefinedMessagesManagement
             MsgName = String.Empty
             MsgTitle = String.Empty
             MsgContent = String.Empty
+            Description = String.Empty
             InputLanguageType = Int16.MinValue
             MsgColor = Color.White
             UserId = Int64.MinValue
@@ -1063,12 +1115,13 @@ Namespace PredefinedMessagesManagement
             Deleted = Boolean.FalseString
         End Sub
 
-        Public Sub New(YourMsgId As Int64, YourMsgName As String, YourMsgTitle As String, YourMsgContent As String, YourInputLanguageType As Int16, YourMsgColor As Color, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
+        Public Sub New(YourMsgId As Int64, YourMsgName As String, YourMsgTitle As String, YourMsgContent As String, YourDescription As String, YourInputLanguageType As Int16, YourMsgColor As Color, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
             MyBase.New()
             MsgId = YourMsgId
             MsgName = YourMsgName
             MsgTitle = YourMsgTitle
             MsgContent = YourMsgContent
+            Description = YourDescription
             InputLanguageType = YourInputLanguageType
             MsgColor = YourMsgColor
             UserId = YourUserId
@@ -1083,6 +1136,7 @@ Namespace PredefinedMessagesManagement
         Public Property MsgName As String
         Public Property MsgTitle As String
         Public Property MsgContent As String
+        Public Property Description As String
         Public Property InputLanguageType As Int16
         Public Property MsgColor As Color
         Public Property UserId As Int64
@@ -1105,6 +1159,7 @@ Namespace PredefinedMessagesManagement
                 NSS.MsgName = Ds.Tables(0).Rows(0).Item("MsgName").trim
                 NSS.MsgTitle = Ds.Tables(0).Rows(0).Item("MsgTitle").trim
                 NSS.MsgContent = Ds.Tables(0).Rows(0).Item("MsgContent").trim
+                NSS.Description = Ds.Tables(0).Rows(0).Item("Description").trim
                 NSS.InputLanguageType = Ds.Tables(0).Rows(0).Item("InputLanguageType")
                 NSS.MsgColor = Color.FromName(Ds.Tables(0).Rows(0).Item("MsgColor").trim)
                 NSS.UserId = Ds.Tables(0).Rows(0).Item("UserId")
@@ -1126,12 +1181,31 @@ Namespace PredefinedMessagesManagement
 
     End Class
 
+    Public Class R2CoreMClassPredefinedMessagesManager
+
+        Public Function GetNSS(YourMSGId As Int64) As R2CoreStandardPredefinedMessageStructure
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPredefinedMessages Where MsgId  = " & YourMSGId & " And Deleted=0", 3600, Ds).GetRecordsCount() = 0 Then Throw New PredefinedMessageNotFoundException
+                Return New R2CoreStandardPredefinedMessageStructure(Ds.Tables(0).Rows(0).Item("MsgId"), Ds.Tables(0).Rows(0).Item("MsgName").trim, Ds.Tables(0).Rows(0).Item("MsgTitle").trim, Ds.Tables(0).Rows(0).Item("MsgContent").trim, Ds.Tables(0).Rows(0).Item("Description").trim, Ds.Tables(0).Rows(0).Item("InputLanguageType"), Color.FromName(Ds.Tables(0).Rows(0).Item("MsgColor").trim), Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi").trim, Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("Deleted"))
+            Catch ex As PredefinedMessageNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+
+        End Function
+
+
+
+    End Class
+
     Namespace Exceptions
         Public Class PredefinedMessageNotFoundException
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "پیام از پیش تعریف شده ای با کد شاخص مورد نظر وجود ندارد"
+                    Return "پیام از پیش تعریف شده ای با شماره شاخص مورد نظر وجود ندارد"
                 End Get
             End Property
         End Class
@@ -1545,6 +1619,8 @@ Namespace PermissionManagement
                 Else
                     Return True
                 End If
+            Catch ex As PermissionException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -1590,6 +1666,18 @@ Namespace PermissionManagement
         End Function
 
     End Class
+
+    Namespace Exceptions
+        Public Class PermissionException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "مجوز دسترسی وچود ندارد"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
 
 End Namespace
 
@@ -1769,6 +1857,12 @@ Namespace WebProcessesManagement
 End Namespace
 
 Namespace MobileProcessesManagement
+
+    Public MustInherit Class R2CoreMobileProcesses
+        Public Shared ReadOnly None As Int64 = 0
+        Public Shared ReadOnly UserLast5Digit = 8
+        Public Shared ReadOnly Advertising = 9
+    End Class
 
     Public Class R2StandardMobileProcessStructure
         Inherits R2StandardStructure
@@ -1977,6 +2071,16 @@ Namespace MobileProcessesManagement
                 End Get
             End Property
         End Class
+
+        Public Class SoftwareUserHasNotPermissionforThisMobileProcessException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "مجوز دسترسی به این فرآیند را ندارید"
+                End Get
+            End Property
+        End Class
+
 
 
     End Namespace
@@ -2388,8 +2492,8 @@ Namespace BlackIPs
                 Dim DS As DataSet = Nothing
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
                         "Select * from R2Primary.dbo.TblBlackIPs 
-                         Where IP='" & YourNSS.IP & "' AND LockStatus=1 AND DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes", 0, DS).GetRecordsCount = 0 Then Return True
-                Return False
+                         Where IP='" & YourNSS.IP & "' AND LockStatus=1 AND DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes", 0, DS).GetRecordsCount = 0 Then Return False
+                Return True
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -2397,8 +2501,8 @@ Namespace BlackIPs
 
         Public Function AuthorizationIP(YourIP As String)
             Try
-                If IsBlackIPActive(New R2StandardBlackIPStructure(0, YourIP, Nothing, Nothing, Nothing, Nothing, Nothing)) Then Throw New AuthorizationIPIsBlackException
-            Catch ex As AuthorizationIPIsBlackException
+                If IsBlackIPActive(New R2StandardBlackIPStructure(0, YourIP, Nothing, Nothing, Nothing, Nothing, Nothing)) Then Throw New AuthorizationIPIPIsBlackException
+            Catch ex As AuthorizationIPIPIsBlackException
                 Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -2446,17 +2550,19 @@ Namespace BlackIPs
 
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "نوع آی پی سیاه با شاخص مورد نظر یافت نشد"
+                    'نوع آی پی سیاه با شاخص مورد نظر یافت نشد
+                    Return (New R2CoreMClassPredefinedMessagesManager).GetNSS(R2CorePredefinedMessages.BlackIPTypeNotFound).MsgContent
                 End Get
             End Property
         End Class
 
-        Public Class AuthorizationIPIsBlackException
+        Public Class AuthorizationIPIPIsBlackException
             Inherits ApplicationException
 
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "امکان ارتباط تا لحظاتی دیگر امکان پذیر نخواهد بود"
+                    'آی پی در لیست سیاه قرار دارد
+                    Return (New R2CoreMClassPredefinedMessagesManager).GetNSS(R2CorePredefinedMessages.IPISBlack).MsgContent
                 End Get
             End Property
         End Class

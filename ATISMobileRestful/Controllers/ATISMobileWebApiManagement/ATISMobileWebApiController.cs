@@ -1,6 +1,9 @@
 ﻿using ATISMobileRestful.Exceptions;
+using ATISMobileRestful.Logging;
 using Newtonsoft.Json;
 using R2Core.BlackIPs;
+using R2Core.LoggingManagement;
+using R2Core.SoftwareUserManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +23,12 @@ namespace ATISMobileRestful.Controllers.ATISMobileWebApiManagement
             try
             {
                 //تایید اعتبار کلاینت
-                var IP = WebAPi.GetClientIpAddress(Request);
-                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
-                InstanceBlackIP.AuthorizationIP(IP);
+                WebAPi.AuthenticateClient(Request, ATISMobileWebApiLogTypes.WebApiClientIsWebAPIAliveRequest);
 
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject("ATISMobileWebAPiIsLive"), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }

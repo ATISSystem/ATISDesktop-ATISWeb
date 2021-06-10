@@ -49,6 +49,8 @@ Imports R2CoreParkingSystem.EntityRelations
 Imports R2Core.PermissionManagement
 Imports R2CoreParkingSystem.SoftwareUsersManagement.Exceptions
 Imports R2Core.RequesterManagement
+Imports R2Core.PredefinedMessagesManagement
+Imports R2CoreParkingSystem.PredefinedMessagesManagement
 
 Namespace DataBaseManagement
 
@@ -2281,6 +2283,20 @@ Namespace MoneyWalletChargeManagement
 
     End Class
 
+    Namespace Exceptions
+        Public Class ChargingAmountInvalidException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    'مبلغ مورد نظر در محدوده مجاز نیست
+                    Return (New R2CoreMClassPredefinedMessagesManager).GetNSS(R2CoreParkingSystemPredefinedMessages.AmountInvalid).MsgContent
+                End Get
+            End Property
+        End Class
+
+    End Namespace
+
 End Namespace
 
 Namespace UserChargeProcessManagement
@@ -4432,3 +4448,17 @@ Namespace EntityManagement
 
 End Namespace
 
+Namespace MobileProcessesManagement
+
+    Public MustInherit Class R2CoreParkingSystemMobileProcesses
+        Public Shared ReadOnly MoneyWallet As Int64 = 7
+    End Class
+
+End Namespace
+
+Namespace PredefinedMessagesManagement
+    Public MustInherit Class R2CoreParkingSystemPredefinedMessages
+        Public Shared ReadOnly AmountInvalid As Int64 = 5
+    End Class
+
+End Namespace

@@ -60,6 +60,8 @@ Imports R2Core.PermissionManagement
 Imports R2CoreTransportationAndLoadNotification.PermissionManagement
 Imports R2CoreTransportationAndLoadNotification.LoadPermission.LoadPermissionPrinting
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.FailedLoadAllocationPrinting
+Imports R2Core.PredefinedMessagesManagement
+Imports R2CoreTransportationAndLoadNotification.PredefinedMessagesManagement
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -1261,9 +1263,10 @@ Namespace LoadCapacitor
                 Try
                     Dim InstanseSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                     Dim DS As DataSet = Nothing
-                    If InstanseSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Elam.nEstelamID,Elam.strBarName,Elam.nCityCode,Elam.nBarcode,Elam.nCompCode,Elam.nTruckType,Elam.strAddress,Elam.nUserID,Elam.nCarNumKol,Elam.strPriceSug,Elam.strDescription,Elam.dDateElam,Elam.dTimeElam,Elam.nCarNum,Elam.LoadStatus,Elam.nBarSource,Elam.AHId,Elam.AHSGId,TransportCompanies.TCTitle,Product.strGoodName,City.strCityName,LoaderType.LoaderTypeTitle From DBTransport.dbo.TbElam as Elam Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Elam.nCompCode=TransportCompanies.TCId Inner Join dbtransport.dbo.tbProducts as Product On Elam.nBarcode=Product.strGoodCode Inner Join dbtransport.dbo.tbCity as City On Elam.nCityCode=City.nCityCode Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderType On Elam.nTruckType=LoaderType.LoaderTypeId Where nEstelamId=" & YournEstelamId & "and LoadStatus<>3", 0, DS).GetRecordsCount <> 0 Then
+                    If InstanseSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Elam.nEstelamID,nEstelamKey,Elam.strBarName,Elam.nCityCode,Elam.nBarcode,Elam.nCompCode,Elam.nTruckType,Elam.strAddress,Elam.nUserID,Elam.nCarNumKol,Elam.strPriceSug,Elam.strDescription,Elam.dDateElam,Elam.dTimeElam,Elam.nCarNum,Elam.LoadStatus,Elam.nBarSource,Elam.AHId,Elam.AHSGId,TransportCompanies.TCTitle,Product.strGoodName,City.strCityName,LoaderType.LoaderTypeTitle From DBTransport.dbo.TbElam as Elam Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Elam.nCompCode=TransportCompanies.TCId Inner Join dbtransport.dbo.tbProducts as Product On Elam.nBarcode=Product.strGoodCode Inner Join dbtransport.dbo.tbCity as City On Elam.nCityCode=City.nCityCode Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderType On Elam.nTruckType=LoaderType.LoaderTypeId Where nEstelamId=" & YournEstelamId & "and LoadStatus<>3", 0, DS).GetRecordsCount <> 0 Then
                         Dim NSS As New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure
                         NSS.nEstelamId = YournEstelamId
+                        NSS.nEstelamKey = DS.Tables(0).Rows(0).Item("nEstelamKey").trim
                         NSS.nTruckType = DS.Tables(0).Rows(0).Item("nTruckType")
                         NSS.StrAddress = DS.Tables(0).Rows(0).Item("StrAddress").trim
                         NSS.nUserId = DS.Tables(0).Rows(0).Item("nUserId")
@@ -6941,6 +6944,16 @@ Namespace LoadAllocation
             End Property
         End Class
 
+        Public Class LoadAllocationIdNotPairWithDriverException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    'عدم مطابقت شماره تخصیص ارسالی با حساب کاربر مرتبط با راننده
+                    Return (New R2CoreMClassPredefinedMessagesManager).GetNSS(R2CoreTransportationAndLoadNotificationPredefinedMessages.LoadAllocationIdNotPairWithDriver).MsgContent
+                End Get
+            End Property
+        End Class
 
     End Namespace
 
@@ -7597,5 +7610,26 @@ Namespace BlackIPs
 
     End Class
 
+
+End Namespace
+
+Namespace MobileProcessesManagement
+
+    Public MustInherit Class R2CoreTransportationAndLoadNotificationMobileProcesses
+        Public Shared ReadOnly TruckDriverInformation As Int64 = 1
+        Public Shared ReadOnly TruckInformation As Int64 = 2
+        Public Shared ReadOnly Top5Turns As Int64 = 3
+        Public Shared ReadOnly LoadCapacitor As Int64 = 4
+        Public Shared ReadOnly LoadAllocation As Int64 = 5
+        Public Shared ReadOnly LoadAllocationPriorityManagement As Int64 = 6
+        Public Shared ReadOnly LoadPermissionsIssuedOrderByPriorityReportPage As Int64 = 9
+    End Class
+
+End Namespace
+
+Namespace PredefinedMessagesManagement
+    Public MustInherit Class R2CoreTransportationAndLoadNotificationPredefinedMessages
+        Public Shared ReadOnly LoadAllocationIdNotPairWithDriver As Int64 = 4
+    End Class
 
 End Namespace

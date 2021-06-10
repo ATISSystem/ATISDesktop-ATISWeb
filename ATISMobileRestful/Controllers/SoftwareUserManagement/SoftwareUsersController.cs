@@ -21,6 +21,9 @@ using System.Data;
 using R2Core.SecurityAlgorithmsManagement.Captcha;
 using ATISMobileRestful.SecurityAlgorithms;
 using R2Core.BlackIPs;
+using R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms;
+using R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms.Exceptions;
+using R2Core.PredefinedMessagesManagement;
 
 namespace ATISMobileRestful.Controllers.SoftwareUserManagement
 {
@@ -35,24 +38,19 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
             try
             {
                 //تایید اعتبار کلاینت
-                var IP = WebAPi.GetClientIpAddress(Request);
-                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
-                InstanceBlackIP.AuthorizationIP(IP);
-                var InstanceLogging = new R2CoreInstanceLoggingManager();
-                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                WebAPi.AuthenticateClientRegisteringMobileNumber(Request);
+
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var MobileNumber = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
-                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientRegisterMobileNumberRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientRegisterMobileNumberRequest).LogTitle, IP, MobileNumber, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
-
                 InstanceSoftwareusers.RegisteringMobileNumber(MobileNumber);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(string.Empty), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
+            catch (MobileNumberIsInvalidException ex)
+            { return WebAPi.CreateErrorContentMessage((new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.MobileNumberIsInvalid).MsgContent); }
             catch (MobileNumberNotFoundException ex)
-            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
+            { return WebAPi.CreateErrorContentMessage((new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.MobileNumberNotFoundException).MsgContent); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
@@ -74,8 +72,6 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
             }
             catch (UserNotExistByMobileNumberException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
@@ -87,21 +83,21 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClientVerificationCodeNonce(Request);
+                WebAPi.AuthenticateClientVerificationCode(Request);
 
                 var InstanceAES = new AESAlgorithmsManager();
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
-                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanceSoftwareUser = new R2CoreInstanseSoftwareUsersManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = Content.Split(';')[0];
+                var NSSSoftwareuser = InstanceSoftwareUser.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
                 InstanceSoftwareusers.LoginSoftwareUser(NSSSoftwareuser.MobileNumber);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-                var AMUStatus = InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + ";" + InstanceAES.Encrypt(NSSSoftwareuser.MobileNumber, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var AMUStatus = InstanceAES.Encrypt(NSSSoftwareuser.MobileNumber, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + ";" + InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 response.Content = new StringContent(JsonConvert.SerializeObject(AMUStatus), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (SoftwareUserNotMatchException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
@@ -115,26 +111,18 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
             try
             {
                 //تایید اعتبار کلاینت
-                var IP = WebAPi.GetClientIpAddress(Request);
-                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
-                InstanceBlackIP.AuthorizationIP(IP);
-                var InstanceLogging = new R2CoreInstanceLoggingManager();
-                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
-                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
-                var InstanceAES = new AESAlgorithmsManager();
-                var MobileNumber = InstanceAES.Decrypt(JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result), InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientNonceRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientNonceRequest).LogTitle, IP, MobileNumber, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                WebAPi.AuthenticateClientGetNonce(Request, ATISMobileWebApiLogTypes.WebApiClientNonceRequest);
 
-                //تولید نانس
-                var nonce = InstanceSoftwareusers.GetNonceforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareuser = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var nonce = InstanceSoftwareuser.GetNonceforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber));
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(nonce), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (UserIsNotActiveException ex)
-            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
-            catch (UserNotExistException ex)
-            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
@@ -146,7 +134,7 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientCaptchaRequest);
+                WebAPi.AuthenticateClientGetCaptcha(Request);
 
                 var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
@@ -158,12 +146,6 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(IImage), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
-            catch (UserIsNotActiveException ex)
-            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
-            catch (UserNotExistException ex)
-            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
@@ -189,31 +171,25 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClientApikeyNonceWith3Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientPersonalNonceRequest);
+                WebAPi.AuthenticateClientGetPersonalNonce(Request);
+
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceAES = new AESAlgorithmsManager();
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                var UserShenaseh = Content.Split(';')[2];
-                var UserPassword = Content.Split(';')[3];
-                var Captcha = Content.Split(';')[4];
-                InstanceSoftwareusers.AuthenticationUserByUserShenasehUserPasswordCaptcha(new R2CoreSoftwareUserMobile(MobileNumber), UserShenaseh, UserPassword, Captcha);
-
-                //تولید نانس شخصی
-                var PersonalNonce = InstanceSoftwareusers.GetPersonalNonceforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
+                var PersonalNonce = InstanceSoftwareusers.GetPersonalNonceforSoftwareUser(NSSSoftwareuser);
+                InvalidateCaptcha(Request);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(PersonalNonce), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { InvalidateCaptcha(Request); return WebAPi.CreateErrorContentMessage(ex); }
-            catch (UserIsNotActiveException ex)
-            { InvalidateCaptcha(Request); return WebAPi.CreateErrorContentMessage(ex); }
-            catch (UserNotExistException ex)
-            { InvalidateCaptcha(Request); return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
-            { InvalidateCaptcha(Request); return WebAPi.CreateErrorContentMessage(ex); }
+            {
+                InvalidateCaptcha(Request);
+                return WebAPi.CreateErrorContentMessage(ex);
+            }
         }
 
 

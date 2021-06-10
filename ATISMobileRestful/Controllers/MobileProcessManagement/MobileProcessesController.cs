@@ -55,8 +55,6 @@ namespace ATISMobileRestful.Controllers.MobileProcessManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(_MobileProcesses), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (SoftwareUserHasNotAnyMobileProcessPermissionException ex)
             { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (UserNotExistByMobileNumberException ex)

@@ -35,8 +35,6 @@ namespace ATISMobileRestful.Controllers.AnnouncementHallsManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(LstPair), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }

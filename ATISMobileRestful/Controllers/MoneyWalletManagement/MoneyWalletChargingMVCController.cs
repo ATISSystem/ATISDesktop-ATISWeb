@@ -14,6 +14,7 @@ using R2CoreParkingSystem.MoneyWalletChargeManagement;
 using R2CoreParkingSystem.MoneyWalletManagement;
 using R2CoreParkingSystem.TrafficCardsManagement;
 using R2CoreTransportationAndLoadNotification.Logging;
+using R2CoreTransportationAndLoadNotification.TerraficCardsManagement;
 
 namespace ATISMobileRestful.Controllers.MoneyWalletManagement
 {
@@ -32,7 +33,7 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 InstanceBlackIP.AuthorizationIP(IP);
 
-                var InstanceTrafficCards = new R2CoreTransportationAndLoadNotification.TerraficCardsManagement.R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
+                var InstanceTrafficCards = new R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
                 var InstanceMoneyWallets = new R2CoreParkingSystemInstanceMoneyWalletManager();
                 var InstanceMoneyWalletCharge = new R2CoreParkingSystemInstanceMoneyWalletChargeManager();
                 var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();

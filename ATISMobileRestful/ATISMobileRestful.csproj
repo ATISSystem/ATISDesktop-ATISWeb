@@ -179,6 +179,7 @@
     <Compile Include="Controllers\MoneyWalletManagement\MoneyWalletAccountingController.cs" />
     <Compile Include="Controllers\MoneyWalletManagement\MoneyWalletChargingAPIController.cs" />
     <Compile Include="Controllers\MoneyWalletManagement\MoneyWalletChargingMVCController.cs" />
+    <Compile Include="Controllers\MoneyWalletManagement\MoneyWalletReminderChargeController.cs" />
     <Compile Include="Controllers\PermissionManagement\PermissionsController.cs" />
     <Compile Include="Controllers\ProvinceManagement\ProvincesController.cs" />
     <Compile Include="Controllers\PublicMessageManagement\PublicMessagesController.cs" />

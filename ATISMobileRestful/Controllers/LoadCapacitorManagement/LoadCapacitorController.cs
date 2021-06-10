@@ -22,6 +22,8 @@ using R2Core.ConfigurationManagement;
 using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
 using R2Core.SecurityAlgorithmsManagement.Hashing;
 using R2Core.DateAndTimeManagement;
+using R2Core.PermissionManagement;
+using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
 
 namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
 {
@@ -61,8 +63,6 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                 return response;
             }
             catch (UserNotExistByMobileNumberException ex)
-            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
-            catch (WebApiClientUnAuthorizedException ex)
             { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }

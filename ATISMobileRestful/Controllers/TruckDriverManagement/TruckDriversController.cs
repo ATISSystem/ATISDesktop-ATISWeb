@@ -16,6 +16,8 @@ using ATISMobileRestful.Exceptions;
 using R2Core.SoftwareUserManagement.Exceptions;
 using R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions;
 using ATISMobileRestful.Logging;
+using R2Core.PermissionManagement;
+using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
 
 namespace ATISMobileRestful.Controllers.TruckDriverManagement
 {
@@ -50,8 +52,6 @@ namespace ATISMobileRestful.Controllers.TruckDriverManagement
             catch (TruckDriverNotFoundException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByMobileNumberException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
-            catch (WebApiClientUnAuthorizedException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }

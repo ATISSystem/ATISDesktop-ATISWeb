@@ -28,6 +28,8 @@ using R2Core.DateAndTimeManagement;
 using R2Core.ConfigurationManagement;
 using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
 using R2Core.SecurityAlgorithmsManagement.Hashing;
+using R2Core.PermissionManagement;
+using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
 
 namespace ATISMobileRestful.Controllers.LoadAllocationManagement
 {
@@ -44,13 +46,13 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientLoadAllocationRegisteringRequest);
 
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceAES = new AESAlgorithmsManager();
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
-                var nEstelamId = Content.Split(';')[2];
+                var nEstelamId = Convert.ToInt64(Content.Split(';')[2]);
                 var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
                 var NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamId).nEstelamKey);
                 if (NSSLoadCapacitorLoad.LoadStatus == R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented)
@@ -84,8 +86,6 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByApiKeyException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TruckDriverNotFoundException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserLast5DigitNotMatchingException ex)
@@ -94,6 +94,19 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
+        }
+
+        private void AuthorizationLoadAllocationIdWithSoftwareUser(R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser, Int64 YourLoadAllocationId)
+        {
+            try
+            {
+                var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
+                var InstanceTurn = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
+                if (InstanceTurn.GetNSSTurn(YourNSSSoftwareUser).nEnterExitId != InstanceLoadAllocation.GetNSSLoadAllocation(YourLoadAllocationId).TurnId)
+                { throw new LoadAllocationIdNotPairWithDriverException(); }
+            }
+            catch (Exception ex)
+            { throw ex; }
         }
 
         [HttpPost]
@@ -111,15 +124,13 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
-                var LoadAllocationId = Content.Split(';')[2];
-
+                var LoadAllocationId = Convert.ToInt64(Content.Split(';')[2]);
+                AuthorizationLoadAllocationIdWithSoftwareUser(NSSSoftwareuser, LoadAllocationId);
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                InstanceLoadAllocation.LoadAllocationCancelling(Convert.ToInt64(LoadAllocationId), R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, NSSSoftwareuser);
+                InstanceLoadAllocation.LoadAllocationCancelling(LoadAllocationId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser, NSSSoftwareuser);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TimingNotReachedException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TurnHandlingNotAllowedBecuaseTurnStatusException ex)
@@ -178,8 +189,6 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(_LoadAllocations), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByApiKeyException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationNotFoundException ex)
@@ -203,18 +212,16 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
-                var LoadAllocationId = Content.Split(';')[2];
-
+                var LoadAllocationId = Convert.ToInt64(Content.Split(';')[2]);
+                AuthorizationLoadAllocationIdWithSoftwareUser(NSSSoftwareuser, LoadAllocationId);
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                InstanceLoadAllocation.IncreasePriority(Convert.ToInt64(LoadAllocationId));
+                InstanceLoadAllocation.IncreasePriority(LoadAllocationId);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
             catch (LoadAllocationChangePriorityNotAllowedBecauseLoadAllocationStatusException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
-            catch (WebApiClientUnAuthorizedException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserLast5DigitNotMatchingException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
@@ -247,18 +254,16 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
-                var LoadAllocationId = Content.Split(';')[2];
-
+                var LoadAllocationId = Convert.ToInt64(Content.Split(';')[2]);
+                AuthorizationLoadAllocationIdWithSoftwareUser(NSSSoftwareuser, LoadAllocationId);
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                InstanceLoadAllocation.DecreasePriority(Convert.ToInt64(LoadAllocationId));
+                InstanceLoadAllocation.DecreasePriority(LoadAllocationId);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
             catch (LoadAllocationChangePriorityNotAllowedBecauseLoadAllocationStatusException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationChangePriorityNotAllowedBecuaseTurnStatusException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
-            catch (WebApiClientUnAuthorizedException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserLast5DigitNotMatchingException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }

@@ -29,12 +29,7 @@ namespace ATISMobileRestful.Controllers.PublicMessageManagement
             try
             {
                 //تایید اعتبار کلاینت
-                var IP = WebAPi.GetClientIpAddress(Request);
-                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
-                InstanceBlackIP.AuthorizationIP(IP);
-                var InstanceLogging = new R2CoreInstanceLoggingManager();
-                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
-                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientPublicMessageRequest ,InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientPublicMessageRequest).LogTitle, WebAPi.GetClientIpAddress(Request),String.Empty, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                WebAPi.AuthenticateClient(Request, ATISMobileWebApiLogTypes.WebApiClientPublicMessageRequest);
 
                 string[] AllConfig = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.PublicMessagesforSoftWareUsers).Split(';');
                 string Message = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.PublicMessagesforSoftWareUsers, 1);

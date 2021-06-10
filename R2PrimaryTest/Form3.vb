@@ -10,6 +10,7 @@ Imports R2Core.DateAndTimeManagement
 Imports R2Core.DateAndTimeManagement.CalendarManagement.PersianCalendar
 Imports R2Core.EntityRelationManagement
 Imports R2Core.PermissionManagement
+Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
 Imports R2Core.SecurityAlgorithmsManagement.Hashing
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
@@ -23,6 +24,7 @@ Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLading
 Imports R2CoreTransportationAndLoadNotification.ConfigurationsManagement
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
 Imports R2CoreTransportationAndLoadNotification.RequesterManagement
@@ -361,38 +363,6 @@ Public Class Form3
     End Sub
 
 
-    Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
-        Dim cmdsql As New SqlCommand
-        cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection()
-        Try
-            Dim da As New OleDb.OleDbDataAdapter
-            Dim ds As New DataSet
-            da.SelectCommand = New OleDbCommand("Select Field8,Field10 from  TransportPriceTarrifsReport")
-            da.SelectCommand.Connection = New OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\4.mdb")
-            da.Fill(ds)
-            cmdsql.Connection.Open()
-            cmdsql.Transaction = cmdsql.Connection.BeginTransaction()
-            For loopx As Integer = 0 To ds.Tables(0).Rows.Count - 1
-                Dim TargetCityId As Int64 = ds.Tables(0).Rows(loopx).Item("Field8")
-                Dim Tarrif As Int64 = ds.Tables(0).Rows(loopx).Item("Field10")
-                cmdsql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifs(AHId,AHSGId,TargetCityId,Tarrif,DateTimeMilladi,DateShamsi,Time,OActive) values(2,7," & TargetCityId & "," & Tarrif & ",'2020-12-27 10:00:00','1399/10/07','10:00:00',0)"
-                cmdsql.ExecuteNonQuery()
-                cmdsql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifs(AHId,AHSGId,TargetCityId,Tarrif,DateTimeMilladi,DateShamsi,Time,OActive) values(2,8," & TargetCityId & "," & Tarrif & ",'2020-12-27 10:00:00','1399/10/07','10:00:00',0)"
-                cmdsql.ExecuteNonQuery()
-                cmdsql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifs(AHId,AHSGId,TargetCityId,Tarrif,DateTimeMilladi,DateShamsi,Time,OActive) values(2,9," & TargetCityId & "," & Tarrif & ",'2020-12-27 10:00:00','1399/10/07','10:00:00',0)"
-                cmdsql.ExecuteNonQuery()
-            Next
-            cmdsql.Transaction.Commit() : cmdsql.Connection.Close()
-            MessageBox.Show("Finished...")
-        Catch ex As Exception
-            If cmdsql.Connection.State <> ConnectionState.Closed Then
-                cmdsql.Transaction.Rollback()
-                cmdsql.Connection.Close()
-            End If
-            MessageBox.Show(ex.Message)
-        End Try
-    End Sub
-
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
         Try
             RmtoWebService.GetNSSTruckDriver("3012237")
@@ -421,84 +391,10 @@ Public Class Form3
         End Try
     End Sub
 
-    Private Sub Button13_Click(sender As Object, e As EventArgs) Handles Button13.Click
-        Dim Cmdsql As New SqlClient.SqlCommand
-        Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
-        Try
-            Dim AES As New R2Core.SecurityAlgorithmsManagement.AESAlgorithms.AESAlgorithmsManager
-            Dim Hasher As New R2Core.SecurityAlgorithmsManagement.Hashing.SHAHasher()
-            Dim Ds As DataSet
-            R2Core.DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserTypeId=3 Order By UserId", 0, Ds)
-            Cmdsql.Connection.Open()
-            Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
-            For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                Dim UserId As Int64 = Ds.Tables(0).Rows(loopx).Item("UserId")
-                Dim UIdSalt As String = AES.GetSalt(64)
-                Dim APIKey = Hasher.GenerateSHA256String(UserId.ToString + UIdSalt)
-                Cmdsql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UIdSalt='" & UIdSalt & "',APIKey='" & APIKey & "' Where UserId=" & UserId & ""
-                Cmdsql.ExecuteNonQuery()
-
-
-            Next
-            Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
-            MessageBox.Show("Finished Success ...")
-        Catch ex As Exception
-            If Cmdsql.Connection.State <> ConnectionState.Closed Then
-                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
-            End If
-            MessageBox.Show(ex.Message)
-        End Try
+    Private Sub Button13_Click(sender As Object, e As EventArgs)
     End Sub
 
-    Private Sub Button14_Click(sender As Object, e As EventArgs) Handles Button14.Click
-        Dim Cmdsql As New SqlClient.SqlCommand
-        Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
-        Try
-            Dim AES As New R2Core.SecurityAlgorithmsManagement.AESAlgorithms.AESAlgorithmsManager
-            Dim Ds As DataSet
-            R2Core.DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserTypeId=3 Order By UserId", 0, Ds)
-            Cmdsql.Connection.Open()
-            Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
-            For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                Dim UserId As Int64 = Ds.Tables(0).Rows(loopx).Item("UserId")
-                Dim UserShenaseh As String = AES.GetRandomNumericCode(1000, 9999)
-                Cmdsql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserShenaseh='" & UserShenaseh & "' Where UserId=" & UserId & ""
-                Cmdsql.ExecuteNonQuery()
-            Next
-            Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
-            MessageBox.Show("Finished Success ...")
-        Catch ex As Exception
-            If Cmdsql.Connection.State <> ConnectionState.Closed Then
-                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
-            End If
-            MessageBox.Show(ex.Message)
-        End Try
-    End Sub
-
-    Private Sub Button15_Click(sender As Object, e As EventArgs) Handles Button15.Click
-        Dim Cmdsql As New SqlClient.SqlCommand
-        Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
-        Try
-            Dim AES As New R2Core.SecurityAlgorithmsManagement.AESAlgorithms.AESAlgorithmsManager
-            Dim Ds As DataSet
-            R2Core.DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserTypeId=3 Order By UserId", 0, Ds)
-            Cmdsql.Connection.Open()
-            Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
-            For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                Dim UserId As Int64 = Ds.Tables(0).Rows(loopx).Item("UserId")
-                Dim UserPassword As String = AES.GetRandomNumericCode(10000000, 99999999)
-                Cmdsql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserPassword='" & UserPassword & "' Where UserId=" & UserId & ""
-                Cmdsql.ExecuteNonQuery()
-            Next
-            Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
-            MessageBox.Show("Finished Success ...")
-        Catch ex As Exception
-            If Cmdsql.Connection.State <> ConnectionState.Closed Then
-                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
-            End If
-            MessageBox.Show(ex.Message)
-        End Try
-
+    Private Sub Button14_Click(sender As Object, e As EventArgs)
     End Sub
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
@@ -606,59 +502,22 @@ Public Class Form3
     Private Sub Button19_Click(sender As Object, e As EventArgs) Handles Button19.Click
         Try
             R2Core.SMSSendAndRecieved.R2CoreSMSMClassSMSDomainManagement.SMSDomainSendRecieved()
-
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
     End Sub
 
-    Private Sub Button20_Click(sender As Object, e As EventArgs) Handles Button20.Click
-        Dim Cmdsql As New SqlClient.SqlCommand
-        Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
+    Private Sub Button28_Click(sender As Object, e As EventArgs) Handles Button28.Click
         Try
-            Dim Hasher = New MD5Hasher
-            Dim Ds As DataSet
-            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select UserId from R2primary.dbo.tblsoftwareusers", 0, Ds)
-            Cmdsql.Connection.Open()
-            Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
-            For loopx As Int16 = 0 To Ds.Tables(0).Rows.Count - 1
-                Dim UserId As Int64 = Ds.Tables(0).Rows(loopx).Item("UserId")
-                Cmdsql.CommandText = "Update r2primary.dbo.tblsoftwareusers set apikey='" & Hasher.GenerateMD5String(UserId) & "'
-                                      Where Userid=" & UserId & ""
-                Cmdsql.ExecuteNonQuery()
-            Next
-            Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
-            MessageBox.Show("Finished ...")
+            Dim frm As New TestforAES
+            frm.Show()
         Catch ex As Exception
-            If Cmdsql.Connection.State <> ConnectionState.Closed Then
-                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
-            End If
-            MessageBox.Show(ex.Message)
         End Try
     End Sub
 
-    Private Sub Button21_Click(sender As Object, e As EventArgs) Handles Button21.Click
-        Dim Cmdsql As New SqlClient.SqlCommand
-        Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
-        Try
-            Dim Hasher = New MD5Hasher
-            Dim Ds As DataSet
-            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select nEstelamId from dbtransport.dbo.tbelam order by nEstelamId asc", 0, Ds)
-            Cmdsql.Connection.Open()
-            For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                Dim nEstelamId As Int64 = Ds.Tables(0).Rows(loopx).Item("nEstelamId")
-                Cmdsql.CommandText = "Update dbtransport.dbo.tbelam set nEstelamkey='" & Hasher.GenerateMD5String(nEstelamId) & "'
-                                      Where nEstelamId=" & nEstelamId & ""
-                Cmdsql.ExecuteNonQuery()
-            Next
-            Cmdsql.Connection.Close()
-            MessageBox.Show("Finished ...")
-        Catch ex As Exception
-            If Cmdsql.Connection.State <> ConnectionState.Closed Then
-                Cmdsql.Connection.Close()
-            End If
-            MessageBox.Show(ex.Message)
-        End Try
+    Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
+        Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager()
+        Dim NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(38).nEstelamKey)
 
     End Sub
 End Class

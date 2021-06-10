@@ -20,6 +20,8 @@ using R2CoreParkingSystem.MoneyWalletManagement;
 using ATISMobileRestful.Exceptions;
 using R2Core.SoftwareUserManagement.Exceptions;
 using ATISMobileRestful.Logging;
+using R2Core.PermissionManagement;
+using R2CoreParkingSystem.MobileProcessesManagement;
 
 namespace ATISMobileRestful.Controllers.MoneyWalletManagement
 {
@@ -60,40 +62,12 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(_MoneyWalletAccountings), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByApiKeyException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
-        [HttpPost]
-        public HttpResponseMessage GetMoneyWalletIDandReminderCharge()
-        {
-            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
-            try
-            {
-                //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletIDandReminderChargeRequest);
-
-                var InstanceTerraficCards = new R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
-                var NSSSoftwareUser = WebAPi.GetNSSSoftwareUser(Request);
-                var InstanceMoneyWallets = new R2CoreParkingSystemInstanceMoneyWalletManager();
-                var NSSTrafficCard = InstanceTerraficCards.GetNSSTerafficCard(NSSSoftwareUser);
-                Int64 ReminderCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
-
-                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-                response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = NSSTrafficCard.CardNo, Message2 = ReminderCharge.ToString(), Message3 = string.Empty }), Encoding.UTF8, "application/json");
-                return response;
-            }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
-            catch (UserNotExistByApiKeyException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
-            catch (Exception ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
-        }
 
     }
 }

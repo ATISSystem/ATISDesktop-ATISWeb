@@ -20,6 +20,8 @@ using ATISMobileRestful.Logging;
 using R2Core.ConfigurationManagement;
 using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
 using R2Core.BlackIPs;
+using R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms;
+using R2Core.PredefinedMessagesManagement;
 
 namespace ATISMobileRestful
 {
@@ -36,6 +38,8 @@ namespace ATISMobileRestful
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var InstanceEVA = new ExpressionValidationAlgorithmsManager();
+                InstanceEVA.ValidationMobileNumber(MobileNumber);
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
                 return NSSSoftwareuser;
             }
@@ -43,7 +47,69 @@ namespace ATISMobileRestful
             { throw ex; }
         }
 
-        public void AuthenticateClientVerificationCodeNonce(HttpRequestMessage YourRequest)
+        public void AuthenticateClient(HttpRequestMessage YourRequest, Int64 YourLogId)
+        {
+            try
+            {
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+                var InstanceEVA = new ExpressionValidationAlgorithmsManager();
+                var IP = GetClientIpAddress(YourRequest);
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, YourLogId, InstanceLogging.GetNSSLogType(YourLogId).LogTitle, IP, string.Empty, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                InstanceBlackIP.AuthorizationIP(IP);
+            }
+            catch (Exception ex)
+            { throw ex; }
+        }
+
+        public void AuthenticateClientRegisteringMobileNumber(HttpRequestMessage YourRequest)
+        {
+            try
+            {
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+                var IP = GetClientIpAddress(YourRequest);
+                var MobileNumber = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientRegisterMobileNumberRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientRegisterMobileNumberRequest).LogTitle, IP, MobileNumber, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                InstanceBlackIP.AuthorizationIP(IP);
+            }
+            catch (Exception ex)
+            { throw ex; }
+        }
+
+        public void AuthenticateClientVerificationCode(HttpRequestMessage YourRequest)
+        {
+            try
+            {
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var InstanceHash = new SHAHasher();
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+                var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
+                var MobileNumber = Content.Split(';')[0];
+                var Hash = Content.Split(';')[1];
+                var IP = GetClientIpAddress(YourRequest);
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientLoginRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientLoginRequest).LogTitle, IP, MobileNumber, Hash, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                InstanceBlackIP.AuthorizationIP(IP);
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSSoftwareuser.VerificationCodeTimeStamp).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 7))
+                { throw new WebApiClientVerificationCodeExpiredException(); };
+                if (NSSSoftwareuser.VerificationCodeCount == 0)
+                { throw new WebApiClientVerificationCodeExpiredException(); }
+                else
+                { InstanceSoftwareusers.DecreaseVerificationCodeCountforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber)); }
+                if (Hash != InstanceHash.GenerateSHA256String(NSSSoftwareuser.VerificationCode))
+                { throw new WebApiClientSecurityHashInvalidException(); };
+            }
+            catch (Exception ex)
+            { throw ex; }
+        }
+
+        public void AuthenticateClientGetPersonalNonce(HttpRequestMessage YourRequest)
         {
             try
             {
@@ -54,22 +120,89 @@ namespace ATISMobileRestful
                 var InstanceHash = new SHAHasher();
                 var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 var IP = GetClientIpAddress(YourRequest);
-                InstanceBlackIP.AuthorizationIP(IP);
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
                 var Hash = Content.Split(';')[1];
-                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientLoginRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientLoginRequest).LogTitle, IP, MobileNumber, Hash, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
-                if (Hash != InstanceHash.GenerateSHA256String(NSSSoftwareuser.VerificationCode + NSSSoftwareuser.Nonce))
-                { throw new WebApiClientSecurityHashInvalidException(); };
-                if (NSSSoftwareuser.VerificationCodeTimeStamp.Subtract(_DateTime.GetCurrentDateTimeMilladi()).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 7))
-                { throw new WebApiClientVerificationCodeExpiredException(); };
-                if (NSSSoftwareuser.NonceTimeStamp.Subtract(_DateTime.GetCurrentDateTimeMilladi()).TotalSeconds < InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 7))
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); };
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientPersonalNonceRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientPersonalNonceRequest).LogTitle, IP, MobileNumber, Hash, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                InstanceBlackIP.AuthorizationIP(IP);
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSSoftwareuser.NonceTimeStamp).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 8))
+                { throw new WebApiClientNonceExpiredException(); };
                 if (NSSSoftwareuser.NonceCount == 0)
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); }
+                { throw new WebApiClientNonceExpiredException(); }
                 else
                 { InstanceSoftwareusers.DecreaseNonceCountforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber)); }
+                if (DateTime.Compare(_DateTime.GetMilladiDateTimeFromDateShamsiFull(NSSSoftwareuser.APIKeyExpiration, "00:00:00"), _DateTime.GetCurrentDateTimeMilladi()) < 0)
+                { throw new WebApiClientSoftwareUserAPIKeyExpiredException(); };
+                if (DateTime.Compare(_DateTime.GetMilladiDateTimeFromDateShamsiFull(NSSSoftwareuser.UserPasswordExpiration, "00:00:00"), _DateTime.GetCurrentDateTimeMilladi()) < 0)
+                { throw new WebApiClientSoftWareUserPasswordExpiredException(); };
+                if (NSSSoftwareuser.UserStatus == "logout")
+                { throw new WebApiClientSoftwareUserIsLogoutException(); };
+                if (Hash != InstanceHash.GenerateSHA256String(InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + NSSSoftwareuser.Nonce + NSSSoftwareuser.UserShenaseh + NSSSoftwareuser.UserPassword + NSSSoftwareuser.Captcha))
+                { throw new WebApiClientSecurityHashInvalidException(); }
+            }
+            catch (Exception ex)
+            { throw ex; }
+        }
+
+        public void AuthenticateClientGetNonce(HttpRequestMessage YourRequest, Int64 YourLogId)
+        {
+            try
+            {
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+                var InstanceHash = new SHAHasher();
+                var IP = GetClientIpAddress(YourRequest);
+                var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var Hash = Content.Split(';')[1];
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, YourLogId, InstanceLogging.GetNSSLogType(YourLogId).LogTitle, IP, MobileNumber, Hash, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                InstanceBlackIP.AuthorizationIP(IP);
+                var NSSSoftwareuser = GetNSSSoftwareUser(YourRequest);
+                if (DateTime.Compare(_DateTime.GetMilladiDateTimeFromDateShamsiFull(NSSSoftwareuser.APIKeyExpiration, "00:00:00"), _DateTime.GetCurrentDateTimeMilladi()) < 0)
+                { throw new WebApiClientSoftwareUserAPIKeyExpiredException(); };
+                if (NSSSoftwareuser.UserStatus == "logout")
+                { throw new WebApiClientSoftwareUserIsLogoutException(); };
+                if (Hash != InstanceHash.GenerateSHA256String(InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3))))
+                { throw new WebApiClientSecurityHashInvalidException(); }
+            }
+            catch (Exception ex)
+            { throw ex; }
+        }
+
+        public void AuthenticateClientGetCaptcha(HttpRequestMessage YourRequest)
+        {
+            try
+            {
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+                var InstanceHash = new SHAHasher();
+                var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var Hash = Content.Split(';')[1];
+                var IP = GetClientIpAddress(YourRequest);
+                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientCaptchaRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientCaptchaRequest).LogTitle, IP, MobileNumber, Hash, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                InstanceBlackIP.AuthorizationIP(IP);
+                var NSSSoftwareuser = GetNSSSoftwareUser(YourRequest);
+                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSSoftwareuser.NonceTimeStamp).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 8))
+                { throw new WebApiClientNonceExpiredException(); };
+                if (NSSSoftwareuser.NonceCount == 0)
+                { throw new WebApiClientNonceExpiredException(); }
+                else
+                { InstanceSoftwareusers.DecreaseNonceCountforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber)); }
+                if (DateTime.Compare(_DateTime.GetMilladiDateTimeFromDateShamsiFull(NSSSoftwareuser.APIKeyExpiration, "00:00:00"), _DateTime.GetCurrentDateTimeMilladi()) < 0)
+                { throw new WebApiClientSoftwareUserAPIKeyExpiredException(); };
+                if (NSSSoftwareuser.UserStatus == "logout")
+                { throw new WebApiClientSoftwareUserIsLogoutException(); };
+                if (Hash != InstanceHash.GenerateSHA256String(InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + NSSSoftwareuser.Nonce))
+                { throw new WebApiClientSecurityHashInvalidException(); }
+
             }
             catch (Exception ex)
             { throw ex; }
@@ -85,25 +218,25 @@ namespace ATISMobileRestful
                 var InstanceAES = new AESAlgorithmsManager();
                 var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 var InstanceHash = new SHAHasher();
-                var IP = GetClientIpAddress(YourRequest);
-                InstanceBlackIP.AuthorizationIP(IP);
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
                 var Hash = Content.Split(';')[1];
+                var IP = GetClientIpAddress(YourRequest);
                 InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, YourLogId, InstanceLogging.GetNSSLogType(YourLogId).LogTitle, IP, MobileNumber, Hash, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
-                if (Hash != InstanceHash.GenerateSHA256String((InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + NSSSoftwareuser.Nonce)))
-                { throw new WebApiClientSecurityHashInvalidException(); }
-                if (NSSSoftwareuser.NonceTimeStamp.Subtract(_DateTime.GetCurrentDateTimeMilladi()).TotalSeconds < InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 8))
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); };
+                InstanceBlackIP.AuthorizationIP(IP);
+                var NSSSoftwareuser = GetNSSSoftwareUser(YourRequest);
+                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSSoftwareuser.NonceTimeStamp).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 8))
+                { throw new WebApiClientNonceExpiredException(); };
                 if (NSSSoftwareuser.NonceCount == 0)
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); }
+                { throw new WebApiClientNonceExpiredException(); }
                 else
                 { InstanceSoftwareusers.DecreaseNonceCountforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber)); }
                 if (DateTime.Compare(_DateTime.GetMilladiDateTimeFromDateShamsiFull(NSSSoftwareuser.APIKeyExpiration, "00:00:00"), _DateTime.GetCurrentDateTimeMilladi()) < 0)
                 { throw new WebApiClientSoftwareUserAPIKeyExpiredException(); };
                 if (NSSSoftwareuser.UserStatus == "logout")
                 { throw new WebApiClientSoftwareUserIsLogoutException(); };
+                if (Hash != InstanceHash.GenerateSHA256String(InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + NSSSoftwareuser.Nonce))
+                { throw new WebApiClientSecurityHashInvalidException(); }
             }
             catch (Exception ex)
             { throw ex; }
@@ -120,25 +253,25 @@ namespace ATISMobileRestful
                 var InstanceHash = new SHAHasher();
                 var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 var IP = GetClientIpAddress(YourRequest);
-                InstanceBlackIP.AuthorizationIP(IP);
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
                 var Hash = Content.Split(';')[1];
                 var Param = Content.Split(';')[2];
                 InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, YourLogId, InstanceLogging.GetNSSLogType(YourLogId).LogTitle, IP, MobileNumber, Hash, "Param=" + Param, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
-                if (Hash != InstanceHash.GenerateSHA256String((InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + NSSSoftwareuser.Nonce + Param)))
-                { throw new WebApiClientSecurityHashInvalidException(); }
-                if (NSSSoftwareuser.NonceTimeStamp.Subtract(_DateTime.GetCurrentDateTimeMilladi()).TotalSeconds < InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 8))
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); };
+                InstanceBlackIP.AuthorizationIP(IP);
+                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSSoftwareuser.NonceTimeStamp).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 8))
+                { throw new WebApiClientNonceExpiredException(); };
                 if (NSSSoftwareuser.NonceCount == 0)
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); }
+                { throw new WebApiClientNonceExpiredException(); }
                 else
                 { InstanceSoftwareusers.DecreaseNonceCountforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber)); }
                 if (DateTime.Compare(_DateTime.GetMilladiDateTimeFromDateShamsiFull(NSSSoftwareuser.APIKeyExpiration, "00:00:00"), _DateTime.GetCurrentDateTimeMilladi()) < 0)
                 { throw new WebApiClientSoftwareUserAPIKeyExpiredException(); };
                 if (NSSSoftwareuser.UserStatus == "logout")
                 { throw new WebApiClientSoftwareUserIsLogoutException(); };
+                if (Hash != InstanceHash.GenerateSHA256String(InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + NSSSoftwareuser.Nonce + Param))
+                { throw new WebApiClientSecurityHashInvalidException(); }
             }
             catch (Exception ex)
             { throw ex; }
@@ -155,29 +288,27 @@ namespace ATISMobileRestful
                 var InstanceHash = new SHAHasher();
                 var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 var IP = GetClientIpAddress(YourRequest);
-                InstanceBlackIP.AuthorizationIP(IP);
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
                 var Hash = Content.Split(';')[1];
                 var Param1 = Content.Split(';')[2];
                 var Param2 = Content.Split(';')[3];
                 var Param3 = Content.Split(';')[4];
                 InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, YourLogId, InstanceLogging.GetNSSLogType(YourLogId).LogTitle, IP, MobileNumber, Hash, "Param1=" + Param1 + ";" + "Param2=" + Param2 + ";" + "Param3=" + Param3, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
-                if (Hash != InstanceHash.GenerateSHA256String(InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + NSSSoftwareuser.Nonce + Param1 + Param2 + Param3))
-                { throw new WebApiClientSecurityHashInvalidException(); }
-                if (NSSSoftwareuser.NonceTimeStamp.Subtract(_DateTime.GetCurrentDateTimeMilladi()).TotalSeconds < InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 8))
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); };
+                InstanceBlackIP.AuthorizationIP(IP);
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSSoftwareuser.NonceTimeStamp).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 8))
+                { throw new WebApiClientNonceExpiredException(); };
                 if (NSSSoftwareuser.NonceCount == 0)
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); }
+                { throw new WebApiClientNonceExpiredException(); }
                 else
                 { InstanceSoftwareusers.DecreaseNonceCountforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber)); }
                 if (DateTime.Compare(_DateTime.GetMilladiDateTimeFromDateShamsiFull(NSSSoftwareuser.APIKeyExpiration, "00:00:00"), _DateTime.GetCurrentDateTimeMilladi()) < 0)
                 { throw new WebApiClientSoftwareUserAPIKeyExpiredException(); };
-                if (DateTime.Compare(_DateTime.GetMilladiDateTimeFromDateShamsiFull(NSSSoftwareuser.UserPasswordExpiration, "00:00:00"), _DateTime.GetCurrentDateTimeMilladi()) < 0)
-                { throw new WebApiClientSoftWareUserPasswordExpiredException(); };
                 if (NSSSoftwareuser.UserStatus == "logout")
                 { throw new WebApiClientSoftwareUserIsLogoutException(); };
+                if (Hash != InstanceHash.GenerateSHA256String(InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + NSSSoftwareuser.Nonce + Param1 + Param2 + Param3))
+                { throw new WebApiClientSecurityHashInvalidException(); }
             }
             catch (Exception ex)
             { throw ex; }
@@ -194,29 +325,29 @@ namespace ATISMobileRestful
                 var InstanceHash = new SHAHasher();
                 var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 var IP = GetClientIpAddress(YourRequest);
-                InstanceBlackIP.AuthorizationIP(IP);
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
                 var Hash = Content.Split(';')[1];
                 var Param = Content.Split(';')[2];
                 InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, YourLogId, InstanceLogging.GetNSSLogType(YourLogId).LogTitle, IP, MobileNumber, Hash, "Param=" + Param, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
-                if (Hash != InstanceHash.GenerateSHA256String(InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3) + NSSSoftwareuser.Nonce + NSSSoftwareuser.PersonalNonce + Param)))
-                { throw new WebApiClientSecurityHashInvalidException(); }
-                if (NSSSoftwareuser.NonceTimeStamp.Subtract(_DateTime.GetCurrentDateTimeMilladi()).TotalSeconds < InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 8))
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); };
+                InstanceBlackIP.AuthorizationIP(IP);
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSSoftwareuser.NonceTimeStamp).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 8))
+                { throw new WebApiClientNonceExpiredException(); };
                 if (NSSSoftwareuser.NonceCount == 0)
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); }
+                { throw new WebApiClientNonceExpiredException(); }
                 else
                 { InstanceSoftwareusers.DecreaseNonceCountforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber)); }
-                if (NSSSoftwareuser.PersonalNonceTimeStamp.Subtract(_DateTime.GetCurrentDateTimeMilladi()).TotalSeconds < InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 5))
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); };
+                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSSoftwareuser.PersonalNonceTimeStamp).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 5))
+                { throw new WebApiClientPersonalNonceExpiredException(); };
                 if (DateTime.Compare(_DateTime.GetMilladiDateTimeFromDateShamsiFull(NSSSoftwareuser.APIKeyExpiration, "00:00:00"), _DateTime.GetCurrentDateTimeMilladi()) < 0)
                 { throw new WebApiClientSoftwareUserAPIKeyExpiredException(); };
                 if (DateTime.Compare(_DateTime.GetMilladiDateTimeFromDateShamsiFull(NSSSoftwareuser.UserPasswordExpiration, "00:00:00"), _DateTime.GetCurrentDateTimeMilladi()) < 0)
                 { throw new WebApiClientSoftWareUserPasswordExpiredException(); };
                 if (NSSSoftwareuser.UserStatus == "logout")
                 { throw new WebApiClientSoftwareUserIsLogoutException(); };
+                if (Hash != InstanceHash.GenerateSHA256String(InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + NSSSoftwareuser.Nonce + NSSSoftwareuser.PersonalNonce + Param))
+                { throw new WebApiClientSecurityHashInvalidException(); }
             }
             catch (Exception ex)
             { throw ex; }
@@ -233,7 +364,6 @@ namespace ATISMobileRestful
                 var InstanceHash = new SHAHasher();
                 var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
                 var IP = GetClientIpAddress(YourRequest);
-                InstanceBlackIP.AuthorizationIP(IP);
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
@@ -243,18 +373,19 @@ namespace ATISMobileRestful
                 var Param3 = Content.Split(';')[4];
                 var Param4 = Content.Split(';')[5];
                 InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, YourLogId, InstanceLogging.GetNSSLogType(YourLogId).LogTitle, IP, MobileNumber, Hash, "Param1=" + Param1 + ";" + "Param2=" + Param2 + ";" + "Param3=" + Param3 + ";" + "Param4=" + Param4, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
-                if (Hash != InstanceHash.GenerateSHA256String((InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + NSSSoftwareuser.Nonce + Param1 + Param2 + Param3 + Param4)))
-                { throw new WebApiClientSecurityHashInvalidException(); }
-                if (NSSSoftwareuser.NonceTimeStamp.Subtract(_DateTime.GetCurrentDateTimeMilladi()).TotalSeconds < InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 7))
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); };
+                InstanceBlackIP.AuthorizationIP(IP);
+                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSSoftwareuser.NonceTimeStamp).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 8))
+                { throw new WebApiClientNonceExpiredException(); };
                 if (NSSSoftwareuser.NonceCount == 0)
-                { throw new WebApiClientSoftwareUserNonceExpiredException(); }
+                { throw new WebApiClientNonceExpiredException(); }
                 else
                 { InstanceSoftwareusers.DecreaseNonceCountforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber)); }
                 if (DateTime.Compare(_DateTime.GetMilladiDateTimeFromDateShamsiFull(NSSSoftwareuser.APIKeyExpiration, "00:00:00"), _DateTime.GetCurrentDateTimeMilladi()) < 0)
                 { throw new WebApiClientSoftwareUserAPIKeyExpiredException(); };
                 if (NSSSoftwareuser.UserStatus == "logout")
                 { throw new WebApiClientSoftwareUserIsLogoutException(); };
+                if (Hash != InstanceHash.GenerateSHA256String(InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + NSSSoftwareuser.Nonce + Param1 + Param2 + Param3 + Param4))
+                { throw new WebApiClientSecurityHashInvalidException(); }
             }
             catch (Exception ex)
             { throw ex; }
@@ -264,6 +395,13 @@ namespace ATISMobileRestful
         {
             HttpResponseMessage response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
             response.Content = new StringContent(JsonConvert.SerializeObject(YourException.Message), Encoding.UTF8, "application/json");
+            return response;
+        }
+
+        public HttpResponseMessage CreateErrorContentMessage(string  YourMessage)
+        {
+            HttpResponseMessage response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+            response.Content = new StringContent(JsonConvert.SerializeObject(YourMessage), Encoding.UTF8, "application/json");
             return response;
         }
 
@@ -334,7 +472,7 @@ namespace ATISMobileRestful
             public static Int64 WebApiClientMoneyWalletPaymentRequest = 46;
             public static Int64 WebApiClientMoneyWalletPaymentSucceededRequest = 47;
             public static Int64 WebApiClientLogoutSoftwareUserRequest = 48;
-
+            public static Int64 WebApiClientIsWebAPIAliveRequest = 49;
 
         }
 
@@ -417,53 +555,67 @@ namespace ATISMobileRestful
 
     namespace Exceptions
     {
-        public class WebApiClientUnAuthorizedException : ApplicationException
-        {
-            public override string Message
-            { get { return "خطای امنیتی کد: 38 با واحد پشتیبانی آتیس تماس بگیرید"; } }
-        }
-
         public class WebApiClientCaptchaInvalidException : ApplicationException
         {
             public override string Message
-            { get { return "تصویر امنیتی صحیح نیست"; } }
+            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.CaptchaInvalid).MsgContent; } }
         }
 
-        public class WebApiClientSoftwareUserNonceExpiredException : ApplicationException
+        public class WebApiClientNonceExpiredException : ApplicationException
         {
             public override string Message
-            { get { return "اعتبار نانس به پایان رسیده است"; } }
+            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.NonceExpired).MsgContent; } }
+        }
+
+        public class WebApiClientPersonalNonceExpiredException : ApplicationException
+        {
+            public override string Message
+            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.PersonalNonceExpired ).MsgContent; } }
         }
 
         public class WebApiClientSoftWareUserPasswordExpiredException : ApplicationException
         {
             public override string Message
-            { get { return "اعتبار رمز شخصی به پایان رسیده است"; } }
+            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.SoftWareUserPasswordExpired).MsgContent; } }
         }
 
         public class WebApiClientSoftwareUserAPIKeyExpiredException : ApplicationException
         {
             public override string Message
-            { get { return "اعتبار شناسه موقت کاربر به پایان رسیده است"; } }
+            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.SoftwareUserAPIKeyExpired).MsgContent; } }
+
         }
 
         public class WebApiClientSoftwareUserIsLogoutException : ApplicationException
         {
             public override string Message
-            { get { return "کاربر هنوز فرآیند فعال سازی انجام نداده است"; } }
+            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.SoftwareUserIsLogout).MsgContent; } }
         }
 
         public class WebApiClientSecurityHashInvalidException : ApplicationException
         {
             public override string Message
-            { get { return "ترکیب هش ارسالی نادرست است"; } }
+            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.SecurityHashInvalid).MsgContent; } }
         }
 
         public class WebApiClientVerificationCodeExpiredException : ApplicationException
         {
             public override string Message
-            { get { return "اعتبار کد فعال سازی به پایان رسیده است"; } }
+            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.VerificationCodeExpired).MsgContent; } }
         }
+
+        public class WebApiClientMobileNumberIsInvalidException : ApplicationException
+        {
+            public override string Message
+            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.MobileNumberIsInvalid ).MsgContent; } }
+        }
+
+        public class WebApiClientMobileNumberNotFoundExceptionException : ApplicationException
+        {
+            public override string Message
+            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.MobileNumberNotFoundException).MsgContent; } }
+        }
+
 
     }
 }

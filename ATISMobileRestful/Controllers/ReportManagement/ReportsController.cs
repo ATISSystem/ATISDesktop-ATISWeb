@@ -16,6 +16,8 @@ using R2Core.ConfigurationManagement;
 using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
 using R2Core.SecurityAlgorithmsManagement.Hashing;
 using ATISMobileRestful.Logging;
+using R2Core.PermissionManagement;
+using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
 
 namespace ATISMobileRestful.Controllers.ReportManagement
 {
@@ -33,9 +35,9 @@ namespace ATISMobileRestful.Controllers.ReportManagement
                 WebAPi.AuthenticateClientApikeyNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientLoadPermissionsIssuedOrderByPriorityReportRequest);
 
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
-                var AHSGId = Content.Split(';')[2];
+                var AHSGId = Convert.ToInt64(Content.Split(';')[2]);
                 var InstanceReport = new R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager();
-                List<KeyValuePair<string, string>> Lst = InstanceReport.ReportingInformationProviderLoadPermissionsIssuedOrderByPriorityReport(Convert.ToInt64(AHSGId));
+                List<KeyValuePair<string, string>> Lst = InstanceReport.ReportingInformationProviderLoadPermissionsIssuedOrderByPriorityReport(AHSGId);
                 List<Models.PermissionsIssued> _PermissionsIssued = new List<Models.PermissionsIssued>();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
@@ -48,8 +50,6 @@ namespace ATISMobileRestful.Controllers.ReportManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(_PermissionsIssued), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (WebApiClientUnAuthorizedException ex)
-            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }

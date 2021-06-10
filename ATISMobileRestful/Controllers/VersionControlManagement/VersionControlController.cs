@@ -30,14 +30,8 @@ namespace ATISMobileRestful.Controllers.VersionControlManagement
             try
             {
                 //تایید اعتبار کلاینت
-                var IP = WebAPi.GetClientIpAddress(Request);
-                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
-                InstanceBlackIP.AuthorizationIP(IP);
-                var InstanceLogging = new R2CoreInstanceLoggingManager();
-                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
-                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientVersionControlRequest , InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientVersionControlRequest ).LogTitle, IP, String.Empty, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null));
+                WebAPi.AuthenticateClient(Request, ATISMobileWebApiLogTypes.WebApiClientVersionControlRequest);
 
-                //کنترل اطلاعات ورژن ارسالی و ورژن موجود روی سایت
                 string WebApiVersionNumber = File.ReadAllText(HttpContext.Current.Server.MapPath("~/App_Data/NewerVersionInfo.txt"), Encoding.UTF8).Split(';')[0].Split(':')[1].Trim();
                 string WebApiVersionName = File.ReadAllText(HttpContext.Current.Server.MapPath("~/App_Data/NewerVersionInfo.txt"), Encoding.UTF8).Split(';')[1].Split(':')[1].Trim();
                 Request.Headers.TryGetValues("VersionNumber", out IEnumerable<string> VersionNumber);
