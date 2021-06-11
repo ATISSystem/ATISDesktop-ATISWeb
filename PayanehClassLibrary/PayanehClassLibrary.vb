@@ -1946,7 +1946,7 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcIndigenousTrucksWithUNNativeLPReport As Int64 = 56
         Public Shared ReadOnly FrmcSedimentedLoadsReport As Int64 = 58
         Public Shared ReadOnly FrmcLoadPermissionsIssuedOrderByPriorityReport As Int64 = 61
-
+        Public Shared ReadOnly FrmcClearanceLoadsReport As Int64 = 66
 
 
     End Class
@@ -2766,6 +2766,7 @@ Namespace ReportsManagement
         Public Shared ReadOnly SedimentedLoadsByTransportCompnayTargetCityReport As Int64 = 24
         Public Shared ReadOnly SedimentedLoadsByTargetCityReport As Int64 = 25
         Public Shared ReadOnly LoadPermissionsIssuedOrderByPriorityReport As Int64 = 28
+        Public Shared ReadOnly ClearanceLoadsReport As Int64 = 31
     End Class
 
     Public Class PayanehClassLibraryMClassReportsManagement
@@ -3799,6 +3800,30 @@ Namespace ReportsManagement
                           Where Turns.strExitDate>='" & YourDate1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDate2.DateShamsiFull & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and
                                 LoadAllocations.LAStatusId=2 and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & " 
                           Order By LoadAllocations.DateTimeMilladi"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Shared Sub ReportingInformationProviderClearanceLoadsReport(YourDate1 As R2StandardDateAndTimeStructure, YourDate2 As R2StandardDateAndTimeStructure)
+            'گزارش بار آزاد شده
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblClearanceLoadsReport" : CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblClearanceLoadsReport
+                                         Select Loads.nBarCode,Products.strGoodName, Count(*),'" & YourDate1.DateShamsiFull & "','" & YourDate2.DateShamsiFull & "' from dbtransport.dbo.tbEnterExit as Turns
+                                            Inner Join dbtransport.dbo.tbElam  as Loads On Turns.nEstelamID=Loads.nEstelamID 
+                                            Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode =Products.strGoodCode 
+                                         Where (Turns.strExitDate>='" & YourDate1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDate2.DateShamsiFull & "') and Turns.LoadPermissionStatus=1
+                                         Group By Loads.nBarCode,Products.strGoodName"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             Catch ex As Exception

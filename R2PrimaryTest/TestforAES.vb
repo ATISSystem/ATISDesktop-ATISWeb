@@ -44,7 +44,7 @@ Public Class TestforAES
             Dim AES As New R2Core.SecurityAlgorithmsManagement.AESAlgorithms.AESAlgorithmsManager
             Dim Hasher As New R2Core.SecurityAlgorithmsManagement.Hashing.SHAHasher()
             Dim Ds As DataSet
-            R2Core.DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where UserTypeId=3 Order By UserId", 0, Ds)
+            R2Core.DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Order By UserId", 0, Ds)
             Cmdsql.Connection.Open()
             Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
             For loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1

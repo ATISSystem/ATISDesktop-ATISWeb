@@ -365,6 +365,12 @@
     <Compile Include="Reports\FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Reports\FrmcClearanceLoadsReport.Designer.vb">
+      <DependentUpon>FrmcClearanceLoadsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FrmcClearanceLoadsReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Reports\FrmcContractorCompanyFinancialReport.Designer.vb">
       <DependentUpon>FrmcContractorCompanyFinancialReport.vb</DependentUpon>
     </Compile>
@@ -441,6 +447,12 @@
       <DependentUpon>UCCapacitorLoadsforAnnounceReport.vb</DependentUpon>
     </Compile>
     <Compile Include="Reports\UCCapacitorLoadsforAnnounceReport.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Reports\UCClearanceLoadsReport.Designer.vb">
+      <DependentUpon>UCClearanceLoadsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCClearanceLoadsReport.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Reports\UCContractorCompanyFinancialReport.Designer.vb">
@@ -708,6 +720,9 @@
     <EmbeddedResource Include="Reports\FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport.resx">
       <DependentUpon>FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FrmcClearanceLoadsReport.resx">
+      <DependentUpon>FrmcClearanceLoadsReport.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\FrmcContractorCompanyFinancialReport.resx">
       <DependentUpon>FrmcContractorCompanyFinancialReport.vb</DependentUpon>
     </EmbeddedResource>
@@ -746,6 +761,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UCCapacitorLoadsforAnnounceReport.resx">
       <DependentUpon>UCCapacitorLoadsforAnnounceReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCClearanceLoadsReport.resx">
+      <DependentUpon>UCClearanceLoadsReport.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UCContractorCompanyFinancialReport.resx">
       <DependentUpon>UCContractorCompanyFinancialReport.vb</DependentUpon>

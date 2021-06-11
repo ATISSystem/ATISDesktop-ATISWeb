@@ -45,6 +45,7 @@ Partial Class Form3
         Me.Button19 = New System.Windows.Forms.Button()
         Me.Button22 = New System.Windows.Forms.Button()
         Me.Button28 = New System.Windows.Forms.Button()
+        Me.UcClearanceLoadsReport1 = New PayanehClassLibrary.UCClearanceLoadsReport()
         Me.SuspendLayout()
         '
         'Button1
@@ -272,11 +273,21 @@ Partial Class Form3
         Me.Button28.Text = "Goto Security"
         Me.Button28.UseVisualStyleBackColor = False
         '
+        'UcClearanceLoadsReport1
+        '
+        Me.UcClearanceLoadsReport1.BackColor = System.Drawing.Color.Transparent
+        Me.UcClearanceLoadsReport1.Location = New System.Drawing.Point(244, 60)
+        Me.UcClearanceLoadsReport1.Name = "UcClearanceLoadsReport1"
+        Me.UcClearanceLoadsReport1.Size = New System.Drawing.Size(248, 266)
+        Me.UcClearanceLoadsReport1.TabIndex = 33
+        Me.UcClearanceLoadsReport1.UCViewTitle = True
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(760, 450)
+        Me.Controls.Add(Me.UcClearanceLoadsReport1)
         Me.Controls.Add(Me.Button28)
         Me.Controls.Add(Me.Button22)
         Me.Controls.Add(Me.Button19)
@@ -329,4 +340,5 @@ End Sub
     Friend WithEvents Button19 As Button
     Friend WithEvents Button22 As Button
     Friend WithEvents Button28 As Button
+    Friend WithEvents UcClearanceLoadsReport1 As PayanehClassLibrary.UCClearanceLoadsReport
 End Class

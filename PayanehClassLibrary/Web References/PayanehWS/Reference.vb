@@ -64,6 +64,8 @@ Namespace PayanehWS
         
         Private WebMethodReportingInformationProviderIndigenousTrucksWithUNNativeLPReportOperationCompleted As System.Threading.SendOrPostCallback
         
+        Private WebMethodReportingInformationPrividerClearanceLoadsReportReportOperationCompleted As System.Threading.SendOrPostCallback
+        
         Private WebMethodCarTruckHasTurnOperationCompleted As System.Threading.SendOrPostCallback
         
         Private WebMethodGetnIdCarTruckBySmartCarNoOperationCompleted As System.Threading.SendOrPostCallback
@@ -155,6 +157,9 @@ Namespace PayanehWS
         
         '''<remarks/>
         Public Event WebMethodReportingInformationProviderIndigenousTrucksWithUNNativeLPReportCompleted As WebMethodReportingInformationProviderIndigenousTrucksWithUNNativeLPReportCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodReportingInformationPrividerClearanceLoadsReportReportCompleted As WebMethodReportingInformationPrividerClearanceLoadsReportReportCompletedEventHandler
         
         '''<remarks/>
         Public Event WebMethodCarTruckHasTurnCompleted As WebMethodCarTruckHasTurnCompletedEventHandler
@@ -604,6 +609,33 @@ Namespace PayanehWS
         End Sub
         
         '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerClearanceLoadsReportRepor"& _ 
+            "t", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationPrividerClearanceLoadsReportReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerClearanceLoadsReportReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerClearanceLoadsReportReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerClearanceLoadsReportReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerClearanceLoadsReportReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationPrividerClearanceLoadsReportReportOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationPrividerClearanceLoadsReportReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerClearanceLoadsReportReportOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodReportingInformationPrividerClearanceLoadsReportReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey}, Me.WebMethodReportingInformationPrividerClearanceLoadsReportReportOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodReportingInformationPrividerClearanceLoadsReportReportOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationPrividerClearanceLoadsReportReportCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodReportingInformationPrividerClearanceLoadsReportReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodCarTruckHasTurn", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
         Public Function WebMethodCarTruckHasTurn(ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourExchangeKey As Long) As Boolean
             Dim results() As Object = Me.Invoke("WebMethodCarTruckHasTurn", New Object() {YourPelak, YourSerial, YourExchangeKey})
@@ -812,6 +844,10 @@ Namespace PayanehWS
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationProviderIndigenousTrucksWithUNNativeLPReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodReportingInformationPrividerClearanceLoadsReportReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
