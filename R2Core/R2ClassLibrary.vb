@@ -1548,24 +1548,21 @@ Namespace SoftwareUserManagement
             End Try
         End Function
 
-        Public Function CaptchaInvalidateforSoftwareUser(YourSoftwareUserMobile As R2CoreSoftwareUserMobile) As String
+        Public Sub CaptchaInvalidateforSoftwareUser(YourSoftwareUserMobile As R2CoreSoftwareUserMobile)
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
                 AuthenticationUserByMobileNumber(YourSoftwareUserMobile)
-                Dim InstanceCaptcha = New R2CoreInstanceCaptchaManager
                 Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
-                Dim Captcha = InstanceCaptcha.GenerateFakeWord(InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 6))
                 CmdSql.Connection.Open()
                 CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set Captcha='',CaptchaValid=0 Where MobileNumber='" & YourSoftwareUserMobile.SoftwareUserMobileNumber & "'"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
-                Return Captcha
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
-        End Function
+        End Sub
 
 
 
@@ -1590,7 +1587,7 @@ Namespace SoftwareUserManagement
                 Dim UserPasswordExpiration As String = _DateTime.GetNextShamsiMonth(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime), InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 2)).DateShamsiFull
                 Dim myShenaseh As String = AES.GetRandomNumericCode(1000, 9999)
                 Dim myPassword As String = AES.GetRandomNumericCode(10000000, 99999999)
-                Dim UIdSalt As String = AES.GetSalt(64)
+                Dim UIdSalt As String = AES.GetSalt(InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 0))
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Select Top 1 UserId from R2Primary.dbo.TblSoftwareUsers with (tablockx) order by UserId desc"

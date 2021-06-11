@@ -6,8 +6,10 @@ using System.Web.Mvc;
 
 using ATISMobileRestful.Logging;
 using R2Core.BlackIPs;
+using R2Core.ConfigurationManagement;
 using R2Core.DateAndTimeManagement;
 using R2Core.LoggingManagement;
+using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
 using R2Core.SoftwareUserManagement;
 using R2CoreParkingSystem.AccountingManagement;
 using R2CoreParkingSystem.MoneyWalletChargeManagement;
@@ -49,7 +51,9 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                         if (Status == 100)
                         {
                             Int64 Amount = YourAmount * 10;
-                            var NSSSoftwareUser = InstanceSoftwareUsers.GetNSSUser(YourApiKey);
+                            var InstanceAES = new AESAlgorithmsManager();
+                            var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                            var NSSSoftwareUser = InstanceSoftwareUsers.GetNSSUser(InstanceAES.Decrypt(YourApiKey , InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)));
                             var NSSTrafficCard = InstanceTrafficCards.GetNSSTerafficCard(NSSSoftwareUser);
                             Int64 CurrentCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
                             InstanceMoneyWallets.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.AddMoney, Amount, R2CoreParkingSystemAccountings.ChargeType, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());

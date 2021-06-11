@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form3
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Form3
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
@@ -45,7 +45,6 @@ Partial Class Form3
         Me.Button19 = New System.Windows.Forms.Button()
         Me.Button22 = New System.Windows.Forms.Button()
         Me.Button28 = New System.Windows.Forms.Button()
-        Me.UcClearanceLoadsReport1 = New PayanehClassLibrary.UCClearanceLoadsReport()
         Me.SuspendLayout()
         '
         'Button1
@@ -273,21 +272,11 @@ Partial Class Form3
         Me.Button28.Text = "Goto Security"
         Me.Button28.UseVisualStyleBackColor = False
         '
-        'UcClearanceLoadsReport1
-        '
-        Me.UcClearanceLoadsReport1.BackColor = System.Drawing.Color.Transparent
-        Me.UcClearanceLoadsReport1.Location = New System.Drawing.Point(244, 60)
-        Me.UcClearanceLoadsReport1.Name = "UcClearanceLoadsReport1"
-        Me.UcClearanceLoadsReport1.Size = New System.Drawing.Size(248, 266)
-        Me.UcClearanceLoadsReport1.TabIndex = 33
-        Me.UcClearanceLoadsReport1.UCViewTitle = True
-        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(760, 450)
-        Me.Controls.Add(Me.UcClearanceLoadsReport1)
         Me.Controls.Add(Me.Button28)
         Me.Controls.Add(Me.Button22)
         Me.Controls.Add(Me.Button19)
@@ -312,10 +301,10 @@ Partial Class Form3
         Me.Controls.Add(Me.TextBoxResult)
         Me.Name = "Form3"
         Me.Text = "Form3"
-        Me.ResumeLayout(false)
-        Me.PerformLayout
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
 
-End Sub
+    End Sub
 
     Friend WithEvents Button1 As Button
     Friend WithEvents Button2 As Button
@@ -340,5 +329,4 @@ End Sub
     Friend WithEvents Button19 As Button
     Friend WithEvents Button22 As Button
     Friend WithEvents Button28 As Button
-    Friend WithEvents UcClearanceLoadsReport1 As PayanehClassLibrary.UCClearanceLoadsReport
 End Class

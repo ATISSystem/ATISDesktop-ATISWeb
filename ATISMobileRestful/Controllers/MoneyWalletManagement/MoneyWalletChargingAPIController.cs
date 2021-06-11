@@ -48,7 +48,7 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 System.Net.ServicePointManager.Expect100Continue = false;
                 ServiceReference.PaymentGatewayImplementationServicePortTypeClient zp = new ServiceReference.PaymentGatewayImplementationServicePortTypeClient();
                 string Authority;
-                int Status = zp.PaymentRequest("aed16bb9-485a-416d-9891-d0b8d2bc98cc", Amount, "درخواست پرداخت-زرین پال-آتیس", String.Empty, String.Empty, "http://ATISMobile.ir:38468/MoneyWalletChargingMVC/PaymentVerification/?YourAPIKey=" + NSSSoftwareuser.ApiKey  + "&YourAmount=" + Amount.ToString(), out Authority);
+                int Status = zp.PaymentRequest("aed16bb9-485a-416d-9891-d0b8d2bc98cc", Amount, "درخواست پرداخت-زرین پال-آتیس", String.Empty, String.Empty, "https://ATISMobile.ir:8083/MoneyWalletChargingMVC/PaymentVerification/?YourAPIKey=" + InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + "&YourAmount=" + Amount.ToString(), out Authority);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 if (Status == 100)
                 { response.Content=new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = Authority, Message2 = "https://www.zarinpal.com/pg/StartPay/", Message3 = string.Empty }),Encoding.UTF8,"application/json"); }

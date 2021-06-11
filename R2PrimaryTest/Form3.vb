@@ -337,9 +337,11 @@ Public Class Form3
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
         Try
-            Dim NSS = R2CoreParkingSystemMClassDrivers.GetNSSDriver(78616)
-            NSS.StrIdNo = "09130843148"
-            R2CoreParkingSystemMClassDrivers.UpdateDriver(NSS, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(0, String.Empty, String.Empty, "123", String.Empty, String.Empty, String.Empty, "Pin123", 0, 1, 3, "09132043148", String.Empty, String.Empty, Nothing, Nothing, String.Empty, Nothing, Nothing, String.Empty, Nothing, String.Empty, 0, 21, Nothing, Nothing, Nothing, Nothing), R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+
+            'Dim NSS = R2CoreParkingSystemMClassDrivers.GetNSSDriver(78616)
+            'NSS.StrIdNo = "09130843148"
+            'R2CoreParkingSystemMClassDrivers.UpdateDriver(NSS, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
 
             'R2CoreTransportationAndLoadNotification.LoadTargets.R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetProvinces(2,7,1,1)
             'Dim NSS As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetCarTruckfromRMTOAndInsertUpdateLocalDataBase("2218230",R2Core.UserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
