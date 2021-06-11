@@ -69,9 +69,9 @@ Partial Class Form3
         '
         Me.Button3.BackColor = System.Drawing.Color.Tomato
         Me.Button3.Font = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Button3.Location = New System.Drawing.Point(100, 131)
+        Me.Button3.Location = New System.Drawing.Point(589, 0)
         Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(162, 78)
+        Me.Button3.Size = New System.Drawing.Size(140, 35)
         Me.Button3.TabIndex = 2
         Me.Button3.Text = "شروع "
         Me.Button3.UseVisualStyleBackColor = False
