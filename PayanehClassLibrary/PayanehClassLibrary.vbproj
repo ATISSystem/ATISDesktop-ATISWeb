@@ -365,10 +365,10 @@
     <Compile Include="Reports\FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Reports\FrmcClearanceLoadsReport.Designer.vb">
-      <DependentUpon>FrmcClearanceLoadsReport.vb</DependentUpon>
+    <Compile Include="Reports\FrmcAnnouncedClearanceLoadsReport.Designer.vb">
+      <DependentUpon>FrmcAnnouncedClearanceLoadsReport.vb</DependentUpon>
     </Compile>
-    <Compile Include="Reports\FrmcClearanceLoadsReport.vb">
+    <Compile Include="Reports\FrmcAnnouncedClearanceLoadsReport.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Reports\FrmcContractorCompanyFinancialReport.Designer.vb">
@@ -430,6 +430,12 @@
     </Compile>
     <Compile Include="Reports\FrmcTrucksAverageOfSleepDaysToGetLoadPermissionReport.vb">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\UCAnnouncedLoadsReport.Designer.vb">
+      <DependentUpon>UCAnnouncedLoadsReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCAnnouncedLoadsReport.vb">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Reports\UCAnnouncementHallsPerformanceGeneralStatisticsReport.Designer.vb">
       <DependentUpon>UCAnnouncementHallsPerformanceGeneralStatisticsReport.vb</DependentUpon>
@@ -720,8 +726,8 @@
     <EmbeddedResource Include="Reports\FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport.resx">
       <DependentUpon>FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\FrmcClearanceLoadsReport.resx">
-      <DependentUpon>FrmcClearanceLoadsReport.vb</DependentUpon>
+    <EmbeddedResource Include="Reports\FrmcAnnouncedClearanceLoadsReport.resx">
+      <DependentUpon>FrmcAnnouncedClearanceLoadsReport.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\FrmcContractorCompanyFinancialReport.resx">
       <DependentUpon>FrmcContractorCompanyFinancialReport.vb</DependentUpon>
@@ -752,6 +758,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\FrmcTrucksAverageOfSleepDaysToGetLoadPermissionReport.resx">
       <DependentUpon>FrmcTrucksAverageOfSleepDaysToGetLoadPermissionReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCAnnouncedLoadsReport.resx">
+      <DependentUpon>UCAnnouncedLoadsReport.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UCAnnouncementHallsPerformanceGeneralStatisticsReport.resx">
       <DependentUpon>UCAnnouncementHallsPerformanceGeneralStatisticsReport.vb</DependentUpon>

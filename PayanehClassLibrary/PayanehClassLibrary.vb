@@ -2767,6 +2767,7 @@ Namespace ReportsManagement
         Public Shared ReadOnly SedimentedLoadsByTargetCityReport As Int64 = 25
         Public Shared ReadOnly LoadPermissionsIssuedOrderByPriorityReport As Int64 = 28
         Public Shared ReadOnly ClearanceLoadsReport As Int64 = 31
+        Public Shared ReadOnly AnnouncedLoadsReport As Int64 = 32
     End Class
 
     Public Class PayanehClassLibraryMClassReportsManagement
@@ -3833,6 +3834,31 @@ Namespace ReportsManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
+
+        Public Shared Sub ReportingInformationProviderAnnouncedLoadsReport(YourDate1 As R2StandardDateAndTimeStructure, YourDate2 As R2StandardDateAndTimeStructure)
+            'گزارش بار آزاد شده
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblAnnouncedLoadsReport" : CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblAnnouncedLoadsReport
+                                         Select Loads.nBarCode,Products.strGoodName, sum(Loads.nCarNumKol) ,'" & YourDate1.DateShamsiFull & "','" & YourDate2.DateShamsiFull & "'
+	                                     from dbtransport.dbo.tbElam AS Loads
+                                             Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode =Products.strGoodCode 
+                                         Where Loads.dDateElam>='" & YourDate1.DateShamsiFull & "' and dDateElam<='" & YourDate2.DateShamsiFull & "' and (LoadStatus<>3 and LoadStatus<>4 and LoadStatus<>6)
+                                         Group By Loads.nBarCode,Products.strGoodName"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
 
     End Class
 

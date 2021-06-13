@@ -145,6 +145,10 @@ Public Class UCDriver
                 Exit Sub
             End If
             If UcNumberDrivernIdPerson.UCValue = 0 Then
+                If R2CoreParkingSystemMClassDrivers.ExistDriver(New R2CoreParkingSystemDriverNationalCode(UcTextBoxNationalCode.UCValue)) Then
+                    UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "راننده با کد ملی وارد شده قبلا ثبت شده است" + vbCrLf + "کد ملی راننده را برای جستجو وارد نمایید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                    Exit Sub
+                End If
                 UcNumberDrivernIdPerson.UCValue = R2CoreParkingSystemMClassDrivers.InsertDriver(New R2StandardDriverStructure("", UcPersianTextBoxNameFamily.UCValue, UcTextBoxNationalCode.UCValue, UcPersianTextBoxFather.UCValue, UcPersianTextBoxAddress.UCValue, UcPersianTextBoxTel.UCValue, UcNumberLicenseNo.UCValue), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                 UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "مشخصات راننده ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             Else

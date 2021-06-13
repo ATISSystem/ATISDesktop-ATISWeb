@@ -3,7 +3,7 @@ Imports R2CoreGUI
 
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class FrmcClearanceLoadsReport
+Partial Class FrmcAnnouncedClearanceLoadsReport
     Inherits FrmcGeneral
 
     'Form overrides dispose to clean up the component list.
@@ -28,7 +28,10 @@ Partial Class FrmcClearanceLoadsReport
     Private Sub InitializeComponent()
         Me.PnlClearanceLoadsReport = New System.Windows.Forms.Panel()
         Me.UcClearanceLoadsReport = New PayanehClassLibrary.UCClearanceLoadsReport()
+        Me.PnlAnnouncedLoadsReport = New System.Windows.Forms.Panel()
+        Me.UcAnnouncedLoadsReport = New PayanehClassLibrary.UCAnnouncedLoadsReport()
         Me.PnlClearanceLoadsReport.SuspendLayout()
+        Me.PnlAnnouncedLoadsReport.SuspendLayout()
         Me.SuspendLayout()
         '
         '_FrmMessageDialog
@@ -52,27 +55,54 @@ Partial Class FrmcClearanceLoadsReport
         '
         Me.UcClearanceLoadsReport.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcClearanceLoadsReport.BackColor = System.Drawing.Color.Transparent
-        Me.UcClearanceLoadsReport.Location = New System.Drawing.Point(372, 128)
+        Me.UcClearanceLoadsReport.Location = New System.Drawing.Point(382, 128)
         Me.UcClearanceLoadsReport.Name = "UcClearanceLoadsReport"
-        Me.UcClearanceLoadsReport.Size = New System.Drawing.Size(248, 266)
+        Me.UcClearanceLoadsReport.Size = New System.Drawing.Size(229, 247)
         Me.UcClearanceLoadsReport.TabIndex = 0
-        Me.UcClearanceLoadsReport.UCViewTitle = False
+        Me.UcClearanceLoadsReport.UCViewTitle = True
         '
-        'FrmcClearanceLoadsReport
+        'PnlAnnouncedLoadsReport
+        '
+        Me.PnlAnnouncedLoadsReport.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PnlAnnouncedLoadsReport.BackColor = System.Drawing.Color.Transparent
+        Me.PnlAnnouncedLoadsReport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlAnnouncedLoadsReport.Controls.Add(Me.UcAnnouncedLoadsReport)
+        Me.PnlAnnouncedLoadsReport.Location = New System.Drawing.Point(5, 50)
+        Me.PnlAnnouncedLoadsReport.Name = "PnlAnnouncedLoadsReport"
+        Me.PnlAnnouncedLoadsReport.Size = New System.Drawing.Size(995, 512)
+        Me.PnlAnnouncedLoadsReport.TabIndex = 50
+        '
+        'UcAnnouncedLoadsReport
+        '
+        Me.UcAnnouncedLoadsReport.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcAnnouncedLoadsReport.Location = New System.Drawing.Point(382, 128)
+        Me.UcAnnouncedLoadsReport.Name = "UcAnnouncedLoadsReport"
+        Me.UcAnnouncedLoadsReport.Size = New System.Drawing.Size(229, 247)
+        Me.UcAnnouncedLoadsReport.TabIndex = 0
+        Me.UcAnnouncedLoadsReport.UCViewTitle = True
+        '
+        'FrmcAnnouncedClearanceLoadsReport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
+        Me.Controls.Add(Me.PnlAnnouncedLoadsReport)
         Me.Controls.Add(Me.PnlClearanceLoadsReport)
         Me.Location = New System.Drawing.Point(0, 0)
-        Me.Name = "FrmcClearanceLoadsReport"
+        Me.Name = "FrmcAnnouncedClearanceLoadsReport"
         Me.Text = "FrmcClearanceLoadsReport"
         Me.Controls.SetChildIndex(Me.PnlClearanceLoadsReport, 0)
+        Me.Controls.SetChildIndex(Me.PnlAnnouncedLoadsReport, 0)
         Me.PnlClearanceLoadsReport.ResumeLayout(False)
+        Me.PnlAnnouncedLoadsReport.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
 
     Friend WithEvents PnlClearanceLoadsReport As Windows.Forms.Panel
     Friend WithEvents UcClearanceLoadsReport As UCClearanceLoadsReport
+    Friend WithEvents PnlAnnouncedLoadsReport As Windows.Forms.Panel
+    Friend WithEvents UcAnnouncedLoadsReport As UCAnnouncedLoadsReport
 End Class

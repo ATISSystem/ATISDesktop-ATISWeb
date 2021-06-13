@@ -1335,7 +1335,7 @@ Namespace SoftwareUserManagement
                 Dim Instanse = New R2CoreInstanseSqlDataBOXManager
                 InstanceEVA.ValidationMobileNumber(YourSoftWareUserMobile.SoftwareUserMobileNumber)
                 Dim Ds As DataSet
-                If Instanse.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where MobileNumber='" & YourSoftWareUserMobile.SoftwareUserMobileNumber & "'", 0, Ds).GetRecordsCount() = 0 Then
+                If Instanse.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblSoftwareUsers Where MobileNumber='" & YourSoftWareUserMobile.SoftwareUserMobileNumber & "' Order By UserId Desc", 0, Ds).GetRecordsCount() = 0 Then
                     Throw New UserNotExistByMobileNumberException
                 End If
                 Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration"), Ds.Tables(0).Rows(0).Item("UserName").trim, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration"), Ds.Tables(0).Rows(0).Item("UserPinCode").trim, Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("VerificationCodeCount"), Ds.Tables(0).Rows(0).Item("Nonce").trim, Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce").trim, Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("Captcha").trim, Ds.Tables(0).Rows(0).Item("CaptchaValid"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi").trim, Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
@@ -1427,8 +1427,10 @@ Namespace SoftwareUserManagement
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
+                Dim APIKeyExpiration As String = _DateTime.GetNextShamsiMonth(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime), InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 1)).DateShamsiFull
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserStatus='login' Where MobileNumber='" & YourMobileNumber & "'"
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserStatus='login',APIKeyExpiration='" & APIKeyExpiration & "' Where MobileNumber='" & YourMobileNumber & "'"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception

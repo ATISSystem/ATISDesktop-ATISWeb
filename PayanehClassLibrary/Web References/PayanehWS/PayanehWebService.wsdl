@@ -267,6 +267,22 @@
       <s:element name="WebMethodReportingInformationPrividerClearanceLoadsReportReportResponse">
         <s:complexType />
       </s:element>
+      <s:element name="WebMethodReportingInformationPrividerAnnounceLoadsReportReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerAnnounceLoadsReportReportResponse">
+        <s:complexType />
+      </s:element>
       <s:element name="WebMethodCarTruckHasTurn">
         <s:complexType>
           <s:sequence>
@@ -417,6 +433,12 @@
   <wsdl:message name="WebMethodReportingInformationPrividerClearanceLoadsReportReportSoapOut">
     <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerClearanceLoadsReportReportResponse" />
   </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerAnnounceLoadsReportReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerAnnounceLoadsReportReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerAnnounceLoadsReportReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerAnnounceLoadsReportReportResponse" />
+  </wsdl:message>
   <wsdl:message name="WebMethodCarTruckHasTurnSoapIn">
     <wsdl:part name="parameters" element="tns:WebMethodCarTruckHasTurn" />
   </wsdl:message>
@@ -503,6 +525,10 @@
     <wsdl:operation name="WebMethodReportingInformationPrividerClearanceLoadsReportReport">
       <wsdl:input message="tns:WebMethodReportingInformationPrividerClearanceLoadsReportReportSoapIn" />
       <wsdl:output message="tns:WebMethodReportingInformationPrividerClearanceLoadsReportReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerAnnounceLoadsReportReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerAnnounceLoadsReportReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerAnnounceLoadsReportReportSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="WebMethodCarTruckHasTurn">
       <wsdl:input message="tns:WebMethodCarTruckHasTurnSoapIn" />
@@ -665,6 +691,15 @@
     </wsdl:operation>
     <wsdl:operation name="WebMethodReportingInformationPrividerClearanceLoadsReportReport">
       <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerClearanceLoadsReportReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerAnnounceLoadsReportReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerAnnounceLoadsReportReport" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -848,6 +883,15 @@
     </wsdl:operation>
     <wsdl:operation name="WebMethodReportingInformationPrividerClearanceLoadsReportReport">
       <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerClearanceLoadsReportReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerAnnounceLoadsReportReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerAnnounceLoadsReportReport" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

@@ -5,7 +5,7 @@ Imports PayanehClassLibrary.ProcessesManagement
 Imports R2Core.DesktopProcessesManagement
 Imports R2CoreGUI
 
-Public Class FrmcClearanceLoadsReport
+Public Class FrmcAnnouncedClearanceLoadsReport
     Inherits FrmcGeneral
 
 
@@ -52,6 +52,17 @@ Public Class FrmcClearanceLoadsReport
 
 #Region "Event Handlers"
 
+    Private Sub FrmcEnterExit__MenuRunRequestedEvent(UC As UCMenu) Handles Me._MenuRunRequestedEvent
+        Try
+            If UC.UCNSSMenu.MenuPanel = "PnlAnnouncedLoadsReport" Then
+                PnlAnnouncedLoadsReport.BringToFront()
+            ElseIf UC.UCNSSMenu.MenuPanel = "PnlClearanceLoadsReport" Then
+                PnlClearanceLoadsReport.BringToFront()
+            End If
+        Catch ex As Exception
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
 
 #End Region
 

@@ -1402,7 +1402,7 @@ Namespace LoadCapacitor
                     'کنترل وضعیت بار
                     If Not (NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered Or NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.FreeLined) Then Return False
                     'کنترل تعداد بار
-                    Threading.Thread.Sleep(50)
+                    Threading.Thread.Sleep(5)
                     If NSSLoadCapacitorLoad.nCarNum < 1 Then Return False
                     Return True
                 Catch ex As Exception

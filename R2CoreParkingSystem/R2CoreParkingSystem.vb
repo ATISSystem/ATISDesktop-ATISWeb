@@ -3255,6 +3255,15 @@ Namespace Drivers
 
     End Class
 
+    Public Class R2CoreParkingSystemDriverNationalCode
+        Public Sub New(YourDriverNationalCode As String)
+            DriverNationalCode = YourDriverNationalCode
+        End Sub
+
+        Public DriverNationalCode As String
+
+    End Class
+
     Public Class R2CoreParkingSystemInstanceDriversManager
         Public Function GetNSSDriver(YournIdPerson As String) As R2StandardDriverStructure
             Try
@@ -3322,6 +3331,22 @@ Namespace Drivers
                 End If
             Catch exx As GetNSSException
                 Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function ExistDriver(YourNationalCode As R2CoreParkingSystemDriverNationalCode) As Boolean
+            Try
+                Dim DS As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                                  "Select strNationalCode from dbtransport.dbo.TbPerson as P 
+                                     inner join dbtransport.dbo.TbDriver as D On P.nIDPerson=D.nIDDriver 
+                                   Where P.strNationalCode='" & YourNationalCode.DriverNationalCode & "'", 0, DS).GetRecordsCount = 0 Then
+                    Return False
+                Else
+                    Return True
+                End If
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
