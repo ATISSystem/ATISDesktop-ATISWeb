@@ -42,7 +42,6 @@ Imports R2CoreParkingSystem.FileShareRawGroupsManagement
 Imports R2CoreParkingSystem.MoneyWalletManagement
 Imports R2CoreParkingSystem.TrafficCardsManagement
 Imports R2CoreParkingSystem.EnterExitManagement
-Imports R2CoreParkingSystem.My
 Imports R2CoreParkingSystem.SoftwareUsersManagement
 Imports R2Core.EntityRelationManagement
 Imports R2CoreParkingSystem.EntityRelations
@@ -51,6 +50,7 @@ Imports R2CoreParkingSystem.SoftwareUsersManagement.Exceptions
 Imports R2Core.RequesterManagement
 Imports R2Core.PredefinedMessagesManagement
 Imports R2CoreParkingSystem.PredefinedMessagesManagement
+Imports R2CoreParkingSystem.AccountingManagement.ExceptionManagement
 
 Namespace DataBaseManagement
 
@@ -1657,7 +1657,7 @@ Namespace AccountingManagement
         SherkatChangeCarTruckNumberPlate = 19 'هزینه تغییر پلاک ناوگان باری - شرکت
         AnjomanChangeDriverTruck = 20  'هزینه تغییر نام راننده ناوگان باری - انجمن
         AnjomanChangeCarTruckNumberPlate = 21 'هزینه تغییر پلاک ناوگان باری - انجمن
-
+        TruckersAssociationControllingMoneyWallet = 22 'کارکرد کیف پول کنترلی کامیونداران
     End Enum
 
     Public Class R2StandardEnterExitAccountingStructure
@@ -1942,7 +1942,41 @@ Namespace AccountingManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
+
+        Public Shared Function GetNSSLastAccounting(YourAccountingCodeType As Int64) As R2StandardEnterExitAccountingStructure
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim DS As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                     "Select Top 1 * from R2Primary.dbo.TblAccounting as Accounting
+                      Where Accounting.EEAccountingProcessType=" & YourAccountingCodeType & "
+                      Order By Accounting.DateMilladiA Desc", 0, DS).GetRecordsCount <> 0 Then
+                    Return New R2StandardEnterExitAccountingStructure(R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(Convert.ToInt64(DS.Tables(0).Rows(0).Item("CardId"))), DS.Tables(0).Rows(0).Item("EEAccountingProcessType"), DS.Tables(0).Rows(0).Item("DateShamsiA"), DS.Tables(0).Rows(0).Item("TimeA"), DS.Tables(0).Rows(0).Item("DateMilladiA"), Nothing, DS.Tables(0).Rows(0).Item("MaabarCode"), DS.Tables(0).Rows(0).Item("MblghA"), DS.Tables(0).Rows(0).Item("UserIdA"), DS.Tables(0).Rows(0).Item("CurrentChargeA"), DS.Tables(0).Rows(0).Item("ReminderChargeA"))
+                Else
+                    Throw New LastAccountingRecordforAccountingCodeTypeNotFoundException
+                End If
+            Catch ex As LastAccountingRecordforAccountingCodeTypeNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
     End Class
+
+    Namespace ExceptionManagement
+
+        Public Class LastAccountingRecordforAccountingCodeTypeNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "رکوردی برای نوع اکانتینگ مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
+
 
 End Namespace
 

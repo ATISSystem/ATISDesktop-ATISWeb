@@ -37,7 +37,8 @@ Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions
-
+Imports PayanehClassLibrary.TruckersAssociationControllingMoneyWallet
+Imports PayanehClassLibrary.TruckersAssociationControllingMoneyWallet.Exceptions
 
 Public Class FrmcEnterExit
     Inherits FrmcGeneral
@@ -388,6 +389,7 @@ Public Class FrmcEnterExit
     Private _LastReadedCardNo As String = String.Empty
     Private Sub FrmcEnterExit__RFIDCardReadedEvent(CardNo As String) Handles Me._RFIDCardReadedEvent
         Try
+            TruckersAssociationControllingMoneyWalletManagement.DoControlforControllingMoneyWallet()
             System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
             'کنترل این که کارت روی کارت خوان نماند
             If _LastReadedCardNo = CardNo Then
@@ -399,6 +401,8 @@ Public Class FrmcEnterExit
                 _TimerClearLastReadedTeraficCard.Start()
             End If
             DoProccess(CardNo, True)
+        Catch ex As TruckersAssociationControllingMoneyWalletCriticalAmountReachedException
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri

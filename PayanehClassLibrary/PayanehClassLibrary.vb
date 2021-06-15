@@ -72,6 +72,8 @@ Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports TWSClassLibrary.TDBClientManagement
 Imports PayanehClassLibrary.Logging
+Imports PayanehClassLibrary.ReportsManagement
+Imports PayanehClassLibrary.TruckersAssociationControllingMoneyWallet.Exceptions
 
 Namespace Logging
 
@@ -1392,9 +1394,10 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property ElamBarMonitoringInterval As Int64 = 33
         Public Shared ReadOnly Property NobatGetFP_ChkViewTruckNobat As Int64 = 34
         Public Shared ReadOnly Property TWS As Int64 = 51
-        Public Shared ReadOnly Property AnnouncementHallMonitoring = 52
-        Public Shared ReadOnly Property TarrifsPayanehKiosk = 53
-        Public Shared ReadOnly Property PayanehAmirKabirAutomatedJobsSetting = 64
+        Public Shared ReadOnly Property AnnouncementHallMonitoring As Int64 = 52
+        Public Shared ReadOnly Property TarrifsPayanehKiosk As Int64 = 53
+        Public Shared ReadOnly Property PayanehAmirKabirAutomatedJobsSetting As Int64 = 64
+        Public Shared ReadOnly Property TruckersAssociationControllingMoneyWallet As Int64 = 75
 
 
 
@@ -1946,6 +1949,7 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcIndigenousTrucksWithUNNativeLPReport As Int64 = 56
         Public Shared ReadOnly FrmcSedimentedLoadsReport As Int64 = 58
         Public Shared ReadOnly FrmcLoadPermissionsIssuedOrderByPriorityReport As Int64 = 61
+        Public Shared ReadOnly FrmcTruckersAssociationControllingMoneyWallet As Int64 = 65
         Public Shared ReadOnly FrmcClearanceLoadsReport As Int64 = 66
 
 
@@ -2791,7 +2795,9 @@ Namespace ReportsManagement
                 Dim DSSixCharkh As New DataSet
                 Dim DSSavari As New DataSet
                 Dim DSTereiliTenCharkh As New DataSet
-                Dim DSExit As New DataSet
+                Dim DSExitSixCharkh As New DataSet
+                Dim DSExitTereiliTenCharkh As New DataSet
+                Dim DSExitSavari As New DataSet
                 Dim DSReturnAmount As New DataSet
 
                 'شش چرخ یا دو محور
@@ -2817,11 +2823,26 @@ Namespace ReportsManagement
                 Da.Fill(DSTereiliTenCharkh)
                 'خروج
                 Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
-                                                    Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
-                                                          And (Accounting.EEAccountingProcessType=2)
-                                                    Group By DateShamsiA"
-                DSExit.Tables.Clear()
-                Da.Fill(DSExit)
+                                                 Inner Join TblRFIDCards as RFs On Accounting.CardId=RFs.CardId 
+                                                Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
+                                                          And (Accounting.EEAccountingProcessType=2) and RFs.CardType=4
+                                                Group By DateShamsiA"
+                DSExitSixCharkh.Tables.Clear()
+                Da.Fill(DSExitSixCharkh)
+                Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
+                                                 Inner Join TblRFIDCards as RFs On Accounting.CardId=RFs.CardId 
+                                                Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
+                                                          And (Accounting.EEAccountingProcessType=2) and RFs.CardType=1
+                                                Group By DateShamsiA"
+                DSExitSavari.Tables.Clear()
+                Da.Fill(DSExitSavari)
+                Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
+                                                 Inner Join TblRFIDCards as RFs On Accounting.CardId=RFs.CardId 
+                                                Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
+                                                          And (Accounting.EEAccountingProcessType=2) and (RFs.CardType=2 or RFs.CardType=3)
+                                                Group By DateShamsiA"
+                DSExitTereiliTenCharkh.Tables.Clear()
+                Da.Fill(DSExitTereiliTenCharkh)
                 'بازگشت مبلغ
                 Da.SelectCommand.CommandText = "Select Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
                                                 Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
@@ -2835,7 +2856,7 @@ Namespace ReportsManagement
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblEnterExitByMblghReport" : CmdSql.ExecuteNonQuery()
                 Do
-                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblEnterExitByMblghReport(DateShamsi1,DateShamsi2,Time1,Time2,ReportDateShamsi,ReportTime,DateShamsi,SixCharkhEnterTotal,SixCharkhEnterJam,SavariEnterTotal,SavariEnterJam,TereiliTenCharkhEnterTotal,TereiliTenCharkhEnterJam,ExitJam,JamKol,MahName,ReturnAmount) values('" & YourDateTime1.DateShamsiFull & "','" & YourDateTime2.DateShamsiFull & "','" & YourDateTime1.Time & "','" & YourDateTime2.Time & "','" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentTime & "','" & myCurrentDate & "',0,0,0,0,0,0,0,0" & ",'" & myMahName & "',0)"
+                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblEnterExitByMblghReport(DateShamsi1,DateShamsi2,Time1,Time2,ReportDateShamsi,ReportTime,DateShamsi,SixCharkhEnterTotal,SixCharkhEnterJam,SavariEnterTotal,SavariEnterJam,TereiliTenCharkhEnterTotal,TereiliTenCharkhEnterJam,ExitJamSixCharkh,ExitJamSavari,ExitJamTereiliTenCharkh,JamKol,MahName,ReturnAmount) values('" & YourDateTime1.DateShamsiFull & "','" & YourDateTime2.DateShamsiFull & "','" & YourDateTime1.Time & "','" & YourDateTime2.Time & "','" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentTime & "','" & myCurrentDate & "',0,0,0,0,0,0,0,0,0,0" & ",'" & myMahName & "',0)"
                     CmdSql.ExecuteNonQuery()
                     myCurrentDate = R2Core.PublicProc.R2CoreMClassPublicProcedures.GetNextShamsiDate(myCurrentDate)
                 Loop While myCurrentDate.Replace("/", "") <= YourDateTime2.DateShamsiFull.Replace("/", "")
@@ -2888,17 +2909,44 @@ Namespace ReportsManagement
                     CmdSql.ExecuteNonQuery()
                 Next
                 'نوشتن خروجی یا همان مازاد
+                'شش چرخ
                 Dim myExitJam As Int64 = 0
-                For Loopx As Int64 = 0 To DSExit.Tables(0).Rows.Count - 1
-                    If Not DBNull.Value.Equals(DSExit.Tables(0).Rows(Loopx).Item("Jam")) Then
+                For Loopx As Int64 = 0 To DSExitSixCharkh.Tables(0).Rows.Count - 1
+                    If Not DBNull.Value.Equals(DSExitSixCharkh.Tables(0).Rows(Loopx).Item("Jam")) Then
                         If YourVatStatus = False Then
-                            myExitJam = DSExit.Tables(0).Rows(Loopx).Item("Jam")
+                            myExitJam = DSExitSixCharkh.Tables(0).Rows(Loopx).Item("Jam")
                         Else
-                            myExitJam = (DSExit.Tables(0).Rows(Loopx).Item("Jam") * 100 / 109)
+                            myExitJam = (DSExitSixCharkh.Tables(0).Rows(Loopx).Item("Jam") * 100 / 109)
                         End If
                         myJamKol += myExitJam
                     End If
-                    CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblEnterExitByMblghReport Set ExitJam=" & myExitJam & " Where DateShamsi='" & DSExit.Tables(0).Rows(Loopx).Item("DateShamsiA").trim & "'"
+                    CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblEnterExitByMblghReport Set ExitJamSixCharkh=" & myExitJam & " Where DateShamsi='" & DSExitSixCharkh.Tables(0).Rows(Loopx).Item("DateShamsiA").trim & "'"
+                    CmdSql.ExecuteNonQuery()
+                Next
+                'تریلی و 10 چرخ
+                For Loopx As Int64 = 0 To DSExitTereiliTenCharkh.Tables(0).Rows.Count - 1
+                    If Not DBNull.Value.Equals(DSExitTereiliTenCharkh.Tables(0).Rows(Loopx).Item("Jam")) Then
+                        If YourVatStatus = False Then
+                            myExitJam = DSExitTereiliTenCharkh.Tables(0).Rows(Loopx).Item("Jam")
+                        Else
+                            myExitJam = (DSExitTereiliTenCharkh.Tables(0).Rows(Loopx).Item("Jam") * 100 / 109)
+                        End If
+                        myJamKol += myExitJam
+                    End If
+                    CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblEnterExitByMblghReport Set ExitJamTereiliTenCharkh=" & myExitJam & " Where DateShamsi='" & DSExitTereiliTenCharkh.Tables(0).Rows(Loopx).Item("DateShamsiA").trim & "'"
+                    CmdSql.ExecuteNonQuery()
+                Next
+                'سواری
+                For Loopx As Int64 = 0 To DSExitSavari.Tables(0).Rows.Count - 1
+                    If Not DBNull.Value.Equals(DSExitSavari.Tables(0).Rows(Loopx).Item("Jam")) Then
+                        If YourVatStatus = False Then
+                            myExitJam = DSExitSavari.Tables(0).Rows(Loopx).Item("Jam")
+                        Else
+                            myExitJam = (DSExitSavari.Tables(0).Rows(Loopx).Item("Jam") * 100 / 109)
+                        End If
+                        myJamKol += myExitJam
+                    End If
+                    CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblEnterExitByMblghReport Set ExitJamSavari=" & myExitJam & " Where DateShamsi='" & DSExitSavari.Tables(0).Rows(Loopx).Item("DateShamsiA").trim & "'"
                     CmdSql.ExecuteNonQuery()
                 Next
                 'نوشتن بازگشت مبلغ
@@ -2920,7 +2968,28 @@ Namespace ReportsManagement
                 End If
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
+
         End Sub
+
+        Public Shared Function GetAmountforTruckersAssociationControllingMoneyWallet() As Int64
+            Try
+                Dim NSSLast = R2CoreParkingSystemMClassAccountingManagement.GetNSSLastAccounting(R2CoreParkingSystemAccountings.TruckersAssociationControllingMoneyWallet)
+                Dim Concat1 As String = NSSLast.DateShamsiA.Replace("/", "") + NSSLast.TimeA.Replace(":", "")
+                Dim Concat2 As String = _DateTime.GetCurrentDateShamsiFull.Replace("/", "") + _DateTime.GetCurrentTime.Replace(":", "")
+                Dim Ds As New DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                                  "Select Sum(MblghA) as Amount from R2Primary.dbo.TblAccounting 
+                                   Where (((Replace(DateShamsiA,'/','')+Replace(TimeA,':',''))>='" & Concat1 & "') And ((Replace(DateShamsiA,'/','')+Replace(TimeA,'/',''))<='" & Concat2 & "'))
+                                         And (EEAccountingProcessType=" & R2CoreParkingSystemAccountings.AnjomanHazinehNobat & " Or EEAccountingProcessType=" & R2CoreParkingSystemAccountings.AnjomanHazinehSodorMojavezUpTo72Saat & " Or EEAccountingProcessType=" & R2CoreParkingSystemAccountings.AnjomanHazinehSodorMojavezKiosk & " Or EEAccountingProcessType=" & R2CoreParkingSystemAccountings.PrintCopyOfTurn & " Or EEAccountingProcessType=" & R2CoreParkingSystemAccountings.AnjomanChangeCarTruckNumberPlate & " Or EEAccountingProcessType=" & R2CoreParkingSystemAccountings.AnjomanChangeDriverTruck & ")
+	                                     And ISNULl(Deleted,0)<>1", 0, Ds).GetRecordsCount = 0 Then
+                    Return 0
+                Else
+                    Return IIf(Ds.Tables(0).Rows(0).Item("Amount").Equals(System.DBNull.Value), 0, Ds.Tables(0).Rows(0).Item("Amount"))
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
         Public Shared Sub ReportingInformationProviderTruckersAssociationFinancialReport(YourDateTime1 As R2StandardDateAndTimeStructure, YourDateTime2 As R2StandardDateAndTimeStructure)
             Dim CmdSql As New SqlClient.SqlCommand
@@ -5034,6 +5103,96 @@ Namespace LoadNotification.LoadPermission
             End Get
         End Property
     End Class
+
+
+End Namespace
+
+Namespace TruckersAssociationControllingMoneyWallet
+
+    Public MustInherit Class TruckersAssociationControllingMoneyWalletManagement
+
+        Private Shared _DateTime As New R2DateTime
+
+        Public Shared Function GetNSSMoneyWallet() As R2CoreParkingSystemStandardTrafficCardStructure
+            Try
+
+                Return R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreMClassConfigurationManagement.GetConfigString(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 4))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Private Shared _ControllingMoneyWalletAccountingExcecutedFlag As Boolean = False
+        Public Shared Sub ControllingMoneyWalletAccounting(YourNSSUser As R2CoreStandardSoftwareUserStructure)
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceConfigurations = New R2CoreInstanceConfigurationManager
+                Dim InstancePersianCallendar = New R2CoreInstanceDateAndTimePersianCalendarManager
+                'کنترل زمان اجرای فرآیند بر اساس کانفیگ
+                Dim TimeOfDay = _DateTime.GetTimeOfDate(Now)
+                If TimeOfDay >= "00:00:00" And TimeOfDay <= "00:05:00" Then
+                    _ControllingMoneyWalletAccountingExcecutedFlag = False
+                    Return
+                ElseIf TimeOfDay < InstanceConfigurations.GetConfigString(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 6) Then
+                    Return
+                Else
+                End If
+                'این فرآیند در روز فقط باید یکبار اجرا گردد و نه بیشتر
+                'خط کد زیر یعنی فرآیند امروز قبلا در بازه معین اجرا یکبار اجرا شده است
+                If _ControllingMoneyWalletAccountingExcecutedFlag Then Return
+                'طبق کانفیگ سیستم کلا اکانتینگ فعال باشد یا نه
+                If Not InstanceConfigurations.GetConfigBoolean(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 1) Then Return
+                'آغاز فرآیند اکانتینگ
+                'آخرین اکانت ثبت شده
+                Dim NSSLastAccounting = R2CoreParkingSystemMClassAccountingManagement.GetNSSLastAccounting(R2CoreParkingSystemAccountings.TruckersAssociationControllingMoneyWallet)
+                'امروز یک مرتبه اکانت ثبت شده پس نیازی به ثبت مجدد نیست
+                If NSSLastAccounting.DateShamsiA = _DateTime.GetCurrentDateShamsiFull Then Return
+                Dim Amount As Int64 = PayanehClassLibraryMClassReportsManagement.GetAmountforTruckersAssociationControllingMoneyWallet()
+                'کسر هزینه شرکت خودگردان
+                If R2CoreMClassConfigurationManagement.GetConfigBoolean(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 2) Then
+                    Dim CostofSelfGoverning = R2CoreMClassConfigurationManagement.GetConfigInt32(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 3)
+                    Amount = Amount * (100 / (100 + CostofSelfGoverning))
+                End If
+                'ثبت اکانت
+                Dim NSSControllingMoneyWallet = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreMClassConfigurationManagement.GetConfigString(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 4))
+                R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSControllingMoneyWallet, BagPayType.MinusMoney, Amount, R2CoreParkingSystemAccountings.TruckersAssociationControllingMoneyWallet, YourNSSUser)
+                _ControllingMoneyWalletAccountingExcecutedFlag = True
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Shared Sub DoControlforControllingMoneyWallet()
+            Try
+                Dim InstanceConfigurations = New R2CoreInstanceConfigurationManager
+                Dim NSS = TruckersAssociationControllingMoneyWalletManagement.GetNSSMoneyWallet()
+                Dim Amount = R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletCharge(NSS)
+                If Amount < R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 5) Then
+                    Throw New TruckersAssociationControllingMoneyWalletCriticalAmountReachedException
+                End If
+            Catch ex As TruckersAssociationControllingMoneyWalletCriticalAmountReachedException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+    End Class
+
+    Namespace Exceptions
+        Public Class TruckersAssociationControllingMoneyWalletCriticalAmountReachedException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کیف پول کنترلی کامیونداران نیاز به شارژ دارد"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
+
+
 
 
 End Namespace

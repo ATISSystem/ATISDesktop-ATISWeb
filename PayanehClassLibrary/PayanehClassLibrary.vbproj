@@ -280,6 +280,12 @@
     <Compile Include="CarTruck And DriverTruck\UCComputerMessageProducerChangeDriverTruck.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolTruckersAssociationControllingMoneyWalletInstrument.Designer.vb">
+      <DependentUpon>UCMonetarySettingToolTruckersAssociationControllingMoneyWalletInstrument.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolTruckersAssociationControllingMoneyWalletInstrument.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Personel Attendance\FrmcTransferPersonelFingerPrintsIntoClock4.Designer.vb">
       <DependentUpon>FrmcTransferPersonelFingerPrintsIntoClock4.vb</DependentUpon>
     </Compile>
@@ -563,6 +569,12 @@
     <Compile Include="Transport Companies\UCSearcherTransportCompanies.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="TruckersAssociationControllingMoneyWallet\FrmcTruckersAssociationControllingMoneyWallet.Designer.vb">
+      <DependentUpon>FrmcTruckersAssociationControllingMoneyWallet.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TruckersAssociationControllingMoneyWallet\FrmcTruckersAssociationControllingMoneyWallet.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Turns\UCTurnsCancellation.Designer.vb">
       <DependentUpon>UCTurnsCancellation.vb</DependentUpon>
     </Compile>
@@ -683,6 +695,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CarTruck And DriverTruck\UCComputerMessageProducerChangeDriverTruck.resx">
       <DependentUpon>UCComputerMessageProducerChangeDriverTruck.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolTruckersAssociationControllingMoneyWalletInstrument.resx">
+      <DependentUpon>UCMonetarySettingToolTruckersAssociationControllingMoneyWalletInstrument.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Personel Attendance\FrmcTransferPersonelFingerPrintsIntoClock4.resx">
       <DependentUpon>FrmcTransferPersonelFingerPrintsIntoClock4.vb</DependentUpon>
@@ -824,6 +839,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Transport Companies\UCSearcherTransportCompanies.resx">
       <DependentUpon>UCSearcherTransportCompanies.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TruckersAssociationControllingMoneyWallet\FrmcTruckersAssociationControllingMoneyWallet.resx">
+      <DependentUpon>FrmcTruckersAssociationControllingMoneyWallet.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Turns\UCTurnsCancellation.resx">
       <DependentUpon>UCTurnsCancellation.vb</DependentUpon>

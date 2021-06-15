@@ -4,6 +4,7 @@ Imports System.Timers
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.ConfigurationManagement
 Imports PayanehClassLibrary.Logging
+Imports PayanehClassLibrary.TruckersAssociationControllingMoneyWallet
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
@@ -93,6 +94,15 @@ Public Class PayanehAmirKabirAutomatedJobs
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TurnsCancellation:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
+
+            'ثبت اکانتینگ کیف پول کنترلی کامیونداران
+            Try
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                TruckersAssociationControllingMoneyWalletManagement.ControllingMoneyWalletAccounting(InstanceSoftwareUsers.GetNSSSystemUser())
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "ControllingMoneyWalletAccounting:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
 
         Catch ex As Exception
             EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "_AutomatedJobsTimer_Elapsed:" + ex.Message.ToString, EventLogEntryType.Error)
