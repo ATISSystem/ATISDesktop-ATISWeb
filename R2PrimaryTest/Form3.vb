@@ -251,7 +251,7 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            PayanehClassLibrary.TruckersAssociationControllingMoneyWallet.TruckersAssociationControllingMoneyWalletManagement.DoControlforControllingMoneyWallet()
+            'PayanehClassLibrary.TruckersAssociationControllingMoneyWallet.TruckersAssociationControllingMoneyWalletManagement.DoControlforControllingMoneyWallet()
             'MessageBox.Show(DateTime.Now.TimeOfDay.Minutes Mod 10) 
             'Dim Instance = New R2CoreInstanceDateAndTimePersianCalendarManager
             'MessageBox.Show(Instance.GetFirstDateShamsiInRangeWithoutHoliday(TextBoxConcat1.Text ,6)) 

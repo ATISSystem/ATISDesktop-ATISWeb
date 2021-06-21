@@ -2767,6 +2767,13 @@ Namespace DateAndTimeManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
         End Function
+        Public Function GetMilladiDateTimeFromDateShamsiFullFormated(ByVal YourShamsiDateFull As String, YourTime As String) As String
+            Try
+                Return PC.ToDateTime(Mid(YourShamsiDateFull, 1, 4), Mid(YourShamsiDateFull, 6, 2), Mid(YourShamsiDateFull, 9, 2), Mid(YourTime, 1, 2), Mid(YourTime, 4, 2), Mid(YourTime, 7, 2), 0).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Function
         Public Function GetNextShamsiMonth(YourShamsiDate As R2StandardDateAndTimeStructure, YourNextMonth As Int16) As R2StandardDateAndTimeStructure
             Try
                 Dim MilladiTemp As DateTime = GetMilladiDateTimeFromDateShamsiFull(YourShamsiDate.DateShamsiFull, YourShamsiDate.Time)
@@ -3336,7 +3343,7 @@ Namespace LoggingManagement
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New DatabaseManagement.R2PrimarySqlConnection).GetConnection()
             Try
-                CmdSql.CommandText = "insert into R2Primary.dbo.TblLogging(logtype,sharh,Optional1,Optional2,Optional3,Optional4,Optional5,userid,dateshamsi,datetimemilladi) values(" & YourLog.LogType & ",'" & YourLog.Sharh & "','" & YourLog.Optional1 & "','" & YourLog.Optional2 & "','" & YourLog.Optional3 & "','" & YourLog.Optional4 & "','" & YourLog.Optional5 & "'," & YourLog.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "')"
+                CmdSql.CommandText = "insert into R2PrimaryLogging.dbo.TblLogging(logtype,sharh,Optional1,Optional2,Optional3,Optional4,Optional5,userid,dateshamsi,datetimemilladi) values(" & YourLog.LogType & ",'" & YourLog.Sharh & "','" & YourLog.Optional1 & "','" & YourLog.Optional2 & "','" & YourLog.Optional3 & "','" & YourLog.Optional4 & "','" & YourLog.Optional5 & "'," & YourLog.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "')"
                 CmdSql.Connection.Open()
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
@@ -3350,7 +3357,7 @@ Namespace LoggingManagement
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet = Nothing
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblLoggingTypes Where LogId=" & YourTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New LoggingTypeNotFoundException
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimaryLogging.dbo.TblLoggingTypes Where LogId=" & YourTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New LoggingTypeNotFoundException
                 Return New R2CoreStandardLogTypeStructure(DS.Tables(0).Rows(0).Item("LogId"), DS.Tables(0).Rows(0).Item("LogName").trim, DS.Tables(0).Rows(0).Item("LogTitle").trim, Color.FromName(DS.Tables(0).Rows(0).Item("LogColor").trim), DS.Tables(0).Rows(0).Item("Core").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As LoggingTypeNotFoundException
                 Throw ex
@@ -3368,7 +3375,7 @@ Namespace LoggingManagement
         Public Shared Function GetNSSLogType(YourLogId As Int64) As R2CoreStandardLogTypeStructure
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblLoggingTypes Where LogId=" & YourLogId & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New R2CoreLogTypeNotFoundException
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimaryLogging.dbo.TblLoggingTypes Where LogId=" & YourLogId & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New R2CoreLogTypeNotFoundException
                 Return New R2CoreStandardLogTypeStructure(Ds.Tables(0).Rows(0).Item("LogId"), Ds.Tables(0).Rows(0).Item("LogName").trim, Ds.Tables(0).Rows(0).Item("LogTitle").trim, Color.FromName(Ds.Tables(0).Rows(0).Item("LogColor").trim), Ds.Tables(0).Rows(0).Item("Core").trim, Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi").trim, Ds.Tables(0).Rows(0).Item("Time").trim, Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -3379,7 +3386,7 @@ Namespace LoggingManagement
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New DatabaseManagement.R2PrimarySqlConnection).GetConnection()
             Try
-                CmdSql.CommandText = "insert into R2Primary.dbo.TblLogging(logtype,sharh,Optional1,Optional2,Optional3,Optional4,Optional5,userid,dateshamsi,datetimemilladi) values(" & YourLog.LogType & ",'" & YourLog.Sharh & "','" & YourLog.Optional1 & "','" & YourLog.Optional2 & "','" & YourLog.Optional3 & "','" & YourLog.Optional4 & "','" & YourLog.Optional5 & "'," & YourLog.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "')"
+                CmdSql.CommandText = "insert into R2PrimaryLogging.dbo.TblLogging(logtype,sharh,Optional1,Optional2,Optional3,Optional4,Optional5,userid,dateshamsi,datetimemilladi) values(" & YourLog.LogType & ",'" & YourLog.Sharh & "','" & YourLog.Optional1 & "','" & YourLog.Optional2 & "','" & YourLog.Optional3 & "','" & YourLog.Optional4 & "','" & YourLog.Optional5 & "'," & YourLog.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "')"
                 CmdSql.Connection.Open()
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()

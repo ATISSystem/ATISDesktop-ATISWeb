@@ -52,6 +52,7 @@ Public Class UCViewerNSSLoadAllocationExtended
     Private Sub UCRefresh()
         Try
             LabelTransportCompanyTitle.Text = String.Empty
+            LabelTurnId.Text = String.Empty
             LabelGoodTitle.Text = String.Empty
             LabelnEstelamId.Text = String.Empty
             LabelLoadTargetTitle.Text = String.Empty
@@ -81,7 +82,7 @@ Public Class UCViewerNSSLoadAllocationExtended
 
 #Region "Event Handlers"
 
-    Private Sub Labels_Click(sender As Object, e As EventArgs) Handles LabelTransportCompanyTitle.Click, LabelGoodTitle.Click, LabelLoadTargetTitle.Click, LabelTruck.Click, LabelDriverTruck.Click, LabelLoadAllocationStatus.Click, LabelnEstelamId.Click
+    Private Sub Labels_Click(sender As Object, e As EventArgs) Handles LabelTransportCompanyTitle.Click, LabelTurnId.Click, LabelGoodTitle.Click, LabelLoadTargetTitle.Click, LabelTruck.Click, LabelDriverTruck.Click, LabelLoadAllocationStatus.Click, LabelnEstelamId.Click
         Try
             UCOnClickedEvent(Me)
         Catch ex As Exception
@@ -111,6 +112,7 @@ Public Class UCViewerNSSLoadAllocationExtended
         Try
             Dim NSS As R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedStructure = UCNSSCurrent
             LabelTransportCompanyTitle.Text = NSS.TCTitle.Trim
+            LabelTurnId.Text = NSS.TurnId
             LabelLAId.Text = NSS.LAId
             LabelGoodTitle.Text = NSS.GoodTitle.Trim
             LabelnEstelamId.Text = NSS.nEstelamId

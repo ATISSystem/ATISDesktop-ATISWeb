@@ -2974,12 +2974,10 @@ Namespace ReportsManagement
         Public Shared Function GetAmountforTruckersAssociationControllingMoneyWallet() As Int64
             Try
                 Dim NSSLast = R2CoreParkingSystemMClassAccountingManagement.GetNSSLastAccounting(R2CoreParkingSystemAccountings.TruckersAssociationControllingMoneyWallet)
-                Dim Concat1 As String = NSSLast.DateShamsiA.Replace("/", "") + NSSLast.TimeA.Replace(":", "")
-                Dim Concat2 As String = _DateTime.GetCurrentDateShamsiFull.Replace("/", "") + _DateTime.GetCurrentTime.Replace(":", "")
                 Dim Ds As New DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                                   "Select Sum(MblghA) as Amount from R2Primary.dbo.TblAccounting 
-                                   Where (((Replace(DateShamsiA,'/','')+Replace(TimeA,':',''))>='" & Concat1 & "') And ((Replace(DateShamsiA,'/','')+Replace(TimeA,'/',''))<='" & Concat2 & "'))
+                                   Where DateMilladiA Between '" & _DateTime.GetMilladiDateTimeFromDateShamsiFullFormated(NSSLast.DateShamsiA, NSSLast.TimeA) & "' and '" & _DateTime.GetCurrentDateTimeMilladiFormated() & "'
                                          And (EEAccountingProcessType=" & R2CoreParkingSystemAccountings.AnjomanHazinehNobat & " Or EEAccountingProcessType=" & R2CoreParkingSystemAccountings.AnjomanHazinehSodorMojavezUpTo72Saat & " Or EEAccountingProcessType=" & R2CoreParkingSystemAccountings.AnjomanHazinehSodorMojavezKiosk & " Or EEAccountingProcessType=" & R2CoreParkingSystemAccountings.PrintCopyOfTurn & " Or EEAccountingProcessType=" & R2CoreParkingSystemAccountings.AnjomanChangeCarTruckNumberPlate & " Or EEAccountingProcessType=" & R2CoreParkingSystemAccountings.AnjomanChangeDriverTruck & ")
 	                                     And ISNULl(Deleted,0)<>1", 0, Ds).GetRecordsCount = 0 Then
                     Return 0

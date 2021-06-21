@@ -52,7 +52,7 @@ Public Class UCUCLogCollection
             UCRefresh()
             PnlMain.SuspendLayout()
             Dim Ds As New DataSet
-            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select top " & RecordCounttoView & " * from R2Primary.dbo.TblLogging Where Optional1 Like '%" & YourOptional1 & "%' order by DateTimeMilladi desc", 1, Ds)
+            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select top " & RecordCounttoView & " * from R2PrimaryLogging.dbo.TblLogging Where Optional1 Like '%" & YourOptional1 & "%' order by DateTimeMilladi desc", 1, Ds)
             For Loopx As Int64 = Ds.Tables(0).Rows.Count - 1 To 0 Step -1
                 Dim UC As UCLog = New UCLog(New R2CoreStandardLoggingStructure(Ds.Tables(0).Rows(Loopx).Item("logid"), Ds.Tables(0).Rows(Loopx).Item("LogType"), Ds.Tables(0).Rows(Loopx).Item("sharh").trim, Ds.Tables(0).Rows(Loopx).Item("optional1").trim, Ds.Tables(0).Rows(Loopx).Item("optional2").trim, Ds.Tables(0).Rows(Loopx).Item("optional3").trim, Ds.Tables(0).Rows(Loopx).Item("optional4").trim, Ds.Tables(0).Rows(Loopx).Item("optional5").trim, Ds.Tables(0).Rows(Loopx).Item("userid"), Ds.Tables(0).Rows(Loopx).Item("datetimemilladi"), Ds.Tables(0).Rows(Loopx).Item("dateshamsi").trim))
                 UC.Dock = DockStyle.Top
