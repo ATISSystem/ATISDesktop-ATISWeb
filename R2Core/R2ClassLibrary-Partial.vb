@@ -916,8 +916,8 @@ Namespace SecurityAlgorithmsManagement
                 g.FillRectangle(drawBackground, New Rectangle(0, 0, iBMPWidth, iBMPHeight))
 
                 ' Create font and brush.
-                Dim drawFont As New Font("Times New Roman", 17)
-                Dim drawBrush As New SolidBrush(Color.Black)
+                Dim drawFont As New System.Drawing.Font("Alborz Titr", 16, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+                Dim drawBrush As New SolidBrush(Color.Red)
                 Dim strFormat As New StringFormat(StringFormatFlags.FitBlackBox)
                 sfLetter = New SizeF(30, 30)
                 ' Draw string to screen.
@@ -1002,10 +1002,49 @@ Namespace SecurityAlgorithmsManagement
                 Next
                 Return sWord
             End Function
+            Public Function GenerateFakeWordNumeric(ByVal iLengthRequired As Integer) As String
+                Dim sVowels As String = "98765"
+                Dim sConsonants As String = "0123456789"
+                Dim iNbrVowels As Integer
+                Dim iNbrConsonants As Integer
+                Dim sWord As String
+                Dim bUseVowel As Boolean
+                Dim iWordLength As Integer
+                Dim sPattern As String
+                iNbrVowels = 0
+                iNbrConsonants = 0
+                bUseVowel = False
+                sWord = ""
+                Randomize(DateTime.UtcNow.Millisecond)
+                For iWordLength = 1 To iLengthRequired
+                    If (iWordLength = 2) Or ((iLengthRequired > 1) And (iWordLength = iLengthRequired)) Then
+                        bUseVowel = Not bUseVowel
+                    ElseIf (iNbrVowels < 2) And (iNbrConsonants < 2) Then
+                        bUseVowel = ((Rnd(1) * 2) > 1)
+                    ElseIf (iNbrVowels < 2) Then
+                        bUseVowel = True
+                    ElseIf (iNbrConsonants < 2) Then
+                        bUseVowel = False
+                    End If
+
+                    sPattern = IIf(bUseVowel, sVowels, sConsonants)
+                    sWord = sWord & sPattern.Substring(Int(Rnd(1) * sPattern.Length), 1)
+                    If bUseVowel Then
+                        iNbrVowels = iNbrVowels + 1
+                        iNbrConsonants = 0
+                    Else
+                        iNbrVowels = 0
+                        iNbrConsonants = iNbrConsonants + 1
+                    End If
+                Next
+                Return sWord
+            End Function
+
             Private Function RndInterval(ByVal iMin As Integer, ByVal iMax As Integer) As Integer
                 Randomize()
                 Return Int(((iMax - iMin + 1) * Rnd()) + iMin)
             End Function
+
 
         End Class
 

@@ -1550,6 +1550,26 @@ Namespace SoftwareUserManagement
             End Try
         End Function
 
+        Public Function GetCaptchaNumericforSoftwareUser(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As String
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                Dim InstanceCaptcha = New R2CoreInstanceCaptchaManager
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim Captcha = InstanceCaptcha.GenerateFakeWordNumeric(InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 6))
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set Captcha='" & Captcha & "',CaptchaValid=1 Where MobileNumber='" & YourNSSSoftwareUser.MobileNumber & "'"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+                Return Captcha
+            Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Sub CaptchaInvalidateforSoftwareUser(YourSoftwareUserMobile As R2CoreSoftwareUserMobile)
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()

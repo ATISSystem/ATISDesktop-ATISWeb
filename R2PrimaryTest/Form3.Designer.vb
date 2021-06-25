@@ -45,6 +45,8 @@ Partial Class Form3
         Me.Button19 = New System.Windows.Forms.Button()
         Me.Button22 = New System.Windows.Forms.Button()
         Me.Button28 = New System.Windows.Forms.Button()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Button1
@@ -78,10 +80,10 @@ Partial Class Form3
         '
         'TextBoxConcat1
         '
-        Me.TextBoxConcat1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.TextBoxConcat1.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.TextBoxConcat1.Location = New System.Drawing.Point(12, 69)
         Me.TextBoxConcat1.Name = "TextBoxConcat1"
-        Me.TextBoxConcat1.Size = New System.Drawing.Size(122, 22)
+        Me.TextBoxConcat1.Size = New System.Drawing.Size(122, 23)
         Me.TextBoxConcat1.TabIndex = 3
         Me.TextBoxConcat1.Text = "13980101070000"
         Me.TextBoxConcat1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -272,11 +274,20 @@ Partial Class Form3
         Me.Button28.Text = "Goto Security"
         Me.Button28.UseVisualStyleBackColor = False
         '
+        'PictureBox1
+        '
+        Me.PictureBox1.Location = New System.Drawing.Point(721, 386)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(113, 40)
+        Me.PictureBox1.TabIndex = 33
+        Me.PictureBox1.TabStop = False
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1154, 450)
+        Me.ClientSize = New System.Drawing.Size(844, 450)
+        Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.Button28)
         Me.Controls.Add(Me.Button22)
         Me.Controls.Add(Me.Button19)
@@ -301,6 +312,7 @@ Partial Class Form3
         Me.Controls.Add(Me.TextBoxResult)
         Me.Name = "Form3"
         Me.Text = "Form3"
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -329,4 +341,5 @@ Partial Class Form3
     Friend WithEvents Button19 As Button
     Friend WithEvents Button22 As Button
     Friend WithEvents Button28 As Button
+    Friend WithEvents PictureBox1 As PictureBox
 End Class

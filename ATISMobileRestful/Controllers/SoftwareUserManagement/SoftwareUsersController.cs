@@ -139,7 +139,7 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
                 var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceCaptcha = new R2CoreInstanceCaptchaManager();
-                var CaptchaImage = InstanceCaptcha.GenerateCaptcha(InstanceSoftwareusers.GetCaptchaforSoftwareUser(NSSSoftwareuser));
+                var CaptchaImage = InstanceCaptcha.GenerateCaptcha(InstanceSoftwareusers.GetCaptchaNumericforSoftwareUser(NSSSoftwareuser));
                 ImageRawData IImage = new ImageRawData();
                 IImage.IRawData = (new JsonImage(CaptchaImage)).GetRawData();
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);

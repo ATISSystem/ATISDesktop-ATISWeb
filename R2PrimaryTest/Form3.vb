@@ -322,6 +322,12 @@ Public Class Form3
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         Try
+            Dim X As New R2Core.LoggingManagement.R2CoreInstanceLoggingManager
+            X.GetNSSLogType(1)
+            'Dim InstanceCaptcha = New CoreClass.R2CoreInstanceCaptchaManager
+            'Dim FakeWord = InstanceCaptcha.GenerateFakeWordNumeric(5)
+            'Dim CaptchaImage = InstanceCaptcha.GenerateCaptcha(FakeWord)
+            'PictureBox1.Image = CaptchaImage
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
@@ -361,6 +367,15 @@ Public Class Form3
     Private Sub Form3_Load(sender As Object, e As EventArgs) Handles Me.Load
 
         R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+
+    End Sub
+
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
 
     End Sub
 

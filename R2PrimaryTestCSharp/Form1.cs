@@ -1,4 +1,5 @@
-﻿using R2Core.SoftwareUserManagement;
+﻿using R2Core.SecurityAlgorithmsManagement.Captcha;
+using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.LoadAllocation;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2CoreTransportationAndLoadNotification.LoadPermission;
@@ -27,15 +28,19 @@ namespace R2PrimaryTestCSharp
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            var InstanceReport = new R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager();
-          var Lst=  InstanceReport.ReportingInformationProviderLoadPermissionsIssuedOrderByPriorityReport(7);
-            List<PermissionsIssued> _PermissionsIssued = new List<PermissionsIssued>();
-            for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
-            {
-                var Item = new PermissionsIssued();
-                //Item.ReportItem = Lst[Loopx];
-                _PermissionsIssued.Add(Item);
-            }
+            var InstanceCaptcha = new R2CoreInstanceCaptchaManager();
+            var FakeWord = InstanceCaptcha.GenerateFakeWordNumeric(5);
+            var CaptchaImage = InstanceCaptcha.GenerateCaptcha(FakeWord);
+            pictureBox1.Image = CaptchaImage;
+            //  var InstanceReport = new R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager();
+            //var Lst=  InstanceReport.ReportingInformationProviderLoadPermissionsIssuedOrderByPriorityReport(7);
+            //  List<PermissionsIssued> _PermissionsIssued = new List<PermissionsIssued>();
+            //  for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
+            //  {
+            //      var Item = new PermissionsIssued();
+            //      //Item.ReportItem = Lst[Loopx];
+            //      _PermissionsIssued.Add(Item);
+            //  }
 
             //var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
             //var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
@@ -56,4 +61,6 @@ namespace R2PrimaryTestCSharp
 
         }
     }
+
+
 }
