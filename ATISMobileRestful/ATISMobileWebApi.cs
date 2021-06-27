@@ -423,6 +423,13 @@ namespace ATISMobileRestful
             return response;
         }
 
+        public HttpResponseMessage CreateAPIKeyExpirationContentMessage(string YourMessage)
+        {
+            HttpResponseMessage response = new HttpResponseMessage(System.Net.HttpStatusCode.NonAuthoritativeInformation);
+            response.Content = new StringContent(JsonConvert.SerializeObject(YourMessage), Encoding.UTF8, "application/json");
+            return response;
+        }
+
         private const string HttpContext = "MS_HttpContext";
         private const string RemoteEndpointMessage = "System.ServiceModel.Channels.RemoteEndpointMessageProperty";
         public string GetClientIpAddress(HttpRequestMessage request)

@@ -59,6 +59,8 @@ namespace ATISMobileRestful.Controllers.MobileProcessManagement
             { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (UserNotExistByMobileNumberException ex)
             { return WebAPi.CreateSuccessContentMessage(string.Empty); }
+            catch (WebApiClientSoftwareUserAPIKeyExpiredException ex)
+            { return WebAPi.CreateAPIKeyExpirationContentMessage(ex.Message); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
