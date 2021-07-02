@@ -24,6 +24,7 @@ Public Class FrmcFirst
         ' Add any initialization after the InitializeComponent() call.
         Try
             _Timer.Interval = 5000
+
             _Timer.Enabled = True
             _Timer.Start()
             LblApplicationDomainTitle0.Text = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 0)
