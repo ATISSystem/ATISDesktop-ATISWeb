@@ -801,7 +801,7 @@ Namespace SecurityAlgorithmsManagement
                 End Try
             End Function
 
-            Private VerificationCodeValidChars As String = "%$#@^&!~()-+*=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            Private VerificationCodeValidChars As String = "%$#@^!~()-+*=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
             Public Function GenerateVerificationCode(YourLength As Int32) As String
                 Try
                     Dim Random As Random = New Random(DateTime.UtcNow.Millisecond)

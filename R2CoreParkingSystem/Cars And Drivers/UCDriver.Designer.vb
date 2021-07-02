@@ -251,20 +251,20 @@ Partial Class UCDriver
         CBlendItems1.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
         CBlendItems1.iPoint = New Single() {0!, 0.5!, 1!}
         Me.CButtonSendSmsLast5Digit.ColorFillBlend = CBlendItems1
-        Me.CButtonSendSmsLast5Digit.Corners.LowerRight = 11
+        Me.CButtonSendSmsLast5Digit.Corners.LowerRight = 10
         Me.CButtonSendSmsLast5Digit.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.CButtonSendSmsLast5Digit.DesignerSelected = true
-        Me.CButtonSendSmsLast5Digit.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.CButtonSendSmsLast5Digit.DesignerSelected = False
+        Me.CButtonSendSmsLast5Digit.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButtonSendSmsLast5Digit.ImageIndex = 0
         Me.CButtonSendSmsLast5Digit.Location = New System.Drawing.Point(12, 44)
         Me.CButtonSendSmsLast5Digit.Name = "CButtonSendSmsLast5Digit"
-        Me.CButtonSendSmsLast5Digit.Size = New System.Drawing.Size(101, 22)
+        Me.CButtonSendSmsLast5Digit.Size = New System.Drawing.Size(112, 22)
         Me.CButtonSendSmsLast5Digit.TabIndex = 21
-        Me.CButtonSendSmsLast5Digit.Text = "ارسال رمز شخصی"
+        Me.CButtonSendSmsLast5Digit.Text = "نمایش رمز شخصی"
         '
         'UcTextBoxNationalCode
         '
-        Me.UcTextBoxNationalCode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxNationalCode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTextBoxNationalCode.BackColor = System.Drawing.Color.Transparent
         Me.UcTextBoxNationalCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.UcTextBoxNationalCode.Location = New System.Drawing.Point(256, 16)
@@ -274,15 +274,15 @@ Partial Class UCDriver
         Me.UcTextBoxNationalCode.TabIndex = 20
         Me.UcTextBoxNationalCode.UCBackColor = System.Drawing.Color.White
         Me.UcTextBoxNationalCode.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTextBoxNationalCode.UCBorder = false
+        Me.UcTextBoxNationalCode.UCBorder = False
         Me.UcTextBoxNationalCode.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcTextBoxNationalCode.UCEnable = true
-        Me.UcTextBoxNationalCode.UCFont = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.UcTextBoxNationalCode.UCEnable = True
+        Me.UcTextBoxNationalCode.UCFont = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.UcTextBoxNationalCode.UCForeColor = System.Drawing.Color.Black
         Me.UcTextBoxNationalCode.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
-        Me.UcTextBoxNationalCode.UCMaxCharacterReached = CType(50,Short)
-        Me.UcTextBoxNationalCode.UCMaxNumber = CType(99999,Long)
-        Me.UcTextBoxNationalCode.UCMultiLine = false
+        Me.UcTextBoxNationalCode.UCMaxCharacterReached = CType(50, Short)
+        Me.UcTextBoxNationalCode.UCMaxNumber = CType(99999, Long)
+        Me.UcTextBoxNationalCode.UCMultiLine = False
         Me.UcTextBoxNationalCode.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
         Me.UcTextBoxNationalCode.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
         Me.UcTextBoxNationalCode.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -290,13 +290,13 @@ Partial Class UCDriver
         '
         'UcNumberLicenseNo
         '
-        Me.UcNumberLicenseNo.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberLicenseNo.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
-        Me.UcNumberLicenseNo.Location = New System.Drawing.Point(120, 42)
+        Me.UcNumberLicenseNo.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberLicenseNo.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumberLicenseNo.Location = New System.Drawing.Point(131, 42)
         Me.UcNumberLicenseNo.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberLicenseNo.Name = "UcNumberLicenseNo"
-        Me.UcNumberLicenseNo.Size = New System.Drawing.Size(210, 25)
+        Me.UcNumberLicenseNo.Size = New System.Drawing.Size(199, 25)
         Me.UcNumberLicenseNo.TabIndex = 19
         Me.UcNumberLicenseNo.UCAllowedMaxNumber = CType(9223372036854775807,Long)
         Me.UcNumberLicenseNo.UCAllowedMinNumber = CType(-9223372036854775,Long)

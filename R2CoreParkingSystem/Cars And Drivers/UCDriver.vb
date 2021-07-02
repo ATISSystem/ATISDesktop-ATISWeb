@@ -278,12 +278,13 @@ Public Class UCDriver
     Private Sub CButtonSendSmsLast5Digit_Click(sender As Object, e As EventArgs) Handles CButtonSendSmsLast5Digit.Click
         Dim InstanceSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
         Try
-            CButtonSendSmsLast5Digit.Enabled=False 
+            'CButtonSendSmsLast5Digit.Enabled=False
             Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
-            Dim SMSSender As New R2CoreSMSSendRecive
-            Dim SMSMessage = "شناسه شخصی:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز شخصی:" + NSSSoftwareUser.UserPassword
-            SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, 1, Nothing, Nothing))
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "رمز شخصی ارسال شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+            MessageBox.Show("شناسه شخصی:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز شخصی:" + NSSSoftwareUser.UserPassword)
+            'Dim SMSSender As New R2CoreSMSSendRecive
+            'Dim SMSMessage = "شناسه شخصی:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز شخصی:" + NSSSoftwareUser.UserPassword
+            'SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, 1, Nothing, Nothing))
+            'UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "رمز شخصی ارسال شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
