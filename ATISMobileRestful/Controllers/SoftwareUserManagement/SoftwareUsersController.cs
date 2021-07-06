@@ -24,6 +24,10 @@ using R2Core.BlackIPs;
 using R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms;
 using R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms.Exceptions;
 using R2Core.PredefinedMessagesManagement;
+using R2CoreTransportationAndLoadNotification.TerraficCardsManagement;
+using R2CoreParkingSystem.MoneyWalletManagement;
+using R2CoreParkingSystem.AccountingManagement;
+using R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions;
 
 namespace ATISMobileRestful.Controllers.SoftwareUserManagement
 {
@@ -41,12 +45,21 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
                 WebAPi.AuthenticateClientRegisteringMobileNumber(Request);
 
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var MobileNumber = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
-                InstanceSoftwareusers.RegisteringMobileNumber(MobileNumber);
+                var NSSSoftwareUser = InstanceSoftwareusers.RegisteringMobileNumber(MobileNumber);
+                //کسر هزینه فعال سازی - از بابت اس ام اس
+                var InstanceTerraficCards = new R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
+                var InstanceMoneyWallets = new R2CoreParkingSystemInstanceMoneyWalletManager();
+                var NSSTrafficCard = InstanceTerraficCards.GetNSSTerafficCard(NSSSoftwareUser);
+                if (InstanceConfiguration.GetConfigBoolean(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 10))
+                { if (!NSSTrafficCard.NoMoney) { InstanceMoneyWallets.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 11), R2CoreParkingSystemAccountings.RegisteringSoftwareUserSMSCost, InstanceSoftwareusers.GetNSSSystemUser()); } }
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(string.Empty), Encoding.UTF8, "application/json");
                 return response;
             }
+            catch (SoftwareUserMoneyWalletNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (MobileNumberIsInvalidException ex)
             { return WebAPi.CreateErrorContentMessage((new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.MobileNumberIsInvalid).MsgContent); }
             catch (MobileNumberNotFoundException ex)

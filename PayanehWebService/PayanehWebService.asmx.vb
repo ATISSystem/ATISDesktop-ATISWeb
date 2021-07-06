@@ -287,6 +287,20 @@ Public Class PayanehWebService
     End Sub
 
     <WebMethod()>
+    Public Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport(YourDateTimeMilladi1 As DateTime, YourDateShamsiFull1 As String, YourTime1 As String, YourDateTimeMilladi2 As DateTime, YourDateShamsiFull2 As String, YourTime2 As String, YourExchangeKey As Int64)
+        Try
+            _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)
+            PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderSaleOfSoftwareUserActivationSMSReport(New R2StandardDateAndTimeStructure(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1), New R2StandardDateAndTimeStructure(YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2))
+        Catch ex As ExchangeKeyTimeRangePassedException
+            Throw ex
+        Catch ex As ExchangeKeyNotExistException
+            Throw ex
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    <WebMethod()>
     Public Function WebMethodCarTruckHasTurn(YourPelak As String, YourSerial As String, YourExchangeKey As Int64) As Boolean
         Try
             _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)

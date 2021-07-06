@@ -171,7 +171,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelTurnId.Cursor = System.Windows.Forms.Cursors.Hand
         Me.LabelTurnId.Font = New System.Drawing.Font("IRMehr", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelTurnId.ForeColor = System.Drawing.Color.Red
-        Me.LabelTurnId.Location = New System.Drawing.Point(790, 12)
+        Me.LabelTurnId.Location = New System.Drawing.Point(821, 11)
         Me.LabelTurnId.Name = "LabelTurnId"
         Me.LabelTurnId.Size = New System.Drawing.Size(67, 23)
         Me.LabelTurnId.TabIndex = 72
@@ -182,9 +182,9 @@ Partial Class UCViewerNSSLoadAllocationExtended
         '
         Me.Label12.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label12.ForeColor = System.Drawing.Color.DarkGray
-        Me.Label12.Location = New System.Drawing.Point(790, -6)
+        Me.Label12.Location = New System.Drawing.Point(826, -6)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(67, 23)
+        Me.Label12.Size = New System.Drawing.Size(62, 23)
         Me.Label12.TabIndex = 71
         Me.Label12.Text = "نوبت"
         Me.Label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -219,7 +219,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelLAId.Cursor = System.Windows.Forms.Cursors.Hand
         Me.LabelLAId.Font = New System.Drawing.Font("IRMehr", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelLAId.ForeColor = System.Drawing.Color.Red
-        Me.LabelLAId.Location = New System.Drawing.Point(696, 12)
+        Me.LabelLAId.Location = New System.Drawing.Point(727, 12)
         Me.LabelLAId.Name = "LabelLAId"
         Me.LabelLAId.Size = New System.Drawing.Size(88, 23)
         Me.LabelLAId.TabIndex = 68
@@ -230,9 +230,9 @@ Partial Class UCViewerNSSLoadAllocationExtended
         '
         Me.Label10.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label10.ForeColor = System.Drawing.Color.DarkGray
-        Me.Label10.Location = New System.Drawing.Point(697, -6)
+        Me.Label10.Location = New System.Drawing.Point(732, -6)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(87, 23)
+        Me.Label10.Size = New System.Drawing.Size(83, 23)
         Me.Label10.TabIndex = 67
         Me.Label10.Text = "تخصیص"
         Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -243,7 +243,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelnEstelamId.Cursor = System.Windows.Forms.Cursors.Hand
         Me.LabelnEstelamId.Font = New System.Drawing.Font("IRMehr", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelnEstelamId.ForeColor = System.Drawing.Color.Red
-        Me.LabelnEstelamId.Location = New System.Drawing.Point(602, 12)
+        Me.LabelnEstelamId.Location = New System.Drawing.Point(633, 12)
         Me.LabelnEstelamId.Name = "LabelnEstelamId"
         Me.LabelnEstelamId.Size = New System.Drawing.Size(88, 23)
         Me.LabelnEstelamId.TabIndex = 66
@@ -254,9 +254,9 @@ Partial Class UCViewerNSSLoadAllocationExtended
         '
         Me.Label9.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.DarkGray
-        Me.Label9.Location = New System.Drawing.Point(606, -6)
+        Me.Label9.Location = New System.Drawing.Point(638, -6)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(84, 23)
+        Me.Label9.Size = New System.Drawing.Size(83, 23)
         Me.Label9.TabIndex = 65
         Me.Label9.Text = "کد بار"
         Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -355,7 +355,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.Label2.ForeColor = System.Drawing.Color.DarkGray
         Me.Label2.Location = New System.Drawing.Point(512, -6)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(84, 23)
+        Me.Label2.Size = New System.Drawing.Size(115, 23)
         Me.Label2.TabIndex = 36
         Me.Label2.Text = "نوع بار"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -366,9 +366,9 @@ Partial Class UCViewerNSSLoadAllocationExtended
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.DarkGray
-        Me.Label1.Location = New System.Drawing.Point(859, -6)
+        Me.Label1.Location = New System.Drawing.Point(898, -6)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(162, 23)
+        Me.Label1.Size = New System.Drawing.Size(123, 23)
         Me.Label1.TabIndex = 35
         Me.Label1.Text = "شرکت حمل ونقل"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -381,9 +381,9 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelTransportCompanyTitle.Cursor = System.Windows.Forms.Cursors.Hand
         Me.LabelTransportCompanyTitle.Font = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelTransportCompanyTitle.ForeColor = System.Drawing.Color.DarkBlue
-        Me.LabelTransportCompanyTitle.Location = New System.Drawing.Point(863, 12)
+        Me.LabelTransportCompanyTitle.Location = New System.Drawing.Point(894, 12)
         Me.LabelTransportCompanyTitle.Name = "LabelTransportCompanyTitle"
-        Me.LabelTransportCompanyTitle.Size = New System.Drawing.Size(159, 23)
+        Me.LabelTransportCompanyTitle.Size = New System.Drawing.Size(128, 23)
         Me.LabelTransportCompanyTitle.TabIndex = 56
         Me.LabelTransportCompanyTitle.Text = "شرکت حمل ونقل"
         Me.LabelTransportCompanyTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -396,7 +396,7 @@ Partial Class UCViewerNSSLoadAllocationExtended
         Me.LabelGoodTitle.ForeColor = System.Drawing.Color.Black
         Me.LabelGoodTitle.Location = New System.Drawing.Point(508, 12)
         Me.LabelGoodTitle.Name = "LabelGoodTitle"
-        Me.LabelGoodTitle.Size = New System.Drawing.Size(88, 23)
+        Me.LabelGoodTitle.Size = New System.Drawing.Size(119, 23)
         Me.LabelGoodTitle.TabIndex = 57
         Me.LabelGoodTitle.Text = "آجر نسوز"
         Me.LabelGoodTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter

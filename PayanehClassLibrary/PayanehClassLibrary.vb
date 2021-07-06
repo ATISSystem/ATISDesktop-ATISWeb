@@ -1951,7 +1951,7 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcLoadPermissionsIssuedOrderByPriorityReport As Int64 = 61
         Public Shared ReadOnly FrmcTruckersAssociationControllingMoneyWallet As Int64 = 65
         Public Shared ReadOnly FrmcClearanceLoadsReport As Int64 = 66
-
+        Public Shared ReadOnly FrmcSaleOfSoftwareUserActivationSMSReport As Int64 = 67
 
     End Class
 
@@ -2772,6 +2772,7 @@ Namespace ReportsManagement
         Public Shared ReadOnly LoadPermissionsIssuedOrderByPriorityReport As Int64 = 28
         Public Shared ReadOnly ClearanceLoadsReport As Int64 = 31
         Public Shared ReadOnly AnnouncedLoadsReport As Int64 = 32
+        Public Shared ReadOnly SaleOfSoftwareUserActivationSMSReport As Int64 = 33
     End Class
 
     Public Class PayanehClassLibraryMClassReportsManagement
@@ -3926,6 +3927,28 @@ Namespace ReportsManagement
             End Try
         End Sub
 
+        Public Shared Sub ReportingInformationProviderSaleOfSoftwareUserActivationSMSReport(YourDateTime1 As R2StandardDateAndTimeStructure, YourDateTime2 As R2StandardDateAndTimeStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblSaleOfSoftwareUserActivationSMSReport"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblSaleOfSoftwareUserActivationSMSReport
+                                         Select '" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentTime & "','" & YourDateTime1.Time & "','" & YourDateTime1.DateShamsiFull & "','" & YourDateTime2.Time & "','" & YourDateTime2.DateShamsiFull & "',Sum(MblghA),Count(*)
+                                         from R2Primary.dbo.TblAccounting 
+                                         Where DateMilladiA Between '" & _DateTime.GetMilladiDateTimeFromDateShamsiFullFormated(YourDateTime1.DateShamsiFull, YourDateTime1.Time) & "' and '" & _DateTime.GetMilladiDateTimeFromDateShamsiFullFormated(YourDateTime2.DateShamsiFull, YourDateTime2.Time) & "'
+                                         And (EEAccountingProcessType=" & R2CoreParkingSystemAccountings.RegisteringSoftwareUserSMSCost & ")"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
 
     End Class
 

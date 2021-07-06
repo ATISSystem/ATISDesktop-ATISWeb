@@ -329,6 +329,22 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportResponse">
+        <s:complexType />
+      </s:element>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="WebMethodLoginSoapIn">
@@ -457,6 +473,12 @@
   <wsdl:message name="WebMethodISCompanyActiveSoapOut">
     <wsdl:part name="parameters" element="tns:WebMethodISCompanyActiveResponse" />
   </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportResponse" />
+  </wsdl:message>
   <wsdl:portType name="PayanehWebServiceSoap">
     <wsdl:operation name="WebMethodLogin">
       <wsdl:input message="tns:WebMethodLoginSoapIn" />
@@ -541,6 +563,10 @@
     <wsdl:operation name="WebMethodISCompanyActive">
       <wsdl:input message="tns:WebMethodISCompanyActiveSoapIn" />
       <wsdl:output message="tns:WebMethodISCompanyActiveSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="PayanehWebServiceSoap" type="tns:PayanehWebServiceSoap">
@@ -734,6 +760,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="PayanehWebServiceSoap12" type="tns:PayanehWebServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -919,6 +954,15 @@
     </wsdl:operation>
     <wsdl:operation name="WebMethodISCompanyActive">
       <soap12:operation soapAction="http://tempuri.org/WebMethodISCompanyActive" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

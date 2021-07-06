@@ -1376,7 +1376,7 @@ Namespace SoftwareUserManagement
             End Try
         End Function
 
-        Public Function RegisteringMobileNumber(YourMobileNumber As String) As String
+        Public Function RegisteringMobileNumber(YourMobileNumber As String) As R2CoreStandardSoftwareUserStructure
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
@@ -1397,10 +1397,10 @@ Namespace SoftwareUserManagement
                     CmdSql.Connection.Close()
                     Dim SMSSender As New R2CoreSMSSendRecive
                     SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, Ds.Tables(0).Rows(0).Item("MobileNumber"), VerificationCode, 1, Nothing, 1, Nothing, Nothing))
+                    Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
                 Else
                     Throw New MobileNumberNotFoundException
                 End If
-                Return VerificationCode
             Catch ex As MobileNumberNotFoundException
                 Throw ex
             Catch ex As Exception

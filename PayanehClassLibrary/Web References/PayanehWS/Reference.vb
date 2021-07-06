@@ -74,6 +74,8 @@ Namespace PayanehWS
         
         Private WebMethodISCompanyActiveOperationCompleted As System.Threading.SendOrPostCallback
         
+        Private WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted As System.Threading.SendOrPostCallback
+        
         Private useDefaultCredentialsSetExplicitly As Boolean
         
         '''<remarks/>
@@ -174,6 +176,9 @@ Namespace PayanehWS
         
         '''<remarks/>
         Public Event WebMethodISCompanyActiveCompleted As WebMethodISCompanyActiveCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompleted As WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompletedEventHandler
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodLogin", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
@@ -749,6 +754,33 @@ Namespace PayanehWS
         End Sub
         
         '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerSaleOfSoftwareUserActivat"& _ 
+            "ionSMSReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey}, Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
         Public Shadows Sub CancelAsync(ByVal userState As Object)
             MyBase.CancelAsync(userState)
         End Sub
@@ -965,4 +997,8 @@ Namespace PayanehWS
             End Get
         End Property
     End Class
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
 End Namespace

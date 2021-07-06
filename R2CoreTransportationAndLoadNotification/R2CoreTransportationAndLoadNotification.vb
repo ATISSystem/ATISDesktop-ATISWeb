@@ -82,6 +82,7 @@ Imports R2CoreParkingSystem.EntityRelations
 Imports R2CoreParkingSystem.RequesterManagement
 Imports R2CoreParkingSystem.PermissionManagement
 Imports R2CoreParkingSystem.EntityManagement
+Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions
 
 Namespace Rmto
     Public MustInherit Class RmtoWebService
@@ -2680,10 +2681,10 @@ Namespace TerraficCardsManagement
                         Order By TCardsRCar.RelationId Desc", 0, Ds).GetRecordsCount <> 0 Then
                     Return InstanceTrafficCards.GetNSSTrafficCard(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CardId")))
                 Else
-                    Throw New GetNSSException
+                    Throw New SoftwareUserMoneyWalletNotFoundException
                 End If
-            Catch exx As GetNSSException
-                Throw exx
+            Catch ex As SoftwareUserMoneyWalletNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -2718,6 +2719,19 @@ Namespace TerraficCardsManagement
         End Function
 
     End Class
+
+    Namespace Exceptions
+        Public Class SoftwareUserMoneyWalletNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کیف پول مرتبط با کاربر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
+
 End Namespace
 
 Namespace SoftwareUserManagement

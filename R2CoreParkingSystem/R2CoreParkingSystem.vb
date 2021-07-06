@@ -1658,6 +1658,7 @@ Namespace AccountingManagement
         AnjomanChangeDriverTruck = 20  'هزینه تغییر نام راننده ناوگان باری - انجمن
         AnjomanChangeCarTruckNumberPlate = 21 'هزینه تغییر پلاک ناوگان باری - انجمن
         TruckersAssociationControllingMoneyWallet = 22 'کارکرد کیف پول کنترلی کامیونداران
+        RegisteringSoftwareUserSMSCost = 23 'هزینه اس ام اس فرآیند فعال سازی کاربر
     End Enum
 
     Public Class R2StandardEnterExitAccountingStructure
