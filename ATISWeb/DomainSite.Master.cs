@@ -10,8 +10,13 @@ namespace ATISWeb
     public partial class DomainSite : System.Web.UI.MasterPage
     {
         protected void Page_Load(object sender, EventArgs e)
-        {
+        { BtnExit.ServerClick += BtnExit_ServerClick; }
 
+        private void BtnExit_ServerClick(object sender, EventArgs e)
+        {
+            Session.RemoveAll();
+            Session.Abandon();
+            Response.Redirect("/LoginManagement/Wflogin.aspx");
         }
     }
 }

@@ -7,6 +7,7 @@ Imports System.Timers
 Imports System.ComponentModel
 Imports System.Security.Cryptography
 Imports System.Text
+Imports System.Threading
 
 Imports R2Core.ComputersManagement
 Imports R2Core.ConfigurationManagement
@@ -27,14 +28,13 @@ Imports R2Core.SMSSendAndRecieved.Exceptions
 Imports R2Core.EntityRelationManagement
 Imports R2Core.MobileProcessesManagement.Exceptions
 Imports R2Core.WebProcessesManagement.Exceptions
-
-Imports PcPosDll
 Imports R2Core.BlackIPs.Exceptions
-Imports System.Threading
 Imports R2Core.PredefinedMessagesManagement
 Imports R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms.Exceptions
 Imports R2Core.PermissionManagement.Exceptions
-Imports R2Core.TrafficCardsManagement
+
+Imports PcPosDll
+
 
 Namespace MonetarySupply
 
@@ -1048,6 +1048,308 @@ Namespace SecurityAlgorithmsManagement
 
 
         End Class
+
+    End Namespace
+
+    Namespace PasswordStrength
+        Public Class PasswordStrength
+            Private dtDetails As DataTable
+            Private PreviousPassword As String = ""
+
+            Public Sub SetPassword(pwd As String)
+                If (PreviousPassword <> pwd) Then
+                    PreviousPassword = pwd
+                    CheckPasswordWithDetails(PreviousPassword)
+                End If
+            End Sub
+
+            Public Function GetPasswordScore() As Integer
+                If dtDetails IsNot Nothing Then
+                    Return dtDetails.Rows(0)(5)
+                Else
+                    Return 0
+                End If
+            End Function
+
+            Public Function GetPasswordStrength() As String
+                If dtDetails IsNot Nothing Then
+                    Return dtDetails.Rows(0)(3)
+                Else
+                    Return "Unknown"
+                End If
+            End Function
+
+            Public Function GetStrengthDetails() As DataTable
+                Return dtDetails
+            End Function
+
+            Private Sub CheckPasswordWithDetails(pwd As String)
+                Dim nScore = 0
+                Dim sComplexity As String = ""
+                Dim iUpperCase As Integer = 0
+                Dim iLowerCase As Integer = 0
+                Dim iDigit As Integer = 0
+                Dim iSymbol As Integer = 0
+                Dim iRepeated As Integer = 1
+                Dim htRepeated As Hashtable = New Hashtable()
+                Dim iMiddle As Integer = 0
+                Dim iMiddleEx As Integer = 1
+                Dim ConsecutiveMode As Integer = 0
+                Dim iConsecutiveUpper As Integer = 0
+                Dim iConsecutiveLower As Integer = 0
+                Dim iConsecutiveDigit As Integer = 0
+                Dim iLevel As Integer = 0
+                Dim sAlphas As String = "abcdefghijklmnopqrstuvwxyz"
+                Dim sNumerics As String = "01234567890"
+                Dim nSeqAlpha As Integer = 0
+                Dim nSeqChar As Integer = 0
+                Dim nSeqNumber As Integer = 0
+
+                CreateDetailsTable()
+                iLevel += 1
+                Dim drScore As DataRow = AddDetailsRow(iLevel, "Score", "", "", 0, 0)
+
+                ' Scan password
+                For Each ch As Char In pwd.ToCharArray()
+                    ' Count digits
+                    If (Char.IsDigit(ch)) Then
+                        iDigit += 1
+                        If (ConsecutiveMode = 3) Then iConsecutiveDigit += 1
+                        ConsecutiveMode = 3
+                    End If
+
+                    ' Count uppercase characters
+                    If (Char.IsUpper(ch)) Then
+                        iUpperCase += 1
+                        If (ConsecutiveMode = 1) Then iConsecutiveUpper += 1
+                        ConsecutiveMode = 1
+                    End If
+
+                    ' Count lowercase characters
+                    If (Char.IsLower(ch)) Then
+                        iLowerCase += 1
+                        If (ConsecutiveMode = 2) Then iConsecutiveLower += 1
+                        ConsecutiveMode = 2
+                    End If
+
+                    ' Count symbols
+                    If (Char.IsSymbol(ch) Or Char.IsPunctuation(ch)) Then
+                        iSymbol += 1
+                        ConsecutiveMode = 0
+                    End If
+
+                    ' Count repeated letters 
+                    If (Char.IsLetter(ch)) Then
+                        If (htRepeated.Contains(Char.ToLower(ch))) Then
+                            iRepeated += 1
+                        Else
+                            htRepeated.Add(Char.ToLower(ch), 0)
+                        End If
+                        If (iMiddleEx > 1) Then iMiddle = iMiddleEx - 1
+                    End If
+
+                    If (iUpperCase > 0 Or iLowerCase > 0) Then
+                        If (Char.IsDigit(ch) Or Char.IsSymbol(ch)) Then iMiddleEx += 1
+                    End If
+                Next
+
+                ' Check for sequential alpha string patterns (forward And reverse) 
+                For s As Integer = 0 To 23 - 1
+                    Dim sFwd As String = sAlphas.Substring(s, 3)
+                    Dim sRev As String = strReverse(sFwd)
+                    If (pwd.ToLower().IndexOf(sFwd) <> -1 Or pwd.ToLower().IndexOf(sRev) <> -1) Then
+                        nSeqAlpha += 1
+                        nSeqChar += 1
+                    End If
+                Next
+
+                ' Check for sequential numeric string patterns (forward And reverse)
+                For s As Integer = 0 To 8 - 1
+                    Dim sFwd As String = sNumerics.Substring(s, 3)
+                    Dim sRev As String = strReverse(sFwd)
+                    If (pwd.ToLower().IndexOf(sFwd) <> -1 Or pwd.ToLower().IndexOf(sRev) <> -1) Then
+                        nSeqNumber += 1
+                        nSeqChar += 1
+                    End If
+                Next
+
+                ' Calcuate score
+                iLevel += 1
+                AddDetailsRow(iLevel, "Additions", "", "", 0, 0)
+
+                ' Score += 4 * Password Length
+                nScore = 4 * pwd.Length
+                iLevel += 1
+                AddDetailsRow(iLevel, "Password Length", "Flat", "(n*4)", pwd.Length, pwd.Length * 4)
+
+                ' if we have uppercase letetrs Score +=(number of uppercase letters *2)
+                If (iUpperCase > 0) Then
+                    nScore += ((pwd.Length - iUpperCase) * 2)
+                    iLevel += 1
+                    AddDetailsRow(iLevel, "Uppercase Letters", "Cond/Incr", "+((len-n)*2)", iUpperCase, ((pwd.Length - iUpperCase) * 2))
+                Else
+                    iLevel += 1
+                    AddDetailsRow(iLevel, "Uppercase Letters", "Cond/Incr", "+((len-n)*2)", iUpperCase, 0)
+                End If
+
+                ' if we have lowercase letetrs Score +=(number of lowercase letters *2)
+                If (iLowerCase > 0) Then
+                    nScore += ((pwd.Length - iLowerCase) * 2)
+                    iLevel += 1
+                    AddDetailsRow(iLevel, "Lowercase Letters", "Cond/Incr", "+((len-n)*2)", iLowerCase, ((pwd.Length - iLowerCase) * 2))
+                Else
+                    iLevel += 1
+                    AddDetailsRow(iLevel, "Lowercase Letters", "Cond/Incr", "+((len-n)*2)", iLowerCase, 0)
+                End If
+
+                ' Score += (Number of digits *4)
+                nScore += (iDigit * 4)
+                iLevel += 1
+                AddDetailsRow(iLevel, "Numbers", "Cond", "+(n*4)", iDigit, (iDigit * 4))
+
+                ' Score += (Number of Symbols * 6)
+                nScore += (iSymbol * 6)
+                iLevel += 1
+                AddDetailsRow(iLevel, "Symbols", "Flat", "+(n*6)", iSymbol, (iSymbol * 6))
+
+                ' Score += (Number of digits Or symbols in middle of password *2)
+                nScore += (iMiddle * 2)
+                iLevel += 1
+                AddDetailsRow(iLevel, "Middle Numbers or Symbols", "Flat", "+(n*2)", iMiddle, (iMiddle * 2))
+
+                'requirments
+                Dim requirments As Integer = 0
+                If (pwd.Length >= 8) Then requirments += 1     ' Min password length
+                If (iUpperCase > 0) Then requirments += 1      ' Uppercase letters
+                If (iLowerCase > 0) Then requirments += 1      ' Lowercase letters
+                If (iDigit > 0) Then requirments += 1          ' Digits
+                If (iSymbol > 0) Then requirments += 1         ' Symbols
+
+                ' If we have more than 3 requirments then
+                If (requirments > 3) Then
+                    ' Score += (requirments *2) 
+                    nScore += (requirments * 2)
+                    iLevel += 1
+                    AddDetailsRow(iLevel, "Requirments", "Flat", "+(n*2)", requirments, (requirments * 2))
+                Else
+                    iLevel += 1
+                    AddDetailsRow(iLevel, "Requirments", "Flat", "+(n*2)", requirments, 0)
+                End If
+
+
+                ' Deductions
+                iLevel += 1
+                AddDetailsRow(iLevel, "Deductions", "", "", 0, 0)
+
+                ' If only letters then score -=  password length
+                If (iDigit = 0 And iSymbol = 0) Then
+                    nScore -= pwd.Length
+                    iLevel += 1
+                    AddDetailsRow(iLevel, "Letters only", "Flat", "-n", pwd.Length, -pwd.Length)
+                Else
+                    iLevel += 1
+                    AddDetailsRow(iLevel, "Letters only", "Flat", "-n", 0, 0)
+                End If
+
+                ' If only digits then score -=  password length
+                If (iDigit = pwd.Length) Then
+                    nScore -= pwd.Length
+                    iLevel += 1
+                    AddDetailsRow(iLevel, "Numbers only", "Flat", "-n", pwd.Length, -pwd.Length)
+                Else
+                    iLevel += 1
+                    AddDetailsRow(iLevel, "Numbers only", "Flat", "-n", 0, 0)
+                End If
+
+                ' If repeated letters used then score -= (iRepeated * (iRepeated - 1));
+                If (iRepeated > 1) Then
+                    nScore -= (iRepeated * (iRepeated - 1))
+                    iLevel += 1
+                    AddDetailsRow(iLevel, "Repeat Characters (Case Insensitive)", "Incr", "-(n(n-1))", iRepeated, -(iRepeated * (iRepeated - 1)))
+                End If
+
+                ' If Consecutive uppercase letters then score -= (iConsecutiveUpper * 2);
+                nScore -= (iConsecutiveUpper * 2)
+                iLevel += 1
+                AddDetailsRow(iLevel, "Consecutive Uppercase Letters", "Flat", "-(n*2)", iConsecutiveUpper, -(iConsecutiveUpper * 2))
+
+                ' If Consecutive lowercase letters then score -= (iConsecutiveUpper * 2);
+                nScore -= (iConsecutiveLower * 2)
+                iLevel += 1
+                AddDetailsRow(iLevel, "Consecutive Lowercase Letters", "Flat", "-(n*2)", iConsecutiveLower, -(iConsecutiveLower * 2))
+
+                ' If Consecutive digits used then score -= (iConsecutiveDigits* 2);
+                nScore -= (iConsecutiveDigit * 2)
+                iLevel += 1
+                AddDetailsRow(iLevel, "Consecutive Numbers", "Flat", "-(n*2)", iConsecutiveDigit, -(iConsecutiveDigit * 2))
+
+                ' If password contains sequence of letters then score -= (nSeqAlpha * 3)
+                nScore -= (nSeqAlpha * 3)
+                iLevel += 1
+                AddDetailsRow(iLevel, "Sequential Letters (3+)", "Flat", "-(n*3)", nSeqAlpha, -(nSeqAlpha * 3))
+
+                ' If password contains sequence of digits then score -= (nSeqNumber * 3)
+                nScore -= (nSeqNumber * 3)
+                iLevel += 1
+                AddDetailsRow(iLevel, "Sequential Numbers (3+)", "Flat", "-(n*3)", nSeqNumber, -(nSeqNumber * 3))
+
+                ' Determine complexity based on overall score 
+                If (nScore > 100) Then
+                    nScore = 100
+                ElseIf (nScore < 0) Then
+                    nScore = 0
+                End If
+                If (nScore >= 0 And nScore < 20) Then
+                    sComplexity = "Very Weak"
+                ElseIf (nScore >= 20 And nScore < 40) Then
+                    sComplexity = "Weak"
+                ElseIf (nScore >= 40 And nScore < 60) Then
+                    sComplexity = "Good"
+                ElseIf (nScore >= 60 And nScore < 80) Then
+                    sComplexity = "Strong"
+                ElseIf (nScore >= 80 And nScore <= 100) Then
+                    sComplexity = "Very Strong"
+                End If
+
+                ' Store score And complexity in dataset
+                drScore(5) = nScore
+                drScore(3) = sComplexity
+                dtDetails.AcceptChanges()
+            End Sub
+
+            Private Sub CreateDetailsTable()
+                dtDetails = New DataTable("PasswordDetails")
+                dtDetails.Columns.Add(New DataColumn("Level", System.Type.GetType("System.Int32")))
+                dtDetails.Columns.Add(New DataColumn("Description", System.Type.GetType("System.String")))
+                dtDetails.Columns.Add(New DataColumn("Type", System.Type.GetType("System.String")))
+                dtDetails.Columns.Add(New DataColumn("Rate", System.Type.GetType("System.String")))
+                dtDetails.Columns.Add(New DataColumn("Count", System.Type.GetType("System.Int32")))
+                dtDetails.Columns.Add(New DataColumn("Bonus", System.Type.GetType("System.Int32")))
+            End Sub
+
+            Private Function AddDetailsRow(Id As Integer, Description As String, Type As String, Rate As String, Count As Integer, Bouns As Integer) As DataRow
+                Dim dr As DataRow = dtDetails.NewRow()
+                dr(0) = Id
+                dr(1) = Description
+                dr(2) = Type
+                dr(3) = Rate
+                dr(4) = Count
+                dr(5) = Bouns
+                dtDetails.Rows.Add(dr)
+                dtDetails.AcceptChanges()
+                Return dr
+            End Function
+
+            Private Function strReverse(str As String) As String
+                Dim newstring As String = ""
+                For s As Integer = 0 To str.Length - 1
+                    newstring = str(s) + newstring
+                Next
+                Return newstring
+            End Function
+
+        End Class
+
 
     End Namespace
 
@@ -2415,38 +2717,55 @@ Namespace RequesterManagement
 End Namespace
 
 Namespace BlackIPs
-    Public MustInherit Class R2CoreBlackIPTypes
-        Public Shared ReadOnly None As Int64 = 0
-    End Class
 
     Public Class R2StandardBlackIPTypeStructure
         Inherits R2StandardStructure
 
         Public Sub New()
             MyBase.New()
-            BIPTypeId = Int64.MinValue
-            BIPName = String.Empty
-            BlackMinutes = Int64.MinValue
+            BlackIPTypeId = Int64.MinValue
+            BlackIPName = String.Empty
+            LockMinutes = Int64.MinValue
+            StrategyQuery = String.Empty
             Color = Color.Black
             Description = String.Empty
+            DateTimeMilladi = DateTime.Now
+            DateShamsi = String.Empty
+            Time = String.Empty
+            Active = Boolean.FalseString
+            Viewflag = Boolean.FalseString
+            Deleted = Boolean.FalseString
         End Sub
 
-        Public Sub New(ByVal YourBIPTypeId As Int64, ByVal YourBIPName As String, ByVal YourBlackMinutes As Int64, ByVal YourColor As Color, ByVal YourDescription As String)
-            MyBase.New(YourBIPTypeId, YourBIPName.Trim())
-            BIPTypeId = YourBIPTypeId
-            BIPName = YourBIPName
-            BlackMinutes = YourBlackMinutes
+        Public Sub New(ByVal YourBlackIPTypeId As Int64, ByVal YourBlackIPName As String, ByVal YourLockMinutes As Int64, YourStrategyQuery As String, ByVal YourColor As Color, ByVal YourDescription As String, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourActive As Boolean, YourViewflag As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourBlackIPTypeId, YourBlackIPName.Trim())
+            BlackIPTypeId = YourBlackIPTypeId
+            BlackIPName = YourBlackIPName
+            LockMinutes = YourLockMinutes
+            StrategyQuery = YourStrategyQuery
             Color = YourColor
             Description = YourDescription
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            Time = YourTime
+            Active = YourActive
+            Viewflag = YourViewflag
+            Deleted = YourDeleted
         End Sub
 
 
-        Public Property BIPTypeId As Int64
-        Public Property BIPName As String
-        Public Property BlackMinutes As Int64
+        Public Property BlackIPTypeId As Int64
+        Public Property BlackIPName As String
+        Public Property LockMinutes As Int64
+        Public Property StrategyQuery As String
         Public Property Color As Color
         Public Property Description As String
-
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property Time As String
+        Public Property Active As Boolean
+        Public Property Viewflag As Boolean
+        Public Property Deleted As Boolean
 
     End Class
 
@@ -2455,48 +2774,80 @@ Namespace BlackIPs
 
         Public Sub New()
             MyBase.New()
-            IPId = Int64.MinValue
-            IP = String.Empty
+            BlackIPId = Int64.MinValue
+            BlackIP = String.Empty
             TypeId = Int64.MinValue
             LockStatus = Boolean.FalseString
             LockMinutes = Int64.MinValue
             DateTimeMilladi = DateTime.Now
             DateShamsi = String.Empty
+            Time = String.Empty
+            Active = Boolean.FalseString
+            Viewflag = Boolean.FalseString
+            Deleted = Boolean.FalseString
         End Sub
 
-        Public Sub New(ByVal YourIPId As Int64, ByVal YourIP As String, ByVal YourTypeId As Int64, ByVal YourLockStatus As Boolean, ByVal YourLockMinutes As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String)
-            MyBase.New(YourIPId, YourIP.Trim())
-            IPId = YourIPId
-            IP = YourIP
+        Public Sub New(ByVal YourBlackIPId As Int64, ByVal YourBlackIP As String, ByVal YourTypeId As Int64, ByVal YourLockStatus As Boolean, ByVal YourLockMinutes As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourActive As Boolean, YourViewflag As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourBlackIPId, YourBlackIP.Trim())
+            BlackIPId = YourBlackIPId
+            BlackIP = YourBlackIP
             TypeId = YourTypeId
             LockStatus = YourLockStatus
             LockMinutes = YourLockMinutes
             DateTimeMilladi = YourDateTimeMilladi
             DateShamsi = YourDateShamsi
+            Time = YourTime
+            Active = YourActive
+            Viewflag = YourViewflag
+            Deleted = YourDeleted
         End Sub
 
-
-        Public Property IPId As Int64
-        Public Property IP As String
+        Public Property BlackIPId As Int64
+        Public Property BlackIP As String
         Public Property TypeId As Int64
         Public Property LockStatus As Boolean
         Public Property LockMinutes As Int64
         Public Property DateTimeMilladi As DateTime
         Public Property DateShamsi As String
-
-
+        Public Property Time As String
+        Public Property Active As Boolean
+        Public Property Viewflag As Boolean
+        Public Property Deleted As Boolean
 
     End Class
 
     Public Class R2CoreInstanceBlackIPsManager
         Private _DateTime As New R2DateTime
 
-        Public Function GetNSSBlackIPType(YourTypeId As Int64) As R2StandardBlackIPTypeStructure
+        Public Sub DoStrategyControl()
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim DsBlackIPTypes As DataSet = Nothing
+                InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                    "Select BlackIPTypeId,StrategyQuery 
+                     from R2Primary.dbo.TblBlackIPTypes 
+                     Where Active=1 and Deleted=0", 3600, DsBlackIPTypes)
+                For Loopx As Int64 = 0 To DsBlackIPTypes.Tables(0).Rows.Count - 1
+                    Dim Ds As DataSet = Nothing
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, DsBlackIPTypes.Tables(0).Rows(Loopx).Item("StrategyQuery"), 0, Ds).GetRecordsCount <> 0 Then
+                        Dim SB As New StringBuilder
+                        For Loopy As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                            SB.Append(Ds.Tables(0).Rows(Loopy).Item("BlackIP").trim).Append(";")
+                        Next
+                        RegisterBlackIPs(Left(SB.ToString, SB.ToString.Length - 1), DsBlackIPTypes.Tables(0).Rows(Loopx).Item("BlackIPTypeId"))
+                    End If
+                Next
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Function GetNSSBlackIPType(YourBlackIPTypeId As Int64) As R2StandardBlackIPTypeStructure
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet = Nothing
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblBlackIPTypes Where BIPTypeId=" & YourTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New BlackIPTypeNotFoundException
-                Return New R2StandardBlackIPTypeStructure(YourTypeId, DS.Tables(0).Rows(0).Item("BIPName").trim, DS.Tables(0).Rows(0).Item("BlackMinutes"), Color.FromName(DS.Tables(0).Rows(0).Item("Color").trim), DS.Tables(0).Rows(0).Item("Description").trim)
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblBlackIPTypes Where BlackIPTypeId=" & YourBlackIPTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New BlackIPTypeNotFoundException
+                Return New R2StandardBlackIPTypeStructure(YourBlackIPTypeId, DS.Tables(0).Rows(0).Item("BlackIPName").trim, DS.Tables(0).Rows(0).Item("LockMinutes"), DS.Tables(0).Rows(0).Item("StrategyQuery").trim, Color.FromName(DS.Tables(0).Rows(0).Item("Color").trim), DS.Tables(0).Rows(0).Item("Description").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As BlackIPTypeNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -2504,12 +2855,12 @@ Namespace BlackIPs
             End Try
         End Function
 
-        Private Sub RegisterIP(YourNSS As R2StandardBlackIPStructure)
+        Private Sub RegisterBlackIP(YourNSS As R2StandardBlackIPStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
             Try
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Insert Into R2Primary.dbo.TblBlackIPs(IP,TypeId,LockStatus,LockMinutes,DateTimeMilladi,DateShamsi) Values('" & YourNSS.IP & "'," & YourNSS.TypeId & "," & IIf(YourNSS.LockStatus = True, 1, 0) & "," & YourNSS.LockMinutes & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull() & "')"
+                CmdSql.CommandText = "Insert Into R2Primary.dbo.TblBlackIPs(BlackIP,TypeId,LockStatus,LockMinutes,DateTimeMilladi,DateShamsi,Time,Active,Viewflag,Deleted) Values('" & YourNSS.BlackIP & "'," & YourNSS.TypeId & ",1," & YourNSS.LockMinutes & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime & "',1,1,0)"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception
@@ -2518,10 +2869,34 @@ Namespace BlackIPs
             End Try
         End Sub
 
-        Public Sub RegisterThisIP(YourIP As String, YourTypeId As Int64)
+        Public Sub RegisterBlackIP(YourIP As String, YourTypeId As Int64)
             Try
-                RegisterIP(New R2StandardBlackIPStructure(0, YourIP, YourTypeId, True, GetNSSBlackIPType(YourTypeId).BlackMinutes, Nothing, Nothing))
+                RegisterBlackIP(New R2StandardBlackIPStructure(0, YourIP, YourTypeId, True, GetNSSBlackIPType(YourTypeId).LockMinutes, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
             Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub RegisterBlackIPs(YourBlackIPs As String, YourBlackIPTypeId As Int64)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                Dim NSSBlackIPTypeId = GetNSSBlackIPType(YourBlackIPTypeId)
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                Dim BlackIPs As String() = YourBlackIPs.Split(";")
+                For Each BIP As String In BlackIPs
+                    Try
+                        CmdSql.CommandText = "Insert Into R2Primary.dbo.TblBlackIPs(BlackIP,TypeId,LockStatus,LockMinutes,DateTimeMilladi,DateShamsi,Time,Active,Viewflag,Deleted) Values('" & BIP & "'," & NSSBlackIPTypeId.BlackIPTypeId & ",1," & NSSBlackIPTypeId.LockMinutes & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime & "',1,1,0)"
+                        CmdSql.ExecuteNonQuery()
+                    Catch ex As Exception
+                    End Try
+                Next
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
@@ -2531,8 +2906,8 @@ Namespace BlackIPs
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet = Nothing
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
-                        "Select * from R2Primary.dbo.TblBlackIPs 
-                         Where IP='" & YourNSS.IP & "' AND LockStatus=1 AND DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes", 0, DS).GetRecordsCount = 0 Then Return False
+                        "Select BlackIPId from R2Primary.dbo.TblBlackIPs 
+                         Where BlackIP='" & YourNSS.BlackIP & "' and LockStatus=1 and DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes", 0, DS).GetRecordsCount = 0 Then Return False
                 Return True
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -2541,7 +2916,7 @@ Namespace BlackIPs
 
         Public Function AuthorizationIP(YourIP As String)
             Try
-                If IsBlackIPActive(New R2StandardBlackIPStructure(0, YourIP, Nothing, Nothing, Nothing, Nothing, Nothing)) Then Throw New AuthorizationIPIPIsBlackException
+                If IsBlackIPActive(New R2StandardBlackIPStructure(0, YourIP, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)) Then Throw New AuthorizationIPIPIsBlackException
             Catch ex As AuthorizationIPIPIsBlackException
                 Throw ex
             Catch ex As Exception
@@ -2554,7 +2929,7 @@ Namespace BlackIPs
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
             Try
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblBlackIPs Set LockStatus=0 Where IP='" & YourNSS.IP & "'"
+                CmdSql.CommandText = "Update R2Primary.dbo.TblBlackIPs Set LockStatus=0 Where BlackIP='" & YourNSS.BlackIP & "'"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception
@@ -2563,17 +2938,24 @@ Namespace BlackIPs
             End Try
         End Sub
 
-        Public Function GetBlackListforThisIP(YourIP As String, YourTypeId As Int64) As List(Of R2StandardBlackIPStructure)
+        Public Function GetBlackIPBlackRecords(YourIP As String, Optional YourTypeId As Int64 = Int64.MinValue) As List(Of R2StandardBlackIPStructure)
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim Lst As New List(Of R2StandardBlackIPStructure)
                 Dim DS As DataSet = Nothing
-                InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                If YourTypeId = Int64.MinValue Then
+                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
                         "Select * from R2Primary.dbo.TblBlackIPs 
-                         Where IP='" & YourIP & "' and LockStatus=1 and TypeId=" & YourTypeId & " and 
+                         Where BlackIP='" & YourIP & "' and LockStatus=1 and 
                                DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes order By DateTimeMilladi Desc", 0, DS)
+                Else
+                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                        "Select * from R2Primary.dbo.TblBlackIPs 
+                         Where BlackIP='" & YourIP & "' and LockStatus=1 and TypeId=" & YourTypeId & " and 
+                               DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes order By DateTimeMilladi Desc", 0, DS)
+                End If
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                    Dim NSS = New R2StandardBlackIPStructure(DS.Tables(0).Rows(Loopx).Item("IPId"), DS.Tables(0).Rows(Loopx).Item("IP"), DS.Tables(0).Rows(Loopx).Item("TypeId"), DS.Tables(0).Rows(Loopx).Item("LockStatus"), DS.Tables(0).Rows(Loopx).Item("LockMinutes"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi"))
+                    Dim NSS = New R2StandardBlackIPStructure(DS.Tables(0).Rows(Loopx).Item("BlackIPId"), DS.Tables(0).Rows(Loopx).Item("BlackIP").trim, DS.Tables(0).Rows(Loopx).Item("TypeId"), DS.Tables(0).Rows(Loopx).Item("LockStatus"), DS.Tables(0).Rows(Loopx).Item("LockMinutes"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi"), DS.Tables(0).Rows(Loopx).Item("Time"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Deleted"))
                     Lst.Add(NSS)
                 Next
                 Return Lst

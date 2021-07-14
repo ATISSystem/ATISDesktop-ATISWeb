@@ -7,7 +7,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using ATISWeb.LoginManagement.Exceptions;
+using R2Core.SecurityAlgorithmsManagement.PasswordStrength;
 using R2Core.SoftwareUserManagement;
+using R2Core.SoftwareUserManagement.Exceptions;
 
 namespace ATISWeb.LoginManagement
 {
@@ -26,7 +28,9 @@ namespace ATISWeb.LoginManagement
         #region "Event Handlers"
 
         protected void Page_Load(object sender, EventArgs e)
-        { BtnSubmit.Click += BtnSubmit_Click; }
+        {
+            BtnSubmit.Click += BtnSubmit_Click;
+        }
 
         private void BtnSubmit_Click(object sender, EventArgs e)
         {
@@ -36,17 +40,19 @@ namespace ATISWeb.LoginManagement
 
                 if (ATISWebMClassLoginManagement.GetNSSCurrentUser().UserPassword == TxtCurrentUserPassword.Text)
                 {
-                    if (R2CoreMClassSoftwareUsersManagement.IsUserRegistered(new R2CoreStandardSoftwareUserStructure(0,string.Empty , string.Empty, string.Empty, ATISWebMClassLoginManagement.GetNSSCurrentUser().UserShenaseh, TxtNewUserPassword.Text.Trim(), string.Empty, null, false, false,Int64.MinValue  , null, null, null, new DateTime(), 0, string.Empty, new DateTime(), 0, string.Empty, new DateTime(),string.Empty,false, Int64.MinValue, new DateTime() , null, false  ,false   )))
+                    if (R2CoreMClassSoftwareUsersManagement.IsUserRegistered(new R2CoreStandardSoftwareUserStructure(0, string.Empty, string.Empty, string.Empty, ATISWebMClassLoginManagement.GetNSSCurrentUser().UserShenaseh, TxtNewUserPassword.Text.Trim(), string.Empty, null, false, false, Int64.MinValue, null, null, null, new DateTime(), 0, string.Empty, new DateTime(), 0, string.Empty, new DateTime(), string.Empty, false, Int64.MinValue, new DateTime(), null, false, false)))
                     {
                         Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + "رمز عبور جدید مورد تایید نیست" + "');", true);
                         return;
                     }
-
-                    R2CoreMClassSoftwareUsersManagement.ChangeUserPassword(new R2CoreStandardSoftwareUserStructure(ATISWebMClassLoginManagement.GetNSSCurrentUser().UserId, string.Empty, string.Empty, null, null, TxtNewUserPassword.Text.Trim(), string.Empty, null, false, false, Int64.MinValue, null, null, null, new DateTime(), 0,string.Empty, new DateTime(), 0, string.Empty, new DateTime(),string.Empty,false, Int64.MinValue, new DateTime(), null, false,false));
+                    R2CoreMClassSoftwareUsersManagement.ChangeUserPassword(new R2CoreStandardSoftwareUserStructure(ATISWebMClassLoginManagement.GetNSSCurrentUser().UserId, string.Empty, string.Empty, null, null, TxtNewUserPassword.Text.Trim(), string.Empty, null, false, false, Int64.MinValue, null, null, null, new DateTime(), 0, string.Empty, new DateTime(), 0, string.Empty, new DateTime(), string.Empty, false, Int64.MinValue, new DateTime(), null, false, false));
                     Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "رمز عبور تغییر یافت" + "');", true);
+                    Response.Redirect("/LoginManagement/Wflogin.aspx");
                 }
                 else { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + "رمز عبور فعلی کاربر نادرست است" + "');", true); }
             }
+            catch (PasswordStrengthRejectedException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
             catch (Exception ex)

@@ -34,6 +34,9 @@ Imports R2Core.SecurityAlgorithmsManagement.Captcha
 Imports R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms
 Imports R2Core.PredefinedMessagesManagement
 Imports R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms.Exceptions
+Imports R2Core.SecurityAlgorithmsManagement
+Imports R2Core.SecurityAlgorithmsManagement.PasswordStrength
+Imports R2Core.LoggingManagement
 
 Public Class R2Enums
 
@@ -1607,7 +1610,7 @@ Namespace SoftwareUserManagement
                 Dim InstanceConfiguration As New R2CoreInstanceConfigurationManager
                 Dim APIKeyExpiration As String = _DateTime.GetNextShamsiMonth(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime), InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 1)).DateShamsiFull
                 Dim UserPasswordExpiration As String = _DateTime.GetNextShamsiMonth(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime), InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 2)).DateShamsiFull
-                Dim myShenaseh As String = AES.GetRandomNumericCode(1000, 9999)
+                Dim myShenaseh As String = AES.GetRandomNumericCode(10000, 99999)
                 Dim myPassword As String = AES.GetRandomNumericCode(10000000, 99999999)
                 Dim UIdSalt As String = AES.GetSalt(InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 0))
                 CmdSql.Connection.Open()
@@ -1758,10 +1761,18 @@ Namespace SoftwareUserManagement
             Dim cmdsql As New SqlClient.SqlCommand
             cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
             Try
-                cmdsql.Connection.Open()
-                cmdsql.CommandText = "update R2Primary.dbo.TblSoftwareUsers Set UserPassword='" & YourNSS.UserPassword & "'   where UserId=" & YourNSS.UserId & ""
-                cmdsql.ExecuteNonQuery()
-                cmdsql.Connection.Close()
+                Dim PS As PasswordStrength = New PasswordStrength
+                PS.SetPassword(YourNSS.UserPassword)
+                If (PS.GetPasswordStrength() = "Strong") Then
+                    cmdsql.Connection.Open()
+                    cmdsql.CommandText = "update R2Primary.dbo.TblSoftwareUsers Set UserPassword='" & YourNSS.UserPassword & "'   where UserId=" & YourNSS.UserId & ""
+                    cmdsql.ExecuteNonQuery()
+                    cmdsql.Connection.Close()
+                Else
+                    Throw New PasswordStrengthRejectedException
+                End If
+            Catch ex As PasswordStrengthRejectedException
+                Throw ex
             Catch ex As Exception
                 If cmdsql.Connection.State <> ConnectionState.Closed Then cmdsql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1864,7 +1875,14 @@ Namespace SoftwareUserManagement
             End Property
         End Class
 
-
+        Public Class PasswordStrengthRejectedException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "رمز عبور کاربر می بایست حداقل 8 حرف و شامل حروف کوچک و بزرگ و اعداد باشد"
+                End Get
+            End Property
+        End Class
 
     End Namespace
 
@@ -3257,7 +3275,7 @@ Namespace LoggingManagement
         Public Shared ReadOnly Property Warn As Int64 = 2
         Public Shared ReadOnly Property Fail As Int64 = 3
         Public Shared ReadOnly Property Info As Int64 = 4
-        Public Shared ReadOnly Property UserLogin As Int64 = 5
+        Public Shared ReadOnly Property SuccessfulUserLogin As Int64 = 5
         Public Shared ReadOnly Property Print As Int64 = 6
         Public Shared ReadOnly Property RegisterRecords As Int64 = 7
         Public Shared ReadOnly Property Delete As Int64 = 8

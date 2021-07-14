@@ -1,7 +1,7 @@
 ﻿
 
 Imports System.Timers
-
+Imports R2Core.BlackIPs
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
@@ -64,10 +64,19 @@ Public Class R2PrimaryAutomatedJobs
                 EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSDomainSendRecieved:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 
+            'بررسی آی پی های سیاه و قرار دادن آن ها در لیست سیاه آی پی ها
+            Try
+                Dim InstanceBlackIPs = New R2CoreInstanceBlackIPsManager
+                InstanceBlackIPs.DoStrategyControl()
+            Catch ex As Exception
+                EventLog.WriteEntry("R2PrimaryAutomatedJobs", "BlackIPs.DoStrategyControl:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
+
         Catch ex As Exception
             EventLog.WriteEntry("R2PrimaryAutomatedJobs", "_AutomatedJobsTimer_Elapsed:" + ex.Message.ToString, EventLogEntryType.Error)
         End Try
-        EventLog.WriteEntry("R2PrimaryAutomatedJobs", "_AutomatedJobsTimer_Elapsed:Run Succefull", EventLogEntryType.SuccessAudit)
+
         _AutomatedJobsTimer.Enabled = True
         _AutomatedJobsTimer.Start()
 

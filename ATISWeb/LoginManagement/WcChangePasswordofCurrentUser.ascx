@@ -1,8 +1,9 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="WcChangePasswordofCurrentUser.ascx.cs" Inherits="ATISWeb.LoginManagement.WcChangePasswordofCurrentUser" %>
+<%@ Register TagPrefix="TWebControl" TagName="WCPasswordStrengthViewer" Src="~/SecurityAlgorithmsManagement/WCPasswordStrengthViewer.ascx" %>
 
 <div class="container">
     <div class="card m-auto" style="width: 25rem;">
-        <div class="card-body"> 
+        <div class="card-body">
             <h6 class="card-title text-center R2FontBHomaLarge">تغییر رمز عبور کاربر</h6>
             <div class="input-group mb-2">
                 <asp:TextBox runat="server" ID="TxtNewUserPassword" class="form-control R2FontBHomaSmall  text-center" TextMode="Password"></asp:TextBox>

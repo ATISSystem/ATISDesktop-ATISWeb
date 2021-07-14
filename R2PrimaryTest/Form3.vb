@@ -4,6 +4,7 @@ Imports System.Globalization
 Imports System.Text
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.PayanehWS
+Imports R2Core.BlackIPs
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DatabaseManagement
 Imports R2Core.DateAndTimeManagement
@@ -251,6 +252,9 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
+            Dim InstanceBlackIPs = New R2CoreInstanceBlackIPsManager
+            InstanceBlackIPs.DoStrategyControl()
+
             'PayanehClassLibrary.TruckersAssociationControllingMoneyWallet.TruckersAssociationControllingMoneyWalletManagement.DoControlforControllingMoneyWallet()
             'MessageBox.Show(DateTime.Now.TimeOfDay.Minutes Mod 10) 
             'Dim Instance = New R2CoreInstanceDateAndTimePersianCalendarManager

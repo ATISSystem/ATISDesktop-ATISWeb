@@ -2,6 +2,7 @@
 Imports System.Reflection
 Imports R2Core.DesktopProcessesManagement
 Imports R2Core.SoftwareUserManagement
+Imports R2Core.SoftwareUserManagement.Exceptions
 
 Public Class FrmcUserPasswordEdit
     Inherits FrmcGeneral
@@ -43,6 +44,8 @@ Public Class FrmcUserPasswordEdit
         Try
             R2CoreMClassSoftwareUsersManagement.ChangeUserPassword(New R2CoreStandardSoftwareUserStructure(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing, Nothing, Nothing, UcTextBoxNewUserPassword.UCValue, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "رمز عبور کاربر تغییر یافت", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As PasswordStrengthRejectedException
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

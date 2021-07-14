@@ -67,6 +67,7 @@
     <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -106,6 +107,7 @@
     <Content Include="fonts\Brush Script MT Italic.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\Yekan.svg" />
+    <Content Include="Global.asax" />
     <Content Include="Images\2-2.jpg" />
     <Content Include="Images\3520962.jpg" />
     <Content Include="Images\ATISMobilePresentation.mp4" />
@@ -173,6 +175,7 @@
     <Content Include="fonts\Brush Script MT Italic.eot" />
     <Content Include="fonts\Brush Script MT Italic.ttf" />
     <Content Include="fonts\Brush Script MT Italic.woff" />
+    <Content Include="SecurityAlgorithmsManagement\WCPasswordStrengthViewer.ascx" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -300,6 +303,7 @@
     <Compile Include="ATISStartManagement\WfATISStart.aspx.designer.cs">
       <DependentUpon>WfATISStart.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ATISWeb.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -320,6 +324,9 @@
     </Compile>
     <Compile Include="Downloads.aspx.designer.cs">
       <DependentUpon>Downloads.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="LoginManagement\ATISWebMClassLoginManagement.cs" />
     <Compile Include="LoginManagement\WcChangePasswordofCurrentUser.ascx.cs">
@@ -371,6 +378,13 @@
     </Compile>
     <Compile Include="ReportsManagement\WfReportViewer.aspx.designer.cs">
       <DependentUpon>WfReportViewer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SecurityAlgorithmsManagement\WCPasswordStrengthViewer.ascx.cs">
+      <DependentUpon>WCPasswordStrengthViewer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SecurityAlgorithmsManagement\WCPasswordStrengthViewer.ascx.designer.cs">
+      <DependentUpon>WCPasswordStrengthViewer.ascx</DependentUpon>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="TransportationAndLoadNotification\LoadAllocationManagement\WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue.ascx.cs">
