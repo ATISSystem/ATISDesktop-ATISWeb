@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="input-group mb-2">
-                <asp:TextBox runat="server" ID="TxtUserPassword" class="form-control R2FontBHomaSmall  text-center" TextMode="Password"></asp:TextBox>
+                <asp:TextBox runat="server" ID="TxtUserPassword" class="form-control R2FontBHomaSmall  text-center" TextMode="Password" AutoCompleteType="Disabled"></asp:TextBox>
                 <div class="input-group-append">
                     <span class="input-group-text R2FontBYekanSmall bg-success text-white">رمزعبور کاربر</span>
                 </div>

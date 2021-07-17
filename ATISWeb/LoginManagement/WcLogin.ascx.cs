@@ -92,7 +92,7 @@ namespace ATISWeb.LoginManagement
                 Session.Add("CurrentUser", NSS);
                 Session.Timeout = 20;
                 if (InstanceLogging.GetNSSLogType(ATISWebLogTypes.SuccessfulSoftwareUserShenasehPasswordAuthentication).Active)
-                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISWebLogTypes.SuccessfulSoftwareUserShenasehPasswordAuthentication, InstanceLogging.GetNSSLogType(ATISWebLogTypes.SuccessfulSoftwareUserShenasehPasswordAuthentication).LogTitle, ClientIP, string.Empty, string.Empty, string.Empty, string.Empty, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISWebLogTypes.SuccessfulSoftwareUserShenasehPasswordAuthentication, InstanceLogging.GetNSSLogType(ATISWebLogTypes.SuccessfulSoftwareUserShenasehPasswordAuthentication).LogTitle, ClientIP, NSS.UserName , string.Empty, string.Empty, string.Empty, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
                 WcUserAuthenticationSuccessEvent?.Invoke(this, e);
             }
             catch (AuthorizationIPIPIsBlackException ex)

@@ -16,6 +16,7 @@ namespace ATISWeb
         {
             Session.RemoveAll();
             Session.Abandon();
+            Response.Cookies.Add(new HttpCookie("ASP.NET_SessionId", ""));
             Response.Redirect("/LoginManagement/Wflogin.aspx");
         }
     }
