@@ -109,6 +109,11 @@ Public Class FrmcEnterExit
             Dim myEnterExitId As Int64
             Dim myEnterExitRequest As R2EnterExitRequestType = R2CoreParkingSystemMClassEnterExitManagement.GetEnterExitRequestType(_NSSTrafficCard, myEnterExitId)
 
+            'کیف پول کنترلی کامیونداران
+            If myEnterExitRequest = R2EnterExitRequestType.ExitRequest Then
+                TruckersAssociationControllingMoneyWalletManagement.DoControlforControllingMoneyWallet()
+            End If
+
             'نمایش موجودی کیف پول مرتبط با کارت تردد و در صورت رایگان بودن نام شرکت مرتبط
             UcMoneyWallet.UCViewMoneyWalletOnlyCharge(_NSSTrafficCard)
             If _NSSTrafficCard.NoMoney = True Then
@@ -364,7 +369,8 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat _
                             OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri _
                             OrElse TypeOf ex Is GetDataException _
-                            OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
+                            OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
+                            OrElse TypeOf ex Is TruckersAssociationControllingMoneyWalletCriticalAmountReachedException
             Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -389,7 +395,6 @@ Public Class FrmcEnterExit
     Private _LastReadedCardNo As String = String.Empty
     Private Sub FrmcEnterExit__RFIDCardReadedEvent(CardNo As String) Handles Me._RFIDCardReadedEvent
         Try
-            TruckersAssociationControllingMoneyWalletManagement.DoControlforControllingMoneyWallet()
             System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
             'کنترل این که کارت روی کارت خوان نماند
             If _LastReadedCardNo = CardNo Then

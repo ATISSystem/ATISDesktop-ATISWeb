@@ -12,6 +12,7 @@ Imports R2Core.DateAndTimeManagement.CalendarManagement.PersianCalendar
 Imports R2Core.EntityRelationManagement
 Imports R2Core.PermissionManagement
 Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
+Imports R2Core.SecurityAlgorithmsManagement.Captcha
 Imports R2Core.SecurityAlgorithmsManagement.Hashing
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
@@ -252,8 +253,11 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            Dim InstanceBlackIPs = New R2CoreInstanceBlackIPsManager
-            InstanceBlackIPs.DoStrategyControl()
+            Dim Instance = New R2CoreInstanceCaptchaManager
+            Dim x As Bitmap = Instance.GenerateCaptcha("785421")
+            PictureBox1.Image = x
+            'Dim InstanceBlackIPs = New R2CoreInstanceBlackIPsManager
+            'InstanceBlackIPs.DoStrategyControl()
 
             'PayanehClassLibrary.TruckersAssociationControllingMoneyWallet.TruckersAssociationControllingMoneyWalletManagement.DoControlforControllingMoneyWallet()
             'MessageBox.Show(DateTime.Now.TimeOfDay.Minutes Mod 10) 
