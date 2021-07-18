@@ -2821,6 +2821,7 @@ Namespace BlackIPs
 
         Public Sub DoStrategyControl()
             Try
+                'اجرای استراتژی ها
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DsBlackIPTypes As DataSet = Nothing
                 InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
@@ -2886,11 +2887,9 @@ Namespace BlackIPs
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 Dim BlackIPs As String() = YourBlackIPs.Split(";")
                 For Each BIP As String In BlackIPs
-                    Try
-                        CmdSql.CommandText = "Insert Into R2Primary.dbo.TblBlackIPs(BlackIP,TypeId,LockStatus,LockMinutes,DateTimeMilladi,DateShamsi,Time,Active,Viewflag,Deleted) Values('" & BIP & "'," & NSSBlackIPTypeId.BlackIPTypeId & ",1," & NSSBlackIPTypeId.LockMinutes & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime & "',1,1,0)"
-                        CmdSql.ExecuteNonQuery()
-                    Catch ex As Exception
-                    End Try
+                    CmdSql.CommandText = "IF NOT EXISTS(SELECT 1 FROM R2Primary.dbo.TblBlackIPs Where BlackIP='" & BIP & "' and LockStatus=1 and DATEDIFF(minute,DateTimeMilladi,getdate())<=LockMinutes)
+                                               Insert Into R2Primary.dbo.TblBlackIPs(BlackIP,TypeId,LockStatus,LockMinutes,DateTimeMilladi,DateShamsi,Time,Active,Viewflag,Deleted) Values('" & BIP & "'," & NSSBlackIPTypeId.BlackIPTypeId & ",1," & NSSBlackIPTypeId.LockMinutes & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime & "',1,1,0)"
+                    CmdSql.ExecuteNonQuery()
                 Next
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             Catch ex As Exception
@@ -2906,7 +2905,7 @@ Namespace BlackIPs
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet = Nothing
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
-                        "Select BlackIPId from R2Primary.dbo.TblBlackIPs 
+                        "Select Top 1 BlackIPId from R2Primary.dbo.TblBlackIPs 
                          Where BlackIP='" & YourNSS.BlackIP & "' and LockStatus=1 and DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes", 0, DS).GetRecordsCount = 0 Then Return False
                 Return True
             Catch ex As Exception

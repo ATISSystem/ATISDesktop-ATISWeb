@@ -12,7 +12,10 @@ namespace ATISWeb.ATISStartManagement
     public partial class WfATISStart : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        { DownloadATISMobile.Click += DownloadATISMobile_Click; }
+        {
+            DownloadATISMobile.Click += DownloadATISMobile_Click;
+            DownloadATISMobile_.Click += DownloadATISMobile_Click;
+        }
 
         private void DownloadATISMobile_Click(object sender, EventArgs e)
         {

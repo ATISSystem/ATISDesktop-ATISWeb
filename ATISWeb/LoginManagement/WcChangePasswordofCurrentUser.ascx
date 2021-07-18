@@ -5,6 +5,7 @@
     <div class="card m-auto" style="width: 25rem;">
         <div class="card-body">
             <h6 class="card-title text-center R2FontBHomaLarge">تغییر رمز عبور کاربر</h6>
+            <h6 class="card-title text-center" style="font-size: 10px">رمز عبور باید شامل حداقل 8 حرف و حروف بزرگ ، کوچک و اعداد باشد</h6>
             <div class="input-group mb-2">
                 <asp:TextBox runat="server" ID="TxtNewUserPassword" class="form-control R2FontBHomaSmall  text-center" TextMode="Password"></asp:TextBox>
                 <div class="input-group-append">

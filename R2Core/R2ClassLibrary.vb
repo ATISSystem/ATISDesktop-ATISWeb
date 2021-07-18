@@ -1761,11 +1761,13 @@ Namespace SoftwareUserManagement
             Dim cmdsql As New SqlClient.SqlCommand
             cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
             Try
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
                 Dim PS As PasswordStrength = New PasswordStrength
                 PS.SetPassword(YourNSS.UserPassword)
                 If (PS.GetPasswordStrength() = "Strong") Then
+                    Dim UserPasswordExpiration As String = _DateTime.GetNextShamsiMonth(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime), InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 2)).DateShamsiFull
                     cmdsql.Connection.Open()
-                    cmdsql.CommandText = "update R2Primary.dbo.TblSoftwareUsers Set UserPassword='" & YourNSS.UserPassword & "'   where UserId=" & YourNSS.UserId & ""
+                    cmdsql.CommandText = "update R2Primary.dbo.TblSoftwareUsers Set UserPassword='" & YourNSS.UserPassword & "',UserPasswordExpiration='" & UserPasswordExpiration & "' Where UserId=" & YourNSS.UserId & ""
                     cmdsql.ExecuteNonQuery()
                     cmdsql.Connection.Close()
                 Else
@@ -1782,6 +1784,15 @@ Namespace SoftwareUserManagement
     End Class
 
     Namespace Exceptions
+        Public Class SoftwareUserPasswordExpiredException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "زمان اعتبار رمز عبور کاربر منقضی شده است"
+                End Get
+            End Property
+        End Class
+
 
         Public Class SoftwareUserMobileNumberNotFoundException
             Inherits ApplicationException

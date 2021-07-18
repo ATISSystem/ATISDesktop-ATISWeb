@@ -92,7 +92,14 @@ namespace ATISWeb.LoginManagement
                 Session.Add("CurrentUser", NSS);
                 Session.Timeout = 20;
                 if (InstanceLogging.GetNSSLogType(ATISWebLogTypes.SuccessfulSoftwareUserShenasehPasswordAuthentication).Active)
-                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISWebLogTypes.SuccessfulSoftwareUserShenasehPasswordAuthentication, InstanceLogging.GetNSSLogType(ATISWebLogTypes.SuccessfulSoftwareUserShenasehPasswordAuthentication).LogTitle, ClientIP, NSS.UserName , string.Empty, string.Empty, string.Empty, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISWebLogTypes.SuccessfulSoftwareUserShenasehPasswordAuthentication, InstanceLogging.GetNSSLogType(ATISWebLogTypes.SuccessfulSoftwareUserShenasehPasswordAuthentication).LogTitle, ClientIP, NSS.UserName, string.Empty, string.Empty, string.Empty, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+
+                if (DateTime.Compare(_DateTime.GetMilladiDateTimeFromDateShamsiFull(NSS.UserPasswordExpiration, "00:00:00"), _DateTime.GetCurrentDateTimeMilladi()) < 0)
+                {
+                    Response.Redirect("/LoginManagement/WfChangeSoftwareUserPassword.aspx");
+                    return;
+                };
+
                 WcUserAuthenticationSuccessEvent?.Invoke(this, e);
             }
             catch (AuthorizationIPIPIsBlackException ex)
