@@ -22,15 +22,6 @@
 <body>
     <form id="form1" runat="server">
         <TWebControl:WcAlertShower runat="server" ID="WcAlertShower" />
-        <div class="card m-auto" style="width: 25rem;">
-            <img class="card-img-top" src="/Images/Header1.jpg" alt="Card image cap" style="min-height: 10rem;" />
-            <div class="card-body">
-                <h6 class="card-title text-center" style="font-size: 10px">پرتال یکپارچه خدمات الکترونیک و اطلاع رسانی بار</h6>
-                <h6 class="card-title text-center R2FontBHomaLarge" style="font-size: 25px">آتیس وب</h6>
-            </div>
-            <h4 class="card-text text-center">ATIS Web</h4>
-            <br />
-        </div>
         <div class="container w-50">
             <TWebControl:WcChangePasswordofCurrentUser ID="WcChangePasswordofCurrentUser" runat="server"></TWebControl:WcChangePasswordofCurrentUser>
         </div>

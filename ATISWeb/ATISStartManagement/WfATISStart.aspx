@@ -5,7 +5,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="jumbotron w-25 bg-transparent mx-auto mt-0">
-        <asp:LinkButton runat="server" ID="DownloadATISMobile_" class="btn btn-dark R2FontBYekanMedium mb-2">دانلود آتیس موبایل</asp:LinkButton>
+        <asp:LinkButton runat="server" ID="DownloadATISMobile_" class="btn btn-primary R2FontBYekanMedium mb-2">دانلود آتیس موبایل</asp:LinkButton>
     </div>
 
     <div class="container-fluid p-0 mb-5">

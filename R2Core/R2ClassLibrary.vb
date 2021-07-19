@@ -1764,7 +1764,7 @@ Namespace SoftwareUserManagement
                 Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
                 Dim PS As PasswordStrength = New PasswordStrength
                 PS.SetPassword(YourNSS.UserPassword)
-                If (PS.GetPasswordStrength() = "Strong") Then
+                If (PS.GetPasswordStrength() = "Strong") Or (PS.GetPasswordStrength() = "Very Strong") Then
                     Dim UserPasswordExpiration As String = _DateTime.GetNextShamsiMonth(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime), InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 2)).DateShamsiFull
                     cmdsql.Connection.Open()
                     cmdsql.CommandText = "update R2Primary.dbo.TblSoftwareUsers Set UserPassword='" & YourNSS.UserPassword & "',UserPasswordExpiration='" & UserPasswordExpiration & "' Where UserId=" & YourNSS.UserId & ""

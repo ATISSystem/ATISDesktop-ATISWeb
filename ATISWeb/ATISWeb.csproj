@@ -126,7 +126,6 @@
     <Content Include="Images\—Pngtree—abstract blue and white background_322099.png" />
     <Content Include="LoginManagement\WcChangePasswordofCurrentUser.ascx" />
     <Content Include="LoginManagement\WcLogin.ascx" />
-    <Content Include="LoginManagement\WfChangePasswordofCurrentUser.aspx" />
     <Content Include="LoginManagement\WfChangeSoftwareUserPassword.aspx" />
     <Content Include="LoginManagement\WfLogin.aspx" />
     <Content Include="MenuManagement\WcProcess.ascx" />
@@ -343,13 +342,6 @@
     </Compile>
     <Compile Include="LoginManagement\WcLogin.ascx.designer.cs">
       <DependentUpon>WcLogin.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="LoginManagement\WfChangePasswordofCurrentUser.aspx.cs">
-      <DependentUpon>WfChangePasswordofCurrentUser.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="LoginManagement\WfChangePasswordofCurrentUser.aspx.designer.cs">
-      <DependentUpon>WfChangePasswordofCurrentUser.aspx</DependentUpon>
     </Compile>
     <Compile Include="LoginManagement\WfChangeSoftwareUserPassword.aspx.cs">
       <DependentUpon>WfChangeSoftwareUserPassword.aspx</DependentUpon>

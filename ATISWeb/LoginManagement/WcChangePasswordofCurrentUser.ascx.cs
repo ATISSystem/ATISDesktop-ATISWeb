@@ -37,7 +37,7 @@ namespace ATISWeb.LoginManagement
             try
             {
                 if (TxtNewUserPassword.Text != TxtNewUserPasswordConfirm.Text) { throw new Exception("رمز عبور جدید را کنترل نمایید"); }
-
+                if (ATISWebMClassLoginManagement.GetNSSCurrentUser().UserPassword == TxtNewUserPassword.Text) { throw new Exception("رمز عبور جدید قابل قبول نیست"); }
                 if (ATISWebMClassLoginManagement.GetNSSCurrentUser().UserPassword == TxtCurrentUserPassword.Text)
                 {
                     if (R2CoreMClassSoftwareUsersManagement.IsUserRegistered(new R2CoreStandardSoftwareUserStructure(0, string.Empty, string.Empty, string.Empty, ATISWebMClassLoginManagement.GetNSSCurrentUser().UserShenaseh, TxtNewUserPassword.Text.Trim(), string.Empty, null, false, false, Int64.MinValue, null, null, null, new DateTime(), 0, string.Empty, new DateTime(), 0, string.Empty, new DateTime(), string.Empty, false, Int64.MinValue, new DateTime(), null, false, false)))

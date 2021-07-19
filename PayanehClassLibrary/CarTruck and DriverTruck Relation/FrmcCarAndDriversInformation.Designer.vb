@@ -24,6 +24,7 @@ Partial Class FrmcCarAndDriversInformation
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1 As R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure = New R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure()
         Me.UcTraficCard = New R2CoreParkingSystem.UCTrafficCard()
         Me.UcButtonSabt = New R2CoreGUI.UCButton()
         Me.PnlCarAndDriversInformation = New System.Windows.Forms.Panel()
@@ -32,10 +33,9 @@ Partial Class FrmcCarAndDriversInformation
         Me.UcDriverTruckSecond = New PayanehClassLibrary.UCDriverTruck()
         Me.UcCarTruck = New PayanehClassLibrary.UCCarTruck()
         Me.PnlTrucksRelationAnnouncementHalls = New System.Windows.Forms.Panel()
+        Me.UcucAnnouncementHallCollection = New R2CoreTransportationAndLoadNotification.UCUCAnnouncementHallCollection()
         Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups = New R2CoreGUI.UCButtonDelete()
-        Me.UcViewerNSSAnnouncementHallSubGroup = New R2CoreTransportationAndLoadNotification.UCViewerNSSAnnouncementHallSubGroup()
         Me.UcCarTruckPnlTrucksRelationAnnouncementHalls = New PayanehClassLibrary.UCCarTruck()
-        Me.UcAnnouncementHallSelection = New R2CoreTransportationAndLoadNotification.UCAnnouncementHallSelection()
         Me.PnlTankTreilers = New System.Windows.Forms.Panel()
         Me.UcChangeTankTreilerStatus = New PayanehClassLibrary.UCChangeTankTreilerStatus()
         Me.PnlCarAndDriversInformation.SuspendLayout()
@@ -99,8 +99,11 @@ Partial Class FrmcCarAndDriversInformation
         Me.UcNumbernIDCar.Name = "UcNumbernIDCar"
         Me.UcNumbernIDCar.Size = New System.Drawing.Size(88, 20)
         Me.UcNumbernIDCar.TabIndex = 205
+        Me.UcNumbernIDCar.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumbernIDCar.UCAllowedMinNumber = CType(0, Long)
         Me.UcNumbernIDCar.UCBackColor = System.Drawing.Color.White
         Me.UcNumbernIDCar.UCBackColorDisable = System.Drawing.Color.White
+        Me.UcNumbernIDCar.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
         Me.UcNumbernIDCar.UCBorder = False
         Me.UcNumbernIDCar.UCBorderColor = System.Drawing.Color.DarkGray
         Me.UcNumbernIDCar.UCEnable = False
@@ -152,14 +155,32 @@ Partial Class FrmcCarAndDriversInformation
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlTrucksRelationAnnouncementHalls.BackColor = System.Drawing.Color.Transparent
         Me.PnlTrucksRelationAnnouncementHalls.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlTrucksRelationAnnouncementHalls.Controls.Add(Me.UcucAnnouncementHallCollection)
         Me.PnlTrucksRelationAnnouncementHalls.Controls.Add(Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups)
-        Me.PnlTrucksRelationAnnouncementHalls.Controls.Add(Me.UcViewerNSSAnnouncementHallSubGroup)
         Me.PnlTrucksRelationAnnouncementHalls.Controls.Add(Me.UcCarTruckPnlTrucksRelationAnnouncementHalls)
-        Me.PnlTrucksRelationAnnouncementHalls.Controls.Add(Me.UcAnnouncementHallSelection)
         Me.PnlTrucksRelationAnnouncementHalls.Location = New System.Drawing.Point(5, 50)
         Me.PnlTrucksRelationAnnouncementHalls.Name = "PnlTrucksRelationAnnouncementHalls"
         Me.PnlTrucksRelationAnnouncementHalls.Size = New System.Drawing.Size(995, 512)
         Me.PnlTrucksRelationAnnouncementHalls.TabIndex = 206
+        '
+        'UcucAnnouncementHallCollection
+        '
+        Me.UcucAnnouncementHallCollection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcucAnnouncementHallCollection.BackColor = System.Drawing.Color.Transparent
+        Me.UcucAnnouncementHallCollection.Location = New System.Drawing.Point(31, 262)
+        Me.UcucAnnouncementHallCollection.Name = "UcucAnnouncementHallCollection"
+        Me.UcucAnnouncementHallCollection.Size = New System.Drawing.Size(933, 46)
+        Me.UcucAnnouncementHallCollection.TabIndex = 4
+        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.Active = True
+        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.AHColor = "Green"
+        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.AHId = CType(2, Long)
+        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.AHTitle = "سالن اعلام بار جاده ای"
+        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.Deleted = False
+        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.ViewFlag = True
+        Me.UcucAnnouncementHallCollection.UCCurrentNSS = R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1
+        Me.UcucAnnouncementHallCollection.UCDefaultAHId = CType(2, Long)
+        Me.UcucAnnouncementHallCollection.UCViewBorder = True
         '
         'UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups
         '
@@ -176,17 +197,6 @@ Partial Class FrmcCarAndDriversInformation
         Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.UCForeColor = System.Drawing.Color.White
         Me.UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.UCValue = "حذف همه زیرگروه ها"
         '
-        'UcViewerNSSAnnouncementHallSubGroup
-        '
-        Me.UcViewerNSSAnnouncementHallSubGroup.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcViewerNSSAnnouncementHallSubGroup.BackColor = System.Drawing.Color.Transparent
-        Me.UcViewerNSSAnnouncementHallSubGroup.Location = New System.Drawing.Point(782, 216)
-        Me.UcViewerNSSAnnouncementHallSubGroup.Name = "UcViewerNSSAnnouncementHallSubGroup"
-        Me.UcViewerNSSAnnouncementHallSubGroup.Padding = New System.Windows.Forms.Padding(5)
-        Me.UcViewerNSSAnnouncementHallSubGroup.Size = New System.Drawing.Size(183, 40)
-        Me.UcViewerNSSAnnouncementHallSubGroup.TabIndex = 2
-        Me.UcViewerNSSAnnouncementHallSubGroup.UCNSSCurrent = Nothing
-        '
         'UcCarTruckPnlTrucksRelationAnnouncementHalls
         '
         Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -198,16 +208,6 @@ Partial Class FrmcCarAndDriversInformation
         Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.Size = New System.Drawing.Size(934, 153)
         Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.TabIndex = 1
         Me.UcCarTruckPnlTrucksRelationAnnouncementHalls.UCViewButtons = False
-        '
-        'UcAnnouncementHallSelection
-        '
-        Me.UcAnnouncementHallSelection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcAnnouncementHallSelection.BackColor = System.Drawing.Color.Transparent
-        Me.UcAnnouncementHallSelection.Location = New System.Drawing.Point(31, 267)
-        Me.UcAnnouncementHallSelection.Name = "UcAnnouncementHallSelection"
-        Me.UcAnnouncementHallSelection.Size = New System.Drawing.Size(934, 93)
-        Me.UcAnnouncementHallSelection.TabIndex = 0
         '
         'PnlTankTreilers
         '
@@ -261,9 +261,8 @@ End Sub
     Friend WithEvents UcNumbernIDCar As UCNumber
     Friend WithEvents PnlTrucksRelationAnnouncementHalls As System.Windows.Forms.Panel
     Friend WithEvents UcCarTruckPnlTrucksRelationAnnouncementHalls As UCCarTruck
-    Friend WithEvents UcAnnouncementHallSelection As R2CoreTransportationAndLoadNotification.UCAnnouncementHallSelection
-    Friend WithEvents UcViewerNSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotification.UCViewerNSSAnnouncementHallSubGroup
     Friend WithEvents PnlTankTreilers As System.Windows.Forms.Panel
     Friend WithEvents UcChangeTankTreilerStatus As UCChangeTankTreilerStatus
     Friend WithEvents UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups As UCButtonDelete
+    Friend WithEvents UcucAnnouncementHallCollection As R2CoreTransportationAndLoadNotification.UCUCAnnouncementHallCollection
 End Class
