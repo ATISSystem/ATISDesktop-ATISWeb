@@ -4,6 +4,7 @@ Imports System.Windows.Forms
 
 Imports R2Core.DatabaseManagement
 Imports R2Core.ExceptionManagement
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.AccountingManagement
 Imports R2CoreParkingSystem.Cars
@@ -39,7 +40,7 @@ Public Class UCListBoxCitys
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        UCTitle="لیست شهرها"
+        UCTitle = "لیست شهرها"
     End Sub
 
     Public Sub UCViewInf(YourSearchString As String)
@@ -50,6 +51,8 @@ Public Class UCListBoxCitys
             For Loopx As Int16 = 0 To Lst.Count - 1
                 UCAddToList(Lst.Item(Loopx).nCityCode.ToString() + "   ;   " + Lst.Item(Loopx).StrCityName)
             Next
+        Catch ex As SqlInjectionException
+            Throw ex
         Catch ex As Exception
             Cursor.Current = Cursors.Default
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

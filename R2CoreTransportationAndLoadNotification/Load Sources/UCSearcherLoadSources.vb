@@ -5,6 +5,7 @@ Imports System.Reflection
 Imports R2Core
 Imports R2Core.BaseStandardClass
 Imports R2Core.ConfigurationManagement
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.ConfigurationsManagement
 Imports R2CoreTransportationAndLoadNotification.LoadSources
@@ -49,6 +50,8 @@ Public Class UCSearcherLoadSources
     Private Sub UCSearcherLoadSources_UCSearchOptional1RequestEvent(SearchString As String) Handles Me.UCSearchOptional1RequestEvent
         Try
             UCFillListBox(R2CoreTransportationAndLoadNotificationMclassLoadSourcesManagement.GetLoadSources_SearchforLeftCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.NSSCity.nCityCode, X.NSSCity.StrCityName)).ToList())
+        Catch ex As SqlInjectionException
+            Throw ex
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me, False)
         End Try
@@ -57,6 +60,8 @@ Public Class UCSearcherLoadSources
     Private Sub UCSearcherLoadSources_UCSearchOptional2RequestEvent(SearchString As String) Handles Me.UCSearchOptional2RequestEvent
         Try
             UCFillListBox(R2CoreTransportationAndLoadNotificationMclassLoadSourcesManagement.GetLoadSources_SearchIntroCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.NSSCity.nCityCode, X.NSSCity.StrCityName)).ToList())
+        Catch ex As SqlInjectionException
+            Throw ex
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me, False)
         End Try

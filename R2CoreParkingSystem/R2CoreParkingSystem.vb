@@ -51,6 +51,8 @@ Imports R2Core.RequesterManagement
 Imports R2Core.PredefinedMessagesManagement
 Imports R2CoreParkingSystem.PredefinedMessagesManagement
 Imports R2CoreParkingSystem.AccountingManagement.ExceptionManagement
+Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 
 Namespace DataBaseManagement
 
@@ -3711,6 +3713,8 @@ Namespace City
 
         Public Shared Function GetListOfCitys_SearchIntroCharacters(YourSearchStr As String) As List(Of R2StandardCityStructure)
             Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourSearchStr)
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbCity Where Viewflag=1 and Deleted=0 and StrCityNAME LIKE '%" & YourSearchStr.Replace("ی", "ي").Replace("ک", "ك") & "%' Order by StrCityName", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
@@ -3721,6 +3725,8 @@ Namespace City
                     Lst.Add(NSS)
                 Next
                 Return Lst
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -3728,6 +3734,8 @@ Namespace City
 
         Public Shared Function GetListOfCitys_SearchforLeftCharacters(YourSearchStr As String) As List(Of R2StandardCityStructure)
             Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourSearchStr)
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbCity Where Left(StrCityNAME," & YourSearchStr.Length & ")='" & YourSearchStr.Replace("ی", "ي").Replace("ک", "ك") & "' Order by StrCityName", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
@@ -3738,6 +3746,8 @@ Namespace City
                     Lst.Add(NSS)
                 Next
                 Return Lst
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try

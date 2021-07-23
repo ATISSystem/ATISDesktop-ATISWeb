@@ -62,6 +62,8 @@ Imports R2CoreTransportationAndLoadNotification.LoadPermission.LoadPermissionPri
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.FailedLoadAllocationPrinting
 Imports R2Core.PredefinedMessagesManagement
 Imports R2CoreTransportationAndLoadNotification.PredefinedMessagesManagement
+Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -2095,6 +2097,12 @@ Namespace LoadCapacitor
                     'کنترل وضعیت بار
                     If YourNSS.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented Or YourNSS.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled Or YourNSS.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted Then Throw New LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException
 
+                    'SqlInjection
+                    Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                    InstanceSQLInjectionPrevention.GeneralAuthorization(YourNSS.StrAddress)
+                    InstanceSQLInjectionPrevention.GeneralAuthorization(YourNSS.StrBarName)
+                    InstanceSQLInjectionPrevention.GeneralAuthorization(YourNSS.StrDescription)
+
                     'ویرایش بار
                     CmdSql.Connection.Open()
                     CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
@@ -2116,7 +2124,8 @@ Namespace LoadCapacitor
                                     OrElse TypeOf ex Is LoadCapacitorLoadEditingChangeAHIdNotAllowedException _
                                     OrElse TypeOf ex Is LoaderTypeRelationAnnouncementHallNotFoundException _
                                     OrElse TypeOf ex Is LoaderTypeRelationAnnouncementHallSubGroupNotFoundException _
-                                    OrElse TypeOf ex Is TransportCompanyISNotActiveException
+                                    OrElse TypeOf ex Is TransportCompanyISNotActiveException _
+                                    OrElse TypeOf ex Is SqlInjectionException
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                     End If
@@ -7401,6 +7410,8 @@ Namespace LoadTargets
                 Dim LstCitys As List(Of R2CoreParkingSystemMClassCitys.R2StandardCityStructure) = R2CoreParkingSystemMClassCitys.GetListOfCitys_SearchforLeftCharacters(YourSearchString)
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadTargetStructure) = LstCitys.Select(Function(X) New R2CoreTransportationAndLoadNotificationStandardLoadTargetStructure(X)).ToList()
                 Return Lst
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch exx As GetNSSException
                 Throw exx
             Catch ex As Exception
@@ -7413,6 +7424,8 @@ Namespace LoadTargets
                 Dim LstCitys As List(Of R2CoreParkingSystemMClassCitys.R2StandardCityStructure) = R2CoreParkingSystemMClassCitys.GetListOfCitys_SearchIntroCharacters(YourSearchString)
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadTargetStructure) = LstCitys.Select(Function(X) New R2CoreTransportationAndLoadNotificationStandardLoadTargetStructure(X)).ToList()
                 Return Lst
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch exx As GetNSSException
                 Throw exx
             Catch ex As Exception
@@ -7481,6 +7494,8 @@ Namespace LoadSources
                 Dim LstCitys As List(Of R2CoreParkingSystemMClassCitys.R2StandardCityStructure) = R2CoreParkingSystemMClassCitys.GetListOfCitys_SearchIntroCharacters(YourSearchString)
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadSourceStructure) = LstCitys.Select(Function(X) New R2CoreTransportationAndLoadNotificationStandardLoadSourceStructure(X)).ToList()
                 Return Lst
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch exx As GetNSSException
                 Throw exx
             Catch ex As Exception
@@ -7493,6 +7508,8 @@ Namespace LoadSources
                 Dim LstCitys As List(Of R2CoreParkingSystemMClassCitys.R2StandardCityStructure) = R2CoreParkingSystemMClassCitys.GetListOfCitys_SearchforLeftCharacters(YourSearchString)
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadSourceStructure) = LstCitys.Select(Function(X) New R2CoreTransportationAndLoadNotificationStandardLoadSourceStructure(X)).ToList()
                 Return Lst
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch exx As GetNSSException
                 Throw exx
             Catch ex As Exception
@@ -7545,6 +7562,8 @@ Namespace LoaderTypes
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassLoaderTypesManagement
         Public Shared Function GetLoaderTypes_SearchforLeftCharacters(YourSearchString As String) As List(Of R2CoreTransportationAndLoadNotificationStandardLoaderTypeStructure)
             Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourSearchString)
                 Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardLoaderTypeStructure)
                 Dim DS As DataSet = Nothing
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * From R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes Where Left(LoaderTypeTitle," & YourSearchString.Length & ")='" & YourSearchString.Replace("ی", "ي").Replace("ک", "ك") & "' and Deleted=0 and Active=1 Order By LoaderTypeTitle", 3600, DS)
@@ -7552,6 +7571,8 @@ Namespace LoaderTypes
                     Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoaderTypeStructure(DS.Tables(0).Rows(Loopx).Item("LoaderTypeId"), DS.Tables(0).Rows(Loopx).Item("LoaderTypeTitle"), DS.Tables(0).Rows(Loopx).Item("LoaderTypeOrgnizationId"), DS.Tables(0).Rows(Loopx).Item("LoaderTypeFixStatusId"), DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                 Next
                 Return Lst
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -7559,6 +7580,8 @@ Namespace LoaderTypes
 
         Public Shared Function GetLoaderTypes_SearchIntroCharacters(YourSearchString As String) As List(Of R2CoreTransportationAndLoadNotificationStandardLoaderTypeStructure)
             Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourSearchString)
                 Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardLoaderTypeStructure)
                 Dim DS As DataSet = Nothing
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * From R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes Where LoaderTypeTitle Like '%" & YourSearchString.Replace("ی", "ي").Replace("ک", "ك") & "%' and Deleted=0 and Active=1 Order By LoaderTypeTitle", 3600, DS)
@@ -7566,6 +7589,8 @@ Namespace LoaderTypes
                     Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoaderTypeStructure(DS.Tables(0).Rows(Loopx).Item("LoaderTypeId"), DS.Tables(0).Rows(Loopx).Item("LoaderTypeTitle"), DS.Tables(0).Rows(Loopx).Item("LoaderTypeOrgnizationId"), DS.Tables(0).Rows(Loopx).Item("LoaderTypeFixStatusId"), DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                 Next
                 Return Lst
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try

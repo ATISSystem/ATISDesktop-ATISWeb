@@ -8,7 +8,7 @@ Imports R2Core.ExceptionManagement
 Imports R2Core.PublicProc
 Imports R2Core.RFIDCardsManagement
 Imports R2Core.SoftwareUserManagement.Exceptions
-
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 
 Public Class UCUserLogin
     Inherits UCGeneral
@@ -71,6 +71,8 @@ Public Class UCUserLogin
                 Exit Try
             End If
             RaiseEvent UCUserAuthenticationSuccessEvent(NSS)
+        Catch ex As SqlInjectionException
+            Throw ex
         Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
             Throw ex
         Catch ex As Exception
@@ -106,6 +108,8 @@ Public Class UCUserLogin
     Private Sub UcButtonSpecial_UCClickedEvent() Handles UcButtonSpecial.UCClickedEvent
         Try
             UCAuthenticationUserByShenasehPassword()
+        Catch EX As SqlInjectionException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "شناسه یا رمز عبور قابل پذیرش نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         Catch ex As Exception
@@ -116,6 +120,8 @@ Public Class UCUserLogin
     Private Sub UcButtonSpecial_UC13PressedEvent() Handles UcButtonSpecial.UC13PressedEvent
         Try
             UCAuthenticationUserByShenasehPassword()
+        Catch EX As SqlInjectionException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "شناسه یا رمز عبور قابل پذیرش نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         Catch ex As Exception

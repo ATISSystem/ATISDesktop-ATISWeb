@@ -34,7 +34,7 @@ Imports R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms.Excep
 Imports R2Core.PermissionManagement.Exceptions
 
 Imports PcPosDll
-
+Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 
 Namespace MonetarySupply
 
@@ -670,6 +670,8 @@ Namespace SecurityAlgorithmsManagement
                 Dim EKTemp = R2CoreMClassSecurityAlgorithmsManagement.GetNewExchangeKey()
                 _LstUsers.Add(New ExchangeKey(EKTemp, NSS.UserId, Now))
                 Return EKTemp
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
                 Throw ex
             Catch ex As Exception
@@ -1051,6 +1053,63 @@ Namespace SecurityAlgorithmsManagement
 
     End Namespace
 
+    Namespace SQLInjectionPrevention
+
+        Public Class R2CoreSQLInjectionPreventionManager
+            Public Sub GeneralAuthorization(YourParam As String)
+                Try
+                    Dim Lowered = YourParam.ToLower()
+                    If Lowered.Contains("'") Then
+                        Throw New SqlInjectionException
+                    End If
+                    If Lowered.Contains("--") Then
+                        Throw New SqlInjectionException
+                    End If
+                    If Lowered.Contains(";") Then
+                        Throw New SqlInjectionException
+                    End If
+                    If Lowered.Contains("drop") Then
+                        Throw New SqlInjectionException
+                    End If
+                    If Lowered.Contains("table") Then
+                        Throw New SqlInjectionException
+                    End If
+                    If Lowered.Contains("alter") Then
+                        Throw New SqlInjectionException
+                    End If
+                    If Lowered.Contains("or") Then
+                        Throw New SqlInjectionException
+                    End If
+                    If Lowered.Contains("=") Then
+                        Throw New SqlInjectionException
+                    End If
+                    If Lowered.Contains("@") Then
+                        Throw New SqlInjectionException
+                    End If
+                    If Lowered.Contains("union") Then
+                        Throw New SqlInjectionException
+                    End If
+                    If Lowered.Contains("having") Then
+                        Throw New SqlInjectionException
+                    End If
+                    If Lowered.Contains("insert") Then
+                        Throw New SqlInjectionException
+                    End If
+                    If Lowered.Contains("delete") Then
+                        Throw New SqlInjectionException
+                    End If
+                Catch ex As SqlInjectionException
+                    Throw ex
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+        End Class
+
+
+
+    End Namespace
+
     Namespace PasswordStrength
         Public Class PasswordStrength
             Private dtDetails As DataTable
@@ -1411,6 +1470,16 @@ Namespace SecurityAlgorithmsManagement
                 End Get
             End Property
         End Class
+
+        Public Class SqlInjectionException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "نوعی از حمله سایبری به بانک اطلاعاتی شناسایی شد"
+                End Get
+            End Property
+        End Class
+
 
     End Namespace
 
@@ -2902,6 +2971,10 @@ Namespace BlackIPs
 
         Public Function IsBlackIPActive(YourNSS As R2StandardBlackIPStructure)
             Try
+                'SqlInjectionPrevention
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourNSS.BlackIP)
+
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet = Nothing
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
@@ -2913,7 +2986,7 @@ Namespace BlackIPs
             End Try
         End Function
 
-        Public Function AuthorizationIP(YourIP As String)
+        Public Sub AuthorizationIP(YourIP As String)
             Try
                 If IsBlackIPActive(New R2StandardBlackIPStructure(0, YourIP, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)) Then Throw New AuthorizationIPIPIsBlackException
             Catch ex As AuthorizationIPIPIsBlackException
@@ -2921,7 +2994,7 @@ Namespace BlackIPs
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
-        End Function
+        End Sub
 
         Public Sub UnLockBlackIP(YourNSS As R2StandardBlackIPStructure)
             Dim CmdSql As New SqlClient.SqlCommand

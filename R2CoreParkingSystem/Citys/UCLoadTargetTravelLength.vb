@@ -1,7 +1,7 @@
 ﻿
 Imports System.ComponentModel
 Imports System.Reflection
-
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.City
 
@@ -40,6 +40,8 @@ Public Class UCLoadTargetTravelLength
     Public Sub UCShowCities(YourSearchString As String)
         Try
             UcListBoxCitys.UCViewInf(YourSearchString)
+        Catch ex As SqlInjectionException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -55,6 +57,8 @@ Public Class UCLoadTargetTravelLength
     Private Sub UcSearcher_UC13PressedEvent(SearchString As String) Handles UcSearcher.UC13PressedEvent
         Try
             UcListBoxCitys.UCViewInf(SearchString)
+        Catch ex As SqlInjectionException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

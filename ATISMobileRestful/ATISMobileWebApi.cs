@@ -409,7 +409,7 @@ namespace ATISMobileRestful
             return response;
         }
 
-        public HttpResponseMessage CreateErrorContentMessage(string  YourMessage)
+        public HttpResponseMessage CreateErrorContentMessage(string YourMessage)
         {
             HttpResponseMessage response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
             response.Content = new StringContent(JsonConvert.SerializeObject(YourMessage), Encoding.UTF8, "application/json");
@@ -438,18 +438,14 @@ namespace ATISMobileRestful
             {
                 dynamic ctx = request.Properties[HttpContext];
                 if (ctx != null)
-                {
-                    return ctx.Request.UserHostAddress;
-                }
+                { return ctx.Request.UserHostAddress; }
             }
 
             if (request.Properties.ContainsKey(RemoteEndpointMessage))
             {
                 dynamic remoteEndpoint = request.Properties[RemoteEndpointMessage];
                 if (remoteEndpoint != null)
-                {
-                    return remoteEndpoint.Address;
-                }
+                { return remoteEndpoint.Address; }
             }
 
             return null;
@@ -588,7 +584,7 @@ namespace ATISMobileRestful
         public class WebApiClientPersonalNonceExpiredException : ApplicationException
         {
             public override string Message
-            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.PersonalNonceExpired ).MsgContent; } }
+            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.PersonalNonceExpired).MsgContent; } }
         }
 
         public class WebApiClientSoftWareUserPasswordExpiredException : ApplicationException
@@ -625,7 +621,7 @@ namespace ATISMobileRestful
         public class WebApiClientMobileNumberIsInvalidException : ApplicationException
         {
             public override string Message
-            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.MobileNumberIsInvalid ).MsgContent; } }
+            { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.MobileNumberIsInvalid).MsgContent; } }
         }
 
         public class WebApiClientMobileNumberNotFoundExceptionException : ApplicationException

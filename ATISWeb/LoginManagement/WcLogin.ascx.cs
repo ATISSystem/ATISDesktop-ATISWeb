@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -12,14 +13,16 @@ using R2Core.ExceptionManagement;
 using R2Core.SecurityAlgorithmsManagement.Captcha;
 using R2Core.SoftwareUserManagement;
 using R2Core.SoftwareUserManagement.Exceptions;
-using System.IO;
+using R2Core.SecurityAlgorithmsManagement;
 using R2Core.SecurityAlgorithmsManagement.Exceptions;
 using R2Core.LoggingManagement;
-using ATISWeb.LoggingManagement;
 using R2Core.DateAndTimeManagement;
-using ATISWeb.PublicProcedures;
 using R2Core.BlackIPs;
 using R2Core.BlackIPs.Exceptions;
+
+using ATISWeb.LoggingManagement;
+using ATISWeb.PublicProcedures;
+using System.Text;
 
 namespace ATISWeb.LoginManagement
 {
@@ -36,6 +39,67 @@ namespace ATISWeb.LoginManagement
 
         #region "Subroutins And Functions"
 
+        public class ImageRawData
+        { public byte[] IRawData; }
+
+        public class AESAlgorithms
+        {
+            public byte[] ImageToBytes(System.Drawing.Image value)
+            {
+                ImageConverter converter = new ImageConverter();
+                byte[] arr = (byte[])converter.ConvertTo(value, typeof(byte[]));
+                return arr;
+            }
+            public System.Drawing.Image BytesToImage(byte[] value)
+            {
+                using (var ms = new MemoryStream(value))
+                {
+                    return System.Drawing.Image.FromStream(ms);
+                }
+            }
+            public string EncodeBytes(byte[] value) => Convert.ToBase64String(value);
+            public byte[] DecodeBytes(string value) => Convert.FromBase64String(value);
+            public string StringHash(byte[] value)
+            {
+                using (System.Security.Cryptography.SHA256 sha256 = System.Security.Cryptography.SHA256.Create())
+                {
+                    byte[] hashBytes = sha256.ComputeHash(value);
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < hashBytes.Length; i++)
+                    {
+                        sb.Append(hashBytes[i].ToString("X2"));
+                    }
+                    return sb.ToString().ToLower();
+                }
+            }
+        }
+
+        public class JsonImage
+        {
+            private AESAlgorithms _AESAlgorithms = new AESAlgorithms();
+            public string hash { get; set; } = string.Empty;
+            public int len { get; set; } = 0;
+            public string image { get; set; } = string.Empty;
+            public JsonImage() { }
+            public JsonImage(System.Drawing.Image value)
+            {
+                byte[] img_sources = _AESAlgorithms.ImageToBytes(value);
+                hash = _AESAlgorithms.StringHash(img_sources);
+                len = img_sources.Length;
+                image = _AESAlgorithms.EncodeBytes(img_sources);
+            }
+            public byte[] GetRawData()
+            {
+                byte[] data = _AESAlgorithms.DecodeBytes(image);
+
+                if (data.Length != len) throw new Exception("Error data len");
+                if (!_AESAlgorithms.StringHash(data).Equals(hash)) throw new Exception("Error hash");
+
+                return data;
+            }
+
+        }
+
         private void FillCaptcha()
         {
             try
@@ -44,8 +108,10 @@ namespace ATISWeb.LoginManagement
                 string CWord = Captcha.GenerateFakeWord(5);
                 Session["_CaptchaWord"] = CWord;
                 Bitmap CImage = Captcha.GenerateCaptcha(CWord);
+
                 CImage.Save(Server.MapPath("~/Images/Captcha.jpg"));
                 ImgCaptcha.ImageUrl = "~/Images/Captcha.jpg";
+                //ImgCaptcha.ImageUrl = "data:image/jpg;base64," + Convert.ToBase64String((new JsonImage(CImage)).GetRawData());
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
@@ -102,6 +168,8 @@ namespace ATISWeb.LoginManagement
 
                 WcUserAuthenticationSuccessEvent?.Invoke(this, e);
             }
+            catch (SqlInjectionException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + "شناسه یا رمز عبور قابل پذیرش نیست" + "');", true); }
             catch (AuthorizationIPIPIsBlackException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex) when (ex is UserIsNotActiveException || ex is UserNotExistException || ex is GetNSSException || ex is CaptchaWordNotCorrectException)

@@ -18,6 +18,7 @@ using R2CoreTransportationAndLoadNotification.LoadTargets;
 using R2CoreTransportationAndLoadNotification.TransportCompanies;
 using R2CoreTransportationAndLoadNotification.TransportCompanies.Exceptions;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions;
+using R2Core.SecurityAlgorithmsManagement.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 {
@@ -104,6 +105,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 }
                 DropDownListLoad.Enabled = true;
             }
+            catch (SqlInjectionException ex)
+            { throw ex; }
             catch (Exception ex)
             { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
         }
@@ -123,6 +126,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 }
                 DropDownListTargetCity.Enabled = true;
             }
+            catch (SqlInjectionException ex)
+            { throw ex; }
             catch (Exception ex)
             { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
         }
@@ -142,6 +147,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 }
                 DropDownListLoaderType.Enabled = true;
             }
+            catch (SqlInjectionException ex)
+            { throw ex; }
             catch (Exception ex)
             { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
         }
@@ -200,6 +207,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         private void BtnSearchTargetCity_ServerClick(object sender, EventArgs e)
         {
             try { WcFillTargets(TxtSearchTargetCity.Text); }
+            catch (SqlInjectionException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }
@@ -207,6 +216,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         private void BtnSearchLoad_ServerClick(object sender, EventArgs e)
         {
             try { WcFillGoods(TxtSearchLoad.Text); }
+            catch (SqlInjectionException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }
@@ -214,6 +225,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         private void BtnSearchLoaderType_ServerClick(object sender, EventArgs e)
         {
             try { WcFillLoaderTypes(TxtSearchLoaderType.Text); }
+            catch (SqlInjectionException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }
@@ -270,6 +283,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 WcInformationChangedEvent?.Invoke(this, new EventArgs());
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "ویرایش بار با موفقیت انجام شد" + "');", true);
             }
+            catch (SqlInjectionException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
             catch (Exception ex) when (ex is LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException || ex is LoadCapacitorLoadNumberOverLimitException || ex is LoadCapacitorLoadnCarNumKolCanNotBeZeroException || ex is TransportCompanyISNotActiveException || ex is LoadCapacitorLoadRegisterTimePassedException || ex is LoadCapacitorLoadEditTimePassedException)

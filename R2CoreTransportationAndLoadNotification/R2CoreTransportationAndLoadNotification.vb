@@ -83,6 +83,8 @@ Imports R2CoreParkingSystem.RequesterManagement
 Imports R2CoreParkingSystem.PermissionManagement
 Imports R2CoreParkingSystem.EntityManagement
 Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions
+Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 
 Namespace Rmto
     Public MustInherit Class RmtoWebService
@@ -2588,6 +2590,8 @@ Namespace Goods
 
         Public Shared Function GetGoods_SearchIntroCharacters(YourSearchString As String) As List(Of R2CoreTransportationAndLoadNotificationStandardGoodStructure)
             Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourSearchString)
                 Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardGoodStructure)
                 Dim DS As DataSet = Nothing
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select StrGoodCode,StrGoodName From DBTransport.dbo.TbProducts Where StrGoodName Like '%" & YourSearchString.Replace("ی", "ي").Replace("ک", "ك") & "%' Order By StrGoodName", 3600, DS)
@@ -2595,6 +2599,8 @@ Namespace Goods
                     Lst.Add(New R2CoreTransportationAndLoadNotificationStandardGoodStructure(DS.Tables(0).Rows(Loopx).Item("StrGoodCode"), DS.Tables(0).Rows(Loopx).Item("StrGoodName")))
                 Next
                 Return Lst
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -2602,6 +2608,8 @@ Namespace Goods
 
         Public Shared Function GetGoods_SearchforLeftCharacters(YourSearchString As String) As List(Of R2CoreTransportationAndLoadNotificationStandardGoodStructure)
             Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourSearchString)
                 Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardGoodStructure)
                 Dim DS As DataSet = Nothing
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select StrGoodCode,StrGoodName From DBTransport.dbo.TbProducts Where Left(StrGoodName," & YourSearchString.Length & ")='" & YourSearchString.Replace("ی", "ي").Replace("ک", "ك") & "' Order By StrGoodName", 3600, DS)
@@ -2609,6 +2617,8 @@ Namespace Goods
                     Lst.Add(New R2CoreTransportationAndLoadNotificationStandardGoodStructure(DS.Tables(0).Rows(Loopx).Item("StrGoodCode"), DS.Tables(0).Rows(Loopx).Item("StrGoodName")))
                 Next
                 Return Lst
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try

@@ -41,6 +41,8 @@ Public Class PayanehWebService
     Public Function WebMethodLogin(YourUserShenaseh As String, YourUserPassword As String) As Int64
         Try
             Return _ExchangeKeyManager.Login(YourUserShenaseh, YourUserPassword)
+        Catch ex As SqlInjectionException
+            Throw New Exception("شناسه یا رمز عبور قابل پذیرش نیست")
         Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
             Throw ex
         Catch ex As Exception

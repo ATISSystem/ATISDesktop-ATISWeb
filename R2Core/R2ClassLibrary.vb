@@ -37,6 +37,8 @@ Imports R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms.Excep
 Imports R2Core.SecurityAlgorithmsManagement
 Imports R2Core.SecurityAlgorithmsManagement.PasswordStrength
 Imports R2Core.LoggingManagement
+Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 
 Public Class R2Enums
 
@@ -1383,6 +1385,10 @@ Namespace SoftwareUserManagement
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
+                'SqlInjectionPrevention
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourMobileNumber)
+
                 Dim InstanceAESAlgorithms As New AESAlgorithmsManager
                 Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
                 Dim VerificationCode As String = InstanceAESAlgorithms.GenerateVerificationCode(InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 9))
@@ -1430,6 +1436,10 @@ Namespace SoftwareUserManagement
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
+                'SqlInjectionPrevention
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourMobileNumber)
+
                 Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
                 Dim APIKeyExpiration As String = _DateTime.GetNextShamsiMonth(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime), InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 1)).DateShamsiFull
                 CmdSql.Connection.Open()
@@ -1658,6 +1668,8 @@ Namespace SoftwareUserManagement
             Try
                 AuthenticationUserbyShenasehPassword(YourUserNSS)
                 Return True
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch ex As UserNotExistException
                 Return False
             Catch ex As UserIsNotActiveException
@@ -1669,12 +1681,18 @@ Namespace SoftwareUserManagement
 
         Public Shared Sub AuthenticationUserbyShenasehPassword(YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourUserNSS.UserShenaseh)
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourUserNSS.UserPassword)
+
                 Dim DS As DataSet
                 If DatabaseManagement.R2ClassSqlDataBOXManagement.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers where ltrim(rtrim(UserShenaseh))='" & YourUserNSS.UserShenaseh & "' and ltrim(rtrim(UserPassword))='" & YourUserNSS.UserPassword & "'", 0, DS).GetRecordsCount = 0 Then
                     Throw New UserNotExistException
                 Else
                     If DS.Tables(0).Rows(0).Item("UserActive") = False Then Throw New UserIsNotActiveException
                 End If
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
                 Throw ex
             Catch ex As Exception
@@ -1761,6 +1779,11 @@ Namespace SoftwareUserManagement
             Dim cmdsql As New SqlClient.SqlCommand
             cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
             Try
+                'SqlInjectionPrevention
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourNSS.UserShenaseh)
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourNSS.UserPassword)
+
                 Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
                 Dim PS As PasswordStrength = New PasswordStrength
                 PS.SetPassword(YourNSS.UserPassword)

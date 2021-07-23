@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using ATISWeb.LoginManagement.Exceptions;
+using R2Core.SecurityAlgorithmsManagement.Exceptions;
 using R2Core.SecurityAlgorithmsManagement.PasswordStrength;
 using R2Core.SoftwareUserManagement;
 using R2Core.SoftwareUserManagement.Exceptions;
@@ -28,9 +29,7 @@ namespace ATISWeb.LoginManagement
         #region "Event Handlers"
 
         protected void Page_Load(object sender, EventArgs e)
-        {
-            BtnSubmit.Click += BtnSubmit_Click;
-        }
+        { BtnSubmit.Click += BtnSubmit_Click; }
 
         private void BtnSubmit_Click(object sender, EventArgs e)
         {

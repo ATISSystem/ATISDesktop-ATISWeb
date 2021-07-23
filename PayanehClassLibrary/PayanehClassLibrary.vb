@@ -74,6 +74,8 @@ Imports TWSClassLibrary.TDBClientManagement
 Imports PayanehClassLibrary.Logging
 Imports PayanehClassLibrary.ReportsManagement
 Imports PayanehClassLibrary.TruckersAssociationControllingMoneyWallet.Exceptions
+Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 
 Namespace Logging
 
@@ -1567,6 +1569,9 @@ Namespace DriverTrucksManagement
 
         Public Shared Function IsExistDriverTruck(YourNSS As R2StandardDriverTruckStructure) As Boolean
             Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourNSS.StrSmartCardNo)
+
                 Dim DS As New DataSet
                 ''If R2ClassSqlDataBOXManagement.GetDataBOX(New DataBaseManagement.R2ClassSqlConnectionSepas, "Select P.StrPersonFullName from dbtransport.dbo.TbPerson as P inner join dbtransport.dbo.TbDriver as D On P.nIdPerson=D.nIdDriver Where D.StrSmartCardNo='" & YourNSS.StrSmartCardNo & "' and P.NIdPerson<>" & YourNSS.NSSDriver.nIdPerson & "", 1, DS).GetRecordsCount <> 0 Then
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New DataBaseManagement.R2ClassSqlConnectionSepas, "Select P.StrPersonFullName from dbtransport.dbo.TbPerson as P inner join dbtransport.dbo.TbDriver as D On P.nIdPerson=D.nIdDriver Where D.StrSmartCardNo='" & YourNSS.StrSmartCardNo & "'", 1, DS).GetRecordsCount <> 0 Then
@@ -1637,6 +1642,8 @@ Namespace DriverTrucksManagement
 
         Public Shared Function GetNSSDriverTruckbySmartCardNo(YournSamrtCardNo As String) As R2StandardDriverTruckStructure
             Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YournSamrtCardNo)
 
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 Da.SelectCommand = New SqlCommand("Select Top 1 * from dbtransport.dbo.TbPerson as P inner join dbtransport.dbo.TbDriver as D On P.nIDPerson=D.nIDDriver Where D.StrSmartCardNo='" & YournSamrtCardNo & "' Order By P.nIDPerson Desc")
@@ -1858,6 +1865,9 @@ Namespace CarTrucksManagement
         Public Shared Function GetNSSCarTruckBySmartCardNoWithUpdating(YourSmartCardNo As String, YourUserNSS As R2CoreStandardSoftwareUserStructure) As R2StandardCarTruckStructure
             Dim NSSCarTruck As R2StandardCarTruckStructure = Nothing
             Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourSmartCardNo)
+
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                "Select Top 1 * from dbtransport.dbo.TbCar Where StrBodyNo='" & YourSmartCardNo.Trim() & "' Order By nIdCar Desc",
@@ -1893,6 +1903,8 @@ Namespace CarTrucksManagement
                     R2CoreParkingSystemMClassCars.UpdateCar(NSSCarTruck.NSSCar)
                     Return NSSCarTruck
                 End If
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch ex As Exception When TypeOf ex Is InternetIsnotAvailableException OrElse
                                        TypeOf ex Is RMTOWebServiceSmartCardInvalidException OrElse
                                        TypeOf ex Is ConnectionIsNotAvailableException
@@ -4904,6 +4916,11 @@ Namespace LoadNotification.LoadPermission
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection()
             Try
+                'SqlInjectionPrevention
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourCarTruckSmartCardNo)
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourDriverTruckSmartCardNo)
+
                 If YourDriverTruckSmartCardNo = String.Empty Or YourCarTruckSmartCardNo = String.Empty Then Throw New Exception("شماره هوشمند راننده یا ناوگان نادرست است")
                 Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(YourCarTruckSmartCardNo, YourNSSUser)
                 Dim NSSDriverTruck As R2StandardDriverTruckStructure = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbySmartCardNo(YourDriverTruckSmartCardNo)

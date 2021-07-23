@@ -2,6 +2,7 @@
 Imports System.Reflection
 
 Imports R2Core.DesktopProcessesManagement
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.ProcessesManagement
 
@@ -56,6 +57,8 @@ Public Class FrmcLoadTargetsTravelLength
     Private Sub FrmcLoadTargetsTravelLength__FormShownFirstTimerTickReachedEvent() Handles Me._FormShownFirstTimerTickReachedEvent
         Try
             UcLoadTargetTravelLength.UCShowCities(String.Empty)
+        Catch ex As SqlInjectionException
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

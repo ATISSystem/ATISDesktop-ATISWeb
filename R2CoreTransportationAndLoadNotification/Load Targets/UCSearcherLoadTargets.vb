@@ -5,6 +5,7 @@ Imports System.Reflection
 
 Imports R2Core
 Imports R2Core.BaseStandardClass
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.LoadTargets
 
@@ -24,7 +25,7 @@ Public Class UCSearcherLoadTargets
 
         ' Add any initialization after the InitializeComponent() call.
         Try
-           
+
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -48,7 +49,9 @@ Public Class UCSearcherLoadTargets
 
     Private Sub UCSearcherLoadTargets_UCSearchOptional1RequestEvent(SearchString As String) Handles Me.UCSearchOptional1RequestEvent
         Try
-            UCFillListBox(R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetLoadTargets_SearchforLeftCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.NSSCity.nCityCode,X.NSSCity.StrCityName)).ToList())
+            UCFillListBox(R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetLoadTargets_SearchforLeftCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.NSSCity.nCityCode, X.NSSCity.StrCityName)).ToList())
+        Catch ex As SqlInjectionException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me, False)
         End Try
@@ -56,7 +59,9 @@ Public Class UCSearcherLoadTargets
 
     Private Sub UCSearcherLoadTargets_UCSearchOptional2RequestEvent(SearchString As String) Handles Me.UCSearchOptional2RequestEvent
         Try
-            UCFillListBox(R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetLoadTargets_SearchIntroCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.NSSCity.nCityCode,X.NSSCity.StrCityName)).ToList())
+            UCFillListBox(R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetLoadTargets_SearchIntroCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.NSSCity.nCityCode, X.NSSCity.StrCityName)).ToList())
+        Catch ex As SqlInjectionException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me, False)
         End Try
