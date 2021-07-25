@@ -2399,7 +2399,7 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property PublicMessagesforSoftWareUsers As Int64 = 74
         Public Shared ReadOnly Property DefaultConfigurationOfSoftwareUserSecurity As Int64 = 76
         Public Shared ReadOnly Property PublicSecurityConfiguration As Int64 = 77
-
+        Public Shared ReadOnly Property SqlInjectionPrevention As Int64 = 78
     End Class
 
     Public Class R2CoreStandardConfigurationStructure

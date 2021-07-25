@@ -28,10 +28,15 @@ namespace R2PrimaryTestCSharp
 
         private void Button1_Click(object sender, EventArgs e)
         {
+            var listOfStrings = new string[] { "as", "AS" };
+            var myString = "AsDFG";
+            bool b = listOfStrings.Any(s => myString.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0);
+            listOfStrings.Any(s => s.Equals(myString, StringComparison.OrdinalIgnoreCase));
+
             var InstanceCaptcha = new R2CoreInstanceCaptchaManager();
-            var FakeWord = InstanceCaptcha.GenerateFakeWordNumeric(5);
-            var CaptchaImage = InstanceCaptcha.GenerateCaptcha(FakeWord);
-            pictureBox1.Image = CaptchaImage;
+            //var FakeWord = InstanceCaptcha.GenerateFakeWordNumeric(5);
+            //var CaptchaImage = InstanceCaptcha.GenerateCaptcha(FakeWord);
+            //pictureBox1.Image = CaptchaImage;
             //  var InstanceReport = new R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager();
             //var Lst=  InstanceReport.ReportingInformationProviderLoadPermissionsIssuedOrderByPriorityReport(7);
             //  List<PermissionsIssued> _PermissionsIssued = new List<PermissionsIssued>();

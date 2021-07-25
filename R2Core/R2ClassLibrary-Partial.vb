@@ -1058,46 +1058,14 @@ Namespace SecurityAlgorithmsManagement
         Public Class R2CoreSQLInjectionPreventionManager
             Public Sub GeneralAuthorization(YourParam As String)
                 Try
-                    Dim Lowered = YourParam.ToLower()
-                    If Lowered.Contains("'") Then
-                        Throw New SqlInjectionException
-                    End If
-                    If Lowered.Contains("--") Then
-                        Throw New SqlInjectionException
-                    End If
-                    If Lowered.Contains(";") Then
-                        Throw New SqlInjectionException
-                    End If
-                    If Lowered.Contains("drop") Then
-                        Throw New SqlInjectionException
-                    End If
-                    If Lowered.Contains("table") Then
-                        Throw New SqlInjectionException
-                    End If
-                    If Lowered.Contains("alter") Then
-                        Throw New SqlInjectionException
-                    End If
-                    If Lowered.Contains("or") Then
-                        Throw New SqlInjectionException
-                    End If
-                    If Lowered.Contains("=") Then
-                        Throw New SqlInjectionException
-                    End If
-                    If Lowered.Contains("@") Then
-                        Throw New SqlInjectionException
-                    End If
-                    If Lowered.Contains("union") Then
-                        Throw New SqlInjectionException
-                    End If
-                    If Lowered.Contains("having") Then
-                        Throw New SqlInjectionException
-                    End If
-                    If Lowered.Contains("insert") Then
-                        Throw New SqlInjectionException
-                    End If
-                    If Lowered.Contains("delete") Then
-                        Throw New SqlInjectionException
-                    End If
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                    Dim SqlInjectionPreventionKeywords = Split(InstanceConfiguration.GetConfigString(R2CoreConfigurations.SqlInjectionPrevention, 0), " ")
+                    Dim Wanted = YourParam.ToLower().Split(" ")
+                    For Each Str As String In Wanted
+                        If SqlInjectionPreventionKeywords.Any(Function(s) Str.Contains(s)) Or (New String() {";"}).Any(Function(s) Str.Contains(s)) Then
+                            Throw New SqlInjectionException
+                        End If
+                    Next
                 Catch ex As SqlInjectionException
                     Throw ex
                 Catch ex As Exception

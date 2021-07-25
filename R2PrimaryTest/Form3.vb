@@ -332,8 +332,14 @@ Public Class Form3
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         Try
-            Dim X As New R2Core.LoggingManagement.R2CoreInstanceLoggingManager
-            X.GetNSSLogType(1)
+            Dim listOfStrings = New String() {"as", "AS"}
+            Dim myString = TextBoxConcat1.Text
+            Dim b = listOfStrings.Any(Function(s) myString.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0)
+            MessageBox.Show(b)
+            'listOfStrings.Any(s >= s.Equals(myString, StringComparison.OrdinalIgnoreCase));
+
+            'Dim X As New R2Core.LoggingManagement.R2CoreInstanceLoggingManager
+            'X.GetNSSLogType(1)
             'Dim InstanceCaptcha = New CoreClass.R2CoreInstanceCaptchaManager
             'Dim FakeWord = InstanceCaptcha.GenerateFakeWordNumeric(5)
             'Dim CaptchaImage = InstanceCaptcha.GenerateCaptcha(FakeWord)
