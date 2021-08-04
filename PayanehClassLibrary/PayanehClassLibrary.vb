@@ -5013,7 +5013,7 @@ Namespace LoadNotification.LoadPermission
                 ProductName = TransportCompaniesLoadCapacitorLoadManipulation.GetProductName(_NSSTransportCompanyStandardLoadCapacitorLoad.nBarCode)
                 TargetCityName = R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(_NSSTransportCompanyStandardLoadCapacitorLoad.nCityCode)
                 StrPriceSug = _NSSTransportCompanyStandardLoadCapacitorLoad.StrPriceSug
-                StrDescription = _NSSTransportCompanyStandardLoadCapacitorLoad.StrDescription
+                StrDescription = _NSSTransportCompanyStandardLoadCapacitorLoad.StrDescription + " " + _NSSTransportCompanyStandardLoadCapacitorLoad.StrBarName
                 Dim HazinehSedimentLoadPermission As Int64 = LoadNotificationLoadPermissionManagement.GetHazinehSedimentLoadPermission(YournEstelamId)
                 If _NSSCarTruckNobat.nUserIdEnter = R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId Then
                     OtherNote = HazinehSedimentLoadPermission.ToString() + ":هزينه پايانه،نوبت و ارزش افزوده-ريال"

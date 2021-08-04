@@ -28,12 +28,27 @@ namespace R2PrimaryTestCSharp
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            var listOfStrings = new string[] { "as", "AS" };
-            var myString = "AsDFG";
-            bool b = listOfStrings.Any(s => myString.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0);
-            listOfStrings.Any(s => s.Equals(myString, StringComparison.OrdinalIgnoreCase));
+            var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+            var NSSSoftwareuser = InstanceSoftwareUsers.GetNSSUser(new R2CoreSoftwareUserMobile("09130843148"));
+            var InstanceAES = new AESAlgorithmsManager();
 
-            var InstanceCaptcha = new R2CoreInstanceCaptchaManager();
+            System.Net.ServicePointManager.Expect100Continue = false;
+            ServiceReference.PaymentGatewayImplementationServicePortTypeClient zp = new ServiceReference.PaymentGatewayImplementationServicePortTypeClient();
+            string Authority;
+            int Status = zp.PaymentRequest("aed16bb9-485a-416d-9891-d0b8d2bc98cc", 1, "درخواست پرداخت-زرین پال-آتیس", String.Empty, String.Empty, "https://ATISMobile.ir:8083/MoneyWalletChargingMVC/PaymentVerification/?YourAPIKey=" + InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + "&YourAmount=1", out Authority);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+            if (Status == 100)
+            { response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = Authority, Message2 = "https://www.zarinpal.com/pg/StartPay/", Message3 = string.Empty }), Encoding.UTF8, "application/json"); }
+            else
+            { response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = true, Message1 = "Error : " + Status.ToString(), Message2 = string.Empty, Message3 = string.Empty }), Encoding.UTF8, "application.json"); }
+            return response;
+
+            //var listOfStrings = new string[] { "as", "AS" };
+            //var myString = "AsDFG";
+            //bool b = listOfStrings.Any(s => myString.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0);
+            //listOfStrings.Any(s => s.Equals(myString, StringComparison.OrdinalIgnoreCase));
+
+            //var InstanceCaptcha = new R2CoreInstanceCaptchaManager();
             //var FakeWord = InstanceCaptcha.GenerateFakeWordNumeric(5);
             //var CaptchaImage = InstanceCaptcha.GenerateCaptcha(FakeWord);
             //pictureBox1.Image = CaptchaImage;

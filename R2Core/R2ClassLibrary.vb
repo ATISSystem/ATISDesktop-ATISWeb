@@ -1781,7 +1781,6 @@ Namespace SoftwareUserManagement
             Try
                 'SqlInjectionPrevention
                 Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
-                InstanceSQLInjectionPrevention.GeneralAuthorization(YourNSS.UserShenaseh)
                 InstanceSQLInjectionPrevention.GeneralAuthorization(YourNSS.UserPassword)
 
                 Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager

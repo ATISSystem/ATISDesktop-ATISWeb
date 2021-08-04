@@ -70,13 +70,6 @@ Public Class PayanehAmirKabirAutomatedJobs
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TransferringTommorowLoads:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 
-            'فراخوانی سرویس رسوب بار در سالن اعلام بار
-            Try
-                R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()
-            Catch ex As Exception
-                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "SedimentingProcess:" + ex.Message.ToString, EventLogEntryType.Error)
-            End Try
-
             'صدور خودکار مجوزهای سالن های اعلام بار
             Try
                 Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
@@ -86,6 +79,13 @@ Public Class PayanehAmirKabirAutomatedJobs
                 InstanceLoadAllocation = Nothing
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
+            'فراخوانی سرویس رسوب بار در سالن اعلام بار
+            Try
+                R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "SedimentingProcess:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 
             'ابطال گروهی نوبت ها

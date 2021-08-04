@@ -113,7 +113,7 @@ Namespace Rmto
                 If YourInfoType = InfoType.GET_DRIVER_BY_SHC Then
                     Return Service.RMTO_WEB_SERVICES("Biinfo878", 41, "2043148", "", "", "", "", "", "", "", "", "", YourDFP).Split(";")
                 ElseIf YourInfoType = InfoType.GET_DRIVER_BY_SHM Then
-                    Return Service.RMTO_WEB_SERVICES("Biinfo878", 2, "2043148", "", "", "", "", "", "", "", "", "", YourDFP).Split(";")
+                    Return Service.RMTO_WEB_SERVICES("Biinfo878", 3, "2043148", "", "", "", "", "", "", "", "", "", YourDFP).Split(";")
                 ElseIf YourInfoType = InfoType.GET_FREIGHTER_BY_SHC Then
                     Return Service.RMTO_WEB_SERVICES("Biinfo878", 4, "2043148", "", "", "", "", "", "", "", "", "", YourDFP).Split(";")
                 ElseIf YourInfoType = InfoType.GET_FREIGHTER_BY_VIN Then
@@ -128,12 +128,12 @@ Namespace Rmto
             End Try
         End Function
 
-        Public Shared Function GetNSSTruckDriver(YourSmartCardNo As String) As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
+        Public Shared Function GetNSSTruckDriver(YourNationalCode As String) As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
             Try
-                Dim ComposeString As String() = GetInf(InfoType.GET_DRIVER_BY_SHC, YourSmartCardNo)
+                Dim ComposeString As String() = GetInf(InfoType.GET_DRIVER_BY_SHM, YourNationalCode)
                 Dim NSSTruckDriver As New R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
                 NSSTruckDriver.NSSDriver = New R2StandardDriverStructure()
-                NSSTruckDriver.StrSmartCardNo = YourSmartCardNo
+                NSSTruckDriver.StrSmartCardNo = ComposeString(1).Split(":")(1)
                 NSSTruckDriver.NSSDriver.StrFatherName = ComposeString(6).Split(":")(1)
                 NSSTruckDriver.NSSDriver.StrNationalCode = ComposeString(3).Split(":")(1)
                 NSSTruckDriver.NSSDriver.StrPersonFullName = ComposeString(4).Split(":")(1) + ";" + ComposeString(5).Split(":")(1)

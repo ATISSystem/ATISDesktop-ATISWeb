@@ -285,13 +285,20 @@ Public Class FrmcCarAndDriversInformation
         UcDriverTruckSecond.UCRefreshGeneral()
     End Sub
 
-    Private Sub UcucAnnouncementHallCollection_UCCurrentNSSChangedEvent() Handles UcucAnnouncementHallCollection.UCCurrentNSSChangedEvent
+    Private Sub UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups_UCClickedEvent() Handles UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.UCClickedEvent
         Try
-            Dim Lst = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetAnnouncementHallsAnnouncementHallSubGroupsJOINT().Where(Function(x) x.NSSAnnounementHall.AHId = UcucAnnouncementHallCollection.UCCurrentNSS.AHId)
-            For Each Joint As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallAnnouncementHallSubGroupJOINTStructure In Lst
-                Dim NSSAnnouncementHallSubGroup = Joint.NSSAnnouncementHallSubGroup
-                R2CoreTransportationAndLoadNotificationMClassTrucksManagement.SetTruckRelationAnnouncementHallSubGroup(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.nIdCar), NSSAnnouncementHallSubGroup)
-            Next
+            R2CoreTransportationAndLoadNotificationMClassTrucksManagement.DisabledAllTruckRelationAnnouncementHallSubGroups(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.nIdCar))
+            PnlAnnouncementHallsRelationTruck.Enabled = True
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.RegisterRecords, "حذف کلیه روابط ناوگان باری و زیرگروه های اعلام بار", UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.GetCarPelakSerialComposit(), 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "کلیه روابط ناوگان باری با زیرگروه های اعلام بار حذف شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub UcAnnouncementHallSelection_UCCurrentNSSAnnouncementHallSubGroupChangedEvent(NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure) Handles UcAnnouncementHallSelection.UCCurrentNSSAnnouncementHallSubGroupChangedEvent
+        Try
+            R2CoreTransportationAndLoadNotificationMClassTrucksManagement.SetTruckRelationAnnouncementHallSubGroup(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.nIdCar), NSSAnnouncementHallSubGroup)
             R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.RegisterRecords, "ثبت رابطه ناوگان باری و سالن اعلام بار", UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.GetCarPelakSerialComposit(), 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ارتباط ناوگان باری و سالن اعلام بار برقرار شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
@@ -299,14 +306,8 @@ Public Class FrmcCarAndDriversInformation
         End Try
     End Sub
 
-    Private Sub UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups_UCClickedEvent() Handles UcButtonDeleteAllofTruckRellationAnnouncementHallSubGroups.UCClickedEvent
-        Try
-            R2CoreTransportationAndLoadNotificationMClassTrucksManagement.DisabledAllTruckRelationAnnouncementHallSubGroups(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.nIdCar))
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.RegisterRecords, "حذف کلیه روابط ناوگان باری و زیرگروه های اعلام بار", UcCarTruckPnlTrucksRelationAnnouncementHalls.UCGetNSS().NSSCar.GetCarPelakSerialComposit(), 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "کلیه روابط ناوگان باری با زیرگروه های اعلام بار حذف شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch ex As Exception
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
+    Private Sub UcCarTruckPnlTrucksRelationAnnouncementHalls_UCViewCarTruckInformationCompletedEvent(CarId As String) Handles UcCarTruckPnlTrucksRelationAnnouncementHalls.UCViewCarTruckInformationCompletedEvent
+        PnlAnnouncementHallsRelationTruck.Enabled = False
     End Sub
 
 
