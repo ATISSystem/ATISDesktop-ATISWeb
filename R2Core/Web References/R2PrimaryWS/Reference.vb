@@ -67,6 +67,10 @@ Namespace R2PrimaryWS
         
         Private WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportOperationCompleted As System.Threading.SendOrPostCallback
         
+        Private WebMethodPaymentRequestOperationCompleted As System.Threading.SendOrPostCallback
+        
+        Private WebMethodVerificationRequestOperationCompleted As System.Threading.SendOrPostCallback
+        
         Private useDefaultCredentialsSetExplicitly As Boolean
         
         '''<remarks/>
@@ -158,6 +162,12 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         Public Event WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportCompleted As WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodPaymentRequestCompleted As WebMethodPaymentRequestCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodVerificationRequestCompleted As WebMethodVerificationRequestCompletedEventHandler
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodLogin", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
@@ -640,6 +650,63 @@ Namespace R2PrimaryWS
         End Sub
         
         '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodPaymentRequest", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodPaymentRequest(ByVal YourAPIKey As String, ByVal YourAmount As Long, ByVal YourExchangeKey As Long, ByRef Authority As String, ByRef Uri As String, ByRef ErrorCode As String)
+            Dim results() As Object = Me.Invoke("WebMethodPaymentRequest", New Object() {YourAPIKey, YourAmount, YourExchangeKey, Authority, Uri, ErrorCode})
+            Authority = CType(results(0),String)
+            Uri = CType(results(1),String)
+            ErrorCode = CType(results(2),String)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodPaymentRequestAsync(ByVal YourAPIKey As String, ByVal YourAmount As Long, ByVal YourExchangeKey As Long, ByVal Authority As String, ByVal Uri As String, ByVal ErrorCode As String)
+            Me.WebMethodPaymentRequestAsync(YourAPIKey, YourAmount, YourExchangeKey, Authority, Uri, ErrorCode, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodPaymentRequestAsync(ByVal YourAPIKey As String, ByVal YourAmount As Long, ByVal YourExchangeKey As Long, ByVal Authority As String, ByVal Uri As String, ByVal ErrorCode As String, ByVal userState As Object)
+            If (Me.WebMethodPaymentRequestOperationCompleted Is Nothing) Then
+                Me.WebMethodPaymentRequestOperationCompleted = AddressOf Me.OnWebMethodPaymentRequestOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodPaymentRequest", New Object() {YourAPIKey, YourAmount, YourExchangeKey, Authority, Uri, ErrorCode}, Me.WebMethodPaymentRequestOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodPaymentRequestOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodPaymentRequestCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodPaymentRequestCompleted(Me, New WebMethodPaymentRequestCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodVerificationRequest", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodVerificationRequest(ByVal YourAuthority As String, ByVal YourAmount As Long, ByVal YourExchangeKey As Long, ByRef RefId As String, ByRef ErrorCode As String)
+            Dim results() As Object = Me.Invoke("WebMethodVerificationRequest", New Object() {YourAuthority, YourAmount, YourExchangeKey, RefId, ErrorCode})
+            RefId = CType(results(0),String)
+            ErrorCode = CType(results(1),String)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodVerificationRequestAsync(ByVal YourAuthority As String, ByVal YourAmount As Long, ByVal YourExchangeKey As Long, ByVal RefId As String, ByVal ErrorCode As String)
+            Me.WebMethodVerificationRequestAsync(YourAuthority, YourAmount, YourExchangeKey, RefId, ErrorCode, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodVerificationRequestAsync(ByVal YourAuthority As String, ByVal YourAmount As Long, ByVal YourExchangeKey As Long, ByVal RefId As String, ByVal ErrorCode As String, ByVal userState As Object)
+            If (Me.WebMethodVerificationRequestOperationCompleted Is Nothing) Then
+                Me.WebMethodVerificationRequestOperationCompleted = AddressOf Me.OnWebMethodVerificationRequestOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodVerificationRequest", New Object() {YourAuthority, YourAmount, YourExchangeKey, RefId, ErrorCode}, Me.WebMethodVerificationRequestOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodVerificationRequestOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodVerificationRequestCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodVerificationRequestCompleted(Me, New WebMethodVerificationRequestCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
         Public Shadows Sub CancelAsync(ByVal userState As Object)
             MyBase.CancelAsync(userState)
         End Sub
@@ -821,4 +888,82 @@ Namespace R2PrimaryWS
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodPaymentRequestCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodPaymentRequestCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
+     System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.ComponentModel.DesignerCategoryAttribute("code")>  _
+    Partial Public Class WebMethodPaymentRequestCompletedEventArgs
+        Inherits System.ComponentModel.AsyncCompletedEventArgs
+        
+        Private results() As Object
+        
+        Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+            MyBase.New(exception, cancelled, userState)
+            Me.results = results
+        End Sub
+        
+        '''<remarks/>
+        Public ReadOnly Property Authority() As String
+            Get
+                Me.RaiseExceptionIfNecessary
+                Return CType(Me.results(0),String)
+            End Get
+        End Property
+        
+        '''<remarks/>
+        Public ReadOnly Property Uri() As String
+            Get
+                Me.RaiseExceptionIfNecessary
+                Return CType(Me.results(1),String)
+            End Get
+        End Property
+        
+        '''<remarks/>
+        Public ReadOnly Property ErrorCode() As String
+            Get
+                Me.RaiseExceptionIfNecessary
+                Return CType(Me.results(2),String)
+            End Get
+        End Property
+    End Class
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodVerificationRequestCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodVerificationRequestCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
+     System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.ComponentModel.DesignerCategoryAttribute("code")>  _
+    Partial Public Class WebMethodVerificationRequestCompletedEventArgs
+        Inherits System.ComponentModel.AsyncCompletedEventArgs
+        
+        Private results() As Object
+        
+        Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+            MyBase.New(exception, cancelled, userState)
+            Me.results = results
+        End Sub
+        
+        '''<remarks/>
+        Public ReadOnly Property RefId() As String
+            Get
+                Me.RaiseExceptionIfNecessary
+                Return CType(Me.results(0),String)
+            End Get
+        End Property
+        
+        '''<remarks/>
+        Public ReadOnly Property ErrorCode() As String
+            Get
+                Me.RaiseExceptionIfNecessary
+                Return CType(Me.results(1),String)
+            End Get
+        End Property
+    End Class
 End Namespace

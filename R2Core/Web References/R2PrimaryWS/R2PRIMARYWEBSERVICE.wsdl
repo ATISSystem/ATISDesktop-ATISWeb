@@ -272,6 +272,46 @@
       <s:element name="WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportResponse">
         <s:complexType />
       </s:element>
+      <s:element name="WebMethodPaymentRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="YourAPIKey" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourAmount" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="Authority" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Uri" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ErrorCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodPaymentRequestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Authority" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Uri" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ErrorCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodVerificationRequest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="YourAuthority" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourAmount" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="RefId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ErrorCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodVerificationRequestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RefId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ErrorCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="WebMethodLoginSoapIn">
@@ -382,6 +422,18 @@
   <wsdl:message name="WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportSoapOut">
     <wsdl:part name="parameters" element="tns:WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportResponse" />
   </wsdl:message>
+  <wsdl:message name="WebMethodPaymentRequestSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodPaymentRequest" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodPaymentRequestSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodPaymentRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodVerificationRequestSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodVerificationRequest" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodVerificationRequestSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodVerificationRequestResponse" />
+  </wsdl:message>
   <wsdl:portType name="R2PrimaryWebServiceSoap">
     <wsdl:operation name="WebMethodLogin">
       <wsdl:input message="tns:WebMethodLoginSoapIn" />
@@ -454,6 +506,14 @@
     <wsdl:operation name="WebMethodReportingInformationProviderBillOfLadingControlInfractionsReport">
       <wsdl:input message="tns:WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportSoapIn" />
       <wsdl:output message="tns:WebMethodReportingInformationProviderBillOfLadingControlInfractionsReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodPaymentRequest">
+      <wsdl:input message="tns:WebMethodPaymentRequestSoapIn" />
+      <wsdl:output message="tns:WebMethodPaymentRequestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodVerificationRequest">
+      <wsdl:input message="tns:WebMethodVerificationRequestSoapIn" />
+      <wsdl:output message="tns:WebMethodVerificationRequestSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="R2PrimaryWebServiceSoap" type="tns:R2PrimaryWebServiceSoap">
@@ -620,6 +680,24 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="WebMethodPaymentRequest">
+      <soap:operation soapAction="http://tempuri.org/WebMethodPaymentRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodVerificationRequest">
+      <soap:operation soapAction="http://tempuri.org/WebMethodVerificationRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="R2PrimaryWebServiceSoap12" type="tns:R2PrimaryWebServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -778,6 +856,24 @@
     </wsdl:operation>
     <wsdl:operation name="WebMethodReportingInformationProviderBillOfLadingControlInfractionsReport">
       <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationProviderBillOfLadingControlInfractionsReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodPaymentRequest">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodPaymentRequest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodVerificationRequest">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodVerificationRequest" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

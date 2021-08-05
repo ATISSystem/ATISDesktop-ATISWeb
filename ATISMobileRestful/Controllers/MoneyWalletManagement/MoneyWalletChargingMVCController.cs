@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using RestSharp;
 
 using ATISMobileRestful.Logging;
 using R2Core.BlackIPs;
@@ -24,12 +25,12 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
     {
         private R2DateTime _R2DateTime = new R2DateTime();
 
-        public ActionResult PaymentVerification(string YourApiKey, Int64 YourAmount)
+        public ActionResult PaymentVerification(string YourApiKey)
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
 
             try
-            {  
+            {
                 //تایید اعتبار کلاینت
                 var IP = Request.UserHostAddress;
                 var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
@@ -40,34 +41,37 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 var InstanceMoneyWalletCharge = new R2CoreParkingSystemInstanceMoneyWalletChargeManager();
                 var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceLogging = new R2CoreInstanceLoggingManager();
+
+                var APIKey = YourApiKey.Split(' ')[0];
+                Int64 Amount = System.Convert.ToInt64(YourApiKey.Split(' ')[1]);
+
                 if (Request.QueryString["Status"] != "" && Request.QueryString["Status"] != null && Request.QueryString["Authority"] != "" && Request.QueryString["Authority"] != null)
                 {
                     if (Request.QueryString["Status"].ToString().Equals("OK"))
                     {
-                        long RefID;
-                        System.Net.ServicePointManager.Expect100Continue = false;
-                        ServiceReference.PaymentGatewayImplementationServicePortTypeClient zp = new ServiceReference.PaymentGatewayImplementationServicePortTypeClient();
-                        int Status = zp.PaymentVerification("aed16bb9-485a-416d-9891-d0b8d2bc98cc", Request.QueryString["Authority"].ToString(), (int)YourAmount, out RefID);
-                        if (Status == 100)
+                        var RefId = string.Empty;
+                        var ErrorCode = string.Empty;
+                        var WS = new R2Core.R2PrimaryWS.R2PrimaryWebService();
+                        WS.WebMethodVerificationRequest(Request.QueryString["Authority"].ToString(), Amount, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword), ref RefId, ref ErrorCode);
+                        if (ErrorCode == string.Empty)
                         {
-                            Int64 Amount = YourAmount * 10;
                             var InstanceAES = new AESAlgorithmsManager();
                             var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
-                            var NSSSoftwareUser = InstanceSoftwareUsers.GetNSSUser(InstanceAES.Decrypt(YourApiKey , InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)));
+                            var NSSSoftwareUser = InstanceSoftwareUsers.GetNSSUser(InstanceAES.Decrypt(YourApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)));
                             var NSSTrafficCard = InstanceTrafficCards.GetNSSTerafficCard(NSSSoftwareUser);
                             Int64 CurrentCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
                             InstanceMoneyWallets.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.AddMoney, Amount, R2CoreParkingSystemAccountings.ChargeType, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
                             InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, Amount, InstanceSoftwareUsers.GetNSSSystemUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime()));
-                            InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest).LogTitle, Request.UserHostAddress, "ApiKey=" + YourApiKey, "Amount=" + Amount.ToString(), "Authority=" + Request.QueryString["Authority"], "RefID=" + RefID.ToString(), InstanceSoftwareUsers.GetNSSSystemUser().UserId, _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull()));
+                            InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest).LogTitle, Request.UserHostAddress, "ApiKey=" + APIKey, "Amount=" + Amount.ToString(), "Authority=" + Request.QueryString["Authority"], "RefID=" + RefId, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull()));
                             Int64 LastCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
-                            ViewBag.IsSuccess = true; ViewBag.RefId = RefID;
+                            ViewBag.IsSuccess = true; ViewBag.RefId = RefId ;
                             ViewBag.Message1 = NSSTrafficCard.CardNo + "شاخص کیف پول: ";
                             ViewBag.Message2 = CurrentCharge.ToString() + "موجودی قبلی: ";
                             ViewBag.Message3 = Amount.ToString() + "مبلغ شارژ: ";
                             ViewBag.Message4 = LastCharge.ToString() + "موجودی نهایی: ";
                         }
                         else
-                        { ViewBag.IsSuccess = false; ViewBag.Message = Status; }
+                        { ViewBag.IsSuccess = false; ViewBag.Message = ErrorCode; }
                     }
                     else
                     { ViewBag.IsSuccess = false; ViewBag.Message = "Error! Authority: " + Request.QueryString["Authority"].ToString() + " Status: " + Request.QueryString["Status"].ToString(); }

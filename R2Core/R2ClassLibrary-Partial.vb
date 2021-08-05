@@ -8,6 +8,9 @@ Imports System.ComponentModel
 Imports System.Security.Cryptography
 Imports System.Text
 Imports System.Threading
+Imports RestSharp
+Imports Newtonsoft
+Imports Newtonsoft.Json
 
 Imports R2Core.ComputersManagement
 Imports R2Core.ConfigurationManagement
@@ -35,6 +38,7 @@ Imports R2Core.PermissionManagement.Exceptions
 
 Imports PcPosDll
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
+Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
 
 Namespace MonetarySupply
 
@@ -3030,6 +3034,73 @@ Namespace BlackIPs
         End Class
 
     End Namespace
+
+
+End Namespace
+
+Namespace MoneyWallet
+    Namespace MoneyWalletCharging
+
+        Public Class R2CoreInstanceMoneyWalletChargingManager
+            Private _DateTime As New R2DateTime
+
+            Public Function ZarrinPalPaymentRequest(YourAPIKey As String, YourAmount As Int64) As MessageStruct
+                Try
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
+                    Dim InstanceAES = New AESAlgorithmsManager()
+
+                    Dim requesturl = "https://api.zarinpal.com/pg/v4/payment/request.json?merchant_id=" + "aed16bb9-485a-416d-9891-d0b8d2bc98cc" + "&amount=" + YourAmount.ToString() +
+                    "&callback_url=" + "https://ATISMobile.ir:8083/MoneyWalletChargingMVC/PaymentVerification/?YourAPIKey=" + InstanceAES.Encrypt(YourAPIKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + " " + YourAmount.ToString() +
+                    "&description=" + "درخواست پرداخت-زرین پال-آتیس" +
+                    "&metadata[0]=" + String.Empty + "& metadata[1]=" + String.Empty
+                    Dim client = New RestClient(requesturl)
+                    client.Timeout = -1
+                    Dim request = New RestRequest(Method.POST)
+                    request.AddHeader("accept", "application/json")
+                    request.AddHeader("content-type", "application/json")
+                    Dim requestresponse As IRestResponse = client.Execute(request)
+                    Dim jo = Newtonsoft.Json.Linq.JObject.Parse(requestresponse.Content)
+                    Dim errorscode = jo("errors").ToString()
+                    Dim jodata = Newtonsoft.Json.Linq.JObject.Parse(requestresponse.Content)
+                    Dim dataauth = jodata("data").ToString()
+                    If dataauth <> "[]" Then
+                        Return New MessageStruct(False, jodata("data")("authority").ToString(), "https://www.zarinpal.com/pg/StartPay/", String.Empty)
+                    Else
+                        Return New MessageStruct(True, errorscode, String.Empty, String.Empty)
+                    End If
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function ZarrinPalVerificationRequest(YourAuthority As String, YourAmount As Int64) As MessageStruct
+                Try
+                    Dim url = "https://api.zarinpal.com/pg/v4/payment/verify.json?merchant_id=aed16bb9-485a-416d-9891-d0b8d2bc98cc&amount=" + YourAmount.ToString() + "&authority=" + YourAuthority
+                    Dim client = New RestClient(url)
+                    client.Timeout = -1
+                    Dim request = New RestRequest(Method.POST)
+                    request.AddHeader("accept", "application/json")
+                    request.AddHeader("content-type", "application/json")
+                    Dim response As IRestResponse = client.Execute(request)
+                    Dim jodata = Newtonsoft.Json.Linq.JObject.Parse(response.Content)
+                    Dim Data = jodata("data").ToString()
+                    Dim jo = Newtonsoft.Json.Linq.JObject.Parse(response.Content)
+                    Dim errors = jo("errors").ToString()
+                    If (Data <> "[]") Then
+                        Return New MessageStruct(False, jodata("data")("ref_id").ToString(), String.Empty, String.Empty)
+                    Else
+                        Return New MessageStruct(True, errors, String.Empty, String.Empty)
+                    End If
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+        End Class
+
+
+    End Namespace
+
 
 
 End Namespace

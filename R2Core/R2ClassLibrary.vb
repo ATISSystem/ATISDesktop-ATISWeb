@@ -756,6 +756,20 @@ Namespace BaseStandardClass
         Public MustOverride Function ExistInQueryOName(ByVal OName As String) As Boolean
     End Class
 
+    Public Class MessageStruct
+        Public Sub New(YourErrorCode As Boolean, YourMessage1 As String, YourMessage2 As String, YourMessage3 As String)
+            ErrorCode = YourErrorCode
+            Message1 = YourMessage1
+            Message2 = YourMessage2
+            Message3 = YourMessage3
+        End Sub
+
+        Public ErrorCode As Boolean
+        Public Message1 As String
+        Public Message2 As String
+        Public Message3 As String
+    End Class
+
     Public Structure DataStruct
         Dim Data1 As String
         Dim Data2 As String

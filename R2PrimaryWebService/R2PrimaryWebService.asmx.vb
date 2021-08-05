@@ -1,4 +1,5 @@
 ﻿
+
 Imports System.Web.Services
 Imports System.Web.Services.Protocols
 Imports System.ComponentModel
@@ -11,6 +12,7 @@ Imports R2Core.SecurityAlgorithmsManagement
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2Core.SoftwareUserManagement
 Imports R2Core.SoftwareUserManagement.Exceptions
+Imports R2Core.MoneyWallet.MoneyWalletCharging
 Imports R2CoreLPR.LicensePlateManagement
 Imports R2CoreParkingSystem.Cars
 Imports R2CoreParkingSystem.City
@@ -292,5 +294,57 @@ Public Class R2PrimaryWebService
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Sub
+
+    <WebMethod()>
+    Public Sub WebMethodPaymentRequest(YourAPIKey As String, YourAmount As Int64, YourExchangeKey As Int64, ByRef Authority As String, ByRef Uri As String, ByRef ErrorCode As String)
+        Try
+            _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)
+            Dim InstanceMoneyWalletCharging = New R2CoreInstanceMoneyWalletChargingManager
+            Dim MStruct = InstanceMoneyWalletCharging.ZarrinPalPaymentRequest(YourAPIKey, YourAmount)
+            If MStruct.ErrorCode Then
+                ErrorCode = MStruct.Message1
+                Authority = String.Empty
+                Uri = String.Empty
+                Return
+            Else
+                ErrorCode = String.Empty
+                Authority = MStruct.Message1
+                Uri = MStruct.Message2
+                Return
+            End If
+        Catch ex As ExchangeKeyTimeRangePassedException
+            Throw ex
+        Catch ex As ExchangeKeyNotExistException
+            Throw ex
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    <WebMethod()>
+    Public Sub WebMethodVerificationRequest(YourAuthority As String, YourAmount As Int64, YourExchangeKey As Int64, ByRef RefId As String, ByRef ErrorCode As String)
+        Try
+            _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)
+            Dim InstanceMoneyWalletCharging = New R2CoreInstanceMoneyWalletChargingManager
+            Dim MStruct = InstanceMoneyWalletCharging.ZarrinPalVerificationRequest(YourAuthority, YourAmount)
+            If MStruct.ErrorCode Then
+                ErrorCode = MStruct.Message1
+                RefId = String.Empty
+                Return
+            Else
+                ErrorCode = String.Empty
+                RefId = MStruct.Message1
+                Return
+            End If
+        Catch ex As ExchangeKeyTimeRangePassedException
+            Throw ex
+        Catch ex As ExchangeKeyNotExistException
+            Throw ex
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+
 
 End Class

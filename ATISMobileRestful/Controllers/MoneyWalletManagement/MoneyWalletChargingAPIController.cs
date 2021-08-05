@@ -19,6 +19,7 @@ using R2Core.SecurityAlgorithmsManagement.Hashing;
 using ATISMobileRestful.Logging;
 using R2Core.DateAndTimeManagement;
 using R2CoreParkingSystem.MoneyWalletChargeManagement.Exceptions;
+using R2Core.MoneyWallet.MoneyWalletCharging;
 
 namespace ATISMobileRestful.Controllers.MoneyWalletManagement
 {
@@ -45,34 +46,19 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 if (Amount > 100000)
                 { throw new ChargingAmountInvalidException(); }
 
-                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-
-                string requesturl = "https://api.zarinpal.com/pg/v4/payment/request.json?merchant_id=" +
-                    "aed16bb9-485a-416d-9891-d0b8d2bc98cc" + "&amount=" + Amount +
-                    "&callback_url=" + "https://ATISMobile.ir:8083/MoneyWalletChargingMVC/PaymentVerification/?YourAPIKey=" + InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + "&YourAmount=" + Amount.ToString() +
-                    "&description=" + "درخواست پرداخت-زرین پال-آتیس" +
-                    "&metadata[0]=" + String.Empty + "& metadata[1]=" + String.Empty;
-                var client = new RestClient(requesturl);
-                client.Timeout = -1;
-                var request = new RestRequest(Method.POST);
-                request.AddHeader("accept", "application/json");
-                request.AddHeader("content-type", "application/json");
-                IRestResponse requestresponse = client.Execute(request);
-                Newtonsoft.Json.Linq.JObject jo = Newtonsoft.Json.Linq.JObject.Parse(requestresponse.Content);
-                string errorscode = jo["errors"].ToString();
-                Newtonsoft.Json.Linq.JObject jodata = Newtonsoft.Json.Linq.JObject.Parse(requestresponse.Content);
-                string dataauth = jodata["data"].ToString();
-
-                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-
-                if (dataauth != "[]")
+                var Authority = string.Empty;
+                var Uri = string.Empty;
+                var ErrorCode = string.Empty;
+                var WS = new R2Core.R2PrimaryWS.R2PrimaryWebService();
+                WS.WebMethodPaymentRequest(NSSSoftwareuser.ApiKey, Amount, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword), ref Authority, ref Uri, ref ErrorCode);
+                if (ErrorCode == string.Empty)
                 {
-                    string Authority = jodata["data"]["authority"].ToString();
-                    response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = Authority, Message2 = "https://www.zarinpal.com/pg/StartPay/", Message3 = string.Empty }), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                    response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = Authority, Message2 = Uri, Message3 = string.Empty }), Encoding.UTF8, "application/json");
+                    return response;
                 }
                 else
-                { response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = true, Message1 = "Error : " + errorscode, Message2 = string.Empty, Message3 = string.Empty }), Encoding.UTF8, "application.json"); }
-                return response;
+                { throw new Exception(ErrorCode); }
             }
             catch (UserNotExistByApiKeyException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }

@@ -11,7 +11,7 @@ Imports R2Core.SoftwareUserManagement
 Public Class R2PrimaryAutomatedJobs
 
     Private WithEvents _AutomatedJobsTimer As System.Timers.Timer = New System.Timers.Timer
-    Private _DateTime As R2DateTime
+    Private _DateTime = New R2DateTime
 
 
     Protected Overrides Sub OnStart(ByVal args() As String)
