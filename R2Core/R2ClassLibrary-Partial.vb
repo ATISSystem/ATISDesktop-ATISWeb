@@ -50,12 +50,18 @@ Namespace MonetarySupply
         UnSuccess = 2
     End Enum
 
+    Public Enum MonetarySupplyType
+        None = 0
+        PaymentRequest = 1
+        VerificationRequest = 2
+    End Enum
+
     Public Class R2CoreMonetarySupply
 
         Private _CurrentNSS As R2CoreStandardMonetaryCreditSupplySourceStructure = Nothing
         Private _Amount As Int64
-        Public Event MonetarySupplySuccessEvent(TransactionId As Int64, Amount As Int64, SupplyReport As String)
-        Public Event MonetarySupplyUnSuccessEvent(TransactionId As Int64, Amount As Int64, SupplyReport As String)
+        Public Event MonetarySupplySuccessEvent(YourMonetarySupplyType As MonetarySupplyType, TransactionId As Int64, Amount As Int64, SupplyReport As String)
+        Public Event MonetarySupplyUnSuccessEvent(YourMonetarySupplyType As MonetarySupplyType, TransactionId As Int64, Amount As Int64, SupplyReport As String)
         Private WithEvents _MonetaryCreditSupplySource As R2CoreMonetaryCreditSupplySource = Nothing
         Private WithEvents _MonetarySupplyWatcher As System.Windows.Forms.Timer = New System.Windows.Forms.Timer
 
@@ -81,21 +87,43 @@ Namespace MonetarySupply
             End Try
         End Sub
 
+        Public Sub StartVerification(YourAuthority As String)
+            Try
+                _MonetaryCreditSupplySource = R2CoreMonetaryCreditSupplySourcesManagement.GetMonetaryCreditSupplySourceInstance(_CurrentNSS, _Amount)
+                _MonetaryCreditSupplySource.Initialize()
+                _MonetaryCreditSupplySource.DoVerification(YourAuthority)
+                _MonetarySupplyWatcher.Interval = 100
+                _MonetarySupplyWatcher.Enabled = True
+                _MonetarySupplyWatcher.Start()
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
         Private Sub _MonetarySupplyWatcher_Tick(sender As Object, e As EventArgs) Handles _MonetarySupplyWatcher.Tick
             Try
                 If _MonetaryCreditSupplySource.MonetaryCreditSupplyResult <> MonetarySupplyResult.None Then
                     _MonetarySupplyWatcher.Enabled = False
                     _MonetarySupplyWatcher.Stop()
                     If _MonetaryCreditSupplySource.MonetaryCreditSupplyResult = MonetarySupplyResult.Success Then
-                        RaiseEvent MonetarySupplySuccessEvent(_MonetaryCreditSupplySource.TransactionId, _MonetaryCreditSupplySource.Amount, _MonetaryCreditSupplySource.SupplyReport)
+                        If _MonetaryCreditSupplySource.MonetarySupplyType = MonetarySupplyType.PaymentRequest Then
+                            RaiseEvent MonetarySupplySuccessEvent(MonetarySupplyType.PaymentRequest, _MonetaryCreditSupplySource.TransactionId, _MonetaryCreditSupplySource.Amount, _MonetaryCreditSupplySource.SupplyReport)
+                        ElseIf _MonetaryCreditSupplySource.MonetarySupplyType = MonetarySupplyType.VerificationRequest Then
+                            RaiseEvent MonetarySupplySuccessEvent(MonetarySupplyType.VerificationRequest, _MonetaryCreditSupplySource.TransactionId, _MonetaryCreditSupplySource.Amount, _MonetaryCreditSupplySource.SupplyReport)
+                        End If
                     Else
-                        RaiseEvent MonetarySupplyUnSuccessEvent(_MonetaryCreditSupplySource.TransactionId, _MonetaryCreditSupplySource.Amount, _MonetaryCreditSupplySource.SupplyReport)
+                        If _MonetaryCreditSupplySource.MonetarySupplyType = MonetarySupplyType.PaymentRequest Then
+                            RaiseEvent MonetarySupplyUnSuccessEvent(MonetarySupplyType.PaymentRequest, _MonetaryCreditSupplySource.TransactionId, _MonetaryCreditSupplySource.Amount, _MonetaryCreditSupplySource.SupplyReport)
+                        ElseIf _MonetaryCreditSupplySource.MonetarySupplyType = MonetarySupplyType.VerificationRequest Then
+                            RaiseEvent MonetarySupplyUnSuccessEvent(MonetarySupplyType.VerificationRequest, _MonetaryCreditSupplySource.TransactionId, _MonetaryCreditSupplySource.Amount, _MonetaryCreditSupplySource.SupplyReport)
+                        End If
                     End If
                 End If
             Catch ex As Exception
                 MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
+
 
     End Class
 
@@ -324,7 +352,6 @@ Namespace MonetaryCreditSupplySources
             End Get
         End Property
 
-
         Protected _TransactionId As Int64 = 0
         <Browsable(False)>
         Public ReadOnly Property TransactionId As Int64
@@ -341,7 +368,17 @@ Namespace MonetaryCreditSupplySources
             End Get
         End Property
 
+        Protected _MonetarySupplyType As MonetarySupplyType = MonetarySupply.MonetarySupplyType.None
+        <Browsable(False)>
+        Public ReadOnly Property MonetarySupplyType As MonetarySupply.MonetarySupplyType
+            Get
+                Return _MonetarySupplyType
+            End Get
+        End Property
+
         Public MustOverride Sub DoCreditSupply()
+
+        Public MustOverride Sub DoVerification(YourAuthority As String)
 
         Public MustOverride Sub Initialize()
 
@@ -371,12 +408,18 @@ Namespace MonetaryCreditSupplySources
             Public Overrides Sub DoCreditSupply()
                 _SupplyReport = "عملیات موفق"
                 _TransactionId = Convert.ToUInt64(_DateTime.GetCurrentDateShamsiFull.Replace("/", "") + _DateTime.GetCurrentTime.Replace(":", "") + Int((1000 - 100 + 1) * Rnd() + 100).ToString)
+                _MonetarySupplyType = MonetarySupply.MonetarySupplyType.PaymentRequest
                 _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
             End Sub
 
             Public Overrides Sub Dispose()
             End Sub
 
+            Public Overrides Sub DoVerification(YourAuthority As String)
+                _SupplyReport = "عملیات موفق"
+                _MonetarySupplyType = MonetarySupply.MonetarySupplyType.VerificationRequest
+                _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
+            End Sub
         End Class
 
     End Namespace
@@ -462,9 +505,11 @@ Namespace MonetaryCreditSupplySources
                         LoggingPosResult(e)
                         If e.ResponseCode = "00" Then
                             _SupplyReport = e.PcPosStatus
+                            _MonetarySupplyType = MonetarySupply.MonetarySupplyType.PaymentRequest
                             _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
                         Else
                             _SupplyReport = "شکست عملیات هنگام ارتباط با دستگاه پوز"
+                            _MonetarySupplyType = MonetarySupply.MonetarySupplyType.PaymentRequest
                             _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.UnSuccess
                         End If
                     Catch ex As Exception
@@ -523,6 +568,12 @@ Namespace MonetaryCreditSupplySources
                         _SearchPos.Dispose()
                     Catch ex As Exception
                     End Try
+                End Sub
+
+                Public Overrides Sub DoVerification(YourAuthority As String)
+                    _SupplyReport = "عملیات موفق"
+                    _MonetarySupplyType = MonetarySupply.MonetarySupplyType.VerificationRequest
+                    _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
                 End Sub
 
 
@@ -591,9 +642,11 @@ Namespace MonetaryCreditSupplySources
                     Dim dataauth = jodata("data").ToString()
                     If dataauth <> "[]" Then
                         _SupplyReport = jodata("data")("authority").ToString()
+                        _MonetarySupplyType = MonetarySupply.MonetarySupplyType.PaymentRequest
                         _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
                     Else
                         _SupplyReport = errorscode
+                        _MonetarySupplyType = MonetarySupply.MonetarySupplyType.PaymentRequest
                         _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.UnSuccess
                     End If
                 Catch ex As Exception
@@ -605,7 +658,7 @@ Namespace MonetaryCreditSupplySources
             Public Overrides Sub Dispose()
             End Sub
 
-            Public Function VerificationRequest(YourAuthority As String) As MessageStruct
+            Public Overrides Sub DoVerification(YourAuthority As String)
                 Try
                     Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
                     Dim url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
@@ -620,16 +673,19 @@ Namespace MonetaryCreditSupplySources
                     Dim jo = Newtonsoft.Json.Linq.JObject.Parse(response.Content)
                     Dim errors = jo("errors").ToString()
                     If (Data <> "[]") Then
-                        Return New MessageStruct(False, jodata("data")("ref_id").ToString(), String.Empty, String.Empty)
+                        _SupplyReport = jodata("data")("ref_id").ToString()
+                        _MonetarySupplyType = MonetarySupply.MonetarySupplyType.VerificationRequest
+                        _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
                     Else
-                        Return New MessageStruct(True, errors, String.Empty, String.Empty)
+                        _SupplyReport = errors
+                        _MonetarySupplyType = MonetarySupply.MonetarySupplyType.VerificationRequest
+                        _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.UnSuccess
                     End If
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
+            End Sub
 
-
-            End Function
 
 
         End Class
@@ -3226,25 +3282,134 @@ Namespace MoneyWallet
 
         End Class
 
-        Public Class R2CoreMClassPaymentRequestsManager
-            Public Function PaymentRequest(YourMCSSId As Int64, YourAmount As Int64, YourSoftwareUserId As Int64) As R2StandardPaymentRequestStructure
+        Public Class R2CoreInstansePaymentRequestsManager
+            Private _DateTime As New R2DateTime
+            Private WithEvents MS As MonetarySupply.R2CoreMonetarySupply = Nothing
+            Private PayId As Int64
+
+            Private Function PaymentRequestRegistering(YourMCSSId As Int64, YourAmount As Int64, YourSoftwareUserId As Int64)
+                Dim CmdSql As New SqlClient.SqlCommand
+                CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
-                    Dim InstanceMonetaryCreditSupplySources As New R2CoreMClassMonetaryCreditSupplySourcesManager
-                    Dim NSSMCSS = InstanceMonetaryCreditSupplySources.GetNSSMonetaryCreditSupplySource(YourMCSSId)
-                    Dim InstanceMonetarySupply = New R2CoreMonetarySupply(NSSMCSS, YourAmount)
+                    Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                    CmdSql.Connection.Open()
+                    CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
+                    CmdSql.CommandText = "Select Top 1 PayId From R2Primary.dbo.TblPaymentRequests with (tablockx) Order By PayId Desc"
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.CommandText = "Select IDENT_CURRENT('R2Primary.dbo.TblPaymentRequests') "
+                    Dim PayIdNew As Int64 = CmdSql.ExecuteScalar() + 1
+                    CmdSql.CommandText = "Insert Into R2Primary.dbo.TblPaymentRequests(MCSSId,SoftwareUserId,Amount,Authority,TransactionId,RefId,PaymentErrors,VerificationErrors,VerificationCount,UserId,DateTimeMilladi,DateShamsi,Time) 
+                                          Values(" & YourMCSSId & "," & YourSoftwareUserId & "," & YourAmount & ",'','','','','',1," & InstanceSoftwareUsers.GetNSSSystemUser().UserId & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "')"
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                    Return PayIdNew
+                Catch ex As Exception
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then
+                        CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                    End If
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function GetNSSPayment(YourAuthority As String) As R2StandardPaymentRequestStructure
+                Try
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    Dim Ds As DataSet
+                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPaymentRequests Where Authority='" & YourAuthority & "'", 0, Ds)
+                    Return New R2StandardPaymentRequestStructure(Ds.Tables(0).Rows(0).Item("PayId"), Ds.Tables(0).Rows(0).Item("MCSSId"), Ds.Tables(0).Rows(0).Item("SoftwareUserId"), Ds.Tables(0).Rows(0).Item("Amount"), Ds.Tables(0).Rows(0).Item("Authority").trim, Ds.Tables(0).Rows(0).Item("TransactionId").trim, Ds.Tables(0).Rows(0).Item("RefId").trim, Ds.Tables(0).Rows(0).Item("PaymentErrors").trim, Ds.Tables(0).Rows(0).Item("VerificationErrors").trim, Ds.Tables(0).Rows(0).Item("VerificationCount"), Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("Time"))
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Sub DecreaseVerificationCount(YourPayId As Int64)
+                Dim CmdSql As New SqlClient.SqlCommand
+                CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+                Try
+                    CmdSql.Connection.Open()
+                    CmdSql.CommandText = "Update R2Primary.dbo.TblPaymentRequests Set VerificationCount=VerificationCount-1 Where PayId=" & YourPayId & ""
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.Connection.Close()
+                Catch ex As Exception
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+            Public Function GetNSSPayment(YourPayId As Int64) As R2StandardPaymentRequestStructure
+                Try
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    Dim Ds As DataSet
+                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPaymentRequests Where PayId=" & YourPayId & "", 0, Ds)
+                    Return New R2StandardPaymentRequestStructure(Ds.Tables(0).Rows(0).Item("PayId"), Ds.Tables(0).Rows(0).Item("MCSSId"), Ds.Tables(0).Rows(0).Item("SoftwareUserId"), Ds.Tables(0).Rows(0).Item("Amount"), Ds.Tables(0).Rows(0).Item("Authority").trim, Ds.Tables(0).Rows(0).Item("TransactionId").trim, Ds.Tables(0).Rows(0).Item("RefId").trim, Ds.Tables(0).Rows(0).Item("PaymentErrors").trim, Ds.Tables(0).Rows(0).Item("VerificationErrors").trim, Ds.Tables(0).Rows(0).Item("VerificationCount"), Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("Time"))
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function PaymentRequest(YourMCSSId As Int64, YourAmount As Int64, YourSoftwareUserId As Int64) As Int64
+                Try
+                    PayId = PaymentRequestRegistering(YourMCSSId, YourAmount, YourSoftwareUserId)
+                    Dim InstanceMCSS As New R2CoreMClassMonetaryCreditSupplySourcesManager
+                    Dim InstanceMonetarySupply = New R2CoreMonetarySupply(InstanceMCSS.GetNSSMonetaryCreditSupplySource(YourMCSSId), YourAmount)
                     InstanceMonetarySupply.StartSupply()
+                    Return PayId
                 Catch ex As Exception
-
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
             End Function
 
-            Public Function VerificationRequest() As R2StandardPaymentRequestStructure
+            Public Function VerificationRequest(YourMCSSId As Int64, YourAuthority As String) As Int64
                 Try
-
+                    PayId = GetNSSPayment(YourAuthority).PayId
+                    Dim InstanceMCSS = New R2CoreMClassMonetaryCreditSupplySourcesManager
+                    MS = New R2CoreMonetarySupply(InstanceMCSS.GetNSSMonetaryCreditSupplySource(YourMCSSId), Nothing)
+                    MS.StartVerification(YourAuthority)
+                    Return PayId
                 Catch ex As Exception
-
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
             End Function
+
+            Private Sub MS_MonetarySupplySuccessEvent(YourMonetarySupplyType As MonetarySupplyType, TransactionId As Long, Amount As Long, SupplyReport As String) Handles MS.MonetarySupplySuccessEvent
+                Dim CmdSql As New SqlClient.SqlCommand
+                CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+                Try
+                    CmdSql.Connection.Open()
+                    If YourMonetarySupplyType = MonetarySupplyType.PaymentRequest Then
+                        CmdSql.CommandText = "Update R2Primary.dbo.TblPaymentRequests Set Authority='" & SupplyReport & "',TransactionId='" & TransactionId & "' Where PayId=" & PayId & ""
+                    ElseIf YourMonetarySupplyType = MonetarySupplyType.VerificationRequest Then
+                        CmdSql.CommandText = "Update R2Primary.dbo.TblPaymentRequests Set RefId='" & SupplyReport & "' Where PayId=" & PayId & ""
+                    Else
+                        Throw New Exception
+                    End If
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.Connection.Close()
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+            Private Sub MS_MonetarySupplyUnSuccessEvent(YourMonetarySupplyType As MonetarySupplyType, TransactionId As Long, Amount As Long, SupplyReport As String) Handles MS.MonetarySupplyUnSuccessEvent
+                Dim CmdSql As New SqlClient.SqlCommand
+                CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+                Try
+                    CmdSql.Connection.Open()
+                    If YourMonetarySupplyType = MonetarySupplyType.PaymentRequest Then
+                        CmdSql.CommandText = "Update R2Primary.dbo.TblPaymentRequests Set PaymentErrors='" & SupplyReport & "' Where PayId=" & PayId & ""
+                    ElseIf YourMonetarySupplyType = MonetarySupplyType.VerificationRequest Then
+                        CmdSql.CommandText = "Update R2Primary.dbo.TblPaymentRequests Set VerificationErrors='" & SupplyReport & "' Where PayId=" & PayId & ""
+                    Else
+                        Throw New Exception
+                    End If
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.Connection.Close()
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+
+            End Sub
+
 
         End Class
 

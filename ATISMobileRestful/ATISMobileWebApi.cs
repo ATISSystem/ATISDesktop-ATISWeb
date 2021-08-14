@@ -22,6 +22,7 @@ using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
 using R2Core.BlackIPs;
 using R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms;
 using R2Core.PredefinedMessagesManagement;
+using R2Core.MoneyWallet.PaymentRequests;
 
 namespace ATISMobileRestful
 {
@@ -397,6 +398,32 @@ namespace ATISMobileRestful
                 { throw new WebApiClientSoftwareUserIsLogoutException(); };
                 if (Hash != InstanceHash.GenerateSHA256String(InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + NSSSoftwareuser.Nonce + Param1 + Param2 + Param3 + Param4))
                 { throw new WebApiClientSecurityHashInvalidException(); }
+            }
+            catch (Exception ex)
+            { throw ex; }
+        }
+
+        public void AuthenticateClientPaymentVerification(System.Web.HttpRequestBase YourRequest, string YourAuthority)
+        {
+            try
+            {
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+                var IP = YourRequest.UserHostAddress;
+                if (InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest).Active)
+                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest).LogTitle, IP, YourAuthority, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                InstanceBlackIP.AuthorizationIP(IP);
+
+                var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
+                var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(YourAuthority);
+                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSPaymentRequest.DateTimeMilladi).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.ZarrinPalPaymentGate, 6))
+                { throw new WebApiClientNonceExpiredException(); };
+                if (NSSPaymentRequest.VerificationCount == 0)
+                { throw new WebApiClientNonceExpiredException(); }
+                else
+                { InstancePaymentRequests.DecreaseVerificationCount(NSSPaymentRequest.PayId); }
             }
             catch (Exception ex)
             { throw ex; }

@@ -275,40 +275,33 @@
       <s:element name="WebMethodPaymentRequest">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="YourAPIKey" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourMCSSId" type="s:long" />
             <s:element minOccurs="1" maxOccurs="1" name="YourAmount" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourSoftwareUserId" type="s:long" />
             <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
-            <s:element minOccurs="0" maxOccurs="1" name="Authority" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="Uri" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="ErrorCode" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
       <s:element name="WebMethodPaymentRequestResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="Authority" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="Uri" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="ErrorCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="WebMethodPaymentRequestResult" type="s:long" />
           </s:sequence>
         </s:complexType>
       </s:element>
       <s:element name="WebMethodVerificationRequest">
         <s:complexType>
           <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourMCSSId" type="s:long" />
             <s:element minOccurs="0" maxOccurs="1" name="YourAuthority" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="YourAmount" type="s:long" />
             <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
-            <s:element minOccurs="0" maxOccurs="1" name="RefId" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="ErrorCode" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
       <s:element name="WebMethodVerificationRequestResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="RefId" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="ErrorCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="WebMethodVerificationRequestResult" type="s:long" />
           </s:sequence>
         </s:complexType>
       </s:element>

@@ -20,6 +20,8 @@ using ATISMobileRestful.Logging;
 using R2Core.DateAndTimeManagement;
 using R2CoreParkingSystem.MoneyWalletChargeManagement.Exceptions;
 using R2Core.MoneyWallet.MoneyWalletCharging;
+using R2Core.MonetaryCreditSupplySources;
+using R2Core.MoneyWallet.PaymentRequests;
 
 namespace ATISMobileRestful.Controllers.MoneyWalletManagement
 {
@@ -36,8 +38,6 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentRequest);
 
-                return WebAPi.CreateErrorContentMessage(new Exception());
-
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceAES = new AESAlgorithmsManager();
@@ -48,19 +48,20 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 if (Amount > 1000000)
                 { throw new ChargingAmountInvalidException(); }
 
-                var Authority = string.Empty;
-                var Uri = string.Empty;
-                var ErrorCode = string.Empty;
                 var WS = new R2Core.R2PrimaryWS.R2PrimaryWebService();
-                WS.WebMethodPaymentRequest(NSSSoftwareuser.ApiKey, Amount, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword), ref Authority, ref Uri, ref ErrorCode);
-                if (ErrorCode == string.Empty)
+                var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, Amount, NSSSoftwareuser.UserId, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword));
+                var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
+                var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(PayId);
+                while ((NSSPaymentRequest.Authority == string.Empty) && (NSSPaymentRequest.PaymentErrors == string.Empty))
+                { System.Threading.Thread.Sleep(1000); }
+                if (NSSPaymentRequest.Authority != string.Empty)
                 {
                     HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-                    response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = Authority, Message2 = Uri, Message3 = string.Empty }), Encoding.UTF8, "application/json");
+                    response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = NSSPaymentRequest.Authority, Message2 = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate , 2), Message3 = string.Empty }), Encoding.UTF8, "application/json");
                     return response;
                 }
                 else
-                { throw new Exception(ErrorCode); }
+                { throw new Exception(NSSPaymentRequest.PaymentErrors); }
             }
             catch (UserNotExistByApiKeyException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }

@@ -100,7 +100,7 @@ Public Class UCMonetarySupply
         End Try
     End Sub
 
-    Private Sub _MonetarySupply_MonetarySupplySuccessEvent(TransactionId As Long, Amount As Int64, SupplyReport As String) Handles _MonetarySupply.MonetarySupplySuccessEvent
+    Private Sub _MonetarySupply_MonetarySupplySuccessEvent(YourMonetarySupplyType As MonetarySupplyType, TransactionId As Long, Amount As Int64, SupplyReport As String) Handles _MonetarySupply.MonetarySupplySuccessEvent
         Try
             RaiseEvent UCMonetarySupplySuccessEvent(TransactionId, Amount, SupplyReport)
         Catch ex As Exception
@@ -108,7 +108,7 @@ Public Class UCMonetarySupply
         End Try
     End Sub
 
-    Private Sub _MonetarySupply_MonetarySupplyUnSuccessEvent(TransactionId As Long, Amount As Int64, SupplyReport As String) Handles _MonetarySupply.MonetarySupplyUnSuccessEvent
+    Private Sub _MonetarySupply_MonetarySupplyUnSuccessEvent(YourMonetarySupplyType As MonetarySupplyType, TransactionId As Long, Amount As Int64, SupplyReport As String) Handles _MonetarySupply.MonetarySupplyUnSuccessEvent
         Try
             RaiseEvent UCMonetarySupplyUnSuccessEvent(TransactionId, Amount, SupplyReport)
         Catch ex As Exception

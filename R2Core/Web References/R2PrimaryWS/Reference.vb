@@ -651,24 +651,22 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodPaymentRequest", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodPaymentRequest(ByVal YourAPIKey As String, ByVal YourAmount As Long, ByVal YourExchangeKey As Long, ByRef Authority As String, ByRef Uri As String, ByRef ErrorCode As String)
-            Dim results() As Object = Me.Invoke("WebMethodPaymentRequest", New Object() {YourAPIKey, YourAmount, YourExchangeKey, Authority, Uri, ErrorCode})
-            Authority = CType(results(0),String)
-            Uri = CType(results(1),String)
-            ErrorCode = CType(results(2),String)
+        Public Function WebMethodPaymentRequest(ByVal YourMCSSId As Long, ByVal YourAmount As Long, ByVal YourSoftwareUserId As Long, ByVal YourExchangeKey As Long) As Long
+            Dim results() As Object = Me.Invoke("WebMethodPaymentRequest", New Object() {YourMCSSId, YourAmount, YourSoftwareUserId, YourExchangeKey})
+            Return CType(results(0),Long)
+        End Function
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodPaymentRequestAsync(ByVal YourMCSSId As Long, ByVal YourAmount As Long, ByVal YourSoftwareUserId As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodPaymentRequestAsync(YourMCSSId, YourAmount, YourSoftwareUserId, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodPaymentRequestAsync(ByVal YourAPIKey As String, ByVal YourAmount As Long, ByVal YourExchangeKey As Long, ByVal Authority As String, ByVal Uri As String, ByVal ErrorCode As String)
-            Me.WebMethodPaymentRequestAsync(YourAPIKey, YourAmount, YourExchangeKey, Authority, Uri, ErrorCode, Nothing)
-        End Sub
-        
-        '''<remarks/>
-        Public Overloads Sub WebMethodPaymentRequestAsync(ByVal YourAPIKey As String, ByVal YourAmount As Long, ByVal YourExchangeKey As Long, ByVal Authority As String, ByVal Uri As String, ByVal ErrorCode As String, ByVal userState As Object)
+        Public Overloads Sub WebMethodPaymentRequestAsync(ByVal YourMCSSId As Long, ByVal YourAmount As Long, ByVal YourSoftwareUserId As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodPaymentRequestOperationCompleted Is Nothing) Then
                 Me.WebMethodPaymentRequestOperationCompleted = AddressOf Me.OnWebMethodPaymentRequestOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodPaymentRequest", New Object() {YourAPIKey, YourAmount, YourExchangeKey, Authority, Uri, ErrorCode}, Me.WebMethodPaymentRequestOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodPaymentRequest", New Object() {YourMCSSId, YourAmount, YourSoftwareUserId, YourExchangeKey}, Me.WebMethodPaymentRequestOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodPaymentRequestOperationCompleted(ByVal arg As Object)
@@ -680,23 +678,22 @@ Namespace R2PrimaryWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodVerificationRequest", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodVerificationRequest(ByVal YourAuthority As String, ByVal YourAmount As Long, ByVal YourExchangeKey As Long, ByRef RefId As String, ByRef ErrorCode As String)
-            Dim results() As Object = Me.Invoke("WebMethodVerificationRequest", New Object() {YourAuthority, YourAmount, YourExchangeKey, RefId, ErrorCode})
-            RefId = CType(results(0),String)
-            ErrorCode = CType(results(1),String)
+        Public Function WebMethodVerificationRequest(ByVal YourMCSSId As Long, ByVal YourAuthority As String, ByVal YourExchangeKey As Long) As Long
+            Dim results() As Object = Me.Invoke("WebMethodVerificationRequest", New Object() {YourMCSSId, YourAuthority, YourExchangeKey})
+            Return CType(results(0),Long)
+        End Function
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodVerificationRequestAsync(ByVal YourMCSSId As Long, ByVal YourAuthority As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodVerificationRequestAsync(YourMCSSId, YourAuthority, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodVerificationRequestAsync(ByVal YourAuthority As String, ByVal YourAmount As Long, ByVal YourExchangeKey As Long, ByVal RefId As String, ByVal ErrorCode As String)
-            Me.WebMethodVerificationRequestAsync(YourAuthority, YourAmount, YourExchangeKey, RefId, ErrorCode, Nothing)
-        End Sub
-        
-        '''<remarks/>
-        Public Overloads Sub WebMethodVerificationRequestAsync(ByVal YourAuthority As String, ByVal YourAmount As Long, ByVal YourExchangeKey As Long, ByVal RefId As String, ByVal ErrorCode As String, ByVal userState As Object)
+        Public Overloads Sub WebMethodVerificationRequestAsync(ByVal YourMCSSId As Long, ByVal YourAuthority As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodVerificationRequestOperationCompleted Is Nothing) Then
                 Me.WebMethodVerificationRequestOperationCompleted = AddressOf Me.OnWebMethodVerificationRequestOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodVerificationRequest", New Object() {YourAuthority, YourAmount, YourExchangeKey, RefId, ErrorCode}, Me.WebMethodVerificationRequestOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodVerificationRequest", New Object() {YourMCSSId, YourAuthority, YourExchangeKey}, Me.WebMethodVerificationRequestOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodVerificationRequestOperationCompleted(ByVal arg As Object)
@@ -908,26 +905,10 @@ Namespace R2PrimaryWS
         End Sub
         
         '''<remarks/>
-        Public ReadOnly Property Authority() As String
+        Public ReadOnly Property Result() As Long
             Get
                 Me.RaiseExceptionIfNecessary
-                Return CType(Me.results(0),String)
-            End Get
-        End Property
-        
-        '''<remarks/>
-        Public ReadOnly Property Uri() As String
-            Get
-                Me.RaiseExceptionIfNecessary
-                Return CType(Me.results(1),String)
-            End Get
-        End Property
-        
-        '''<remarks/>
-        Public ReadOnly Property ErrorCode() As String
-            Get
-                Me.RaiseExceptionIfNecessary
-                Return CType(Me.results(2),String)
+                Return CType(Me.results(0),Long)
             End Get
         End Property
     End Class
@@ -951,18 +932,10 @@ Namespace R2PrimaryWS
         End Sub
         
         '''<remarks/>
-        Public ReadOnly Property RefId() As String
+        Public ReadOnly Property Result() As Long
             Get
                 Me.RaiseExceptionIfNecessary
-                Return CType(Me.results(0),String)
-            End Get
-        End Property
-        
-        '''<remarks/>
-        Public ReadOnly Property ErrorCode() As String
-            Get
-                Me.RaiseExceptionIfNecessary
-                Return CType(Me.results(1),String)
+                Return CType(Me.results(0),Long)
             End Get
         End Property
     End Class
