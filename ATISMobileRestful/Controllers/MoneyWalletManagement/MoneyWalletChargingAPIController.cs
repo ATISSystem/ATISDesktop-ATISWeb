@@ -36,14 +36,16 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentRequest);
 
+                return WebAPi.CreateErrorContentMessage(new Exception());
+
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceAES = new AESAlgorithmsManager();
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
-                var Amount = Convert.ToInt32(Content.Split(';')[2]);
-                if (Amount > 100000)
+                var Amount = Convert.ToInt32(Content.Split(';')[2]) * 10;
+                if (Amount > 1000000)
                 { throw new ChargingAmountInvalidException(); }
 
                 var Authority = string.Empty;

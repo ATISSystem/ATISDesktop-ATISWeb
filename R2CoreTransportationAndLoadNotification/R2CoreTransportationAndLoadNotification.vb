@@ -792,6 +792,29 @@ Namespace Turns
     End Class
 
     Public Class R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+        Private _DateTime As New R2DateTime
+
+        Public Function GetFirstActiveTurn(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
+            Try
+                Dim SeqTurnKeyWord = Mid(YourNSSTurn.OtaghdarTurnNumber, 1, 1)
+                Dim DS As DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "
+                  Declare @TopTurn int
+                  Select Top 1 @TopTurn=Turns.nEnterExitId from dbtransport.dbo.tbEnterExit as Turns
+                  Where substring(OtaghdarTurnNumber,1,1)='" & SeqTurnKeyWord & "' and TurnStatus=3 
+                  Order By nEnterExitId Desc
+                  Select Top 1 Turns.OtaghdarTurnNumber from dbtransport.dbo.tbEnterExit as Turns
+                  Where Turns.nEnterExitId>@TopTurn and (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and substring(Turns.OtaghdarTurnNumber,1,1)='" & SeqTurnKeyWord & "' 
+                  Order By Turns.nEnterExitId Asc", 300, DS).GetRecordsCount <> 0 Then
+                    Return DS.Tables(0).Rows(0).Item("OtaghdarTurnNumber")
+                End If
+                Return String.Empty
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Function GetTurns(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager

@@ -253,7 +253,9 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            R2CoreTransportationAndLoadNotification.Rmto.RmtoWebService.GetNSSTruck(2854541)
+            Dim Instance = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+            MessageBox.Show(Instance.GetFirstActiveTurn(Instance.GetNSSTurn(943406)))
+            'R2CoreTransportationAndLoadNotification.Rmto.RmtoWebService.GetNSSTruck(2854541)
             'Dim Instance = New R2Core.SecurityAlgorithmsManagement.PasswordStrength.PasswordStrength
             'Instance.SetPassword("Fas4005100")
             'Dim x As String = Instance.GetPasswordScore()

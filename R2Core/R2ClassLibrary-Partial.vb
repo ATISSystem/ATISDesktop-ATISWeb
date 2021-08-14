@@ -39,11 +39,10 @@ Imports R2Core.PermissionManagement.Exceptions
 Imports PcPosDll
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
+Imports R2Core.MonetarySupply
 
 Namespace MonetarySupply
 
-    ' On All of Location of Code Where UCMonetarySupply Used so ConfigurationIndex must be set to UCConfigurationIndex Property
-    ' For Example UCMoneyWalletCharge has ConfigurationIndex Property so send it to UCMonetarySupply
 
     Public Enum MonetarySupplyResult
         None = 0
@@ -65,7 +64,6 @@ Namespace MonetarySupply
                 _CurrentNSS = YourNSS
                 _Amount = YourAmount
             Catch ex As Exception
-                '_MonetaryCreditSupplySource.Dispose()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
@@ -114,7 +112,7 @@ Namespace MonetaryCreditSupplySources
         Public Shared ReadOnly Property None As Int64 = 0
         Public Shared ReadOnly Property Cash As Int64 = 1
         Public Shared ReadOnly Property Pos As Int64 = 2
-        Public Shared ReadOnly Property BankWebService As Int64 = 3
+        Public Shared ReadOnly Property ZarrinPalPaymentGate As Int64 = 3
     End Class
 
     Public Class R2CoreStandardMonetaryCreditSupplySourceStructure
@@ -155,6 +153,80 @@ Namespace MonetaryCreditSupplySources
         Public Property ViewFlag As Boolean
         Public Property Active As Boolean
         Public Property Deleted As Boolean
+    End Class
+
+    Public Class R2CoreMClassMonetaryCreditSupplySourcesManager
+
+        Public Function GetNSSMonetaryCreditSupplySource(YourMCSSId As String) As R2CoreStandardMonetaryCreditSupplySourceStructure
+            Try
+                Dim Ds As DataSet
+                Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where MCSSId=" & YourMCSSId & "", 3600, Ds).GetRecordsCount() = 0 Then
+                    Throw New GetNSSException
+                Else
+                    Return New R2CoreStandardMonetaryCreditSupplySourceStructure(Ds.Tables(0).Rows(0).Item("MCSSId"), Ds.Tables(0).Rows(0).Item("MCSSName").trim, Ds.Tables(0).Rows(0).Item("MCSSTitle").trim, Color.FromName(Ds.Tables(0).Rows(0).Item("MCSSColor").trim), Ds.Tables(0).Rows(0).Item("AssemblyPath").trim, Ds.Tables(0).Rows(0).Item("AssemblyDll").trim, Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("Deleted"))
+                End If
+            Catch ex As GetNSSException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetMonetaryCreditSupplySources() As List(Of R2CoreStandardMonetaryCreditSupplySourceStructure)
+            Try
+                Dim DS As DataSet
+                Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
+                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where ViewFlag=1 and Active=1 and Deleted=0 ", 3600, DS)
+                Dim Lst As New List(Of R2CoreStandardMonetaryCreditSupplySourceStructure)
+                For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                    Lst.Add(New R2CoreStandardMonetaryCreditSupplySourceStructure(DS.Tables(0).Rows(Loopx).Item("MCSSId"), DS.Tables(0).Rows(Loopx).Item("MCSSName").trim, DS.Tables(0).Rows(Loopx).Item("MCSSTitle").trim, Color.FromName(DS.Tables(0).Rows(Loopx).Item("MCSSColor").trim), DS.Tables(0).Rows(Loopx).Item("AssemblyPath").trim, DS.Tables(0).Rows(Loopx).Item("AssemblyDll").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
+                Next
+                Return Lst
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetThisComputerDefaultNSS(YourConfigurationIndex As Int16) As R2CoreStandardMonetaryCreditSupplySourceStructure
+            Try
+                Dim InstanceConfigurationOfComputers As New R2CoreMClassConfigurationOfComputersManager
+                Dim InstanceComputers As New R2CoreMClassComputersManager
+                Dim ConfigValue As String = InstanceConfigurationOfComputers.GetConfigString(R2CoreConfigurations.MonetaryCreditSupplySources, InstanceComputers.GetNSSCurrentComputer.MId, YourConfigurationIndex)
+                Return GetNSSMonetaryCreditSupplySource(ConfigValue.Split("@")(0))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetThisComputerCollectionBitMap(YourConfigurationIndex As Int16) As List(Of R2CoreStandardMonetaryCreditSupplySourceStructure)
+            Try
+                Dim InstanceConfigurationOfComputers As New R2CoreMClassConfigurationOfComputersManager
+                Dim InstanceComputers As New R2CoreMClassComputersManager
+                Dim Lst As New List(Of R2CoreStandardMonetaryCreditSupplySourceStructure)
+                Dim ConfigValue As String = InstanceConfigurationOfComputers.GetConfigString(R2CoreConfigurations.MonetaryCreditSupplySources, InstanceComputers.GetNSSCurrentComputer.MId, YourConfigurationIndex)
+                Dim Bitmap() As String = ConfigValue.Split("@")(1).Split("-")
+                For Loopx As Int16 = 0 To Bitmap.Count - 1
+                    Dim NSS As R2CoreStandardMonetaryCreditSupplySourceStructure = GetNSSMonetaryCreditSupplySource(Bitmap(Loopx).Split(":")(0))
+                    NSS.Active = Bitmap(Loopx).Split(":")(1)
+                    Lst.Add(NSS)
+                Next
+                Return Lst
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetMonetaryCreditSupplySourceInstance(YourNSS As R2CoreStandardMonetaryCreditSupplySourceStructure, YourAmount As Int64) As R2CoreMonetaryCreditSupplySource
+            Try
+                Dim AssemblyClassName As String = YourNSS.AssemblyPath
+                Dim Instance As Object = Activator.CreateInstance(Type.GetType(AssemblyClassName), New Object() {YourAmount})
+                Return Instance
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
     End Class
 
     Public MustInherit Class R2CoreMonetaryCreditSupplySourcesManagement
@@ -325,7 +397,9 @@ Namespace MonetaryCreditSupplySources
 
                 Public ReadOnly Property GetTargetPosIPAddress As String
                     Get
-                        Return R2CoreMClassConfigurationOfComputersManagement.GetConfigString(R2CoreConfigurations.AttachedPoses, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0)
+                        Dim InstanceConfigurationOfComputers As New R2CoreMClassConfigurationOfComputersManager
+                        Dim InstanceComputers As New R2CoreMClassComputersManager
+                        Return InstanceConfigurationOfComputers.GetConfigString(R2CoreConfigurations.AttachedPoses, InstanceComputers.GetNSSCurrentComputer.MId, 0)
                     End Get
                 End Property
 
@@ -343,9 +417,11 @@ Namespace MonetaryCreditSupplySources
 
                 Private Sub LoggingPosResult(YourPosResult As PosResult)
                     Try
+                        Dim InstanceLogging As New R2CoreInstanceLoggingManager
+                        Dim InstanceSoftwareUsers As New R2CoreInstanseSoftwareUsersManager
                         Dim DataStruct As DataStruct = GetPosResultComposit(YourPosResult)
                         _TransactionId = DataStruct.Data1
-                        R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "پوز - خرید", DataStruct.Data1, DataStruct.Data2, DataStruct.Data3, DataStruct.Data4, DataStruct.Data5, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                        InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Note, "پوز - خرید", DataStruct.Data1, DataStruct.Data2, DataStruct.Data3, DataStruct.Data4, DataStruct.Data5, InstanceSoftwareUsers.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                     Catch ex As Exception
                         Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                     End Try
@@ -414,7 +490,7 @@ Namespace MonetaryCreditSupplySources
 #Region "Override Methods"
                 Public Overrides Sub Initialize()
                     Try
-                        TargetedPosDevice.IpAddress = R2CoreMClassConfigurationOfComputersManagement.GetConfigString(R2CoreConfigurations.AttachedPoses, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0)
+                        TargetedPosDevice.IpAddress = GetTargetPosIPAddress
                         TargetedPosDevice.Port = 8888
                         'SearchPCPosAsync()
                     Catch ex As Exception
@@ -478,9 +554,9 @@ Namespace MonetaryCreditSupplySources
 
     End Namespace
 
-    Namespace Bank
+    Namespace ZarrinPalPeymentGate
 
-        Public Class R2CoreBank
+        Public Class R2CoreZarrinPalPeymentGate
             Inherits MonetaryCreditSupplySources.R2CoreMonetaryCreditSupplySource
 
             Public Sub New(YourAmount As Int64)
@@ -496,12 +572,64 @@ Namespace MonetaryCreditSupplySources
             End Sub
 
             Public Overrides Sub DoCreditSupply()
-                _SupplyReport = "عملیات موفق"
-                _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
+                Try
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
+
+                    Dim requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 1) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() +
+                    "&callback_url=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 3) +
+                    "&description=" + "درخواست پرداخت-زرین پال-آتیس" +
+                    "&metadata[0]=" + String.Empty + "& metadata[1]=" + String.Empty
+                    Dim client = New RestClient(requesturl)
+                    client.Timeout = -1
+                    Dim request = New RestRequest(Method.POST)
+                    request.AddHeader("accept", "application/json")
+                    request.AddHeader("content-type", "application/json")
+                    Dim requestresponse As IRestResponse = client.Execute(request)
+                    Dim jo = Newtonsoft.Json.Linq.JObject.Parse(requestresponse.Content)
+                    Dim errorscode = jo("errors").ToString()
+                    Dim jodata = Newtonsoft.Json.Linq.JObject.Parse(requestresponse.Content)
+                    Dim dataauth = jodata("data").ToString()
+                    If dataauth <> "[]" Then
+                        _SupplyReport = jodata("data")("authority").ToString()
+                        _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
+                    Else
+                        _SupplyReport = errorscode
+                        _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.UnSuccess
+                    End If
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+
             End Sub
 
             Public Overrides Sub Dispose()
             End Sub
+
+            Public Function VerificationRequest(YourAuthority As String) As MessageStruct
+                Try
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
+                    Dim url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
+                    Dim client = New RestClient(url)
+                    client.Timeout = -1
+                    Dim request = New RestRequest(Method.POST)
+                    request.AddHeader("accept", "application/json")
+                    request.AddHeader("content-type", "application/json")
+                    Dim response As IRestResponse = client.Execute(request)
+                    Dim jodata = Newtonsoft.Json.Linq.JObject.Parse(response.Content)
+                    Dim Data = jodata("data").ToString()
+                    Dim jo = Newtonsoft.Json.Linq.JObject.Parse(response.Content)
+                    Dim errors = jo("errors").ToString()
+                    If (Data <> "[]") Then
+                        Return New MessageStruct(False, jodata("data")("ref_id").ToString(), String.Empty, String.Empty)
+                    Else
+                        Return New MessageStruct(True, errors, String.Empty, String.Empty)
+                    End If
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+
+
+            End Function
 
 
         End Class
@@ -3039,62 +3167,95 @@ Namespace BlackIPs
 End Namespace
 
 Namespace MoneyWallet
+
+    Namespace PaymentRequests
+
+        Public Class R2StandardPaymentRequestStructure
+
+            Public Sub New()
+                MyBase.New()
+                PayId = Int64.MinValue
+                MCSSId = Int64.MinValue
+                SoftwareUserId = Int64.MinValue
+                Amount = Int64.MinValue
+                Authority = String.Empty
+                TransactionId = String.Empty
+                RefId = String.Empty
+                PaymentErrors = String.Empty
+                VerificationErrors = String.Empty
+                VerificationCount = String.Empty
+                UserId = Int64.MinValue
+                DateTimeMilladi = Now
+                DateShamsi = String.Empty
+                Time = String.Empty
+            End Sub
+
+            Public Sub New(YourPayId As Int64, YourMCSSId As Int64, YourSoftwareUserId As Int64, YourAmount As Int64, YourAuthority As String, YourTransactionId As String, YourRefId As String, YourPaymentErrors As String, YourVerificationErrors As String, YourVerificationCount As Byte, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String)
+                MyBase.New
+                PayId = YourPayId
+                MCSSId = YourMCSSId
+                SoftwareUserId = YourSoftwareUserId
+                Amount = YourAmount
+                Authority = YourAuthority
+                TransactionId = YourTransactionId
+                RefId = YourRefId
+                PaymentErrors = YourPaymentErrors
+                VerificationErrors = YourVerificationErrors
+                VerificationCount = YourVerificationCount
+                UserId = YourUserId
+                DateTimeMilladi = YourDateTimeMilladi
+                DateShamsi = YourDateShamsi
+                Time = YourTime
+            End Sub
+
+
+            Public Property PayId As Int64
+            Public Property MCSSId As Int64 'MonetaryCreditSupplySource
+            Public Property SoftwareUserId As Int64 'Payment for This UserId Relation MoneyWallet
+            Public Property Amount As Int64
+            Public Property Authority As String
+            Public Property TransactionId As String
+            Public Property RefId As String
+            Public Property PaymentErrors As String
+            Public Property VerificationErrors As String
+            Public Property VerificationCount As Byte
+            Public Property UserId As Int64
+            Public Property DateTimeMilladi As DateTime
+            Public Property DateShamsi As String
+            Public Property Time As String
+
+        End Class
+
+        Public Class R2CoreMClassPaymentRequestsManager
+            Public Function PaymentRequest(YourMCSSId As Int64, YourAmount As Int64, YourSoftwareUserId As Int64) As R2StandardPaymentRequestStructure
+                Try
+                    Dim InstanceMonetaryCreditSupplySources As New R2CoreMClassMonetaryCreditSupplySourcesManager
+                    Dim NSSMCSS = InstanceMonetaryCreditSupplySources.GetNSSMonetaryCreditSupplySource(YourMCSSId)
+                    Dim InstanceMonetarySupply = New R2CoreMonetarySupply(NSSMCSS, YourAmount)
+                    InstanceMonetarySupply.StartSupply()
+                Catch ex As Exception
+
+                End Try
+            End Function
+
+            Public Function VerificationRequest() As R2StandardPaymentRequestStructure
+                Try
+
+                Catch ex As Exception
+
+                End Try
+            End Function
+
+        End Class
+
+
+    End Namespace
+
     Namespace MoneyWalletCharging
 
         Public Class R2CoreInstanceMoneyWalletChargingManager
             Private _DateTime As New R2DateTime
 
-            Public Function ZarrinPalPaymentRequest(YourAPIKey As String, YourAmount As Int64) As MessageStruct
-                Try
-                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
-                    Dim InstanceAES = New AESAlgorithmsManager()
-
-                    Dim requesturl = "https://api.zarinpal.com/pg/v4/payment/request.json?merchant_id=" + "aed16bb9-485a-416d-9891-d0b8d2bc98cc" + "&amount=" + YourAmount.ToString() +
-                    "&callback_url=" + "https://ATISMobile.ir:8083/MoneyWalletChargingMVC/PaymentVerification/?YourAPIKey=" + InstanceAES.Encrypt(YourAPIKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + " " + YourAmount.ToString() +
-                    "&description=" + "درخواست پرداخت-زرین پال-آتیس" +
-                    "&metadata[0]=" + String.Empty + "& metadata[1]=" + String.Empty
-                    Dim client = New RestClient(requesturl)
-                    client.Timeout = -1
-                    Dim request = New RestRequest(Method.POST)
-                    request.AddHeader("accept", "application/json")
-                    request.AddHeader("content-type", "application/json")
-                    Dim requestresponse As IRestResponse = client.Execute(request)
-                    Dim jo = Newtonsoft.Json.Linq.JObject.Parse(requestresponse.Content)
-                    Dim errorscode = jo("errors").ToString()
-                    Dim jodata = Newtonsoft.Json.Linq.JObject.Parse(requestresponse.Content)
-                    Dim dataauth = jodata("data").ToString()
-                    If dataauth <> "[]" Then
-                        Return New MessageStruct(False, jodata("data")("authority").ToString(), "https://www.zarinpal.com/pg/StartPay/", String.Empty)
-                    Else
-                        Return New MessageStruct(True, errorscode, String.Empty, String.Empty)
-                    End If
-                Catch ex As Exception
-                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-                End Try
-            End Function
-
-            Public Function ZarrinPalVerificationRequest(YourAuthority As String, YourAmount As Int64) As MessageStruct
-                Try
-                    Dim url = "https://api.zarinpal.com/pg/v4/payment/verify.json?merchant_id=aed16bb9-485a-416d-9891-d0b8d2bc98cc&amount=" + YourAmount.ToString() + "&authority=" + YourAuthority
-                    Dim client = New RestClient(url)
-                    client.Timeout = -1
-                    Dim request = New RestRequest(Method.POST)
-                    request.AddHeader("accept", "application/json")
-                    request.AddHeader("content-type", "application/json")
-                    Dim response As IRestResponse = client.Execute(request)
-                    Dim jodata = Newtonsoft.Json.Linq.JObject.Parse(response.Content)
-                    Dim Data = jodata("data").ToString()
-                    Dim jo = Newtonsoft.Json.Linq.JObject.Parse(response.Content)
-                    Dim errors = jo("errors").ToString()
-                    If (Data <> "[]") Then
-                        Return New MessageStruct(False, jodata("data")("ref_id").ToString(), String.Empty, String.Empty)
-                    Else
-                        Return New MessageStruct(True, errors, String.Empty, String.Empty)
-                    End If
-                Catch ex As Exception
-                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-                End Try
-            End Function
 
         End Class
 

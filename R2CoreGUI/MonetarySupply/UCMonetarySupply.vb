@@ -20,6 +20,8 @@ Public Class UCMonetarySupply
 
 #Region "General Properties"
 
+    ' On All of Location of Code Where UCMonetarySupply Used so ConfigurationIndex must be set to UCConfigurationIndex Property
+    ' For Example UCMoneyWalletCharge has ConfigurationIndex Property so send it to UCMonetarySupply
     Private _UCConfigurationIndex As Int64 = 0
     Public Property UCConfigurationIndex() As Int64
         Get
