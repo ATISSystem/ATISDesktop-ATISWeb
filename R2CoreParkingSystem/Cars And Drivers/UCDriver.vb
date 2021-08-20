@@ -19,6 +19,7 @@ Public Class UCDriver
     Public Event UCViewDriverInformationCompleted(DriverId As String)
     Public Event UCRefreshedEvent()
     Public Event UCRefreshedGeneralEvent()
+    'Public Event UCDriverInfByNationalCodeRequestedEvent(NationalCode As String)
 
 
 
@@ -208,6 +209,7 @@ Public Class UCDriver
     Private Sub UcNumberDriverNationalCode_UC13Pressed(UserNumber As String) Handles UcNumberDriverNationalCode.UC13Pressed
         Try
             UCRefresh()
+            'RaiseEvent UCDriverInfByNationalCodeRequestedEvent(UserNumber)
             UCViewFrmDrivers(UcNumberDriverNationalCode.UCValue, FrmcDrivers.ViewType.ByNationalCode, UcNumberDriverNationalCode)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

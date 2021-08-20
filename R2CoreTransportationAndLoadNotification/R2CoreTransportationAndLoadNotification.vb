@@ -224,7 +224,7 @@ Namespace Rmto
         Inherits ApplicationException
         Public Overrides ReadOnly Property Message As String
             Get
-                Return "شماره هوشمند نادرست است یا سایت کارت هوشمند در دسترس نیست"
+                Return "شماره وارد شده نادرست است یا سایت کارت هوشمند در دسترس نیست"
             End Get
         End Property
     End Class

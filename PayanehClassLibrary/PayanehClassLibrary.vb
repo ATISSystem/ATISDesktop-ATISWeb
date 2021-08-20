@@ -1597,6 +1597,19 @@ Namespace DriverTrucksManagement
             End Try
         End Function
 
+        Public Shared Function IsExistDriverTruckByNationalCode(YourNationalCode As String) As Boolean
+            Try
+                Dim DS As New DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New DataBaseManagement.R2ClassSqlConnectionSepas, "Select nIDPerson from dbtransport.dbo.TbPerson Where strNationalCode='" & YourNationalCode.Trim & "'", 0, DS).GetRecordsCount <> 0 Then
+                    Return True
+                Else
+                    Return False
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Shared Function GetNSSDriverTruckbyDriverId(YournIdPerson As String) As R2StandardDriverTruckStructure
             Try
 
@@ -1623,7 +1636,7 @@ Namespace DriverTrucksManagement
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
-                If IsExistDriverTruck(YourNSS) = True Then Throw New DriverTruckSmartCardNoAlreadyAvailabletException
+                'If IsExistDriverTruck(YourNSS) = True Then Throw New DriverTruckSmartCardNoAlreadyAvailabletException
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 Dim mynIdPerson As Int64 = YourNSS.NSSDriver.nIdPerson
@@ -1672,6 +1685,38 @@ Namespace DriverTrucksManagement
             End Try
         End Function
 
+        Public Shared Function GetNSSDriverTruckbyNationalCode(YourNationalCode As String) As R2StandardDriverTruckStructure
+            Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourNationalCode)
+
+                Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
+                Da.SelectCommand = New SqlCommand("Select Top 1 * from dbtransport.dbo.TbPerson as P inner join dbtransport.dbo.TbDriver as D On P.nIDPerson=D.nIDDriver Where P.StrNationalCode='" & YourNationalCode & "' Order By P.nIDPerson Desc")
+                Da.SelectCommand.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
+                Ds.Tables.Clear()
+                If Da.Fill(Ds) <> 0 Then
+                    Dim NSSDriver As R2StandardDriverStructure = New R2StandardDriverStructure
+                    NSSDriver.nIdPerson = Ds.Tables(0).Rows(0).Item("nIdPerson")
+                    NSSDriver.StrPersonFullName = Ds.Tables(0).Rows(0).Item("StrPersonName").trim + " " + Ds.Tables(0).Rows(0).Item("StrPersonFamily").trim
+                    NSSDriver.StrNationalCode = Ds.Tables(0).Rows(0).Item("StrNationalCode")
+                    NSSDriver.StrFatherName = Ds.Tables(0).Rows(0).Item("StrFatherName")
+                    NSSDriver.StrAddress = Ds.Tables(0).Rows(0).Item("StrAddress")
+                    NSSDriver.StrIdNo = Ds.Tables(0).Rows(0).Item("StrIdNo") 'تلفن
+                    NSSDriver.strDrivingLicenceNo = Ds.Tables(0).Rows(0).Item("strDrivingLicenceNo")
+                    Dim NSSDriverTruck As R2StandardDriverTruckStructure = New R2StandardDriverTruckStructure()
+                    NSSDriverTruck.NSSDriver = NSSDriver
+                    NSSDriverTruck.StrSmartCardNo = Ds.Tables(0).Rows(0).Item("StrSmartCardNo")
+                    Return NSSDriverTruck
+                Else
+                    Throw New DriverTruckInformationNotExistException
+                End If
+            Catch ex As DriverTruckInformationNotExistException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Shared Function GetDriverTruckfromRMTOAndInsertUpdateLocalDataBase(YourSmartCardNo As String) As R2StandardDriverTruckStructure
             Try
                 Dim NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSTruckDriver(RmtoWebService.GetNSSTruckDriver(YourSmartCardNo))
@@ -1686,6 +1731,31 @@ Namespace DriverTrucksManagement
                     PayanehClassLibraryMClassDriverTrucksManagement.UpdateDriverTruck(NSS)
                 End If
                 Return GetNSSDriverTruckbySmartCardNo(YourSmartCardNo)
+            Catch ex As Exception When TypeOf ex Is InternetIsnotAvailableException OrElse
+                                       TypeOf ex Is RMTOWebServiceSmartCardInvalidException OrElse
+                                       TypeOf ex Is ConnectionIsNotAvailableException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function GetDriverTruckfromRMTOAndInsertUpdateLocalDataBaseByNationalCode(YourNationalCode As String) As R2StandardDriverTruckStructure
+            Try
+                Dim NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSTruckDriver(RmtoWebService.GetNSSTruckDriver(YourNationalCode))
+                If IsExistDriverTruckByNationalCode(NSS.NSSDriver.StrNationalCode) = True Then
+                    Dim nIdPerson As Int64 = GetNSSDriverTruckbyNationalCode(NSS.NSSDriver.StrNationalCode).NSSDriver.nIdPerson
+                    NSS.NSSDriver.nIdPerson = nIdPerson
+                    NSS.NSSDriver.StrIdNo = IIf(GetNSSDriverTruckbyNationalCode(NSS.NSSDriver.StrNationalCode).NSSDriver.StrIdNo = String.Empty, "09130000000", GetNSSDriverTruckbyNationalCode(NSS.NSSDriver.StrNationalCode).NSSDriver.StrIdNo)
+                    R2CoreParkingSystemMClassDrivers.UpdateDriver(NSS.NSSDriver, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+                    PayanehClassLibraryMClassDriverTrucksManagement.UpdateDriverTruck(NSS)
+                Else
+                    If NSS.NSSDriver.StrIdNo = String.Empty Then NSS.NSSDriver.StrIdNo = "09130000000"
+                    Dim nIdPerson As Int64 = R2CoreParkingSystemMClassDrivers.InsertDriver(NSS.NSSDriver, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+                    NSS.NSSDriver.nIdPerson = nIdPerson
+                    PayanehClassLibraryMClassDriverTrucksManagement.UpdateDriverTruck(NSS)
+                End If
+                Return GetNSSDriverTruckbyNationalCode(YourNationalCode)
             Catch ex As Exception When TypeOf ex Is InternetIsnotAvailableException OrElse
                                        TypeOf ex Is RMTOWebServiceSmartCardInvalidException OrElse
                                        TypeOf ex Is ConnectionIsNotAvailableException

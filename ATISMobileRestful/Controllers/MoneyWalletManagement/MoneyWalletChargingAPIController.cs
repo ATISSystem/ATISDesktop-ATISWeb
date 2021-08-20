@@ -52,12 +52,12 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, Amount, NSSSoftwareuser.UserId, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword));
                 var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
                 var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(PayId);
-                while ((NSSPaymentRequest.Authority == string.Empty) && (NSSPaymentRequest.PaymentErrors == string.Empty))
-                { System.Threading.Thread.Sleep(1000); }
+                while ((NSSPaymentRequest.Authority == string.Empty) & (NSSPaymentRequest.PaymentErrors == string.Empty))
+                { System.Threading.Thread.Sleep(500); NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(PayId); }
                 if (NSSPaymentRequest.Authority != string.Empty)
                 {
                     HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-                    response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = NSSPaymentRequest.Authority, Message2 = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate , 2), Message3 = string.Empty }), Encoding.UTF8, "application/json");
+                    response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = NSSPaymentRequest.Authority, Message2 = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 2), Message3 = string.Empty }), Encoding.UTF8, "application/json");
                     return response;
                 }
                 else

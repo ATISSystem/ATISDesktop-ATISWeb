@@ -5694,7 +5694,7 @@ Namespace LoadAllocation
         Public Function GetLoadAllocationsforLoadPermissionRegistering() As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
             Try
                 Dim DS As DataSet
-                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "
+                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "
                       Select LoadAllocation.Priority,LoadAllocation.LAId,LoadAllocation.nEstelamId,LoadAllocation.TurnId,LoadAllocation.LAStatusId,LoadAllocation.LANote,LoadAllocation.DateTimeMilladi,LoadAllocation.DateShamsi,LoadAllocation.Time,LoadAllocation.UserId
                              From R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations  as LoadAllocation 
                                Inner Join dbtransport.dbo.tbElam as Elam On LoadAllocation.nEstelamId=Elam.nEstelamID
@@ -5777,6 +5777,7 @@ Namespace LoadAllocation
                 Dim InstanceLoadPermissionPrinting = New R2CoreTransportationAndLoadNotificationInstanceLoadPermissionPrintingManager
                 Dim InstanceConfigurations = New R2CoreInstanceConfigurationManager
                 Dim FailedResultLst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)()
+
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure) = GetLoadAllocationsforLoadPermissionRegistering()
                 Dim CurrentTime = _DateTime.GetCurrentTime()
                 For Loopx As Int64 = 0 To Lst.Count - 1
@@ -5789,7 +5790,6 @@ Namespace LoadAllocation
                             Continue For
                         End If
                     End If
-
                     Dim NSSLoadAllocation = Lst(Loopx)
                     Try
                         LoadAllocationLoadPermissionRegistering(Lst(Loopx).LAId, YourUserNSS)

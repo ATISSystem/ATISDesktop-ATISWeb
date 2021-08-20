@@ -46,16 +46,16 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                     if (Request.QueryString["Status"].ToString().Equals("OK"))
                     {
                         var WS = new R2Core.R2PrimaryWS.R2PrimaryWebService();
-                        var PayId = WS.WebMethodVerificationRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate,Request.QueryString["Authority"].ToString(),WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword));
+                        var PayId = WS.WebMethodVerificationRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, Request.QueryString["Authority"].ToString(), WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword));
                         var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
                         var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(PayId);
-                        while ((NSSPaymentRequest.RefId  == string.Empty) && (NSSPaymentRequest.VerificationErrors  == string.Empty))
-                        { System.Threading.Thread.Sleep(1000); }
+                        while ((NSSPaymentRequest.RefId == string.Empty) & (NSSPaymentRequest.VerificationErrors == string.Empty))
+                        { System.Threading.Thread.Sleep(500); NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(PayId); }
                         if (NSSPaymentRequest.RefId != string.Empty)
                         {
                             var InstanceAES = new AESAlgorithmsManager();
                             var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
-                            var NSSSoftwareUser = InstanceSoftwareUsers.GetNSSUser(NSSPaymentRequest.SoftwareUserId );
+                            var NSSSoftwareUser = InstanceSoftwareUsers.GetNSSUser(NSSPaymentRequest.SoftwareUserId);
                             var NSSTrafficCard = InstanceTrafficCards.GetNSSTerafficCard(NSSSoftwareUser);
                             Int64 CurrentCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
                             InstanceMoneyWallets.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.AddMoney, NSSPaymentRequest.Amount, R2CoreParkingSystemAccountings.ChargeType, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
@@ -68,7 +68,7 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                             ViewBag.Message4 = LastCharge.ToString() + "  موجودی نهایی ";
                         }
                         else
-                        { ViewBag.IsSuccess = false; ViewBag.Message = NSSPaymentRequest.VerificationErrors ; }
+                        { ViewBag.IsSuccess = false; ViewBag.Message = NSSPaymentRequest.VerificationErrors; }
                     }
                     else
                     { ViewBag.IsSuccess = false; ViewBag.Message = "Error! : Status: " + Request.QueryString["Status"].ToString(); }

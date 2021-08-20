@@ -220,6 +220,43 @@ Public Class UCDriverTruck
         UcButtonSabt.Focus()
     End Sub
 
+    Private Sub UcNumberDriverNationalCode_UC13Pressed(UserNumber As String) Handles UcNumberDriverNationalCode.UC13Pressed
+        Try
+            Try
+                UcDriver.UCRefreshGeneral()
+                _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetDriverTruckfromRMTOAndInsertUpdateLocalDataBaseByNationalCode(UserNumber)
+                UcDriver.UCViewDriverInformation(_CurrentNSS.NSSDriver)
+            Catch ex As DriverTruckInformationNotExistException
+                If MessageBox.Show(Nothing, "اطلاعات راننده در سیستم قبلا ثبت نشده است" + vbCrLf + "اطلاعات مورد نظر را از سرویس اینترنتی دریافت میکنید؟", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly) = DialogResult.Yes Then
+                    Try
+                        _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSTruckDriver(RmtoWebService.GetNSSTruckDriver(UserNumber))
+                        UcDriver.UCViewDriverInformationDirty(_CurrentNSS.NSSDriver)
+                        UcNumberStrSmartCardNo.UCValue = _CurrentNSS.StrSmartCardNo
+                    Catch exx As Exception When TypeOf exx Is InternetIsnotAvailableException OrElse TypeOf exx Is RMTOWebServiceSmartCardInvalidException
+                        UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                    End Try
+                Else
+                End If
+            End Try
+        Catch ex As InternetIsnotAvailableException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As ConnectionIsNotAvailableException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As GetNSSException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    'Private Sub UcDriver_UCDriverInfByNationalCodeRequestedEvent(NationalCode As String) Handles UcDriver.UCDriverInfByNationalCodeRequestedEvent
+    '    Try
+
+    '    Catch ex As Exception
+
+    '    End Try
+    'End Sub
+
 
 #End Region
 

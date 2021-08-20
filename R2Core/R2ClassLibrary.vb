@@ -2034,6 +2034,7 @@ Namespace DatabaseManagement
     Public MustInherit Class R2ClassSqlConnection
 
         Protected DefaultConnectionString As String = R2CoreMClassConfigurationManagement.GetDefaultConnectionString
+        Protected SubscriptionDBConnectionString As String = R2CoreMClassConfigurationManagement.GetSubscriptionDBConnectionString
         Protected _Connection As SqlClient.SqlConnection = Nothing
 
         Public Sub New()
@@ -2060,6 +2061,20 @@ Namespace DatabaseManagement
             MyBase.New()
             Try
                 _Connection = New SqlClient.SqlConnection(DefaultConnectionString.Replace("@", R2CoreMClassConfigurationManagement.GetMainDatabaseName))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Sub
+
+    End Class
+
+    Public Class R2PrimarySubscriptionDBSqlConnection
+        Inherits R2ClassSqlConnection
+
+        Public Sub New()
+            MyBase.New()
+            Try
+                _Connection = New SqlClient.SqlConnection(SubscriptionDBConnectionString.Replace("@", R2CoreMClassConfigurationManagement.GetMainDatabaseName))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
@@ -2604,6 +2619,7 @@ Namespace ConfigurationManagement
 
         Private Shared myMainDatabaseName As String = Nothing
         Private Shared myDefaultConnectionString As String = Nothing
+        Private Shared mySubscriptionDBConnectionString As String = Nothing
         Private Shared myComputerCode As String
 
 
@@ -2612,11 +2628,15 @@ Namespace ConfigurationManagement
                 Dim fs As New System.IO.FileStream(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments) + "\Timciens.txt", IO.FileMode.Open, IO.FileAccess.Read)
                 Dim sr As New System.IO.StreamReader(fs)
                 sr.BaseStream.Seek(0, IO.SeekOrigin.Begin)
-                myComputerCode = Convert.ToInt64(Mid(sr.ReadLine, 3, 3))
+                Dim FirstLine = sr.ReadLine
+                myComputerCode = Convert.ToInt64(Mid(FirstLine, 3, 3))
+                Dim DSSubscriptionDB = Split(Mid(FirstLine, 8, 20), "$")(0)
+                Dim PasswordSubscriptionDB = Split(Mid(FirstLine, 26, 100), "$")(0)
                 myMainDatabaseName = Split(Mid(sr.ReadLine, 31, 100), "$")(0)
                 Dim DSTemp = Split(Mid(sr.ReadLine, 15, 100), "$")(0)
                 Dim PasswordTemp = Split(Mid(sr.ReadLine, 4, 100), "$")(0)
                 myDefaultConnectionString = "Data Source=@DS;Initial Catalog=@;Persist Security Info=True;User ID=sa;Password=@Password".Replace("@DS", DSTemp).Replace("@Password", PasswordTemp)
+                mySubscriptionDBConnectionString = "Data Source=@DS;Initial Catalog=@;Persist Security Info=True;User ID=sa;Password=@Password".Replace("@DS", DSSubscriptionDB).Replace("@Password", PasswordSubscriptionDB)
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
@@ -2645,6 +2665,15 @@ Namespace ConfigurationManagement
                 '    End If
                 'End If
                 Return myDefaultConnectionString
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function GetSubscriptionDBConnectionString() As String
+            Try
+                If mySubscriptionDBConnectionString = Nothing Then FillPublicVariables()
+                Return mySubscriptionDBConnectionString
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try

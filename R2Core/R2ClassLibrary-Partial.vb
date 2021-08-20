@@ -63,7 +63,7 @@ Namespace MonetarySupply
         Public Event MonetarySupplySuccessEvent(YourMonetarySupplyType As MonetarySupplyType, TransactionId As Int64, Amount As Int64, SupplyReport As String)
         Public Event MonetarySupplyUnSuccessEvent(YourMonetarySupplyType As MonetarySupplyType, TransactionId As Int64, Amount As Int64, SupplyReport As String)
         Private WithEvents _MonetaryCreditSupplySource As R2CoreMonetaryCreditSupplySource = Nothing
-        Private WithEvents _MonetarySupplyWatcher As System.Windows.Forms.Timer = New System.Windows.Forms.Timer
+        Private WithEvents _MonetarySupplyWatcher As System.Timers.Timer = New System.Timers.Timer
 
         Public Sub New(YourNSS As R2CoreStandardMonetaryCreditSupplySourceStructure, YourAmount As Int64)
             Try
@@ -100,7 +100,7 @@ Namespace MonetarySupply
             End Try
         End Sub
 
-        Private Sub _MonetarySupplyWatcher_Tick(sender As Object, e As EventArgs) Handles _MonetarySupplyWatcher.Tick
+        Private Sub _MonetarySupplyWatcher_Elapsed(sender As Object, e As ElapsedEventArgs) Handles _MonetarySupplyWatcher.Elapsed
             Try
                 If _MonetaryCreditSupplySource.MonetaryCreditSupplyResult <> MonetarySupplyResult.None Then
                     _MonetarySupplyWatcher.Enabled = False
@@ -122,9 +122,8 @@ Namespace MonetarySupply
             Catch ex As Exception
                 MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
+
         End Sub
-
-
     End Class
 
 End Namespace
@@ -605,9 +604,9 @@ Namespace MonetaryCreditSupplySources
 
     End Namespace
 
-    Namespace ZarrinPalPeymentGate
+    Namespace ZarrinPalPaymentGate
 
-        Public Class R2CoreZarrinPalPeymentGate
+        Public Class R2CoreZarrinPalPaymentGate
             Inherits MonetaryCreditSupplySources.R2CoreMonetaryCreditSupplySource
 
             Public Sub New(YourAmount As Int64)
@@ -3351,8 +3350,8 @@ Namespace MoneyWallet
                 Try
                     PayId = PaymentRequestRegistering(YourMCSSId, YourAmount, YourSoftwareUserId)
                     Dim InstanceMCSS As New R2CoreMClassMonetaryCreditSupplySourcesManager
-                    Dim InstanceMonetarySupply = New R2CoreMonetarySupply(InstanceMCSS.GetNSSMonetaryCreditSupplySource(YourMCSSId), YourAmount)
-                    InstanceMonetarySupply.StartSupply()
+                    Dim MS = New R2CoreMonetarySupply(InstanceMCSS.GetNSSMonetaryCreditSupplySource(YourMCSSId), YourAmount)
+                    MS.StartSupply()
                     Return PayId
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -3362,8 +3361,9 @@ Namespace MoneyWallet
             Public Function VerificationRequest(YourMCSSId As Int64, YourAuthority As String) As Int64
                 Try
                     PayId = GetNSSPayment(YourAuthority).PayId
+                    Dim Amount = GetNSSPayment(YourAuthority).Amount
                     Dim InstanceMCSS = New R2CoreMClassMonetaryCreditSupplySourcesManager
-                    MS = New R2CoreMonetarySupply(InstanceMCSS.GetNSSMonetaryCreditSupplySource(YourMCSSId), Nothing)
+                    MS = New R2CoreMonetarySupply(InstanceMCSS.GetNSSMonetaryCreditSupplySource(YourMCSSId), Amount)
                     MS.StartVerification(YourAuthority)
                     Return PayId
                 Catch ex As Exception

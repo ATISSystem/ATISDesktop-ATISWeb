@@ -38,13 +38,17 @@ Partial Class UCDriverTruck
         Me.UcNumberStrSmartCardNo = New R2CoreGUI.UCNumber()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.UcDriver = New R2CoreParkingSystem.UCDriver()
-        Me.PnlMain.SuspendLayout
-        Me.Panel1.SuspendLayout
-        Me.SuspendLayout
+        Me.UcNumberDriverNationalCode = New R2CoreGUI.UCNumber()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.PnlMain.SuspendLayout()
+        Me.Panel1.SuspendLayout()
+        Me.SuspendLayout()
         '
         'PnlMain
         '
         Me.PnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlMain.Controls.Add(Me.UcNumberDriverNationalCode)
+        Me.PnlMain.Controls.Add(Me.Label3)
         Me.PnlMain.Controls.Add(Me.Label2)
         Me.PnlMain.Controls.Add(Me.UcNumberStrSmartCardNoSearch)
         Me.PnlMain.Controls.Add(Me.UcButtonNew)
@@ -59,9 +63,9 @@ Partial Class UCDriverTruck
         '
         'Label2
         '
-        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label2.AutoSize = true
-        Me.Label2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.OrangeRed
         Me.Label2.Location = New System.Drawing.Point(564, 3)
         Me.Label2.Name = "Label2"
@@ -71,22 +75,25 @@ Partial Class UCDriverTruck
         '
         'UcNumberStrSmartCardNoSearch
         '
-        Me.UcNumberStrSmartCardNoSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberStrSmartCardNoSearch.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberStrSmartCardNoSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberStrSmartCardNoSearch.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberStrSmartCardNoSearch.Location = New System.Drawing.Point(424, 3)
         Me.UcNumberStrSmartCardNoSearch.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberStrSmartCardNoSearch.Name = "UcNumberStrSmartCardNoSearch"
         Me.UcNumberStrSmartCardNoSearch.Size = New System.Drawing.Size(134, 25)
         Me.UcNumberStrSmartCardNoSearch.TabIndex = 24
+        Me.UcNumberStrSmartCardNoSearch.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberStrSmartCardNoSearch.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberStrSmartCardNoSearch.UCBackColor = System.Drawing.Color.White
         Me.UcNumberStrSmartCardNoSearch.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberStrSmartCardNoSearch.UCBorder = true
+        Me.UcNumberStrSmartCardNoSearch.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberStrSmartCardNoSearch.UCBorder = True
         Me.UcNumberStrSmartCardNoSearch.UCBorderColor = System.Drawing.Color.Black
-        Me.UcNumberStrSmartCardNoSearch.UCEnable = true
-        Me.UcNumberStrSmartCardNoSearch.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberStrSmartCardNoSearch.UCEnable = True
+        Me.UcNumberStrSmartCardNoSearch.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberStrSmartCardNoSearch.UCForeColor = System.Drawing.Color.Black
-        Me.UcNumberStrSmartCardNoSearch.UCMultiLine = false
-        Me.UcNumberStrSmartCardNoSearch.UCValue = CType(0,Long)
+        Me.UcNumberStrSmartCardNoSearch.UCMultiLine = False
+        Me.UcNumberStrSmartCardNoSearch.UCValue = CType(0, Long)
         '
         'UcButtonNew
         '
@@ -98,15 +105,15 @@ Partial Class UCDriverTruck
         Me.UcButtonNew.TabIndex = 23
         Me.UcButtonNew.UCBackColor = System.Drawing.Color.SteelBlue
         Me.UcButtonNew.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonNew.UCEnable = true
-        Me.UcButtonNew.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonNew.UCEnable = True
+        Me.UcButtonNew.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonNew.UCForeColor = System.Drawing.Color.White
         Me.UcButtonNew.UCValue = "جدید"
         '
         'Label1
         '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label1.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label1.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.SteelBlue
         Me.Label1.Location = New System.Drawing.Point(684, 1)
         Me.Label1.Name = "Label1"
@@ -124,16 +131,16 @@ Partial Class UCDriverTruck
         Me.UcButtonSabt.TabIndex = 22
         Me.UcButtonSabt.UCBackColor = System.Drawing.Color.SteelBlue
         Me.UcButtonSabt.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonSabt.UCEnable = true
-        Me.UcButtonSabt.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonSabt.UCEnable = True
+        Me.UcButtonSabt.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonSabt.UCForeColor = System.Drawing.Color.White
         Me.UcButtonSabt.UCValue = "ثبت"
         '
         'Panel1
         '
-        Me.Panel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Panel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel1.Controls.Add(Me.UcNumberStrSmartCardNo)
         Me.Panel1.Controls.Add(Me.Label8)
@@ -145,28 +152,31 @@ Partial Class UCDriverTruck
         '
         'UcNumberStrSmartCardNo
         '
-        Me.UcNumberStrSmartCardNo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberStrSmartCardNo.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberStrSmartCardNo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberStrSmartCardNo.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberStrSmartCardNo.Location = New System.Drawing.Point(566, 111)
         Me.UcNumberStrSmartCardNo.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberStrSmartCardNo.Name = "UcNumberStrSmartCardNo"
         Me.UcNumberStrSmartCardNo.Size = New System.Drawing.Size(134, 25)
         Me.UcNumberStrSmartCardNo.TabIndex = 21
+        Me.UcNumberStrSmartCardNo.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberStrSmartCardNo.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberStrSmartCardNo.UCBackColor = System.Drawing.Color.White
         Me.UcNumberStrSmartCardNo.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberStrSmartCardNo.UCBorder = true
+        Me.UcNumberStrSmartCardNo.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberStrSmartCardNo.UCBorder = True
         Me.UcNumberStrSmartCardNo.UCBorderColor = System.Drawing.Color.Black
-        Me.UcNumberStrSmartCardNo.UCEnable = true
-        Me.UcNumberStrSmartCardNo.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberStrSmartCardNo.UCEnable = True
+        Me.UcNumberStrSmartCardNo.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberStrSmartCardNo.UCForeColor = System.Drawing.Color.Black
-        Me.UcNumberStrSmartCardNo.UCMultiLine = false
-        Me.UcNumberStrSmartCardNo.UCValue = CType(0,Long)
+        Me.UcNumberStrSmartCardNo.UCMultiLine = False
+        Me.UcNumberStrSmartCardNo.UCValue = CType(0, Long)
         '
         'Label8
         '
-        Me.Label8.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label8.AutoSize = true
-        Me.Label8.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label8.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label8.Location = New System.Drawing.Point(698, 111)
         Me.Label8.Name = "Label8"
         Me.Label8.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -176,15 +186,49 @@ Partial Class UCDriverTruck
         '
         'UcDriver
         '
-        Me.UcDriver.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcDriver.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcDriver.BackColor = System.Drawing.Color.Transparent
         Me.UcDriver.Location = New System.Drawing.Point(7, 9)
         Me.UcDriver.Name = "UcDriver"
         Me.UcDriver.Padding = New System.Windows.Forms.Padding(3)
         Me.UcDriver.Size = New System.Drawing.Size(791, 101)
         Me.UcDriver.TabIndex = 0
-        Me.UcDriver.UCViewButtons = true
+        Me.UcDriver.UCViewButtons = True
+        '
+        'UcNumberDriverNationalCode
+        '
+        Me.UcNumberDriverNationalCode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberDriverNationalCode.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumberDriverNationalCode.Location = New System.Drawing.Point(269, 3)
+        Me.UcNumberDriverNationalCode.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        Me.UcNumberDriverNationalCode.Name = "UcNumberDriverNationalCode"
+        Me.UcNumberDriverNationalCode.Size = New System.Drawing.Size(90, 25)
+        Me.UcNumberDriverNationalCode.TabIndex = 27
+        Me.UcNumberDriverNationalCode.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberDriverNationalCode.UCAllowedMinNumber = CType(-922337203685477, Long)
+        Me.UcNumberDriverNationalCode.UCBackColor = System.Drawing.Color.White
+        Me.UcNumberDriverNationalCode.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcNumberDriverNationalCode.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberDriverNationalCode.UCBorder = True
+        Me.UcNumberDriverNationalCode.UCBorderColor = System.Drawing.Color.Black
+        Me.UcNumberDriverNationalCode.UCEnable = True
+        Me.UcNumberDriverNationalCode.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumberDriverNationalCode.UCForeColor = System.Drawing.Color.Black
+        Me.UcNumberDriverNationalCode.UCMultiLine = False
+        Me.UcNumberDriverNationalCode.UCValue = CType(0, Long)
+        '
+        'Label3
+        '
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label3.ForeColor = System.Drawing.Color.OrangeRed
+        Me.Label3.Location = New System.Drawing.Point(366, 2)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(42, 23)
+        Me.Label3.TabIndex = 26
+        Me.Label3.Text = "کد ملی"
         '
         'UCDriverTruck
         '
@@ -213,4 +257,6 @@ End Sub
     Friend WithEvents UcButtonNew As UCButton
     Friend WithEvents UcNumberStrSmartCardNoSearch As UCNumber
     Friend WithEvents Label2 As Label
+    Friend WithEvents UcNumberDriverNationalCode As UCNumber
+    Friend WithEvents Label3 As Label
 End Class
