@@ -2085,6 +2085,7 @@ End Namespace
 
 Namespace PermissionManagement
 
+
     Public MustInherit Class R2CorePermissionTypes
         Public Shared ReadOnly None As Int64 = 0
         Public Shared ReadOnly SoftwareUsersAccessMobileProcesses As Int64 = 1
