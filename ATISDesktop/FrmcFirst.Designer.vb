@@ -29,21 +29,22 @@ Partial Class FrmcFirst
         Me.LblApplicationDomainTitle1 = New System.Windows.Forms.Label()
         Me.LblApplicationDomainTitle0 = New System.Windows.Forms.Label()
         Me.UcLabelMessage = New R2CoreGUI.UCLabel()
-        CType(Me.PicEnd,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.PnlMain.SuspendLayout
-        Me.SuspendLayout
+        Me.SqlConnection1 = New System.Data.SqlClient.SqlConnection()
+        CType(Me.PicEnd, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PnlMain.SuspendLayout()
+        Me.SuspendLayout()
         '
         'PicEnd
         '
-        Me.PicEnd.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PicEnd.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PicEnd.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PicEnd.Image = CType(resources.GetObject("PicEnd.Image"),System.Drawing.Image)
+        Me.PicEnd.Image = CType(resources.GetObject("PicEnd.Image"), System.Drawing.Image)
         Me.PicEnd.Location = New System.Drawing.Point(432, 11)
         Me.PicEnd.Name = "PicEnd"
         Me.PicEnd.Size = New System.Drawing.Size(30, 39)
         Me.PicEnd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PicEnd.TabIndex = 1
-        Me.PicEnd.TabStop = false
+        Me.PicEnd.TabStop = False
         '
         'PnlMain
         '
@@ -62,9 +63,9 @@ Partial Class FrmcFirst
         '
         'LblSystemTitle
         '
-        Me.LblSystemTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LblSystemTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LblSystemTitle.BackColor = System.Drawing.Color.Transparent
-        Me.LblSystemTitle.Font = New System.Drawing.Font("Tempus Sans ITC", 15!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic),System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LblSystemTitle.Font = New System.Drawing.Font("Tempus Sans ITC", 15.0!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblSystemTitle.ForeColor = System.Drawing.Color.Black
         Me.LblSystemTitle.Location = New System.Drawing.Point(11, 99)
         Me.LblSystemTitle.Name = "LblSystemTitle"
@@ -75,9 +76,9 @@ Partial Class FrmcFirst
         '
         'LblApplicationDomainTitle1
         '
-        Me.LblApplicationDomainTitle1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LblApplicationDomainTitle1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LblApplicationDomainTitle1.BackColor = System.Drawing.Color.Transparent
-        Me.LblApplicationDomainTitle1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.LblApplicationDomainTitle1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.LblApplicationDomainTitle1.ForeColor = System.Drawing.Color.Black
         Me.LblApplicationDomainTitle1.Location = New System.Drawing.Point(11, 40)
         Me.LblApplicationDomainTitle1.Name = "LblApplicationDomainTitle1"
@@ -88,9 +89,9 @@ Partial Class FrmcFirst
         '
         'LblApplicationDomainTitle0
         '
-        Me.LblApplicationDomainTitle0.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LblApplicationDomainTitle0.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LblApplicationDomainTitle0.BackColor = System.Drawing.Color.Transparent
-        Me.LblApplicationDomainTitle0.Font = New System.Drawing.Font("B Homa", 27.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.LblApplicationDomainTitle0.Font = New System.Drawing.Font("B Homa", 27.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.LblApplicationDomainTitle0.ForeColor = System.Drawing.Color.Black
         Me.LblApplicationDomainTitle0.Location = New System.Drawing.Point(58, 40)
         Me.LblApplicationDomainTitle0.Name = "LblApplicationDomainTitle0"
@@ -103,8 +104,8 @@ Partial Class FrmcFirst
         '
         Me.UcLabelMessage._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabelMessage._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabelMessage.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabelMessage.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelMessage.BackColor = System.Drawing.Color.Transparent
         Me.UcLabelMessage.ForeColor = System.Drawing.Color.Black
         Me.UcLabelMessage.Location = New System.Drawing.Point(11, 125)
@@ -113,10 +114,16 @@ Partial Class FrmcFirst
         Me.UcLabelMessage.Size = New System.Drawing.Size(467, 53)
         Me.UcLabelMessage.TabIndex = 0
         Me.UcLabelMessage.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelMessage.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabelMessage.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabelMessage.UCForeColor = System.Drawing.Color.Black
         Me.UcLabelMessage.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelMessage.UCValue = ""
+        '
+        'SqlConnection1
+        '
+        Me.SqlConnection1.ConnectionString = "Data Source=192.168.1.2;Initial Catalog=R2Primary;Persist Security Info=True;User" &
+    " ID=sa;Password=Biinfo878aB"
+        Me.SqlConnection1.FireInfoMessageEventOnUserErrors = False
         '
         'FrmcFirst
         '
@@ -149,4 +156,5 @@ End Sub
     Friend WithEvents LblApplicationDomainTitle1 As Label
     Friend WithEvents LblApplicationDomainTitle0 As Label
     Friend WithEvents LblSystemTitle As Label
+    Friend WithEvents SqlConnection1 As SqlClient.SqlConnection
 End Class

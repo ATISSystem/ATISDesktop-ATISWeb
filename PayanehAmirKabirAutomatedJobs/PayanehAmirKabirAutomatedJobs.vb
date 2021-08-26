@@ -103,6 +103,14 @@ Public Class PayanehAmirKabirAutomatedJobs
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "ControllingMoneyWalletAccounting:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 
+            'صدور خودکار نوبت ها
+            Try
+                PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
+
 
         Catch ex As Exception
             EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "_AutomatedJobsTimer_Elapsed:" + ex.Message.ToString, EventLogEntryType.Error)

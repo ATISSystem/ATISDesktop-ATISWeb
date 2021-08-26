@@ -76,6 +76,8 @@ Imports PayanehClassLibrary.ReportsManagement
 Imports PayanehClassLibrary.TruckersAssociationControllingMoneyWallet.Exceptions
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
+Imports R2CoreTransportationAndLoadNotification.AnnouncementTiming
+Imports PayanehClassLibrary.TurnRegisterRequest
 
 Namespace Logging
 
@@ -85,6 +87,7 @@ Namespace Logging
         Public Shared ReadOnly Property CarTruckUpdateInfSuccess As Int64 = 17
         Public Shared ReadOnly Property CarTruckUpdateInfNotSuccess As Int64 = 18
         Public Shared ReadOnly Property TurnsCancellationBaseOnDuration As Int64 = 21
+        Public Shared ReadOnly Property AutomaticTurnRegistering As Int64 = 52
     End Class
 
 End Namespace
@@ -1126,6 +1129,66 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
+        Public Shared Sub AutomaticTurnRegistering()
+            Try
+                'ابتدا تولید رشته ساب کوری
+                'گروه های اعلام بار
+                Dim InstanceAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
+                Dim AnnouncementHalls = InstanceAnnouncementHalls.GetAnnouncementHalls()
+                Dim SubQuery = String.Empty
+                For LoopAnnouncementHalls As Int16 = 0 To AnnouncementHalls.Count - 1
+                    Dim AHSGsConfig = Split(R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnRegisteringSetting, AnnouncementHalls(LoopAnnouncementHalls).AHId, 0), "-")
+                    'زیرگروه های اعلام بار
+                    Dim AnnouncementHallsSubGroups = InstanceAnnouncementHalls.GetAnnouncementHallSubGroups(AnnouncementHalls(LoopAnnouncementHalls).AHId)
+                    For LoopAnnouncementHallsSubGroups As Int16 = 0 To AnnouncementHallsSubGroups.Count - 1
+                        Dim LoopIndex = LoopAnnouncementHallsSubGroups
+                        Dim IsActiveAutomaticTurnRegistering As Boolean = Split(AHSGsConfig.Where(Function(x) AnnouncementHallsSubGroups(LoopIndex).AHSGId = Split(x, ":")(0))(0), ":")(2)
+                        If IsActiveAutomaticTurnRegistering Then SubQuery = SubQuery + " or AHSGId=" & AnnouncementHallsSubGroups(LoopIndex).AHSGId.ToString() & ""
+                    Next
+                Next
+
+                'بدست آوردن لیست نوبت هایی که مجوز برایشان  صادر شده و باید نوبت برایشان صادر شود
+                Dim Query = "Select Turns.nEnterExitId,Turns.strCardno,Loads.AHId,Loads.AHSGId from dbtransport.dbo.tbEnterExit as Turns
+                                       Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID=Loads.nEstelamID 
+                                 Where  Turns.strCardno not in (Select strCardno from dbtransport.dbo.tbEnterExit Where (TurnStatus=1 or TurnStatus=7 or TurnStatus=8 or TurnStatus=9 or TurnStatus=10)) and 
+                                        Turns.TurnStatus = 6 And Turns.strExitDate ='" & _DateTime.GetCurrentDateShamsiFull & "' and (2=3" + SubQuery + ")" + " Order By Turns.nEnterExitId Asc"
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
+                Dim InstanceLogging = New R2CoreInstanceLoggingManager
+                Dim CurrentTime = _DateTime.GetCurrentTime()
+                Dim DsTurns As DataSet = Nothing
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, Query, 0, DsTurns).GetRecordsCount <> 0 Then
+                    For LoopTurns As Int64 = 0 To DsTurns.Tables(0).Rows.Count - 1
+                        Dim AHId As Int64 = DsTurns.Tables(0).Rows(LoopTurns).Item("AHId")
+                        Dim AHSGId As Int64 = DsTurns.Tables(0).Rows(LoopTurns).Item("AHSGId")
+                        Dim nIdCar As Int64 = DsTurns.Tables(0).Rows(LoopTurns).Item("strCardno")
+                        Dim nEnterExitId As Int64 = DsTurns.Tables(0).Rows(LoopTurns).Item("nEnterExitId")
+                        Try
+                            If InstanceTiming.IsTimingActive(AHId, AHSGId) Then
+                                If InstanceTiming.GetTiming(AHId, AHSGId, CurrentTime) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering Then
+                                    Continue For
+                                End If
+                            End If
+                            'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
+                            Dim NSSCarTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure = New R2CoreTransportationAndLoadNotificationStandardTruckStructure(New R2StandardCarStructure(nIdCar, Nothing, Nothing, Nothing, Nothing), Nothing)
+                            R2CoreTransportationAndLoadNotificationMClassTurnsManagement.TruckPresentInParkingForTurnRegisteringControl(NSSCarTruck)
+                            Dim TurnId As Int64 = Int64.MinValue
+                            Dim TurnRegisterRequestId = PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(NSSCarTruck, True, True, TurnId, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+                            If InstanceLogging.GetNSSLogType(PayanehClassLibraryLogType.AutomaticTurnRegistering).Active Then
+                                InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.AutomaticTurnRegistering, InstanceLogging.GetNSSLogType(PayanehClassLibraryLogType.AutomaticTurnRegistering).LogTitle, "nIdCar=" + nIdCar.ToString(), "TurnRegisterRequestId=" + TurnRegisterRequestId.ToString(), String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), Nothing))
+                            End If
+                        Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
+                            If InstanceLogging.GetNSSLogType(PayanehClassLibraryLogType.AutomaticTurnRegistering).Active Then
+                                InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.AutomaticTurnRegistering, InstanceLogging.GetNSSLogType(PayanehClassLibraryLogType.AutomaticTurnRegistering).LogTitle, "nIdCar=" + nIdCar.ToString(), ex.Message, "CurrentTurnId=" + nEnterExitId.ToString(), "AHId=" + AHId.ToString(), "AHSGId=" + AHSGId.ToString(), R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), Nothing))
+                            End If
+                        End Try
+                    Next
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
 
     End Class
 
@@ -1396,7 +1459,6 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property ElamBarMonitoringInterval As Int64 = 33
         Public Shared ReadOnly Property NobatGetFP_ChkViewTruckNobat As Int64 = 34
         Public Shared ReadOnly Property TWS As Int64 = 51
-        Public Shared ReadOnly Property AnnouncementHallMonitoring As Int64 = 52
         Public Shared ReadOnly Property TarrifsPayanehKiosk As Int64 = 53
         Public Shared ReadOnly Property PayanehAmirKabirAutomatedJobsSetting As Int64 = 64
         Public Shared ReadOnly Property TruckersAssociationControllingMoneyWallet As Int64 = 75
