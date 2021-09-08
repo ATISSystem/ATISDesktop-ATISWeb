@@ -2,7 +2,7 @@
 Imports System.Drawing
 Imports System.Reflection
 Imports System.Windows.Forms
-
+Imports R2Core.ConfigurationManagement
 Imports R2Core.EntityRelationManagement
 Imports R2Core.EntityRelationManagement.Exceptions
 Imports R2Core.ExceptionManagement
@@ -37,12 +37,12 @@ Public Class UCDriver
                 UcButtonDel.Visible = True
                 UcButtonNew.Visible = True
                 UcButtonSabt.Visible = True
-                CButtonSendSmsLast5Digit.Visible=True 
+                CButtonSendSmsLast5Digit.Visible = True
             Else
                 UcButtonDel.Visible = False
                 UcButtonNew.Visible = False
                 UcButtonSabt.Visible = False
-                CButtonSendSmsLast5Digit.Visible=False 
+                CButtonSendSmsLast5Digit.Visible = False
             End If
         End Set
     End Property
@@ -65,7 +65,8 @@ Public Class UCDriver
         UcPersianTextBoxFather.UCRefresh() : UcPersianTextBoxTel.UCRefresh() : UcPersianTextBoxAddress.UCRefresh()
         UcNumberDrivernIdPerson.UCRefresh() : UcTextBoxNationalCode.UCRefresh() : UcNumberLicenseNo.UCRefresh()
         UcPersianTextBoxDriverName.Focus()
-        CButtonSendSmsLast5Digit.Enabled=True 
+        CButtonSendSmsLast5Digit.Enabled = True
+        CButtonSoftwareUserVerificationCodeInjection.Enabled = True
         RaiseEvent UCRefreshedEvent()
     End Sub
 
@@ -287,6 +288,24 @@ Public Class UCDriver
             'Dim SMSMessage = "شناسه شخصی:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز شخصی:" + NSSSoftwareUser.UserPassword
             'SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, 1, Nothing, Nothing))
             'UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "رمز شخصی ارسال شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As GetNSSException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اطلاعات مورد نیاز را به صورت کامل وارد کنید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub CButtonSoftwareUserVerificationCodeInjection_Click(sender As Object, e As EventArgs) Handles CButtonSoftwareUserVerificationCodeInjection.Click
+        Try
+            Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+            Dim InstanceR2CoreParkingSystemSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
+            Dim NSSSoftwareUser = InstanceR2CoreParkingSystemSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
+            Dim InstanceR2CoreSoftwareUser = New R2CoreInstanseSoftwareUsersManager
+            InstanceR2CoreSoftwareUser.SoftwareUserVerificationCodeInjection(NSSSoftwareUser)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تزریق کد فعال سازی با موفقیت انجام شد" + vbCrLf + "InjectedVerificationCode=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 12), "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+            CButtonSoftwareUserVerificationCodeInjection.Enabled = False
+        Catch ex As GetNSSException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اطلاعات مورد نیاز را به صورت کامل وارد کنید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

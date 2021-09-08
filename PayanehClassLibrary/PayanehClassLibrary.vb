@@ -1150,7 +1150,7 @@ Namespace CarTruckNobatManagement
                 'بدست آوردن لیست نوبت هایی که مجوز برایشان  صادر شده و باید نوبت برایشان صادر شود
                 Dim Query = "Select Turns.nEnterExitId,Turns.strCardno,Loads.AHId,Loads.AHSGId from dbtransport.dbo.tbEnterExit as Turns
                                        Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID=Loads.nEstelamID 
-                                 Where  Turns.strCardno not in (Select strCardno from dbtransport.dbo.tbEnterExit Where (TurnStatus=1 or TurnStatus=7 or TurnStatus=8 or TurnStatus=9 or TurnStatus=10)) and 
+                                 Where  Turns.strCardno not in (Select strCardno from dbtransport.dbo.tbEnterExit Where (TurnStatus=1 or TurnStatus=7 or TurnStatus=8 or TurnStatus=9 or TurnStatus=10) and strEnterDate='" & _DateTime.GetCurrentDateShamsiFull & "') and 
                                         Turns.TurnStatus = 6 And Turns.strExitDate ='" & _DateTime.GetCurrentDateShamsiFull & "' and (2=3" + SubQuery + ")" + " Order By Turns.nEnterExitId Asc"
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim InstanceTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager

@@ -1613,6 +1613,22 @@ Namespace SoftwareUserManagement
             End Try
         End Sub
 
+        Public Sub SoftwareUserVerificationCodeInjection(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+            Dim CmdSql As New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers 
+                                      Set VerificationCode='" & InstanceConfiguration.GetConfigString(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 12) & "',VerificationCodeTimeStamp='" & _DateTime.GetCurrentDateTimeMilladiFormated & "',VerificationCodeCount=" & InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 4) & " 
+                                      Where UserId=" & YourNSSSoftwareUser.UserId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
 
 
     End Class
