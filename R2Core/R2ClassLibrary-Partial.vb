@@ -3055,7 +3055,7 @@ Namespace BlackIPs
                      Where Active=1 and Deleted=0", 3600, DsBlackIPTypes)
                 For Loopx As Int64 = 0 To DsBlackIPTypes.Tables(0).Rows.Count - 1
                     Dim Ds As DataSet = Nothing
-                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, DsBlackIPTypes.Tables(0).Rows(Loopx).Item("StrategyQuery"), 0, Ds).GetRecordsCount <> 0 Then
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, DsBlackIPTypes.Tables(0).Rows(Loopx).Item("StrategyQuery"), 0, Ds).GetRecordsCount <> 0 Then
                         Dim SB As New StringBuilder
                         For Loopy As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                             SB.Append(Ds.Tables(0).Rows(Loopy).Item("BlackIP").trim).Append(";")
