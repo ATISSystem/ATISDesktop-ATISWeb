@@ -14,6 +14,7 @@ using R2CoreTransportationAndLoadNotification.LoadAllocation;
 using PayanehClassLibrary.LoadNotification.LoadPermission;
 using static ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement.WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue;
 using ATISWeb.TransportationAndLoadNotification.LoadPermissionManagement.LoadPermissionPrinting;
+using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -75,6 +76,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 GridViewLoadCapacitorLoadLoadPermissionsIssued.DataSource = dt;
                 GridViewLoadCapacitorLoadLoadPermissionsIssued.DataBind();
             }
+            catch (LoadAllocationNotFoundException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }

@@ -1,7 +1,9 @@
 ﻿
 Imports System.Drawing
+Imports System.Drawing.Printing
 Imports System.Reflection
 Imports System.Windows.Forms
+
 Imports R2Core.ConfigurationManagement
 Imports R2Core.EntityRelationManagement
 Imports R2Core.EntityRelationManagement.Exceptions
@@ -280,12 +282,14 @@ Public Class UCDriver
         End Try
     End Sub
 
+    Private WithEvents PrintDocument As PrintDocument = New PrintDocument
     Private Sub CButtonSendSmsLast5Digit_Click(sender As Object, e As EventArgs) Handles CButtonSendSmsLast5Digit.Click
         Dim InstanceSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
         Try
             'CButtonSendSmsLast5Digit.Enabled=False
             Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
             MessageBox.Show("شناسه شخصی:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز شخصی:" + NSSSoftwareUser.UserPassword)
+            PrintDocument.Print()
             'Dim SMSSender As New R2CoreSMSSendRecive
             'Dim SMSMessage = "شناسه شخصی:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز شخصی:" + NSSSoftwareUser.UserPassword
             'SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, 1, Nothing, Nothing))
@@ -313,6 +317,38 @@ Public Class UCDriver
         End Try
     End Sub
 
+    Private Sub PrintDocument_BeginPrint(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintEventArgs) Handles PrintDocument.BeginPrint
+    End Sub
+
+    Private Sub PrintDocument_EndPrint(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintEventArgs) Handles PrintDocument.EndPrint
+        Try
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Private Sub PrintDocument_PrintPage_Printing(ByVal X As Int16, ByVal Y As Int16, ByVal E As System.Drawing.Printing.PrintPageEventArgs)
+        Try
+            Dim InstanceSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
+            Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
+
+            Dim myPaperSizeHalf As Integer = PrintDocument.PrinterSettings.DefaultPageSettings.PaperSize.Width / 4
+            Dim myStrFont As Drawing.Font = New System.Drawing.Font("B Homa", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+            Dim myDigFont As Drawing.Font = New System.Drawing.Font("Alborz Titr", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+            E.Graphics.DrawString(NSSSoftwareUser.UserName, myStrFont, Brushes.DarkBlue, myPaperSizeHalf - NSSSoftwareUser.UserName.Trim.Length, Y)
+            E.Graphics.DrawString("شناسه شخصی : " + NSSSoftwareUser.UserShenaseh, myStrFont, Brushes.DarkBlue, myPaperSizeHalf - ("شناسه شخصی : " + NSSSoftwareUser.UserShenaseh).Trim.Length, Y + 30)
+            E.Graphics.DrawString("رمز شخصی : " + NSSSoftwareUser.UserPassword, myStrFont, Brushes.DarkBlue, myPaperSizeHalf - ("رمز شخصی : " + NSSSoftwareUser.UserPassword.Trim).Length, Y + 60)
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub PrintDocument_PrintPage(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintPageEventArgs) Handles PrintDocument.PrintPage
+        Try
+            PrintDocument_PrintPage_Printing(0, 0, e)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
 
 
 #End Region

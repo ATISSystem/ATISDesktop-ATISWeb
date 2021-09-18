@@ -52,8 +52,9 @@ Public Class UCUCTransportCompanyCollection
             Return _UCDefaultTransportComapnyId
         End Get
         Set(value As Int64)
+            Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
             _UCDefaultTransportComapnyId = value
-            UCActiveThisNSS(R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompany(value))
+            UCActiveThisNSS(InstanceTransportCompanies.GetNSSTransportCompany(value))
         End Set
     End Property
 
@@ -93,7 +94,8 @@ Public Class UCUCTransportCompanyCollection
             Next
             PnlUCs.ResumeLayout()
             Try
-                UCActiveThisNSS(R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompany(R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompanyFullOfWorkCompany(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull(), Nothing), New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull(), Nothing), YourAHId, YourAHSGId).TCId))
+                Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
+                UCActiveThisNSS(InstanceTransportCompanies.GetNSSTransportCompany(R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompanyFullOfWorkCompany(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull(), Nothing), New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull(), Nothing), YourAHId, YourAHSGId).TCId))
             Catch ex As TransportCompanyNotFoundException
             End Try
         Catch ex As Exception

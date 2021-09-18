@@ -3,6 +3,7 @@ Imports System.Reflection
 
 Imports R2Core.RFIDCardsManagement
 Imports R2Core.ConfigurationManagement
+Imports R2Core.RFIDCardsManagement.Exceptions
 
 Public Class UCRFIDCardTextMaintainer
     Inherits UCGeneral
@@ -60,6 +61,8 @@ Public Class UCRFIDCardTextMaintainer
     Private Sub UCFillUCTextBoxRFIDCardId()
         Try
             UcTextBoxRFIDCardId.UCValue = R2CoreMClassRFIDCardManagement.GetNSSRFIDCard(UcTextBoxRFIDCardNO.UCValue).CardId
+        Catch ex As RFIdCardNotFoundException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -75,8 +78,10 @@ Public Class UCRFIDCardTextMaintainer
 
     Private Sub UcTextBox_UC13PressedEvent(CurrentText As String) Handles UcTextBoxRFIDCardNO.UC13PressedEvent
         Try
-            UCFillUCTextBoxRFIDCardId
+            UCFillUCTextBoxRFIDCardId()
             RaiseEvent UC13PressedEvent(UCValue)
+        Catch ex As RFIdCardNotFoundException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -84,8 +89,10 @@ Public Class UCRFIDCardTextMaintainer
 
     Private Sub PicReturn_Click(sender As Object, e As EventArgs) Handles PicReturn.Click
         Try
-            UCFillUCTextBoxRFIDCardId
+            UCFillUCTextBoxRFIDCardId()
             RaiseEvent UC13PressedEvent(UCValue)
+        Catch ex As RFIdCardNotFoundException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

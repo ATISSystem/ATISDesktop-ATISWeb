@@ -64,6 +64,11 @@ Imports R2Core.PredefinedMessagesManagement
 Imports R2CoreTransportationAndLoadNotification.PredefinedMessagesManagement
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
+Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement
+Imports R2Core.EntityRelationManagement
+Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement.Exceptions
+Imports R2CoreParkingSystem.TrafficCardsManagement
+Imports R2CoreParkingSystem.AccountingManagement
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -1965,7 +1970,7 @@ Namespace LoadCapacitor
                     If YourNSS.nCarNumKol > InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.LoadCapacitorLoadManipulationSetting, 0) Then Throw New LoadCapacitorLoadNumberOverLimitException
                     If YourNSS.nCarNumKol < 1 Then Throw New LoadCapacitorLoadnCarNumKolCanNotBeZeroException
                     'کنترل اکتیو بودن شرکت حمل و نقل
-                    If InstanceTransportCompanies.ISTransportCompanyActive(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(YourNSS.nCompCode, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)) = False Then Throw New TransportCompanyISNotActiveException
+                    If InstanceTransportCompanies.ISTransportCompanyActive(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(YourNSS.nCompCode, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)) = False Then Throw New TransportCompanyISNotActiveException
                     'بررسی بار فردا
                     Dim ComposeSearchString As String = NSSAnnouncementHallSubGroup.AHSGId.ToString + "="
                     Dim AllTommorowConfigforAHId As String() = Split(InstanceConfigurationsofAnnouncementHalls.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.TommorowLoads, NSSAnnouncementHall.AHId), "-")
@@ -3348,10 +3353,12 @@ Namespace AnnouncementHalls
         End Function
 
         Public Function GetAnnouncementHallsAnnouncementHallSubGroupsJOINT() As List(Of R2CoreTransportationAndLoadNotificationStandardAnnouncementHallAnnouncementHallSubGroupJOINTStructure)
-            Dim InstanceAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
+
             Try
+                Dim InstanceAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet
-                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "
+                InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "
                  Select AHs.AHId,AHSGs.AHSGId from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs
                     Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationAnnouncementHallSubGroups as AHRAHSG On AHs.AHId=AHRAHSG.AHId 
                     Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On AHRAHSG.AHSGId=AHSGs.AHSGId 
@@ -3783,6 +3790,8 @@ Namespace AnnouncementTiming
         InEndOfAllProcesses = 8 'بعد از همه اعلام بارها
         StartAutomaticTurnRegistering = 9 'در 5 ثانیه اول صدور خودکار نوبت ها
         InAutomaticTurnRegistering = 10 'در اسلایس صدور خودکار نوبت ها
+        StartSedimenting = 11 'در 5 ثانیه اول رسوب بار
+        InSedimenting = 12 'در اسلایس رسوب بار
     End Enum
 
     Public Class R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
@@ -3810,12 +3819,14 @@ Namespace AnnouncementTiming
                 Dim AllAnnouncementHallsAutomaticProcessesTimingSubGroup As String = AllAnnouncementHallsAutomaticProcessesTiming.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0)
                 Dim TruckDriverLoadAllocationTiming As Int64 = Split(AllAnnouncementHallsAutomaticProcessesTimingSubGroup, "=")(1).Split("-")(1).Split(",")(0)
                 Dim LoadPermissionsAutomaticJobTiming As Int64 = Split(AllAnnouncementHallsAutomaticProcessesTimingSubGroup, "=")(1).Split("-")(1).Split(",")(1)
-                Dim AutomaticTurnRegisteringTiming As Int64 = Split(AllAnnouncementHallsAutomaticProcessesTimingSubGroup, "=")(1).Split("-")(1).Split(",")(2)
+                Dim SedimentingTiming As Int64 = Split(AllAnnouncementHallsAutomaticProcessesTimingSubGroup, "=")(1).Split("-")(1).Split(",")(2)
+                Dim AutomaticTurnRegisteringTiming As Int64 = Split(AllAnnouncementHallsAutomaticProcessesTimingSubGroup, "=")(1).Split("-")(1).Split(",")(3)
                 Dim AnnouncemenetHallLastAnnounceTime As String = InstanceAnnouncementHalls.GetAnnouncemenetHallLastAnnounceTime(YourAHId, YourAHSGId).Time
                 Dim O1 As TimeSpan = TimeSpan.Parse(YourTime)
                 Dim O2 As TimeSpan = TimeSpan.Parse(AnnouncemenetHallLastAnnounceTime)
                 Dim SliceLoadPermissionTiming As Int64 = LoadPermissionsAutomaticJobTiming * 60
                 Dim SliceTruckDriverLoadAllocationTiming As Int64 = TruckDriverLoadAllocationTiming * 60
+                Dim SliceSedimentingTiming As Int64 = SedimentingTiming * 60
                 Dim SliceAutomaticTurnRegisteringTiming As Int64 = AutomaticTurnRegisteringTiming * 60
                 'قبل از شروع اعلام بار
                 If AnnouncemenetHallLastAnnounceTime = "00:00:00" Then Return R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses
@@ -3827,10 +3838,14 @@ Namespace AnnouncementTiming
                 If O1.TotalSeconds >= O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming And O1.TotalSeconds < O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 Then Return R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering
                 'در اسلایس صدور مجوز
                 If O1.TotalSeconds >= O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 And O1.TotalSeconds < O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming Then Return R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering
+                'در 5 ثانیه اول شروع رسوب بار
+                If O1.TotalSeconds >= O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming And O1.TotalSeconds < O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming + 5 Then Return R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting
+                'در اسلایس رسوب بار
+                If O1.TotalSeconds >= O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming + 5 And O1.TotalSeconds < O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming + 5 + SliceSedimentingTiming Then Return R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting
                 'در 5 ثانیه اول شروع صدور نوبت خودکار
-                If O1.TotalSeconds >= O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming And O1.TotalSeconds < O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming + 5 Then Return R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering
+                If O1.TotalSeconds >= O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming + 5 + SliceSedimentingTiming And O1.TotalSeconds < O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming + 5 + SliceSedimentingTiming + 5 Then Return R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering
                 'در اسلایس صدور نوبت خودکار
-                If O1.TotalSeconds >= O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming + 5 And O1.TotalSeconds < O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming + 5 + SliceAutomaticTurnRegisteringTiming Then Return R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering
+                If O1.TotalSeconds >= O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming + 5 + SliceSedimentingTiming + 5 And O1.TotalSeconds < O2.TotalSeconds + 5 + SliceTruckDriverLoadAllocationTiming + 5 + SliceLoadPermissionTiming + 5 + SliceSedimentingTiming + 5 + SliceAutomaticTurnRegisteringTiming Then Return R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering
                 'پایان همه فرآیندها
                 If InstanceAnnouncementHalls.IsThisAnnounceTimeLeastAnnounceTime(YourAHId, YourAHSGId, AnnouncemenetHallLastAnnounceTime) Then Return R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InEndOfAllProcesses
                 'در وسط دو اعلام بار قرار داریم البته بعد از تخصیص و صدور مجوز و صدور خودکار نوبت ها
@@ -5735,8 +5750,10 @@ Namespace LoadAllocation
             End Try
         End Sub
 
-        Public Function GetLoadAllocationsforLoadPermissionRegistering() As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
+        Public Function GetLoadAllocationsforLoadPermissionRegistering(Optional YourAHId As Int64 = Int64.MinValue, Optional YourAHSGId As Int64 = Int64.MinValue) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
             Try
+                Dim ComposeQueryAHId = IIf(YourAHId = Int64.MinValue, String.Empty, " And Elam.AHId=" & YourAHId & "")
+                Dim ComposeQueryAHSGId = IIf(YourAHSGId = Int64.MinValue, String.Empty, " And Elam.AHSGId=" & YourAHSGId & "")
                 Dim DS As DataSet
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "
                       Select LoadAllocation.Priority,LoadAllocation.LAId,LoadAllocation.nEstelamId,LoadAllocation.TurnId,LoadAllocation.LAStatusId,LoadAllocation.LANote,LoadAllocation.DateTimeMilladi,LoadAllocation.DateShamsi,LoadAllocation.Time,LoadAllocation.UserId
@@ -5745,8 +5762,7 @@ Namespace LoadAllocation
                                Inner Join dbtransport.dbo.tbEnterExit as EnterExit On LoadAllocation.TurnId=EnterExit.nEnterExitId
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On Elam.AHId=AHs.AHId 
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On Elam.AHSGId =AHSGs.AHSGId  
-                             Where LoadAllocation.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull() & "' and LoadAllocation.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.Registered & " 
-                                   Order By TurnId Asc,LoadAllocation.Priority Asc", 0, DS)
+                             Where LoadAllocation.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull() & "' and LoadAllocation.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.Registered & "" + ComposeQueryAHId + ComposeQueryAHSGId + " Order By TurnId Asc,LoadAllocation.Priority Asc", 0, DS)
                 Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                     Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure(DS.Tables(0).Rows(Loopx).Item("LAId"), DS.Tables(0).Rows(Loopx).Item("nEstelamId"), DS.Tables(0).Rows(Loopx).Item("TurnId"), DS.Tables(0).Rows(Loopx).Item("LAStatusId"), DS.Tables(0).Rows(Loopx).Item("LANote").trim, DS.Tables(0).Rows(Loopx).Item("Priority"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi"), DS.Tables(0).Rows(Loopx).Item("Time"), DS.Tables(0).Rows(Loopx).Item("UserId")))
@@ -6838,10 +6854,81 @@ Namespace LoadSedimentation
         Public Property SedimentingActive As Boolean
     End Class
 
-    Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement
+    Public Class R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManager
         Private Shared _DateTime As New R2DateTime
 
-        Private Shared Function GetNSSLoadSedimentingConfigurations(YourAHId As Int64, YourAHSGId As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupSedimentingConfigurationStructure)
+        Public Sub SedimentingProcess()
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                Dim InstanceAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
+                Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
+                Dim Lst = InstanceAnnouncementHalls.GetAnnouncementHallsAnnouncementHallSubGroupsJOINT()
+                Dim CurrentTime As String = _DateTime.GetCurrentTime()
+                Dim AHId, AHSGId As Int64
+                For Each C In Lst
+                    Try
+                        AHId = C.NSSAnnounementHall.AHId
+                        AHSGId = C.NSSAnnouncementHallSubGroup.AHSGId
+                        'کنترل فعال بودن فرآیند رسوب برای زیرگروه مورد نظر
+                        Dim LastSedimentingConfiguration = GetNSSLastSedimentingConfiguration(AHId, AHSGId, CurrentTime)
+                        If Not LastSedimentingConfiguration.SedimentingActive Then Continue For
+                        'کنترل تایمینگ - آیا رسوب بار برای زیرگروه مورد نظر فرارسیده است
+                        If InstanceAnnouncementTiming.IsTimingActive(AHId, AHSGId) Then
+                            If InstanceAnnouncementTiming.GetTiming(AHId, AHSGId, CurrentTime) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting Then
+                                Continue For
+                            End If
+                        Else
+                            Continue For
+                        End If
+                        'کنترل این که ممکن است هنوز آزاد سازی بار تمام نشده باشد لذا رسوب بار نباید انجام گیرد حتی اگر زمان رسوب بار فرارسیده باشد
+                        Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+                        If InstanceLoadAllocation.GetLoadAllocationsforLoadPermissionRegistering(AHId, AHSGId).Count <> 0 Then Continue For
+                        'لیست کامل باری که باید رسوب گردد
+                        'موجودی داشته باشد و حذف کنسل و رسوب شده نباشد بار فردا هم نباشد 
+                        Dim InstanceLoadCapacitor = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+                        Dim LstLoads = InstanceLoadCapacitor.GetLoadCapacitorLoads(AHId, AHSGId, AnnouncementHallAnnounceTimeTypes.LastAnnounceLoads, False, True, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.nEstelamId)
+                        If IsNothing(LstLoads) Or LstLoads.Count = 0 Then Continue For
+                        'رسوب بار
+                        Dim LastAnnounceTime = InstanceAnnouncementHalls.GetAnnouncemenetHallLastAnnounceTime(AHId, AHSGId).Time
+                        CmdSql.Connection.Open()
+                        CmdSql.CommandText = "Update dbtransport.dbo.tbElam Set bFlag=1,LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " 
+                                              Where (dDateElam='" & _DateTime.GetCurrentDateShamsiFull & "') and (LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered & " or LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.FreeLined & ") and AHId=" & AHId & " and AHSGId=" & AHSGId & " and (dTimeElam<='" & LastAnnounceTime & "') and nCarNum>0"
+                        CmdSql.ExecuteNonQuery()
+                        CmdSql.Connection.Close()
+                        'ثبت اکانتینگ
+                        Dim InstanceAccounting = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorAccountingManager
+                        For Each LoadCapcitorLoad In LstLoads
+                            InstanceAccounting.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(LoadCapcitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Sedimenting, LoadCapcitorLoad.nCarNum, Nothing, Nothing, Nothing, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId))
+                        Next
+                    Catch ex As Exception
+                        If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                        R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.LoadCapacitorSedimentingFailed, ex.Message, "AHId:" + AHId.ToString, "AHSGId:" + AHSGId.ToString, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
+                    End Try
+                Next
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Private Function GetNSSLastSedimentingConfiguration(YourAHId As Int64, YourAHSGId As Int64, YourTime As String) As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupSedimentingConfigurationStructure
+            Try
+                Dim SedimentingConfigurations As List(Of R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupSedimentingConfigurationStructure) = GetNSSLoadSedimentingConfigurations(YourAHId, YourAHSGId)
+                If YourTime < SedimentingConfigurations(0).SedimentingStartTime.Time Then Return Nothing
+                If YourTime >= SedimentingConfigurations(SedimentingConfigurations.Count - 1).SedimentingStartTime.Time Then Return SedimentingConfigurations(SedimentingConfigurations.Count - 1)
+                For Loopx As Int64 = 0 To SedimentingConfigurations.Count - 1
+                    If Loopx < SedimentingConfigurations.Count - 1 Then
+                        If YourTime >= SedimentingConfigurations(Loopx).SedimentingStartTime.Time And YourTime < SedimentingConfigurations(Loopx + 1).SedimentingStartTime.Time Then Return SedimentingConfigurations(Loopx)
+                    Else
+                        Throw New Exception("تنظیمات زمان رسوب بار را در پیکربندی سیستم کنترل نمایید")
+                    End If
+                Next
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Private Function GetNSSLoadSedimentingConfigurations(YourAHId As Int64, YourAHSGId As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupSedimentingConfigurationStructure)
             Try
                 Dim ComposeSearchString As String = YourAHSGId.ToString + "="
                 Dim AllSedimentingTimesofAnnouncementHall As String() = Split(R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadSedimentationSetting, YourAHId), "&")
@@ -6862,88 +6949,10 @@ Namespace LoadSedimentation
             End Try
         End Function
 
-        Private Shared Function GetNSSLastSedimentingConfiguration(YourAHId As Int64, YourAHSGId As Int64) As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupSedimentingConfigurationStructure
-            Try
-                Dim CurrentTime As String = _DateTime.GetCurrentTime()
-                Dim SedimentingConfigurations As List(Of R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupSedimentingConfigurationStructure) = GetNSSLoadSedimentingConfigurations(YourAHId, YourAHSGId)
-                If CurrentTime < SedimentingConfigurations(0).SedimentingStartTime.Time Then Return Nothing
-                If CurrentTime >= SedimentingConfigurations(SedimentingConfigurations.Count - 1).SedimentingStartTime.Time Then Return SedimentingConfigurations(SedimentingConfigurations.Count - 1)
-                For Loopx As Int64 = 0 To SedimentingConfigurations.Count - 1
-                    If Loopx < SedimentingConfigurations.Count - 1 Then
-                        If CurrentTime >= SedimentingConfigurations(Loopx).SedimentingStartTime.Time And CurrentTime < SedimentingConfigurations(Loopx + 1).SedimentingStartTime.Time Then Return SedimentingConfigurations(Loopx)
-                    Else
-                        Throw New Exception("تنظیمات زمان رسوب بار را در پیکربندی سیستم کنترل نمایید")
-                    End If
-                Next
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
+    End Class
 
-        Private Shared Sub SedimentingAllOfLoadCapacitorLoads(YourAHId As Int64, YourAHSGId As Int64)
-            Dim CmdSql As New SqlClient.SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
-            Try
-                'لیست کامل باری که باید رسوب گردد
-                Dim Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetLoadCapacitorLoads(YourAHId, YourAHSGId, AnnouncementHalls.AnnouncementHallAnnounceTimeTypes.LastAnnounceLoads, True, True, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.nEstelamId)
-                'باری برای رسوب وجود ندارد
-                If IsNothing(Lst) Or Lst.Count = 0 Then Return
-
-                Dim LastAnnounceTime As String = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetAnnouncemenetHallLastAnnounceTime(YourAHId, YourAHSGId).Time
-                CmdSql.CommandText = "Update dbtransport.dbo.tbElam Set bFlag=1,LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " 
-                                       Where (dDateElam='" & _DateTime.GetCurrentDateShamsiFull & "') and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow & " and AHId=" & YourAHId & " and AHSGId=" & YourAHSGId & " and (dTimeElam<='" & LastAnnounceTime & "')"
-                CmdSql.Connection.Open()
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Connection.Close()
-
-                For Each LoadCapcitorLoad In Lst
-                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(LoadCapcitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Sedimenting, 1, Nothing, Nothing, Nothing, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId))
-                Next
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Private Shared Sub SedimentingLoadCapacitorLoads(YourAHId As Int64, YourAHSGId As Int64)
-            Try
-                Dim CurrentTime As String = _DateTime.GetCurrentTime()
-                Dim LastSedimentingConfiguration As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupSedimentingConfigurationStructure = GetNSSLastSedimentingConfiguration(YourAHId, YourAHSGId)
-                If IsNothing(LastSedimentingConfiguration) Then Return
-                If Not LastSedimentingConfiguration.SedimentingActive Then Return
-                If CurrentTime >= LastSedimentingConfiguration.SedimentingEndTime.Time Then
-                    SedimentingAllOfLoadCapacitorLoads(YourAHId, YourAHSGId)
-                Else
-                    If CurrentTime < LastSedimentingConfiguration.SedimentingStartTime.Time Then Return
-                    Dim FinalLoadPermission = LoadPermission.R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement.GetNSSFinalLoadPermission(YourAHId, YourAHSGId)
-                    Dim DateTime2 As DateTime = Convert.ToDateTime(CurrentTime)
-                    Dim DateTime1 As DateTime
-                    If IsNothing(FinalLoadPermission) Then
-                        DateTime1 = Convert.ToDateTime(R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetAnnouncemenetHallLastAnnounceTime(YourAHId, YourAHSGId).Time)
-                    Else
-                        DateTime1 = Convert.ToDateTime(FinalLoadPermission.LoadPermissionTime)
-                    End If
-                    If DateDiff(DateInterval.Minute, DateTime1, DateTime2) >= LastSedimentingConfiguration.SedimentingDelationMinutes Then SedimentingAllOfLoadCapacitorLoads(YourAHId, YourAHSGId)
-                End If
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Public Shared Sub SedimentingProcess()
-            Try
-                Dim Lst = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetAnnouncementHallsAnnouncementHallSubGroupsJOINT()
-                For Each C In Lst
-                    Try
-                        SedimentingLoadCapacitorLoads(C.NSSAnnounementHall.AHId, C.NSSAnnouncementHallSubGroup.AHSGId)
-                    Catch ex As Exception
-                        R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, R2CoreTransportationAndLoadNotificationLogType.LoadCapacitorSedimentingFailed, ex.Message, String.Empty, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
-                    End Try
-                Next
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
+    Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement
+        Private Shared _DateTime As New R2DateTime
 
         Public Shared Sub SedimentingLoadCapacitorLoad(YournEstelamId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
@@ -6973,10 +6982,6 @@ End Namespace
 
 Namespace TransportCompanies
 
-    Public Interface ITransportCompanies
-
-    End Interface
-
     Public Class R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure
         Inherits R2StandardStructure
 
@@ -6984,21 +6989,27 @@ Namespace TransportCompanies
             MyBase.New()
             _TCId = Int64.MinValue
             _TCTitle = String.Empty
-            _TCOrganizationCode = Int64.MinValue
+            _TCOrganizationCode = String.Empty
             _TCCityId = Int64.MinValue
             _TCColor = String.Empty
+            _TCTel = String.Empty
+            _TCManagerNameFamily = String.Empty
+            _TCManagerMobileNumber = String.Empty
             _ViewFlag = False
             _Active = False
             _Deleted = False
         End Sub
 
-        Public Sub New(ByVal YourTCId As Int64, YourTCTitle As String, YourTCOrganizationCode As Int64, YourTCCityId As Int64, YourTColor As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+        Public Sub New(ByVal YourTCId As Int64, YourTCTitle As String, YourTCOrganizationCode As String, YourTCCityId As Int64, YourTColor As String, YourTCTel As String, YourTCManagerNameFamily As String, YourTCManagerMobileNumber As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
             MyBase.New(YourTCId, YourTCTitle)
             _TCId = YourTCId
             _TCTitle = YourTCTitle
             _TCOrganizationCode = YourTCOrganizationCode
             _TCCityId = YourTCCityId
             _TCColor = YourTColor
+            _TCTel = YourTCTel
+            _TCManagerNameFamily = YourTCManagerNameFamily
+            _TCManagerMobileNumber = YourTCManagerMobileNumber
             _ViewFlag = YourViewFlag
             _Active = YourActive
             _Deleted = YourDeleted
@@ -7014,9 +7025,12 @@ Namespace TransportCompanies
 
         Public Property TCId As Int64
         Public Property TCTitle As String
-        Public Property TCOrganizationCode As Int64
+        Public Property TCOrganizationCode As String
         Public Property TCCityId As Int64
         Public Property TCColor As String
+        Public Property TCTel As String
+        Public Property TCManagerNameFamily As String
+        Public Property TCManagerMobileNumber As String
         Public Property ViewFlag As Boolean
         Public Property Active As Boolean
         Public Property Deleted As Boolean
@@ -7035,16 +7049,242 @@ Namespace TransportCompanies
             End Try
         End Function
 
+        Public Function GetNSSTransportCompany(YourTransportCompanyId As Int64) As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim DS As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * From R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies Where TCId=" & YourTransportCompanyId & "", 3600, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
+                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("TCTel").trim, DS.Tables(0).Rows(0).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(0).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSTransportCompany(YourNSSMoneyWallet As R2CoreParkingSystemStandardTrafficCardStructure) As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim DS As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                       "Select Top 1 TransportCompanies.TCId,TransportCompanies.TCTitle,TransportCompanies.TCOrganizationCode,TransportCompanies.TCCityId,TransportCompanies.TCColor,TransportCompanies.TCTel,
+                                     TransportCompanies.TCManagerNameFamily,TransportCompanies.TCManagerMobileNumber,TransportCompanies.ViewFlag,TransportCompanies.Active,TransportCompanies.Deleted  
+                        from R2Primary.dbo.TblRFIDCards as MoneyWallets 
+                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationMoneyWallets as TCRMoneyWallets On MoneyWallets.CardId=TCRMoneyWallets.CardId 
+                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On TCRMoneyWallets.TransportCompanyId=TransportCompanies.TCId 
+                        Where MoneyWallets.Active=1 and TCRMoneyWallets.RelationActive=1 and TransportCompanies.Deleted=0 and MoneyWallets.CardId=" & YourNSSMoneyWallet.CardId & "
+                        Order By MoneyWallets.CardId Desc,TransportCompanies.TCId Desc", 0, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
+                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("TCTel").trim, DS.Tables(0).Rows(0).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(0).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
+            Catch ex As TransportCompanyNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Sub RegisteringTransportCompanyMoneyWalletRelation(YourNSSTransportCompany As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure, YourMoneyWallet As R2CoreParkingSystemStandardTrafficCardStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure)
+            Dim Cmdsql As New SqlClient.SqlCommand
+            Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                Try
+                    Cmdsql.Connection.Open()
+                    Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
+                    Cmdsql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationMoneyWallets Set RelationActive=0 Where CardId=" & YourMoneyWallet.CardId & " or TransportCompanyId=" & YourNSSTransportCompany.TCId & ""
+                    Cmdsql.ExecuteNonQuery()
+                    Cmdsql.CommandText = "Insert R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationMoneyWallets(CardId,TransportCompanyId,RelationActive) Values(" & YourMoneyWallet.CardId & "," & YourNSSTransportCompany.TCId & ",1)"
+                    Cmdsql.ExecuteNonQuery()
+                    Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
+                Catch ex As Exception
+                    If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                        Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
+                    End If
+                    Throw New Exception(ex.Message)
+                End Try
+                Try
+                    Dim InstanceTrafficCards = New R2CoreParkingSystemInstanceTrafficCardsManager
+                    Dim NSSMoneyWallet = InstanceTrafficCards.GetNSSTrafficCard(YourMoneyWallet.CardId)
+                    NSSMoneyWallet.Pelak = String.Empty
+                    NSSMoneyWallet.Serial = String.Empty
+                    NSSMoneyWallet.UserIdEdit = YourNSSUser.UserId
+                    NSSMoneyWallet.NoMoney = False
+                    NSSMoneyWallet.Active = True
+                    NSSMoneyWallet.CompanyName = YourNSSTransportCompany.TCTitle
+                    NSSMoneyWallet.NameFamily = YourNSSTransportCompany.TCManagerNameFamily
+                    NSSMoneyWallet.Mobile = YourNSSTransportCompany.TCManagerMobileNumber
+                    NSSMoneyWallet.Tel = YourNSSTransportCompany.TCTel
+                    NSSMoneyWallet.Tahvilg = YourNSSTransportCompany.TCManagerNameFamily
+                    NSSMoneyWallet.CardType = TerafficCardType.None
+                    NSSMoneyWallet.TempCardType = TerafficTempCardType.None
+                    InstanceTrafficCards.UpdatingTrafficCard(NSSMoneyWallet, R2Core.R2Enums.EditLevel.HighLevel)
+                Catch ex As Exception
+                    Throw New Exception(ex.Message)
+                End Try
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
     End Class
 
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement
+
+        Public Shared Function RegisteringTransportCompany(YourNSS As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
+            Dim CmdSql As SqlCommand = New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                If YourNSS.TCTitle.Trim = String.Empty Or YourNSS.TCOrganizationCode.Trim = String.Empty Or YourNSS.TCTel.Trim = String.Empty Or YourNSS.TCManagerNameFamily.Trim = String.Empty Or YourNSS.TCManagerMobileNumber.Trim = String.Empty Then
+                    Throw New DataEntryException
+                End If
+                'ایجاد کاربر مرتبط به شرکت حمل و نقل
+                Dim myUserId = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, Nothing, YourNSS.TCTitle, Nothing, Nothing, Nothing, String.Empty, True, True, R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TransportCompany, YourNSS.TCManagerMobileNumber, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, YourUserNSS.UserId, Nothing, Nothing, True, Nothing), YourUserNSS)
+                'ثبت شرکت حمل و نقل
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Select Top 1 TCId  from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies with (tablockx) Order By TCId Desc " : CmdSql.ExecuteNonQuery()
+                Dim myTCId As Int64 = CmdSql.ExecuteScalar + 1
+                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies(TCId,TCTitle,TCOrganizationCode,TCCityId,TCColor,TCTel,TCManagerNameFamily,TCManagerMobileNumber,ViewFlag,Active,Deleted) Values(" & myTCId & ",'" & YourNSS.TCTitle & "','" & YourNSS.TCOrganizationCode & "'," & YourNSS.TCCityId & ",'200;200;60;50','" & YourNSS.TCTel & "','" & YourNSS.TCManagerNameFamily & "','" & YourNSS.TCManagerMobileNumber & "'," & IIf(YourNSS.ViewFlag, 1, 0) & "," & IIf(YourNSS.Active, 1, 0) & ",0)"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.tbCompany(nCompCode,strCompName,nCompCityCode,Active,ViewFlag,Deleted) Values(" & myTCId & ",'" & YourNSS.TCTitle & "'," & YourNSS.TCCityId & "," & IIf(YourNSS.Active, 1, 0) & "," & IIf(YourNSS.ViewFlag, 1, 0) & ",0)"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationSoftwareUsers(TCId,UserId,RelationActive) Values(" & myTCId & "," & myUserId & ",1)"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+
+                'به دست آوردن لیست فرآیندهای موبایلی قابل دسترسی برای نوع کاربر شرکت حمل و نقل و ارسال به مدیریت مجوز
+                Dim ComposeSearchString As String = R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TransportCompany.ToString + ":"
+                Dim AllofProcessGroupsIds As String()
+                Dim AllofProcessesIds As String()
+                Dim AllofSoftwareUserTypes As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesAccessMobileProcesses), ";")
+                If Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length) <> String.Empty Then
+                    AllofProcessesIds = Split(Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+                    R2CoreMClassPermissionsManagement.RegisteringPermissions(R2CorePermissionTypes.SoftwareUsersAccessMobileProcesses, myUserId, AllofProcessesIds)
+                End If
+                'به دست آوردن لیست گروههای فرآیند موبایلی برای نوع کاربر شرکت حمل و نقل و ارسال آن به مدیریت روابط نهادی
+                AllofSoftwareUserTypes = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesRelationMobileProcessGroups), ";")
+                If Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length) <> String.Empty Then
+                    AllofProcessGroupsIds = Split(Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+                    R2CoreMClassEntityRelationManagement.RegisteringEntityRelations(R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup, myUserId, AllofProcessGroupsIds)
+                End If
+                'به دست آوردن لیست فرآیندهای وب قابل دسترسی برای نوع کاربر شرکت حمل و نقل و ارسال به مدیریت مجوز
+                ComposeSearchString = R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TransportCompany.ToString + ":"
+                AllofSoftwareUserTypes = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesAccessWebProcesses), ";")
+                If Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length) <> String.Empty Then
+                    AllofProcessesIds = Split(Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+                    R2CoreMClassPermissionsManagement.RegisteringPermissions(R2CorePermissionTypes.SoftwareUsersAccessWebProcesses, myUserId, AllofProcessesIds)
+                End If
+                'به دست آوردن لیست گروههای فرآیند وب برای نوع کاربر شرکت حمل و نقل و ارسال آن به مدیریت روابط نهادی
+                AllofSoftwareUserTypes = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesRelationWebProcessGroups), ";")
+                If Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length) <> String.Empty Then
+                    AllofProcessGroupsIds = Split(Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+                    R2CoreMClassEntityRelationManagement.RegisteringEntityRelations(R2CoreEntityRelationTypes.SoftwareUser_WebProcessGroup, myUserId, AllofProcessGroupsIds)
+                End If
+                Return myTCId
+            Catch ex As DataEntryException
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Sub UpdatingTransportCompany(YourNSS As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure)
+            Dim CmdSql As SqlCommand = New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                If YourNSS.TCTitle.Trim = String.Empty Or YourNSS.TCOrganizationCode.Trim = String.Empty Or YourNSS.TCTel.Trim = String.Empty Or YourNSS.TCManagerNameFamily.Trim = String.Empty Or YourNSS.TCManagerMobileNumber.Trim = String.Empty Then
+                    Throw New DataEntryException
+                End If
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies 
+                                      Set TCTitle='" & YourNSS.TCTitle & "',TCOrganizationCode='" & YourNSS.TCOrganizationCode & "',TCCityId=" & YourNSS.TCCityId & ",TCTel='" & YourNSS.TCTel & "',TCManagerNameFamily='" & YourNSS.TCManagerNameFamily & "',TCManagerMobileNumber='" & YourNSS.TCManagerMobileNumber & "',ViewFlag=" & IIf(YourNSS.ViewFlag, 1, 0) & ",Active=" & IIf(YourNSS.Active, 1, 0) & "
+                                      Where TCId=" & YourNSS.TCId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Update dbtransport.dbo.tbCompany 
+                                      Set strCompName='" & YourNSS.TCTitle & "',nCompCityCode=" & YourNSS.TCCityId & ",ViewFlag=" & IIf(YourNSS.ViewFlag, 1, 0) & ",Active=" & IIf(YourNSS.Active, 1, 0) & "
+                                      Where nCompCode =" & YourNSS.TCId & ""
+
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Dim NSSUser As R2CoreStandardSoftwareUserStructure
+                Try
+                    Dim InstanceSoftwareUsers = New R2CoreTransportationAndLoadNotificationInstanceSoftwareUsersManager
+                    NSSUser = InstanceSoftwareUsers.GetNSSSoftwareUser(YourNSS.TCId)
+                    R2CoreMClassSoftwareUsersManagement.EditingSoftwareUser(New R2CoreStandardSoftwareUserStructure(NSSUser.UserId, Nothing, Nothing, YourNSS.TCTitle, Nothing, Nothing, Nothing, NSSUser.UserPinCode, NSSUser.UserCanCharge, YourNSS.Active, NSSUser.UserTypeId, YourNSS.TCManagerMobileNumber, NSSUser.UserStatus, String.Empty, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, YourNSSUser.UserId, Nothing, Nothing, NSSUser.ViewFlag, NSSUser.Deleted), YourNSSUser)
+                Catch ex As SoftwareUserRelatedThisTransportCompanyNotFoundException
+                    'ایجاد کاربر مرتبط به شرکت حمل و نقل
+                    Dim myUserId = R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, Nothing, YourNSS.TCTitle, Nothing, Nothing, Nothing, String.Empty, True, True, R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TransportCompany, YourNSS.TCManagerMobileNumber, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, YourNSSUser.UserId, Nothing, Nothing, True, Nothing), YourNSSUser)
+                    CmdSql.Connection.Open()
+                    CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationSoftwareUsers(TCId,UserId,RelationActive) Values(" & YourNSS.TCId & "," & myUserId & ",1)"
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.Connection.Close()
+                    'به دست آوردن لیست فرآیندهای موبایلی قابل دسترسی برای نوع کاربر شرکت حمل و نقل و ارسال به مدیریت مجوز
+                    Dim AllofProcessesIds As String()
+                    Dim AllofProcessGroupsIds As String()
+                    Dim ComposeSearchString As String = R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TransportCompany.ToString + ":"
+                    Dim AllofSoftwareUserTypes As String() = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesAccessMobileProcesses), ";")
+                    If Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length) <> String.Empty Then
+                        AllofProcessesIds = Split(Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+                        R2CoreMClassPermissionsManagement.RegisteringPermissions(R2CorePermissionTypes.SoftwareUsersAccessMobileProcesses, myUserId, AllofProcessesIds)
+                    End If
+                    'به دست آوردن لیست گروههای فرآیند موبایلی برای نوع کاربر شرکت حمل و نقل و ارسال آن به مدیریت روابط نهادی
+                    AllofSoftwareUserTypes = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesRelationMobileProcessGroups), ";")
+                    If Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length) <> String.Empty Then
+                        AllofProcessGroupsIds = Split(Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+                        R2CoreMClassEntityRelationManagement.RegisteringEntityRelations(R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup, myUserId, AllofProcessGroupsIds)
+                    End If
+                    'به دست آوردن لیست فرآیندهای وب قابل دسترسی برای نوع کاربر شرکت حمل و نقل و ارسال به مدیریت مجوز
+                    AllofSoftwareUserTypes = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesAccessWebProcesses), ";")
+                    If Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length) <> String.Empty Then
+                        AllofProcessesIds = Split(Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+                        R2CoreMClassPermissionsManagement.RegisteringPermissions(R2CorePermissionTypes.SoftwareUsersAccessWebProcesses, myUserId, AllofProcessesIds)
+                    End If
+                    'به دست آوردن لیست گروههای فرآیند وب برای نوع کاربر شرکت حمل و نقل و ارسال آن به مدیریت روابط نهادی
+                    AllofSoftwareUserTypes = Split(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SoftwareUserTypesRelationWebProcessGroups), ";")
+                    If Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length) <> String.Empty Then
+                        AllofProcessGroupsIds = Split(Mid(AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllofSoftwareUserTypes.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), ",")
+                        R2CoreMClassEntityRelationManagement.RegisteringEntityRelations(R2CoreEntityRelationTypes.SoftwareUser_WebProcessGroup, myUserId, AllofProcessGroupsIds)
+                    End If
+                Catch ex As Exception
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                    Throw ex
+                End Try
+            Catch ex As DataEntryException
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Shared Sub DeletingTransportCompany(YourTCId As Int64)
+            Dim CmdSql As SqlCommand = New SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies Set ViewFlag=0,Active=0,Deleted=1 Where TCId=" & YourTCId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Update dbtransport.dbo.tbCompany Set ViewFlag=0,Active=0,Deleted=1 Where nCompCode=" & YourTCId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
         Public Shared Function GetTransportCompanies_SearchforLeftCharacters(YourSearchString As String) As List(Of R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure)
             Try
                 Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure)
                 Dim DS As DataSet = Nothing
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * From R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies Where Left(TCTitle," & YourSearchString.Length & ")='" & YourSearchString & "' and Deleted=0 and Active=1 Order By TCTitle", 3600, DS)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(Loopx).Item("TCId"), DS.Tables(0).Rows(Loopx).Item("TCTitle"), DS.Tables(0).Rows(Loopx).Item("TCOrganizationCode"), DS.Tables(0).Rows(Loopx).Item("TCCityId"), DS.Tables(0).Rows(Loopx).Item("TCColor").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(Loopx).Item("TCId"), DS.Tables(0).Rows(Loopx).Item("TCTitle"), DS.Tables(0).Rows(Loopx).Item("TCOrganizationCode"), DS.Tables(0).Rows(Loopx).Item("TCCityId"), DS.Tables(0).Rows(Loopx).Item("TCColor").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                 Next
                 Return Lst
             Catch ex As Exception
@@ -7058,7 +7298,7 @@ Namespace TransportCompanies
                 Dim DS As DataSet = Nothing
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * From R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies Where TCTitle Like '%" & YourSearchString & "%' and Deleted=0 and Active=1 Order By TCTitle", 3600, DS)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(Loopx).Item("TCId"), DS.Tables(0).Rows(Loopx).Item("TCTitle"), DS.Tables(0).Rows(Loopx).Item("TCOrganizationCode"), DS.Tables(0).Rows(Loopx).Item("TCCityId"), DS.Tables(0).Rows(Loopx).Item("TCColor").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(Loopx).Item("TCId"), DS.Tables(0).Rows(Loopx).Item("TCTitle"), DS.Tables(0).Rows(Loopx).Item("TCOrganizationCode"), DS.Tables(0).Rows(Loopx).Item("TCCityId"), DS.Tables(0).Rows(Loopx).Item("TCColor").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                 Next
                 Return Lst
             Catch ex As Exception
@@ -7078,19 +7318,9 @@ Namespace TransportCompanies
                 Dim DS As DataSet = Nothing
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, SqlString, 1, DS)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(Loopx).Item("TCId"), DS.Tables(0).Rows(Loopx).Item("TCTitle"), DS.Tables(0).Rows(Loopx).Item("TCOrganizationCode"), DS.Tables(0).Rows(Loopx).Item("TCCityId"), DS.Tables(0).Rows(Loopx).Item("TCColor").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(Loopx).Item("TCId"), DS.Tables(0).Rows(Loopx).Item("TCTitle"), DS.Tables(0).Rows(Loopx).Item("TCOrganizationCode"), DS.Tables(0).Rows(Loopx).Item("TCCityId"), DS.Tables(0).Rows(Loopx).Item("TCColor").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                 Next
                 Return Lst
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Shared Function GetNSSTransportCompany(YourTransportCompanyId As Int64) As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure
-            Try
-                Dim DS As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * From R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies Where TCId=" & YourTransportCompanyId & "", 3600, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
-                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -7100,7 +7330,7 @@ Namespace TransportCompanies
             Try
                 Dim DS As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * From R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies Where TCOrganizationCode=" & YourTransportCompanyOrganizationId & "", 3600, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
-                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("TCTel").trim, DS.Tables(0).Rows(0).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(0).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As TransportCompanyNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -7133,9 +7363,11 @@ Namespace TransportCompanies
 
         Public Shared Function GetNSSTransportCompanyFullOfWorkCompany(YourWorkDate1 As R2StandardDateAndTimeStructure, YourWorkDate2 As R2StandardDateAndTimeStructure, YourAHId As Int64, YourAHSGId As Int64) As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure
             Try
+                Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 nCompCode from (Select nCompCode,Sum(nCarNumKol) as Suming from dbtransport.dbo.tbElam Where (dDateElam>='" & YourWorkDate1.DateShamsiFull & "') and (dDateElam<='" & YourWorkDate2.DateShamsiFull & "') and AHId=" & YourAHId & " and AHSGId=" & YourAHSGId & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow & " Group By nCompCode) as Companies  Order By Companies.Suming Desc", 1, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
-                Return GetNSSTransportCompany(DS.Tables(0).Rows(0).Item("nCompCode"))
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 nCompCode from (Select nCompCode,Sum(nCarNumKol) as Suming from dbtransport.dbo.tbElam Where (dDateElam>='" & YourWorkDate1.DateShamsiFull & "') and (dDateElam<='" & YourWorkDate2.DateShamsiFull & "') and AHId=" & YourAHId & " and AHSGId=" & YourAHSGId & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " and LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.RegisteredforTommorow & " Group By nCompCode) as Companies  Order By Companies.Suming Desc", 1, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
+                Return InstanceTransportCompanies.GetNSSTransportCompany(DS.Tables(0).Rows(0).Item("nCompCode"))
             Catch ex As TransportCompanyNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -7145,13 +7377,15 @@ Namespace TransportCompanies
 
         Public Shared Function GetNSSTransportCompnay(YourNSSUser As R2Core.SoftwareUserManagement.R2CoreStandardSoftwareUserStructure) As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure
             Try
+                Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
                  "Select Top 1 TransportCompanies.TCId from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies
                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationSoftwareUsers as TCRUser On TransportCompanies.TCId=TCRUser.TCId
                             Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On TCRUser.UserId=SoftwareUsers.UserId
-                          Where SoftwareUsers.UserId=" & YourNSSUser.UserId & "", 1, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
-                Return GetNSSTransportCompany(DS.Tables(0).Rows(0).Item("TCId"))
+                          Where SoftwareUsers.UserId=" & YourNSSUser.UserId & "", 0, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
+                Return InstanceTransportCompanies.GetNSSTransportCompany(DS.Tables(0).Rows(0).Item("TCId"))
             Catch ex As TransportCompanyNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -7167,7 +7401,7 @@ Namespace TransportCompanies
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "کد شرکت حمل و نقل در بانک اطلاعاتی یافت نشد"
+                    Return "اطلاعات شرکت حمل و نقل در بانک اطلاعاتی یافت نشد"
                 End Get
             End Property
         End Class

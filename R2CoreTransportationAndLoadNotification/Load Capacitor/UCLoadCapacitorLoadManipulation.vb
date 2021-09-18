@@ -103,11 +103,12 @@ Public Class UCLoadCapacitorLoadManipulation
 
     Private Sub UCLoadCapacitorLoadManipulation_UCViewNSSRequested() Handles Me.UCViewNSSRequested
         Try
+            Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
             UcNumbernEstelamId.UCValue = UCNSSCurrent.nEstelamId
             UcPersianTextBoxLoadCapacitorLoadDateTimeComposite.UCValue = UCNSSCurrent.dTimeElam & " - " & UCNSSCurrent.dDateElam
             UcPersianTextBoxLoadPermissionStatus.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoadStatus(UCNSSCurrent.LoadStatus).LoadStatusName
             UcNumbernCarNum.UCValue = UCNSSCurrent.nCarNum
-            UcSearcherTransportCompanies.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompany(UCNSSCurrent.nCompCode))
+            UcSearcherTransportCompanies.UCViewNSS(InstanceTransportCompanies.GetNSSTransportCompany(UCNSSCurrent.nCompCode))
             UcSearcherGoods.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassGoodsManagement.GetNSSGood(UCNSSCurrent.nBarCode))
             UcSearcherLoadTargets.UCViewNSS(R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetNSSLoadTarget(UCNSSCurrent.nCityCode))
             UcSearcherLoadSources.UCViewNSS(R2CoreTransportationAndLoadNotificationMclassLoadSourcesManagement.GetNSSLoadSource(UCNSSCurrent.nBarSource))

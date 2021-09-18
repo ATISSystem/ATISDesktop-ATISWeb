@@ -4,6 +4,7 @@ Imports System.Drawing
 Imports System.Reflection
 
 Imports R2CoreGUI
+Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement
 Imports R2CoreTransportationAndLoadNotification.TransportCompanies
 
 Public Class UCTransportCompany
@@ -51,8 +52,9 @@ Public Class UCTransportCompany
 
     End Sub
 
-    Public Overloads Sub UCRefreshGeneral()
+    Public Overrides Sub UCRefreshGeneral()
         Try
+            MyBase.UCRefreshGeneral()
             UCNSSCurrent = Nothing
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -70,7 +72,8 @@ Public Class UCTransportCompany
 
     Public Sub UCViewNSS(YourTransportCompanyId As Int64)
         Try
-            UCNSSCurrent = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompany(YourTransportCompanyId)
+            Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
+            UCNSSCurrent = InstanceTransportCompanies.GetNSSTransportCompany(YourTransportCompanyId)
             RaiseEvent UCViewNSSRequested(UCNSSCurrent)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

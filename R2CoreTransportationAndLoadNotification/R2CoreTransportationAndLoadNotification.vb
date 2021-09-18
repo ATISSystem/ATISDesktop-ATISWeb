@@ -85,6 +85,7 @@ Imports R2CoreParkingSystem.EntityManagement
 Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
+Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement.Exceptions
 
 Namespace Rmto
     Public MustInherit Class RmtoWebService
@@ -2676,6 +2677,7 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcBillOfLadingControl As Int64 = 62
         Public Shared ReadOnly FrmcTruckDriverLoadAllocationsPriorityApplied As Int64 = 63
         Public Shared ReadOnly FrmcLoadCapacitorMonitoring As Int64 = 64
+        Public Shared ReadOnly FrmcTransportCompniesManipulation As Int64 = 68
 
     End Class
 
@@ -2712,6 +2714,28 @@ Namespace TerraficCardsManagement
                         Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.RelationActive=1 and  
                               EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and Cars.ViewFlag=1 and TCardsRCar.RelationActive=1 and CarAndPersons.snRelation=2 
                         Order By TCardsRCar.RelationId Desc", 0, Ds).GetRecordsCount <> 0 Then
+                    Return InstanceTrafficCards.GetNSSTrafficCard(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CardId")))
+                Else
+                    Throw New SoftwareUserMoneyWalletNotFoundException
+                End If
+            Catch ex As SoftwareUserMoneyWalletNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSTerafficCard(YourNSSTransprortCompany As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure) As R2CoreParkingSystemStandardTrafficCardStructure
+            Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+            Dim InstanceTrafficCards = New R2CoreParkingSystemInstanceTrafficCardsManager
+            Try
+                Dim Ds As New DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                       "Select Top 1 MoneyWallets.CardId 
+                        from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies
+                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationMoneyWallets as TCsRMoneyWallets On TransportCompanies.TCId=TCsRMoneyWallets.TransportCompanyId 
+   			  			   Inner Join R2Primary.dbo.TblRFIDCards as MoneyWallets On TCsRMoneyWallets.CardId=MoneyWallets.CardId  
+                        Where MoneyWallets.Active=1 and TransportCompanies.Deleted=0 and  TCsRMoneyWallets.RelationActive=1 and TransportCompanies.TCId=" & YourNSSTransprortCompany.TCId & "", 0, Ds).GetRecordsCount <> 0 Then
                     Return InstanceTrafficCards.GetNSSTrafficCard(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CardId")))
                 Else
                     Throw New SoftwareUserMoneyWalletNotFoundException
@@ -2773,7 +2797,42 @@ Namespace SoftwareUserManagement
         Public Shared ReadOnly Property TruckOwner As Int64 = 4
         Public Shared ReadOnly Property TruckersAssociation As Int64 = 5
         Public Shared ReadOnly Property TransportCompaniesAssociation As Int64 = 6
+        Public Shared ReadOnly Property TransportCompany As Int64 = 7
     End Class
+
+    Public Class R2CoreTransportationAndLoadNotificationInstanceSoftwareUsersManager
+        Public Function GetNSSSoftwareUser(YourTransportCompanyId As Int64) As R2CoreStandardSoftwareUserStructure
+            Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
+            Dim InstanceSoftwareUser As New R2CoreInstanseSoftwareUsersManager
+            Try
+                Dim Ds As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                         "Select Top 1 SoftwareUsers.UserId from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                          Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationSoftwareUsers as TCsRSoftwareUsers On SoftwareUsers.UserId=TCsRSoftwareUsers.UserId 
+                          Where SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and TCsRSoftwareUsers.RelationActive=1 and TCsRSoftwareUsers.TCId=" & YourTransportCompanyId & "  Order by SoftwareUsers.UserId", 0, Ds).GetRecordsCount = 0 Then Throw New SoftwareUserRelatedThisTransportCompanyNotFoundException
+                Return InstanceSoftwareUser.GetNSSUser(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("UserId")))
+            Catch ex As SoftwareUserRelatedThisTransportCompanyNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+
+    End Class
+
+    Namespace Exceptions
+        Public Class SoftwareUserRelatedThisTransportCompanyNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "مشخصات کاربری مرتبط  با شرکت حمل و نقل مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
+
 
 End Namespace
 

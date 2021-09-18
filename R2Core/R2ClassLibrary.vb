@@ -39,6 +39,7 @@ Imports R2Core.SecurityAlgorithmsManagement.PasswordStrength
 Imports R2Core.LoggingManagement
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
+Imports R2Core.RFIDCardsManagement.Exceptions
 
 Public Class R2Enums
 
@@ -2445,6 +2446,8 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property PublicSecurityConfiguration As Int64 = 77
         Public Shared ReadOnly Property SqlInjectionPrevention As Int64 = 78
         Public Shared ReadOnly Property ZarrinPalPaymentGate As Int64 = 79
+        Public Shared ReadOnly Property SoftwareUserTypesAccessWebProcesses As Int64 = 80
+        Public Shared ReadOnly Property SoftwareUserTypesRelationWebProcessGroups As Int64 = 81
 
     End Class
 
@@ -4287,8 +4290,10 @@ Namespace RFIDCardsManagement
         Public Shared Function GetNSSRFIDCard(ByVal YourCardNo As String) As R2CoreStandardRFIDCardStructure
             Try
                 Dim Ds As DataSet
-                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblRFIDCards Where ltrim(rtrim(CardNo))='" & YourCardNo & "' Order By CardId Desc", 1, Ds)
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblRFIDCards Where ltrim(rtrim(CardNo))='" & YourCardNo & "' Order By CardId Desc", 1, Ds).GetRecordsCount = 0 Then Throw New RFIdCardNotFoundException
                 Return New R2CoreStandardRFIDCardStructure(Ds.Tables(0).Rows(0).Item("CardId"), Ds.Tables(0).Rows(0).Item("CardNo"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("DateTimeMilladiSabt"), Ds.Tables(0).Rows(0).Item("DateTimeMilladiEdit"), Ds.Tables(0).Rows(0).Item("DateShamsiSabt"), Ds.Tables(0).Rows(0).Item("DateShamsiEdit"))
+            Catch ex As RFIdCardNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -4316,7 +4321,17 @@ Namespace RFIDCardsManagement
 
     End Class
 
+    Namespace Exceptions
+        Public Class RFIdCardNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "اطلاعات وارد شده نادرست است"
+                End Get
+            End Property
+        End Class
 
+    End Namespace
 End Namespace
 
 Namespace ComputersManagement

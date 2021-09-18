@@ -75,6 +75,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\ATISDesktopRefrences\TWS.dll</HintPath>
     </Reference>
+    <Reference Include="UI.Glass.Panel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ATISDesktopRefrences\UI.Glass.Panel.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -513,6 +517,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Transport Companies\FrmcTransportCompniesManipulation.Designer.vb">
+      <DependentUpon>FrmcTransportCompniesManipulation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transport Companies\FrmcTransportCompniesManipulation.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Transport Companies\UCLabelSherkatHamloNaghl.Designer.vb">
       <DependentUpon>UCLabelSherkatHamloNaghl.vb</DependentUpon>
     </Compile>
@@ -529,6 +539,12 @@
       <DependentUpon>UCTransportCompany.vb</DependentUpon>
     </Compile>
     <Compile Include="Transport Companies\UCTransportCompany.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Transport Companies\UCTransportCompanyManipulation.Designer.vb">
+      <DependentUpon>UCTransportCompanyManipulation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transport Companies\UCTransportCompanyManipulation.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Transport Companies\UCUCTransportCompanyCollection.Designer.vb">
@@ -790,6 +806,9 @@
     <EmbeddedResource Include="Goods\UCSearcherGoods.resx">
       <DependentUpon>UCSearcherGoods.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Transport Companies\FrmcTransportCompniesManipulation.resx">
+      <DependentUpon>FrmcTransportCompniesManipulation.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Transport Companies\UCLabelSherkatHamloNaghl.resx">
       <DependentUpon>UCLabelSherkatHamloNaghl.vb</DependentUpon>
     </EmbeddedResource>
@@ -798,6 +817,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Transport Companies\UCTransportCompany.resx">
       <DependentUpon>UCTransportCompany.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transport Companies\UCTransportCompanyManipulation.resx">
+      <DependentUpon>UCTransportCompanyManipulation.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Transport Companies\UCUCTransportCompanyCollection.resx">
       <DependentUpon>UCUCTransportCompanyCollection.vb</DependentUpon>

@@ -253,7 +253,9 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+            Dim X = New R2CoreTransportationAndLoadNotification.LoadSedimentation.R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManager
+            X.SedimentingProcess()
+            'PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
             'Dim Instance = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
             'MessageBox.Show(Instance.GetFirstActiveTurn(Instance.GetNSSTurn(943406)))
             'R2CoreTransportationAndLoadNotification.Rmto.RmtoWebService.GetNSSTruck(2854541)
@@ -384,7 +386,7 @@ Public Class Form3
     End Sub
 
     Private Sub Form3_Load(sender As Object, e As EventArgs) Handles Me.Load
-
+        'R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS = R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser
         R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
 
     End Sub

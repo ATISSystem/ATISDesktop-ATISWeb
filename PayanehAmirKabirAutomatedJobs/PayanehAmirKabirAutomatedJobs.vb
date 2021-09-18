@@ -83,7 +83,8 @@ Public Class PayanehAmirKabirAutomatedJobs
 
             'فراخوانی سرویس رسوب بار در سالن اعلام بار
             Try
-                R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()
+                Dim InstanceLoadSedimentation = New R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManager
+                InstanceLoadSedimentation.SedimentingProcess()
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "SedimentingProcess:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
