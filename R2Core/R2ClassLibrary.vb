@@ -2789,16 +2789,18 @@ Namespace DateAndTimeManagement
     Public Class R2StandardDateAndTimeStructure
 
         Private myDateTimeMilladi As DateTime
+        Private myDateTimeMilladiFormated As String
         Private myDateShamsiFull As String
         Private myTime As String
 
         Public Sub New()
             MyBase.New()
-            myDateTimeMilladi = Date.Now : myDateShamsiFull = "" : myTime = ""
+            myDateTimeMilladi = Date.Now : myDateTimeMilladiFormated = String.Empty : myDateShamsiFull = "" : myTime = ""
         End Sub
 
         Public Sub New(ByVal DateTimeMilladii As DateTime, ByVal DateShamsiFulll As String, ByVal Timee As String)
             myDateTimeMilladi = DateTimeMilladii
+            myDateTimeMilladiFormated = myDateTimeMilladi.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             myDateShamsiFull = DateShamsiFulll
             myTime = Timee
         End Sub
@@ -2811,6 +2813,13 @@ Namespace DateAndTimeManagement
                 myDateTimeMilladi = Value
             End Set
         End Property
+
+        Public ReadOnly Property DateTimeMilladiFormated() As String
+            Get
+                Return myDateTimeMilladiFormated
+            End Get
+        End Property
+
 
         Public Property DateShamsiFull() As String
             Get
