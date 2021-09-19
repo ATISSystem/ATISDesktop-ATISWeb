@@ -26,17 +26,16 @@ Partial Class UCLoadPermissionCancellation
     Private Sub InitializeComponent()
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PnlInner = New System.Windows.Forms.Panel()
-        Me.CheckBoxLoadCapacitorLoad = New System.Windows.Forms.CheckBox()
         Me.UcNumberLoadAllocationId = New R2CoreGUI.UCNumber()
         Me.CheckBoxTurn = New System.Windows.Forms.CheckBox()
         Me.UcButtonLoadPermissionCancelling = New R2CoreGUI.UCButton()
         Me.UcLabel1 = New R2CoreGUI.UCLabel()
         Me.PnlBorder = New System.Windows.Forms.Panel()
         Me.UcViewerNSSLoadPermissionExtended = New R2CoreTransportationAndLoadNotification.UCViewerNSSLoadPermissionExtended()
-        Me.PnlMain.SuspendLayout
-        Me.PnlInner.SuspendLayout
-        Me.PnlBorder.SuspendLayout
-        Me.SuspendLayout
+        Me.PnlMain.SuspendLayout()
+        Me.PnlInner.SuspendLayout()
+        Me.PnlBorder.SuspendLayout()
+        Me.SuspendLayout()
         '
         'PnlMain
         '
@@ -52,7 +51,6 @@ Partial Class UCLoadPermissionCancellation
         'PnlInner
         '
         Me.PnlInner.BackColor = System.Drawing.Color.White
-        Me.PnlInner.Controls.Add(Me.CheckBoxLoadCapacitorLoad)
         Me.PnlInner.Controls.Add(Me.UcNumberLoadAllocationId)
         Me.PnlInner.Controls.Add(Me.CheckBoxTurn)
         Me.PnlInner.Controls.Add(Me.UcButtonLoadPermissionCancelling)
@@ -64,55 +62,43 @@ Partial Class UCLoadPermissionCancellation
         Me.PnlInner.Size = New System.Drawing.Size(898, 121)
         Me.PnlInner.TabIndex = 16
         '
-        'CheckBoxLoadCapacitorLoad
-        '
-        Me.CheckBoxLoadCapacitorLoad.AutoSize = true
-        Me.CheckBoxLoadCapacitorLoad.Checked = true
-        Me.CheckBoxLoadCapacitorLoad.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBoxLoadCapacitorLoad.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.CheckBoxLoadCapacitorLoad.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.CheckBoxLoadCapacitorLoad.ForeColor = System.Drawing.Color.Black
-        Me.CheckBoxLoadCapacitorLoad.Location = New System.Drawing.Point(146, 9)
-        Me.CheckBoxLoadCapacitorLoad.Name = "CheckBoxLoadCapacitorLoad"
-        Me.CheckBoxLoadCapacitorLoad.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.CheckBoxLoadCapacitorLoad.Size = New System.Drawing.Size(134, 27)
-        Me.CheckBoxLoadCapacitorLoad.TabIndex = 2
-        Me.CheckBoxLoadCapacitorLoad.Text = "بازگردانی بار / کنسلی بار"
-        Me.CheckBoxLoadCapacitorLoad.UseVisualStyleBackColor = true
-        '
         'UcNumberLoadAllocationId
         '
-        Me.UcNumberLoadAllocationId.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberLoadAllocationId.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberLoadAllocationId.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberLoadAllocationId.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberLoadAllocationId.Location = New System.Drawing.Point(661, 9)
         Me.UcNumberLoadAllocationId.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberLoadAllocationId.Name = "UcNumberLoadAllocationId"
         Me.UcNumberLoadAllocationId.Size = New System.Drawing.Size(100, 25)
         Me.UcNumberLoadAllocationId.TabIndex = 14
+        Me.UcNumberLoadAllocationId.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberLoadAllocationId.UCAllowedMinNumber = CType(-923372036854775808, Long)
         Me.UcNumberLoadAllocationId.UCBackColor = System.Drawing.Color.White
         Me.UcNumberLoadAllocationId.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberLoadAllocationId.UCBorder = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcNumberLoadAllocationId.UCEnable = true
-        Me.UcNumberLoadAllocationId.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberLoadAllocationId.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberLoadAllocationId.UCBorder = True
+        Me.UcNumberLoadAllocationId.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcNumberLoadAllocationId.UCEnable = True
+        Me.UcNumberLoadAllocationId.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberLoadAllocationId.UCForeColor = System.Drawing.Color.Black
-        Me.UcNumberLoadAllocationId.UCMultiLine = false
-        Me.UcNumberLoadAllocationId.UCValue = CType(0,Long)
+        Me.UcNumberLoadAllocationId.UCMultiLine = False
+        Me.UcNumberLoadAllocationId.UCValue = CType(0, Long)
         '
         'CheckBoxTurn
         '
-        Me.CheckBoxTurn.AutoSize = true
-        Me.CheckBoxTurn.Checked = true
+        Me.CheckBoxTurn.AutoSize = True
+        Me.CheckBoxTurn.Checked = True
         Me.CheckBoxTurn.CheckState = System.Windows.Forms.CheckState.Checked
         Me.CheckBoxTurn.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.CheckBoxTurn.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.CheckBoxTurn.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CheckBoxTurn.ForeColor = System.Drawing.Color.Black
-        Me.CheckBoxTurn.Location = New System.Drawing.Point(297, 9)
+        Me.CheckBoxTurn.Location = New System.Drawing.Point(144, 8)
         Me.CheckBoxTurn.Name = "CheckBoxTurn"
         Me.CheckBoxTurn.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.CheckBoxTurn.Size = New System.Drawing.Size(142, 27)
         Me.CheckBoxTurn.TabIndex = 1
         Me.CheckBoxTurn.Text = "احیاء نوبت / ابطال نوبت"
-        Me.CheckBoxTurn.UseVisualStyleBackColor = true
+        Me.CheckBoxTurn.UseVisualStyleBackColor = True
         '
         'UcButtonLoadPermissionCancelling
         '
@@ -124,16 +110,18 @@ Partial Class UCLoadPermissionCancellation
         Me.UcButtonLoadPermissionCancelling.TabIndex = 16
         Me.UcButtonLoadPermissionCancelling.UCBackColor = System.Drawing.Color.Red
         Me.UcButtonLoadPermissionCancelling.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonLoadPermissionCancelling.UCEnable = true
-        Me.UcButtonLoadPermissionCancelling.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonLoadPermissionCancelling.UCEnable = True
+        Me.UcButtonLoadPermissionCancelling.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonLoadPermissionCancelling.UCForeColor = System.Drawing.Color.White
         Me.UcButtonLoadPermissionCancelling.UCValue = "کنسلی مجوز"
         '
         'UcLabel1
         '
-        Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabel1._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabel1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabel1.Location = New System.Drawing.Point(770, 6)
         Me.UcLabel1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.UcLabel1.Name = "UcLabel1"
@@ -141,16 +129,16 @@ Partial Class UCLoadPermissionCancellation
         Me.UcLabel1.Size = New System.Drawing.Size(102, 27)
         Me.UcLabel1.TabIndex = 15
         Me.UcLabel1.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel1.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabel1.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabel1.UCForeColor = System.Drawing.Color.Black
         Me.UcLabel1.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.UcLabel1.UCValue = "شماره تخصیص بار"
         '
         'PnlBorder
         '
-        Me.PnlBorder.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlBorder.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlBorder.Controls.Add(Me.UcViewerNSSLoadPermissionExtended)
         Me.PnlBorder.Location = New System.Drawing.Point(3, 22)
@@ -160,8 +148,8 @@ Partial Class UCLoadPermissionCancellation
         '
         'UcViewerNSSLoadPermissionExtended
         '
-        Me.UcViewerNSSLoadPermissionExtended.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcViewerNSSLoadPermissionExtended.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcViewerNSSLoadPermissionExtended.BackColor = System.Drawing.Color.Transparent
         Me.UcViewerNSSLoadPermissionExtended.Location = New System.Drawing.Point(-2, 11)
         Me.UcViewerNSSLoadPermissionExtended.Name = "UcViewerNSSLoadPermissionExtended"
@@ -172,22 +160,21 @@ Partial Class UCLoadPermissionCancellation
         '
         'UCLoadPermissionCancellation
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCLoadPermissionCancellation"
         Me.Size = New System.Drawing.Size(902, 125)
-        Me.PnlMain.ResumeLayout(false)
-        Me.PnlInner.ResumeLayout(false)
-        Me.PnlInner.PerformLayout
-        Me.PnlBorder.ResumeLayout(false)
-        Me.ResumeLayout(false)
+        Me.PnlMain.ResumeLayout(False)
+        Me.PnlInner.ResumeLayout(False)
+        Me.PnlInner.PerformLayout()
+        Me.PnlBorder.ResumeLayout(False)
+        Me.ResumeLayout(False)
 
-End Sub
+    End Sub
 
     Friend WithEvents PnlMain As System.Windows.Forms.Panel
-    Friend WithEvents CheckBoxLoadCapacitorLoad As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBoxTurn As System.Windows.Forms.CheckBox
     Friend WithEvents PnlInner As System.Windows.Forms.Panel
     Friend WithEvents UcButtonLoadPermissionCancelling As UCButton

@@ -255,7 +255,8 @@ Public Class UCLoadCapacitorLoadManipulation
 
     Private Sub UcButtonLoadCapacitorLoadSedimentation_UCClickedEvent() Handles UcButtonLoadCapacitorLoadSedimentation.UCClickedEvent
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingLoadCapacitorLoad(UcNumbernEstelamId.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            Dim InstanceLoadSedimentation = New R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManager
+            InstanceLoadSedimentation.SedimentingLoadCapacitorLoad(UcNumbernEstelamId.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             RaiseEvent UCLoadCapacitorLoadSedimentedEvent(UCNSSCurrent)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "وضعیت بار تغییر یافت", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadCapacitor.Exceptions.LoadCapacitorLoadNotFoundException
