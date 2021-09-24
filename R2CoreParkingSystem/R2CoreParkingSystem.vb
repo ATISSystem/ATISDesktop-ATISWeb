@@ -2539,7 +2539,7 @@ Namespace Cars
         Public Function GetnIdCarFromCardId(YourCardId As String) As Int64
             Try
                 Dim Da As New SqlDataAdapter : Dim Ds As New DataSet
-                Da.SelectCommand = New SqlCommand("Select nCarId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (CardId='" & YourCardId & "') and (RelationActive=1)")
+                Da.SelectCommand = New SqlCommand("Select Top 1 nCarId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (CardId='" & YourCardId & "') and (RelationActive=1) and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By RelationId Desc")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 If Da.Fill(Ds) <> 0 Then
@@ -2557,7 +2557,7 @@ Namespace Cars
         Public Function GetnIdPersonFirst(YournIdCar As Int64) As Int64
             Try
                 Dim da As New SqlDataAdapter : Dim ds As New DataSet
-                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=2) Order By dDate Desc")
+                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=2) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) Or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By nIDCarAndPerson Desc")
                 da.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
                 ds.Tables.Clear()
                 If da.Fill(ds) <> 0 Then
@@ -2678,7 +2678,7 @@ Namespace Cars
         Public Shared Function GetnIdCarFromCardId(YourCardId As String) As Int64
             Try
                 Dim Da As New SqlDataAdapter : Dim Ds As New DataSet
-                Da.SelectCommand = New SqlCommand("Select nCarId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (CardId='" & YourCardId & "') and (RelationActive=1)")
+                Da.SelectCommand = New SqlCommand("Select Top 1 nCarId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (CardId='" & YourCardId & "') and (RelationActive=1) and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By RelationId Desc")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 If Da.Fill(Ds) <> 0 Then
@@ -2696,7 +2696,7 @@ Namespace Cars
         Public Shared Function GetCardIdFromnIdCar(YournCarId As Int64) As Int64
             Try
                 Dim Da As New SqlDataAdapter : Dim Ds As New DataSet
-                Da.SelectCommand = New SqlCommand("Select CardId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (nCarId=" & YournCarId & ") and (RelationActive=1)")
+                Da.SelectCommand = New SqlCommand("Select Top 1 CardId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (nCarId=" & YournCarId & ") and (RelationActive=1) and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By RelationId Desc")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 If Da.Fill(Ds) <> 0 Then
@@ -2714,7 +2714,7 @@ Namespace Cars
         Public Shared Function GetnIdPersonFirst(YournIdCar As Int64) As Int64
             Try
                 Dim da As New SqlDataAdapter : Dim ds As New DataSet
-                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=2) Order By dDate Desc")
+                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=2) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) Or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By nIDCarAndPerson Desc")
                 da.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
                 ds.Tables.Clear()
                 If da.Fill(ds) <> 0 Then
@@ -2732,7 +2732,7 @@ Namespace Cars
         Public Shared Function GetnIdPersonSecond(YournIdCar As Int64) As Int64
             Try
                 Dim da As New SqlDataAdapter : Dim ds As New DataSet
-                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=3)  Order By dDate Desc")
+                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=3) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) Or (RelationTimeStamp='2015-01-01 00:00:00.000'))  Order By nIDCarAndPerson Desc")
                 da.SelectCommand.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
                 ds.Tables.Clear()
                 If da.Fill(ds) <> 0 Then
@@ -2765,19 +2765,19 @@ Namespace Cars
             End Try
         End Function
 
-        Public Shared Sub MakeRelationCarAndPerson(ByVal YourSepasCarId As Int64, ByVal YourPersonId As Int64)
-            Dim CmdSql As New SqlClient.SqlCommand
-            CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
-            Try
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.tbcarandperson(nidcar,nidperson,snrelation,ddate) Values(" & YourSepasCarId & "," & YourPersonId & ",2,'" & _DateTime.GetCurrentDateShamsiFull & "')"
-                CmdSql.Connection.Open()
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Connection.Close()
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
+        'Public Shared Sub MakeRelationCarAndPerson(ByVal YourSepasCarId As Int64, ByVal YourPersonId As Int64)
+        '    Dim CmdSql As New SqlClient.SqlCommand
+        '    CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
+        '    Try
+        '        CmdSql.CommandText = "Insert Into dbtransport.dbo.tbcarandperson(nidcar,nidperson,snrelation,ddate) Values(" & YourSepasCarId & "," & YourPersonId & ",2,'" & _DateTime.GetCurrentDateShamsiFull & "')"
+        '        CmdSql.Connection.Open()
+        '        CmdSql.ExecuteNonQuery()
+        '        CmdSql.Connection.Close()
+        '    Catch ex As Exception
+        '        If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+        '        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        '    End Try
+        'End Sub
 
         Public Shared Sub CreateCar(ByVal YourLP As R2StandardLicensePlateStructure)
             Dim CmdSql As New SqlClient.SqlCommand
@@ -2901,7 +2901,7 @@ Namespace Cars
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
                 CmdSql.CommandText = "Update R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Set RelationActive=0 Where CardId=" & YourNSSTerraficCard.CardId & " or nCarId=" & YourNSSCar.nIdCar & ""
                 CmdSql.ExecuteNonQuery()
-                CmdSql.CommandText = "Insert into R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars(CardId,nCarId,RelationActive) Values(" & YourNSSTerraficCard.CardId & "," & YourNSSCar.nIdCar & ",1)"
+                CmdSql.CommandText = "Insert into R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars(CardId,nCarId,RelationActive,RelationTimeStamp) Values(" & YourNSSTerraficCard.CardId & "," & YourNSSCar.nIdCar & ",1,'2015-01-01 00:00:00.000')"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             Catch ex As Exception
@@ -3516,7 +3516,7 @@ Namespace Drivers
         Public Shared Function GetCountOfCarsSecondDriverAttached(YourNSSSecondDriver As R2StandardDriverStructure) As Int64
             Try
                 Dim Ds As New DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "select Count(*) as CountX from dbtransport.dbo.TbCarAndPerson where (nIdPerson=" & YourNSSSecondDriver.nIdPerson & ") and (SnRelation=3)", 1, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "select Count(*) as CountX from dbtransport.dbo.TbCarAndPerson where (nIdPerson=" & YourNSSSecondDriver.nIdPerson & ") and (SnRelation=3) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) Or (RelationTimeStamp='2015-01-01 00:00:00.000'))", 1, Ds).GetRecordsCount() = 0 Then
                     Return 0
                 Else
                     Return Ds.Tables(0).Rows(0).Item("CountX")
@@ -3529,7 +3529,7 @@ Namespace Drivers
         Public Shared Function GetCountOfDriversAttachedCar(YourNSSCar As R2StandardCarStructure) As Int64
             Try
                 Dim Ds As New DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "select Count(*) as CountX from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YourNSSCar.nIdCar & ") and (SnRelation=2 or SnRelation=3)", 1, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "select Count(*) as CountX from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YourNSSCar.nIdCar & ") and (SnRelation=2 or SnRelation=3) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) Or (RelationTimeStamp='2015-01-01 00:00:00.000'))", 1, Ds).GetRecordsCount() = 0 Then
                     Return 0
                 Else
                     Return Ds.Tables(0).Rows(0).Item("CountX")

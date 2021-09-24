@@ -7,7 +7,7 @@
 <%@ Register Src="~/TransportationAndLoadNotification/LoadAllocationManagement/WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue.ascx" TagName="WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue" TagPrefix="TWebControl" %>
 
 
- 
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -17,7 +17,7 @@
     <div class="container-fluid">
         <div class="container-fluid  text-right">
             <div class="d-flex flex-column">
-                <span class="" style="font-family: BHoma; font-size: 40px">تخصیص بار</span>
+                <span class="" style="font-family: BHoma; font-size: 40px">بار رسوب شده</span>
             </div>
         </div>
         <div class="container-fluid p-0 mb-1">
@@ -27,27 +27,27 @@
         <div class="container-fluid">
             <ul class="nav nav-tabs justify-content-end" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadAllocationLoadPermissionIssue">تخصیص بار</a>
+                    <a class="nav-link R2FontBYekanMedium " data-toggle="tab" href="#LoadCapacitorLoads">لیست بار</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadPersmissionsIssued">مجوزهای صادر شده</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active R2FontBYekanMedium " data-toggle="tab" href="#LoadCapacitorLoads">لیست بار</a>
+                    <a class="nav-link active R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadAllocationLoadPermissionIssue">تخصیص بار</a>
                 </li>
             </ul>
             <div class="tab-content">
-                <div id="LoadCapacitorLoads" class="container-fluid tab-pane active">
+                <div id="LoadCapacitorLoadLoadAllocationLoadPermissionIssue" class="container-fluid tab-pane active">
                     <br />
-                    <TWebControl:WcLoadCapacitorLoadsCollectionIntelligently runat="server" ID="WcLoadCapacitorLoadsCollectionIntelligently" />
+                    <TWebControl:WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue runat="server" ID="WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue" />
                 </div>
                 <div id="LoadCapacitorLoadLoadPersmissionsIssued" class="container-fluid tab-pane fade ">
                     <br />
                     <TWebControl:WcLoadCapacitorLoadLoadPermissionsIssued runat="server" ID="WcLoadCapacitorLoadLoadPermissionsIssued" />
                 </div>
-                <div id="LoadCapacitorLoadLoadAllocationLoadPermissionIssue" class="container-fluid tab-pane">
+                <div id="LoadCapacitorLoads" class="container-fluid tab-pane">
                     <br />
-                    <TWebControl:WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue runat="server" ID="WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue" />
+                    <TWebControl:WcLoadCapacitorLoadsCollectionIntelligently runat="server" ID="WcLoadCapacitorLoadsCollectionIntelligently" />
                 </div>
             </div>
         </div>

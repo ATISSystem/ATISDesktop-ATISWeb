@@ -128,7 +128,7 @@ Public Class FrmcCarAndDriversInformation
             End If
             'ایجاد رابطه جدید کارت و پلاک
             If myNSSTraficCard IsNot Nothing Then
-                CmdSql.CommandText = "Insert into R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars(CardId,nCarId,RelationActive) Values(" & myNSSTraficCard.CardId & "," & myNSSCarTruck.NSSCar.nIdCar & ",1)"
+                CmdSql.CommandText = "Insert into R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars(CardId,nCarId,RelationActive,RelationTimeStamp) Values(" & myNSSTraficCard.CardId & "," & myNSSCarTruck.NSSCar.nIdCar & ",1,'2015-01-01 00:00:00.000')"
                 CmdSql.ExecuteNonQuery()
             End If
             If myNSSCarTruckReserved IsNot Nothing Then
@@ -192,11 +192,11 @@ Public Class FrmcCarAndDriversInformation
             CmdSql.CommandText = "Delete Dbtransport.dbo.TbCarAndPerson Where nIdCar=" & myNSSCarTruck.NSSCar.nIdCar & ""
             CmdSql.ExecuteNonQuery()
             'ایجاد رابطه جدید راننده اول با پلاک
-            CmdSql.CommandText = "Insert into Dbtransport.dbo.TbCarAndPerson(nIdCar,nIdPerson,snRelation,dDate) Values(" & myNSSCarTruck.NSSCar.nIdCar & "," & myNSSDriverTruckFirst.NSSDriver.nIdPerson & ",2,'" & _DateTime.GetCurrentDateShamsiFull() & "')"
+            CmdSql.CommandText = "Insert into Dbtransport.dbo.TbCarAndPerson(nIdCar,nIdPerson,snRelation,dDate,RelationTimeStamp) Values(" & myNSSCarTruck.NSSCar.nIdCar & "," & myNSSDriverTruckFirst.NSSDriver.nIdPerson & ",2,'" & _DateTime.GetCurrentDateShamsiFull() & "','2015-01-01 00:00:00.000')"
             CmdSql.ExecuteNonQuery()
             'ایجاد رابطه جدید راننده دوم با پلاک در صورت موجود بودن راننده دوم
             If myNSSDriverTruckSecond IsNot Nothing Then
-                CmdSql.CommandText = "Insert into Dbtransport.dbo.TbCarAndPerson(nIdCar,nIdPerson,snRelation,dDate) Values(" & myNSSCarTruck.NSSCar.nIdCar & "," & myNSSDriverTruckSecond.NSSDriver.nIdPerson & ",3,'" & _DateTime.GetCurrentDateShamsiFull() & "')"
+                CmdSql.CommandText = "Insert into Dbtransport.dbo.TbCarAndPerson(nIdCar,nIdPerson,snRelation,dDate,RelationTimeStamp) Values(" & myNSSCarTruck.NSSCar.nIdCar & "," & myNSSDriverTruckSecond.NSSDriver.nIdPerson & ",3,'" & _DateTime.GetCurrentDateShamsiFull() & "','2015-01-01 00:00:00.000')"
                 CmdSql.ExecuteNonQuery()
             End If
             CmdSql.Transaction.Commit() : CmdSql.Connection.Close()

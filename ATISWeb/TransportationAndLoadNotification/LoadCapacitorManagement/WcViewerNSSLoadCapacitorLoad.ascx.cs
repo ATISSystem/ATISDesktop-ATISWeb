@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using System.Web.UI;
-
+using R2Core.ExceptionManagement;
 using R2Core.PublicProc;
+using R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
@@ -19,7 +20,16 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         {
             get
             {
-                try { return R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(Convert.ToInt64(TxtnEstelamId.Text)); }
+                try
+                {
+                    if (TxtnEstelamId.Text == string.Empty)
+                    { throw new DataEntryException(); }
+                    else { return R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(Convert.ToInt64(TxtnEstelamId.Text)); }
+                }
+                catch (DataEntryException ex)
+                { throw ex; }
+                catch (LoadCapacitorLoadNotFoundException ex)
+                { throw ex; }
                 catch (Exception ex)
                 { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
             }

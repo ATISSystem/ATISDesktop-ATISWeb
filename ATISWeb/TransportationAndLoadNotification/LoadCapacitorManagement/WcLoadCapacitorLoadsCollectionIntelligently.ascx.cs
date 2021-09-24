@@ -11,7 +11,7 @@ using R2Core.PublicProc;
 using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2CoreTransportationAndLoadNotification.TransportCompanies;
- 
+
 namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 {
     public partial class WcLoadCapacitorLoadsCollectionIntelligently : UserControl
@@ -58,7 +58,10 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                     Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTommorowLoadCapacitorLoads(TCId);
                 }
                 else if (WcCurrentListType == LoadCapacitorLoadsListType.None)
-                { throw new Exception("نوع لیست بار صحیح نیست"); }
+                {
+                    LblCaption.Text = "لیست بار";
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetAllLoadCapacitorLoads(TCId);
+                }
 
                 while (TblLoadCapacitorLoads.Rows.Count > 1) TblLoadCapacitorLoads.Rows.RemoveAt(1);
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)

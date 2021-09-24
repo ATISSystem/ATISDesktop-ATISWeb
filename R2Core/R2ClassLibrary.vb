@@ -3817,6 +3817,15 @@ Namespace ExceptionManagement
         End Property
     End Class
 
+    Public Class UserNotAllowedRunThisProccessException
+        Inherits ApplicationException
+        Public Overrides ReadOnly Property Message As String
+            Get
+                Return "کاربر مجوز دسترسی ندارد"
+            End Get
+        End Property
+    End Class
+
 
 
 End Namespace

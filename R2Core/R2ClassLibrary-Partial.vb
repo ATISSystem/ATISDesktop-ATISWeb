@@ -2090,6 +2090,9 @@ Namespace PermissionManagement
         Public Shared ReadOnly None As Int64 = 0
         Public Shared ReadOnly SoftwareUsersAccessMobileProcesses As Int64 = 1
         Public Shared ReadOnly SoftwareUsersAccessWebProcesses As Int64 = 2
+        Public Shared ReadOnly UserCanSendSoftwareUserShenasehPasswordViaSMS As Int64 = 7
+        Public Shared ReadOnly UserCanViewAndPrintUserShenasehPassword As Int64 = 8
+        Public Shared ReadOnly UserCanInject123VerificationCodeforAppActivation As Int64 = 9
     End Class
 
     Public Class R2StandardPermissionTypeStructure
@@ -2778,7 +2781,7 @@ Namespace SMSSendAndRecieved
                         If DateDiff(DateInterval.Hour, _DateTime.GetCurrentDateTimeMilladi, Convert.ToDateTime(DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"))) <= DS.Tables(0).Rows(Loopx).Item("EndHours") Then
                             Dim myMessage As String = DS.Tables(0).Rows(Loopx).Item("message").trim
                             Dim myMobilenumber As String = DS.Tables(0).Rows(Loopx).Item("mobilenumber").trim
-                            Dim SmsId() As Long = _SepahanSMS.SendSms("Biinfo878", "bF=7A=E4sR$Bw58!Zu$U", "sepahansms", New String() {myMessage}, New String() {myMobilenumber}, "30006403868611",
+                            Dim SmsId() As Long = _SepahanSMS.SendSms(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 2), R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 3), R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 5), New String() {myMessage}, New String() {myMobilenumber}, R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 4),
                                                      net.sepahansms.SendType.DynamicText, net.sepahansms.SmsMode.SaveInPhone)
                             If SmsId(0) > 0 Then
                                 CmdSql.Connection.Open()

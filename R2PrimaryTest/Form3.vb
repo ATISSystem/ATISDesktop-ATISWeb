@@ -21,6 +21,7 @@ Imports R2CoreParkingSystem.Drivers
 Imports R2CoreParkingSystem.EntityRelations
 Imports R2CoreParkingSystem.SoftwareUsersManagement
 Imports R2CoreTransportationAndLoadNotification
+Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.ConfigurationsManagement
@@ -253,8 +254,8 @@ Public Class Form3
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
-            Dim X = New R2CoreTransportationAndLoadNotification.LoadSedimentation.R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManager
-            X.SedimentingProcess()
+            Dim X = New R2CoreTransportationAndLoadNotification.LoadAllocation.R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+            X.LoadAllocationsLoadPermissionRegistering(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             'PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
             'Dim Instance = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
             'MessageBox.Show(Instance.GetFirstActiveTurn(Instance.GetNSSTurn(943406)))

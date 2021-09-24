@@ -194,7 +194,7 @@ Partial Class UCDriverTruck
         Me.UcDriver.Padding = New System.Windows.Forms.Padding(3)
         Me.UcDriver.Size = New System.Drawing.Size(791, 101)
         Me.UcDriver.TabIndex = 0
-        Me.UcDriver.UCViewButtons = True
+        Me.UcDriver.UCViewButtons = False
         '
         'UcNumberDriverNationalCode
         '

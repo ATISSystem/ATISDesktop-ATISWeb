@@ -21,7 +21,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 
         #region "General Properties"
 
-        public LoadCapacitorLoadsListType WcCurrentListType = LoadCapacitorLoadsListType.NotSedimented;
+        public LoadCapacitorLoadsListType WcCurrentListType = LoadCapacitorLoadsListType.None ;
 
         private string _UCCaption = string.Empty;
         public string UCCaption
@@ -60,7 +60,10 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                     Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTommorowLoadCapacitorLoads(TCId);
                 }
                 else if (WcCurrentListType == LoadCapacitorLoadsListType.None)
-                { throw new Exception("نوع لیست بار صحیح نیست"); }
+                {
+                    LblCaption.Text = "لیست بار";
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetAllLoadCapacitorLoads(TCId);
+                }
 
                 DropDownListLoads.Items.Clear();
                 DropDownListLoads.Items.Add("انتخاب کنید ...");

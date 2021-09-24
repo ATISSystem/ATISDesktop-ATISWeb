@@ -2,7 +2,7 @@
 
 <div class="container-fluid p-1 border border-primary rounded">
     <div class="container-fluid text-right bg-primary" style="height: 40px">
-        <asp:Label runat="server" ID="Label2" CssClass="R2FontBHomaLarge text-white">استعلام کارت هوشمند ناوگان و راننده باری</asp:Label>
+        <asp:Label runat="server" ID="Label2" CssClass="R2FontBHomaLarge text-white">استعلام کارت هوشمند ناوگان و کد ملی راننده</asp:Label>
     </div>
     <div class="container-fluid p-1 border mb-1" style="border-color: gainsboro">
         <asp:UpdatePanel ID="UpdatePanelTruckSmartCard" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="True">
@@ -33,13 +33,13 @@
             <ContentTemplate>
                 <div class="d-flex flex-row-reverse">
                     <div class="input-group col-lg-3 col-sm-3">
-                        <asp:TextBox runat="server" ID="TxtTruckDriverSmartCardNo" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="TxtTruckDriverNationalCode" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
                         <div class="input-group-append">
-                            <span class="input-group-text R2FontBHomaSmall" style="background-color: greenyellow; color: black">هوشمند راننده</span>
+                            <span class="input-group-text R2FontBHomaSmall" style="background-color: greenyellow; color: black">کد ملی راننده</span>
                         </div>
                     </div>
                     <div class="">
-                        <asp:Button runat="server" ID="BtnTruckDriverSmartCardInquiry" CssClass="btn border border-success mr-2 R2FontBYekanSmall" Text="استعلام راننده" Style="background-color: transparent; color: black" />
+                        <asp:Button runat="server" ID="BtnTruckDriverNationalCodeInquiry" CssClass="btn border border-success mr-2 R2FontBYekanSmall" Text="استعلام راننده" Style="background-color: transparent; color: black" />
                     </div>
                     <div class="text-center mr-3">
                         <asp:Label runat="server" ID="LblTruckDriver" CssClass="R2FontBHomaMedium text-primary" Style="direction: rtl"></asp:Label>
@@ -47,7 +47,7 @@
                 </div>
             </ContentTemplate>
             <Triggers>
-                <asp:AsyncPostBackTrigger ControlID="BtnTruckDriverSmartCardInquiry" EventName="Click" />
+                <asp:AsyncPostBackTrigger ControlID="BtnTruckDriverNationalCodeInquiry" EventName="Click" />
             </Triggers>
         </asp:UpdatePanel>
     </div>

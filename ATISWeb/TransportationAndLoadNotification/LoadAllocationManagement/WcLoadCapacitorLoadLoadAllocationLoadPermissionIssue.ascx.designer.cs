@@ -13,6 +13,15 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
     public partial class WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue {
         
         /// <summary>
+        /// BtnNewLoadAllocation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnNewLoadAllocation;
+        
+        /// <summary>
         /// UpdatePanelWcViewerNSSLoadCapacitorLoad control.
         /// </summary>
         /// <remarks>
@@ -49,39 +58,30 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         protected global::ATISWeb.TransportationAndLoadNotification.SmartCards.WcSmartCardsInquiry WcSmartCardsInquiry;
         
         /// <summary>
-        /// UpdatePanelWcLoadCapacitorLoadLoadAllocationLoadPermissionIssue control.
+        /// PnlTurnStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanelWcLoadCapacitorLoadLoadAllocationLoadPermissionIssue;
+        protected global::System.Web.UI.WebControls.Panel PnlTurnStatus;
         
         /// <summary>
-        /// BtnPrint control.
+        /// LblTurnStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnPrint;
+        protected global::System.Web.UI.WebControls.Label LblTurnStatus;
         
         /// <summary>
-        /// BtnLoadAllocationLoadPermissionIssue control.
+        /// BtnLoadAllocation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnLoadAllocationLoadPermissionIssue;
-        
-        /// <summary>
-        /// PnlPrintLoadPermission control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel PnlPrintLoadPermission;
+        protected global::System.Web.UI.WebControls.Button BtnLoadAllocation;
     }
 }

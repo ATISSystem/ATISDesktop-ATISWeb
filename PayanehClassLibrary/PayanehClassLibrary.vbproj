@@ -563,12 +563,6 @@
     <Compile Include="Reports\UCTrucksAverageOfSleepDaysToGetLoadPermissionReport.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Transport Companies\UCComputerMessageSedimentedLoadAllocationAndPermssion.Designer.vb">
-      <DependentUpon>UCComputerMessageSedimentedLoadAllocationAndPermssion.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Transport Companies\UCComputerMessageSedimentedLoadAllocationAndPermssion.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Transport Companies\UCResuscitationSedimentedLoadbynEstelamId.Designer.vb">
       <DependentUpon>UCResuscitationSedimentedLoadbynEstelamId.vb</DependentUpon>
     </Compile>
@@ -848,9 +842,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UCTrucksAverageOfSleepDaysToGetLoadPermissionReport.resx">
       <DependentUpon>UCTrucksAverageOfSleepDaysToGetLoadPermissionReport.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transport Companies\UCComputerMessageSedimentedLoadAllocationAndPermssion.resx">
-      <DependentUpon>UCComputerMessageSedimentedLoadAllocationAndPermssion.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Transport Companies\UCResuscitationSedimentedLoadbynEstelamId.resx">
       <DependentUpon>UCResuscitationSedimentedLoadbynEstelamId.vb</DependentUpon>

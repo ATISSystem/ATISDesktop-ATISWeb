@@ -30,8 +30,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
         {
             try
             {
-                WcLoadCapacitorLoadLoadPermissionsIssued.WcCurrentListTypeIssued = LoadCapacitorLoadsListType.Sedimented;
-                WcLoadCapacitorLoadsCollectionIntelligently.WcCurrentListType =LoadCapacitorLoadsListType.Sedimented;
+                WcLoadCapacitorLoadLoadPermissionsIssued.WcCurrentListTypeIssued = LoadCapacitorLoadsListType.None;
+                WcLoadCapacitorLoadsCollectionIntelligently.WcCurrentListType =LoadCapacitorLoadsListType.None ;
                 WcLoadCapacitorLoadsCollectionIntelligently.WcViewInformation();
             }
             catch (Exception ex)

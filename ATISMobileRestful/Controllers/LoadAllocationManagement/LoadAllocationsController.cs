@@ -55,8 +55,8 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 var nEstelamId = Convert.ToInt64(Content.Split(';')[2]);
                 var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
                 var NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamId).nEstelamKey);
-                if (NSSLoadCapacitorLoad.LoadStatus == R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented)
-                { throw new Exception("تخصیص بار رسوبی تا اطلاع ثانوی ممکن نیست"); }
+                //if (NSSLoadCapacitorLoad.LoadStatus == R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented)
+                //{ throw new Exception("تخصیص بار رسوبی تا اطلاع ثانوی ممکن نیست"); }
 
                 Int64 myTurnId = Int64.MinValue;
                 try
@@ -177,9 +177,10 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                     SB.Append("کد مرجع: " + Lst[Loopx].LoadCapacitorLoadnEstelamId + "\r\n");
                     SB.Append(Lst[Loopx].LoadCapacitorLoadGoodTitle.Trim() + " " + Lst[Loopx].LoadCapacitorLoadTargetTitle.Trim() + " تعدادبار: " + Lst[Loopx].LoadCapacitorLoadnCarNumKol.Trim() + "\r\n");
                     SB.Append("تعرفه: " + Lst[Loopx].LoadCapacitorLoadStrPriceSug.Trim() + "\r\n");
-                    SB.Append("توضیحات بار: " + Lst[Loopx].LoadCapacitorLoadStrDescription.Trim() + " " + Lst[Loopx].LoadCapacitorLoadStrAddress.Trim() + "\r\n");
+                    SB.Append("توضیحات بار: " + Lst[Loopx].LoadCapacitorLoadStrDescription.Trim() + " " + Lst[Loopx].LoadCapacitorLoadStrBarName.Trim() + " " + Lst[Loopx].LoadCapacitorLoadStrAddress.Trim() + "\r\n");
                     SB.Append("وضعیت تخصیص بار: " + Lst[Loopx].LoadAllocationStatusTitle.Trim() + "\r\n");
                     SB.Append("توضیحات تخصیص: " + Lst[Loopx].LoadAllocationNote.Trim() + "\r\n");
+                    SB.Append("طول سفر: " + Lst[Loopx].LoadCapacitorLoadTargetTravelength.Trim() + "\r\n");
                     Item.Description = SB.ToString();
                     Item.DescriptionColor = Lst[Loopx].LoadAllocationStatusColor;
                     Item.LoadAllocationId = "شماره تخصیص:" + Lst[Loopx].LoadAllocationId + " - " + "اولویت:" + Lst[Loopx].LoadAllocationPriority;

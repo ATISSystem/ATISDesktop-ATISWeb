@@ -27,7 +27,7 @@ Public Class UCDriverTruck
 
 #Region "General Properties"
 
-    Private _UCViewButtons As Boolean = True
+    Private _UCViewButtons As Boolean = False
     Public Property UCViewButtons() As Boolean
         Get
             Return _UCViewButtons

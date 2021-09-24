@@ -14,6 +14,9 @@ using R2CoreTransportationAndLoadNotification.Rmto;
 using R2Core.ExceptionManagement;
 using R2Core.NetworkInternetManagement.Exceptions;
 using R2Core.SecurityAlgorithmsManagement.Exceptions;
+using R2CoreTransportationAndLoadNotification.Trucks;
+using R2CoreTransportationAndLoadNotification.TruckDrivers;
+using PayanehClassLibrary.DriverTrucksManagement.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.SmartCards
 {
@@ -21,6 +24,15 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
     {
 
         #region "General Properties"
+
+        private R2CoreTransportationAndLoadNotificationStandardTruckStructure _WcNSSTruck = null;
+        public R2CoreTransportationAndLoadNotificationStandardTruckStructure WcGetNSSTruck
+        { get { if (_WcNSSTruck is null) { throw new DataEntryException(); } else { return _WcNSSTruck; } } }
+
+        private R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure _WcNSSTruckDriver = null;
+        public R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure WcGetNSSTruckDriver
+        { get { if (_WcNSSTruckDriver is null) { throw new DataEntryException(); } else { return _WcNSSTruckDriver; } } }
+
         #endregion
 
         #region "Subroutins And Functions"
@@ -28,15 +40,52 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
         public string WcGetTruckSmartCardNo()
         { return TxtTruckSmartCardNo.Text; }
 
-        public string WcGetTruckDriverSmartCardNo()
-        { return TxtTruckDriverSmartCardNo.Text; }
+        public string WcGetTruckDriverNationalCodeNo()
+        { return TxtTruckDriverNationalCode.Text; }
 
         public void WcRefreshInformation()
         {
-            TxtTruckDriverSmartCardNo.Text = string.Empty;
+            TxtTruckDriverNationalCode.Text = string.Empty;
+            LblTruckDriver.Text= string.Empty;
             TxtTruckSmartCardNo.Text = string.Empty;
+            LblTruck.Text = string.Empty;
         }
 
+        private void FillWcDriverTruckInf()
+        {
+            try
+            {
+                R2StandardDriverTruckStructure NSS = null;
+                try { NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyNationalCode(TxtTruckDriverNationalCode.Text); }
+                catch (DriverTruckInformationNotExistException ex)
+                { NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetDriverTruckfromRMTOAndInsertUpdateLocalDataBaseByNationalCode(TxtTruckDriverNationalCode.Text); }
+                var InstanceTruckDrivers = new R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager();
+                _WcNSSTruckDriver = InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(NSS.NSSDriver.nIdPerson));
+            }
+            catch (Exception ex) when (ex is SqlInjectionException || ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
+            { throw ex; }
+            catch (PleaseReloginException ex)
+            { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
+            catch (Exception ex)
+            { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
+        }
+
+        private void FillWcTruckInf()
+        {
+            try
+            {
+                R2StandardCarTruckStructure NSS = null;
+                NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(TxtTruckSmartCardNo.Text, ATISWebMClassLoginManagement.GetNSSCurrentUser());
+                var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
+                _WcNSSTruck = InstanceTrucks.GetNSSTruck(System.Convert.ToInt64(NSS.NSSCar.nIdCar));
+            }
+            catch (Exception ex) when (ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+            catch (PleaseReloginException ex)
+            { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
+            catch (Exception ex)
+            { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
+        }
 
         #endregion
 
@@ -49,23 +98,26 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
         {
             try
             {
+                var InstanceTruckDrivers = new R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager();
                 BtnTruckSmartCardInquiry.Click += BtnTruckSmartCardInquiry_Click;
-                BtnTruckDriverSmartCardInquiry.Click += BtnTruckDriverSmartCardInquiry_Click;
+                BtnTruckDriverNationalCodeInquiry.Click += BtnTruckDriverNationalCodeInquiry_Click;
+                if (IsPostBack)
+                {
+                    FillWcDriverTruckInf();
+                    FillWcTruckInf();
+                }
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }
 
-        private void BtnTruckDriverSmartCardInquiry_Click(object sender, EventArgs e)
+        private void BtnTruckDriverNationalCodeInquiry_Click(object sender, EventArgs e)
         {
             try
             {
                 LblTruckDriver.Text = string.Empty;
-                R2StandardDriverTruckStructure NSS = null;
-                try { NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbySmartCardNo(TxtTruckDriverSmartCardNo.Text); }
-                catch (GetNSSException ex)
-                { NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetDriverTruckfromRMTOAndInsertUpdateLocalDataBase(TxtTruckDriverSmartCardNo.Text); }
-                LblTruckDriver.Text = NSS.NSSDriver.StrPersonFullName.Trim();
+                FillWcDriverTruckInf();
+                LblTruckDriver.Text = _WcNSSTruckDriver.NSSDriver.StrPersonFullName;
             }
             catch (Exception ex) when (ex is SqlInjectionException || ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
@@ -78,9 +130,8 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
             try
             {
                 LblTruck.Text = string.Empty;
-                R2StandardCarTruckStructure NSS = null;
-                NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(TxtTruckSmartCardNo.Text, ATISWebMClassLoginManagement.GetNSSCurrentUser());
-                LblTruck.Text = NSS.NSSCar.GetCarPelakSerialComposit();
+                FillWcTruckInf();
+                LblTruck.Text = _WcNSSTruck.NSSCar.GetCarPelakSerialComposit();
             }
             catch (Exception ex) when (ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }

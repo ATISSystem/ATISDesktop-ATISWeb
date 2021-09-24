@@ -8,6 +8,7 @@ Imports R2Core.ConfigurationManagement
 Imports R2Core.EntityRelationManagement
 Imports R2Core.EntityRelationManagement.Exceptions
 Imports R2Core.ExceptionManagement
+Imports R2Core.PermissionManagement
 Imports R2Core.SMSSendAndRecieved
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
@@ -21,14 +22,11 @@ Public Class UCDriver
     Public Event UCViewDriverInformationCompleted(DriverId As String)
     Public Event UCRefreshedEvent()
     Public Event UCRefreshedGeneralEvent()
-    'Public Event UCDriverInfByNationalCodeRequestedEvent(NationalCode As String)
-
-
 
 
 #Region "General Properties"
 
-    Private _UCViewButtons As Boolean = True
+    Private _UCViewButtons As Boolean = False
     Public Property UCViewButtons() As Boolean
         Get
             Return _UCViewButtons
@@ -39,13 +37,15 @@ Public Class UCDriver
                 UcButtonDel.Visible = True
                 UcButtonNew.Visible = True
                 UcButtonSabt.Visible = True
-                CButtonSendSmsLast5Digit.Visible = True
+                CButtonViewPrintUserShenasehPassword.Visible = True
+                CButtonSoftwareUserVerificationCodeInjection.Visible = True
                 CButtonSoftwareUserVerificationCodeInjection.Visible = True
             Else
                 UcButtonDel.Visible = False
                 UcButtonNew.Visible = False
                 UcButtonSabt.Visible = False
-                CButtonSendSmsLast5Digit.Visible = False
+                CButtonViewPrintUserShenasehPassword.Visible = False
+                CButtonSoftwareUserVerificationCodeInjection.Visible = False
                 CButtonSoftwareUserVerificationCodeInjection.Visible = False
             End If
         End Set
@@ -69,8 +69,9 @@ Public Class UCDriver
         UcPersianTextBoxFather.UCRefresh() : UcPersianTextBoxTel.UCRefresh() : UcPersianTextBoxAddress.UCRefresh()
         UcNumberDrivernIdPerson.UCRefresh() : UcTextBoxNationalCode.UCRefresh() : UcNumberLicenseNo.UCRefresh()
         UcPersianTextBoxDriverName.Focus()
-        CButtonSendSmsLast5Digit.Enabled = True
+        CButtonViewPrintUserShenasehPassword.Enabled = True
         CButtonSoftwareUserVerificationCodeInjection.Enabled = True
+        CButtonSendSmsUserShenasehPassword.Enabled = True
         RaiseEvent UCRefreshedEvent()
     End Sub
 
@@ -283,40 +284,6 @@ Public Class UCDriver
     End Sub
 
     Private WithEvents PrintDocument As PrintDocument = New PrintDocument
-    Private Sub CButtonSendSmsLast5Digit_Click(sender As Object, e As EventArgs) Handles CButtonSendSmsLast5Digit.Click
-        Dim InstanceSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
-        Try
-            'CButtonSendSmsLast5Digit.Enabled=False
-            Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
-            MessageBox.Show("شناسه شخصی:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز شخصی:" + NSSSoftwareUser.UserPassword)
-            PrintDocument.Print()
-            'Dim SMSSender As New R2CoreSMSSendRecive
-            'Dim SMSMessage = "شناسه شخصی:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز شخصی:" + NSSSoftwareUser.UserPassword
-            'SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, 1, Nothing, Nothing))
-            'UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "رمز شخصی ارسال شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch ex As GetNSSException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اطلاعات مورد نیاز را به صورت کامل وارد کنید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
-    Private Sub CButtonSoftwareUserVerificationCodeInjection_Click(sender As Object, e As EventArgs) Handles CButtonSoftwareUserVerificationCodeInjection.Click
-        Try
-            Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
-            Dim InstanceR2CoreParkingSystemSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
-            Dim NSSSoftwareUser = InstanceR2CoreParkingSystemSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
-            Dim InstanceR2CoreSoftwareUser = New R2CoreInstanseSoftwareUsersManager
-            InstanceR2CoreSoftwareUser.SoftwareUserVerificationCodeInjection(NSSSoftwareUser)
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تزریق کد فعال سازی با موفقیت انجام شد" + vbCrLf + "InjectedVerificationCode=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 12), "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-            CButtonSoftwareUserVerificationCodeInjection.Enabled = False
-        Catch ex As GetNSSException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اطلاعات مورد نیاز را به صورت کامل وارد کنید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
     Private Sub PrintDocument_BeginPrint(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintEventArgs) Handles PrintDocument.BeginPrint
     End Sub
 
@@ -350,6 +317,64 @@ Public Class UCDriver
         End Try
     End Sub
 
+    Private Sub CButtonSendSmsUserShenasehPassword_Click(sender As Object, e As EventArgs) Handles CButtonSendSmsUserShenasehPassword.Click
+        Try
+
+            Dim InstancePermissions = New R2CoreInstansePermissionsManager
+            If Not InstancePermissions.ExistPermission(R2CorePermissionTypes.UserCanSendSoftwareUserShenasehPasswordViaSMS, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, 0) Then Throw New UserNotAllowedRunThisProccessException
+            Dim InstanceSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
+            CButtonSendSmsUserShenasehPassword.Enabled = False
+            Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
+            Dim SMSSender As New R2CoreSMSSendRecive
+            Dim SMSMessage = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SystemDisplayTitle, 0) + vbCrLf + "شناسه شخصی:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز شخصی:" + NSSSoftwareUser.UserPassword
+            SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, 1, Nothing, Nothing))
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "شناسه و رمز شخصی ارسال شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As UserNotAllowedRunThisProccessException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As GetNSSException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اطلاعات مورد نیاز را به صورت کامل وارد کنید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+
+    End Sub
+
+    Private Sub CButtonViewPrintUserShenasehPassword_Click(sender As Object, e As EventArgs) Handles CButtonViewPrintUserShenasehPassword.Click
+        Try
+            Dim InstancePermissions = New R2CoreInstansePermissionsManager
+            If Not InstancePermissions.ExistPermission(R2CorePermissionTypes.UserCanViewAndPrintUserShenasehPassword, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, 0) Then Throw New UserNotAllowedRunThisProccessException
+            Dim InstanceSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
+            Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
+            MessageBox.Show("شناسه شخصی:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز شخصی:" + NSSSoftwareUser.UserPassword)
+            PrintDocument.Print()
+        Catch ex As UserNotAllowedRunThisProccessException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As GetNSSException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اطلاعات مورد نیاز را به صورت کامل وارد کنید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub CButtonSoftwareUserVerificationCodeInjection_Click(sender As Object, e As EventArgs) Handles CButtonSoftwareUserVerificationCodeInjection.Click
+        Try
+            Dim InstancePermissions = New R2CoreInstansePermissionsManager
+            If Not InstancePermissions.ExistPermission(R2CorePermissionTypes.UserCanInject123VerificationCodeforAppActivation, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, 0) Then Throw New UserNotAllowedRunThisProccessException
+            Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+            Dim InstanceR2CoreParkingSystemSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
+            Dim NSSSoftwareUser = InstanceR2CoreParkingSystemSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
+            Dim InstanceR2CoreSoftwareUser = New R2CoreInstanseSoftwareUsersManager
+            InstanceR2CoreSoftwareUser.SoftwareUserVerificationCodeInjection(NSSSoftwareUser)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تزریق کد فعال سازی با موفقیت انجام شد" + vbCrLf + "InjectedVerificationCode=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 12), "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+            CButtonSoftwareUserVerificationCodeInjection.Enabled = False
+        Catch ex As UserNotAllowedRunThisProccessException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As GetNSSException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اطلاعات مورد نیاز را به صورت کامل وارد کنید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
 
 #End Region
 

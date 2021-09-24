@@ -78,6 +78,9 @@ Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2CoreTransportationAndLoadNotification.AnnouncementTiming
 Imports PayanehClassLibrary.TurnRegisterRequest
+Imports R2CoreTransportationAndLoadNotification.TransportCompanies
+Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement
+Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions
 
 Namespace Logging
 
@@ -217,6 +220,11 @@ Namespace CarTruckNobatManagement
                 _OtaghdarTurnNumber = Value
             End Set
         End Property
+        Public ReadOnly Property OtaghdarTurnNumberSummary() As String
+            Get
+                Return Mid(_OtaghdarTurnNumber, 7, 20)
+            End Get
+        End Property
         Public Property StrCardNo() As Int64
             Get
                 Return _StrCardNo
@@ -279,9 +287,11 @@ Namespace CarTruckNobatManagement
                 Dim SeqTKeyWord As String = R2CoreTransportationAndLoadNotificationMClassSequentialTurnsManagement.GetNSSSequentialTurn(YourNSSAnnouncementHall).SequentialTurnKeyWord
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "
-                       Select Substring(Turns.OtaghdarTurnNumber,7,6) as OtaghdarTurnNumber,Turns.StrEnterDate from dbtransport.dbo.TbEnterExit as Turns
+                        Select Substring(Turns.OtaghdarTurnNumber,7,6) as OtaghdarTurnNumber,Turns.StrEnterDate from dbtransport.dbo.TbEnterExit as Turns
                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCars On Turns.strCardno=AHSGRCars.CarId 
-                        Where bFlagDriver=0 and AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and Substring(OtaghdarTurnNumber,1,1)='" & SeqTKeyWord & "' and AHSGRCars.RelationActive=1 Order By nEnterExitId", 1, Ds).GetRecordsCount() = 0 Then
+                        Where bFlagDriver=0 and AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and Substring(OtaghdarTurnNumber,1,1)='" & SeqTKeyWord & "' and AHSGRCars.RelationActive=1 
+                              and ((DATEDIFF(SECOND,AHSGRCars.RelationTimeStamp,getdate())<120) or (AHSGRCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                        Order By nEnterExitId,AHSGRCars.RelationId Desc", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New GetDataException
                 End If
                 Dim Lst As List(Of String) = New List(Of String)
@@ -472,9 +482,9 @@ Namespace CarTruckNobatManagement
                 CmdSql.ExecuteNonQuery()
 
                 'این خطوط بعد از حذف سپاس باید حذف گردند فعلا موقتی هستند
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbGhabz(nIdNobat,nIdCar,nIdDriver,StrDateEnter,StrDateExit,StrDateShEnter,StrDateShExit,StrTimeEnter,StrTimeExit,StrBarcodeNo,StrTime,IdUserEnter,IdUserExit,nSumPaid,nSumPaidEnter,nSumPaidExit,FlagA,snEnterAim,bEbtal) Values(" & mynIdEnterExit & "," & NSSCarTruck.NSSCar.nIdCar & "," & NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & _DateTime.GetCurrentTime() & "','" & YourTrafficCard.CardNo & "','" & _DateTime.GetCurrentTime() & "'," & YourUserNSS.UserId & "," & YourUserNSS.UserId & ",0,0,0,1,1,0)"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbGhabz(nIdNobat,nIdCar,nIdDriver,StrDateEnter,StrDateExit,StrDateShEnter,StrDateShExit,StrTimeEnter,StrTimeExit,StrBarcodeNo,StrTime,IdUserEnter,IdUserExit,nSumPaid,nSumPaidEnter,nSumPaidExit,FlagA,snEnterAim,bEbtal) Values(" & mynIdEnterExit & "," & NSSCarTruck.NSSCar.nIdCar & "," & NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & _DateTime.GetCurrentTime() & "','" & YourTrafficCard.CardNo & "','" & _DateTime.GetCurrentTime() & "',1,1,0,0,0,1,1,0)"
                 CmdSql.ExecuteNonQuery()
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbGhabz(nIdNobat,nIdCar,nIdDriver,StrDateEnter,StrDateExit,StrDateShEnter,StrDateShExit,StrTimeEnter,StrTimeExit,StrBarcodeNo,StrTime,IdUserEnter,IdUserExit,nSumPaid,nSumPaidEnter,nSumPaidExit,FlagA,snEnterAim,bEbtal) Values(0," & NSSCarTruck.NSSCar.nIdCar & "," & NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & _DateTime.GetCurrentTime() & "','" & YourTrafficCard.CardNo & "','" & _DateTime.GetCurrentTime() & "'," & YourUserNSS.UserId & "," & YourUserNSS.UserId & ",0,0,0,1,1,0)"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbGhabz(nIdNobat,nIdCar,nIdDriver,StrDateEnter,StrDateExit,StrDateShEnter,StrDateShExit,StrTimeEnter,StrTimeExit,StrBarcodeNo,StrTime,IdUserEnter,IdUserExit,nSumPaid,nSumPaidEnter,nSumPaidExit,FlagA,snEnterAim,bEbtal) Values(0," & NSSCarTruck.NSSCar.nIdCar & "," & NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & _DateTime.GetCurrentTime() & "','" & YourTrafficCard.CardNo & "','" & _DateTime.GetCurrentTime() & "',1,1,0,0,0,1,1,0)"
                 CmdSql.ExecuteNonQuery()
 
                 'هزینه نوبت انجمن و شرکت
@@ -554,7 +564,7 @@ Namespace CarTruckNobatManagement
                     CmdSql.Transaction.Rollback()
                     CmdSql.Connection.Close()
                 End If
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Fail, "بروز خطای اساسی هنگام صدور نوبت" + ex.Message, YourTrafficCard.CardNo, 0, 0, 0, 0, YourUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+                'R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Fail, "بروز خطای اساسی هنگام صدور نوبت" + ex.Message, YourTrafficCard.CardNo, 0, 0, 0, 0, YourUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
@@ -617,89 +627,51 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
-        Public Shared Function GetNobatKiosk(YourNSSCarTruck As R2StandardCarTruckStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
+        Public Shared Function GetTurnofKiosk(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourNSSTruckDriver As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure, YourNSSTransportCompany As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure, YourNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
-                'احراز راننده ناوگان از رابطه ناوگان راننده
-                Dim nIdPerson As Int64
-                Dim NSSDriverTruck As R2StandardDriverTruckStructure
-                Try
-                    nIdPerson = R2CoreParkingSystemMClassCars.GetnIdPersonFirst(YourNSSCarTruck.NSSCar.nIdCar)
-                    NSSDriverTruck = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(nIdPerson)
-                Catch exx As GetDataException
-                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Fail, "صدور نوبت امکان پذیر نیست" + vbCrLf + "مشخصات راننده متصل به ناوگان مشخص نیست", String.Empty, 0, 0, 0, 0, YourUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
-                    Throw New GetNobatException("صدور نوبت امکان پذیر نیست" + vbCrLf + "مشخصات راننده متصل به ناوگان مشخص نیست")
-                End Try
+                Dim InstanceTerraficCards = New R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager
+                Dim NSSMoneyWallet = InstanceTerraficCards.GetNSSTerafficCard(YourNSSTransportCompany)
 
-                'تراکنش صدور نوبت
+                'تراکنش ثبت روابط موقت ناوگان و راننده باری و کیف پول و زیرگروه اعلام بار
+                'کلیه روابط به صورت موقت ایجاد می گردند و از طریق فیلد تایم استمپ در کل سیستم ایزوله می شوند و شناسایی می گردند
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
-                'شاخص اصلی نوبت برای تمام انواع ناوگان یکدست و یکپارچه محاسبه می شود و سیاست یکسانی دارد
-                CmdSql.CommandText = "Select top 1 nEnterExitId from dbtransport.dbo.tbEnterExit with (tablockx) order by nEnterExitId desc"
-                Dim mynIdEnterExit As Int64 = CmdSql.ExecuteScalar + 1
-
-                'شاخص فرعی نوبت برای انواع ناوگان متفاوت است و سیاست متفاوت دارد
-                'Example -> Tereilli Start : T1397/000001  
-                'Example -> Otaghdar Start : O1397/000001  
-                'در چاپ قبض نوبت صفرهای اضافه نوبت فرعی حذف می گردند
-                Dim TereilliNobatId As Int64
-                Dim TereilliNobatId_ As String
-                Dim OtaghdarNobatId As Int64
-                Dim OtaghdarNobatId_ As String
-                Dim NSSAnnouncemenetHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(YourNSSCarTruck.NSSCar.snCarType)
-                If NSSAnnouncemenetHall.AHId = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.Zobi Or NSSAnnouncemenetHall.AHId = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.Anbari Then
-                    CmdSql.CommandText = "Select top 1 Substring(OtaghdarTurnNumber,7,10) from tbenterexit with (tablockx) Where Substring(OtaghdarTurnNumber,1,5)='T" + _DateTime.GetCurrentSalShamsiFull() + "' order by OtaghdarTurnNumber desc"
-                    TereilliNobatId = CmdSql.ExecuteScalar + 1
-                    TereilliNobatId_ = "T" + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - TereilliNobatId.ToString().Trim().Length) + TereilliNobatId.ToString().Trim()
-                ElseIf NSSAnnouncemenetHall.AHId <> AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.Zobi And NSSAnnouncemenetHall.AHId <> AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.Anbari Then
-                    CmdSql.CommandText = "Select top 1 Substring(OtaghdarTurnNumber,7,10) from tbenterexit with (tablockx) Where Substring(OtaghdarTurnNumber,1,5)='O" + _DateTime.GetCurrentSalShamsiFull() + "' order by OtaghdarTurnNumber desc"
-                    OtaghdarNobatId = CmdSql.ExecuteScalar + 1
-                    OtaghdarNobatId_ = "O" + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - OtaghdarNobatId.ToString().Trim().Length) + OtaghdarNobatId.ToString().Trim()
-                Else
-                    TereilliNobatId_ = String.Empty
-                    OtaghdarNobatId_ = String.Empty
-                End If
-
-                'این خطوط بعد از حذف سپاس باید حذف گردند فعلا موقتی هستند
-                CmdSql.CommandText = "Select top 1 nIdNobat from dbtransport.dbo.tbGhabz with (tablockx) order by nIdNobat desc"
+                CmdSql.CommandText = "Insert into dbtransport.dbo.TbCarAndPerson(nIDCar,nIDPerson,snRelation,dDate,strDesc,RelationTimeStamp)
+                  				      Values(" & YourNSSTruck.NSSCar.nIdCar & "," & YourNSSTruckDriver.NSSDriver.nIdPerson & ",2,'" & _DateTime.GetCurrentDateShamsiFull & "','TempRelation','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "')"
                 CmdSql.ExecuteNonQuery()
-                CmdSql.CommandText = "Select IDENT_CURRENT('dbtransport.dbo.TbGhabz')"
-                Dim mynIdGhabz As Int64 = CmdSql.ExecuteScalar + 1
-
-                'ثبت نوبت ناوگان باری
-                If NSSAnnouncemenetHall.AHId = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.Zobi Or NSSAnnouncemenetHall.AHId = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.Anbari Then
-                    CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus) Values(" & mynIdEnterExit & "," & YourNSSCarTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','3800000',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',0,0," & NSSDriverTruck.NSSDriver.nIdPerson & "," & mynIdGhabz & ",'" & TereilliNobatId_ & "'," & TurnStatus.Registered & "," & R2CoreTransportationAndLoadNotification.LoadPermission.R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ")"
-                    CmdSql.ExecuteNonQuery()
-                Else
-                    CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus) Values(" & mynIdEnterExit & "," & YourNSSCarTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','3800000',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',0,0," & NSSDriverTruck.NSSDriver.nIdPerson & "," & mynIdGhabz & ",'" & OtaghdarNobatId_ & "'," & TurnStatus.Registered & "," & R2CoreTransportationAndLoadNotification.LoadPermission.R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ")"
-                    CmdSql.ExecuteNonQuery()
-                End If
-
-                'این خطوط بعد از حذف سپاس باید حذف گردند فعلا موقتی هستند
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbGhabz(nIdNobat,nIdCar,nIdDriver,StrDateEnter,StrDateExit,StrDateShEnter,StrDateShExit,StrTimeEnter,StrTimeExit,StrBarcodeNo,StrTime,IdUserEnter,IdUserExit,nSumPaid,nSumPaidEnter,nSumPaidExit,FlagA,snEnterAim,bEbtal) Values(" & mynIdEnterExit & "," & YourNSSCarTruck.NSSCar.nIdCar & "," & NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & _DateTime.GetCurrentTime() & "','" & String.Empty & "','" & _DateTime.GetCurrentTime() & "'," & YourUserNSS.UserId & "," & YourUserNSS.UserId & ",0,0,0,1,1,0)"
+                CmdSql.CommandText = "Insert Into R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars(CardId, nCarId, RelationActive, RelationTimeStamp) 
+                  				      Values(" & NSSMoneyWallet.CardId & "," & YourNSSTruck.NSSCar.nIdCar & ",1,'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "')"
                 CmdSql.ExecuteNonQuery()
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbGhabz(nIdNobat,nIdCar,nIdDriver,StrDateEnter,StrDateExit,StrDateShEnter,StrDateShExit,StrTimeEnter,StrTimeExit,StrBarcodeNo,StrTime,IdUserEnter,IdUserExit,nSumPaid,nSumPaidEnter,nSumPaidExit,FlagA,snEnterAim,bEbtal) Values(0," & YourNSSCarTruck.NSSCar.nIdCar & "," & NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & _DateTime.GetCurrentTime() & "','" & String.Empty & "','" & _DateTime.GetCurrentTime() & "'," & YourUserNSS.UserId & "," & YourUserNSS.UserId & ",0,0,0,1,1,0)"
+                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars(CarId,AHSGId,Priority,RelationActive,RelationTimeStamp)
+	         				          Values(" & YourNSSTruck.NSSCar.nIdCar & "," & YourNSSLoadCapacitorLoad.AHSGId & ",1,1,'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "')"
                 CmdSql.ExecuteNonQuery()
-
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
-
-                Return mynIdEnterExit
-            Catch exx As GetNSSException
+                Dim TurnId = Int64.MinValue
+                Dim TurnRegisterRequestId = PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(YourNSSTruck, True, True, TurnId, YourUserNSS)
+                Return TurnId
+            Catch ex As Exception When TypeOf ex Is SoftwareUserMoneyWalletNotFoundException _
+                                OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
+                                OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
+                                OrElse TypeOf ex Is CarIsNotPresentInParkingException _
+                                OrElse TypeOf ex Is SequentialTurnIsNotActiveException _
+                                OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
+                                OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler _
+                                OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException _
+                                OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat _
+                                OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri _
+                                OrElse TypeOf ex Is GetNobatException _
+                                OrElse TypeOf ex Is GetNSSException _
+                                OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                 End If
-                Throw exx
-            Catch exxx As GetDataException
-                If CmdSql.Connection.State <> ConnectionState.Closed Then
-                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
-                End If
-                Throw exxx
+                Throw ex
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                 End If
-                R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Fail, "بروز خطای اساسی هنگام صدور نوبت" + ex.Message, String.Empty, 0, 0, 0, 0, YourUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
@@ -904,7 +876,8 @@ Namespace CarTruckNobatManagement
                               (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and 
                               AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and 
                               AHSGRCars.RelationActive=1
-                        Order By nEnterExitId")
+                              and ((DATEDIFF(SECOND,AHSGRCars.RelationTimeStamp,getdate())<120) or (AHSGRCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                        Order By nEnterExitId,AHSGRCars.RelationId Desc")
                 Da.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
                 Ds.Tables.Clear()
                 Da.Fill(Ds)
@@ -918,7 +891,7 @@ Namespace CarTruckNobatManagement
                                            Where (SUBSTRING(Turns.OtaghdarTurnNumber,2,20) < = '" & YourYearShamsi + "/" + YourTopSequentialTurnNumber & "') and 
                                                  (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and 
                                                  AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and 
-                                                 AHSGRCars.RelationActive=1)"
+                                                 AHSGRCars.RelationActive=1 and ((DATEDIFF(SECOND,AHSGRCars.RelationTimeStamp,getdate())<120) or (AHSGRCars.RelationTimeStamp='2015-01-01 00:00:00.000')))"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
                 'در آنلاین
@@ -1271,6 +1244,13 @@ Namespace CarTruckNobatManagement
                 Return "طول سفر ناوگان باری به پایان نرسیده است" + vbCrLf + _ConsumerMessage
             End Get
         End Property
+
+        Public ReadOnly Property WithoutConsumerMessage As String
+            Get
+                Return "طول سفر ناوگان باری به پایان نرسیده است"
+            End Get
+        End Property
+
     End Class
 
 
@@ -1293,49 +1273,49 @@ Namespace TurnRegisterRequest
             End Try
         End Function
 
-        Public Shared Function RealTimeTurnRegisterRequestforAjent(YourSoftwareUserId As Int64, YournEstelamId As Int64, YourTruckMustBePresent As Boolean, YourMoneyWalletInventoryControl As Boolean, ByRef YourTurnId As Int64) As Int64
-            Try
-                Dim myNSSSoftwareUser = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourSoftwareUserId)
-                Dim myNSSTruck = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(myNSSSoftwareUser)
-                'کنترل موجودی کیف پول برای هزینه صدور نوبت - درصورتی که موجودی کافی نباشداکسپشن پرتاب می گردد 
-                Dim NSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure
-                If YourMoneyWalletInventoryControl Then
-                    NSSTrafficCard = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(myNSSTruck.NSSCar.nIdCar))
-                    If Not IsMoneyWalletInventoryIsEnoughForTurnRegistering(NSSTrafficCard) Then Throw New MoneyWalletCurrentChargeNotEnoughException
-                End If
-                'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
-                If YourTruckMustBePresent Then R2CoreTransportationAndLoadNotificationMClassTurnsManagement.TruckPresentInParkingForTurnRegisteringControl(myNSSTruck)
-                'ثبت درخواست صدور نوبت بلادرنگ
-                Dim TurnRegisterRequestId = R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.TurnRegisterRequestRegistering(New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(Nothing, TurnRegisterRequestTypes.RealTime, myNSSTruck.NSSCar.nIdCar, R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.GetNSSTurnRegisterRequestType(TurnRegisterRequestTypes.RealTime).TRRTypeTitle, Nothing, Nothing, Nothing, Nothing), Nothing, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
-                'ثبت نوبت
-                YourTurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetNewTurnIdforAgent(myNSSTruck, YournEstelamId, TurnRegisterRequestId, False)
-                'ثبت رابطه نوبت با درخواست صدور نوبت از طریق فضانام مدیریت روابط نهادی
-                R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, YourTurnId, TurnRegisterRequestId, Nothing), RelationDeactiveTypes.BothDeactive)
-                Return TurnRegisterRequestId
-            Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
-                                  OrElse TypeOf ex Is TruckNotFoundException _
-                                  OrElse TypeOf ex Is CarIsNotPresentInParkingException _
-                                  OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
-                                  OrElse TypeOf ex Is SequentialTurnIsNotActiveException _
-                                  OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
-                                  OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler _
-                                  OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException _
-                                  OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat _
-                                  OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri _
-                                  OrElse TypeOf ex Is GetNobatException _
-                                  OrElse TypeOf ex Is GetNSSException _
-                                  OrElse TypeOf ex Is AnnouncementHallNotFoundException _
-                                  OrElse TypeOf ex Is AnnouncementHallSubGroupNotFoundException _
-                                  OrElse TypeOf ex Is AnnouncementHallSubGroupRelationTruckNotExistException _
-                                  OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
-                                  OrElse TypeOf ex Is TruckDriverNotFoundException _
-                                  OrElse TypeOf ex Is GetDataException _
-                                  OrElse TypeOf ex Is LoadCapacitorLoadAHSGIdViaTruckAHSGIdNotAllowedException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
+        'Public Shared Function RealTimeTurnRegisterRequestforAjent(YourSoftwareUserId As Int64, YournEstelamId As Int64, YourTruckMustBePresent As Boolean, YourMoneyWalletInventoryControl As Boolean, ByRef YourTurnId As Int64) As Int64
+        '    Try
+        '        Dim myNSSSoftwareUser = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourSoftwareUserId)
+        '        Dim myNSSTruck = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(myNSSSoftwareUser)
+        '        'کنترل موجودی کیف پول برای هزینه صدور نوبت - درصورتی که موجودی کافی نباشداکسپشن پرتاب می گردد 
+        '        Dim NSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure
+        '        If YourMoneyWalletInventoryControl Then
+        '            NSSTrafficCard = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(myNSSTruck.NSSCar.nIdCar))
+        '            If Not IsMoneyWalletInventoryIsEnoughForTurnRegistering(NSSTrafficCard) Then Throw New MoneyWalletCurrentChargeNotEnoughException
+        '        End If
+        '        'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
+        '        If YourTruckMustBePresent Then R2CoreTransportationAndLoadNotificationMClassTurnsManagement.TruckPresentInParkingForTurnRegisteringControl(myNSSTruck)
+        '        'ثبت درخواست صدور نوبت بلادرنگ
+        '        Dim TurnRegisterRequestId = R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.TurnRegisterRequestRegistering(New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(Nothing, TurnRegisterRequestTypes.RealTime, myNSSTruck.NSSCar.nIdCar, R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.GetNSSTurnRegisterRequestType(TurnRegisterRequestTypes.RealTime).TRRTypeTitle, Nothing, Nothing, Nothing, Nothing), Nothing, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+        '        'ثبت نوبت
+        '        YourTurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetNewTurnIdforAgent(myNSSTruck, YournEstelamId, TurnRegisterRequestId, False)
+        '        'ثبت رابطه نوبت با درخواست صدور نوبت از طریق فضانام مدیریت روابط نهادی
+        '        R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, YourTurnId, TurnRegisterRequestId, Nothing), RelationDeactiveTypes.BothDeactive)
+        '        Return TurnRegisterRequestId
+        '    Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
+        '                          OrElse TypeOf ex Is TruckNotFoundException _
+        '                          OrElse TypeOf ex Is CarIsNotPresentInParkingException _
+        '                          OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
+        '                          OrElse TypeOf ex Is SequentialTurnIsNotActiveException _
+        '                          OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
+        '                          OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler _
+        '                          OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException _
+        '                          OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat _
+        '                          OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri _
+        '                          OrElse TypeOf ex Is GetNobatException _
+        '                          OrElse TypeOf ex Is GetNSSException _
+        '                          OrElse TypeOf ex Is AnnouncementHallNotFoundException _
+        '                          OrElse TypeOf ex Is AnnouncementHallSubGroupNotFoundException _
+        '                          OrElse TypeOf ex Is AnnouncementHallSubGroupRelationTruckNotExistException _
+        '                          OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
+        '                          OrElse TypeOf ex Is TruckDriverNotFoundException _
+        '                          OrElse TypeOf ex Is GetDataException _
+        '                          OrElse TypeOf ex Is LoadCapacitorLoadAHSGIdViaTruckAHSGIdNotAllowedException
+        '        Throw ex
+        '    Catch ex As Exception
+        '        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        '    End Try
+        'End Function
 
         Public Shared Function RealTimeTurnRegisterRequest(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourTurnPrintRedirect As Boolean, YourMoneyWalletInventoryControl As Boolean, ByRef YourTurnId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Try
@@ -2948,21 +2928,21 @@ Namespace ReportsManagement
                 'شش چرخ یا دو محور
                 Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
                                                     Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
-                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=8) or (Accounting.EEAccountingProcessType=11))  And ((Accounting.MblghA=40000) Or (Accounting.MblghA=43600) Or (Accounting.MblghA=45000) Or (Accounting.MblghA=65400) Or (Accounting.MblghA=85020))
+                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=8) or (Accounting.EEAccountingProcessType=11))  And ((Accounting.MblghA=40000) Or (Accounting.MblghA=43600) Or (Accounting.MblghA=45000) Or (Accounting.MblghA=65400) Or (Accounting.MblghA=85020)  Or (Accounting.MblghA=130000))
                                                     Group By DateShamsiA"
                 DSSixCharkh.Tables.Clear()
                 Da.Fill(DSSixCharkh)
                 'سواری
                 Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
                                                     Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
-                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17))  And ((Accounting.MblghA=14170) Or (Accounting.MblghA=15000) Or (Accounting.MblghA=21255) Or (Accounting.MblghA=27250))
+                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17))  And ((Accounting.MblghA=14170) Or (Accounting.MblghA=15000) Or (Accounting.MblghA=21255) Or (Accounting.MblghA=27250) Or (Accounting.MblghA=38000))
                                                     Group By DateShamsiA"
                 DSSavari.Tables.Clear()
                 Da.Fill(DSSavari)
                 'ده و چرخ تریلی یا سه محور به بالا
                 Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
                                                     Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
-                                                          and ((Accounting.EEAccountingProcessType=1) OR (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=7) OR (Accounting.EEAccountingProcessType=8) OR (Accounting.EEAccountingProcessType=11)) And ((Accounting.MblghA=60000) or (Accounting.MblghA=59950) or (Accounting.MblghA=81750) or (Accounting.MblghA=105730))
+                                                          and ((Accounting.EEAccountingProcessType=1) OR (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=7) OR (Accounting.EEAccountingProcessType=8) OR (Accounting.EEAccountingProcessType=11)) And ((Accounting.MblghA=60000) or (Accounting.MblghA=59950) or (Accounting.MblghA=81750) or (Accounting.MblghA=105730) or (Accounting.MblghA=160000))
                                                     Group By DateShamsiA"
                 DSTereiliTenCharkh.Tables.Clear()
                 Da.Fill(DSTereiliTenCharkh)
@@ -3796,8 +3776,8 @@ Namespace ReportsManagement
 	                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCars On Turns.strCardno=AHSGRCars.CarId 
 	                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SeqT On Substring(Turns.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS=SeqT.SeqTKeyWord Collate Arabic_CI_AI_WS
                    Where (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and 
-                         AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and AHSGRCars.RelationActive=1 
-                   Order By Turns.strEnterDate,Turns.strEnterTime")
+                         AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and AHSGRCars.RelationActive=1 and ((DATEDIFF(SECOND,AHSGRCars.RelationTimeStamp,getdate())<120) or (AHSGRCars.RelationTimeStamp='2015-01-01 00:00:00.000'))  
+                   Order By Turns.strEnterDate,Turns.strEnterTime,AHSGRCars.RelationId Desc")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 Da.Fill(Ds)
@@ -4939,69 +4919,69 @@ Namespace LoadNotification.LoadPermission
             End Try
         End Function
 
-        Public Shared Function TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(YourComapnyCode As Int64, YournEstelamId As Int64, YourCarTruckSmartCardNo As String, YourDriverTruckSmartCardNo As String, YourNSSUser As R2CoreStandardSoftwareUserStructure) As Int64
-            Try
-                ''کنترل حداقل موجودی در کیف پول شرکت حمل و نقل
-                'Dim NSSMoneyWallet As R2CoreParkingSystemStandardTrafficCardStructure = TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompanyMoneyWallet(YourComapnyCode)
-                'If R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletCharge(NSSMoneyWallet) < GetHazinehSedimentLoadPermission(YournEstelamId) Then
-                '    Throw New TransportCompanyMoneyWalletInventoryIsLowException
-                'End If
+        'Public Shared Function TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(YourComapnyCode As Int64, YournEstelamId As Int64, YourCarTruckSmartCardNo As String, YourDriverTruckSmartCardNo As String, YourNSSUser As R2CoreStandardSoftwareUserStructure) As Int64
+        '    Try
+        '        ''کنترل حداقل موجودی در کیف پول شرکت حمل و نقل
+        '        'Dim NSSMoneyWallet As R2CoreParkingSystemStandardTrafficCardStructure = TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompanyMoneyWallet(YourComapnyCode)
+        '        'If R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletCharge(NSSMoneyWallet) < GetHazinehSedimentLoadPermission(YournEstelamId) Then
+        '        '    Throw New TransportCompanyMoneyWalletInventoryIsLowException
+        '        'End If
 
-                'صدور نوبت برای ناوگان باری
-                'در صورتی که راننده خودش نوبت داشته باشد از همان استفاده می شود
-                Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(YourCarTruckSmartCardNo, YourNSSUser)
-                Dim NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId)
-                Dim TurnShouldBeUseInTransportCompany As Boolean = R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadPermissionsSetting, NSSLoadCapacitorLoad.AHId, 1)
+        '        'صدور نوبت برای ناوگان باری
+        '        'در صورتی که راننده خودش نوبت داشته باشد از همان استفاده می شود
+        '        Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(YourCarTruckSmartCardNo, YourNSSUser)
+        '        Dim NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId)
+        '        Dim TurnShouldBeUseInTransportCompany As Boolean = R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadPermissionsSetting, NSSLoadCapacitorLoad.AHId, 1)
 
-                Dim TurnId As Int64
-                If TurnShouldBeUseInTransportCompany Then
-                    Try
-                        TurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetLastActiveNSSNobat(NSSCarTruck.NSSCar).nEnterExitId
-                    Catch exx As GetNobatException
-                        TurnId = CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.GetNobatKiosk(NSSCarTruck, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
-                    Catch ex As Exception
-                        Throw ex
-                    End Try
-                Else
-                    TurnId = CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.GetNobatKiosk(NSSCarTruck, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
-                End If
+        '        Dim TurnId As Int64
+        '        If TurnShouldBeUseInTransportCompany Then
+        '            Try
+        '                TurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetLastActiveNSSNobat(NSSCarTruck.NSSCar).nEnterExitId
+        '            Catch exx As GetNobatException
+        '                TurnId = CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.GetNobatKiosk(NSSCarTruck, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+        '            Catch ex As Exception
+        '                Throw ex
+        '            End Try
+        '        Else
+        '            TurnId = CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.GetNobatKiosk(NSSCarTruck, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+        '        End If
 
 
-                Dim NSSCarTruckNobat As R2StandardCarTruckNobatStructure = PayanehClassLibraryMClassCarTruckNobatManagement.GetNSSCarTruckNobat(TurnId)
+        '        Dim NSSCarTruckNobat As R2StandardCarTruckNobatStructure = PayanehClassLibraryMClassCarTruckNobatManagement.GetNSSCarTruckNobat(TurnId)
 
-                'صدور مجوز بارگیری برای ناوگان باری
-                Try
-                    TransportCompanyLoadCapacitorSedimentLoadPermisiion(TurnId, YournEstelamId, PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(NSSCarTruck.NSSCar.nIdCar)), R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
-                Catch ex As Exception
-                    'درصورتی که صدور مجوز با مشکل مواجه شود نوبت صادرشده باطل می گردد
-                    PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToTrue(TurnId, False)
-                    Throw ex
-                End Try
+        '        'صدور مجوز بارگیری برای ناوگان باری
+        '        Try
+        '            TransportCompanyLoadCapacitorSedimentLoadPermisiion(TurnId, YournEstelamId, PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(NSSCarTruck.NSSCar.nIdCar)), R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+        '        Catch ex As Exception
+        '            'درصورتی که صدور مجوز با مشکل مواجه شود نوبت صادرشده باطل می گردد
+        '            PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToTrue(TurnId, False)
+        '            Throw ex
+        '        End Try
 
-                ''اکانتینگ کیف پول
-                ''محاسبه هزینه شرکت با توجه به نوع ناوگان باری
-                ''اگر از نوبت موجود راننده استفاده شود اکانت برای کیف پول شرکت ثبت نمی شود
-                'If NSSCarTruckNobat.nUserIdEnter = R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId Then
-                '    Dim HazinehAS As Int64 = 0
-                '    Dim NSS As TransportCompaniesStandardLoadCapacitorLoadStructure = TransportCompaniesLoadCapacitorLoadManipulation.GetNSSTransportCompanyLoadCapacitorLoad(YournEstelamId)
-                '    If NSS.nTruckType = 505 Or NSS.nTruckType = 455 Or NSS.nTruckType = 700 Or NSS.nTruckType = 605 Then
-                '        HazinehAS = R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayanehKiosk, 1)
-                '    Else
-                '        HazinehAS = R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayanehKiosk, 2)
-                '    End If
-                '    'شرکت
-                '    R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSMoneyWallet, BagPayType.MinusMoney, HazinehAS, R2CoreParkingSystemAccountings.SherkatHazinehSodoorMojavezKiosk)
-                '    'انجمن
-                '    R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSMoneyWallet, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayanehKiosk, 0), R2CoreParkingSystemAccountings.AnjomanHazinehSodorMojavezKiosk)
-                'End If
+        '        ''اکانتینگ کیف پول
+        '        ''محاسبه هزینه شرکت با توجه به نوع ناوگان باری
+        '        ''اگر از نوبت موجود راننده استفاده شود اکانت برای کیف پول شرکت ثبت نمی شود
+        '        'If NSSCarTruckNobat.nUserIdEnter = R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId Then
+        '        '    Dim HazinehAS As Int64 = 0
+        '        '    Dim NSS As TransportCompaniesStandardLoadCapacitorLoadStructure = TransportCompaniesLoadCapacitorLoadManipulation.GetNSSTransportCompanyLoadCapacitorLoad(YournEstelamId)
+        '        '    If NSS.nTruckType = 505 Or NSS.nTruckType = 455 Or NSS.nTruckType = 700 Or NSS.nTruckType = 605 Then
+        '        '        HazinehAS = R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayanehKiosk, 1)
+        '        '    Else
+        '        '        HazinehAS = R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayanehKiosk, 2)
+        '        '    End If
+        '        '    'شرکت
+        '        '    R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSMoneyWallet, BagPayType.MinusMoney, HazinehAS, R2CoreParkingSystemAccountings.SherkatHazinehSodoorMojavezKiosk)
+        '        '    'انجمن
+        '        '    R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSMoneyWallet, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayanehKiosk, 0), R2CoreParkingSystemAccountings.AnjomanHazinehSodorMojavezKiosk)
+        '        'End If
 
-                Return TurnId
+        '        Return TurnId
 
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
+        '    Catch ex As Exception
+        '        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        '    End Try
 
-        End Function
+        'End Function
 
         Public Shared Sub TransportCompanyLoadCapacitorSedimentLoadPermisiion(YourTurnId As Int64, YournEstelamId As Int64, YourNSSDriverTruck As R2StandardDriverTruckStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
@@ -5044,37 +5024,37 @@ Namespace LoadNotification.LoadPermission
             End Try
         End Function
 
-        Public Shared Sub CarTruckRelationDriverTruck(YourCarTruckSmartCardNo As String, YourDriverTruckSmartCardNo As String, YourNSSUser As R2CoreStandardSoftwareUserStructure)
-            Dim CmdSql As New SqlClient.SqlCommand
-            CmdSql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection()
-            Try
-                'SqlInjectionPrevention
-                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
-                InstanceSQLInjectionPrevention.GeneralAuthorization(YourCarTruckSmartCardNo)
-                InstanceSQLInjectionPrevention.GeneralAuthorization(YourDriverTruckSmartCardNo)
+        'Public Shared Sub CarTruckRelationDriverTruck(YourCarTruckSmartCardNo As String, YourDriverTruckSmartCardNo As String, YourNSSUser As R2CoreStandardSoftwareUserStructure)
+        '    Dim CmdSql As New SqlClient.SqlCommand
+        '    CmdSql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection()
+        '    Try
+        '        'SqlInjectionPrevention
+        '        Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+        '        InstanceSQLInjectionPrevention.GeneralAuthorization(YourCarTruckSmartCardNo)
+        '        InstanceSQLInjectionPrevention.GeneralAuthorization(YourDriverTruckSmartCardNo)
 
-                If YourDriverTruckSmartCardNo = String.Empty Or YourCarTruckSmartCardNo = String.Empty Then Throw New Exception("شماره هوشمند راننده یا ناوگان نادرست است")
-                Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(YourCarTruckSmartCardNo, YourNSSUser)
-                Dim NSSDriverTruck As R2StandardDriverTruckStructure = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbySmartCardNo(YourDriverTruckSmartCardNo)
-                CmdSql.Connection.Open()
-                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
-                CmdSql.CommandText = "Insert into Dbtransport.dbo.TbCarAndPerson(nIdCar,nIdPerson,snRelation,dDate) Values(" & NSSCarTruck.NSSCar.nIdCar & "," & NSSDriverTruck.NSSDriver.nIdPerson & ",2,'" & _DateTime.GetCurrentDateShamsiFull() & "')"
-                Try
-                    CmdSql.ExecuteNonQuery()
-                Catch ex As Exception
-                    CmdSql.CommandText = "Update Dbtransport.dbo.TbCarAndPerson Set nIdPerson=" & NSSDriverTruck.NSSDriver.nIdPerson & ",dDate='" & _DateTime.GetCurrentDateShamsiFull() & "'  Where (nIdCar=" & NSSCarTruck.NSSCar.nIdCar & ") and snRelation=2"
-                    CmdSql.ExecuteNonQuery()
-                End Try
+        '        If YourDriverTruckSmartCardNo = String.Empty Or YourCarTruckSmartCardNo = String.Empty Then Throw New Exception("شماره هوشمند راننده یا ناوگان نادرست است")
+        '        Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(YourCarTruckSmartCardNo, YourNSSUser)
+        '        Dim NSSDriverTruck As R2StandardDriverTruckStructure = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbySmartCardNo(YourDriverTruckSmartCardNo)
+        '        CmdSql.Connection.Open()
+        '        CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
+        '        CmdSql.CommandText = "Insert into Dbtransport.dbo.TbCarAndPerson(nIdCar,nIdPerson,snRelation,dDate,RelationTimeStamp) Values(" & NSSCarTruck.NSSCar.nIdCar & "," & NSSDriverTruck.NSSDriver.nIdPerson & ",2,'" & _DateTime.GetCurrentDateShamsiFull() & "','2015-01-01 00:00:00.000')"
+        '        Try
+        '            CmdSql.ExecuteNonQuery()
+        '        Catch ex As Exception
+        '            CmdSql.CommandText = "Update Dbtransport.dbo.TbCarAndPerson Set nIdPerson=" & NSSDriverTruck.NSSDriver.nIdPerson & ",dDate='" & _DateTime.GetCurrentDateShamsiFull() & "'  Where (nIdCar=" & NSSCarTruck.NSSCar.nIdCar & ") and snRelation=2"
+        '            CmdSql.ExecuteNonQuery()
+        '        End Try
 
-                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+        '        CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
 
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then
-                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
-                End If
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message + vbCrLf + "خطا ممکن است به دلیل تداخل در ثبت اطلاعات پایه راننده و ناوگان باشد")
-            End Try
-        End Sub
+        '    Catch ex As Exception
+        '        If CmdSql.Connection.State <> ConnectionState.Closed Then
+        '            CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+        '        End If
+        '        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message + vbCrLf + "خطا ممکن است به دلیل تداخل در ثبت اطلاعات پایه راننده و ناوگان باشد")
+        '    End Try
+        'End Sub
 
         Public Shared Sub ResuscitationSedimentedLoadbynEstelamId(YournEstelamId As Int64)
             Dim CmdSql As New SqlCommand
@@ -5128,7 +5108,7 @@ Namespace LoadNotification.LoadPermission
                 StrExitTime = LoadNotificationLoadPermissionManagement.GetLoadPermissionInf(YournEstelamId, YourTurnId).Data2
                 PermissionUserName = LoadNotificationLoadPermissionManagement.GetLoadPermissionInf(YournEstelamId, YourTurnId).Data3
                 nEstelamId = YournEstelamId
-                TurnId = YourTurnId
+                TurnId = _NSSCarTruckNobat.OtaghdarTurnNumberSummary
                 Try
                     LAId = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(YournEstelamId, YourTurnId).LAId.ToString()
                 Catch exx As LoadAllocationNotFoundException

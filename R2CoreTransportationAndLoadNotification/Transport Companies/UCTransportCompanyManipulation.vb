@@ -19,6 +19,7 @@ Imports R2CoreParkingSystem.MoneyWalletManagement
 Imports R2Core.ConfigurationManagement
 Imports R2CoreParkingSystem.AccountingManagement
 Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions
+Imports R2Core.PermissionManagement
 
 Public Class UCTransportCompanyManipulation
     Inherits UCTransportCompany
@@ -140,6 +141,8 @@ Public Class UCTransportCompanyManipulation
 
     Private Sub CButtonSendSMSUserPassword_Click(sender As Object, e As EventArgs) Handles CButtonSendSMSUserPassword.Click
         Try
+            Dim InstancePermissions = New R2CoreInstansePermissionsManager
+            If Not InstancePermissions.ExistPermission(R2CorePermissionTypes.UserCanSendSoftwareUserShenasehPasswordViaSMS, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, 0) Then Throw New UserNotAllowedRunThisProccessException
             Dim InstanceSoftwareUser = New R2CoreTransportationAndLoadNotificationInstanceSoftwareUsersManager
             Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
             If UCNSSCurrent Is Nothing Then Throw New GetNSSException
@@ -159,6 +162,8 @@ Public Class UCTransportCompanyManipulation
             Dim SMSMessage = "سامانه آتیس وب" + vbCrLf + "ATISMobile.ir" + vbCrLf + "شناسه کاربر:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز عبور کاربر:" + NSSSoftwareUser.UserPassword
             SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, True, Nothing, Nothing))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "شناسه و رمز عبور کاربر ارسال شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As UserNotAllowedRunThisProccessException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As SoftwareUserMoneyWalletNotFoundException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As SoftwareUserRelatedThisTransportCompanyNotFoundException
@@ -173,11 +178,15 @@ Public Class UCTransportCompanyManipulation
 
     Private Sub CButtonViewUserPassword_Click(sender As Object, e As EventArgs) Handles CButtonViewUserPassword.Click
         Try
+            Dim InstancePermissions = New R2CoreInstansePermissionsManager
+            If Not InstancePermissions.ExistPermission(R2CorePermissionTypes.UserCanViewAndPrintUserShenasehPassword, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, 0) Then Throw New UserNotAllowedRunThisProccessException
             If UCNSSCurrent Is Nothing Then Throw New GetNSSException
             Dim InstanceSoftwareUser = New R2CoreTransportationAndLoadNotificationInstanceSoftwareUsersManager
             Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCNSSCurrent.TCId)
             MessageBox.Show("شناسه کاربر:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز عبور کاربر:" + NSSSoftwareUser.UserPassword)
             PrintDocument.Print()
+        Catch ex As UserNotAllowedRunThisProccessException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As GetNSSException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اطلاعات مورد نیاز را به صورت کامل وارد کنید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception

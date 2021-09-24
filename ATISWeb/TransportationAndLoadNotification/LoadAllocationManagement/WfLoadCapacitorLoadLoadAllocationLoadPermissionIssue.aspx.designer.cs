@@ -40,13 +40,13 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         protected global::ATISWeb.TransportationAndLoadNotification.TransportCompanies.WcViewerNSSTransportCompanyIntelligently WcViewerNSSTransportCompanyIntelligently;
         
         /// <summary>
-        /// WcLoadCapacitorLoadsCollectionIntelligently control.
+        /// WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement.WcLoadCapacitorLoadsCollectionIntelligently WcLoadCapacitorLoadsCollectionIntelligently;
+        protected global::ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement.WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue;
         
         /// <summary>
         /// WcLoadCapacitorLoadLoadPermissionsIssued control.
@@ -58,12 +58,12 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         protected global::ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement.WcLoadCapacitorLoadLoadPermissionsIssued WcLoadCapacitorLoadLoadPermissionsIssued;
         
         /// <summary>
-        /// WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue control.
+        /// WcLoadCapacitorLoadsCollectionIntelligently control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement.WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue;
+        protected global::ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement.WcLoadCapacitorLoadsCollectionIntelligently WcLoadCapacitorLoadsCollectionIntelligently;
     }
 }

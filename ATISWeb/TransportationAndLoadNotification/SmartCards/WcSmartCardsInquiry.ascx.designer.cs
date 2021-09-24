@@ -67,22 +67,22 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards {
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         /// <summary>
-        /// TxtTruckDriverSmartCardNo control.
+        /// TxtTruckDriverNationalCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TxtTruckDriverSmartCardNo;
+        protected global::System.Web.UI.WebControls.TextBox TxtTruckDriverNationalCode;
         
         /// <summary>
-        /// BtnTruckDriverSmartCardInquiry control.
+        /// BtnTruckDriverNationalCodeInquiry control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnTruckDriverSmartCardInquiry;
+        protected global::System.Web.UI.WebControls.Button BtnTruckDriverNationalCodeInquiry;
         
         /// <summary>
         /// LblTruckDriver control.

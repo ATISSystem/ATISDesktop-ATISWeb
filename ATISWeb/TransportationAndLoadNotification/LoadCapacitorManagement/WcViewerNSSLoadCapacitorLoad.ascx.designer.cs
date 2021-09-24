@@ -7,8 +7,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Web.UI.WebControls;
-
 namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
     
     
@@ -21,7 +19,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Label Label2;
+        protected global::System.Web.UI.WebControls.Label Label2;
         
         /// <summary>
         /// TxtnEstelamId control.
@@ -30,88 +28,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected TextBox TxtnEstelamId;
-        
-        /// <summary>
-        /// LblTarrif control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected Label LblTarrif;
-        
-        /// <summary>
-        /// LblnCarNum control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected Label LblnCarNum;
-        
-        /// <summary>
-        /// LblnCarNumKol control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected Label LblnCarNumKol;
-        
-        /// <summary>
-        /// LblLoaderType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected Label LblLoaderType;
-        
-        /// <summary>
-        /// LblTargetCity control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected Label LblTargetCity;
-        
-        /// <summary>
-        /// LblLoadTitle control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected Label LblLoadTitle;
-        
-        /// <summary>
-        /// LblDateTimeofLoadRegistering control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected Label LblDateTimeofLoadRegistering;
-        
-        /// <summary>
-        /// LblAddress control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected Label LblAddress;
-        
-        /// <summary>
-        /// LblLoadReceiver control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected Label LblLoadReceiver;
+        protected global::System.Web.UI.WebControls.TextBox TxtnEstelamId;
         
         /// <summary>
         /// LblDescription control.
@@ -120,6 +37,87 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected Label LblDescription;
+        protected global::System.Web.UI.WebControls.Label LblDescription;
+        
+        /// <summary>
+        /// LblLoadReceiver control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblLoadReceiver;
+        
+        /// <summary>
+        /// LblAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblAddress;
+        
+        /// <summary>
+        /// LblTarrif control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblTarrif;
+        
+        /// <summary>
+        /// LblnCarNum control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblnCarNum;
+        
+        /// <summary>
+        /// LblnCarNumKol control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblnCarNumKol;
+        
+        /// <summary>
+        /// LblLoaderType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblLoaderType;
+        
+        /// <summary>
+        /// LblTargetCity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblTargetCity;
+        
+        /// <summary>
+        /// LblLoadTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblLoadTitle;
+        
+        /// <summary>
+        /// LblDateTimeofLoadRegistering control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblDateTimeofLoadRegistering;
     }
 }

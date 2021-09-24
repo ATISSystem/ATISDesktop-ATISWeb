@@ -9,12 +9,26 @@ using System.Web.UI.WebControls;
 using ATISWeb.LoginManagement;
 using ATISWeb.LoginManagement.Exceptions;
 using ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement;
-using PayanehClassLibrary.LoadNotification.LoadPermission;
 using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2CoreTransportationAndLoadNotification.TransportCompanies;
 using R2CoreTransportationAndLoadNotification.LoadPermission.LoadPermissionPrinting;
 using ATISWeb.TransportationAndLoadNotification.LoadPermissionManagement.LoadPermissionPrinting;
+using PayanehClassLibrary.CarTruckNobatManagement;
+using R2CoreTransportationAndLoadNotification.Turns;
+using R2CoreTransportationAndLoadNotification.Turns.Exceptions;
+using R2CoreTransportationAndLoadNotification.LoadAllocation;
+using R2CoreTransportationAndLoadNotification.RequesterManagement;
+using R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions;
+using R2Core.ExceptionManagement;
+using R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions;
+using R2CoreParkingSystem.MoneyWalletManagement;
+using R2CoreParkingSystem.EnterExitManagement;
+using R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions;
+using R2CoreTransportationAndLoadNotification.TransportCompanies.Exceptions;
+using R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions;
+using R2CoreTransportationAndLoadNotification.Trucks.Exceptions;
+using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -38,12 +52,19 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
             {
                 WcLoadCapacitorLoadsCollectionSummaryIntelligently.WcCurrentListType = LoadCapacitorLoadsListType.Sedimented;
                 WcLoadCapacitorLoadsCollectionSummaryIntelligently.WcLoadCapacitorLoadSelectedEvent += WcLoadCapacitorLoadsCollectionSummaryIntelligently_WcLoadCapacitorLoadSelectedEvent;
-                if (!IsPostBack) { WcLoadCapacitorLoadsCollectionSummaryIntelligently.WcViewInformation(); }
-                BtnLoadAllocationLoadPermissionIssue.Click += BtnLoadAllocationLoadPermissionIssue_Click;
-                BtnPrint.Click += BtnPrint_Click;
+                if (!IsPostBack)
+                { WcLoadCapacitorLoadsCollectionSummaryIntelligently.WcViewInformation(); }
+                BtnLoadAllocation.Click += BtnLoadAllocation_Click;
+                BtnNewLoadAllocation.Click += BtnNewLoadAllocation_Click;
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
+        }
+
+        private void BtnNewLoadAllocation_Click(object sender, EventArgs e)
+        {
+            BtnLoadAllocation.Enabled = true;
+            WcViewerNSSLoadCapacitorLoad.WcRefreshInformation(); WcSmartCardsInquiry.WcRefreshInformation();
         }
 
         private void WcLoadCapacitorLoadsCollectionSummaryIntelligently_WcLoadCapacitorLoadSelectedEvent(object sender, WcLoadCapacitorLoadsCollectionSummaryIntelligently.nEstelamIdEventArgs e)
@@ -54,37 +75,82 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }
 
-        public PermissionPrintingDataStructure PPDS = new PermissionPrintingDataStructure();
-        private void BtnPrint_Click(object sender, EventArgs e)
+        private void BtnLoadAllocation_Click(object sender, EventArgs e)
         {
+            bool TurnIsTemporary = false;
+            R2CoreTransportationAndLoadNotificationStandardTurnStructure NSSTurn = null;
             try
             {
-                Page.ClientScript.RegisterStartupScript(GetType(), "hwa", "$('#AlertShower').modal('show');", true);
-            }
-            catch (Exception ex)
-            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
-        }
+                BtnLoadAllocation.Enabled = false;
+                var NSSTruck = WcSmartCardsInquiry.WcGetNSSTruck;
+                var NSSTruckDriver = WcSmartCardsInquiry.WcGetNSSTruckDriver;
+                var NSSTransportCompany = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(ATISWebMClassLoginManagement.GetNSSCurrentUser());
+                var NSSLoadCapacitorLoad = WcViewerNSSLoadCapacitorLoad.WcGetNSSCurrent;
 
-        private void BtnLoadAllocationLoadPermissionIssue_Click(object sender, EventArgs e)
-        {
-            try
-            { LoadNotificationLoadPermissionManagement.CarTruckRelationDriverTruck(WcSmartCardsInquiry.WcGetTruckSmartCardNo(), WcSmartCardsInquiry.WcGetTruckDriverSmartCardNo(), ATISWebMClassLoginManagement.GetNSSCurrentUser()); }
-            catch (Exception ex)
-            {
-                Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true);
-                return;
+                //به دست آوردن نوبت موجود ناوگان و یا این که در صورت عدم وجود نوبت باید روابط موقت ایجاد گردد و نوبت صادر گردد
+                //در این جا از کیف پول شرکت حمل و نقل استفاده شده است
+                //سه رابطه ایجاد می گردد ناوگان-راننده و ناوگان-زیرگروه اعلام بار و ناوگان-کیف پول
+                var InstanceTurns = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
+                try
+                {
+                    NSSTurn = InstanceTurns.GetNSSTurn(NSSTruck);
+                    LblTurnStatus.Text = "ناوگان نوبت دارد.برای تخصیص بار از نوبت موجود استفاده شد ";
+                    PnlTurnStatus.BackColor = System.Drawing.Color.Green;
+                    TurnIsTemporary = false;
+                }
+                catch (TurnNotFoundException ex)
+                {
+                    NSSTurn = InstanceTurns.GetNSSTurn(PayanehClassLibraryMClassCarTruckNobatManagement.GetTurnofKiosk(NSSTruck, NSSTruckDriver, NSSTransportCompany, NSSLoadCapacitorLoad, ATISWebMClassLoginManagement.GetNSSCurrentUser()));
+                    LblTurnStatus.Text = "ناوگان نوبت ندارد.نوبت به صورت خودکار در سامانه صادر شد ";
+                    PnlTurnStatus.BackColor = System.Drawing.Color.Red;
+                    TurnIsTemporary = true;
+                }
+                //تخصیص بار - آزاد سازی بار به صورت خودکار توسط سرور انجام می گردد
+                //مشاهده و چاپ مجوز از طریق قسمت مجوزهای صادر شده در بارهای رسوبی قابل مشاهده است
+                var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
+                Int64 LAId = InstanceLoadAllocation.LoadAllocationRegistering(NSSLoadCapacitorLoad.nEstelamId, NSSTurn.nEnterExitId, ATISWebMClassLoginManagement.GetNSSCurrentUser(), R2CoreTransportationAndLoadNotificationRequesters.WcLoadCapacitorLoadAllocationLoadPermissionIssue);
+                Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','تخصیص بار با موفقیت انجام شد');", true);
             }
+            catch (Exception ex) when (ex is SoftwareUserMoneyWalletNotFoundException ||
+                                       ex is MoneyWalletCurrentChargeNotEnoughException ||
+                                       ex is TurnRegisterRequestTypeNotFoundException ||
+                                       ex is CarIsNotPresentInParkingException ||
+                                       ex is SequentialTurnIsNotActiveException ||
+                                       ex is TurnPrintingInfNotFoundException ||
+                                       ex is GetNobatExceptionCarTruckIsTankTreiler ||
+                                       ex is CarTruckTravelLengthNotOverYetException ||
+                                       ex is GetNobatExceptionCarTruckHasNobat ||
+                                       ex is GetNobatExceptionCarTruckIsShahri ||
+                                       ex is GetNobatException ||
+                                       ex is GetNSSException ||
+                                       ex is TruckRelatedSequentialTurnNotFoundException ||
+                                       ex is TransportCompanyNotFoundException ||
+                                       ex is LoadCapacitorLoadNotFoundException ||
+                                       ex is DataEntryException ||
+                                       ex is AnnouncementHallSubGroupUnActiveException ||
+                                       ex is AnnouncementHallSubGroupRelationTruckNotExistException ||
+                                       ex is AnnouncementHallSubGroupNotFoundException ||
+                                       ex is LoadAllocationRegisteringReachedEndTimeException ||
+                                       ex is LoadAllocationMaximumAllowedNumberReachedException ||
+                                       ex is LoadCapacitorLoadAHSGIdViaTruckAHSGIdNotAllowedException ||
+                                       ex is LoadAllocationRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException ||
+                                       ex is LoadAllocationRegisteringFailedBecauseTurnIsNotReadyException ||
+                                       ex is LoadCapacitorLoadLoaderTypeViaSequentialTurnOfTurnNotAllowedException ||
+                                       ex is LoadAllocationNotAllowedBecuaseAHSGLoadAllocationIsUnactiveException ||
+                                       ex is LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException ||
+                                       ex is RegisteredLoadAllocationIsRepetitiousException ||
+                                       ex is RequesterHasNotPermissionforLoadAllocationRegisteringException ||
+                                       ex is LoadAllocationNotAllowedBecauseCarHasBlackListException ||
+                                       ex is TimingNotReachedException ||
+                                       ex is TurnNotFoundException ||
+                                       ex is TruckNotFoundException ||
+                                       ex is TurnHandlingNotAllowedBecuaseTurnStatusException ||
+                                       ex is UnableAllocatingTommorowLoadException)
 
-            try
             {
-                BtnLoadAllocationLoadPermissionIssue.Enabled = false;
-                Int64 myCompanyCode = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(ATISWebMClassLoginManagement.GetNSSCurrentUser()).TCId;
-                Int64 mynEstelamId = WcViewerNSSLoadCapacitorLoad.WcGetNSSCurrent.nEstelamId;
-                LoadNotificationLoadPermissionManagement.CarTruckRelationDriverTruck(WcSmartCardsInquiry.WcGetTruckSmartCardNo(), WcSmartCardsInquiry.WcGetTruckDriverSmartCardNo(), ATISWebMClassLoginManagement.GetNSSCurrentUser());
-                Int64 myTurnId = LoadNotificationLoadPermissionManagement.TransportCompanyLoadCapacitorSedimentLoadAllocationAndPermisiion(myCompanyCode, mynEstelamId, WcSmartCardsInquiry.WcGetTruckSmartCardNo(), WcSmartCardsInquiry.WcGetTruckDriverSmartCardNo(), ATISWebMClassLoginManagement.GetNSSCurrentUser());
-                PermissionPrinting.GetInformationforRemotePermissionPrinting(mynEstelamId, myTurnId, ref PPDS.StrExitDate, ref PPDS.StrExitTime, ref PPDS.nEstelamId, ref PPDS.TurnId, ref PPDS.CompanyName, ref PPDS.CarTruckLoaderTypeName, ref PPDS.pelak, ref PPDS.Serial, ref PPDS.DriverTruckFullNameFamily, ref PPDS.DriverTruckDrivingLicenseNo, ref PPDS.ProductName, ref PPDS.TargetCityName, ref PPDS.StrPriceSug, ref PPDS.StrDescription, ref PPDS.PermissionUserName, ref PPDS.OtherNote,ref PPDS.LAId);
-                PPDS.TurnId = myTurnId.ToString();
-                PPDS.nEstelamId = mynEstelamId.ToString();
+                if (TurnIsTemporary)
+                { PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToTrue(NSSTurn.nEnterExitId, true); }
+                Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message.Replace("\r\n", " ") + "');", true);
             }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
