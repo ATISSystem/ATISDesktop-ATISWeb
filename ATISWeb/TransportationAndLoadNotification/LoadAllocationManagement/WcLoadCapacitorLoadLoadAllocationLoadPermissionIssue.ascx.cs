@@ -64,7 +64,9 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
         private void BtnNewLoadAllocation_Click(object sender, EventArgs e)
         {
             BtnLoadAllocation.Enabled = true;
-            WcViewerNSSLoadCapacitorLoad.WcRefreshInformation(); WcSmartCardsInquiry.WcRefreshInformation();
+            WcSmartCardsInquiry.WcRefreshInformation();
+            LblTurnStatus.Text = String.Empty;
+            PnlTurnStatus.BackColor = System.Drawing.Color.Transparent;
         }
 
         private void WcLoadCapacitorLoadsCollectionSummaryIntelligently_WcLoadCapacitorLoadSelectedEvent(object sender, WcLoadCapacitorLoadsCollectionSummaryIntelligently.nEstelamIdEventArgs e)
@@ -145,7 +147,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                                        ex is TurnNotFoundException ||
                                        ex is TruckNotFoundException ||
                                        ex is TurnHandlingNotAllowedBecuaseTurnStatusException ||
-                                       ex is UnableAllocatingTommorowLoadException)
+                                       ex is UnableAllocatingTommorowLoadException ||
+                                       ex is RequesterNotAllowTurnIssueBySeqTException)
 
             {
                 if (TurnIsTemporary)

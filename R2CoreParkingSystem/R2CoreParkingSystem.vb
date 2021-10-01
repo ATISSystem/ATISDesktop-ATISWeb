@@ -1693,7 +1693,7 @@ Namespace AccountingManagement
         Private _NSSCar As R2StandardCarStructure
         Private _MaabarCode As String
         Private _MblghA As Int64
-        Private _UserIdA As Byte
+        Private _UserIdA As Int64
         Private _CurrentChargeA As Int64
         Private _ReminderChargeA As Int64
 
@@ -1783,11 +1783,11 @@ Namespace AccountingManagement
                 _MblghA = Value
             End Set
         End Property
-        Public Property UserIdA() As Byte
+        Public Property UserIdA() As Int64
             Get
                 Return _UserIdA
             End Get
-            Set(ByVal Value As Byte)
+            Set(ByVal Value As Int64)
                 _UserIdA = Value
             End Set
         End Property

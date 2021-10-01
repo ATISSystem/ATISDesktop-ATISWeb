@@ -1410,14 +1410,18 @@ Namespace LoadCapacitor
 
             Public Function IsLoadCapacitorLoadReadeyforLoadPermissionRegistering(YourNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure) As Boolean
                 Try
+                    Dim InstancePermissions = New R2CoreInstansePermissionsManager
                     Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
                     Dim InstanceAnnouncementHall = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
                     Dim NSSAnnouncementHall = InstanceAnnouncementHall.GetNSSAnnouncementHall(YourNSSLoadCapacitorLoad.AHId)
                     Dim NSSAnnouncementHallSubGroup = InstanceAnnouncementHall.GetNSSAnnouncementHallSubGroupByLoaderTypeId(YourNSSLoadCapacitorLoad.nTruckType)
-                    'کنترل زمان ترخیص بار 
-                    If Not InstanceAnnouncementHall.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSSLoadCapacitorLoad.dTimeElam)) Then
-                        If Not YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.FreeLined Then Return False
-                    End If
+                    ''کنترل زمان ترخیص بار 
+                    'If InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.LoadPermissionUseTimeHandlingByLoadStatus, YourNSSLoadCapacitorLoad.LoadStatus, 0) Then
+                    '    If Not InstanceAnnouncementHall.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSSLoadCapacitorLoad.dTimeElam)) Then
+                    '        If Not YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.FreeLined Then Return False
+                    '    End If
+                    'End If
+
                     'کنترل وضعیت بار
                     If Not (YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered Or YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.FreeLined Or YourNSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented) Then Return False
                     'کنترل تعداد بار
@@ -2831,7 +2835,7 @@ Namespace LoadCapacitor
                     CmdSql.CommandText = "Select nEstelamId from DBTransport.dbo.TbElam  with (tablockx) Where nEstelamId=" & YournEstelamId & ""
                     CmdSql.ExecuteNonQuery()
                     'کنترل وضعیت بار
-                    If NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted Or NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented Then Throw New LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException
+                    If NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted Then Throw New LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException
                     'بازگردانی بار
                     CmdSql.CommandText = "Update DBTransport.dbo.TbElam Set nCarNum=nCarNum+1 Where nEstelamId=" & NSSLoadCapacitorLoad.nEstelamId & ""
                     R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.LoadPermissionCancelling, 1, Nothing, Nothing, Nothing, YourUserNSS.UserId))
@@ -5445,9 +5449,9 @@ Namespace LoadAllocation
                         'کنترل تایمینگ بار در مخزن بار
                         If Not InstanceLoadCapacitorLoad.IsLoadCapacitorLoadTimingReadeyforLoadAllocationRegistering(NSSLoadCapacitorLoad, NSSAnnouncementHall, NSSAnnouncementHallSubGroup) Then Throw New LoadAllocationRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException
                     End If
-                Else
-                    'کنترل تایمینگ بار در مخزن بار
-                    If Not InstanceLoadCapacitorLoad.IsLoadCapacitorLoadTimingReadeyforLoadAllocationRegistering(NSSLoadCapacitorLoad, NSSAnnouncementHall, NSSAnnouncementHallSubGroup) Then Throw New LoadAllocationRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException
+                    'Else
+                    '    'کنترل تایمینگ بار در مخزن بار
+                    '    If Not InstanceLoadCapacitorLoad.IsLoadCapacitorLoadTimingReadeyforLoadAllocationRegistering(NSSLoadCapacitorLoad, NSSAnnouncementHall, NSSAnnouncementHallSubGroup) Then Throw New LoadAllocationRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException
                 End If
 
                 'کنترل وضعیت بار در مخزن بار

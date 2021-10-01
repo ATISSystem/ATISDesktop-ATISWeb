@@ -39,6 +39,7 @@ Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions
 Imports PayanehClassLibrary.TruckersAssociationControllingMoneyWallet
 Imports PayanehClassLibrary.TruckersAssociationControllingMoneyWallet.Exceptions
+Imports PayanehClassLibrary.RequesterManagement
 
 Public Class FrmcEnterExit
     Inherits FrmcGeneral
@@ -334,7 +335,7 @@ Public Class FrmcEnterExit
                     'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
                     R2CoreTransportationAndLoadNotificationMClassTurnsManagement.TruckPresentInParkingForTurnRegisteringControl(NSSTruckTemp)
                     Dim TurnId As Int64 = Int64.MinValue
-                    Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(NSSTruckTemp, False, False, TurnId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                    Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(NSSTruckTemp, False, False, TurnId, PayanehClassLibraryRequesters.FrmcEnterExit, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                     _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + TurnRegisterRequestId.ToString & vbCrLf & "شماره نوبت :" + TurnId.ToString, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 End If
                 UcTurnRegisterRequestConfirmation.UCChkTruckNobat = True
@@ -370,7 +371,8 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri _
                             OrElse TypeOf ex Is GetDataException _
                             OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
-                            OrElse TypeOf ex Is TruckersAssociationControllingMoneyWalletCriticalAmountReachedException
+                            OrElse TypeOf ex Is TruckersAssociationControllingMoneyWalletCriticalAmountReachedException _
+                            OrElse TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException
             Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

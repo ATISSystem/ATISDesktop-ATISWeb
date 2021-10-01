@@ -21,7 +21,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 
         #region "General Properties"
 
-        public LoadCapacitorLoadsListType WcCurrentListType = LoadCapacitorLoadsListType.None ;
+        public LoadCapacitorLoadsListType WcCurrentListType = LoadCapacitorLoadsListType.None;
 
         private string _UCCaption = string.Empty;
         public string UCCaption
@@ -95,9 +95,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         protected void Page_Load(object sender, EventArgs e)
         {
             try
-            {
-                BtnRenew.ServerClick += BtnRenew_ServerClick;
-            }
+            { BtnRenew.ServerClick += BtnRenew_ServerClick; }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }

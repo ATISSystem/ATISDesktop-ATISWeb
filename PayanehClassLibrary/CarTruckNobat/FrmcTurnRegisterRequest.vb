@@ -22,6 +22,7 @@ Imports R2CoreTransportationAndLoadNotification.Trucks
 Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions
+Imports PayanehClassLibrary.RequesterManagement
 
 Public Class FrmcTurnRegisterRequest
     Inherits FrmcGeneral
@@ -119,10 +120,10 @@ Public Class FrmcTurnRegisterRequest
             'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
             R2CoreTransportationAndLoadNotificationMClassTurnsManagement.TruckPresentInParkingForTurnRegisteringControl(_NSSTruck)
             Dim TurnId As Int64 = Int64.MinValue
-            Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(_NSSTruck, False, True, TurnId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(_NSSTruck, False, True, TurnId, PayanehClassLibraryRequesters.FrmcTurnRegisterRequest, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + TurnRegisterRequestId.ToString & vbCrLf & "شماره نوبت :" + TurnId.ToString, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             RaiseEvent _SodorNobatSuccessEvent()
-        Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
+        Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException OrElse TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatExceptionCarTruckIsShahri
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Information, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)

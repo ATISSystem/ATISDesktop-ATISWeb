@@ -2331,6 +2331,15 @@ Namespace Turns
             End Property
         End Class
 
+        Public Class RequesterNotAllowTurnIssueBySeqTException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "درخواست کننده ، مجوز درخواست صدور نوبت برای تسلسل نوبت مورد نظر را ندارد"
+                End Get
+            End Property
+        End Class
+
     End Namespace
 
 End Namespace
@@ -3578,7 +3587,7 @@ Namespace PermissionManagement
         Public Shared ReadOnly RequesterAllowLoadAllocationByLoadStatus As Int64 = 4
         Public Shared ReadOnly LoadAllocationUseTimeHandlingByLoadStatus As Int64 = 5
         Public Shared ReadOnly LoadPermissionUseTimeHandlingByLoadStatus As Int64 = 6
-
+        Public Shared ReadOnly RequesterCanSendRequestforTurnIssueBySeqT As Int64 = 10
     End Class
 
 End Namespace
@@ -3588,9 +3597,9 @@ Namespace EntityManagement
     Public MustInherit Class R2CoreTransportationAndLoadNotificationEntities
         Inherits R2CoreParkingSystemEntities
 
-        Public Shared ReadOnly Requesters As Int64 = 4
         Public Shared ReadOnly AnnouncementHallSubGroups As Int64 = 5
         Public Shared ReadOnly LoadCapacitorLoadStatuses As Int64 = 6
+        Public Shared ReadOnly SequentialTurns As Int64 = 7
 
     End Class
 

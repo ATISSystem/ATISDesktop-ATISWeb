@@ -1787,6 +1787,9 @@ Namespace EntityManagement
         Public Shared ReadOnly None As Int64 = 0
         Public Shared ReadOnly SoftwareUsers As Int64 = 1
         Public Shared ReadOnly MobileProcesses As Int64 = 2
+        Public Shared ReadOnly WebProcesses As Int64 = 3
+        Public Shared ReadOnly Requesters As Int64 = 4
+
     End Class
 
     Public Class R2StandardEntityRelationTypeStructure
@@ -2242,7 +2245,7 @@ Namespace PermissionManagement
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "مجوز دسترسی وچود ندارد"
+                    Return "مجوز دسترسی وجود ندارد"
                 End Get
             End Property
         End Class
