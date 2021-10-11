@@ -1179,6 +1179,27 @@ Namespace Turns
             End Try
         End Function
 
+        Public Function GetNSSTurn(YourNSSTurnRegisteringRequest As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure) As R2CoreTransportationAndLoadNotificationStandardTurnStructure
+            Try
+                Dim InstanceTruckDrivers = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim Ds As New DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                     "Select Top 1 Turns.* from dbtransport.dbo.tbEnterExit as Turns
+                        Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On Turns.nEnterExitId=EntityRelations.E1 
+                        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnRegisterRequests as TurnRegisterRequests On EntityRelations.E2=TurnRegisterRequests.TRRId 
+                      Where EntityRelations.RelationActive=1 and EntityRelations.ERTypeId=1 and TurnRegisterRequests.TRRId=" & YourNSSTurnRegisteringRequest.TRRId & "", 0, Ds).GetRecordsCount() = 0 Then
+                    Throw New TurnNotFoundException
+                End If
+                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate").trim, Ds.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode"))), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("TurnStatus"))
+            Catch ex As TurnNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+
     End Class
 
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTurnsManagement
@@ -1626,10 +1647,10 @@ Namespace Turns
 
         Public Shared Sub TruckPresentInParkingForTurnRegisteringControl(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure)
             Try
-                Dim NSSTerraficCard As R2CoreParkingSystemStandardTrafficCardStructure = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(YourNSSTruck.NSSCar.nIdCar))
+                Dim NSSTerraficCard = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(YourNSSTruck.NSSCar.nIdCar))
                 'بررسی شرط حضور ناوگان باری در پارکینگ هنگام صدور نوبت با توجه به پیکربندی برای هر زیرگروه اعلام بار
-                Dim NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSAnnouncementHallSubGroup(YourNSSTruck.NSSCar.nIdCar)
-                Dim NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByAnnouncementHallSubGroup(NSSAnnouncementHallSubGroup.AHSGId)
+                Dim NSSAnnouncementHallSubGroup = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSAnnouncementHallSubGroup(YourNSSTruck.NSSCar.nIdCar)
+                Dim NSSAnnouncementHall = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByAnnouncementHallSubGroup(NSSAnnouncementHallSubGroup.AHSGId)
                 If R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.IsActiveTurnRegisteringIssueControlforAnnouncementHall(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId) Then
                     If R2CoreParkingSystem.EnterExitManagement.R2CoreParkingSystemMClassEnterExitManagement.GetEnterExitRequestType(NSSTerraficCard, Nothing) = R2EnterExitRequestType.EnterRequest Then Throw New CarIsNotPresentInParkingException
                 End If
@@ -1849,16 +1870,18 @@ Namespace Turns
                 _TRRTypeName = String.Empty
                 _TRRTypeTitle = String.Empty
                 _TRRTypeColor = Color.Black
+                _TurnExpirationHours = Int16.MinValue
                 _Acitve = Boolean.FalseString
                 _ViewFlag = Boolean.FalseString
                 _Deleted = Boolean.FalseString
             End Sub
 
-            Public Sub New(ByVal YourTRRTypeId As Int64, ByVal YourTRRTypeName As String, YourTRRTypeTitle As String, YourTRRTypeColor As Color, YourAcitve As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
+            Public Sub New(ByVal YourTRRTypeId As Int64, ByVal YourTRRTypeName As String, YourTRRTypeTitle As String, YourTRRTypeColor As Color, YourTurnExpirationHours As Int16, YourAcitve As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
                 _TRRTypeId = YourTRRTypeId
                 _TRRTypeName = YourTRRTypeName
                 _TRRTypeTitle = YourTRRTypeTitle
                 _TRRTypeColor = YourTRRTypeColor
+                _TurnExpirationHours = YourTurnExpirationHours
                 _Acitve = YourAcitve
                 _ViewFlag = YourViewFlag
                 _Deleted = YourDeleted
@@ -1868,6 +1891,7 @@ Namespace Turns
             Public Property TRRTypeName As String
             Public Property TRRTypeTitle As String
             Public Property TRRTypeColor As Color
+            Public Property TurnExpirationHours As Int16
             Public Property Acitve As Boolean
             Public Property ViewFlag As Boolean
             Public Property Deleted As Boolean
@@ -1920,6 +1944,7 @@ Namespace Turns
                     NSS.TRRTypeName = Ds.Tables(0).Rows(0).Item("TRRTypeName").trim
                     NSS.TRRTypeTitle = Ds.Tables(0).Rows(0).Item("TRRTypeTitle").trim
                     NSS.TRRTypeColor = Color.FromName(Ds.Tables(0).Rows(0).Item("TRRTypeColor").trim)
+                    NSS.TurnExpirationHours = Ds.Tables(0).Rows(0).Item("TurnExpirationHours")
                     NSS.ViewFlag = Ds.Tables(0).Rows(0).Item("ViewFlag")
                     NSS.Acitve = Ds.Tables(0).Rows(0).Item("Active")
                     NSS.Deleted = Ds.Tables(0).Rows(0).Item("Deleted")
@@ -3588,6 +3613,10 @@ Namespace PermissionManagement
         Public Shared ReadOnly LoadAllocationUseTimeHandlingByLoadStatus As Int64 = 5
         Public Shared ReadOnly LoadPermissionUseTimeHandlingByLoadStatus As Int64 = 6
         Public Shared ReadOnly RequesterCanSendRequestforTurnIssueBySeqT As Int64 = 10
+        Public Shared ReadOnly UserCanRequestReserveTurnRegistering As Int64 = 11
+        Public Shared ReadOnly ComputerCanRequestReserveTurnRegistering As Int64 = 12
+        Public Shared ReadOnly UserCanResuscitationReserveTurn As Int64 = 13
+        Public Shared ReadOnly UserCanRequestEmergencyTurnRegistering As Int64 = 14
     End Class
 
 End Namespace

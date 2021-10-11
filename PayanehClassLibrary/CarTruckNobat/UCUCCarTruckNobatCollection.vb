@@ -14,6 +14,7 @@ Imports PayanehClassLibrary.DataBaseManagement
 Imports PayanehClassLibrary.DriverTrucksManagement
 Imports R2Core.RFIDCardsManagement
 Imports R2CoreTransportationAndLoadNotification.Turns
+Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
 
 Public Class UCUCCarTruckNobatCollection
     Inherits UCGeneral
@@ -81,7 +82,7 @@ Public Class UCUCCarTruckNobatCollection
             If Not R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTerraficCardTypeforTurnRegistering(YourTerraficCard) Then
                 Throw New ViewCarTruckTurnsTerraficCardNotSupportException
             End If
-            Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckbyCarId(R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(YourTerraficCard.CardId))
+            Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(YourTerraficCard.CardId))
             UCViewCollection(NSSCarTruck)
         Catch exx As ViewCarTruckTurnsTerraficCardNotSupportException
             Throw exx

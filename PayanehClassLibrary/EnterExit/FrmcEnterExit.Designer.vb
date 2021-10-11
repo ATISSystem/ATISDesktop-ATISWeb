@@ -28,6 +28,7 @@ Partial Class FrmcEnterExit
         Me.PnlEnterExit = New System.Windows.Forms.Panel()
         Me.UcBlackListCompositBlackListViewer = New R2CoreParkingSystem.UCBlackListCompositBlackListViewer()
         Me.UcCarPresenter = New R2CoreParkingSystem.UCCarPresenter()
+        Me.UCReserveTurnRegisterRequest = New PayanehClassLibrary.UCReserveTurnRegisterRequest()
         Me.UcTerafficCardPresenter = New R2CoreParkingSystem.UCTerafficCardPresenter()
         Me.UcTurnRegisterRequestConfirmation = New PayanehClassLibrary.UCTurnRegisterRequestConfirmation()
         Me.UcCarTruckUpdateInf = New PayanehClassLibrary.UcCarTruckUpdateInf()
@@ -68,6 +69,7 @@ Partial Class FrmcEnterExit
         Me.PnlEnterExit.Controls.Add(Me.UcBlackListCompositBlackListViewer)
         Me.PnlEnterExit.Controls.Add(Me.UcCarTruckUpdateInf)
         Me.PnlEnterExit.Controls.Add(Me.UcCarPresenter)
+        Me.PnlEnterExit.Controls.Add(Me.UCReserveTurnRegisterRequest)
         Me.PnlEnterExit.Controls.Add(Me.UcTerafficCardPresenter)
         Me.PnlEnterExit.Controls.Add(Me.UcTurnRegisterRequestConfirmation)
         Me.PnlEnterExit.Controls.Add(Me.UcCarAndTrafficCard)
@@ -110,6 +112,16 @@ Partial Class FrmcEnterExit
         Me.UcCarPresenter.Padding = New System.Windows.Forms.Padding(3)
         Me.UcCarPresenter.Size = New System.Drawing.Size(410, 74)
         Me.UcCarPresenter.TabIndex = 343
+        '
+        'UCReserveTurnRegisterRequest
+        '
+        Me.UCReserveTurnRegisterRequest.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.UCReserveTurnRegisterRequest.BackColor = System.Drawing.Color.Transparent
+        Me.UCReserveTurnRegisterRequest.Location = New System.Drawing.Point(13, 120)
+        Me.UCReserveTurnRegisterRequest.Name = "UCReserveTurnRegisterRequest"
+        Me.UCReserveTurnRegisterRequest.Padding = New System.Windows.Forms.Padding(3)
+        Me.UCReserveTurnRegisterRequest.Size = New System.Drawing.Size(133, 40)
+        Me.UCReserveTurnRegisterRequest.TabIndex = 380
         '
         'UcTerafficCardPresenter
         '
@@ -365,6 +377,7 @@ End Sub
     Friend WithEvents UcTurnRegisterRequestConfirmation As UCTurnRegisterRequestConfirmation
     Friend WithEvents UcTerafficCardPresenter As UCTerafficCardPresenter
     Friend WithEvents UcCarPresenter As UCCarPresenter
+    Friend WithEvents UCReserveTurnRegisterRequest As UCReserveTurnRegisterRequest
     Friend WithEvents UcTerafficCardPresenterPnlMoneyWalletChargeSavabegh As UCTerafficCardPresenter
     Friend WithEvents UcCarImage As UCCarImage
     Friend WithEvents PnlMoneyWalletCharge As System.Windows.Forms.Panel

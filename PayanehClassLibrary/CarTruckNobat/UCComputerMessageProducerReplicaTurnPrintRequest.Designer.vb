@@ -26,10 +26,9 @@ Partial Class UCComputerMessageProducerReplicaTurnPrintRequest
         '
         'UCComputerMessageProducerReplicaTurnPrintRequest
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Name = "UCComputerMessageProducerReplicaTurnPrintRequest"
-        Me.Size = New System.Drawing.Size(989, 310)
+        Me.Size = New System.Drawing.Size(1011, 271)
         Me.ResumeLayout(false)
 
 End Sub

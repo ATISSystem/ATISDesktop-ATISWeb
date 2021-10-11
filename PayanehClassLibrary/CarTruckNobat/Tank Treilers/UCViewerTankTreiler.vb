@@ -5,6 +5,7 @@ Imports System.Reflection
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports R2CoreGUI
+Imports R2CoreTransportationAndLoadNotification.Trucks
 
 Public Class UCViewerTankTreiler
     Inherits UCGeneral
@@ -33,9 +34,10 @@ Public Class UCViewerTankTreiler
 
     Public Sub UCViewTankTreilerStatus(YourNSS As R2StandardCarTruckStructure)
         Try
+            Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
             UCNSSCurrentCarTruck = YourNSS
             UCRefresh()
-            If PayanehClassLibraryMClassCarTruckNobatManagement.IsCarTruckTankTreiler(YourNSS) Then
+            If PayanehClassLibraryMClassCarTruckNobatManagement.IsCarTruckTankTreiler(InstanceTrucks.GetNSSTruck(YourNSS.NSSCar.nIdCar)) Then
                 UcLabel.UCValue = "تانکر مخزندار"
             Else
                 UcLabel.UCRefreshGeneral()

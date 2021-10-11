@@ -1789,7 +1789,7 @@ Namespace EntityManagement
         Public Shared ReadOnly MobileProcesses As Int64 = 2
         Public Shared ReadOnly WebProcesses As Int64 = 3
         Public Shared ReadOnly Requesters As Int64 = 4
-
+        Public Shared ReadOnly Computers As Int64 = 8
     End Class
 
     Public Class R2StandardEntityRelationTypeStructure

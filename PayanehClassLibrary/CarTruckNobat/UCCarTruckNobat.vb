@@ -9,6 +9,7 @@ Imports R2CoreParkingSystem.Cars
 Imports R2CoreParkingSystem.EnterExitManagement
 Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.TurnPrinting
+Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
 
 Public Class UCCarTruckNobat
     Inherits UCGeneral

@@ -1,7 +1,7 @@
 ﻿
 
 Imports System.Reflection
-
+Imports PayanehClassLibrary.TurnRegisterRequest.Exceptions
 Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.MoneyWalletManagement
@@ -27,8 +27,10 @@ Public Class UCComputerMessageProducerEmergencyTurnRegisterRequest
 
     Private Sub UCEmergencyTurnRegisterRequest()
         Try
-            TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.EmergencyTurnRegisterRequest(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCar.UCGetNSS.nIdCar), True, UcPersianTextBoxNote.UCValue,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
-        Catch ex As Exception When TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException
+            TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.EmergencyTurnRegisterRequest(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCar.UCGetNSS.nIdCar), True, UcPersianTextBoxNote.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+        Catch ex As Exception When TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
+            OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
+            OrElse TypeOf ex Is UserCanNotRequestEmergencyTurnRegisteringException
             Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -46,7 +48,9 @@ Public Class UCComputerMessageProducerEmergencyTurnRegisterRequest
         Try
             UCEmergencyTurnRegisterRequest()
             UCSuccessSendingNotification()
-        Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException  OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException
+        Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
+            OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
+            OrElse TypeOf ex Is UserCanNotRequestEmergencyTurnRegisteringException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

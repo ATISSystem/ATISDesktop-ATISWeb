@@ -160,12 +160,6 @@
     <Compile Include="CarTruckNobat\UCComputerMessageProducerEmergencyTurnRegisterRequest.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CarTruckNobat\UCComputerMessageReserveTurnRegisterRequestConfirmation.Designer.vb">
-      <DependentUpon>UCComputerMessageReserveTurnRegisterRequestConfirmation.vb</DependentUpon>
-    </Compile>
-    <Compile Include="CarTruckNobat\UCComputerMessageReserveTurnRegisterRequestConfirmation.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="CarTruckNobat\UCComputerMessageTurnPrint.Designer.vb">
       <DependentUpon>UCComputerMessageTurnPrint.vb</DependentUpon>
     </Compile>
@@ -224,6 +218,18 @@
       <DependentUpon>UCViewerTankTreiler.vb</DependentUpon>
     </Compile>
     <Compile Include="CarTruckNobat\Tank Treilers\UCViewerTankTreiler.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCReserveTurnRegisterRequest.Designer.vb">
+      <DependentUpon>UCReserveTurnRegisterRequest.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCReserveTurnRegisterRequest.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCResuscitationReserveTurn.Designer.vb">
+      <DependentUpon>UCResuscitationReserveTurn.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCResuscitationReserveTurn.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Configuration Management\FrmcClientConfigurations.Designer.vb">
@@ -645,9 +651,6 @@
     <EmbeddedResource Include="CarTruckNobat\UCComputerMessageProducerNoCostTurnPrintRequest.resx">
       <DependentUpon>UCComputerMessageProducerNoCostTurnPrintRequest.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CarTruckNobat\UCComputerMessageReserveTurnRegisterRequestConfirmation.resx">
-      <DependentUpon>UCComputerMessageReserveTurnRegisterRequestConfirmation.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="CarTruckNobat\UCComputerMessageTurnPrint.resx">
       <DependentUpon>UCComputerMessageTurnPrint.vb</DependentUpon>
     </EmbeddedResource>
@@ -674,6 +677,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CarTruckNobat\Tank Treilers\UCViewerTankTreiler.resx">
       <DependentUpon>UCViewerTankTreiler.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCReserveTurnRegisterRequest.resx">
+      <DependentUpon>UCReserveTurnRegisterRequest.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCResuscitationReserveTurn.resx">
+      <DependentUpon>UCResuscitationReserveTurn.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Configuration Management\FrmcClientConfigurations.resx">
       <DependentUpon>FrmcClientConfigurations.vb</DependentUpon>

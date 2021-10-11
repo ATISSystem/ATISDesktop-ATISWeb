@@ -23,7 +23,7 @@ Imports PayanehClassLibrary.DriverTruckPresentManagement
 Imports PayanehClassLibrary.DriverTrucksManagement
 Imports PayanehClassLibrary.ProcessesManagement
 Imports R2Core.FingerPrintsManagement.DermalogSystem
-
+Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
 
 Public Class FrmcDriverTruckPresentDermalog
     Inherits FrmcGeneral

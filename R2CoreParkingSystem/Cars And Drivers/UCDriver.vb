@@ -39,14 +39,14 @@ Public Class UCDriver
                 UcButtonSabt.Visible = True
                 CButtonViewPrintUserShenasehPassword.Visible = True
                 CButtonSoftwareUserVerificationCodeInjection.Visible = True
-                CButtonSoftwareUserVerificationCodeInjection.Visible = True
+                CButtonSendSmsUserShenasehPassword.Visible = True
             Else
                 UcButtonDel.Visible = False
                 UcButtonNew.Visible = False
                 UcButtonSabt.Visible = False
                 CButtonViewPrintUserShenasehPassword.Visible = False
                 CButtonSoftwareUserVerificationCodeInjection.Visible = False
-                CButtonSoftwareUserVerificationCodeInjection.Visible = False
+                CButtonSendSmsUserShenasehPassword.Visible = False
             End If
         End Set
     End Property
