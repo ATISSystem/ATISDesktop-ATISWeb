@@ -4426,7 +4426,7 @@ Namespace LoadPermission
         Public Structure R2CoreTransportationAndLoadNotificationLoadPermissionPrintingInf
             Dim LoadAllocationId As Int64
             Dim nEstelamId As Int64
-            Dim TurnId As Int64
+            Dim TurnId As String
             Dim LoadPermissionDate As String
             Dim LoadPermissionTime As String
             Dim TransportCompany As String
@@ -4453,7 +4453,7 @@ Namespace LoadPermission
                     Dim InstanceSqlDataBox = New R2CoreInstanseSqlDataBOXManager
                     Dim DS As DataSet
                     InstanceSqlDataBox.GetDataBOX(New R2PrimarySqlConnection,
-                          "Select LoadAllocation.LAId,LoadAllocation.nEstelamId,Cast(Substring(EnterExit.OtaghdarTurnNumber,7,20) as int) as TurnId,EnterExit.strExitDate,EnterExit.strExitTime
+                          "Select LoadAllocation.LAId,LoadAllocation.nEstelamId,Substring(EnterExit.OtaghdarTurnNumber,7,20) as TurnId,EnterExit.strExitDate,EnterExit.strExitTime
                                   ,TransportCompany.TCTitle,LoaderType.LoaderTypeTitle,Car.strCarNo as Truck,Car.strCarSerialNo as TruckSerial,Person.strPersonFullName
 	                              ,Driver.strDrivingLicenceNo,Product.strGoodName,CityTarget.strCityName as TargetCity,CitySource.strCityName as SourceCity,Elam.strPriceSug,Elam.strDescription,Elam.StrAddress,Elam.strBarName,SoftwareUser.UserName,CityTarget.nDistance/25 as TravelLength
                            from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocation
@@ -4717,7 +4717,7 @@ Namespace LoadPermission
                 Try
                     Dim DS As DataSet
                     R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                          "Select LoadAllocation.LAId,LoadAllocation.nEstelamId,Cast(Substring(EnterExit.OtaghdarTurnNumber,7,20) as int) as TurnId,EnterExit.strExitDate,EnterExit.strExitTime
+                          "Select LoadAllocation.LAId,LoadAllocation.nEstelamId,Substring(EnterExit.OtaghdarTurnNumber,7,20) as TurnId,EnterExit.strExitDate,EnterExit.strExitTime
                                   ,TransportCompany.TCTitle,LoaderType.LoaderTypeTitle,Car.strCarNo as Truck,Car.strCarSerialNo as TruckSerial,Person.strPersonFullName
 	                              ,Driver.strDrivingLicenceNo,Product.strGoodName,CityTarget.strCityName as TargetCity,CitySource.strCityName as SourceCity,Elam.strPriceSug,Elam.strDescription,Elam.StrAddress,Elam.strBarName,SoftwareUser.UserName,CityTarget.nDistance/25 as TravelLength
                            from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocation
@@ -6391,7 +6391,7 @@ Namespace LoadAllocation
         Public Structure R2CoreTransportationAndLoadNotificationFailedLoadAllocationPrintingInf
             Dim LoadAllocationId As Int64
             Dim nEstelamId As Int64
-            Dim TurnId As Int64
+            Dim TurnId As String
             Dim TransportCompany As String
             Dim TruckLP As String
             Dim TruckLPSerial As String
@@ -6410,7 +6410,7 @@ Namespace LoadAllocation
                     Dim InstanceSqlDataBox = New R2CoreInstanseSqlDataBOXManager
                     Dim DS As DataSet
                     InstanceSqlDataBox.GetDataBOX(New R2PrimarySqlConnection,
-                          "Select LoadAllocation.LAId,LoadAllocation.nEstelamId,Cast(Substring(EnterExit.OtaghdarTurnNumber,7,20) as int) as TurnId,TransportCompany.TCTitle,Car.strCarNo as Truck,Car.strCarSerialNo as TruckSerial,Person.strPersonFullName,Product.strGoodName,CityTarget.strCityName as TargetCity,LoadAllocation.LANote
+                          "Select LoadAllocation.LAId,LoadAllocation.nEstelamId,Substring(EnterExit.OtaghdarTurnNumber,7,20) as TurnId,TransportCompany.TCTitle,Car.strCarNo as Truck,Car.strCarSerialNo as TruckSerial,Person.strPersonFullName,Product.strGoodName,CityTarget.strCityName as TargetCity,LoadAllocation.LANote
                            from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocation
                                 Inner Join dbtransport.dbo.tbEnterExit as EnterExit On LoadAllocation.TurnId=EnterExit.nEnterExitId
                                 Inner Join dbtransport.dbo.tbElam as Elam On LoadAllocation.nEstelamId=Elam.nEstelamID
@@ -6560,7 +6560,7 @@ Namespace LoadAllocation
                 Try
                     Dim DS As DataSet
                     R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                          "Select LoadAllocation.LAId,LoadAllocation.nEstelamId,Cast(Substring(EnterExit.OtaghdarTurnNumber,7,20) as int) as TurnId,TransportCompany.TCTitle,Car.strCarNo as Truck,Car.strCarSerialNo as TruckSerial,Person.strPersonFullName,Product.strGoodName,CityTarget.strCityName as TargetCity,LoadAllocation.LANote
+                          "Select LoadAllocation.LAId,LoadAllocation.nEstelamId,Substring(EnterExit.OtaghdarTurnNumber,7,20) as TurnId,TransportCompany.TCTitle,Car.strCarNo as Truck,Car.strCarSerialNo as TruckSerial,Person.strPersonFullName,Product.strGoodName,CityTarget.strCityName as TargetCity,LoadAllocation.LANote
                            from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocation
                                 Inner Join dbtransport.dbo.tbEnterExit as EnterExit On LoadAllocation.TurnId=EnterExit.nEnterExitId
                                 Inner Join dbtransport.dbo.tbElam as Elam On LoadAllocation.nEstelamId=Elam.nEstelamID
@@ -7170,8 +7170,8 @@ Namespace TransportCompanies
                     NSSMoneyWallet.Mobile = YourNSSTransportCompany.TCManagerMobileNumber
                     NSSMoneyWallet.Tel = YourNSSTransportCompany.TCTel
                     NSSMoneyWallet.Tahvilg = YourNSSTransportCompany.TCManagerNameFamily
-                    NSSMoneyWallet.CardType = TerafficCardType.None
-                    NSSMoneyWallet.TempCardType = TerafficTempCardType.None
+                    NSSMoneyWallet.CardType = TerafficCardType.Tereili
+                    NSSMoneyWallet.TempCardType = TerafficTempCardType.NoTemp
                     InstanceTrafficCards.UpdatingTrafficCard(NSSMoneyWallet, R2Core.R2Enums.EditLevel.HighLevel)
                 Catch ex As Exception
                     Throw New Exception(ex.Message)

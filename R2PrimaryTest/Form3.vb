@@ -2,8 +2,10 @@
 Imports System.Data.SqlClient
 Imports System.Globalization
 Imports System.Text
+Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.PayanehWS
+Imports PayanehClassLibrary.TurnRegisterRequest
 Imports R2Core.BlackIPs
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DatabaseManagement
@@ -34,6 +36,7 @@ Imports R2CoreTransportationAndLoadNotification.RequesterManagement
 Imports R2CoreTransportationAndLoadNotification.Rmto
 Imports R2CoreTransportationAndLoadNotification.Trucks
 Imports R2CoreTransportationAndLoadNotification.Turns
+Imports R2CoreTransportationAndLoadNotification.Turns.TurnRegisterRequest
 
 Public Class Form3
     Private _DateTime As R2DateTime = New R2DateTime
@@ -253,9 +256,26 @@ Public Class Form3
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Dim Cmdsql As New SqlClient.SqlCommand
+        Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            Dim X = New R2CoreTransportationAndLoadNotification.LoadAllocation.R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
-            X.LoadAllocationsLoadPermissionRegistering(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+            PayanehClassLibraryMClassTurnRegisterRequestManagement.ResuscitationReserveTurn(168, R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(127786), False, 6, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+            'Dim ds As New DataSet
+            'Dim da As New OleDb.OleDbDataAdapter
+            'da.SelectCommand = New OleDbCommand("Select * from [Sheet1]")
+            'da.SelectCommand.Connection = OleDbConnection1
+            'da.Fill(ds)
+            'Cmdsql.Connection.Open()
+            'Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
+            'For Loopx As Int64 = 0 To ds.Tables(0).Rows.Count - 1
+            '    Cmdsql.CommandText = "Insert Into TDBClient.dbo.Turns(Serial,Pelak3,Pelak2,Pelak1,Time,ShamsiDate,TId)
+            '          Values('" & ds.Tables(0).Rows(Loopx).Item("Serial") & "','" & ds.Tables(0).Rows(Loopx).Item("Pelak3") & "','" & ds.Tables(0).Rows(Loopx).Item("Pelak2") & "','" & ds.Tables(0).Rows(Loopx).Item("Pelak1") & "','" & ds.Tables(0).Rows(Loopx).Item("Time") & "','" & ds.Tables(0).Rows(Loopx).Item("ShamsiDate") & "','" & ds.Tables(0).Rows(Loopx).Item("TId") & "')"
+            '    Cmdsql.ExecuteNonQuery()
+            'Next
+            'Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
+            'MessageBox.Show("Ok")
+            'Dim X = New R2CoreTransportationAndLoadNotification.LoadAllocation.R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+            'X.LoadAllocationsLoadPermissionRegistering(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             'PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
             'Dim Instance = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
             'MessageBox.Show(Instance.GetFirstActiveTurn(Instance.GetNSSTurn(943406)))

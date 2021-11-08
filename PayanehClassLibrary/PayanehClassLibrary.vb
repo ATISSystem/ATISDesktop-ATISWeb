@@ -294,7 +294,7 @@ Namespace CarTruckNobatManagement
                 Dim SeqTKeyWord As String = R2CoreTransportationAndLoadNotificationMClassSequentialTurnsManagement.GetNSSSequentialTurn(YourNSSAnnouncementHall).SequentialTurnKeyWord
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "
-                        Select Substring(Turns.OtaghdarTurnNumber,7,6) as OtaghdarTurnNumber,Turns.StrEnterDate from dbtransport.dbo.TbEnterExit as Turns
+                        Select LTRIM(RTRIM(Substring(Turns.OtaghdarTurnNumber,7,20))) as OtaghdarTurnNumber,Turns.StrEnterDate from dbtransport.dbo.TbEnterExit as Turns
                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCars On Turns.strCardno=AHSGRCars.CarId 
                         Where bFlagDriver=0 and AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and Substring(OtaghdarTurnNumber,1,1)='" & SeqTKeyWord & "' and AHSGRCars.RelationActive=1 
                               and ((DATEDIFF(SECOND,AHSGRCars.RelationTimeStamp,getdate())<120) or (AHSGRCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
@@ -409,7 +409,7 @@ Namespace CarTruckNobatManagement
 
                 Dim SequentialTurnId As Int64 = Int64.MinValue
                 Dim SequentialTurnId_ As String = String.Empty
-                CmdSql.CommandText = "Select top 1 Substring(OtaghdarTurnNumber,7,10) from tbenterexit with (tablockx) Where Substring(OtaghdarTurnNumber,1,5)='" & NSSSeqT.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() & "' order by OtaghdarTurnNumber desc"
+                CmdSql.CommandText = "Select top 1 Substring(OtaghdarTurnNumber,7,20) from tbenterexit with (tablockx) Where Substring(OtaghdarTurnNumber,1,5)='" & NSSSeqT.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() & "' order by OtaghdarTurnNumber desc"
                 SequentialTurnId = CmdSql.ExecuteScalar + 1
                 SequentialTurnId_ = NSSSeqT.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - SequentialTurnId.ToString().Trim().Length) + SequentialTurnId.ToString().Trim()
 
@@ -848,7 +848,7 @@ Namespace CarTruckNobatManagement
                 'بدست آوردن لیست نوبت هایی که مجوز برایشان  صادر شده و باید نوبت برایشان صادر شود
                 Dim Query = "Select Turns.nEnterExitId,Turns.strCardno,Loads.AHId,Loads.AHSGId from dbtransport.dbo.tbEnterExit as Turns
                                        Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID=Loads.nEstelamID 
-                                 Where  Turns.strCardno not in (Select strCardno from dbtransport.dbo.tbEnterExit Where (TurnStatus=1 or TurnStatus=7 or TurnStatus=8 or TurnStatus=9 or TurnStatus=10) and strEnterDate='" & _DateTime.GetCurrentDateShamsiFull & "') and 
+                                 Where  Turns.strCardno not in (Select strCardno from dbtransport.dbo.tbEnterExit Where (TurnStatus=1 or TurnStatus=2 or TurnStatus=7 or TurnStatus=8 or TurnStatus=9 or TurnStatus=10) and strEnterDate='" & _DateTime.GetCurrentDateShamsiFull & "') and 
                                         Turns.TurnStatus = 6 And Turns.strExitDate ='" & _DateTime.GetCurrentDateShamsiFull & "' and (2=3" + SubQuery + ")" + " Order By Turns.nEnterExitId Asc"
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim InstanceTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
@@ -1070,25 +1070,18 @@ Namespace CarTruckNobatManagement
 
                 Dim SequentialTurnId As Int64 = Int64.MinValue
                 Dim SequentialTurnId_ As String = String.Empty
-                CmdSql.CommandText = "Select top 1 Substring(OtaghdarTurnNumber,7,10) from tbenterexit with (tablockx) Where Substring(OtaghdarTurnNumber,1,5)='" & NSSSequentialTurn.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() & "' order by OtaghdarTurnNumber desc"
-                SequentialTurnId = CmdSql.ExecuteScalar + 1
+                CmdSql.CommandText = "Select top 1 Substring(OtaghdarTurnNumber,7,20) from dbtransport.dbo.tbenterexit with (tablockx) Where Substring(OtaghdarTurnNumber,1,5)='" & NSSSequentialTurn.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() & "' order by OtaghdarTurnNumber desc"
+                Dim TurnIdTemp As String = CmdSql.ExecuteScalar
+                If TurnIdTemp = String.Empty Then
+                    SequentialTurnId = 1
+                Else
+                    SequentialTurnId = Split(TurnIdTemp, ":")(0) + 1
+                End If
                 SequentialTurnId_ = NSSSequentialTurn.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - SequentialTurnId.ToString().Trim().Length) + SequentialTurnId.ToString().Trim()
-
-                'این خطوط بعد از حذف سپاس باید حذف گردند فعلا موقتی هستند
-                'CmdSql.CommandText = "Select top 1 nIdNobat from dbtransport.dbo.tbGhabz with (tablockx) order by nIdNobat desc"
-                'CmdSql.ExecuteNonQuery()
-                'CmdSql.CommandText = "Select IDENT_CURRENT('dbtransport.dbo.TbGhabz')"
-                'Dim mynIdGhabz As Int64 = CmdSql.ExecuteScalar + 1
 
                 'ثبت نوبت ناوگان باری
                 CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTurnRegisteringRequest.Description & "',0," & NSSSoftwareUser.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',0,0," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatus.Registered & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ")"
                 CmdSql.ExecuteNonQuery()
-
-                'این خطوط بعد از حذف سپاس باید حذف گردند فعلا موقتی هستند
-                'CmdSql.CommandText = "Insert Into dbtransport.dbo.TbGhabz(nIdNobat,nIdCar,nIdDriver,StrDateEnter,StrDateExit,StrDateShEnter,StrDateShExit,StrTimeEnter,StrTimeExit,StrBarcodeNo,StrTime,IdUserEnter,IdUserExit,nSumPaid,nSumPaidEnter,nSumPaidExit,FlagA,snEnterAim,bEbtal) Values(" & mynIdEnterExit & "," & NSSCarTruck.NSSCar.nIdCar & "," & NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & _DateTime.GetCurrentTime() & "','" & YourTrafficCard.CardNo & "','" & _DateTime.GetCurrentTime() & "',1,1,0,0,0,1,1,0)"
-                'CmdSql.ExecuteNonQuery()
-                'CmdSql.CommandText = "Insert Into dbtransport.dbo.TbGhabz(nIdNobat,nIdCar,nIdDriver,StrDateEnter,StrDateExit,StrDateShEnter,StrDateShExit,StrTimeEnter,StrTimeExit,StrBarcodeNo,StrTime,IdUserEnter,IdUserExit,nSumPaid,nSumPaidEnter,nSumPaidExit,FlagA,snEnterAim,bEbtal) Values(0," & NSSCarTruck.NSSCar.nIdCar & "," & NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & _DateTime.GetCurrentTime() & "','" & YourTrafficCard.CardNo & "','" & _DateTime.GetCurrentTime() & "',1,1,0,0,0,1,1,0)"
-                'CmdSql.ExecuteNonQuery()
 
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
@@ -1129,9 +1122,12 @@ Namespace CarTruckNobatManagement
                 'محاسبه تسلسل نوبت
                 Dim SequentialTurnId As Int64 = Int64.MinValue
                 Dim SequentialTurnId_ As String = String.Empty
-                CmdSql.CommandText = "Select top 1 Substring(OtaghdarTurnNumber,7,10) from dbtransport.dbo.tbEnterExit with (tablockx) Where Substring(OtaghdarTurnNumber,1,5)='" & NSSSequentialTurn.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() & "' order by OtaghdarTurnNumber desc"
-                SequentialTurnId = CmdSql.ExecuteScalar + 1
-                SequentialTurnId_ = NSSSequentialTurn.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - SequentialTurnId.ToString().Trim().Length) + SequentialTurnId.ToString().Trim()
+                CmdSql.CommandText = "Select top 1 Substring(OtaghdarTurnNumber,7,20) from dbtransport.dbo.tbEnterExit with (tablockx) Where Substring(OtaghdarTurnNumber,1,5)='" & NSSSequentialTurn.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() & "' and nEnterExitId<" & NSSTurn.nEnterExitId & " order by OtaghdarTurnNumber desc"
+                Dim TurnIdTemp As String = CmdSql.ExecuteScalar
+                If TurnIdTemp = String.Empty Then Throw New ResuscitationReserveTurnFailedException
+                SequentialTurnId = Split(TurnIdTemp, ":")(0)
+                SequentialTurnId_ = NSSSequentialTurn.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - SequentialTurnId.ToString().Trim().Length) + SequentialTurnId.ToString().Trim() + ":" + NSSTurn.nEnterExitId.ToString
+
                 'احیاء نوبت رزرو
                 CmdSql.CommandText = "Update dbtransport.dbo.tbEnterExit 
                                       Set strCardno=" & NSSTruck.NSSCar.nIdCar & ",strDriverName='" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',strDesc=strDesc+' - " & NSSSoftwareUser.UserName & "',bFlag=0,bFlagDriver=0,nDriverCode=" & NSSDriverTruck.NSSDriver.nIdPerson & ",OtaghdarTurnNumber='" & SequentialTurnId_ & "',TurnStatus=" & TurnStatuses.Registered & " 
@@ -1139,7 +1135,7 @@ Namespace CarTruckNobatManagement
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 DoStrategyComplementaryWorks()
-            Catch ex As Exception When TypeOf ex Is TurnNotFoundException OrElse TypeOf ex Is ReserveTurnAlreadyUsedException
+            Catch ex As Exception When TypeOf ex Is TurnNotFoundException OrElse TypeOf ex Is ReserveTurnAlreadyUsedException OrElse TypeOf ex Is ResuscitationReserveTurnFailedException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                 End If
@@ -1155,6 +1151,17 @@ Namespace CarTruckNobatManagement
     End Class
 
     Namespace Exceptions
+
+        Public Class ResuscitationReserveTurnFailedException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "امکان احیاء نوبت رزرو وجود ندارد"
+                End Get
+            End Property
+        End Class
+
         Public Class GetNobatException
             Inherits ApplicationException
 

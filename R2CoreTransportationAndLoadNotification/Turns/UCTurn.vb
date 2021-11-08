@@ -65,7 +65,7 @@ Public Class UCTurn
         End Try
     End Sub
 
-    Public Sub UCViewNSS(YourSeqTId As Int64, YourTurnId As Int64, YourTargetYearFull As Int64)
+    Public Sub UCViewNSS(YourSeqTId As Int64, YourTurnId As String, YourTargetYearFull As Int64)
         Try
             UCNSSCurrent = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(YourSeqTId, YourTurnId, YourTargetYearFull)
             RaiseEvent UCViewNSSRequested(UCNSSCurrent)

@@ -47,7 +47,6 @@ Partial Class Form3
         Me.Button28 = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.UcReserveTurnRegisterRequest1 = New PayanehClassLibrary.UCReserveTurnRegisterRequest()
-        Me.UcResuscitationReserveTurn1 = New PayanehClassLibrary.UCResuscitationReserveTurn()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -181,7 +180,7 @@ Partial Class Form3
         '
         'OleDbConnection1
         '
-        Me.OleDbConnection1.ConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\SA.mdb"
+        Me.OleDbConnection1.ConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\admin\Desktop\Turns.mdb"
         '
         'Button10
         '
@@ -293,21 +292,11 @@ Partial Class Form3
         Me.UcReserveTurnRegisterRequest1.Size = New System.Drawing.Size(196, 50)
         Me.UcReserveTurnRegisterRequest1.TabIndex = 34
         '
-        'UcResuscitationReserveTurn1
-        '
-        Me.UcResuscitationReserveTurn1.BackColor = System.Drawing.Color.Transparent
-        Me.UcResuscitationReserveTurn1.Location = New System.Drawing.Point(93, 60)
-        Me.UcResuscitationReserveTurn1.Name = "UcResuscitationReserveTurn1"
-        Me.UcResuscitationReserveTurn1.Padding = New System.Windows.Forms.Padding(10)
-        Me.UcResuscitationReserveTurn1.Size = New System.Drawing.Size(831, 297)
-        Me.UcResuscitationReserveTurn1.TabIndex = 36
-        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1078, 450)
-        Me.Controls.Add(Me.UcResuscitationReserveTurn1)
         Me.Controls.Add(Me.UcReserveTurnRegisterRequest1)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.Button28)
@@ -365,5 +354,4 @@ Partial Class Form3
     Friend WithEvents Button28 As Button
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents UcReserveTurnRegisterRequest1 As PayanehClassLibrary.UCReserveTurnRegisterRequest
-    Friend WithEvents UcResuscitationReserveTurn1 As PayanehClassLibrary.UCResuscitationReserveTurn
 End Class

@@ -795,7 +795,7 @@ Namespace Turns
     Public Class R2CoreTransportationAndLoadNotificationInstanceTurnsManager
         Private _DateTime As New R2DateTime
 
-        Public Function GetFirstActiveTurn(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
+        Public Function GetFirstActiveTurn(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure) As String
             Try
                 Dim SeqTurnKeyWord = Mid(YourNSSTurn.OtaghdarTurnNumber, 1, 1)
                 Dim DS As DataSet
@@ -852,7 +852,7 @@ Namespace Turns
                     NSS.bFlagDriver = Ds.Tables(0).Rows(Loopx).Item("bFlagDriver")
                     NSS.nUserIdEnter = Ds.Tables(0).Rows(Loopx).Item("nUserIdEnter")
                     NSS.TurnStatus = Ds.Tables(0).Rows(Loopx).Item("TurnStatus")
-                    NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber").ToString + " : " + IIf(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTurnReadeyforLoadAllocationRegistering(NSS), Ds.Tables(0).Rows(Loopx).Item("TurnDistanceToValidity").ToString, "اعتبار ندارد")
+                    NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber").ToString + " - " + IIf(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTurnReadeyforLoadAllocationRegistering(NSS), Ds.Tables(0).Rows(Loopx).Item("TurnDistanceToValidity").ToString, "اعتبار ندارد")
                     NSS.StrCardNo = Ds.Tables(0).Rows(Loopx).Item("StrCardNo")
                     NSS.LicensePlatePString = Ds.Tables(0).Rows(Loopx).Item("LPString").trim
                     NSS.TruckDriver = Ds.Tables(0).Rows(Loopx).Item("strPersonFullName").trim
@@ -1318,7 +1318,7 @@ Namespace Turns
                     NSS.bFlagDriver = Ds.Tables(0).Rows(Loopx).Item("bFlagDriver")
                     NSS.nUserIdEnter = Ds.Tables(0).Rows(Loopx).Item("nUserIdEnter")
                     NSS.TurnStatus = Ds.Tables(0).Rows(Loopx).Item("TurnStatus")
-                    NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber").ToString + " : " + IIf(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTurnReadeyforLoadAllocationRegistering(NSS), Ds.Tables(0).Rows(Loopx).Item("TurnDistanceToValidity").ToString, "اعتبار ندارد")
+                    NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber").ToString + " - " + IIf(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTurnReadeyforLoadAllocationRegistering(NSS), Ds.Tables(0).Rows(Loopx).Item("TurnDistanceToValidity").ToString, "اعتبار ندارد")
                     NSS.StrCardNo = Ds.Tables(0).Rows(Loopx).Item("StrCardNo")
                     NSS.LicensePlatePString = Ds.Tables(0).Rows(Loopx).Item("LPString").trim
                     NSS.TruckDriver = Ds.Tables(0).Rows(Loopx).Item("strPersonFullName").trim
@@ -1366,7 +1366,7 @@ Namespace Turns
             End Try
         End Function
 
-        Public Shared Function GetNSSTurn(YourSeqTId As Int64, YourTurnId As Int64, YourTargetYearFull As Int64) As R2CoreTransportationAndLoadNotificationStandardTurnStructure
+        Public Shared Function GetNSSTurn(YourSeqTId As Int64, YourTurnId As String, YourTargetYearFull As Int64) As R2CoreTransportationAndLoadNotificationStandardTurnStructure
             Try
                 Dim CurrentSalShamsiFull As String = _DateTime.GetCurrentSalShamsiFull
                 Dim Ds As DataSet
@@ -1378,7 +1378,7 @@ Namespace Turns
                                   Inner Join dbtransport.dbo.TbPerson as Person On EnterExit.nDriverCode=Person.nIDPerson
                                   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnStatuses as TurnStatus On EnterExit.TurnStatus=TurnStatus.TurnStatusId
                                   Inner Join R2Primary.DBO.TblSoftwareUsers AS Users On EnterExit.nUserIdEnter=Users.UserId 
-                                Where SeqT.SeqTId=" & YourSeqTId & " and SUBSTRING(EnterExit.OtaghdarTurnNumber,2,4)='" & YourTargetYearFull & "' and SUBSTRING(EnterExit.OtaghdarTurnNumber,7,20)=" & YourTurnId & "", 1, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
+                                Where SeqT.SeqTId=" & YourSeqTId & " and SUBSTRING(EnterExit.OtaghdarTurnNumber,2,4)='" & YourTargetYearFull & "' and ltrim(rtrim(SUBSTRING(EnterExit.OtaghdarTurnNumber,7,20)))='" & YourTurnId & "'", 1, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
                 Dim NSS As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure = New R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure
                 NSS.nEnterExitId = Ds.Tables(0).Rows(0).Item("nEnterExitId")
                 NSS.EnterDate = Ds.Tables(0).Rows(0).Item("StrEnterDate")
@@ -2232,7 +2232,7 @@ Namespace Turns
 
                     For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                         Try
-                            Dim NSSTurn = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(Ds.Tables(0).Rows(Loopx).Item("nEnterExitId"))
+                            Dim NSSTurn = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nEnterExitId")))
                             Dim NSSTurnRegisterRequest = R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement.GetNSSTurnRegisterRequest(Ds.Tables(0).Rows(Loopx).Item("TRRId"))
                             If NSSTurnRegisterRequest.TRRTypeId = TurnRegisterRequestTypes.RealTime Then
                                 If IsTurnOfRealTimeTurnRegisterRequestExpired(NSSTurn) Then ChangeTurnStatusToExpiration(NSSTurn)

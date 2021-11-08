@@ -1858,7 +1858,7 @@ Namespace AccountingManagement
                     Dim myNSSCar As R2StandardCarStructure = New R2StandardCarStructure
                     Dim myMaabarCode As String = Ds.Tables(0).Rows(Loopx).Item("maabarcode")
                     Dim myMblghA As Int64 = Ds.Tables(0).Rows(Loopx).Item("mblgha")
-                    Dim myUserIdA As Byte = Ds.Tables(0).Rows(Loopx).Item("userida")
+                    Dim myUserIdA As Int64 = Ds.Tables(0).Rows(Loopx).Item("userida")
                     Dim myCurrentChargeA As Int64 = Ds.Tables(0).Rows(Loopx).Item("currentchargea")
                     Dim myReminderChargeA As Int64 = Ds.Tables(0).Rows(Loopx).Item("reminderchargea")
                     Lst.Add(New R2StandardEnterExitAccountingExtendedStructure(New R2StandardEnterExitAccountingStructure(YourTrafficCard, myEEAProcessType, myDateShamsiA, myTimeA, myDateTimeMilladiA, myNSSCar, myMaabarCode, myMblghA, myUserIdA, myCurrentChargeA, myReminderChargeA), Ds.Tables(0).Rows(Loopx).Item("AColor").trim, Ds.Tables(0).Rows(Loopx).Item("AName").trim, Ds.Tables(0).Rows(Loopx).Item("MName").trim, Ds.Tables(0).Rows(Loopx).Item("UserName").trim))
@@ -1955,7 +1955,7 @@ Namespace AccountingManagement
                     Dim myNSSCar As R2StandardCarStructure = New R2StandardCarStructure
                     Dim myMaabarCode As String = Ds.Tables(0).Rows(Loopx).Item("maabarcode")
                     Dim myMblghA As Int64 = Ds.Tables(0).Rows(Loopx).Item("mblgha")
-                    Dim myUserIdA As Byte = Ds.Tables(0).Rows(Loopx).Item("userida")
+                    Dim myUserIdA As Int64 = Ds.Tables(0).Rows(Loopx).Item("userida")
                     Dim myCurrentChargeA As Int64 = Ds.Tables(0).Rows(Loopx).Item("currentchargea")
                     Dim myReminderChargeA As Int64 = Ds.Tables(0).Rows(Loopx).Item("reminderchargea")
                     Lst.Add(New R2StandardEnterExitAccountingExtendedStructure(New R2StandardEnterExitAccountingStructure(YourTrafficCard, myEEAProcessType, myDateShamsiA, myTimeA, myDateTimeMilladiA, myNSSCar, myMaabarCode, myMblghA, myUserIdA, myCurrentChargeA, myReminderChargeA), Ds.Tables(0).Rows(Loopx).Item("AColor").trim, Ds.Tables(0).Rows(Loopx).Item("AName").trim, Ds.Tables(0).Rows(Loopx).Item("MName").trim, Ds.Tables(0).Rows(Loopx).Item("UserName").trim))

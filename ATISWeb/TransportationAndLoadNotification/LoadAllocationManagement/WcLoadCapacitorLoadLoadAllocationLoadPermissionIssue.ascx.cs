@@ -29,6 +29,7 @@ using R2CoreTransportationAndLoadNotification.TransportCompanies.Exceptions;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions;
 using R2CoreTransportationAndLoadNotification.Trucks.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
+using PayanehClassLibrary.CarTruckNobatManagement.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -122,7 +123,6 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                                        ex is GetNobatExceptionCarTruckIsTankTreiler ||
                                        ex is CarTruckTravelLengthNotOverYetException ||
                                        ex is GetNobatExceptionCarTruckHasNobat ||
-                                       ex is GetNobatExceptionCarTruckIsShahri ||
                                        ex is GetNobatException ||
                                        ex is GetNSSException ||
                                        ex is TruckRelatedSequentialTurnNotFoundException ||

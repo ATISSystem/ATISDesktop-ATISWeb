@@ -39,8 +39,8 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                 {
                     var Item = new Models.Turns();
                     Item.TurnId = Lst[Loopx].nEnterExitId.ToString();
-                    var OtaghdarTurnNumber = Lst[Loopx].OtaghdarTurnNumber.Trim().Split(':')[0];
-                    var TurnDistanceToValidity = Lst[Loopx].OtaghdarTurnNumber.Trim().Split(':')[1];
+                    var OtaghdarTurnNumber = Lst[Loopx].OtaghdarTurnNumber.Trim().Split('-')[0];
+                    var TurnDistanceToValidity = Lst[Loopx].OtaghdarTurnNumber.Trim().Split('-')[1];
                     Item.OtaghdarTurnNumber = "شماره نوبت : " + OtaghdarTurnNumber + " فاصله شما تا اعتبار : " + TurnDistanceToValidity;
                     if (Loopx == 0)
                     { Item.OtaghdarTurnNumber +="\r\n"+ "شماره اعتبار : " + InstanceTurns.GetFirstActiveTurn(Lst[Loopx]); }

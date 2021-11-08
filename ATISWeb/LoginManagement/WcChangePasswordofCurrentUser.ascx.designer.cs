@@ -13,6 +13,15 @@ namespace ATISWeb.LoginManagement {
     public partial class WcChangePasswordofCurrentUser {
         
         /// <summary>
+        /// TxtCurrentUserPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TxtCurrentUserPassword;
+        
+        /// <summary>
         /// TxtNewUserPassword control.
         /// </summary>
         /// <remarks>
@@ -29,15 +38,6 @@ namespace ATISWeb.LoginManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtNewUserPasswordConfirm;
-        
-        /// <summary>
-        /// TxtCurrentUserPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TxtCurrentUserPassword;
         
         /// <summary>
         /// BtnSubmit control.

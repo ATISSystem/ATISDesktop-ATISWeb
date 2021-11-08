@@ -1,6 +1,6 @@
 ﻿
 Imports System.Reflection
-
+Imports R2Core.PublicProc
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
 Imports R2CoreTransportationAndLoadNotification.Turns
@@ -37,7 +37,7 @@ Public Class UCViewerNSSTurnDataEntry
     Private Sub UCViewInformation()
         Try
             Dim NSS As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure = UCNSSCurrent
-            UcNumberTurnId.UCValue = Mid(NSS.OtaghdarTurnNumber, 7, 20)
+            UcTextBoxTurnId.UCValue = Mid(NSS.OtaghdarTurnNumber, 7, 20).Trim
             UcLabelTruck.UCValue = NSS.LicensePlatePString
             UcLabelTruckDriver.UCValue = NSS.TruckDriver
             UcLabelDateTimeComposite.UCValue = NSS.EnterDate + " - " + NSS.EnterTime
@@ -60,7 +60,7 @@ Public Class UCViewerNSSTurnDataEntry
     End Sub
 
     Private Sub UCRefresh()
-        UcNumberTurnId.UCRefresh()
+        UcTextBoxTurnId.UCRefresh()
         UcLabelTruck.UCRefreshGeneral()
         UcLabelTruckDriver.UCRefreshGeneral()
         UcLabelDateTimeComposite.UCRefreshGeneral()
@@ -73,10 +73,11 @@ Public Class UCViewerNSSTurnDataEntry
 #End Region
 
 #Region "Event Handlers"
-
-    Private Sub UcNumberTurnId_UC13Pressed(UserNumber As String) Handles UcNumberTurnId.UC13Pressed
+    Private Sub UcTextBoxTurnId_UC13PressedEvent(CurrentText As String) Handles UcTextBoxTurnId.UC13PressedEvent
         Try
-            UCNSSCurrent = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(UcucSequentialTurnCollection.UCCurrentNSS.SequentialTurnId, UcNumberTurnId.UCValue, UcNumberTargetYear.UCValue)
+            Dim TurnId = R2CoreMClassPublicProcedures.RepeatStr("0", 6 - Split(UcTextBoxTurnId.UCValue, ":")(0).Trim().Length) + Split(UcTextBoxTurnId.UCValue, ":")(0)
+            If Split(UcTextBoxTurnId.UCValue, ":").Count > 1 Then TurnId = TurnId + ":" + Split(UcTextBoxTurnId.UCValue, ":")(1)
+            UCNSSCurrent = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(UcucSequentialTurnCollection.UCCurrentNSS.SequentialTurnId, TurnId, UcNumberTargetYear.UCValue)
             UCViewInformation()
             RaiseEvent UC13PressedEvent()
         Catch ex As Exception
@@ -93,15 +94,15 @@ Public Class UCViewerNSSTurnDataEntry
     End Sub
 
     Private Sub UCViewerNSSTurnDataEntry_UCGotFocusedEvent() Handles Me.UCGotFocusedEvent
-        UcNumberTurnId.UCFocus()
+        UcTextBoxTurnId.UCFocus()
     End Sub
 
     Private Sub UcucSequentialTurnCollection_UCCurrentNSSChangedEvent() Handles UcucSequentialTurnCollection.UCCurrentNSSChangedEvent
-        UcNumberTurnId.UCFocus()
+        UcTextBoxTurnId.UCFocus()
     End Sub
 
     Private Sub UcNumberTargetYear_UC13Pressed(UserNumber As String) Handles UcNumberTargetYear.UC13Pressed
-        UcNumberTurnId.UCFocus()
+        UcTextBoxTurnId.UCFocus()
     End Sub
 
 #End Region

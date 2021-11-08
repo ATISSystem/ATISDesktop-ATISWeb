@@ -30,6 +30,44 @@ Public Class UCReserveTurnRegisterRequest
 
     End Sub
 
+    Private Sub ReserveTurnRegister(YourViewMessage As Boolean)
+        Try
+            Dim InstanceComputers = New R2CoreMClassComputersManager
+            Dim TurnRegisterRequestId = PayanehClassLibraryMClassTurnRegisterRequestManagement.ReserveTurnRegisterRequest(InstanceComputers.GetNSSCurrentComputer().MId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            If YourViewMessage Then UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "درخواست صدور نوبت رزرو با موفقیت صادر شد" + vbCrLf + "شماره درخواست" + vbCrLf + TurnRegisterRequestId.ToString(), "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
+        Catch ex As Exception When TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
+                                OrElse TypeOf ex Is UserCanNotRequestReserveTurnRegisteringException _
+                                OrElse TypeOf ex Is ComputerCanNotRequestReserveTurnRegisteringException _
+                                OrElse TypeOf ex Is TruckNotFoundException _
+                                OrElse TypeOf ex Is SequentialTurnNotFoundException _
+                                OrElse TypeOf ex Is TruckDriverNotFoundException _
+                                OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
+                                OrElse TypeOf ex Is GetNSSException _
+                                OrElse TypeOf ex Is GetDataException
+            Throw ex
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Public Sub UCPleaseReserveTurnRegister(YourViewMessage As Boolean)
+        Try
+            ReserveTurnRegister(YourViewMessage)
+        Catch ex As Exception When TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
+                                OrElse TypeOf ex Is UserCanNotRequestReserveTurnRegisteringException _
+                                OrElse TypeOf ex Is ComputerCanNotRequestReserveTurnRegisteringException _
+                                OrElse TypeOf ex Is TruckNotFoundException _
+                                OrElse TypeOf ex Is SequentialTurnNotFoundException _
+                                OrElse TypeOf ex Is TruckDriverNotFoundException _
+                                OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
+                                OrElse TypeOf ex Is GetNSSException _
+                                OrElse TypeOf ex Is GetDataException
+            Throw ex
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me, True)
+        End Try
+    End Sub
+
 #End Region
 
 #Region "Events"
@@ -39,9 +77,7 @@ Public Class UCReserveTurnRegisterRequest
 
     Private Sub CButton_Click(sender As Object, e As EventArgs) Handles CButton.Click
         Try
-            Dim InstanceComputers = New R2CoreMClassComputersManager
-            Dim TurnRegisterRequestId = PayanehClassLibraryMClassTurnRegisterRequestManagement.ReserveTurnRegisterRequest(InstanceComputers.GetNSSCurrentComputer().MId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "درخواست صدور نوبت رزرو با موفقیت صادر شد" + vbCrLf + "شماره درخواست" + vbCrLf + TurnRegisterRequestId.ToString(), "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
+            ReserveTurnRegister(True)
         Catch ex As Exception When TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
                                 OrElse TypeOf ex Is UserCanNotRequestReserveTurnRegisteringException _
                                 OrElse TypeOf ex Is ComputerCanNotRequestReserveTurnRegisteringException _
