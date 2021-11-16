@@ -362,6 +362,7 @@ End Namespace
 Namespace ConfigurationsManagement
     Public MustInherit Class R2CoreTransportationAndLoadNotificationConfigurations
         Inherits R2CoreConfigurations
+        Public Shared ReadOnly Property TurnControlling = 34
         Public Shared ReadOnly Property AnnouncementHallMonitoring = 52
         Public Shared ReadOnly Property LoadCapacitorLoadManipulationSetting = 54
         Public Shared ReadOnly Property AnnouncementHallAnnounceTime = 55
@@ -1743,9 +1744,11 @@ Namespace Turns
 
             Public Shared Sub TurnPrint(YourTurnId As Int64)
                 Try
-                    TurnPrintingInf = GetTurnPrintingInf(YourTurnId)
-                    'چاپ قبض نوبت
-                    _PrintDocumentNobat.Print()
+                    If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.TurnControlling, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 2) Then
+                        TurnPrintingInf = GetTurnPrintingInf(YourTurnId)
+                        'چاپ قبض نوبت
+                        _PrintDocumentNobat.Print()
+                    End If
                 Catch ex As TurnPrintingInfNotFoundException
                     Throw ex
                 Catch ex As Exception

@@ -2823,7 +2823,7 @@ Namespace LoadCapacitor
                 End Try
             End Sub
 
-            Public Shared Sub LoadCapacitorLoadPermissionCancelling(YournEstelamId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
+            Public Shared Sub LoadCapacitorLoadPermissionCancelling(YournEstelamId As Int64, YourLoadResuscitationFlag As Boolean, YourUserNSS As R2CoreStandardSoftwareUserStructure)
                 Dim CmdSql As New SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
@@ -2836,10 +2836,14 @@ Namespace LoadCapacitor
                     CmdSql.ExecuteNonQuery()
                     'کنترل وضعیت بار
                     If NSSLoadCapacitorLoad.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted Then Throw New LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException
-                    'بازگردانی بار
-                    CmdSql.CommandText = "Update DBTransport.dbo.TbElam Set nCarNum=nCarNum+1 Where nEstelamId=" & NSSLoadCapacitorLoad.nEstelamId & ""
-                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.LoadPermissionCancelling, 1, Nothing, Nothing, Nothing, YourUserNSS.UserId))
-                    CmdSql.ExecuteNonQuery()
+                    If YourLoadResuscitationFlag Then
+                        'بازگردانی بار
+                        CmdSql.CommandText = "Update DBTransport.dbo.TbElam Set nCarNum=nCarNum+1 Where nEstelamId=" & NSSLoadCapacitorLoad.nEstelamId & ""
+                        R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.LoadPermissionCancelling, 1, Nothing, Nothing, Nothing, YourUserNSS.UserId))
+                        CmdSql.ExecuteNonQuery()
+                    Else
+                        R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.LoadPermissionCancelling, 1, Nothing, Nothing, Nothing, YourUserNSS.UserId))
+                    End If
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                     Dim InstanceLoadSedimentation = New R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManager
                     InstanceLoadSedimentation.SedimentingLoadCapacitorLoad(YournEstelamId, YourUserNSS)
@@ -4076,6 +4080,7 @@ Namespace LoadPermission
                     StringB.Append("شرکت حمل و نقل : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("TCTitle"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("TCTitle").ToString().Trim()) + vbCrLf)
                     StringB.Append("کدبار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("nEstelamID"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("nEstelamID").ToString().Trim()) + " تخصیص: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("LAId"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("LAId").ToString().Trim()) + " اولویت : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("Priority"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("Priority").ToString().Trim()) + vbCrLf)
                     StringB.Append("توضیحات بار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strDescription"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strDescription").ToString().Trim()))
+                    StringB.Append("پلاک ناوگان: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("Truck"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("Truck").ToString().Trim()))
                     Lst.Add(New KeyValuePair(Of String, String)(ValueHeader, StringB.ToString()))
                 Next
                 Return Lst
@@ -4194,7 +4199,7 @@ Namespace LoadPermission
                     InstanceLoadCapacitorAccounting.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.LoadPermissionCancelling, 1, Nothing, Nothing, Nothing, YourUserNSS.UserId))
                 ElseIf NSSLoadAllocation.DateShamsi = _DateTime.GetCurrentDateShamsiFull Then
                     Dim InstanceLoadCapacitorLoadOtherThanManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadOtherThanManipulationManager
-                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.LoadCapacitorLoadPermissionCancelling(YournEstelamId, YourUserNSS)
+                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.LoadCapacitorLoadPermissionCancelling(YournEstelamId, YourTurnResuscitationFlag, YourUserNSS)
                 Else
                     Throw New GetDataException
                 End If
@@ -4295,7 +4300,7 @@ Namespace LoadPermission
             End Try
         End Sub
 
-        Public Shared Sub LoadPermissionCancelling(YournEstelamId As Int64, YourTurnId As Int64, YourTurnResuscitationFlag As Boolean, YourUserNSS As R2CoreStandardSoftwareUserStructure)
+        Public Shared Sub LoadPermissionCancelling(YournEstelamId As Int64, YourTurnId As Int64, YourTurnResuscitationFlag As Boolean, YourLoadResuscitationFlag As Boolean, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
@@ -4319,7 +4324,7 @@ Namespace LoadPermission
                     'بار رسوب شده است و نیازی به عملیات خاصی نیست
                     R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.LoadPermissionCancelling, 1, Nothing, Nothing, Nothing, YourUserNSS.UserId))
                 ElseIf NSSLoadAllocation.DateShamsi = _DateTime.GetCurrentDateShamsiFull Then
-                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.LoadCapacitorLoadPermissionCancelling(YournEstelamId, YourUserNSS)
+                    R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.LoadCapacitorLoadPermissionCancelling(YournEstelamId, YourLoadResuscitationFlag, YourUserNSS)
                 Else
                     Throw New GetDataException
                 End If

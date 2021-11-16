@@ -6,6 +6,7 @@ Imports R2Core.ComputersManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.TrafficCardsManagement
 Imports PayanehClassLibrary.ConfigurationManagement
+Imports R2CoreTransportationAndLoadNotification.ConfigurationsManagement
 
 Public Class UCTurnRegisterRequestConfirmation
     Inherits UCGeneral
@@ -38,7 +39,7 @@ Public Class UCTurnRegisterRequestConfirmation
         ' Add any initialization after the InitializeComponent() call.
         Try
             UCRefresh()
-            If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(PayanehClassLibraryConfigurations.NobatGetFP_ChkViewTruckNobat, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 1) = False Then
+            If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.TurnControlling, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 1) = False Then
                 Me.Visible = False
             End If
         Catch ex As Exception

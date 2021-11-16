@@ -43,6 +43,7 @@ Imports PayanehClassLibrary.RequesterManagement
 Imports R2CoreTransportationAndLoadNotification.Trucks.Exceptions
 Imports R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions
 Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
+Imports PayanehClassLibrary.TurnRegisterRequest
 
 Public Class FrmcEnterExit
     Inherits FrmcGeneral
@@ -383,6 +384,15 @@ Public Class FrmcEnterExit
         End Try
     End Sub
 
+    Private Sub PleaseReserveTurn()
+        Try
+            Dim InstanceComputers = New R2CoreMClassComputersManager
+            PayanehClassLibraryMClassTurnRegisterRequestManagement.ReserveTurnRegisterRequest(InstanceComputers.GetNSSCurrentComputer().MId, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
 #End Region
 
 #Region "Events"
@@ -416,15 +426,15 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
                             OrElse TypeOf ex Is TruckersAssociationControllingMoneyWalletCriticalAmountReachedException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
-            UCReserveTurnRegisterRequest.UCPleaseReserveTurnRegister(False)
+            PleaseReserveTurn()
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
-            UCReserveTurnRegisterRequest.UCPleaseReserveTurnRegister(False)
+            PleaseReserveTurn()
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Information, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Nothing, True)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "ثبت تردد در فرآیند اصلی با خطا مواجه شد", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me, True)
-            UCReserveTurnRegisterRequest.UCPleaseReserveTurnRegister(False)
+            PleaseReserveTurn()
         End Try
 
         Try

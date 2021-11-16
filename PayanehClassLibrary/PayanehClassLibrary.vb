@@ -1514,7 +1514,6 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property SalonFingerPrint As Int64 = 26
         Public Shared ReadOnly Property TarrifsPayaneh As Int64 = 31
         Public Shared ReadOnly Property ElamBarMonitoringInterval As Int64 = 33
-        Public Shared ReadOnly Property NobatGetFP_ChkViewTruckNobat As Int64 = 34
         Public Shared ReadOnly Property TWS As Int64 = 51
         Public Shared ReadOnly Property TarrifsPayanehKiosk As Int64 = 53
         Public Shared ReadOnly Property PayanehAmirKabirAutomatedJobsSetting As Int64 = 64
@@ -3863,7 +3862,7 @@ Namespace ReportsManagement
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblTruckDriversWaitingToGetLoadPermissionReport" : CmdSql.ExecuteNonQuery()
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblTruckDriversWaitingToGetLoadPermissionReport(EnterExitId,SequentialId,TurnDate,TurnTime,SleepDays,SequentialTurnTitle,TruckDriver,Truck) Values(" & Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nEnterExitId")) & "," & Ds.Tables(0).Rows(Loopx).Item("SequentialId") & ",'" & Ds.Tables(0).Rows(Loopx).Item("strEnterDate") & "','" & Ds.Tables(0).Rows(Loopx).Item("strEnterTime") & "'," & Ds.Tables(0).Rows(Loopx).Item("SleepDays") & ",'" & Ds.Tables(0).Rows(Loopx).Item("SeqTTitle").trim & "','" & Ds.Tables(0).Rows(Loopx).Item("strPersonFullName").trim & "','" & Ds.Tables(0).Rows(Loopx).Item("strCarNo").trim + "-" + Ds.Tables(0).Rows(Loopx).Item("strCarSerialNo").trim & "')"
+                    CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblTruckDriversWaitingToGetLoadPermissionReport(EnterExitId,SequentialId,TurnDate,TurnTime,SleepDays,SequentialTurnTitle,TruckDriver,Truck) Values(" & Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nEnterExitId")) & ",'" & Ds.Tables(0).Rows(Loopx).Item("SequentialId") & "','" & Ds.Tables(0).Rows(Loopx).Item("strEnterDate") & "','" & Ds.Tables(0).Rows(Loopx).Item("strEnterTime") & "'," & Ds.Tables(0).Rows(Loopx).Item("SleepDays") & ",'" & Ds.Tables(0).Rows(Loopx).Item("SeqTTitle").trim & "','" & Ds.Tables(0).Rows(Loopx).Item("strPersonFullName").trim & "','" & Ds.Tables(0).Rows(Loopx).Item("strCarNo").trim + "-" + Ds.Tables(0).Rows(Loopx).Item("strCarSerialNo").trim & "')"
                     CmdSql.ExecuteNonQuery()
                 Next
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()

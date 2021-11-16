@@ -32,6 +32,7 @@ Partial Class UCLoadPermissionCancellation
         Me.UcLabel1 = New R2CoreGUI.UCLabel()
         Me.PnlBorder = New System.Windows.Forms.Panel()
         Me.UcViewerNSSLoadPermissionExtended = New R2CoreTransportationAndLoadNotification.UCViewerNSSLoadPermissionExtended()
+        Me.CheckBoxLoadCapacitorLoad = New System.Windows.Forms.CheckBox()
         Me.PnlMain.SuspendLayout()
         Me.PnlInner.SuspendLayout()
         Me.PnlBorder.SuspendLayout()
@@ -51,6 +52,7 @@ Partial Class UCLoadPermissionCancellation
         'PnlInner
         '
         Me.PnlInner.BackColor = System.Drawing.Color.White
+        Me.PnlInner.Controls.Add(Me.CheckBoxLoadCapacitorLoad)
         Me.PnlInner.Controls.Add(Me.UcNumberLoadAllocationId)
         Me.PnlInner.Controls.Add(Me.CheckBoxTurn)
         Me.PnlInner.Controls.Add(Me.UcButtonLoadPermissionCancelling)
@@ -92,7 +94,7 @@ Partial Class UCLoadPermissionCancellation
         Me.CheckBoxTurn.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CheckBoxTurn.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CheckBoxTurn.ForeColor = System.Drawing.Color.Black
-        Me.CheckBoxTurn.Location = New System.Drawing.Point(144, 8)
+        Me.CheckBoxTurn.Location = New System.Drawing.Point(279, 8)
         Me.CheckBoxTurn.Name = "CheckBoxTurn"
         Me.CheckBoxTurn.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.CheckBoxTurn.Size = New System.Drawing.Size(142, 27)
@@ -158,6 +160,22 @@ Partial Class UCLoadPermissionCancellation
         Me.UcViewerNSSLoadPermissionExtended.TabIndex = 0
         Me.UcViewerNSSLoadPermissionExtended.UCNSSCurrent = Nothing
         '
+        'CheckBoxLoadCapacitorLoad
+        '
+        Me.CheckBoxLoadCapacitorLoad.AutoSize = True
+        Me.CheckBoxLoadCapacitorLoad.Checked = True
+        Me.CheckBoxLoadCapacitorLoad.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CheckBoxLoadCapacitorLoad.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CheckBoxLoadCapacitorLoad.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.CheckBoxLoadCapacitorLoad.ForeColor = System.Drawing.Color.Black
+        Me.CheckBoxLoadCapacitorLoad.Location = New System.Drawing.Point(137, 8)
+        Me.CheckBoxLoadCapacitorLoad.Name = "CheckBoxLoadCapacitorLoad"
+        Me.CheckBoxLoadCapacitorLoad.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.CheckBoxLoadCapacitorLoad.Size = New System.Drawing.Size(134, 27)
+        Me.CheckBoxLoadCapacitorLoad.TabIndex = 17
+        Me.CheckBoxLoadCapacitorLoad.Text = "بازگردانی بار / کنسلی بار"
+        Me.CheckBoxLoadCapacitorLoad.UseVisualStyleBackColor = True
+        '
         'UCLoadPermissionCancellation
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -182,4 +200,5 @@ Partial Class UCLoadPermissionCancellation
     Friend WithEvents UcNumberLoadAllocationId As UCNumber
     Friend WithEvents UcLabel1 As UCLabel
     Friend WithEvents UcViewerNSSLoadPermissionExtended As UCViewerNSSLoadPermissionExtended
+    Friend WithEvents CheckBoxLoadCapacitorLoad As Windows.Forms.CheckBox
 End Class
