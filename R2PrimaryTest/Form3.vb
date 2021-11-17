@@ -259,7 +259,8 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            PayanehClassLibraryMClassTurnRegisterRequestManagement.ResuscitationReserveTurn(168, R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(127786), False, 6, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+            PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+            'PayanehClassLibraryMClassTurnRegisterRequestManagement.ResuscitationReserveTurn(168, R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(127786), False, 6, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             'Dim ds As New DataSet
             'Dim da As New OleDb.OleDbDataAdapter
             'da.SelectCommand = New OleDbCommand("Select * from [Sheet1]")

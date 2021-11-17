@@ -46,7 +46,6 @@ Partial Class Form3
         Me.Button22 = New System.Windows.Forms.Button()
         Me.Button28 = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.UcReserveTurnRegisterRequest1 = New PayanehClassLibrary.UCReserveTurnRegisterRequest()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -283,21 +282,11 @@ Partial Class Form3
         Me.PictureBox1.TabIndex = 33
         Me.PictureBox1.TabStop = False
         '
-        'UcReserveTurnRegisterRequest1
-        '
-        Me.UcReserveTurnRegisterRequest1.BackColor = System.Drawing.Color.Transparent
-        Me.UcReserveTurnRegisterRequest1.Location = New System.Drawing.Point(389, 376)
-        Me.UcReserveTurnRegisterRequest1.Name = "UcReserveTurnRegisterRequest1"
-        Me.UcReserveTurnRegisterRequest1.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcReserveTurnRegisterRequest1.Size = New System.Drawing.Size(196, 50)
-        Me.UcReserveTurnRegisterRequest1.TabIndex = 34
-        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1078, 450)
-        Me.Controls.Add(Me.UcReserveTurnRegisterRequest1)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.Button28)
         Me.Controls.Add(Me.Button22)
@@ -353,5 +342,4 @@ Partial Class Form3
     Friend WithEvents Button22 As Button
     Friend WithEvents Button28 As Button
     Friend WithEvents PictureBox1 As PictureBox
-    Friend WithEvents UcReserveTurnRegisterRequest1 As PayanehClassLibrary.UCReserveTurnRegisterRequest
 End Class

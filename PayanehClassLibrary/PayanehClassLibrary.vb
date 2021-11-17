@@ -841,7 +841,12 @@ Namespace CarTruckNobatManagement
                     For LoopAnnouncementHallsSubGroups As Int16 = 0 To AnnouncementHallsSubGroups.Count - 1
                         Dim LoopIndex = LoopAnnouncementHallsSubGroups
                         Dim IsActiveAutomaticTurnRegistering As Boolean = Split(AHSGsConfig.Where(Function(x) AnnouncementHallsSubGroups(LoopIndex).AHSGId = Split(x, ":")(0))(0), ":")(2)
-                        If IsActiveAutomaticTurnRegistering Then SubQuery = SubQuery + " or AHSGId=" & AnnouncementHallsSubGroups(LoopIndex).AHSGId.ToString() & ""
+                        If IsActiveAutomaticTurnRegistering Then
+                            Dim AHSGId = AnnouncementHallsSubGroups(LoopIndex).AHSGId
+                            Dim AHId = InstanceAnnouncementHalls.GetNSSAnnouncementHallByAnnouncementHallSubGroup(AHSGId).AHId
+                            Dim AHSGIdLastAnnounceTime = InstanceAnnouncementHalls.GetAnnouncemenetHallLastAnnounceTime(AHId, AHSGId)
+                            SubQuery = SubQuery + " or (AHSGId=" & AnnouncementHallsSubGroups(LoopIndex).AHSGId.ToString() & " and Turns.strExitTime > '" & AHSGIdLastAnnounceTime.Time & "')"
+                        End If
                     Next
                 Next
 
