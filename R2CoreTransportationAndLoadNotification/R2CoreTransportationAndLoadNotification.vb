@@ -3620,6 +3620,8 @@ Namespace PermissionManagement
         Public Shared ReadOnly ComputerCanRequestReserveTurnRegistering As Int64 = 12
         Public Shared ReadOnly UserCanResuscitationReserveTurn As Int64 = 13
         Public Shared ReadOnly UserCanRequestEmergencyTurnRegistering As Int64 = 14
+        Public Shared ReadOnly UserCanEditLoadCapacitorLoadInLoadAllocationTiming As Int64 = 15
+
     End Class
 
 End Namespace

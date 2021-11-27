@@ -2098,6 +2098,7 @@ Namespace LoadCapacitor
                     Dim InstanceTransportTarrifs = New R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsManager
                     Dim InstanceLoadCapacitorAccounting = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorAccountingManager
                     Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+                    Dim InstancePermissions = New R2CoreInstansePermissionsManager
 
                     Dim NSSCurrentLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(YourNSS.nEstelamId)
                     Dim NSSAnnouncementHall = InstanceAnnouncementHalls.GetAnnouncementHallfromLoadCapacitorLoad(YourNSS)
@@ -2126,8 +2127,12 @@ Namespace LoadCapacitor
                         Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                         If InstanceAnnouncementTiming.IsTimingActive(YourNSS.AHId, YourNSS.AHSGId) Then
                             Dim Timing = InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime)
-                            If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Then
-                                Throw New LoadCapacitorLoadEditTimePassedException
+                            If Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationRegistering And InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.UserCanEditLoadCapacitorLoadInLoadAllocationTiming, YourUserNSS.UserId, 0) Then
+                                'امکان ویرایش بار هنگام تخصیص بار فقط توسط کاربر خاص که مجوز دارد
+                            Else
+                                If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Then
+                                    Throw New LoadCapacitorLoadEditTimePassedException
+                                End If
                             End If
                         Else
                             If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then Throw New LoadCapacitorLoadEditTimePassedException
