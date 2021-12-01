@@ -348,6 +348,22 @@ Public Class PayanehWebService
         End Try
     End Function
 
+    <WebMethod()>
+    Public Function WebMethodGetDriverTruckByNationalCodefromRMTO(YourNationalCode As String, YourExchangeKey As Int64) As Int64
+        Try
+            Dim NSS = _ExchangeKeyManager.GetNSSUser(YourExchangeKey)
+            Return PayanehClassLibraryMClassDriverTrucksManagement.GetDriverTruckfromRMTOAndInsertUpdateLocalDataBaseByNationalCode(YourNationalCode).NSSDriver.nIdPerson
+        Catch ex As ExchangeKeyTimeRangePassedException
+            Throw ex
+        Catch ex As ExchangeKeyNotExistException
+            Throw ex
+        Catch ex As GetNSSException
+            Throw ex
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Function
+
 
 End Class
 

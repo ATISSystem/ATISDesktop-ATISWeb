@@ -283,6 +283,22 @@
       <s:element name="WebMethodReportingInformationPrividerAnnounceLoadsReportReportResponse">
         <s:complexType />
       </s:element>
+      <s:element name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportResponse">
+        <s:complexType />
+      </s:element>
       <s:element name="WebMethodCarTruckHasTurn">
         <s:complexType>
           <s:sequence>
@@ -329,21 +345,20 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
+      <s:element name="WebMethodGetDriverTruckByNationalCodefromRMTO">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
-            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
-            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourNationalCode" type="s:string" />
             <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportResponse">
-        <s:complexType />
+      <s:element name="WebMethodGetDriverTruckByNationalCodefromRMTOResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="WebMethodGetDriverTruckByNationalCodefromRMTOResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
       </s:element>
     </s:schema>
   </wsdl:types>
@@ -455,6 +470,12 @@
   <wsdl:message name="WebMethodReportingInformationPrividerAnnounceLoadsReportReportSoapOut">
     <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerAnnounceLoadsReportReportResponse" />
   </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportResponse" />
+  </wsdl:message>
   <wsdl:message name="WebMethodCarTruckHasTurnSoapIn">
     <wsdl:part name="parameters" element="tns:WebMethodCarTruckHasTurn" />
   </wsdl:message>
@@ -473,11 +494,11 @@
   <wsdl:message name="WebMethodISCompanyActiveSoapOut">
     <wsdl:part name="parameters" element="tns:WebMethodISCompanyActiveResponse" />
   </wsdl:message>
-  <wsdl:message name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapIn">
-    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport" />
+  <wsdl:message name="WebMethodGetDriverTruckByNationalCodefromRMTOSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodGetDriverTruckByNationalCodefromRMTO" />
   </wsdl:message>
-  <wsdl:message name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapOut">
-    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportResponse" />
+  <wsdl:message name="WebMethodGetDriverTruckByNationalCodefromRMTOSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodGetDriverTruckByNationalCodefromRMTOResponse" />
   </wsdl:message>
   <wsdl:portType name="PayanehWebServiceSoap">
     <wsdl:operation name="WebMethodLogin">
@@ -552,6 +573,10 @@
       <wsdl:input message="tns:WebMethodReportingInformationPrividerAnnounceLoadsReportReportSoapIn" />
       <wsdl:output message="tns:WebMethodReportingInformationPrividerAnnounceLoadsReportReportSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="WebMethodCarTruckHasTurn">
       <wsdl:input message="tns:WebMethodCarTruckHasTurnSoapIn" />
       <wsdl:output message="tns:WebMethodCarTruckHasTurnSoapOut" />
@@ -564,9 +589,9 @@
       <wsdl:input message="tns:WebMethodISCompanyActiveSoapIn" />
       <wsdl:output message="tns:WebMethodISCompanyActiveSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
-      <wsdl:input message="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapIn" />
-      <wsdl:output message="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapOut" />
+    <wsdl:operation name="WebMethodGetDriverTruckByNationalCodefromRMTO">
+      <wsdl:input message="tns:WebMethodGetDriverTruckByNationalCodefromRMTOSoapIn" />
+      <wsdl:output message="tns:WebMethodGetDriverTruckByNationalCodefromRMTOSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="PayanehWebServiceSoap" type="tns:PayanehWebServiceSoap">
@@ -733,6 +758,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="WebMethodCarTruckHasTurn">
       <soap:operation soapAction="http://tempuri.org/WebMethodCarTruckHasTurn" style="document" />
       <wsdl:input>
@@ -760,8 +794,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
-      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport" style="document" />
+    <wsdl:operation name="WebMethodGetDriverTruckByNationalCodefromRMTO">
+      <soap:operation soapAction="http://tempuri.org/WebMethodGetDriverTruckByNationalCodefromRMTO" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -934,6 +968,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="WebMethodCarTruckHasTurn">
       <soap12:operation soapAction="http://tempuri.org/WebMethodCarTruckHasTurn" style="document" />
       <wsdl:input>
@@ -961,8 +1004,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
-      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport" style="document" />
+    <wsdl:operation name="WebMethodGetDriverTruckByNationalCodefromRMTO">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodGetDriverTruckByNationalCodefromRMTO" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

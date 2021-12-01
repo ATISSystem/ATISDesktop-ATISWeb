@@ -24,6 +24,7 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
     {
 
         #region "General Properties"
+        private PayanehClassLibrary.PayanehWS.PayanehWebService WS = new PayanehClassLibrary.PayanehWS.PayanehWebService();
 
         private R2CoreTransportationAndLoadNotificationStandardTruckStructure _WcNSSTruck = null;
         public R2CoreTransportationAndLoadNotificationStandardTruckStructure WcGetNSSTruck
@@ -56,11 +57,19 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
             try
             {
                 R2StandardDriverTruckStructure NSS = null;
-                try { NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyNationalCode(TxtTruckDriverNationalCode.Text); }
-                catch (DriverTruckInformationNotExistException ex)
-                { NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetDriverTruckfromRMTOAndInsertUpdateLocalDataBaseByNationalCode(TxtTruckDriverNationalCode.Text); }
                 var InstanceTruckDrivers = new R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager();
-                _WcNSSTruckDriver = InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(NSS.NSSDriver.nIdPerson));
+                try
+                {
+                    NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyNationalCode(TxtTruckDriverNationalCode.Text);
+                    _WcNSSTruckDriver = InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(NSS.NSSDriver.nIdPerson));
+                }
+                catch (DriverTruckInformationNotExistException ex)
+                {
+                    var TruckDriverId = WS.WebMethodGetDriverTruckByNationalCodefromRMTO(TxtTruckDriverNationalCode.Text, WS.WebMethodLogin(ATISWebMClassLoginManagement.GetNSSCurrentUser().UserShenaseh, ATISWebMClassLoginManagement.GetNSSCurrentUser().UserPassword));
+                    _WcNSSTruckDriver = InstanceTruckDrivers.GetNSSTruckDriver(TruckDriverId);
+                }
+
+
             }
             catch (Exception ex) when (ex is SqlInjectionException || ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
             { throw ex; }
@@ -74,10 +83,9 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
         {
             try
             {
-                R2StandardCarTruckStructure NSS = null;
-                NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(TxtTruckSmartCardNo.Text, ATISWebMClassLoginManagement.GetNSSCurrentUser());
+                var CarId = WS.WebMethodGetnIdCarTruckBySmartCarNo(TxtTruckSmartCardNo.Text, WS.WebMethodLogin(ATISWebMClassLoginManagement.GetNSSCurrentUser().UserShenaseh, ATISWebMClassLoginManagement.GetNSSCurrentUser().UserPassword));
                 var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
-                _WcNSSTruck = InstanceTrucks.GetNSSTruck(System.Convert.ToInt64(NSS.NSSCar.nIdCar));
+                _WcNSSTruck = InstanceTrucks.GetNSSTruck(CarId);
             }
             catch (Exception ex) when (ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
@@ -98,14 +106,8 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
         {
             try
             {
-                var InstanceTruckDrivers = new R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager();
                 BtnTruckSmartCardInquiry.Click += BtnTruckSmartCardInquiry_Click;
                 BtnTruckDriverNationalCodeInquiry.Click += BtnTruckDriverNationalCodeInquiry_Click;
-                if (IsPostBack)
-                {
-                    FillWcDriverTruckInf();
-                    FillWcTruckInf();
-                }
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }

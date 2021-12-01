@@ -2850,8 +2850,6 @@ Namespace LoadCapacitor
                         R2CoreTransportationAndLoadNotificationMClassLoadCapacitorAccountingManagement.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(NSSLoadCapacitorLoad.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.LoadPermissionCancelling, 1, Nothing, Nothing, Nothing, YourUserNSS.UserId))
                     End If
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
-                    Dim InstanceLoadSedimentation = New R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManager
-                    InstanceLoadSedimentation.SedimentingLoadCapacitorLoad(YournEstelamId, YourUserNSS)
                 Catch ex As Exception
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()

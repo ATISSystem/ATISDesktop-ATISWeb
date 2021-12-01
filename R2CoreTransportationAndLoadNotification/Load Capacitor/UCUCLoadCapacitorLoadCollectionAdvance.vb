@@ -28,7 +28,7 @@ Public Class UCUCLoadCapacitorLoadCollectionAdvance
         End Set
     End Property
 
-    Private _UCViewnCarNumZero As Boolean = True
+    Private _UCViewnCarNumZero As Boolean = False
     Public Property UCViewnCarNumZero() As Boolean
         Get
             Return _UCViewnCarNumZero

@@ -68,13 +68,15 @@ Namespace PayanehWS
         
         Private WebMethodReportingInformationPrividerAnnounceLoadsReportReportOperationCompleted As System.Threading.SendOrPostCallback
         
+        Private WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted As System.Threading.SendOrPostCallback
+        
         Private WebMethodCarTruckHasTurnOperationCompleted As System.Threading.SendOrPostCallback
         
         Private WebMethodGetnIdCarTruckBySmartCarNoOperationCompleted As System.Threading.SendOrPostCallback
         
         Private WebMethodISCompanyActiveOperationCompleted As System.Threading.SendOrPostCallback
         
-        Private WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted As System.Threading.SendOrPostCallback
+        Private WebMethodGetDriverTruckByNationalCodefromRMTOOperationCompleted As System.Threading.SendOrPostCallback
         
         Private useDefaultCredentialsSetExplicitly As Boolean
         
@@ -169,6 +171,9 @@ Namespace PayanehWS
         Public Event WebMethodReportingInformationPrividerAnnounceLoadsReportReportCompleted As WebMethodReportingInformationPrividerAnnounceLoadsReportReportCompletedEventHandler
         
         '''<remarks/>
+        Public Event WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompleted As WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompletedEventHandler
+        
+        '''<remarks/>
         Public Event WebMethodCarTruckHasTurnCompleted As WebMethodCarTruckHasTurnCompletedEventHandler
         
         '''<remarks/>
@@ -178,7 +183,7 @@ Namespace PayanehWS
         Public Event WebMethodISCompanyActiveCompleted As WebMethodISCompanyActiveCompletedEventHandler
         
         '''<remarks/>
-        Public Event WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompleted As WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompletedEventHandler
+        Public Event WebMethodGetDriverTruckByNationalCodefromRMTOCompleted As WebMethodGetDriverTruckByNationalCodefromRMTOCompletedEventHandler
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodLogin", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
@@ -673,6 +678,33 @@ Namespace PayanehWS
         End Sub
         
         '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerSaleOfSoftwareUserActivat"& _ 
+            "ionSMSReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey}, Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodCarTruckHasTurn", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
         Public Function WebMethodCarTruckHasTurn(ByVal YourPelak As String, ByVal YourSerial As String, ByVal YourExchangeKey As Long) As Boolean
             Dim results() As Object = Me.Invoke("WebMethodCarTruckHasTurn", New Object() {YourPelak, YourSerial, YourExchangeKey})
@@ -754,29 +786,29 @@ Namespace PayanehWS
         End Sub
         
         '''<remarks/>
-        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerSaleOfSoftwareUserActivat"& _ 
-            "ionSMSReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
-            Me.Invoke("WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey})
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodGetDriverTruckByNationalCodefromRMTO", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Function WebMethodGetDriverTruckByNationalCodefromRMTO(ByVal YourNationalCode As String, ByVal YourExchangeKey As Long) As Long
+            Dim results() As Object = Me.Invoke("WebMethodGetDriverTruckByNationalCodefromRMTO", New Object() {YourNationalCode, YourExchangeKey})
+            Return CType(results(0),Long)
+        End Function
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodGetDriverTruckByNationalCodefromRMTOAsync(ByVal YourNationalCode As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodGetDriverTruckByNationalCodefromRMTOAsync(YourNationalCode, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
-            Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey, Nothing)
-        End Sub
-        
-        '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
-            If (Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted Is Nothing) Then
-                Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted
+        Public Overloads Sub WebMethodGetDriverTruckByNationalCodefromRMTOAsync(ByVal YourNationalCode As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
+            If (Me.WebMethodGetDriverTruckByNationalCodefromRMTOOperationCompleted Is Nothing) Then
+                Me.WebMethodGetDriverTruckByNationalCodefromRMTOOperationCompleted = AddressOf Me.OnWebMethodGetDriverTruckByNationalCodefromRMTOOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey}, Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodGetDriverTruckByNationalCodefromRMTO", New Object() {YourNationalCode, YourExchangeKey}, Me.WebMethodGetDriverTruckByNationalCodefromRMTOOperationCompleted, userState)
         End Sub
         
-        Private Sub OnWebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted(ByVal arg As Object)
-            If (Not (Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompletedEvent) Is Nothing) Then
+        Private Sub OnWebMethodGetDriverTruckByNationalCodefromRMTOOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodGetDriverTruckByNationalCodefromRMTOCompletedEvent) Is Nothing) Then
                 Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
-                RaiseEvent WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+                RaiseEvent WebMethodGetDriverTruckByNationalCodefromRMTOCompleted(Me, New WebMethodGetDriverTruckByNationalCodefromRMTOCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
             End If
         End Sub
         
@@ -919,6 +951,10 @@ Namespace PayanehWS
     
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodCarTruckHasTurnCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodCarTruckHasTurnCompletedEventArgs)
     
     '''<remarks/>
@@ -1000,5 +1036,28 @@ Namespace PayanehWS
     
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
-    Public Delegate Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    Public Delegate Sub WebMethodGetDriverTruckByNationalCodefromRMTOCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodGetDriverTruckByNationalCodefromRMTOCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0"),  _
+     System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.ComponentModel.DesignerCategoryAttribute("code")>  _
+    Partial Public Class WebMethodGetDriverTruckByNationalCodefromRMTOCompletedEventArgs
+        Inherits System.ComponentModel.AsyncCompletedEventArgs
+        
+        Private results() As Object
+        
+        Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+            MyBase.New(exception, cancelled, userState)
+            Me.results = results
+        End Sub
+        
+        '''<remarks/>
+        Public ReadOnly Property Result() As Long
+            Get
+                Me.RaiseExceptionIfNecessary
+                Return CType(Me.results(0),Long)
+            End Get
+        End Property
+    End Class
 End Namespace

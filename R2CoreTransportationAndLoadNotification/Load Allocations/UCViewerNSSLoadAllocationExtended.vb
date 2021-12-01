@@ -10,6 +10,7 @@ Imports R2Core.SoftwareUserManagement
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
+Imports R2CoreTransportationAndLoadNotification.Turns
 
 Public Class UCViewerNSSLoadAllocationExtended
     Inherits UCLoadAllocation
@@ -110,9 +111,10 @@ Public Class UCViewerNSSLoadAllocationExtended
 
     Private Sub UCViewerNSSLoadAllocationExtended_UCViewNSSRequested() Handles Me.UCViewNSSRequested
         Try
+            Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
             Dim NSS As R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedStructure = UCNSSCurrent
             LabelTransportCompanyTitle.Text = NSS.TCTitle.Trim
-            LabelTurnId.Text = NSS.TurnId
+            LabelTurnId.Text = InstanceTurns.GetNSSTurn(NSS.TurnId).OtaghdarTurnNumber.Trim
             LabelLAId.Text = NSS.LAId
             LabelGoodTitle.Text = NSS.GoodTitle.Trim
             LabelnEstelamId.Text = NSS.nEstelamId
