@@ -3139,6 +3139,8 @@ Namespace AnnouncementHalls
         Public Shared ReadOnly Property ZobiRol = 11
         Public Shared ReadOnly Property Shahri = 12
         Public Shared ReadOnly Property ShahriRol = 13
+        Public Shared ReadOnly Property WareHouseOutShahri = 14
+        Public Shared ReadOnly Property WareHouseShahri = 15
 
     End Class
 

@@ -108,6 +108,11 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
             {
                 BtnTruckSmartCardInquiry.Click += BtnTruckSmartCardInquiry_Click;
                 BtnTruckDriverNationalCodeInquiry.Click += BtnTruckDriverNationalCodeInquiry_Click;
+                if (IsPostBack)
+                {
+                    FillWcDriverTruckInf();
+                    FillWcTruckInf();
+                }
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }

@@ -3533,10 +3533,8 @@ Namespace ReportsManagement
                         If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.Otaghdar10 Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set Otaghdar10CharkhAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & " Where TransportCompanyId=" & nCompCode & ""
                         CmdSql.ExecuteNonQuery()
                     ElseIf DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHalls.Anbari Then
-                        If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.Anbari Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariAnbariAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & " Where TransportCompanyId=" & nCompCode & ""
-                        If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.AnbariShemsh Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariShemshAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & " Where TransportCompanyId=" & nCompCode & ""
-                        If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.AnbariSaderati Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariSaderatiAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & " Where TransportCompanyId=" & nCompCode & ""
-                        If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.AnbarRol Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariCoilAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & " Where TransportCompanyId=" & nCompCode & ""
+                        If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.WareHouseOutShahri Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariAnbariAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & " Where TransportCompanyId=" & nCompCode & ""
+                        If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.WareHouseShahri Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariShemshAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & " Where TransportCompanyId=" & nCompCode & ""
                         CmdSql.ExecuteNonQuery()
                     ElseIf DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHalls.Zobi Then
                         If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.Zobi Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set ZobiZobiAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & " Where TransportCompanyId=" & nCompCode & ""
@@ -3577,32 +3575,18 @@ Namespace ReportsManagement
                             End If
                         End If
                     ElseIf DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHalls.Anbari Then
-                        If DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.Anbari Then
+                        If DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.WareHouseOutShahri Then
                             If DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall Then
                                 CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariAnbariReleasedInAnnouncementHall=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & " Where TransportCompanyId=" & nCompCode & ""
                             ElseIf DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany Then
                                 CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariAnbariReleasedInTransportCompany=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & " Where TransportCompanyId=" & nCompCode & ""
                             End If
                         End If
-                        If DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.AnbariShemsh Then
+                        If DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.WareHouseShahri Then
                             If DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall Then
                                 CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariShemshReleasedInAnnouncementHall=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & " Where TransportCompanyId=" & nCompCode & ""
                             ElseIf DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany Then
                                 CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariShemshReleasedInTransportCompany=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & " Where TransportCompanyId=" & nCompCode & ""
-                            End If
-                        End If
-                        If DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.AnbariSaderati Then
-                            If DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall Then
-                                CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariSaderatiReleasedInAnnouncementHall=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & " Where TransportCompanyId=" & nCompCode & ""
-                            ElseIf DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany Then
-                                CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariSaderatiReleasedInTransportCompany=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & " Where TransportCompanyId=" & nCompCode & ""
-                            End If
-                        End If
-                        If DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHSGId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHallSubGroups.AnbarRol Then
-                            If DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall Then
-                                CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariCoilReleasedInAnnouncementHall=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & " Where TransportCompanyId=" & nCompCode & ""
-                            ElseIf DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany Then
-                                CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceReport Set AnbariCoilReleasedInTransportCompany=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & " Where TransportCompanyId=" & nCompCode & ""
                             End If
                         End If
                     ElseIf DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHId") = R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHalls.Zobi Then
@@ -3716,10 +3700,8 @@ Namespace ReportsManagement
                         If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.Otaghdar10 Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set Otaghdar10CharkhAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & ""
                         CmdSql.ExecuteNonQuery()
                     ElseIf DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.Anbari Then
-                        If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.Anbari Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariAnbariAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & ""
-                        If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.AnbariShemsh Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariShemshAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & ""
-                        If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.AnbariSaderati Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariSaderatiAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & ""
-                        If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.AnbarRol Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariCoilAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & ""
+                        If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.WareHouseOutShari Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariAnbariAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & ""
+                        If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.WareHouseShari Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariShemshAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & ""
                         CmdSql.ExecuteNonQuery()
                     ElseIf DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.Zobi Then
                         If DsRegisteredLoad.Tables(0).Rows(Loopx).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.Zobi Then CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set ZobiZobiAnnounced=" & DsRegisteredLoad.Tables(0).Rows(Loopx).Item("Jam") & ""
@@ -3759,32 +3741,18 @@ Namespace ReportsManagement
                             End If
                         End If
                     ElseIf DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.Anbari Then
-                        If DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.Anbari Then
+                        If DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.WareHouseOutShari Then
                             If DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall Then
                                 CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariAnbariReleasedInAnnouncementHall=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & ""
                             ElseIf DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany Then
                                 CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariAnbariReleasedInTransportCompany=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & ""
                             End If
                         End If
-                        If DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.AnbariShemsh Then
+                        If DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.WareHouseShari Then
                             If DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall Then
                                 CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariShemshReleasedInAnnouncementHall=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & ""
                             ElseIf DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany Then
                                 CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariShemshReleasedInTransportCompany=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & ""
-                            End If
-                        End If
-                        If DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.AnbariSaderati Then
-                            If DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall Then
-                                CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariSaderatiReleasedInAnnouncementHall=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & ""
-                            ElseIf DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany Then
-                                CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariSaderatiReleasedInTransportCompany=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & ""
-                            End If
-                        End If
-                        If DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHSGId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHallSubGroups.AnbarRol Then
-                            If DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall Then
-                                CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariCoilReleasedInAnnouncementHall=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & ""
-                            ElseIf DsReleasedLoad.Tables(0).Rows(Loopy).Item("ReleaseLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany Then
-                                CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblAnnouncementHallPerformanceGeneralStatisticsReport Set AnbariCoilReleasedInTransportCompany=" & DsReleasedLoad.Tables(0).Rows(Loopy).Item("Teadad") & ""
                             End If
                         End If
                     ElseIf DsReleasedLoad.Tables(0).Rows(Loopy).Item("AHId") = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.Zobi Then
@@ -4187,6 +4155,8 @@ Namespace AnnouncementHallsManagement
             ZobiRol = 11
             Shahri = 12
             ShahriRol = 13
+            WareHouseOutShari = 14
+            WareHouseShari = 15
         End Enum
 
         Public Class PayanehClassLibraryStandardAnnouncementHallStructure
@@ -4262,7 +4232,6 @@ Namespace AnnouncementHallsManagement
                 End Get
             End Property
         End Class
-
 
         Public Class CarTruckTypeRelationAnnouncementHallNotFoundException
             Inherits ApplicationException
