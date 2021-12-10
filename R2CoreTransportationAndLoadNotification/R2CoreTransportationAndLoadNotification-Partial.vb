@@ -2028,7 +2028,12 @@ Namespace LoadCapacitor
                         Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                         If InstanceAnnouncementTiming.IsTimingActive(YourNSS.AHId, YourNSS.AHSGId) Then
                             Dim Timing = InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime)
-                            If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Then
+                            If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) Then
                                 Throw New LoadCapacitorLoadRegisterTimePassedException
                             End If
                         Else
@@ -2130,7 +2135,12 @@ Namespace LoadCapacitor
                             If Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationRegistering And InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.UserCanEditLoadCapacitorLoadInLoadAllocationTiming, YourUserNSS.UserId, 0) Then
                                 'امکان ویرایش بار هنگام تخصیص بار فقط توسط کاربر خاص که مجوز دارد
                             Else
-                                If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Then
+                                If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And
+                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) And
+                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) And
+                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) And
+                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) And
+                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) Then
                                     Throw New LoadCapacitorLoadEditTimePassedException
                                 End If
                             End If
@@ -2260,7 +2270,12 @@ Namespace LoadCapacitor
                         Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                         If InstanceAnnouncementTiming.IsTimingActive(YourNSS.AHId, YourNSS.AHSGId) Then
                             Dim Timing = InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime)
-                            If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Then
+                            If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) Then
                                 Throw New LoadCapacitorLoadDeleteTimePassedException
                             End If
                         Else
@@ -4219,6 +4234,25 @@ Namespace LoadPermission
             End Try
         End Sub
 
+        Public Function GetTruckLastLoadWhichPermissioned(YourNSSCarTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure) As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure
+            Try
+                Dim DS As DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                      "Select Top 1 nEstelamID from dbtransport.dbo.tbEnterExit
+                       Where(strCardno = " & YourNSSCarTruck.NSSCar.nIdCar & ")  And isnull(nestelamid,0)<>0 
+                       Order By nEnterExitId Desc", 0, DS).GetRecordsCount() = 0 Then Throw New TruckHasNotAnyLoadPermissionException
+                Return InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(DS.Tables(0).Rows(0).Item("nEstelamID"))
+            Catch ex As TruckHasNotAnyLoadPermissionException
+                Throw ex
+            Catch ex As GetNSSException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
 
     End Class
 
@@ -5039,6 +5073,16 @@ Namespace LoadPermission
             Public Overrides ReadOnly Property Message As String
                 Get
                     Return "وضعیت فعلی مجوز بارگیری مانع از اجرای این فرآیند شد"
+                End Get
+            End Property
+        End Class
+
+        Public Class TruckHasNotAnyLoadPermissionException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "برای ناوگان تاکنون هیچگونه مجوز بار ثبت نشده است"
                 End Get
             End Property
         End Class

@@ -88,6 +88,7 @@ Imports R2CoreTransportationAndLoadNotification.RequesterManagement
 Imports PayanehClassLibrary.RequesterManagement
 Imports PayanehClassLibrary.TurnRegisterRequest.Exceptions
 Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
+Imports R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions
 
 Namespace Logging
 
@@ -856,7 +857,7 @@ Namespace CarTruckNobatManagement
                                  Where  Turns.strCardno not in (Select strCardno from dbtransport.dbo.tbEnterExit Where (TurnStatus=1 or TurnStatus=2 or TurnStatus=7 or TurnStatus=8 or TurnStatus=9 or TurnStatus=10) and strEnterDate='" & _DateTime.GetCurrentDateShamsiFull & "') and 
                                         Turns.TurnStatus = 6 And Turns.strExitDate ='" & _DateTime.GetCurrentDateShamsiFull & "' and (2=3" + SubQuery + ")" + " Order By Turns.nEnterExitId Asc"
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
-                Dim InstanceTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
+                'Dim InstanceTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                 Dim InstanceLogging = New R2CoreInstanceLoggingManager
                 Dim CurrentTime = _DateTime.GetCurrentTime()
                 Dim DsTurns As DataSet = Nothing
@@ -867,14 +868,13 @@ Namespace CarTruckNobatManagement
                         Dim nIdCar As Int64 = DsTurns.Tables(0).Rows(LoopTurns).Item("strCardno")
                         Dim nEnterExitId As Int64 = DsTurns.Tables(0).Rows(LoopTurns).Item("nEnterExitId")
                         Try
-                            If InstanceTiming.IsTimingActive(AHId, AHSGId) Then
-                                If InstanceTiming.GetTiming(AHId, AHSGId, CurrentTime) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering Then
-                                    Continue For
-                                End If
-                            End If
+                            'If InstanceTiming.IsTimingActive(AHId, AHSGId) Then
+                            'If InstanceTiming.GetTiming(AHId, AHSGId, CurrentTime) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering Then
+                            '        Continue For
+                            '    End If
+                            'End If
                             'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
                             Dim NSSCarTruck = New R2CoreTransportationAndLoadNotificationStandardTruckStructure(New R2StandardCarStructure(nIdCar, Nothing, Nothing, Nothing, Nothing), Nothing)
-                            R2CoreTransportationAndLoadNotificationMClassTurnsManagement.TruckPresentInParkingForTurnRegisteringControl(NSSCarTruck)
                             Dim TurnId As Int64 = Int64.MinValue
                             Dim TurnRegisterRequestId = PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(NSSCarTruck, True, True, TurnId, PayanehClassLibraryRequesters.AutomaticTurnRegistering, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
                             If InstanceLogging.GetNSSLogType(PayanehClassLibraryLogType.AutomaticTurnRegistering).Active Then
@@ -999,7 +999,7 @@ Namespace CarTruckNobatManagement
                 'کنترل طول سفر
                 Try
                     Dim TravelLength As Int64 = PayanehClassLibraryMClassCarTruckNobatManagement.GetCarTravellength(NSSTruck.NSSCar.nIdCar)
-                    Dim NSSLOadCapacitor = LoadNotificationLoadPermissionManagement.GetCapacitorLoadLoadByCarTruckLastLoadPermissionByCarTruck(PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(NSSTruck.NSSCar.nIdCar))
+                    'Dim NSSLOadCapacitor = LoadNotificationLoadPermissionManagement.GetCapacitorLoadLoadByCarTruckLastLoadPermissionByCarTruck(PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(NSSTruck.NSSCar.nIdCar))
                     If TravelLength < 0 Then
                         R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Fail, PayanehClassLibraryMClassCarTruckNobatManagement.GetCarTravellengthFormated(NSSTruck.NSSCar.nIdCar) + vbCrLf + "طول سفر ناوگان به پایان نرسیده است", NSSTrafficCard.CardNo, 0, 0, 0, 0, YourUserNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                         Throw New CarTruckTravelLengthNotOverYetException(PayanehClassLibraryMClassCarTruckNobatManagement.GetCarTravellengthFormated(NSSTruck.NSSCar.nIdCar))
@@ -5139,6 +5139,33 @@ Namespace LoadNotification.LoadPermission
             End Try
         End Function
 
+        Public Shared Sub DoControlforTruckPresentInParkingAndLastLoadPermission(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure)
+            Try
+                Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure
+                Dim InstanceLoadPermission = New R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager
+                'بررسی شرط حضور ناوگان باری در پارکینگ هنگام صدور نوبت با توجه به پیکربندی برای هر زیرگروه اعلام بار
+                Dim NSSLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = Nothing
+                Try
+                    NSSLoad = InstanceLoadPermission.GetTruckLastLoadWhichPermissioned(YourNSSTruck)
+                Catch ex As TruckHasNotAnyLoadPermissionException
+                    'برای ناوگان هیچ مجوزی تاکنون صادر نشده است و بنابراین باید در پایانه حضور داشته باشد
+                    Dim NSSTerraficCard = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(YourNSSTruck.NSSCar.nIdCar))
+                    If R2CoreParkingSystem.EnterExitManagement.R2CoreParkingSystemMClassEnterExitManagement.GetEnterExitRequestType(NSSTerraficCard, Nothing) = R2EnterExitRequestType.EnterRequest Then Throw New CarIsNotPresentInParkingException
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+
+                'برای ناوگان قبلا مجوز صادر شده است و باید کنترل شود بار چه نوعی بوده براساس کانفیگ تصمیم گیری شود
+                If R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.IsActiveTurnRegisteringIssueControlforAnnouncementHall(NSSLoad.AHId, NSSLoad.AHSGId) Then
+                    Dim NSSTerraficCard = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(YourNSSTruck.NSSCar.nIdCar))
+                    If R2CoreParkingSystem.EnterExitManagement.R2CoreParkingSystemMClassEnterExitManagement.GetEnterExitRequestType(NSSTerraficCard, Nothing) = R2EnterExitRequestType.EnterRequest Then Throw New CarIsNotPresentInParkingException
+                End If
+            Catch ex As CarIsNotPresentInParkingException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
     End Class
 
     Public Class PermissionPrinting
@@ -5305,6 +5332,7 @@ Namespace LoadNotification.LoadPermission
             End Get
         End Property
     End Class
+
 
 
 End Namespace

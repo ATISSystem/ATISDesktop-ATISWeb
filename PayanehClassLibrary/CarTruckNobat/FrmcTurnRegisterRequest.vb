@@ -26,6 +26,7 @@ Imports PayanehClassLibrary.RequesterManagement
 Imports R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Trucks.Exceptions
 Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
+Imports PayanehClassLibrary.LoadNotification.LoadPermission
 
 Public Class FrmcTurnRegisterRequest
     Inherits FrmcGeneral
@@ -121,7 +122,7 @@ Public Class FrmcTurnRegisterRequest
     Private Sub UcButtonSodoorNobat_UCClickedEvent() Handles UcButtonSodoorNobat.UCClickedEvent
         Try
             'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
-            R2CoreTransportationAndLoadNotificationMClassTurnsManagement.TruckPresentInParkingForTurnRegisteringControl(_NSSTruck)
+            LoadNotificationLoadPermissionManagement.DoControlforTruckPresentInParkingAndLastLoadPermission(_NSSTruck)
             Dim TurnId As Int64 = Int64.MinValue
             Dim TurnRegisterRequestId = TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(_NSSTruck, False, True, TurnId, PayanehClassLibraryRequesters.FrmcTurnRegisterRequest, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + TurnRegisterRequestId.ToString & vbCrLf & "شماره نوبت :" + TurnId.ToString, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)

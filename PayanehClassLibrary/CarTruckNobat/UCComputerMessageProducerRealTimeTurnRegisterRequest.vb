@@ -3,6 +3,7 @@ Imports System.Reflection
 
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
+Imports PayanehClassLibrary.LoadNotification.LoadPermission
 Imports PayanehClassLibrary.RequesterManagement
 Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
@@ -37,7 +38,7 @@ Public Class UCComputerMessageProducerRealTimeTurnRegisterRequest
         Try
             Dim NSSTruckTemp = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCar.UCGetNSS.nIdCar)
             'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
-            R2CoreTransportationAndLoadNotificationMClassTurnsManagement.TruckPresentInParkingForTurnRegisteringControl(NSSTruckTemp)
+            LoadNotificationLoadPermissionManagement.DoControlforTruckPresentInParkingAndLastLoadPermission(NSSTruckTemp)
             TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(NSSTruckTemp, True, True, Nothing, PayanehClassLibraryRequesters.UCComputerMessageProducerRealTimeTurnRegisterRequest, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                                 OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _

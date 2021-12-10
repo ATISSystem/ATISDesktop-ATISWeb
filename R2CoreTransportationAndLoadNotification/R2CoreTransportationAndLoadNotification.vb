@@ -1646,21 +1646,7 @@ Namespace Turns
             End Try
         End Function
 
-        Public Shared Sub TruckPresentInParkingForTurnRegisteringControl(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure)
-            Try
-                Dim NSSTerraficCard = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(YourNSSTruck.NSSCar.nIdCar))
-                'بررسی شرط حضور ناوگان باری در پارکینگ هنگام صدور نوبت با توجه به پیکربندی برای هر زیرگروه اعلام بار
-                Dim NSSAnnouncementHallSubGroup = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSAnnouncementHallSubGroup(YourNSSTruck.NSSCar.nIdCar)
-                Dim NSSAnnouncementHall = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByAnnouncementHallSubGroup(NSSAnnouncementHallSubGroup.AHSGId)
-                If R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.IsActiveTurnRegisteringIssueControlforAnnouncementHall(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId) Then
-                    If R2CoreParkingSystem.EnterExitManagement.R2CoreParkingSystemMClassEnterExitManagement.GetEnterExitRequestType(NSSTerraficCard, Nothing) = R2EnterExitRequestType.EnterRequest Then Throw New CarIsNotPresentInParkingException
-                End If
-            Catch ex As CarIsNotPresentInParkingException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
+
 
 
 
