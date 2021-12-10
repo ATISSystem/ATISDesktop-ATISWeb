@@ -466,6 +466,7 @@ Namespace CarTruckNobatManagement
                 Dim TurnRegisterRequestId = PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(YourNSSTruck, True, True, TurnId, PayanehClassLibraryRequesters.GetTurnofKiosk, YourUserNSS)
                 Return TurnId
             Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                                OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                                 OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
                                 OrElse TypeOf ex Is CarIsNotPresentInParkingException _
                                 OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler _
@@ -881,6 +882,7 @@ Namespace CarTruckNobatManagement
                                 InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.AutomaticTurnRegistering, InstanceLogging.GetNSSLogType(PayanehClassLibraryLogType.AutomaticTurnRegistering).LogTitle, "nIdCar=" + nIdCar.ToString(), "TurnRegisterRequestId=" + TurnRegisterRequestId.ToString(), String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), Nothing))
                             End If
                         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                                OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                                 OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
                                 OrElse TypeOf ex Is CarIsNotPresentInParkingException _
                                 OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler _
@@ -964,6 +966,17 @@ Namespace CarTruckNobatManagement
                 Dim InstancePermissions = New R2CoreInstansePermissionsManager
                 If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.RequesterCanSendRequestforTurnIssueBySeqT, YourRequesterId, NSSSequentialTurn.SequentialTurnId) Then Throw New RequesterNotAllowTurnIssueBySeqTException
 
+                'کنترل مجوز درخواست صدور نوبت توسط رکستر خاص بر اساس نوع آخرین بار دریافت شده
+                Dim InstanceLoadPermission = New R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager
+                Dim NSSLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = Nothing
+                Try
+                    NSSLoad = InstanceLoadPermission.GetTruckLastLoadWhichPermissioned(NSSTruck)
+                    If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.RequesterCanSendRequestforTurnIssueByLastLoadPermissioned, YourRequesterId, NSSLoad.AHSGId) Then Throw New RequesterNotAllowTurnIssueByLastLoadPermissionedException
+                Catch ex As TruckHasNotAnyLoadPermissionException
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+
                 'احراز راننده ناوگان از رابطه ناوگان راننده
                 Try
                     NSSDriverTruck = InstanceTruckDrivers.GetNSSTruckDriver(PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(NSSTruck.NSSCar.nIdCar)).NSSDriver.nIdPerson)
@@ -1008,6 +1021,7 @@ Namespace CarTruckNobatManagement
                 End Try
 
             Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                                OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                                 OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
                                 OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
                                 OrElse TypeOf ex Is CarIsNotPresentInParkingException _
@@ -1294,6 +1308,7 @@ Namespace TurnRegisterRequest
                 PayanehClassLibraryMClassCarTruckNobatManagement.NoCostTurnPrintRequest(PayanehClassLibraryMClassCarTruckNobatManagement.GetNSSCarTruckNobat(YourTurnId), YourTurnPrintRedirect)
                 Return TurnRegisterRequestId
             Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                                OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                                 OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
                                 OrElse TypeOf ex Is CarIsNotPresentInParkingException _
                                 OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler _
@@ -1353,6 +1368,7 @@ Namespace TurnRegisterRequest
                 'درخواست چاپ نوبت
                 R2CoreTransportationAndLoadNotificationMClassTurnPrintRequestManagement.NoCostTurnPrintRequest(TurnId, YourTurnPrintRedirect)
             Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                                OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                                 OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
                                 OrElse TypeOf ex Is CarIsNotPresentInParkingException _
                                 OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler _
@@ -1420,6 +1436,7 @@ Namespace TurnRegisterRequest
                 Strategy.DoStrategy()
                 Return Strategy.GetNSSTurn.nEnterExitId
             Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                                OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                                 OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
                                 OrElse TypeOf ex Is CarIsNotPresentInParkingException _
                                 OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler _

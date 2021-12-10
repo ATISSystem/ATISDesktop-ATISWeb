@@ -41,6 +41,7 @@ Public Class UCComputerMessageProducerRealTimeTurnRegisterRequest
             LoadNotificationLoadPermissionManagement.DoControlforTruckPresentInParkingAndLastLoadPermission(NSSTruckTemp)
             TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.RealTimeTurnRegisterRequest(NSSTruckTemp, True, True, Nothing, PayanehClassLibraryRequesters.UCComputerMessageProducerRealTimeTurnRegisterRequest, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                                OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                                 OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
                                 OrElse TypeOf ex Is CarIsNotPresentInParkingException _
                                 OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler _
@@ -78,6 +79,7 @@ Public Class UCComputerMessageProducerRealTimeTurnRegisterRequest
             UCRealTimeTurnRegisterRequest()
             UCSuccessSendingNotification()
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                                OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                                 OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
                                 OrElse TypeOf ex Is CarIsNotPresentInParkingException _
                                 OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler _

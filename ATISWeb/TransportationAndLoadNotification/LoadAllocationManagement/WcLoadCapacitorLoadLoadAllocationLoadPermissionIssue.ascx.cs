@@ -148,8 +148,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                                        ex is TruckNotFoundException ||
                                        ex is TurnHandlingNotAllowedBecuaseTurnStatusException ||
                                        ex is UnableAllocatingTommorowLoadException ||
-                                       ex is RequesterNotAllowTurnIssueBySeqTException)
-
+                                       ex is RequesterNotAllowTurnIssueBySeqTException ||
+                                       ex is RequesterNotAllowTurnIssueByLastLoadPermissionedException)
             {
                 if (TurnIsTemporary)
                 { PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToTrue(NSSTurn.nEnterExitId, true); }

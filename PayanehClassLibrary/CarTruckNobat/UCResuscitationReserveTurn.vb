@@ -70,6 +70,7 @@ Public Class UCResuscitationReserveTurn
             PayanehClassLibraryMClassTurnRegisterRequestManagement.ResuscitationReserveTurn(UcNumberTRRId.UCValue, R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCar.UCGetNSS().nIdCar), True, PayanehClassLibrary.RequesterManagement.PayanehClassLibraryRequesters.UCResuscitationReserveTurn, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت رزرو با موفقیت احیاء شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                                OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                                 OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
                                 OrElse TypeOf ex Is CarIsNotPresentInParkingException _
                                 OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler _

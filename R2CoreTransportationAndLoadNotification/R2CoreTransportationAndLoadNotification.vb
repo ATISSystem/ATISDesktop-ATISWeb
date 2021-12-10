@@ -2354,6 +2354,16 @@ Namespace Turns
             End Property
         End Class
 
+        Public Class RequesterNotAllowTurnIssueByLastLoadPermissionedException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "درخواست کننده ، مجوز درخواست صدور نوبت با توجه به نوع آخرین بار دریافت شده را ندارد"
+                End Get
+            End Property
+        End Class
+
+
     End Namespace
 
 End Namespace
@@ -3607,7 +3617,7 @@ Namespace PermissionManagement
         Public Shared ReadOnly UserCanResuscitationReserveTurn As Int64 = 13
         Public Shared ReadOnly UserCanRequestEmergencyTurnRegistering As Int64 = 14
         Public Shared ReadOnly UserCanEditLoadCapacitorLoadInLoadAllocationTiming As Int64 = 15
-
+        Public Shared ReadOnly RequesterCanSendRequestforTurnIssueByLastLoadPermissioned As Int64 = 16
     End Class
 
 End Namespace

@@ -375,6 +375,7 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
                             OrElse TypeOf ex Is TruckersAssociationControllingMoneyWalletCriticalAmountReachedException _
                             OrElse TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                            OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                             OrElse TypeOf ex Is TruckNotFoundException _
                             OrElse TypeOf ex Is SequentialTurnNotFoundException _
                             OrElse TypeOf ex Is TruckDriverNotFoundException _
@@ -421,6 +422,7 @@ Public Class FrmcEnterExit
             DoProccess(CardNo, True)
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
                             OrElse TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                            OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                             OrElse TypeOf ex Is TruckNotFoundException _
                             OrElse TypeOf ex Is SequentialTurnNotFoundException _
                             OrElse TypeOf ex Is TruckDriverNotFoundException _
@@ -545,6 +547,7 @@ Public Class FrmcEnterExit
             R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.CarTruckUpdateInfSuccess, "موفقیت در آپدیت اطلاعات ناوگان باری", UcCarTruckUpdateInf.UcCarTruck.UCGetNSS.StrBodyNo, _NSSTrafficCard.CardNo, UcCarTruckUpdateInf.UcCarTruck.UCGetNSS.NSSCar.GetCarPelakSerialComposit(), 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             DoProccess(_NSSTrafficCard.CardNo, True)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                            OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                             OrElse TypeOf ex Is TruckNotFoundException _
                             OrElse TypeOf ex Is SequentialTurnNotFoundException _
                             OrElse TypeOf ex Is TruckDriverNotFoundException _
@@ -577,6 +580,7 @@ Public Class FrmcEnterExit
             R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.CarTruckUpdateInfNotSuccess, "عدم موفقیت در آپدیت اطلاعات ناوگان باری", UcCarTruckUpdateInf.UcCarTruck.UcNumberStrBodyNoSearch.UCValue, _NSSTrafficCard.CardNo, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             DoProccess(_NSSTrafficCard.CardNo, False)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                            OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                             OrElse TypeOf ex Is TruckNotFoundException _
                             OrElse TypeOf ex Is SequentialTurnNotFoundException _
                             OrElse TypeOf ex Is TruckDriverNotFoundException _
