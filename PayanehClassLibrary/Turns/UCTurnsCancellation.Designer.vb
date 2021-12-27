@@ -125,7 +125,7 @@ Partial Class UCTurnsCancellation
         Me.UcLabel2.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
         Me.UcLabel2.UCForeColor = System.Drawing.Color.Red
         Me.UcLabel2.UCTextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.UcLabel2.UCValue = "(دقت کنید که کلیه نوبت های کمتر از اعتبار (و شامل اعتبار) باطل می گردند)"
+        Me.UcLabel2.UCValue = "دقت کنید که کلیه نوبت های کمتر از اعتبار باطل می گردند"
         '
         'UcLabel1
         '

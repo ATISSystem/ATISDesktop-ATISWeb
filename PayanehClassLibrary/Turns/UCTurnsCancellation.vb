@@ -71,7 +71,7 @@ Public Class UCTurnsCancellation
     Private Sub CButtonTurnsCancellation_Click(sender As Object, e As EventArgs) Handles CButtonTurnsCancellation.Click
         Try
             Cursor.Current = Cursors.WaitCursor
-            PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellation(UcLstViewerAllOfnEnterExitId.UCGetSelectedSequentialTurnNumber , UcLstViewerAllOfnEnterExitId.UCGetSelectedAnnouncementHall, UcLstViewerAllOfnEnterExitId.UCGetSelectedAnnouncementHallSubGroup,UcLstViewerAllOfnEnterExitId.UCGetSelectedTargetYear)
+            PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellation(UcLstViewerAllOfnEnterExitId.UCGetSelectedSequentialTurnNumber, UcLstViewerAllOfnEnterExitId.UCGetCurrentNSSSequentialTurn, UcLstViewerAllOfnEnterExitId.UCGetSelectedTargetYear)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ابطال گروهی نوبت ها انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

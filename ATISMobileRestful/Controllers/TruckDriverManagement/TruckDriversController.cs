@@ -18,6 +18,11 @@ using R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions;
 using ATISMobileRestful.Logging;
 using R2Core.PermissionManagement;
 using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
+using R2Core.ConfigurationManagement;
+using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
+using R2CoreTransportationAndLoadNotification.Trucks;
+using R2CoreParkingSystem.Cars;
+using PayanehClassLibrary.DriverTrucksManagement;
 
 namespace ATISMobileRestful.Controllers.TruckDriverManagement
 {
@@ -56,6 +61,78 @@ namespace ATISMobileRestful.Controllers.TruckDriverManagement
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
+
+        [HttpPost]
+        public HttpResponseMessage TruckDriverInqueryWithLicensePlate()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith2Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientTruckDriverInqueryWithLicensePlate );
+
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var LPPelak = Content.Split(';')[2];
+                var LPSerial = Content.Split(';')[3];
+
+                var InstanceTruckDrivers = new R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager();
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(InstanceTruckDrivers.GetNSSTruckDriverWithLicensePlate(new R2CoreTransportationAndLoadNotificationStandardTruckStructure(new R2StandardCarStructure(null, null, LPPelak, LPSerial, null), null)).NSSDriver.StrPersonFullName), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (UserNotExistByApiKeyException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserLast5DigitNotMatchingException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserIdNotExistException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+
+        }
+
+        [HttpPost]
+        public HttpResponseMessage SendTruckDriverChangeRequestMessage()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith3Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientSendTruckDriverChangeMessageRequest);
+
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var LPPelak = Content.Split(';')[2];
+                var LPSerial = Content.Split(';')[3];
+                var TruckDriverNationalCode = Content.Split(';')[4];
+
+                var InstanceDriverTrucks = new PayanehClassLibraryMClassDriverTrucksManager();
+                var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
+                InstanceDriverTrucks.SendTruckDriverChangeRequestMessage(InstanceTrucks.GetNSSTruckWithLicensePlate(new R2CoreTransportationAndLoadNotificationStandardTruckStructure(new R2StandardCarStructure(null, null, LPPelak, LPSerial, null), null)), TruckDriverNationalCode, NSSSoftwareuser);
+
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                return response;
+            }
+            catch (UserNotExistByApiKeyException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserLast5DigitNotMatchingException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserIdNotExistException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+
+        }
+
 
     }
 }

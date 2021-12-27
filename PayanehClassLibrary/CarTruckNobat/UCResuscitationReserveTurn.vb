@@ -4,6 +4,7 @@ Imports System.Reflection
 
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
+Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
 Imports PayanehClassLibrary.TurnRegisterRequest
 Imports PayanehClassLibrary.TurnRegisterRequest.Exceptions
 Imports R2Core.ExceptionManagement
@@ -89,7 +90,8 @@ Public Class UCResuscitationReserveTurn
                                 OrElse TypeOf ex Is TurnNotFoundException _
                                 OrElse TypeOf ex Is ReserveTurnAlreadyUsedException _
                                 OrElse TypeOf ex Is TurnRegisteringRequestDateTimeExpiredException _
-                                OrElse TypeOf ex Is UserCanNotResuscitationReserveTurnException
+                                OrElse TypeOf ex Is UserCanNotResuscitationReserveTurnException _
+                                OrElse TypeOf ex Is DriverTruckInformationNotExistException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

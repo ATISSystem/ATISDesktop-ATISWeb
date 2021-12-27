@@ -53,6 +53,7 @@ Imports R2CoreParkingSystem.PredefinedMessagesManagement
 Imports R2CoreParkingSystem.AccountingManagement.ExceptionManagement
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
+Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
 
 Namespace DataBaseManagement
 
@@ -1344,11 +1345,11 @@ Namespace TrafficCardsManagement
             Try
                 Dim Ds As DataSet
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblRFIDCards Where CardId=" & YourCardId & "", 0, Ds).GetRecordsCount() = 0 Then
-                    Throw New GetNSSException
+                    Throw New TerraficCardNotFoundException
                 Else
                     Return New R2CoreParkingSystemStandardTrafficCardStructure(Ds.Tables(0).Rows(0).Item("CardId"), Ds.Tables(0).Rows(0).Item("CardNo"), Ds.Tables(0).Rows(0).Item("Charge"), Ds.Tables(0).Rows(0).Item("UserIdSabt"), Ds.Tables(0).Rows(0).Item("UserIdEdit"), Ds.Tables(0).Rows(0).Item("PelakType"), Ds.Tables(0).Rows(0).Item("Pelak"), Ds.Tables(0).Rows(0).Item("Serial"), Ds.Tables(0).Rows(0).Item("NoMoney"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("CompanyName"), Ds.Tables(0).Rows(0).Item("NameFamily"), Ds.Tables(0).Rows(0).Item("Mobile"), Ds.Tables(0).Rows(0).Item("Address"), Ds.Tables(0).Rows(0).Item("Tel"), Ds.Tables(0).Rows(0).Item("Tahvilg"), Ds.Tables(0).Rows(0).Item("DateTimeMilladiSabt"), Ds.Tables(0).Rows(0).Item("DateTimeMilladiEdit"), Ds.Tables(0).Rows(0).Item("DateShamsiSabt"), Ds.Tables(0).Rows(0).Item("DateShamsiEdit"), Ds.Tables(0).Rows(0).Item("CardType"), Ds.Tables(0).Rows(0).Item("TempCardType"))
                 End If
-            Catch exx As GetNSSException
+            Catch exx As TerraficCardNotFoundException
                 Throw exx
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1462,12 +1463,12 @@ Namespace TrafficCardsManagement
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblRFIDCards Where CardId=" & YourCardId & "", 1, Ds).GetRecordsCount() = 0 Then
-                    Throw New GetNSSException
+                    Throw New TerraficCardNotFoundException
                 Else
                     Return New R2CoreParkingSystemStandardTrafficCardStructure(Ds.Tables(0).Rows(0).Item("CardId"), Ds.Tables(0).Rows(0).Item("CardNo"), Ds.Tables(0).Rows(0).Item("Charge"), Ds.Tables(0).Rows(0).Item("UserIdSabt"), Ds.Tables(0).Rows(0).Item("UserIdEdit"), Ds.Tables(0).Rows(0).Item("PelakType"), Ds.Tables(0).Rows(0).Item("Pelak"), Ds.Tables(0).Rows(0).Item("Serial"), Ds.Tables(0).Rows(0).Item("NoMoney"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("CompanyName"), Ds.Tables(0).Rows(0).Item("NameFamily"), Ds.Tables(0).Rows(0).Item("Mobile"), Ds.Tables(0).Rows(0).Item("Address"), Ds.Tables(0).Rows(0).Item("Tel"), Ds.Tables(0).Rows(0).Item("Tahvilg"), Ds.Tables(0).Rows(0).Item("DateTimeMilladiSabt"), Ds.Tables(0).Rows(0).Item("DateTimeMilladiEdit"), Ds.Tables(0).Rows(0).Item("DateShamsiSabt"), Ds.Tables(0).Rows(0).Item("DateShamsiEdit"), Ds.Tables(0).Rows(0).Item("CardType"), Ds.Tables(0).Rows(0).Item("TempCardType"))
                 End If
-            Catch exx As GetNSSException
-                Throw exx
+            Catch ex As TerraficCardNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -1621,6 +1622,28 @@ Namespace TrafficCardsManagement
 
 
     End Class
+
+    Namespace ExceptionManagement
+
+        Public Class RelatedTerraficCardNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کارت تردد مرتبط یافت نشد"
+                End Get
+            End Property
+        End Class
+
+        Public Class TerraficCardNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کارت تردد یافت نشد"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
 
 End Namespace
 
@@ -2572,6 +2595,23 @@ Namespace Cars
             End Try
         End Function
 
+        Public Function GetCardIdFromnIdCar(YournCarId As Int64) As Int64
+            Try
+                Dim Da As New SqlDataAdapter : Dim Ds As New DataSet
+                Da.SelectCommand = New SqlCommand("Select Top 1 CardId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (nCarId=" & YournCarId & ") and (RelationActive=1) and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By RelationId Desc")
+                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
+                Ds.Tables.Clear()
+                If Da.Fill(Ds) <> 0 Then
+                    Return Ds.Tables(0).Rows(0).Item("CardId")
+                Else
+                    Throw New RelatedTerraficCardNotFoundException
+                End If
+            Catch ex As RelatedTerraficCardNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
     End Class
 
@@ -2684,10 +2724,10 @@ Namespace Cars
                 If Da.Fill(Ds) <> 0 Then
                     Return Ds.Tables(0).Rows(0).Item("nCarId")
                 Else
-                    Throw New GetDataException
+                    Throw New RelatedTerraficCardNotFoundException
                 End If
-            Catch exx As GetDataException
-                Throw exx
+            Catch ex As RelatedTerraficCardNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -2702,10 +2742,10 @@ Namespace Cars
                 If Da.Fill(Ds) <> 0 Then
                     Return Ds.Tables(0).Rows(0).Item("CardId")
                 Else
-                    Throw New GetDataException
+                    Throw New RelatedTerraficCardNotFoundException
                 End If
-            Catch exx As GetDataException
-                Throw exx
+            Catch ex As RelatedTerraficCardNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -3384,9 +3424,9 @@ Namespace Drivers
                     NSS.strDrivingLicenceNo = Ds.Tables(0).Rows(0).Item("strDrivingLicenceNo")
                     Return NSS
                 Else
-                    Throw New GetNSSException
+                    Throw New DriverNotFoundException
                 End If
-            Catch exx As GetNSSException
+            Catch exx As DriverNotFoundException
                 Throw exx
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -3593,6 +3633,15 @@ Namespace Drivers
         Public Overrides ReadOnly Property Message As String
             Get
                 Return "تصویر راننده ثبت نشده است"
+            End Get
+        End Property
+    End Class
+
+    Public Class DriverNotFoundException
+        Inherits ApplicationException
+        Public Overrides ReadOnly Property Message As String
+            Get
+                Return "راننده با کد شاخص مورد نظر یافت نشد"
             End Get
         End Property
     End Class

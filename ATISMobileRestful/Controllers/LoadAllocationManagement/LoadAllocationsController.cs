@@ -55,8 +55,6 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 var nEstelamId = Convert.ToInt64(Content.Split(';')[2]);
                 var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
                 var NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamId).nEstelamKey);
-                //if (NSSLoadCapacitorLoad.LoadStatus == R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented)
-                //{ throw new Exception("تخصیص بار رسوبی تا اطلاع ثانوی ممکن نیست"); }
 
                 Int64 myTurnId = Int64.MinValue;
                 try

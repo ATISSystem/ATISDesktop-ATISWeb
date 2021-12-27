@@ -69,8 +69,9 @@ Partial Class Form3
         '
         'Button3
         '
-        Me.Button3.BackColor = System.Drawing.Color.Tomato
+        Me.Button3.BackColor = System.Drawing.Color.Olive
         Me.Button3.Font = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Button3.ForeColor = System.Drawing.Color.White
         Me.Button3.Location = New System.Drawing.Point(589, 0)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(140, 35)

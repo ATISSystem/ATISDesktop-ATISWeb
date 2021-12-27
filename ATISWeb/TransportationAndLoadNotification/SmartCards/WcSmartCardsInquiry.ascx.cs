@@ -123,7 +123,7 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
             try
             {
                 LblTruckDriver.Text = string.Empty;
-                if (TxtTruckDriverNationalCode.Text == string.Empty) { return; }
+                if (TxtTruckDriverNationalCode.Text.Trim() == string.Empty) { return; }
                 FillWcDriverTruckInf();
                 LblTruckDriver.Text = _WcNSSTruckDriver.NSSDriver.StrPersonFullName;
             }
@@ -138,7 +138,7 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
             try
             {
                 LblTruck.Text = string.Empty;
-                if (TxtTruckSmartCardNo.Text == string.Empty) { return; }
+                if (TxtTruckSmartCardNo.Text.Trim() == string.Empty) { return; }
                 FillWcTruckInf();
                 LblTruck.Text = _WcNSSTruck.NSSCar.GetCarPelakSerialComposit();
             }

@@ -12,10 +12,12 @@ Imports R2Core.DatabaseManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.DateAndTimeManagement.CalendarManagement.PersianCalendar
 Imports R2Core.EntityRelationManagement
+Imports R2Core.ExceptionManagement
 Imports R2Core.PermissionManagement
 Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
 Imports R2Core.SecurityAlgorithmsManagement.Captcha
 Imports R2Core.SecurityAlgorithmsManagement.Hashing
+Imports R2Core.SMSSendAndRecieved
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.BlackList
@@ -31,6 +33,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
+Imports R2CoreTransportationAndLoadNotification.LoadPermission
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
 Imports R2CoreTransportationAndLoadNotification.RequesterManagement
 Imports R2CoreTransportationAndLoadNotification.Rmto
@@ -259,7 +262,25 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+            'Dim x As New PayanehClassLibraryMClassTurnRegisterRequestManager
+            'x.RealTimeTurnRegisterRequestByLP("286ع11", "13", R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser, 12)
+            'Try
+
+            '    Dim InstancePermissions = New R2CoreInstansePermissionsManager
+            '    If Not InstancePermissions.ExistPermission(R2CorePermissionTypes.UserCanSendSoftwareUserShenasehPasswordViaSMS, 21, 0) Then Throw New UserNotAllowedRunThisProccessException
+            '    Dim InstanceSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
+            '    Dim SMSSender As New R2CoreSMSSendRecive
+            '    Dim SMSMessage = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 3) + vbCrLf + "شناسه شخصی:" + "54545" + vbCrLf + "رمز شخصی:" + "45454545454"
+            '    SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, "09132043148", SMSMessage, 1, Nothing, 1, Nothing, Nothing))
+            'Catch ex As UserNotAllowedRunThisProccessException
+            '    MessageBox.Show(ex.Message)
+            'Catch ex As GetNSSException
+            '    MessageBox.Show("اطلاعات مورد نیاز را به صورت کامل وارد کنید")
+            'Catch ex As Exception
+            '    MessageBox.Show(ex.Message)
+            'End Try
+
+            'PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
             'PayanehClassLibraryMClassTurnRegisterRequestManagement.ResuscitationReserveTurn(168, R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(127786), False, 6, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             'Dim ds As New DataSet
             'Dim da As New OleDb.OleDbDataAdapter

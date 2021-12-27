@@ -27,6 +27,8 @@ Imports R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Trucks.Exceptions
 Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
 Imports PayanehClassLibrary.LoadNotification.LoadPermission
+Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
+Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
 
 Public Class FrmcTurnRegisterRequest
     Inherits FrmcGeneral
@@ -144,7 +146,10 @@ Public Class FrmcTurnRegisterRequest
                                 OrElse TypeOf ex Is GetDataException _
                                 OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
                                 OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
-                                OrElse TypeOf ex Is TurnPrintingInfNotFoundException
+                                OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
+                                OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
+                                OrElse TypeOf ex Is TerraficCardNotFoundException _
+                                OrElse TypeOf ex Is DriverTruckInformationNotExistException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Information, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)

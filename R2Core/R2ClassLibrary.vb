@@ -249,6 +249,18 @@ Namespace PublicProc
             End Try
         End Function
 
+        Public Function RepeatStr(ByVal Str As String, ByVal Counts As Int16) As String
+            Dim myStr As String = ""
+            Try
+                For loopx As Int16 = 1 To Counts
+                    myStr += Str
+                Next
+                Return myStr
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Function
+
 
     End Class
 

@@ -1828,10 +1828,12 @@ Namespace Turns
                     If Not YourTurnPrintRedirect Then
                         R2CoreTransportationAndLoadNotificationMClassTurnPrintingManagement.TurnPrint(YourTurnId)
                     Else
-                        Dim DataStruct As DataStruct = New DataStruct()
-                        DataStruct.Data1 = YourTurnId
-                        Dim NSSTruck = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTruck(YourTurnId)
-                        R2CoreMClassComputerMessagesManagement.SendComputerMessage(New R2StandardComputerMessageStructure(Nothing, NSSTruck.NSSCar.GetCarPelakSerialComposit(), R2CoreTransportationAndLoadNotificationComputerMessageTypes.TurnPrint, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, DataStruct))
+                        If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.TurnControlling, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) = True Then
+                            Dim DataStruct As DataStruct = New DataStruct()
+                            DataStruct.Data1 = YourTurnId
+                            Dim NSSTruck = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTruck(YourTurnId)
+                            R2CoreMClassComputerMessagesManagement.SendComputerMessage(New R2StandardComputerMessageStructure(Nothing, NSSTruck.NSSCar.GetCarPelakSerialComposit(), R2CoreTransportationAndLoadNotificationComputerMessageTypes.TurnPrint, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, DataStruct))
+                        End If
                     End If
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -2077,6 +2079,19 @@ Namespace Turns
                         Lst.Add(New R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure(DS.Tables(0).Rows(Loopx).Item("SeqTId"), DS.Tables(0).Rows(Loopx).Item("SeqTTitle").trim, DS.Tables(0).Rows(Loopx).Item("SeqTColor").trim, DS.Tables(0).Rows(Loopx).Item("SeqTKeyWord"), DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                     Next
                     Return Lst
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function GetNSSSequentialTurn(YourSeqTId As Int64) As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure
+                Try
+                    Dim DS As DataSet
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2PrimaryTransportationAndLoadNotification.DBO.TblSequentialTurns Where SeqTId=" & YourSeqTId & "", 3600, DS).GetRecordsCount() = 0 Then Throw New SequentialTurnNotFoundException
+                    Return New R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure(DS.Tables(0).Rows(0).Item("SeqTId"), DS.Tables(0).Rows(0).Item("SeqTTitle").trim, DS.Tables(0).Rows(0).Item("SeqTColor").trim, DS.Tables(0).Rows(0).Item("SeqTKeyWord").trim, DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Catch ex As SequentialTurnNotFoundException
+                    Throw ex
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
@@ -3594,7 +3609,7 @@ Namespace RequesterManagement
         Public Shared ReadOnly UCLoadAllocationManipulation As Int64 = 2
         Public Shared ReadOnly FrmcTruckDriverLoadAllocationsPriorityApplied As Int64 = 3
         Public Shared ReadOnly WcLoadCapacitorLoadAllocationLoadPermissionIssue As Int64 = 4
-
+        Public Shared ReadOnly ATISRestfullTurnControllerRealTimeTurnRegisterRequest As Int64 = 12
 
     End Class
 
@@ -3618,6 +3633,9 @@ Namespace PermissionManagement
         Public Shared ReadOnly UserCanRequestEmergencyTurnRegistering As Int64 = 14
         Public Shared ReadOnly UserCanEditLoadCapacitorLoadInLoadAllocationTiming As Int64 = 15
         Public Shared ReadOnly RequesterCanSendRequestforTurnIssueByLastLoadPermissioned As Int64 = 16
+        Public Shared ReadOnly SoftwareUserCanExcecuteTurnCancellation As Int64 = 17
+        Public Shared ReadOnly SoftwareUserCanSendRealTimeTurnRegisteringRequestWithLicensePlate As Int64 = 18
+        Public Shared ReadOnly SoftwareUserCanSendTruckorTruckDriverChangeRequest As Int64 = 19
     End Class
 
 End Namespace

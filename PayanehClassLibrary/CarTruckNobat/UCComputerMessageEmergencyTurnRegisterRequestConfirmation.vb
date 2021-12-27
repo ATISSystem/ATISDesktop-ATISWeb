@@ -4,6 +4,7 @@ Imports System.Reflection
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
 Imports PayanehClassLibrary.DriverTrucksManagement
+Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
 Imports PayanehClassLibrary.RequesterManagement
 Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
@@ -45,7 +46,7 @@ Public Class UCComputerMessageEmergencyTurnRegisterRequestConfirmation
         Try
             TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.EmergencyTurnRegister(_NSS.DataStruct, True, PayanehClassLibraryRequesters.UCComputerMessageEmergencyTurnRegisterRequestConfirmation, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCDeactiveComputerMessage()
-        Catch ex As Exception When TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException OrElse TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException
+        Catch ex As Exception When TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException OrElse TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException OrElse TypeOf ex Is DriverTruckInformationNotExistException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, True)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me, True)

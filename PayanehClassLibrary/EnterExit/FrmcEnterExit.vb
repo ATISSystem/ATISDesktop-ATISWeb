@@ -45,6 +45,8 @@ Imports R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions
 Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
 Imports PayanehClassLibrary.TurnRegisterRequest
 Imports PayanehClassLibrary.LoadNotification.LoadPermission
+Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
+Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
 
 Public Class FrmcEnterExit
     Inherits FrmcGeneral
@@ -379,7 +381,10 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is TruckNotFoundException _
                             OrElse TypeOf ex Is SequentialTurnNotFoundException _
                             OrElse TypeOf ex Is TruckDriverNotFoundException _
-                            OrElse TypeOf ex Is TurnRegisterRequestNotFoundException
+                            OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
+                            OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
+                            OrElse TypeOf ex Is TerraficCardNotFoundException _
+                            OrElse TypeOf ex Is DriverTruckInformationNotExistException
             Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -427,7 +432,10 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is SequentialTurnNotFoundException _
                             OrElse TypeOf ex Is TruckDriverNotFoundException _
                             OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
-                            OrElse TypeOf ex Is TruckersAssociationControllingMoneyWalletCriticalAmountReachedException
+                            OrElse TypeOf ex Is TruckersAssociationControllingMoneyWalletCriticalAmountReachedException _
+                            OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
+                            OrElse TypeOf ex Is TerraficCardNotFoundException _
+                            OrElse TypeOf ex Is DriverTruckInformationNotExistException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
             PleaseReserveTurn()
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
@@ -563,7 +571,10 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat _
                             OrElse TypeOf ex Is GetNobatException _
                             OrElse TypeOf ex Is GetNSSException _
-                            OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
+                            OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
+                            OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
+                            OrElse TypeOf ex Is TerraficCardNotFoundException _
+                            OrElse TypeOf ex Is DriverTruckInformationNotExistException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Information, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Nothing, True)
@@ -596,7 +607,10 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat _
                             OrElse TypeOf ex Is GetNobatException _
                             OrElse TypeOf ex Is GetNSSException _
-                            OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
+                            OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
+                            OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
+                            OrElse TypeOf ex Is TerraficCardNotFoundException _
+                            OrElse TypeOf ex Is DriverTruckInformationNotExistException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Information, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Nothing, True)

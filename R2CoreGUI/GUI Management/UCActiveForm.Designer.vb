@@ -43,7 +43,6 @@ Partial Class UCActiveForm
         Me.CButton.FillType = CButtonLib.CButton.eFillType.Solid
         Me.CButton.FillTypeLinear = System.Drawing.Drawing2D.LinearGradientMode.Horizontal
         Me.CButton.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.CButton.ForeColor = System.Drawing.Color.Black
         Me.CButton.ImageIndex = 0
         Me.CButton.Location = New System.Drawing.Point(2, 2)
         Me.CButton.Name = "CButton"

@@ -4,22 +4,26 @@ Imports System.Drawing
 Imports System.Reflection
 
 Imports PayanehClassLibrary.CarTruckNobatManagement
+Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.ConfigurationManagement
 Imports R2Core.BaseStandardClass
 Imports R2Core.ComputerMessagesManagement
 Imports R2Core.ConfigurationManagement
 Imports R2Core.ExceptionManagement
+Imports R2Core.PermissionManagement.Exceptions
 Imports R2Core.RFIDCardsManagement
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.AccountingManagement
 Imports R2CoreParkingSystem.Cars
 Imports R2CoreParkingSystem.ConfigurationManagement
 Imports R2CoreParkingSystem.MoneyWalletManagement
 Imports R2CoreParkingSystem.TrafficCardsManagement
+Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
+Imports R2CoreTransportationAndLoadNotification.Trucks
 
 Public Class UCComputerMessageProducerChangeCarTruckNumberPlate
     Inherits UCComputerMessageProducer
-    Implements R2CoreRFIDCardRequester
 
 
 #Region "General Properties"
@@ -47,35 +51,19 @@ Public Class UCComputerMessageProducerChangeCarTruckNumberPlate
 
     Private Sub UCComputerMessageProducerChangeCarTruckNumberPlate_UCRequestSend() Handles Me.UCRequestSend
         Try
-            If UcPersianTextBox.UCValue.Trim = String.Empty Then
-                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "پلاک و سریال ناوگان وارد نشده است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-                Exit Sub
-            End If
-            Dim SherkatHazinehChangeCarTruckNumberPlate As Int64 = R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 8)
-            Dim AnjomanHazinehChangeCarTruckNumberPlate As Int64 = R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 10)
-            Dim NSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure = UcMoneyWallet.UCGetTrafficCard()
-            'کنترل موجودی کیف پول
-            If R2CoreParkingSystemMClassMoneyWalletManagement.GetMoneyWalletCharge(NSSTerafficCard) < SherkatHazinehChangeCarTruckNumberPlate + AnjomanHazinehChangeCarTruckNumberPlate Then
-                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "موجودی کافی نیست", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-                Exit Sub
-            Else
-                UcMoneyWallet.UCViewandActMoneyWalletNextStatus(NSSTerafficCard, BagPayType.MinusMoney, SherkatHazinehChangeCarTruckNumberPlate, R2CoreParkingSystemAccountings.SherkatChangeCarTruckNumberPlate)
-                UcMoneyWallet.UCViewandActMoneyWalletNextStatus(NSSTerafficCard, BagPayType.MinusMoney, AnjomanHazinehChangeCarTruckNumberPlate, R2CoreParkingSystemAccountings.AnjomanChangeCarTruckNumberPlate)
-            End If
-            R2CoreMClassComputerMessagesManagement.SendComputerMessage(New R2StandardComputerMessageStructure(Nothing, UcPersianTextBox.UCValue.Trim(), PayanehClassLibrary.ComputerMessages.PayanehClassLibraryComputerMessageTypes.ChangeCarTruckNumberPlate , Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, New DataStruct))
-            UCSuccessSendingNotification()
-        Catch exx As GetNSSException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, exx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch exxx As GetDataException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, exxx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
+            Dim InstanceCarTrucks = New PayanehClassLibraryMClassCarTrucksManager
+            Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
 
-    Private Sub UcPersianTextBox_UCGotFocusEvent() Handles UcPersianTextBox.UCGotFocusEvent
-        Try
-            R2CoreRFIDCardReaderInterface.StartReading(Me, R2CoreRFIDCardReaderInterface.InterfaceMode.TestForRFIDCardConfirm)
+            InstanceCarTrucks.SendTruckChangeRequestMessage(InstanceTrucks.GetNSSTruck(UcCarTruck.UCGetNSS.NSSCar.nIdCar), UcPersianTextBoxNewTruck.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            UCSuccessSendingNotification()
+        Catch ex As Exception When TypeOf ex Is SqlInjectionException _
+                               OrElse TypeOf ex Is PermissionException _
+                               OrElse TypeOf ex Is DataEntryException _
+                               OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
+                               OrElse TypeOf ex Is TerraficCardNotFoundException _
+                               OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
+                               OrElse TypeOf ex Is MoneyWalletNotExistException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -92,20 +80,6 @@ Public Class UCComputerMessageProducerChangeCarTruckNumberPlate
 
 #Region "Implemented Members"
 
-    Public Sub R2RFIDCardReaderStartToRead() Implements R2CoreRFIDCardRequester.R2RFIDCardReaderStartToRead
-    End Sub
-
-    Public Sub R2RFIDCardReaded(CardNo As String) Implements R2CoreRFIDCardRequester.R2RFIDCardReaded
-        Try
-            UcMoneyWallet.UCViewMoneyWalletOnlyCharge(R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(CardNo))
-            UCSendIsActive = True
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
-    Public Sub R2RFIDCardReaderWarning(MessageWarning As String) Implements R2CoreRFIDCardRequester.R2RFIDCardReaderWarning
-    End Sub
 
 #End Region
 

@@ -20,6 +20,9 @@ using R2Core.SoftwareUserManagement.Exceptions;
 using ATISMobileRestful.Logging;
 using R2Core.PermissionManagement;
 using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
+using R2Core.ConfigurationManagement;
+using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
+using PayanehClassLibrary.CarTrucksManagement;
 
 namespace ATISMobileRestful.Controllers.TruckManagement
 {
@@ -59,6 +62,43 @@ namespace ATISMobileRestful.Controllers.TruckManagement
             { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
+        }
+
+        [HttpPost]
+        public HttpResponseMessage SendTruckChangeRequestMessage()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith3Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientSendTruckChangeMessageRequest);
+
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var LPPelak = Content.Split(';')[2];
+                var LPSerial = Content.Split(';')[3];
+                var NewTruckLicensePlate = Content.Split(';')[4];
+
+                var InstanceCarTrucks = new PayanehClassLibraryMClassCarTrucksManager();
+                var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
+                InstanceCarTrucks.SendTruckChangeRequestMessage(InstanceTrucks.GetNSSTruckWithLicensePlate(new R2CoreTransportationAndLoadNotificationStandardTruckStructure(new R2StandardCarStructure(null, null, LPPelak, LPSerial, null), null)),NewTruckLicensePlate , NSSSoftwareuser);
+
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                return response;
+            }
+            catch (UserNotExistByApiKeyException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserLast5DigitNotMatchingException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserIdNotExistException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+
         }
 
     }

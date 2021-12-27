@@ -25,53 +25,78 @@ Partial Class UCComputerMessageProducerChangeCarTruckNumberPlate
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.UcPersianTextBox = New R2CoreGUI.UCPersianTextBox()
-        Me.UcMoneyWallet = New R2CoreParkingSystem.UCMoneyWallet()
-        Me.SuspendLayout
+        Me.UcCarTruck = New PayanehClassLibrary.UCCarTruck()
+        Me.UcLabel1 = New R2CoreGUI.UCLabel()
+        Me.UcPersianTextBoxNewTruck = New R2CoreGUI.UCPersianTextBox()
+        Me.SuspendLayout()
         '
-        'UcPersianTextBox
+        'UcCarTruck
         '
-        Me.UcPersianTextBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcPersianTextBox.Location = New System.Drawing.Point(219, 62)
-        Me.UcPersianTextBox.MaxCharacterReached = CType(50,Short)
-        Me.UcPersianTextBox.Name = "UcPersianTextBox"
-        Me.UcPersianTextBox.Size = New System.Drawing.Size(294, 175)
-        Me.UcPersianTextBox.TabIndex = 2
-        Me.UcPersianTextBox.UCBackColor = System.Drawing.Color.White
-        Me.UcPersianTextBox.UCBorder = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcPersianTextBox.UCEnable = true
-        Me.UcPersianTextBox.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcPersianTextBox.UCForeColor = System.Drawing.Color.Black
-        Me.UcPersianTextBox.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
-        Me.UcPersianTextBox.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcPersianTextBox.UCValue = ""
+        Me.UcCarTruck.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcCarTruck.BackColor = System.Drawing.Color.Transparent
+        Me.UcCarTruck.Location = New System.Drawing.Point(16, 64)
+        Me.UcCarTruck.Name = "UcCarTruck"
+        Me.UcCarTruck.Padding = New System.Windows.Forms.Padding(3)
+        Me.UcCarTruck.Size = New System.Drawing.Size(815, 153)
+        Me.UcCarTruck.TabIndex = 1
+        Me.UcCarTruck.UCViewButtons = False
         '
-        'UcMoneyWallet
+        'UcLabel1
         '
-        Me.UcMoneyWallet.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.UcMoneyWallet.BackColor = System.Drawing.Color.Transparent
-        Me.UcMoneyWallet.Location = New System.Drawing.Point(16, 62)
-        Me.UcMoneyWallet.Name = "UcMoneyWallet"
-        Me.UcMoneyWallet.Size = New System.Drawing.Size(197, 171)
-        Me.UcMoneyWallet.TabIndex = 3
+        Me.UcLabel1._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabel1.Location = New System.Drawing.Point(623, 217)
+        Me.UcLabel1.Name = "UcLabel1"
+        Me.UcLabel1.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcLabel1.Size = New System.Drawing.Size(197, 32)
+        Me.UcLabel1.TabIndex = 5
+        Me.UcLabel1.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabel1.UCFont = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel1.UCForeColor = System.Drawing.Color.Red
+        Me.UcLabel1.UCTextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.UcLabel1.UCValue = "پلاک ناوگان جدید را وارد کنید : "
+        '
+        'UcPersianTextBoxNewTruck
+        '
+        Me.UcPersianTextBoxNewTruck.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBoxNewTruck.BackColor = System.Drawing.Color.Transparent
+        Me.UcPersianTextBoxNewTruck.Location = New System.Drawing.Point(420, 222)
+        Me.UcPersianTextBoxNewTruck.MaxCharacterReached = CType(50, Short)
+        Me.UcPersianTextBoxNewTruck.Name = "UcPersianTextBoxNewTruck"
+        Me.UcPersianTextBoxNewTruck.Size = New System.Drawing.Size(202, 27)
+        Me.UcPersianTextBoxNewTruck.TabIndex = 6
+        Me.UcPersianTextBoxNewTruck.UCBackColor = System.Drawing.Color.White
+        Me.UcPersianTextBoxNewTruck.UCBorder = True
+        Me.UcPersianTextBoxNewTruck.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcPersianTextBoxNewTruck.UCEnable = True
+        Me.UcPersianTextBoxNewTruck.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcPersianTextBoxNewTruck.UCForeColor = System.Drawing.Color.Black
+        Me.UcPersianTextBoxNewTruck.UCMultiLine = False
+        Me.UcPersianTextBoxNewTruck.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
+        Me.UcPersianTextBoxNewTruck.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.UcPersianTextBoxNewTruck.UCValue = "rfwrwer"
         '
         'UCComputerMessageProducerChangeCarTruckNumberPlate
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.UcMoneyWallet)
-        Me.Controls.Add(Me.UcPersianTextBox)
+        Me.Controls.Add(Me.UcPersianTextBoxNewTruck)
+        Me.Controls.Add(Me.UcLabel1)
+        Me.Controls.Add(Me.UcCarTruck)
         Me.Name = "UCComputerMessageProducerChangeCarTruckNumberPlate"
-        Me.Size = New System.Drawing.Size(527, 251)
-        Me.Controls.SetChildIndex(Me.UcPersianTextBox, 0)
-        Me.Controls.SetChildIndex(Me.UcMoneyWallet, 0)
-        Me.ResumeLayout(false)
+        Me.Size = New System.Drawing.Size(845, 268)
+        Me.Controls.SetChildIndex(Me.UcCarTruck, 0)
+        Me.Controls.SetChildIndex(Me.UcLabel1, 0)
+        Me.Controls.SetChildIndex(Me.UcPersianTextBoxNewTruck, 0)
+        Me.ResumeLayout(False)
 
-End Sub
+    End Sub
 
-    Friend WithEvents UcPersianTextBox As UCPersianTextBox
-    Friend WithEvents UcMoneyWallet As R2CoreParkingSystem.UCMoneyWallet
+    Friend WithEvents UcCarTruck As UCCarTruck
+    Friend WithEvents UcLabel1 As UCLabel
+    Friend WithEvents UcPersianTextBoxNewTruck As UCPersianTextBox
 End Class
