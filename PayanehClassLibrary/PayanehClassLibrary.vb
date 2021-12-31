@@ -308,7 +308,20 @@ Namespace CarTruckNobatManagement
             End Try
         End Sub
 
-
+        Public Function GetLastTurnIdWhichCancelledDuringTurnsCancellationProcess() As R2CoreTransportationAndLoadNotificationStandardTurnStructure
+            Try
+                Dim DS As New DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceTruckDriver = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                        "Select Top 1 * from dbtransport.dbo.tbEnterExit as Turns 
+                         Where Turns.TurnStatus=" & TurnStatuses.CancelledUnderScore & "
+                         Order By Turns.nEnterExitId Desc", 0, DS).GetRecordsCount = 0 Then Throw New LastTurnIdWhichCancelledDuringTurnsCancellationProcessNotFoundException
+                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(DS.Tables(0).Rows(0).Item("nEnterExitId"), DS.Tables(0).Rows(0).Item("StrEnterDate").trim, DS.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDriver.GetNSSTruckDriver(Convert.ToInt64(DS.Tables(0).Rows(0).Item("nDriverCode"))), DS.Tables(0).Rows(0).Item("bFlagDriver"), DS.Tables(0).Rows(0).Item("nUserIdEnter"), DS.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, DS.Tables(0).Rows(0).Item("StrCardNo"), DS.Tables(0).Rows(0).Item("TurnStatus"))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
     End Class
 
     Public Class PayanehClassLibraryMClassCarTruckNobatManagement
@@ -1335,6 +1348,17 @@ Namespace CarTruckNobatManagement
                 End Get
             End Property
         End Class
+
+        Public Class LastTurnIdWhichCancelledDuringTurnsCancellationProcessNotFoundException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "آخرین شماره اعتبار،باطل شده طی فرآیند ابطال نوبت ها ، وجود ندارد "
+                End Get
+            End Property
+        End Class
+
 
     End Namespace
 

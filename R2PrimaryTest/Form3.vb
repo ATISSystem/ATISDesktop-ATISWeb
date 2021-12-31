@@ -262,6 +262,13 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
+            'صدور خودکار نوبت ها
+            Try
+                PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
             'Dim x As New PayanehClassLibraryMClassTurnRegisterRequestManager
             'x.RealTimeTurnRegisterRequestByLP("286ع11", "13", R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser, 12)
             'Try

@@ -197,6 +197,57 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
         }
 
         [HttpPost]
+        public HttpResponseMessage GetLoadPermissionsViaLicensePlate()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNonceWith2Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientGetLoadPermissionsViaLicensePlate);
+
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var LPPelak = Content.Split(';')[2];
+                var LPSerial = Content.Split(';')[3];
+
+                var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
+                List<Models.LoadAllocationsforTruckDriver> _LoadAllocations = new List<Models.LoadAllocationsforTruckDriver>();
+                var Lst = InstanceLoadAllocation.GetLoadPermissionsViaLicensePlate(LPPelak, LPSerial);
+                StringBuilder SB = new StringBuilder();
+                for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
+                {
+                    var Item = new Models.LoadAllocationsforTruckDriver();
+                    SB.Clear();
+                    SB.Append("شرکت حمل و نقل: " + Lst[Loopx].TransportCompanyTitle.Trim() + " " + Lst[Loopx].TransportCompanyTel.Trim() + "\r\n");
+                    SB.Append("کد مرجع: " + Lst[Loopx].LoadCapacitorLoadnEstelamId + "\r\n");
+                    SB.Append(Lst[Loopx].LoadCapacitorLoadGoodTitle.Trim() + " " + Lst[Loopx].LoadCapacitorLoadTargetTitle.Trim() + " تعدادبار: " + Lst[Loopx].LoadCapacitorLoadnCarNumKol.Trim() + "\r\n");
+                    SB.Append("تعرفه: " + Lst[Loopx].LoadCapacitorLoadStrPriceSug.Trim() + "\r\n");
+                    SB.Append("توضیحات بار: " + Lst[Loopx].LoadCapacitorLoadStrDescription.Trim() + " " + Lst[Loopx].LoadCapacitorLoadStrBarName.Trim() + " " + Lst[Loopx].LoadCapacitorLoadStrAddress.Trim() + "\r\n");
+                    SB.Append("وضعیت تخصیص بار: " + Lst[Loopx].LoadAllocationStatusTitle.Trim() + "\r\n");
+                    SB.Append("توضیحات تخصیص: " + Lst[Loopx].LoadAllocationNote.Trim() + "\r\n");
+                    SB.Append("طول سفر: " + Lst[Loopx].LoadCapacitorLoadTargetTravelength.Trim() + "\r\n");
+                    Item.Description = SB.ToString();
+                    Item.DescriptionColor = Lst[Loopx].LoadAllocationStatusColor;
+                    Item.LoadAllocationId = "شماره تخصیص:" + Lst[Loopx].LoadAllocationId + " - " + "اولویت:" + Lst[Loopx].LoadAllocationPriority;
+                    _LoadAllocations.Add(Item);
+                }
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(_LoadAllocations), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (UserNotExistByApiKeyException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (LoadAllocationNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+        }
+
+        [HttpPost]
         public HttpResponseMessage IncreasePriority()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();

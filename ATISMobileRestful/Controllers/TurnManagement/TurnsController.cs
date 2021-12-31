@@ -124,7 +124,7 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                 var YearShamsi = Content.Split(';')[3];
 
                 var InstanceCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
-                InstanceCarTruckNobat.TurnsCancellation(TopSequentialTurnNumber, InstanceSequentialTrun.GetNSSSequentialTurn(2), YearShamsi,NSSSoftwareuser );
+                InstanceCarTruckNobat.TurnsCancellation(TopSequentialTurnNumber, InstanceSequentialTrun.GetNSSSequentialTurn(2), YearShamsi, NSSSoftwareuser);
 
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
@@ -139,6 +139,42 @@ namespace ATISMobileRestful.Controllers.TurnManagement
             { return WebAPi.CreateErrorContentMessage(ex); }
 
         }
+
+        [HttpPost]
+        public HttpResponseMessage GetLastTurnIdWhichCancelledDuringTurnsCancellationProcess()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientGetLastTurnIdWhichCancelledDuringTurnsCancellationProcess);
+
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceSequentialTrun = new R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+
+                var InstanceCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
+                var NSSTurn = InstanceCarTruckNobat.GetLastTurnIdWhichCancelledDuringTurnsCancellationProcess();
+
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(NSSTurn.OtaghdarTurnNumber), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (UserNotExistByApiKeyException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserLast5DigitNotMatchingException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserIdNotExistException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+
+        }
+
 
 
     }

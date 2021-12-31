@@ -33,8 +33,12 @@ namespace R2PrimaryTestCSharp
         {
             try
             {
-                var InstanceSequentialTrun = new R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager();
-                PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellation("9:943623", InstanceSequentialTrun.GetNSSSequentialTurn(2), "1400");
+                var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
+                List<R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure > _LoadAllocations = new List<R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure>();
+                var Lst = InstanceLoadAllocation.GetLoadPermissionsViaLicensePlate("539ع24", "83");
+
+                //var InstanceSequentialTrun = new R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager();
+                //PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellation("9:943623", InstanceSequentialTrun.GetNSSSequentialTurn(2), "1400");
 
                 //var listOfStrings = new string[] { "as", "AS" };
                 //var myString = "AsDFG";
