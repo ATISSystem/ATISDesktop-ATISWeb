@@ -41,6 +41,7 @@ namespace ATISMobileRestful.Controllers.TurnManagement
 
                 var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanceTurns = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
+                var InstanceSequentialTurns = new R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager();
                 var Lst = InstanceTurns.GetTurns(NSSSoftwareuser);
                 List<Models.Turns> _Turns = new List<Models.Turns>();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
@@ -51,7 +52,10 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                     var TurnDistanceToValidity = Lst[Loopx].OtaghdarTurnNumber.Trim().Split('-')[1];
                     Item.OtaghdarTurnNumber = "شماره نوبت : " + OtaghdarTurnNumber + " فاصله شما تا اعتبار : " + TurnDistanceToValidity;
                     if (Loopx == 0)
-                    { Item.OtaghdarTurnNumber += "\r\n" + "شماره اعتبار : " + InstanceTurns.GetFirstActiveTurn(Lst[Loopx]); }
+                    {
+                        var NSSSeqTurn = InstanceSequentialTurns.GetNSSSequentialTurn(Lst[Loopx]);
+                        Item.OtaghdarTurnNumber += "\r\n" + "شماره اعتبار : " + InstanceTurns.GetFirstActiveTurn(NSSSeqTurn);
+                    }
                     Item.TurnDateTime = "زمان: " + Lst[Loopx].EnterDate.Trim() + " - " + Lst[Loopx].EnterTime.Trim();
                     Item.TurnStatusTitle = "وضعیت نوبت: " + Lst[Loopx].TurnStatusTitle.Trim();
                     Item.LPPString = "ناوگان: " + Lst[Loopx].LicensePlatePString.Trim();
@@ -141,7 +145,7 @@ namespace ATISMobileRestful.Controllers.TurnManagement
         }
 
         [HttpPost]
-        public HttpResponseMessage GetLastTurnIdWhichCancelledDuringTurnsCancellationProcess()
+        public HttpResponseMessage GetFirstActiveTurn()
         {
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
@@ -157,8 +161,9 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
 
-                var InstanceCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
-                var NSSTurn = InstanceCarTruckNobat.GetLastTurnIdWhichCancelledDuringTurnsCancellationProcess();
+                var InstanceTurns = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
+                var InstanceSequentialTurns = new R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager();
+                var NSSTurn = InstanceTurns.GetFirstActiveTurn(InstanceSequentialTurns.GetNSSSequentialTurn(Convert.ToInt64(SequentialTurns.SequentialTurnZobi)));
 
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(NSSTurn.OtaghdarTurnNumber), Encoding.UTF8, "application/json");

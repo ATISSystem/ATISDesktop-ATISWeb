@@ -228,6 +228,7 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                     SB.Append("تعرفه: " + Lst[Loopx].LoadCapacitorLoadStrPriceSug.Trim() + "\r\n");
                     SB.Append("توضیحات بار: " + Lst[Loopx].LoadCapacitorLoadStrDescription.Trim() + " " + Lst[Loopx].LoadCapacitorLoadStrBarName.Trim() + " " + Lst[Loopx].LoadCapacitorLoadStrAddress.Trim() + "\r\n");
                     SB.Append("وضعیت تخصیص بار: " + Lst[Loopx].LoadAllocationStatusTitle.Trim() + "\r\n");
+                    SB.Append("تاریخ تخصیص بار: " + Lst[Loopx].LoadPermissionDate + " - " + Lst[Loopx].LoadPermissionTime + "\r\n");
                     SB.Append("توضیحات تخصیص: " + Lst[Loopx].LoadAllocationNote.Trim() + "\r\n");
                     SB.Append("طول سفر: " + Lst[Loopx].LoadCapacitorLoadTargetTravelength.Trim() + "\r\n");
                     Item.Description = SB.ToString();

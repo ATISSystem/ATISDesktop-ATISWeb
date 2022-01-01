@@ -238,7 +238,7 @@ Namespace Trucks
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As New DataSet
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
-                    "Select nIdCar,StrCarNo,StrCarSerialNo from dbtransport.dbo.TbCar Where strCarNo='" & YourDirtyTruckNSS.NSSCar.StrCarNo & "' and strCarSerialNo='" & YourDirtyTruckNSS.NSSCar.StrCarSerialNo & "' ", 0, DS).GetRecordsCount <> 0 Then
+                    "Select Top 1 nIdCar,StrCarNo,StrCarSerialNo from dbtransport.dbo.TbCar Where strCarNo='" & YourDirtyTruckNSS.NSSCar.StrCarNo & "' and strCarSerialNo='" & YourDirtyTruckNSS.NSSCar.StrCarSerialNo & "' and ViewFlag=1 Order By nIDCar Desc", 0, DS).GetRecordsCount <> 0 Then
                     TruckId = DS.Tables(0).Rows(0).Item("nIdCar")
                     Return True
                 Else
@@ -253,7 +253,7 @@ Namespace Trucks
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As New DataSet
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select nIdCar,StrCarNo,StrCarSerialNo from dbtransport.dbo.TbCar Where strCarNo='" & YourDirtyTruckNSS.NSSCar.StrCarNo & "' and strCarSerialNo='" & YourDirtyTruckNSS.NSSCar.StrCarSerialNo & "' ", 0, DS).GetRecordsCount = 0 Then Throw New TruckNotFoundException
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 nIdCar,StrCarNo,StrCarSerialNo from dbtransport.dbo.TbCar Where strCarNo='" & YourDirtyTruckNSS.NSSCar.StrCarNo & "' and strCarSerialNo='" & YourDirtyTruckNSS.NSSCar.StrCarSerialNo & "' and ViewFlag=1 Order By nIDCar Desc", 0, DS).GetRecordsCount = 0 Then Throw New TruckNotFoundException
                 Return GetNSSTruck(Convert.ToInt64(DS.Tables(0).Rows(0).Item("nIdCar")))
             Catch ex As TruckNotFoundException
                 Throw ex
@@ -2085,7 +2085,9 @@ Namespace LoadCapacitor
                                (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) And
                                (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) And
                                (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) Then
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) Then
                                 Throw New LoadCapacitorLoadRegisterTimePassedException
                             End If
                         Else
@@ -2192,7 +2194,9 @@ Namespace LoadCapacitor
                                    (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) And
                                    (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) And
                                    (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) And
-                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) Then
+                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) And
+                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering) And
+                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) Then
                                     Throw New LoadCapacitorLoadEditTimePassedException
                                 End If
                             End If
@@ -2327,7 +2331,9 @@ Namespace LoadCapacitor
                                (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) And
                                (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) And
                                (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) Then
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering) And
+                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) Then
                                 Throw New LoadCapacitorLoadDeleteTimePassedException
                             End If
                         Else

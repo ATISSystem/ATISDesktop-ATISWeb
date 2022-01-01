@@ -135,19 +135,6 @@ End Namespace
 
 Namespace CarTruckNobatManagement
 
-    Public Enum TurnStatus
-        None = 0
-        Registered = 1
-        CancelledUser = 2
-        CancelledUserUnderScore = 3
-        CancelledSystem = 4
-        UsedLoadPermissionRegistered = 5
-        UsedLoadAllocationRegistered = 6
-        ResuscitationLoadPermissionCancelled = 7
-        ResuscitationLoadAllocationCancelled = 8
-        ResuscitationUser = 9
-    End Enum
-
     Public Class R2StandardCarTruckNobatStructure
         Private _nEnterExitId As Int64
         Private _EnterDate As String
@@ -308,20 +295,6 @@ Namespace CarTruckNobatManagement
             End Try
         End Sub
 
-        Public Function GetLastTurnIdWhichCancelledDuringTurnsCancellationProcess() As R2CoreTransportationAndLoadNotificationStandardTurnStructure
-            Try
-                Dim DS As New DataSet
-                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
-                Dim InstanceTruckDriver = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
-                        "Select Top 1 * from dbtransport.dbo.tbEnterExit as Turns 
-                         Where Turns.TurnStatus=" & TurnStatuses.CancelledUnderScore & "
-                         Order By Turns.nEnterExitId Desc", 0, DS).GetRecordsCount = 0 Then Throw New LastTurnIdWhichCancelledDuringTurnsCancellationProcessNotFoundException
-                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(DS.Tables(0).Rows(0).Item("nEnterExitId"), DS.Tables(0).Rows(0).Item("StrEnterDate").trim, DS.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDriver.GetNSSTruckDriver(Convert.ToInt64(DS.Tables(0).Rows(0).Item("nDriverCode"))), DS.Tables(0).Rows(0).Item("bFlagDriver"), DS.Tables(0).Rows(0).Item("nUserIdEnter"), DS.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, DS.Tables(0).Rows(0).Item("StrCardNo"), DS.Tables(0).Rows(0).Item("TurnStatus"))
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
     End Class
 
     Public Class PayanehClassLibraryMClassCarTruckNobatManagement
@@ -490,7 +463,7 @@ Namespace CarTruckNobatManagement
                 SequentialTurnId_ = NSSSeqT.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - SequentialTurnId.ToString().Trim().Length) + SequentialTurnId.ToString().Trim()
 
                 'ثبت نوبت ناوگان باری
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTRR.Description & "',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',1,1," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatus.CancelledSystem & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ")"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTRR.Description & "',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',1,1," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatuses.CancelledSystem & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ")"
                 CmdSql.ExecuteNonQuery()
 
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -651,7 +624,7 @@ Namespace CarTruckNobatManagement
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatus.CancelledUser & ",bFlag=1,bFlagDriver=1 Where nEnterExitId=" & YournEnterExitId & ""
+                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.CancelledUser & ",bFlag=1,bFlagDriver=1 Where nEnterExitId=" & YournEnterExitId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
                 If DoSendtoTWSFlag Then
@@ -782,7 +755,7 @@ Namespace CarTruckNobatManagement
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatus.ResuscitationUser & ",bFlag=1,bFlagDriver=0 Where nEnterExitId=" & YournEnterExitId & ""
+                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.ResuscitationUser & ",bFlag=1,bFlagDriver=0 Where nEnterExitId=" & YournEnterExitId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception
@@ -1179,7 +1152,7 @@ Namespace CarTruckNobatManagement
                 SequentialTurnId_ = NSSSequentialTurn.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - SequentialTurnId.ToString().Trim().Length) + SequentialTurnId.ToString().Trim()
 
                 'ثبت نوبت ناوگان باری
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTurnRegisteringRequest.Description & "',0," & NSSSoftwareUser.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',0,0," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatus.Registered & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ")"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTurnRegisteringRequest.Description & "',0," & NSSSoftwareUser.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',0,0," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatuses.Registered & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ")"
                 CmdSql.ExecuteNonQuery()
 
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -2171,7 +2144,7 @@ Namespace CarTrucksManagement
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As New DataSet
                 If InstanceSqlDataBOX.GetDataBOX(New R2ClassSqlConnectionSepas,
-                    "Select nIdCar,StrCarNo,StrCarSerialNo from dbtransport.dbo.TbCar Where strCarNo='" & YourNSS.NSSCar.StrCarNo & "' and strCarSerialNo='" & YourNSS.NSSCar.StrCarSerialNo & "' ", 0, DS).GetRecordsCount <> 0 Then
+                    "Select Top 1 nIdCar,StrCarNo,StrCarSerialNo from dbtransport.dbo.TbCar Where strCarNo='" & YourNSS.NSSCar.StrCarNo & "' and strCarSerialNo='" & YourNSS.NSSCar.StrCarSerialNo & "'  and ViewFlag=1 Order By nIDCar Desc", 0, DS).GetRecordsCount <> 0 Then
                     TruckId = DS.Tables(0).Rows(0).Item("nIdCar")
                     Return True
                 Else

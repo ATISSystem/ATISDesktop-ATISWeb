@@ -796,22 +796,23 @@ Namespace Turns
     Public Class R2CoreTransportationAndLoadNotificationInstanceTurnsManager
         Private _DateTime As New R2DateTime
 
-        Public Function GetFirstActiveTurn(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure) As String
+        Public Function GetFirstActiveTurn(YourNSSSequentialTurn As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure) As R2CoreTransportationAndLoadNotificationStandardTurnStructure
             Try
-                Dim SeqTurnKeyWord = Mid(YourNSSTurn.OtaghdarTurnNumber, 1, 1)
-                Dim DS As DataSet
+                Dim DS As DataSet = Nothing
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceTruckDrivers = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "
                   Declare @TopTurn int
                   Select Top 1 @TopTurn=Turns.nEnterExitId from dbtransport.dbo.tbEnterExit as Turns
-                  Where substring(OtaghdarTurnNumber,1,1)='" & SeqTurnKeyWord & "' and TurnStatus=3 
+                  Where substring(OtaghdarTurnNumber,1,1)='" & YourNSSSequentialTurn.SequentialTurnKeyWord & "' and TurnStatus=" & TurnStatuses.CancelledUnderScore & " 
                   Order By nEnterExitId Desc
                   Select Top 1 Turns.OtaghdarTurnNumber from dbtransport.dbo.tbEnterExit as Turns
-                  Where Turns.nEnterExitId>@TopTurn and (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and substring(Turns.OtaghdarTurnNumber,1,1)='" & SeqTurnKeyWord & "' 
-                  Order By Turns.nEnterExitId Asc", 300, DS).GetRecordsCount <> 0 Then
-                    Return DS.Tables(0).Rows(0).Item("OtaghdarTurnNumber")
-                End If
-                Return String.Empty
+                  Where Turns.nEnterExitId>@TopTurn and (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") 
+                        and substring(Turns.OtaghdarTurnNumber,1,1)='" & YourNSSSequentialTurn.SequentialTurnKeyWord & "' 
+                  Order By Turns.nEnterExitId Asc", 300, DS).GetRecordsCount <> 0 Then Throw New FirstActiveTurnNotFoundException
+                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(DS.Tables(0).Rows(0).Item("nEnterExitId"), DS.Tables(0).Rows(0).Item("StrEnterDate").trim, DS.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(DS.Tables(0).Rows(0).Item("nDriverCode"))), DS.Tables(0).Rows(0).Item("bFlagDriver"), DS.Tables(0).Rows(0).Item("nUserIdEnter"), DS.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, DS.Tables(0).Rows(0).Item("StrCardNo"), DS.Tables(0).Rows(0).Item("TurnStatus"))
+            Catch ex As FirstActiveTurnNotFoundException
+                Throw New FirstActiveTurnNotFoundException
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -2097,6 +2098,20 @@ Namespace Turns
                 End Try
             End Function
 
+            Public Function GetNSSSequentialTurn(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure) As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure
+                Try
+                    Dim SeqTurnKeyWord = Mid(YourNSSTurn.OtaghdarTurnNumber, 1, 1)
+                    Dim DS As DataSet
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2PrimaryTransportationAndLoadNotification.DBO.TblSequentialTurns Where SeqTKeyWord='" & SeqTurnKeyWord & "'", 3600, DS).GetRecordsCount() = 0 Then Throw New SequentialTurnNotFoundException
+                    Return New R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure(DS.Tables(0).Rows(0).Item("SeqTId"), DS.Tables(0).Rows(0).Item("SeqTTitle").trim, DS.Tables(0).Rows(0).Item("SeqTColor").trim, DS.Tables(0).Rows(0).Item("SeqTKeyWord").trim, DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Catch ex As SequentialTurnNotFoundException
+                    Throw ex
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
         End Class
 
         Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassSequentialTurnsManagement
@@ -2378,6 +2393,14 @@ Namespace Turns
             End Property
         End Class
 
+        Public Class FirstActiveTurnNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "شماره اولین نوبت دارای اعتبار یافت نشد"
+                End Get
+            End Property
+        End Class
 
     End Namespace
 
