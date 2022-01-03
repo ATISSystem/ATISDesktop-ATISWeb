@@ -1113,6 +1113,36 @@ Namespace ComputerMessagesManagement
 
     End Class
 
+    Public Class R2CoreMClassComputerMessagesManager
+        Private _DateTime As R2DateTime = New R2DateTime()
+
+        Public Sub SendComputerMessage(YourComputerMessage As R2StandardComputerMessageStructure)
+            Try
+                Dim InstanceComputers = New R2CoreMClassComputersManager
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                SabtComputerMessage(New R2StandardComputerMessageStructure(0, YourComputerMessage.CMNote, YourComputerMessage.CMType, True, False, InstanceComputers.GetNSSCurrentComputer.MId, InstanceSoftwareUsers.GetNSSSystemUser.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), YourComputerMessage.DataStruct))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Private Sub SabtComputerMessage(YourComputerMessage As R2StandardComputerMessageStructure)
+            Dim Cmdsql As New SqlClient.SqlCommand
+            Cmdsql.Connection = (New DatabaseManagement.R2PrimarySqlConnection).GetConnection
+            Try
+                Cmdsql.Connection.Open()
+                Cmdsql.CommandText = "Insert Into R2Primary.dbo.TblComputerMessages(CMNote,CMType,CMActive,CMAccessed,ComputerId,UserId,DateTimeMilladi,DateShamsi,Time,Data1,Data2,Data3,Data4,Data5) values('" & YourComputerMessage.CMNote & "'," & YourComputerMessage.CMType & "," & IIf(YourComputerMessage.CMActive = True, 1, 0) & "," & IIf(YourComputerMessage.CMAccessed = True, 1, 0) & "," & YourComputerMessage.ComputerId & "," & YourComputerMessage.UserId & ",'" & YourComputerMessage.DateTimeMilladi & "','" & YourComputerMessage.DateShamsi & "','" & YourComputerMessage.Time & "','" & YourComputerMessage.DataStruct.Data1 & "','" & YourComputerMessage.DataStruct.Data2 & "','" & YourComputerMessage.DataStruct.Data3 & "','" & YourComputerMessage.DataStruct.Data4 & "','" & YourComputerMessage.DataStruct.Data5 & "')"
+                Cmdsql.ExecuteNonQuery()
+                Cmdsql.Connection.Close()
+            Catch ex As Exception
+                If Cmdsql.Connection.State <> ConnectionState.Closed Then Cmdsql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+
+    End Class
+
     Public NotInheritable Class R2CoreMClassComputerMessagesManagement
 
         Private Shared _DateTime As R2DateTime = New R2DateTime()
@@ -3806,7 +3836,7 @@ Namespace ExceptionManagement
         Private _Message = String.Empty
 
         Public Sub New()
-            _Message = "اطلاعات وارد شده صحیح نیست"
+            _Message = "اطلاعات وارد شده صحیح نیست،کلیه اطلاعات وارد شده را بررسی کنید"
         End Sub
 
         Public Sub New(YourMessage As String)

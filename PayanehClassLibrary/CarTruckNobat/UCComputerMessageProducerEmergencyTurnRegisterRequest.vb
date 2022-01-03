@@ -1,6 +1,7 @@
 ﻿
 
 Imports System.Reflection
+Imports PayanehClassLibrary.TurnRegisterRequest
 Imports PayanehClassLibrary.TurnRegisterRequest.Exceptions
 Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
@@ -27,7 +28,9 @@ Public Class UCComputerMessageProducerEmergencyTurnRegisterRequest
 
     Private Sub UCEmergencyTurnRegisterRequest()
         Try
-            TurnRegisterRequest.PayanehClassLibraryMClassTurnRegisterRequestManagement.EmergencyTurnRegisterRequest(R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCar.UCGetNSS.nIdCar), True, UcPersianTextBoxNote.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
+            Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
+            InstanceTurnRegisterRequest.EmergencyTurnRegisterRequest(InstanceTrucks.GetNSSTruck(UcCar.UCGetNSS.nIdCar), True, UcPersianTextBoxNote.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
         Catch ex As Exception When TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
             OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
             OrElse TypeOf ex Is UserCanNotRequestEmergencyTurnRegisteringException

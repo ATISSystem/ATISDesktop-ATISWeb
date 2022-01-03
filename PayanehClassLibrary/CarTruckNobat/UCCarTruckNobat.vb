@@ -110,7 +110,8 @@ Public Class UCCarTruckNobat
 
     Private Sub UcButtonChop_UCClickedEvent() Handles UcButtonChop.UCClickedEvent
         Try
-            R2CoreTransportationAndLoadNotificationMClassTurnPrintingManagement.TurnPrint(_NSSCarTruckNobat.nEnterExitId)
+            Dim InstanceTurnPrinting = New R2CoreTransportationAndLoadNotificationMClassTurnPrintingManager
+            InstanceTurnPrinting.TurnPrint(_NSSCarTruckNobat.nEnterExitId)
         Catch exx As GetNSSException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + exx.Message, "اطلاعات پایه برای چاپ نوبت ناوگان باری تکمیل نیست", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         Catch ex As Exception

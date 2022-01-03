@@ -11,9 +11,9 @@ using R2Core.SoftwareUserManagement;
 
 namespace ATISWeb.LoginManagement
 {
-    public class ATISWebMClassLoginManagement
+    public class ATISWebMClassLoginManager
     {
-        public static R2CoreStandardSoftwareUserStructure GetNSSCurrentUser()
+        public R2CoreStandardSoftwareUserStructure GetNSSCurrentUser()
         {
             try
             {

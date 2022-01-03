@@ -49,7 +49,8 @@ namespace ATISWeb.MenuManagement
         {
             try
             {
-                var Lst = R2CoreMClassWebProcessesManagement.GetWebProcesses(ATISWebMClassLoginManagement.GetNSSCurrentUser());
+                var InstanceLogin = new ATISWebMClassLoginManager();
+                var Lst = R2CoreMClassWebProcessesManagement.GetWebProcesses(InstanceLogin.GetNSSCurrentUser());
                 int X = Lst.Count - 1;
                 while (X >=0 )
                 {

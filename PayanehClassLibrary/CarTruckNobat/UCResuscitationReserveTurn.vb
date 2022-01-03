@@ -5,6 +5,7 @@ Imports System.Reflection
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
 Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
+Imports PayanehClassLibrary.RequesterManagement
 Imports PayanehClassLibrary.TurnRegisterRequest
 Imports PayanehClassLibrary.TurnRegisterRequest.Exceptions
 Imports R2Core.ExceptionManagement
@@ -68,7 +69,9 @@ Public Class UCResuscitationReserveTurn
     Private Sub UCButtonResuscitation_UCClickedEvent() Handles UCButtonResuscitation.UCClickedEvent
         Try
             UCButtonResuscitation.UCEnable = False
-            PayanehClassLibraryMClassTurnRegisterRequestManagement.ResuscitationReserveTurn(UcNumberTRRId.UCValue, R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSTruck(UcCar.UCGetNSS().nIdCar), True, PayanehClassLibrary.RequesterManagement.PayanehClassLibraryRequesters.UCResuscitationReserveTurn, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
+            Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
+            InstanceTurnRegisterRequest.ResuscitationReserveTurn(UcNumberTRRId.UCValue, InstanceTrucks.GetNSSTruck(UcCar.UCGetNSS().nIdCar), True, PayanehClassLibraryRequesters.UCResuscitationReserveTurn, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت رزرو با موفقیت احیاء شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                                 OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _

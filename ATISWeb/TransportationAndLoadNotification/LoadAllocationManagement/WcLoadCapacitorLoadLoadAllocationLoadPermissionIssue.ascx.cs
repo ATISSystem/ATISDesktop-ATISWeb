@@ -85,33 +85,38 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
             try
             {
                 BtnLoadAllocation.Enabled = false;
+                var InstanceTransportCompanies = new R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager();
+                var InstanceLogin = new ATISWebMClassLoginManager();
                 var NSSTruck = WcSmartCardsInquiry.WcGetNSSTruck;
                 var NSSTruckDriver = WcSmartCardsInquiry.WcGetNSSTruckDriver;
-                var NSSTransportCompany = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(ATISWebMClassLoginManagement.GetNSSCurrentUser());
+                var NSSTransportCompany = InstanceTransportCompanies.GetNSSTransportCompnay(InstanceLogin.GetNSSCurrentUser());
                 var NSSLoadCapacitorLoad = WcViewerNSSLoadCapacitorLoad.WcGetNSSCurrent;
 
                 //به دست آوردن نوبت موجود ناوگان و یا این که در صورت عدم وجود نوبت باید روابط موقت ایجاد گردد و نوبت صادر گردد
                 //در این جا از کیف پول شرکت حمل و نقل استفاده شده است
                 //سه رابطه ایجاد می گردد ناوگان-راننده و ناوگان-زیرگروه اعلام بار و ناوگان-کیف پول
                 var InstanceTurns = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
+                var TempTurnReport = string.Empty;
                 try
                 {
                     NSSTurn = InstanceTurns.GetNSSTurn(NSSTruck);
-                    LblTurnStatus.Text = "ناوگان نوبت دارد.برای تخصیص بار از نوبت موجود استفاده شد ";
+                    TempTurnReport = "ناوگان نوبت دارد.برای تخصیص بار از نوبت موجود استفاده شد ";
                     PnlTurnStatus.BackColor = System.Drawing.Color.Green;
                     TurnIsTemporary = false;
                 }
                 catch (TurnNotFoundException ex)
                 {
-                    NSSTurn = InstanceTurns.GetNSSTurn(PayanehClassLibraryMClassCarTruckNobatManagement.GetTurnofKiosk(NSSTruck, NSSTruckDriver, NSSTransportCompany, NSSLoadCapacitorLoad, ATISWebMClassLoginManagement.GetNSSCurrentUser()));
-                    LblTurnStatus.Text = "ناوگان نوبت ندارد.نوبت به صورت خودکار در سامانه صادر شد ";
+                    var InstanceCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
+                    NSSTurn = InstanceTurns.GetNSSTurn(InstanceCarTruckNobat.GetTurnofKiosk(NSSTruck, NSSTruckDriver, NSSTransportCompany, NSSLoadCapacitorLoad, InstanceLogin.GetNSSCurrentUser()));
+                    TempTurnReport = "ناوگان نوبت ندارد.نوبت به صورت خودکار در سامانه صادر شد ";
                     PnlTurnStatus.BackColor = System.Drawing.Color.Red;
                     TurnIsTemporary = true;
                 }
                 //تخصیص بار - آزاد سازی بار به صورت خودکار توسط سرور انجام می گردد
                 //مشاهده و چاپ مجوز از طریق قسمت مجوزهای صادر شده در بارهای رسوبی قابل مشاهده است
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                Int64 LAId = InstanceLoadAllocation.LoadAllocationRegistering(NSSLoadCapacitorLoad.nEstelamId, NSSTurn.nEnterExitId, ATISWebMClassLoginManagement.GetNSSCurrentUser(), R2CoreTransportationAndLoadNotificationRequesters.WcLoadCapacitorLoadAllocationLoadPermissionIssue);
+                Int64 LAId = InstanceLoadAllocation.LoadAllocationRegistering(NSSLoadCapacitorLoad.nEstelamId, NSSTurn.nEnterExitId, InstanceLogin.GetNSSCurrentUser(), R2CoreTransportationAndLoadNotificationRequesters.WcLoadCapacitorLoadAllocationLoadPermissionIssue);
+                LblTurnStatus.Text = TempTurnReport;
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','تخصیص بار با موفقیت انجام شد');", true);
             }
             catch (Exception ex) when (ex is SoftwareUserMoneyWalletNotFoundException ||

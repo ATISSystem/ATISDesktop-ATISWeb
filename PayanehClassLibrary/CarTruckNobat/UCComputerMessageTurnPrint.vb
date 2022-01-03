@@ -38,7 +38,8 @@ Public Class UCComputerMessageTurnPrint
 
     Private Sub UcButtonNobatPrint_UCClickedEvent() Handles UcButtonNobatPrint.UCClickedEvent
         Try
-            R2CoreTransportationAndLoadNotificationMClassTurnPrintingManagement.TurnPrint(_NSS.DataStruct.Data1)
+            Dim InstanceTurnPrinting = New R2CoreTransportationAndLoadNotificationMClassTurnPrintingManager
+            InstanceTurnPrinting.TurnPrint(_NSS.DataStruct.Data1)
             UCDeactiveComputerMessage()
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

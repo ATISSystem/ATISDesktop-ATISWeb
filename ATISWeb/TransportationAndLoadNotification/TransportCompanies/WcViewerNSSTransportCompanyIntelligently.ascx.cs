@@ -30,7 +30,9 @@ namespace ATISWeb.TransportationAndLoadNotification.TransportCompanies
         {
             try
             {
-                R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure NSS = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetNSSTransportCompnay(ATISWebMClassLoginManagement.GetNSSCurrentUser());
+                var InstanceLogin = new ATISWebMClassLoginManager();
+                var InstanceTransportCompanies = new R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager();
+                R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure NSS = InstanceTransportCompanies.GetNSSTransportCompnay(InstanceLogin.GetNSSCurrentUser());
                 TxtTransportCompanyTitle.Text = NSS.TCTitle.Trim();
             }
             catch (PleaseReloginException ex)

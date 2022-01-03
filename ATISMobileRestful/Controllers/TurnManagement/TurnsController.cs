@@ -54,7 +54,7 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                     if (Loopx == 0)
                     {
                         var NSSSeqTurn = InstanceSequentialTurns.GetNSSSequentialTurn(Lst[Loopx]);
-                        Item.OtaghdarTurnNumber += "\r\n" + "شماره اعتبار : " + InstanceTurns.GetFirstActiveTurn(NSSSeqTurn);
+                        Item.OtaghdarTurnNumber += "\r\n" + "شماره اعتبار : " + InstanceTurns.GetFirstActiveTurn(NSSSeqTurn).OtaghdarTurnNumber ;
                     }
                     Item.TurnDateTime = "زمان: " + Lst[Loopx].EnterDate.Trim() + " - " + Lst[Loopx].EnterTime.Trim();
                     Item.TurnStatusTitle = "وضعیت نوبت: " + Lst[Loopx].TurnStatusTitle.Trim();

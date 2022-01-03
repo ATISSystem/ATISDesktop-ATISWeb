@@ -806,10 +806,10 @@ Namespace Turns
                   Select Top 1 @TopTurn=Turns.nEnterExitId from dbtransport.dbo.tbEnterExit as Turns
                   Where substring(OtaghdarTurnNumber,1,1)='" & YourNSSSequentialTurn.SequentialTurnKeyWord & "' and TurnStatus=" & TurnStatuses.CancelledUnderScore & " 
                   Order By nEnterExitId Desc
-                  Select Top 1 Turns.OtaghdarTurnNumber from dbtransport.dbo.tbEnterExit as Turns
+                  Select Top 1 * from dbtransport.dbo.tbEnterExit as Turns
                   Where Turns.nEnterExitId>@TopTurn and (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") 
                         and substring(Turns.OtaghdarTurnNumber,1,1)='" & YourNSSSequentialTurn.SequentialTurnKeyWord & "' 
-                  Order By Turns.nEnterExitId Asc", 300, DS).GetRecordsCount <> 0 Then Throw New FirstActiveTurnNotFoundException
+                  Order By Turns.nEnterExitId Asc", 300, DS).GetRecordsCount = 0 Then Throw New FirstActiveTurnNotFoundException
                 Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(DS.Tables(0).Rows(0).Item("nEnterExitId"), DS.Tables(0).Rows(0).Item("StrEnterDate").trim, DS.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(DS.Tables(0).Rows(0).Item("nDriverCode"))), DS.Tables(0).Rows(0).Item("bFlagDriver"), DS.Tables(0).Rows(0).Item("nUserIdEnter"), DS.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, DS.Tables(0).Rows(0).Item("StrCardNo"), DS.Tables(0).Rows(0).Item("TurnStatus"))
             Catch ex As FirstActiveTurnNotFoundException
                 Throw New FirstActiveTurnNotFoundException
@@ -1673,15 +1673,15 @@ Namespace Turns
             Dim Description As String
         End Structure
 
-        Public Class R2CoreTransportationAndLoadNotificationMClassTurnPrintingManagement
+        Public Class R2CoreTransportationAndLoadNotificationMClassTurnPrintingManager
+            Private WithEvents _PrintDocumentNobat As PrintDocument = New PrintDocument()
+            Private TurnPrintingInf As R2CoreTransportationAndLoadNotificationTurnPrintingInf
 
-            Private Shared WithEvents _PrintDocumentNobat As PrintDocument = New PrintDocument()
-            Private Shared TurnPrintingInf As R2CoreTransportationAndLoadNotificationTurnPrintingInf
-
-            Private Shared Function GetTurnPrintingInf(YourTurnId As Int64) As R2CoreTransportationAndLoadNotificationTurnPrintingInf
+            Private Function GetTurnPrintingInf(YourTurnId As Int64) As R2CoreTransportationAndLoadNotificationTurnPrintingInf
                 Try
                     Dim DS As DataSet
-                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
                       "Select Top 1 EnterExit.strDesc as Description,EnterExit.nEnterExitId,EnterExit.strEnterDate,EnterExit.strEnterTime,RFIDCard.CardNo,RFIDCard.Charge,
                                     Person.strPersonFullName,LoaderType.LoaderTypeTitle,LoaderTypeFixStatus.LoaderTypeFixStatusTitle,Car.strCarNo,Car.strCarSerialNo,
 	                                SoftwareUser.UserName,Substring(EnterExit.OtaghdarTurnNumber,7,20) as SequentialTurnId
@@ -1729,9 +1729,11 @@ Namespace Turns
                 End Try
             End Function
 
-            Public Shared Sub TurnPrint(YourTurnId As Int64)
+            Public Sub TurnPrint(YourTurnId As Int64)
                 Try
-                    If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.TurnControlling, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 2) Then
+                    Dim InstanceConfigurationOfComputers = New R2CoreMClassConfigurationOfComputersManager
+                    Dim InstanceComputers = New R2CoreMClassComputersManager
+                    If InstanceConfigurationOfComputers.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.TurnControlling, InstanceComputers.GetNSSCurrentComputer.MId, 2) Then
                         TurnPrintingInf = GetTurnPrintingInf(YourTurnId)
                         'چاپ قبض نوبت
                         _PrintDocumentNobat.Print()
@@ -1743,13 +1745,13 @@ Namespace Turns
                 End Try
             End Sub
 
-            Private Shared Sub _PrintDocumentNobat_BeginPrint(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintEventArgs) Handles _PrintDocumentNobat.BeginPrint
+            Private Sub _PrintDocumentNobat_BeginPrint(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintEventArgs) Handles _PrintDocumentNobat.BeginPrint
             End Sub
 
-            Private Shared Sub _PrintDocumentNobat_EndPrint(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintEventArgs) Handles _PrintDocumentNobat.EndPrint
+            Private Sub _PrintDocumentNobat_EndPrint(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintEventArgs) Handles _PrintDocumentNobat.EndPrint
             End Sub
 
-            Private Shared Sub _PrintDocumentNobat_PrintPage_Printing(ByVal X As Int16, ByVal Y As Int16, ByVal E As System.Drawing.Printing.PrintPageEventArgs)
+            Private Sub _PrintDocumentNobat_PrintPage_Printing(ByVal X As Int16, ByVal Y As Int16, ByVal E As System.Drawing.Printing.PrintPageEventArgs)
                 Try
                     Dim myPaperSizeHalf As Integer = _PrintDocumentNobat.PrinterSettings.DefaultPageSettings.PaperSize.Width / 4
                     Dim myStrFontPersonFullName As Font = New System.Drawing.Font("Badr", 20.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
@@ -1786,7 +1788,7 @@ Namespace Turns
                 End Try
             End Sub
 
-            Private Shared Sub PrintDocument_PrintPage(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintPageEventArgs) Handles _PrintDocumentNobat.PrintPage
+            Private Sub PrintDocument_PrintPage(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintPageEventArgs) Handles _PrintDocumentNobat.PrintPage
                 Try
                     _PrintDocumentNobat_PrintPage_Printing(150, 40, e)
                 Catch ex As Exception
@@ -1804,6 +1806,40 @@ Namespace Turns
             Public Shared ReadOnly Property None = 0
             Public Shared ReadOnly Property NoCost = 1
             Public Shared ReadOnly Property Replica = 2
+        End Class
+
+        Public Class R2CoreTransportationAndLoadNotificationMClassTurnPrintRequestManager
+
+            Public Sub NoCostTurnPrintRequest(YourTurnId As Int64, YourTurnPrintRedirect As Boolean)
+                Try
+                    TurnPrintRequest(YourTurnId, YourTurnPrintRedirect)
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+            Private Sub TurnPrintRequest(YourTurnId As Int64, YourTurnPrintRedirect As Boolean)
+                Try
+                    Dim InstanceTurnPrinting = New R2CoreTransportationAndLoadNotificationMClassTurnPrintingManager
+                    Dim InstanceConfigurationOfComputers = New R2CoreMClassConfigurationOfComputersManager
+                    Dim InstanceComputers = New R2CoreMClassComputersManager
+                    Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                    If Not YourTurnPrintRedirect Then
+                        InstanceTurnPrinting.TurnPrint(YourTurnId)
+                    Else
+                        If InstanceConfigurationOfComputers.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.TurnControlling, InstanceComputers.GetNSSCurrentComputer.MId, 0) = True Then
+                            Dim DataStruct As DataStruct = New DataStruct()
+                            DataStruct.Data1 = YourTurnId
+                            Dim NSSTruck = InstanceTurns.GetNSSTruck(YourTurnId)
+                            Dim InstanceComputerMessages = New R2CoreMClassComputerMessagesManager
+                            InstanceComputerMessages.SendComputerMessage(New R2StandardComputerMessageStructure(Nothing, NSSTruck.NSSCar.GetCarPelakSerialComposit(), R2CoreTransportationAndLoadNotificationComputerMessageTypes.TurnPrint, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, DataStruct))
+                        End If
+                    End If
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
         End Class
 
         Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTurnPrintRequestManagement
@@ -1826,8 +1862,9 @@ Namespace Turns
 
             Private Shared Sub TurnPrintRequest(YourTurnId As Int64, YourTurnPrintRedirect As Boolean)
                 Try
+                    Dim InstanceTurnPrinting = New R2CoreTransportationAndLoadNotificationMClassTurnPrintingManager
                     If Not YourTurnPrintRedirect Then
-                        R2CoreTransportationAndLoadNotificationMClassTurnPrintingManagement.TurnPrint(YourTurnId)
+                        InstanceTurnPrinting.TurnPrint(YourTurnId)
                     Else
                         If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.TurnControlling, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0) = True Then
                             Dim DataStruct As DataStruct = New DataStruct()
@@ -1920,6 +1957,91 @@ Namespace Turns
             Public Property ComputerId As Int64
             Public Property DateTimeMilladi As DateTime
             Public Property DateShamsi As String
+        End Class
+
+        Public Class R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManager
+            Private _DateTime As New R2DateTime
+            Private _R2PrimaryFSWS As R2Core.R2PrimaryFileSharingWS.R2PrimaryFileSharingWebService = New R2PrimaryFileSharingWebService()
+
+            Public Function GetNSSTurnRegisterRequestType(YourTurnRegisterRequestTypeId As Int64) As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestTypeStructure
+                Try
+                    Dim Ds As DataSet
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimaryTransportationAndLoadNotification.dbo.TblTurnRegisterRequestTypes as TRRTypes Where TRRTypes.TRRTypeId=" & YourTurnRegisterRequestTypeId & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New TurnRegisterRequestTypeNotFoundException
+                    Dim NSS = New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestTypeStructure
+                    NSS.TRRTypeId = Ds.Tables(0).Rows(0).Item("TRRTypeId")
+                    NSS.TRRTypeName = Ds.Tables(0).Rows(0).Item("TRRTypeName").trim
+                    NSS.TRRTypeTitle = Ds.Tables(0).Rows(0).Item("TRRTypeTitle").trim
+                    NSS.TRRTypeColor = Color.FromName(Ds.Tables(0).Rows(0).Item("TRRTypeColor").trim)
+                    NSS.TurnExpirationHours = Ds.Tables(0).Rows(0).Item("TurnExpirationHours")
+                    NSS.ViewFlag = Ds.Tables(0).Rows(0).Item("ViewFlag")
+                    NSS.Acitve = Ds.Tables(0).Rows(0).Item("Active")
+                    NSS.Deleted = Ds.Tables(0).Rows(0).Item("Deleted")
+                    Return NSS
+                Catch ex As TurnRegisterRequestTypeNotFoundException
+                    Throw ex
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function TurnRegisterRequestRegistering(YourNSSTRR As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure, YourAttachement As R2CoreImage, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
+                Dim CmdSql As New SqlCommand
+                CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+                Try
+                    Dim InstanceComputers = New R2CoreMClassComputersManager
+                    'تراکنش ثبت درخواست صدور نوبت
+                    CmdSql.Connection.Open()
+                    CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
+                    CmdSql.CommandText = "Select Top 1 TRRId From R2PrimaryTransportationAndLoadNotification.dbo.TblTurnRegisterRequests With (tablockx) Order By TRRId Desc"
+                    CmdSql.ExecuteNonQuery()
+                    Dim TRRIdNew As Int64 = CmdSql.ExecuteScalar() + 1
+                    CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTurnRegisterRequests(TRRId,TRRTypeId,TruckId,Description,UserId,ComputerId,DateTimeMilladi,DateShamsi) Values(" & TRRIdNew & "," & YourNSSTRR.TRRTypeId & "," & YourNSSTRR.TruckId & ",'" & YourNSSTRR.Description & "'," & YourUserNSS.UserId & "," & InstanceComputers.GetNSSCurrentComputer.MId & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "')"
+                    CmdSql.ExecuteNonQuery()
+                    If YourAttachement IsNot Nothing Then SaveTurnRegisterRequestAttachement(YourAttachement, TRRIdNew, YourUserNSS)
+                    CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                    'ارسال کد درخواست
+                    Return TRRIdNew
+                Catch ex As Exception
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then
+                        CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                    End If
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Private Sub SaveTurnRegisterRequestAttachement(YourAttachement As R2CoreImage, YourTRRId As Int64, YourNSSUser As R2CoreStandardSoftwareUserStructure)
+                Try
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                    Dim FileInf = New R2CoreFile(YourTRRId.ToString() + InstanceConfiguration.GetConfigString(R2CoreConfigurations.JPGBitmap, 2))
+                    _R2PrimaryFSWS.WebMethodSaveFile(FileShareRawGroupsManagement.R2CoreTransportationAndLoadNotificationRawGroups.TurnRegisterRequestAttachements, FileInf.FileName, YourAttachement.GetImageByte(), _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword))
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+            Public Function GetNSSTurnRegisterRequest(YourTurnRegisterRequestId As Int64) As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure
+                Try
+                    Dim Ds As DataSet
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimaryTransportationAndLoadNotification.dbo.TblTurnRegisterRequests as TRRs Where TRRs.TRRId=" & YourTurnRegisterRequestId & "", 1, Ds).GetRecordsCount() = 0 Then Throw New TurnRegisterRequestNotFoundException
+                    Dim NSS = New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure
+                    NSS.TRRId = Ds.Tables(0).Rows(0).Item("TRRId")
+                    NSS.TRRTypeId = Ds.Tables(0).Rows(0).Item("TRRTypeId")
+                    NSS.TruckId = Ds.Tables(0).Rows(0).Item("TruckId")
+                    NSS.UserId = Ds.Tables(0).Rows(0).Item("UserId")
+                    NSS.Description = Ds.Tables(0).Rows(0).Item("Description").trim
+                    NSS.ComputerId = Ds.Tables(0).Rows(0).Item("ComputerId")
+                    NSS.DateShamsi = Ds.Tables(0).Rows(0).Item("DateShamsi")
+                    NSS.DateTimeMilladi = Ds.Tables(0).Rows(0).Item("DateTimeMilladi")
+                    Return NSS
+                Catch ex As TurnRegisterRequestNotFoundException
+                    Throw ex
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
         End Class
 
         Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement

@@ -57,6 +57,7 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
             try
             {
                 R2StandardDriverTruckStructure NSS = null;
+                var InstacneLogin = new ATISWebMClassLoginManager();
                 var InstanceTruckDrivers = new R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager();
                 try
                 {
@@ -65,7 +66,7 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
                 }
                 catch (DriverTruckInformationNotExistException ex)
                 {
-                    var TruckDriverId = WS.WebMethodGetDriverTruckByNationalCodefromRMTO(TxtTruckDriverNationalCode.Text, WS.WebMethodLogin(ATISWebMClassLoginManagement.GetNSSCurrentUser().UserShenaseh, ATISWebMClassLoginManagement.GetNSSCurrentUser().UserPassword));
+                    var TruckDriverId = WS.WebMethodGetDriverTruckByNationalCodefromRMTO(TxtTruckDriverNationalCode.Text, WS.WebMethodLogin(InstacneLogin.GetNSSCurrentUser().UserShenaseh, InstacneLogin.GetNSSCurrentUser().UserPassword));
                     _WcNSSTruckDriver = InstanceTruckDrivers.GetNSSTruckDriver(TruckDriverId);
                 }
 
@@ -83,7 +84,8 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
         {
             try
             {
-                var CarId = WS.WebMethodGetnIdCarTruckBySmartCarNo(TxtTruckSmartCardNo.Text, WS.WebMethodLogin(ATISWebMClassLoginManagement.GetNSSCurrentUser().UserShenaseh, ATISWebMClassLoginManagement.GetNSSCurrentUser().UserPassword));
+                var InstanceLogin = new ATISWebMClassLoginManager();
+                var CarId = WS.WebMethodGetnIdCarTruckBySmartCarNo(TxtTruckSmartCardNo.Text, WS.WebMethodLogin(InstanceLogin.GetNSSCurrentUser().UserShenaseh, InstanceLogin.GetNSSCurrentUser().UserPassword));
                 var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
                 _WcNSSTruck = InstanceTrucks.GetNSSTruck(CarId);
             }

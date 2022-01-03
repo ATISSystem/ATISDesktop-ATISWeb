@@ -1943,6 +1943,43 @@ Namespace EntityRelationManagement
 
     End Class
 
+    Public Class R2CoreMClassEntityRelationManager
+
+        Public Function RegisteringEntityRelation(YourNSSEntityRelation As R2StandardEntityRelationStructure, YourDeactive As RelationDeactiveTypes) As Int64
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
+                If YourDeactive = RelationDeactiveTypes.E1Deactive Then
+                    CmdSql.CommandText = "Update R2Primary.dbo.TblEntityRelations Set RelationActive=0 Where E1=" & YourNSSEntityRelation.E1 & " and ERTypeId=" & YourNSSEntityRelation.ERTypeId & ""
+                ElseIf YourDeactive = RelationDeactiveTypes.E2Deactive Then
+                    CmdSql.CommandText = "Update R2Primary.dbo.TblEntityRelations Set RelationActive=0 Where E2=" & YourNSSEntityRelation.E2 & " and ERTypeId=" & YourNSSEntityRelation.ERTypeId & ""
+                ElseIf YourDeactive = RelationDeactiveTypes.BothDeactive Then
+                    CmdSql.CommandText = "Update R2Primary.dbo.TblEntityRelations Set RelationActive=0 Where (E1=" & YourNSSEntityRelation.E1 & " or E2=" & YourNSSEntityRelation.E2 & ") and ERTypeId=" & YourNSSEntityRelation.ERTypeId & ""
+                ElseIf YourDeactive = RelationDeactiveTypes.None Then
+                End If
+                CmdSql.ExecuteNonQuery()
+
+                CmdSql.CommandText = "Select Top 1 ERId From R2Primary.dbo.TblEntityRelations With (tablockx) Order By ERId Desc"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Select IDENT_CURRENT('R2Primary.dbo.TblEntityRelations') "
+                Dim ERIdNew As Int64 = CmdSql.ExecuteScalar() + 1
+                CmdSql.CommandText = "Insert Into R2Primary.dbo.TblEntityRelations(ERTypeId,E1,E2,RelationActive) Values(" & YourNSSEntityRelation.ERTypeId & "," & YourNSSEntityRelation.E1 & "," & YourNSSEntityRelation.E2 & ",1)"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Return ERIdNew
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+
+    End Class
+
     Public NotInheritable Class R2CoreMClassEntityRelationManagement
         Public Shared Function GetNSSEntityRelationType(YourEntityRelationTypeId As Int64) As R2StandardEntityRelationTypeStructure
             Try
@@ -3403,9 +3440,9 @@ Namespace MoneyWallet
                 Try
                     CmdSql.Connection.Open()
                     If YourMonetarySupplyType = MonetarySupplyType.PaymentRequest Then
-                        CmdSql.CommandText = "Update R2Primary.dbo.TblPaymentRequests Set PaymentErrors='" & SupplyReport & "' Where PayId=" & PayId & ""
+                        CmdSql.CommandText = "Update R2Primary.dbo.TblPaymentRequests Set PaymentErrors='" & IIf(SupplyReport <> String.Empty, SupplyReport, "Empty Error") & "' Where PayId=" & PayId & ""
                     ElseIf YourMonetarySupplyType = MonetarySupplyType.VerificationRequest Then
-                        CmdSql.CommandText = "Update R2Primary.dbo.TblPaymentRequests Set VerificationErrors='" & SupplyReport & "' Where PayId=" & PayId & ""
+                        CmdSql.CommandText = "Update R2Primary.dbo.TblPaymentRequests Set VerificationErrors='" & IIf(SupplyReport <> String.Empty, SupplyReport, "Empty Error") & "' Where PayId=" & PayId & ""
                     Else
                         Throw New Exception
                     End If
