@@ -2985,6 +2985,26 @@ End Namespace
 
 Namespace CarType
 
+    Public Class R2CoreParkingSystemCarTypeManager
+
+        Public Function GetCarTypeNameFromsnCarType(YourCarType As String) As String
+            Try
+                Dim Ds As New DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New DataBaseManagement.R2ClassSqlConnectionSepas, "Select StrCarName from dbtransport.dbo.TbCarType Where snCarType=" & YourCarType & "", 10, Ds).GetRecordsCount <> 0 Then
+                    Return Ds.Tables(0).Rows(0).Item(0)
+                Else
+                    Throw New GetDataException
+                End If
+            Catch exx As GetDataException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
+
     Public Class R2CoreParkingSystemMClassCarType
 
         Public Shared TereiliKafiCode As String = "505"
@@ -3650,6 +3670,26 @@ Namespace Drivers
 End Namespace
 
 Namespace City
+
+    Public Class R2CoreParkingSystemCitysManager
+
+        Public Function GetCityNameFromnCityCode(YourCityCode As String) As String
+            Try
+                Dim Ds As New DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New DataBaseManagement.R2ClassSqlConnectionSepas, "Select StrCityName from dbtransport.dbo.TbCity Where nCityCode=" & YourCityCode & "", 10, Ds).GetRecordsCount <> 0 Then
+                    Return Ds.Tables(0).Rows(0).Item(0)
+                Else
+                    Throw New GetDataException
+                End If
+            Catch exx As GetDataException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
 
     Public Class R2CoreParkingSystemMClassCitys
 

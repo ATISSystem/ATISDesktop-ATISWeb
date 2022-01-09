@@ -92,6 +92,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions
 Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
 Imports R2Core.PermissionManagement.Exceptions
 Imports PayanehClassLibrary.ComputerMessages
+Imports R2CoreParkingSystem.CarType
 
 Namespace Logging
 
@@ -1603,8 +1604,8 @@ Namespace TurnRegisterRequest
                 Dim InstanceEntityRelation = New R2CoreMClassEntityRelationManager
                 InstanceEntityRelation.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, YourTurnId, TurnRegisterRequestId, Nothing), RelationDeactiveTypes.BothDeactive)
                 'درخواست چاپ نوبت
-                Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
-                InstanceCarTruckNobat.NoCostTurnPrintRequest(InstanceCarTruckNobat.GetNSSCarTruckNobat(YourTurnId), YourTurnPrintRedirect)
+                ''Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
+                ''InstanceCarTruckNobat.NoCostTurnPrintRequest(InstanceCarTruckNobat.GetNSSCarTruckNobat(YourTurnId), YourTurnPrintRedirect)
                 Return TurnRegisterRequestId
             Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                                 OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
@@ -1851,7 +1852,7 @@ End Namespace
 Namespace ConfigurationManagement
 
     Public MustInherit Class PayanehClassLibraryConfigurations
-        Inherits R2CoreTransportationAndLoadNotification.ConfigurationsManagement.R2CoreTransportationAndLoadNotificationConfigurations
+        Inherits R2CoreTransportationAndLoadNotificationConfigurations
 
         Public Shared ReadOnly Property Clock4 As Int64 = 22
         Public Shared ReadOnly Property SalonFingerPrint As Int64 = 26
@@ -1870,7 +1871,7 @@ Namespace ConfigurationManagement
     End Class
 
     Public NotInheritable Class PayanehClassLibraryMClassConfigurationOfAnnouncementHallsManagement
-        Inherits R2CoreMClassConfigurationManagement
+        'Inherits R2CoreMClassConfigurationManagement
 
         Public Shared Function GetConfig(YourCId As Int64, YourAHId As Int64, YourIndex As Int64) As Object
             Try
@@ -2414,6 +2415,27 @@ Namespace CarTrucksManagement
             End Try
         End Sub
 
+        Public Function GetNSSCarTruckByCarId(YournIdCar As String) As R2StandardCarTruckStructure
+            Try
+                Dim InstanceCars = New R2CoreParkingSystemInstanceCarsManager
+                Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
+                Da.SelectCommand = New SqlCommand("Select * from dbtransport.dbo.TbCar Where nIdCar=" & YournIdCar & "")
+                Da.SelectCommand.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
+                Ds.Tables.Clear()
+                If Da.Fill(Ds) <> 0 Then
+                    Dim NSS As R2StandardCarTruckStructure = New R2StandardCarTruckStructure
+                    NSS.NSSCar = InstanceCars.GetNSSCar(YournIdCar)
+                    NSS.StrBodyNo = Ds.Tables(0).Rows(0).Item("StrBodyNo")
+                    Return NSS
+                Else
+                    Throw New GetNSSException
+                End If
+            Catch exx As GetNSSException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
     End Class
 
@@ -5081,6 +5103,69 @@ Namespace TransportCompanies
 #End Region
     End Class
 
+    Public Class PayanehClassLibraryTransportCompaniesManager
+        Private _DateTime As New R2DateTime
+
+        Public Function GetNSSTransportCompanyLoadCapacitorLoad(YournEstelamId As Int64) As TransportCompaniesStandardLoadCapacitorLoadStructure
+            Try
+                Dim DS As DataSet = Nothing
+                Dim InstanceSqlData = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlData.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * From dbtransport.dbo.TbElam Where nEstelamId=" & YournEstelamId & "", 1, DS).GetRecordsCount <> 0 Then
+                    Dim NSS As New TransportCompaniesStandardLoadCapacitorLoadStructure
+                    NSS.nEstelamId = YournEstelamId
+                    NSS.nTruckType = DS.Tables(0).Rows(0).Item("nTruckType")
+                    NSS.StrAddress = DS.Tables(0).Rows(0).Item("StrAddress")
+                    NSS.StrBarName = DS.Tables(0).Rows(0).Item("StrBarName")
+                    NSS.StrDescription = DS.Tables(0).Rows(0).Item("StrDescription")
+                    NSS.StrPriceSug = DS.Tables(0).Rows(0).Item("strPriceSug")
+                    NSS.dDateElam = DS.Tables(0).Rows(0).Item("dDateElam")
+                    NSS.dTimeElam = DS.Tables(0).Rows(0).Item("dTimeElam")
+                    NSS.nBarCode = DS.Tables(0).Rows(0).Item("nBarCode")
+                    NSS.nCarNum = DS.Tables(0).Rows(0).Item("nCarNum")
+                    NSS.nCarNumKol = DS.Tables(0).Rows(0).Item("nCarNumKol")
+                    NSS.nCityCode = DS.Tables(0).Rows(0).Item("nCityCode")
+                    NSS.nCompCode = DS.Tables(0).Rows(0).Item("nCompCode")
+                    Return NSS
+                Else
+                    Throw New GetNSSException
+                End If
+            Catch exx As GetNSSException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetTransportCompanyName(YourCompanyCode As Int64) As String
+            Try
+                Dim DS As DataSet = Nothing
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2ClassSqlConnectionSepas, "Select Top 1 StrCompName From dbtransport.dbo.TbCompany Where nCompCode=" & YourCompanyCode & "", 3600, DS).GetRecordsCount <> 0 Then
+                    Return DS.Tables(0).Rows(0).Item("StrCompName")
+                Else
+                    Throw New TransportCompanyNotFoundException
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetProductName(YourProductCode As Int64) As String
+            Try
+                Dim DS As DataSet = Nothing
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2ClassSqlConnectionSepas, "Select Top 1 StrGoodName From dbtransport.dbo.TbProducts Where StrGoodCode=" & YourProductCode & "", 3600, DS).GetRecordsCount <> 0 Then
+                    Return DS.Tables(0).Rows(0).Item("StrGoodName")
+                Else
+                    Throw New ProductNotFoundException
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
+
     Public NotInheritable Class TransportCompaniesLoadCapacitorLoadManipulation
 
         Private Shared _DateTime As New R2DateTime
@@ -5412,6 +5497,30 @@ End Namespace
 
 Namespace LoadNotification.LoadPermission
 
+    Public Class PayanehClassLibraryLoadPermissionManager
+        Private _DateTime As New R2DateTime
+
+        Public Function GetLoadPermissionInf(YournEstelamId As Int64, YourTurnId As Int64) As DataStruct
+            Try
+                Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
+                Da.SelectCommand = New SqlCommand("Select Top 1 StrExitDate,StrExitTime,nUserIdExit From DBTransport.dbo.TbEnterExit Where nEnterExitId=" & YourTurnId & " and nEstelamId=" & YournEstelamId & "")
+                Da.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
+                Ds.Tables.Clear()
+                If Da.Fill(Ds) = 0 Then Throw New LoadPermissionNotExistException
+                Dim LoadPermissionDataStruct As New DataStruct
+                LoadPermissionDataStruct.Data1 = IIf(Ds.Tables(0).Rows(0).Item("StrExitDate").Equals(System.DBNull.Value), String.Empty, Ds.Tables(0).Rows(0).Item("StrExitDate").trim)
+                LoadPermissionDataStruct.Data2 = IIf(Ds.Tables(0).Rows(0).Item("StrExitTime").Equals(System.DBNull.Value), String.Empty, Ds.Tables(0).Rows(0).Item("StrExitTime").trim)
+                LoadPermissionDataStruct.Data3 = IIf(Ds.Tables(0).Rows(0).Item("nUserIdExit").Equals(System.DBNull.Value), String.Empty, DirectCast(R2CoreMClassSoftwareUsersManagement.GetNSSUser(Ds.Tables(0).Rows(0).Item("nUserIdExit")), R2CoreStandardSoftwareUserStructure).UserName)
+                Return LoadPermissionDataStruct
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+
+
+    End Class
+
     Public NotInheritable Class LoadNotificationLoadPermissionManagement
         Private Shared _DateTime As New R2DateTime
 
@@ -5636,126 +5745,6 @@ Namespace LoadNotification.LoadPermission
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
-    End Class
-
-    Public Class PermissionPrinting
-
-        Private Shared WithEvents _PrintDocumentPermission As PrintDocument = New PrintDocument()
-        Private Shared _NSSCarTruck As R2StandardCarTruckStructure
-        Private Shared _NSSCarTruckNobat As R2StandardCarTruckNobatStructure
-        Private Shared _NSSTransportCompanyStandardLoadCapacitorLoad As TransportCompaniesStandardLoadCapacitorLoadStructure
-        Private Shared _ExitDate, _ExitTime As String
-        Private Shared _LoadPermissionUserExit As String
-
-        Public Shared Sub GetInformationforRemotePermissionPrinting(YournEstelamId As Int64, YourTurnId As Int64, ByRef StrExitDate As String, ByRef StrExitTime As String, ByRef nEstelamId As String, ByRef TurnId As String, ByRef CompanyName As String, ByRef CarTruckLoaderTypeName As String, ByRef Pelak As String, ByRef Serial As String, ByRef DriverTruckFullNameFamily As String, ByRef DriverTruckDrivingLicenseNo As String, ByRef ProductName As String, ByRef TargetCityName As String, ByRef StrPriceSug As String, ByRef StrDescription As String, ByRef PermissionUserName As String, ByRef OtherNote As String, ByRef LAId As String)
-            Try
-                _NSSCarTruckNobat = PayanehClassLibraryMClassCarTruckNobatManagement.GetNSSCarTruckNobat(YourTurnId)
-                _NSSTransportCompanyStandardLoadCapacitorLoad = TransportCompaniesLoadCapacitorLoadManipulation.GetNSSTransportCompanyLoadCapacitorLoad(YournEstelamId)
-                _NSSCarTruck = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(_NSSCarTruckNobat.StrCardNo)
-
-                StrExitDate = LoadNotificationLoadPermissionManagement.GetLoadPermissionInf(YournEstelamId, YourTurnId).Data1
-                StrExitTime = LoadNotificationLoadPermissionManagement.GetLoadPermissionInf(YournEstelamId, YourTurnId).Data2
-                PermissionUserName = LoadNotificationLoadPermissionManagement.GetLoadPermissionInf(YournEstelamId, YourTurnId).Data3
-                nEstelamId = YournEstelamId
-                TurnId = _NSSCarTruckNobat.OtaghdarTurnNumberSummary
-                Try
-                    LAId = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(YournEstelamId, YourTurnId).LAId.ToString()
-                Catch exx As LoadAllocationNotFoundException
-                    LAId = 0
-                Catch ex As Exception
-                    Throw ex
-                End Try
-                CompanyName = TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompanyName(_NSSTransportCompanyStandardLoadCapacitorLoad.nCompCode)
-                CarTruckLoaderTypeName = R2CoreParkingSystem.CarType.R2CoreParkingSystemMClassCarType.GetCarTypeNameFromsnCarType(_NSSCarTruck.NSSCar.snCarType)
-                Pelak = _NSSCarTruck.NSSCar.StrCarNo
-                Serial = _NSSCarTruck.NSSCar.StrCarSerialNo
-                DriverTruckFullNameFamily = _NSSCarTruckNobat.NSSDriverTruck.NSSDriver.StrPersonFullName
-                DriverTruckDrivingLicenseNo = _NSSCarTruckNobat.NSSDriverTruck.NSSDriver.strDrivingLicenceNo
-                ProductName = TransportCompaniesLoadCapacitorLoadManipulation.GetProductName(_NSSTransportCompanyStandardLoadCapacitorLoad.nBarCode)
-                TargetCityName = R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(_NSSTransportCompanyStandardLoadCapacitorLoad.nCityCode)
-                StrPriceSug = _NSSTransportCompanyStandardLoadCapacitorLoad.StrPriceSug
-                StrDescription = _NSSTransportCompanyStandardLoadCapacitorLoad.StrDescription + " " + _NSSTransportCompanyStandardLoadCapacitorLoad.StrBarName
-                Dim HazinehSedimentLoadPermission As Int64 = LoadNotificationLoadPermissionManagement.GetHazinehSedimentLoadPermission(YournEstelamId)
-                If _NSSCarTruckNobat.nUserIdEnter = R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId Then
-                    OtherNote = HazinehSedimentLoadPermission.ToString() + ":هزينه پايانه،نوبت و ارزش افزوده-ريال"
-                Else
-                    OtherNote = 0.ToString() + ":هزينه پايانه،نوبت و ارزش افزوده-ريال"
-                End If
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Public Shared Sub PrintPermission(YournEstelamId As Int64, YourTurnId As Int64)
-            Try
-                _NSSCarTruckNobat = PayanehClassLibraryMClassCarTruckNobatManagement.GetNSSCarTruckNobat(YourTurnId)
-                _NSSTransportCompanyStandardLoadCapacitorLoad = TransportCompaniesLoadCapacitorLoadManipulation.GetNSSTransportCompanyLoadCapacitorLoad(YournEstelamId)
-                _NSSCarTruck = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(_NSSCarTruckNobat.StrCardNo)
-                _ExitDate = LoadNotificationLoadPermissionManagement.GetLoadPermissionInf(YournEstelamId, YourTurnId).Data1
-                _ExitTime = LoadNotificationLoadPermissionManagement.GetLoadPermissionInf(YournEstelamId, YourTurnId).Data2
-                _LoadPermissionUserExit = LoadNotificationLoadPermissionManagement.GetLoadPermissionInf(YournEstelamId, YourTurnId).Data3
-                'چاپ مجوز
-                _PrintDocumentPermission.Print()
-            Catch exx As GetNSSException
-                Throw exx
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Private Shared Sub _PrintDocumentPermission_BeginPrint(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintEventArgs) Handles _PrintDocumentPermission.BeginPrint
-        End Sub
-
-        Private Shared Sub _PrintDocumentPermission_EndPrint(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintEventArgs) Handles _PrintDocumentPermission.EndPrint
-        End Sub
-
-        Private Shared Sub _PrintDocumentPermission_PrintPage_Printing(ByVal X As Int16, ByVal Y As Int16, ByVal E As System.Drawing.Printing.PrintPageEventArgs)
-            Try
-                Dim myPaperSizeHalf As Integer = _PrintDocumentPermission.PrinterSettings.DefaultPageSettings.PaperSize.Width / 4
-                Dim myStrFontPersonFullName As Font = New System.Drawing.Font("Badr", 20.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-                Dim myStrFontMax As Font = New System.Drawing.Font("Badr", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-                Dim myStrFontMin As Font = New System.Drawing.Font("Badr", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-                Dim myDigFont As Font = New System.Drawing.Font("Alborz Titr", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-                E.Graphics.DrawString(_ExitDate, myStrFontMax, Brushes.DarkBlue, X, Y)
-                E.Graphics.DrawString(_NSSTransportCompanyStandardLoadCapacitorLoad.nEstelamId, myDigFont, Brushes.DarkBlue, X + 420, Y)
-                E.Graphics.DrawString(_ExitTime, myStrFontMax, Brushes.DarkBlue, X, Y + 50)
-                E.Graphics.DrawString(_NSSCarTruckNobat.nEnterExitId, myStrFontMax, Brushes.DarkBlue, X + 420, Y + 30)
-                E.Graphics.DrawString(TransportCompaniesLoadCapacitorLoadManipulation.GetTransportCompanyName(_NSSTransportCompanyStandardLoadCapacitorLoad.nCompCode), myStrFontMax, Brushes.DarkBlue, X + 350, Y + 130)
-                E.Graphics.DrawString(_NSSCarTruck.NSSCar.StrCarSerialNo + "-", myStrFontMax, Brushes.DarkBlue, X + 120, Y + 170)
-                Dim a As Char() = _NSSCarTruck.NSSCar.StrCarNo.Trim.ToCharArray()
-                E.Graphics.DrawString(a(4), myStrFontMax, Brushes.DarkBlue, X + 150, Y + 170)
-                E.Graphics.DrawString(a(5), myStrFontMax, Brushes.DarkBlue, X + 160, Y + 170)
-                E.Graphics.DrawString(a(3), myStrFontMax, Brushes.DarkBlue, X + 170, Y + 170)
-                E.Graphics.DrawString(a(0), myStrFontMax, Brushes.DarkBlue, X + 180, Y + 170)
-                E.Graphics.DrawString(a(1), myStrFontMax, Brushes.DarkBlue, X + 190, Y + 170)
-                E.Graphics.DrawString(a(2), myStrFontMax, Brushes.DarkBlue, X + 200, Y + 170)
-
-
-                ''E.Graphics.DrawString(R2CoreParkingSystemMClassCars.GetNSSCar(_NSSCarTruckNobat.StrCardNo).GetCarPelakSerialComposit(), myStrFontPersonFullName, Brushes.DarkBlue, X + 280, Y + 50)
-
-                E.Graphics.DrawString(R2CoreParkingSystem.CarType.R2CoreParkingSystemMClassCarType.GetCarTypeNameFromsnCarType(_NSSCarTruck.NSSCar.snCarType), myStrFontMax, Brushes.DarkBlue, X + 350, Y + 170)
-                E.Graphics.DrawString(_NSSCarTruckNobat.NSSDriverTruck.NSSDriver.strDrivingLicenceNo, myStrFontMax, Brushes.DarkBlue, X + 50, Y + 210)
-                E.Graphics.DrawString(_NSSCarTruckNobat.NSSDriverTruck.NSSDriver.StrPersonFullName, myStrFontMax, Brushes.DarkBlue, X + 350, Y + 210)
-                E.Graphics.DrawString(R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(_NSSTransportCompanyStandardLoadCapacitorLoad.nCityCode), myStrFontMax, Brushes.DarkBlue, X, Y + 230)
-
-                E.Graphics.DrawString(_NSSTransportCompanyStandardLoadCapacitorLoad.StrPriceSug, myStrFontMax, Brushes.DarkBlue, X + 450, Y + 270)
-                E.Graphics.DrawString(_NSSTransportCompanyStandardLoadCapacitorLoad.StrDescription, myStrFontMax, Brushes.DarkBlue, X, Y + 290)
-
-                E.Graphics.DrawString(_LoadPermissionUserExit, myStrFontMax, Brushes.DarkBlue, X, Y + 320)
-
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Private Shared Sub _PrintDocumentPermission_PrintPage(ByVal sender As Object, ByVal e As System.Drawing.Printing.PrintPageEventArgs) Handles _PrintDocumentPermission.PrintPage
-            Try
-                _PrintDocumentPermission_PrintPage_Printing(100, 80, e)
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
     End Class
 
     Public Class TransportCompanyMoneyWalletInventoryIsLowException

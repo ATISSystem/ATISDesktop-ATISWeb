@@ -67,6 +67,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
             BtnLoadAllocation.Enabled = true;
             WcSmartCardsInquiry.WcRefreshInformation();
             LblTurnStatus.Text = String.Empty;
+            LblTurnStatus.ForeColor = System.Drawing.Color.White;
             PnlTurnStatus.BackColor = System.Drawing.Color.Transparent;
         }
 

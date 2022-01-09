@@ -70,7 +70,9 @@ Public Class UCLoadPermission
 
     Protected Sub UCDoPrintLoadPermission()
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadPermissionPrintingManagement.PrintLoadPermission(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId).LAId)
+            Dim InstanceLoadPermissionPrinting = New R2CoreTransportationAndLoadNotificationInstanceLoadPermissionPrintingManager
+            Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+            InstanceLoadPermissionPrinting.PrintLoadPermission(InstanceLoadAllocation.GetNSSLoadAllocation(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId).LAId)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

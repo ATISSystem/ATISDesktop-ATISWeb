@@ -15,6 +15,7 @@ using PayanehClassLibrary.LoadNotification.LoadPermission;
 using static ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement.WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue;
 using ATISWeb.TransportationAndLoadNotification.LoadPermissionManagement.LoadPermissionPrinting;
 using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
+using R2CoreTransportationAndLoadNotification.LoadPermission.LoadPermissionPrinting;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -101,16 +102,14 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }
 
-        public PermissionPrintingDataStructure PPDS = new PermissionPrintingDataStructure();
+        public R2CoreTransportationAndLoadNotificationLoadPermissionPrintingInf PPDS = new R2CoreTransportationAndLoadNotificationLoadPermissionPrintingInf() ;
         private void GridViewLoadCapacitorLoadLoadPermissionsIssued_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
+                var InstanceLoadPermissionPrinting = new R2CoreTransportationAndLoadNotificationInstanceLoadPermissionPrintingManager();
                 Int64 LAId = Int64.Parse(GridViewLoadCapacitorLoadLoadPermissionsIssued.SelectedRow.Cells[0].Text);
-                var NSS = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(LAId);
-                PermissionPrinting.GetInformationforRemotePermissionPrinting(NSS.nEstelamId, NSS.TurnId, ref PPDS.StrExitDate, ref PPDS.StrExitTime, ref PPDS.nEstelamId, ref PPDS.TurnId, ref PPDS.CompanyName, ref PPDS.CarTruckLoaderTypeName, ref PPDS.pelak, ref PPDS.Serial, ref PPDS.DriverTruckFullNameFamily, ref PPDS.DriverTruckDrivingLicenseNo, ref PPDS.ProductName, ref PPDS.TargetCityName, ref PPDS.StrPriceSug, ref PPDS.StrDescription, ref PPDS.PermissionUserName, ref PPDS.OtherNote, ref PPDS.LAId);
-                PPDS.TurnId = PPDS.TurnId.Trim();
-                PPDS.nEstelamId = NSS.nEstelamId.ToString();
+                PPDS = InstanceLoadPermissionPrinting.GetLoadPermissionPrintingInf(LAId);
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
