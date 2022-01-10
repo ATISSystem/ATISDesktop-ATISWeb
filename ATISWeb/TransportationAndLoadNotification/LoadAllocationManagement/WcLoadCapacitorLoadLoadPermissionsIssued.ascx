@@ -103,7 +103,7 @@
                     <div style="width: 100%; text-align: right; font-family: Titr; font-size: small;"><span>شرکت/موسسه محترم <%=PPDS.TransportCompany%>&nbsp;&nbsp;&nbsp;</span></div>
                     <br />
                     <div style="width: 100%; text-align: right;">
-                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>بدین وسیله یک دستگاه <%=PPDS.LoaderType%></span>&nbsp;&nbsp;</div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>بدین وسیله یک دستگاه <%=PPDS.CarType%></span>&nbsp;&nbsp;</div>
                         <div style="display: inline-block; float: right; font-family: B Homa; font-size: smaller;"><span>به شماره پلاک <%=PPDS.TruckLP%> - <%=PPDS.TruckLPSerial%></span></div>
                     </div>
                     <br />
@@ -161,7 +161,7 @@
                     <div style="width: 100%; text-align: right; font-family: Titr; font-size: small;"><span>شرکت/موسسه محترم <%=PPDS.TransportCompany%>&nbsp;&nbsp;&nbsp;</span></div>
                     <br />
                     <div style="width: 100%; text-align: right;">
-                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>بدین وسیله یک دستگاه <%=PPDS.LoaderType%></span>&nbsp;&nbsp;</div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>بدین وسیله یک دستگاه <%=PPDS.CarType%></span>&nbsp;&nbsp;</div>
                         <div style="display: inline-block; float: right; font-family: B Homa; font-size: smaller;"><span>به شماره پلاک <%=PPDS.TruckLP%> - <%=PPDS.TruckLPSerial%></span></div>
                     </div>
                     <br />

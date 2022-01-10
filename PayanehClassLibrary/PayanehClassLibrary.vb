@@ -296,6 +296,63 @@ Namespace CarTruckNobatManagement
             End Try
         End Sub
 
+        Public Sub TurnCancellationWithLicensePlate(YourLPPelak As String, YourLPSerial As String, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
+            Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourLPPelak)
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourLPSerial)
+
+                Dim InstancePermissions = New R2CoreInstansePermissionsManager
+                If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.SoftwareUserCanExcecuteTurnCancellationWithLicensePlate, YourNSSSoftwareUser.UserId, 0) Then Throw New PermissionException
+
+                Dim InstanceCarTrucks = New PayanehClassLibraryMClassCarTrucksManager
+                Dim NSSTruck = New R2CoreTransportationAndLoadNotificationStandardTruckStructure(New R2StandardCarStructure(Nothing, Nothing, YourLPPelak, YourLPSerial, Nothing), Nothing)
+                Dim TruckId As Int64 = Nothing
+                If InstanceCarTrucks.IsExistCarTruckWithLicensePlate(New R2StandardCarTruckStructure(NSSTruck.NSSCar, Nothing), TruckId) Then
+                    CmdSql.Connection.Open()
+                    CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.CancelledUser & ",bFlag=1,bFlagDriver=1,nUserIdExit=" & YourNSSSoftwareUser.UserId & " 
+                                          Where StrCardNo=" & TruckId & " and (TurnStatus=" & TurnStatuses.Registered & " or TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or TurnStatus=" & TurnStatuses.ResuscitationUser & ")"
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.Connection.Close()
+                    If R2CoreMClassConfigurationManagement.GetConfigBoolean(PayanehClassLibraryConfigurations.TWS, 0) Then
+                        TWSClassLibrary.TDBClientManagement.TWSClassTDBClientManagement.DelNobat(NSSTruck.NSSCar.StrCarNo, NSSTruck.NSSCar.StrCarSerialNo)
+                    End If
+                Else
+                    Throw New TruckNotFoundException
+                End If
+            Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                                OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
+                                OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
+                                OrElse TypeOf ex Is CarIsNotPresentInParkingException _
+                                OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler _
+                                OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException _
+                                OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat _
+                                OrElse TypeOf ex Is GetNobatException _
+                                OrElse TypeOf ex Is SequentialTurnIsNotActiveException _
+                                OrElse TypeOf ex Is TruckNotFoundException _
+                                OrElse TypeOf ex Is SequentialTurnNotFoundException _
+                                OrElse TypeOf ex Is TruckDriverNotFoundException _
+                                OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
+                                OrElse TypeOf ex Is GetNSSException _
+                                OrElse TypeOf ex Is GetDataException _
+                                OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
+                                OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
+                                OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
+                                OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
+                                OrElse TypeOf ex Is TerraficCardNotFoundException _
+                                OrElse TypeOf ex Is DriverTruckInformationNotExistException _
+                                OrElse TypeOf ex Is SqlInjectionException _
+                                OrElse TypeOf ex Is PermissionException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
         Public Function GetTurnofKiosk(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourNSSTruckDriver As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure, YourNSSTransportCompany As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure, YourNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
@@ -457,17 +514,6 @@ Namespace CarTruckNobatManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
-
-        Public Sub NoCostTurnPrintRequest(YourNSSCarTruckNobat As R2StandardCarTruckNobatStructure, YourTurnPrintRedirect As Boolean)
-            Try
-                Dim InstanceTurnPrintRequest = New R2CoreTransportationAndLoadNotificationMClassTurnPrintRequestManager
-                InstanceTurnPrintRequest.NoCostTurnPrintRequest(YourNSSCarTruckNobat.nEnterExitId, YourTurnPrintRedirect)
-            Catch ex As Exception When TypeOf ex Is GetNSSException OrElse TypeOf ex Is GetDataException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
 
         Public Function GetReserveTurn(YourTurnRegisterRequestId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Dim CmdSql As SqlCommand = New SqlCommand
@@ -1604,8 +1650,9 @@ Namespace TurnRegisterRequest
                 Dim InstanceEntityRelation = New R2CoreMClassEntityRelationManager
                 InstanceEntityRelation.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, YourTurnId, TurnRegisterRequestId, Nothing), RelationDeactiveTypes.BothDeactive)
                 'درخواست چاپ نوبت
-                ''Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
-                ''InstanceCarTruckNobat.NoCostTurnPrintRequest(InstanceCarTruckNobat.GetNSSCarTruckNobat(YourTurnId), YourTurnPrintRedirect)
+                'Dim InstanceTurnPrintRequest = New R2CoreTransportationAndLoadNotificationMClassTurnPrintRequestManager
+                'InstanceTurnPrintRequest.NoCostTurnPrintRequest(YourTurnId, YourTurnPrintRedirect)
+
                 Return TurnRegisterRequestId
             Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                                 OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
@@ -1783,6 +1830,7 @@ Namespace TurnRegisterRequest
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
+
 
     End Class
 
@@ -5745,6 +5793,7 @@ Namespace LoadNotification.LoadPermission
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
+
     End Class
 
     Public Class TransportCompanyMoneyWalletInventoryIsLowException

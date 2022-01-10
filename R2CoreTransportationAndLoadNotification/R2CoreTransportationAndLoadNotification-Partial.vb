@@ -4553,6 +4553,7 @@ Namespace LoadPermission
             Dim LoadPermissionDate As String
             Dim LoadPermissionTime As String
             Dim TransportCompany As String
+            Dim CarType As String
             Dim LoaderType As String
             Dim TruckLP As String
             Dim TruckLPSerial As String
@@ -4578,13 +4579,14 @@ Namespace LoadPermission
                     Dim DS As DataSet
                     InstanceSqlDataBox.GetDataBOX(New R2PrimarySqlConnection,
                           "Select LoadAllocation.LAId,LoadAllocation.nEstelamId,Substring(EnterExit.OtaghdarTurnNumber,7,20) as TurnId,EnterExit.strExitDate,EnterExit.strExitTime
-                                  ,TransportCompany.TCTitle,LoaderType.LoaderTypeTitle,Car.strCarNo as Truck,Car.strCarSerialNo as TruckSerial,Person.strPersonFullName
-	                              ,Driver.strDrivingLicenceNo,Product.strGoodName,CityTarget.strCityName as TargetCity,CitySource.strCityName as SourceCity,Elam.strPriceSug,Elam.strDescription,Elam.StrAddress,Elam.strBarName,SoftwareUser.UserName,CityTarget.nDistance/25 as TravelLength,Elam.nTruckType
+                                  ,TransportCompany.TCTitle,LoaderType.LoaderTypeTitle,CarType.strCarName as CarType,Car.strCarNo as Truck,Car.strCarSerialNo as TruckSerial,Person.strPersonFullName
+	                              ,Driver.strDrivingLicenceNo,Product.strGoodName,CityTarget.strCityName as TargetCity,CitySource.strCityName as SourceCity,Elam.strPriceSug,Elam.strDescription,Elam.StrAddress,Elam.strBarName,SoftwareUser.UserName,CityTarget.nDistance/25 as TravelLength
                            from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocation
                                 Inner Join dbtransport.dbo.tbEnterExit as EnterExit On LoadAllocation.TurnId=EnterExit.nEnterExitId
                                 Inner Join dbtransport.dbo.tbElam as Elam On LoadAllocation.nEstelamId=Elam.nEstelamID
                                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompany On Elam.nCompCode=TransportCompany.TCId
                                 Inner Join dbtransport.dbo.TbCar as Car On EnterExit.strCardno=Car.nIDCar 
+                                Inner Join dbtransport.dbo.tbCarType as CarType On Car.snCarType=CarType.snCarType 
                                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderType On Car.snCarType=LoaderType.LoaderTypeId
 								Inner Join dbtransport.dbo.TbPerson as Person On EnterExit.nDriverCode=Person.nIDPerson
                                 Inner Join dbtransport.dbo.TbDriver as Driver On EnterExit.nDriverCode=Driver.nIDDriver
@@ -4600,6 +4602,7 @@ Namespace LoadPermission
                     LoadPermissionPrintingInf.LoadPermissionDate = DS.Tables(0).Rows(0).Item("strExitDate").trim
                     LoadPermissionPrintingInf.LoadPermissionTime = DS.Tables(0).Rows(0).Item("strExitTime").trim
                     LoadPermissionPrintingInf.TransportCompany = DS.Tables(0).Rows(0).Item("TCTitle").trim
+                    LoadPermissionPrintingInf.CarType = DS.Tables(0).Rows(0).Item("CarType").trim
                     LoadPermissionPrintingInf.LoaderType = DS.Tables(0).Rows(0).Item("LoaderTypeTitle").trim
                     LoadPermissionPrintingInf.TruckLP = DS.Tables(0).Rows(0).Item("Truck").trim
                     LoadPermissionPrintingInf.TruckLPSerial = DS.Tables(0).Rows(0).Item("TruckSerial").trim
@@ -4611,7 +4614,7 @@ Namespace LoadPermission
                     LoadPermissionPrintingInf.TransportPrice = DS.Tables(0).Rows(0).Item("strPriceSug").trim
                     LoadPermissionPrintingInf.LoadCapacitorLoadDescription = DS.Tables(0).Rows(0).Item("strDescription").trim & " " & DS.Tables(0).Rows(0).Item("StrAddress").trim & " " & DS.Tables(0).Rows(0).Item("StrBarName").trim
                     LoadPermissionPrintingInf.UserName = DS.Tables(0).Rows(0).Item("UserName").trim
-                    LoadPermissionPrintingInf.OtherNote = Convert.ToSingle(DS.Tables(0).Rows(0).Item("TravelLength")) + "مدت سفر:"
+                    LoadPermissionPrintingInf.OtherNote = Convert.ToString(DS.Tables(0).Rows(0).Item("TravelLength")) + "مدت سفر:"
                     Return LoadPermissionPrintingInf
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

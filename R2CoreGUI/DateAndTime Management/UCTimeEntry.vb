@@ -9,6 +9,7 @@ Public Class UCTimeEntry
     Inherits UCGeneral
 
     Private Shadows ReadOnly _DateTime As New R2DateTime
+    Public Event UCTimeChangedEvent()
 
 #Region "General Properties"
 
@@ -180,6 +181,18 @@ Public Class UCTimeEntry
 
     Private Sub UcTextBoxMinute_UCLeftArrowKeyPressedEvent(CursorPosition As Long) Handles UcTextBoxMinute.UCLeftArrowKeyPressedEvent
         If CursorPosition = 0 Then UcTextBoxHour.UCFocus()
+    End Sub
+
+    Private Sub UcTextBoxHour_UCTextChangedEvent(CurrentText As String) Handles UcTextBoxHour.UCTextChangedEvent
+        RaiseEvent UCTimeChangedEvent()
+    End Sub
+
+    Private Sub UcTextBoxMinute_UCTextChangedEvent(CurrentText As String) Handles UcTextBoxMinute.UCTextChangedEvent
+        RaiseEvent UCTimeChangedEvent()
+    End Sub
+
+    Private Sub UcTextBoxSecond_UCTextChangedEvent(CurrentText As String) Handles UcTextBoxSecond.UCTextChangedEvent
+        RaiseEvent UCTimeChangedEvent()
     End Sub
 
 

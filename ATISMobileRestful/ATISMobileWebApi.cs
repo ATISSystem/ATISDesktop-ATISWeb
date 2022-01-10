@@ -640,7 +640,8 @@ namespace ATISMobileRestful
             public static Int64 WebApiClientSendTruckDriverChangeMessageRequest = 56;
             public static Int64 WebApiClientSendTruckChangeMessageRequest = 57;
             public static Int64 WebApiClientGetLastTurnIdWhichCancelledDuringTurnsCancellationProcess = 58;
-            public static Int64 WebApiClientGetLoadPermissionsViaLicensePlate = 59; 
+            public static Int64 WebApiClientGetLoadPermissionsViaLicensePlate = 59;
+            public static Int64 WebApiClientTurnCancellation = 60;
         }
 
     }

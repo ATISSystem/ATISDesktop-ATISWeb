@@ -281,7 +281,7 @@ Partial Class FrmcTurnsComputerMessageProducer
         Me.UcResuscitationReserveTurn.Location = New System.Drawing.Point(7, 3)
         Me.UcResuscitationReserveTurn.Name = "UcResuscitationReserveTurn"
         Me.UcResuscitationReserveTurn.Padding = New System.Windows.Forms.Padding(10)
-        Me.UcResuscitationReserveTurn.Size = New System.Drawing.Size(981, 309)
+        Me.UcResuscitationReserveTurn.Size = New System.Drawing.Size(981, 344)
         Me.UcResuscitationReserveTurn.TabIndex = 0
         '
         'FrmcTurnsComputerMessageProducer
@@ -290,15 +290,15 @@ Partial Class FrmcTurnsComputerMessageProducer
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
         Me.Controls.Add(Me.PnlRealTimeTurnRegisterRequest)
-        Me.Controls.Add(Me.PnlResuscitationReserveTurn)
         Me.Controls.Add(Me.PnlReplicaTurnPrintRequest)
         Me.Controls.Add(Me.PnlEmergencyTurnRegisterRequest)
+        Me.Controls.Add(Me.PnlResuscitationReserveTurn)
         Me.Location = New System.Drawing.Point(0, 0)
         Me.Name = "FrmcTurnsComputerMessageProducer"
         Me.Text = "FrmcTurnsComputerMessageProducer"
+        Me.Controls.SetChildIndex(Me.PnlResuscitationReserveTurn, 0)
         Me.Controls.SetChildIndex(Me.PnlEmergencyTurnRegisterRequest, 0)
         Me.Controls.SetChildIndex(Me.PnlReplicaTurnPrintRequest, 0)
-        Me.Controls.SetChildIndex(Me.PnlResuscitationReserveTurn, 0)
         Me.Controls.SetChildIndex(Me.PnlRealTimeTurnRegisterRequest, 0)
         Me.PnlRealTimeTurnRegisterRequest.ResumeLayout(False)
         Me.PnlEmergencyTurnRegisterRequest.ResumeLayout(False)

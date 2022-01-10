@@ -2042,6 +2042,29 @@ Namespace Turns
                 End Try
             End Function
 
+            Public Function GetNSSTurnRegisteringRequestWithReservedDateTime(YourDateTime As R2StandardDateAndTimeStructure) As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure
+                Try
+                    Dim InstanceSequentialTurns = New R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager
+                    Dim DS As DataSet
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                           "Select Top 1 Turns.strEnterDate,Turns.strEnterTime,Turns.nEnterExitId,TurnRegisterRequests.* from dbtransport.dbo.tbEnterExit as Turns
+                             Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On Turns.nEnterExitId=EntityRelations.E1 
+                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnRegisterRequests as TurnRegisterRequests On TurnRegisterRequests.TRRId=EntityRelations.E2 
+                            Where Turns.strEnterDate>='" & YourDateTime.DateShamsiFull & "' and Turns.strEnterTime>='" & YourDateTime.Time & "' and EntityRelations.ERTypeId=" & R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest & " 
+                                  and EntityRelations.RelationActive=1 and TurnRegisterRequests.TRRTypeId=" & TurnRegisterRequestTypes.Reserve & " and Substring(Turns.OtaghdarTurnNumber,1,1)='" & InstanceSequentialTurns.GetNSSSequentialTurn(SequentialTurns.SequentialTurns.None).SequentialTurnKeyWord & "'
+                            Order By Turns.nEnterExitId Asc", 0, DS).GetRecordsCount = 0 Then
+                        Throw New TurnRegisterRequestNotFoundException
+                    End If
+                    Return New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(DS.Tables(0).Rows(0).Item("TRRId"), DS.Tables(0).Rows(0).Item("TRRTypeId"), DS.Tables(0).Rows(0).Item("TruckId"), DS.Tables(0).Rows(0).Item("Description").trim, DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("ComputerId"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi").trim)
+                Catch ex As TurnRegisterRequestNotFoundException
+                    Throw ex
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+
         End Class
 
         Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManagement
@@ -2126,15 +2149,16 @@ Namespace Turns
 
         End Class
 
+
     End Namespace
 
     Namespace SequentialTurns
 
         Public MustInherit Class SequentialTurns
-            Public Shared ReadOnly Property None = 0
-            Public Shared ReadOnly Property SequentialTurnOtaghdar = 1
-            Public Shared ReadOnly Property SequentialTurnZobi = 2
-            Public Shared ReadOnly Property SequentialTurnShahri = 3
+            Public Shared ReadOnly Property None As Int64 = 0
+            Public Shared ReadOnly Property SequentialTurnOtaghdar As Int64 = 1
+            Public Shared ReadOnly Property SequentialTurnZobi As Int64 = 2
+            Public Shared ReadOnly Property SequentialTurnShahri As Int64 = 3
         End Class
 
         Public Class R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure
@@ -3781,6 +3805,7 @@ Namespace PermissionManagement
         Public Shared ReadOnly SoftwareUserCanExcecuteTurnCancellation As Int64 = 17
         Public Shared ReadOnly SoftwareUserCanSendRealTimeTurnRegisteringRequestWithLicensePlate As Int64 = 18
         Public Shared ReadOnly SoftwareUserCanSendTruckorTruckDriverChangeRequest As Int64 = 19
+        Public Shared ReadOnly SoftwareUserCanExcecuteTurnCancellationWithLicensePlate As Int64 = 20
     End Class
 
 End Namespace

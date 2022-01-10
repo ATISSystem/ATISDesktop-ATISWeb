@@ -32,9 +32,9 @@ Partial Class UCDriver
         Dim CBlendItems2 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems3 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Me.PnlMain = New System.Windows.Forms.Panel()
+        Me.UcTextBoxDriverNationalCode = New R2CoreGUI.UCTextBox()
         Me.UcNumberDrivernIdPerson = New R2CoreGUI.UCNumber()
         Me.Label9 = New System.Windows.Forms.Label()
-        Me.UcNumberDriverNationalCode = New R2CoreGUI.UCNumber()
         Me.UcButtonNew = New R2CoreGUI.UCButton()
         Me.UcButtonDel = New R2CoreGUI.UCButton()
         Me.UcButtonSabt = New R2CoreGUI.UCButton()
@@ -64,9 +64,9 @@ Partial Class UCDriver
         'PnlMain
         '
         Me.PnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlMain.Controls.Add(Me.UcTextBoxDriverNationalCode)
         Me.PnlMain.Controls.Add(Me.UcNumberDrivernIdPerson)
         Me.PnlMain.Controls.Add(Me.Label9)
-        Me.PnlMain.Controls.Add(Me.UcNumberDriverNationalCode)
         Me.PnlMain.Controls.Add(Me.UcButtonNew)
         Me.PnlMain.Controls.Add(Me.UcButtonDel)
         Me.PnlMain.Controls.Add(Me.UcButtonSabt)
@@ -79,6 +79,32 @@ Partial Class UCDriver
         Me.PnlMain.Name = "PnlMain"
         Me.PnlMain.Size = New System.Drawing.Size(914, 97)
         Me.PnlMain.TabIndex = 0
+        '
+        'UcTextBoxDriverNationalCode
+        '
+        Me.UcTextBoxDriverNationalCode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxDriverNationalCode.BackColor = System.Drawing.Color.Transparent
+        Me.UcTextBoxDriverNationalCode.Location = New System.Drawing.Point(508, 4)
+        Me.UcTextBoxDriverNationalCode.Name = "UcTextBoxDriverNationalCode"
+        Me.UcTextBoxDriverNationalCode.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcTextBoxDriverNationalCode.Size = New System.Drawing.Size(95, 26)
+        Me.UcTextBoxDriverNationalCode.TabIndex = 24
+        Me.UcTextBoxDriverNationalCode.UCBackColor = System.Drawing.Color.White
+        Me.UcTextBoxDriverNationalCode.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcTextBoxDriverNationalCode.UCBorder = True
+        Me.UcTextBoxDriverNationalCode.UCBorderColor = System.Drawing.Color.Black
+        Me.UcTextBoxDriverNationalCode.UCBorderCornerRedius = 5
+        Me.UcTextBoxDriverNationalCode.UCEnable = True
+        Me.UcTextBoxDriverNationalCode.UCFont = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UcTextBoxDriverNationalCode.UCForeColor = System.Drawing.Color.Black
+        Me.UcTextBoxDriverNationalCode.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
+        Me.UcTextBoxDriverNationalCode.UCMaxCharacterReached = CType(50, Short)
+        Me.UcTextBoxDriverNationalCode.UCMaxNumber = CType(99999, Long)
+        Me.UcTextBoxDriverNationalCode.UCMultiLine = False
+        Me.UcTextBoxDriverNationalCode.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
+        Me.UcTextBoxDriverNationalCode.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.UcTextBoxDriverNationalCode.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.UcTextBoxDriverNationalCode.UCValue = ""
         '
         'UcNumberDrivernIdPerson
         '
@@ -113,28 +139,6 @@ Partial Class UCDriver
         Me.Label9.Size = New System.Drawing.Size(21, 23)
         Me.Label9.TabIndex = 19
         Me.Label9.Text = "کد"
-        '
-        'UcNumberDriverNationalCode
-        '
-        Me.UcNumberDriverNationalCode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcNumberDriverNationalCode.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumberDriverNationalCode.Location = New System.Drawing.Point(512, 5)
-        Me.UcNumberDriverNationalCode.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.UcNumberDriverNationalCode.Name = "UcNumberDriverNationalCode"
-        Me.UcNumberDriverNationalCode.Size = New System.Drawing.Size(90, 25)
-        Me.UcNumberDriverNationalCode.TabIndex = 18
-        Me.UcNumberDriverNationalCode.UCAllowedMaxNumber = CType(9223372036854775807, Long)
-        Me.UcNumberDriverNationalCode.UCAllowedMinNumber = CType(-922337203685477, Long)
-        Me.UcNumberDriverNationalCode.UCBackColor = System.Drawing.Color.White
-        Me.UcNumberDriverNationalCode.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberDriverNationalCode.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
-        Me.UcNumberDriverNationalCode.UCBorder = True
-        Me.UcNumberDriverNationalCode.UCBorderColor = System.Drawing.Color.Black
-        Me.UcNumberDriverNationalCode.UCEnable = True
-        Me.UcNumberDriverNationalCode.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumberDriverNationalCode.UCForeColor = System.Drawing.Color.Black
-        Me.UcNumberDriverNationalCode.UCMultiLine = False
-        Me.UcNumberDriverNationalCode.UCValue = CType(0, Long)
         '
         'UcButtonNew
         '
@@ -317,6 +321,7 @@ Partial Class UCDriver
         Me.UcTextBoxNationalCode.UCBackColorDisable = System.Drawing.Color.Gainsboro
         Me.UcTextBoxNationalCode.UCBorder = False
         Me.UcTextBoxNationalCode.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcTextBoxNationalCode.UCBorderCornerRedius = 0
         Me.UcTextBoxNationalCode.UCEnable = True
         Me.UcTextBoxNationalCode.UCFont = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.UcTextBoxNationalCode.UCForeColor = System.Drawing.Color.Black
@@ -539,7 +544,6 @@ End Sub
     Friend WithEvents Label5 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents Label3 As Label
-    Friend WithEvents UcNumberDriverNationalCode As R2CoreGUI.UCNumber
     Friend WithEvents UcNumberLicenseNo As R2CoreGUI.UCNumber
     Friend WithEvents Label8 As Label
     Friend WithEvents UcNumberDrivernIdPerson As R2CoreGUI.UCNumber
@@ -548,4 +552,5 @@ End Sub
     Friend WithEvents CButtonViewPrintUserShenasehPassword As CButtonLib.CButton
     Friend WithEvents CButtonSoftwareUserVerificationCodeInjection As CButtonLib.CButton
     Friend WithEvents CButtonSendSmsUserShenasehPassword As CButtonLib.CButton
+    Friend WithEvents UcTextBoxDriverNationalCode As UCTextBox
 End Class

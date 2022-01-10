@@ -29,6 +29,8 @@ Partial Class UCDriverTruck
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.PnlMain = New System.Windows.Forms.Panel()
+        Me.UcTextBoxDriverNationalCode = New R2CoreGUI.UCTextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.UcNumberStrSmartCardNoSearch = New R2CoreGUI.UCNumber()
         Me.UcButtonNew = New R2CoreGUI.UCButton()
@@ -38,8 +40,6 @@ Partial Class UCDriverTruck
         Me.UcNumberStrSmartCardNo = New R2CoreGUI.UCNumber()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.UcDriver = New R2CoreParkingSystem.UCDriver()
-        Me.UcNumberDriverNationalCode = New R2CoreGUI.UCNumber()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.PnlMain.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -47,7 +47,7 @@ Partial Class UCDriverTruck
         'PnlMain
         '
         Me.PnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PnlMain.Controls.Add(Me.UcNumberDriverNationalCode)
+        Me.PnlMain.Controls.Add(Me.UcTextBoxDriverNationalCode)
         Me.PnlMain.Controls.Add(Me.Label3)
         Me.PnlMain.Controls.Add(Me.Label2)
         Me.PnlMain.Controls.Add(Me.UcNumberStrSmartCardNoSearch)
@@ -60,6 +60,44 @@ Partial Class UCDriverTruck
         Me.PnlMain.Name = "PnlMain"
         Me.PnlMain.Size = New System.Drawing.Size(820, 161)
         Me.PnlMain.TabIndex = 0
+        '
+        'UcTextBoxDriverNationalCode
+        '
+        Me.UcTextBoxDriverNationalCode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxDriverNationalCode.BackColor = System.Drawing.Color.Transparent
+        Me.UcTextBoxDriverNationalCode.Location = New System.Drawing.Point(189, 3)
+        Me.UcTextBoxDriverNationalCode.Name = "UcTextBoxDriverNationalCode"
+        Me.UcTextBoxDriverNationalCode.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcTextBoxDriverNationalCode.Size = New System.Drawing.Size(95, 26)
+        Me.UcTextBoxDriverNationalCode.TabIndex = 28
+        Me.UcTextBoxDriverNationalCode.UCBackColor = System.Drawing.Color.White
+        Me.UcTextBoxDriverNationalCode.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcTextBoxDriverNationalCode.UCBorder = True
+        Me.UcTextBoxDriverNationalCode.UCBorderColor = System.Drawing.Color.Black
+        Me.UcTextBoxDriverNationalCode.UCBorderCornerRedius = 5
+        Me.UcTextBoxDriverNationalCode.UCEnable = True
+        Me.UcTextBoxDriverNationalCode.UCFont = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UcTextBoxDriverNationalCode.UCForeColor = System.Drawing.Color.Black
+        Me.UcTextBoxDriverNationalCode.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
+        Me.UcTextBoxDriverNationalCode.UCMaxCharacterReached = CType(50, Short)
+        Me.UcTextBoxDriverNationalCode.UCMaxNumber = CType(99999, Long)
+        Me.UcTextBoxDriverNationalCode.UCMultiLine = False
+        Me.UcTextBoxDriverNationalCode.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
+        Me.UcTextBoxDriverNationalCode.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.UcTextBoxDriverNationalCode.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.UcTextBoxDriverNationalCode.UCValue = ""
+        '
+        'Label3
+        '
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label3.ForeColor = System.Drawing.Color.OrangeRed
+        Me.Label3.Location = New System.Drawing.Point(288, 2)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(166, 23)
+        Me.Label3.TabIndex = 26
+        Me.Label3.Text = "کد ملی(استعلام از سایت هوشمند)"
         '
         'Label2
         '
@@ -77,10 +115,10 @@ Partial Class UCDriverTruck
         '
         Me.UcNumberStrSmartCardNoSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcNumberStrSmartCardNoSearch.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumberStrSmartCardNoSearch.Location = New System.Drawing.Point(424, 3)
+        Me.UcNumberStrSmartCardNoSearch.Location = New System.Drawing.Point(460, 3)
         Me.UcNumberStrSmartCardNoSearch.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberStrSmartCardNoSearch.Name = "UcNumberStrSmartCardNoSearch"
-        Me.UcNumberStrSmartCardNoSearch.Size = New System.Drawing.Size(134, 25)
+        Me.UcNumberStrSmartCardNoSearch.Size = New System.Drawing.Size(98, 25)
         Me.UcNumberStrSmartCardNoSearch.TabIndex = 24
         Me.UcNumberStrSmartCardNoSearch.UCAllowedMaxNumber = CType(9223372036854775807, Long)
         Me.UcNumberStrSmartCardNoSearch.UCAllowedMinNumber = CType(-922337203685477580, Long)
@@ -101,7 +139,7 @@ Partial Class UCDriverTruck
         Me.UcButtonNew.Location = New System.Drawing.Point(126, 0)
         Me.UcButtonNew.Name = "UcButtonNew"
         Me.UcButtonNew.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcButtonNew.Size = New System.Drawing.Size(60, 32)
+        Me.UcButtonNew.Size = New System.Drawing.Size(60, 30)
         Me.UcButtonNew.TabIndex = 23
         Me.UcButtonNew.UCBackColor = System.Drawing.Color.SteelBlue
         Me.UcButtonNew.UCBackColorDisable = System.Drawing.Color.Gray
@@ -127,7 +165,7 @@ Partial Class UCDriverTruck
         Me.UcButtonSabt.Location = New System.Drawing.Point(35, 0)
         Me.UcButtonSabt.Name = "UcButtonSabt"
         Me.UcButtonSabt.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcButtonSabt.Size = New System.Drawing.Size(85, 32)
+        Me.UcButtonSabt.Size = New System.Drawing.Size(85, 30)
         Me.UcButtonSabt.TabIndex = 22
         Me.UcButtonSabt.UCBackColor = System.Drawing.Color.SteelBlue
         Me.UcButtonSabt.UCBackColorDisable = System.Drawing.Color.Gray
@@ -196,40 +234,6 @@ Partial Class UCDriverTruck
         Me.UcDriver.TabIndex = 0
         Me.UcDriver.UCViewButtons = False
         '
-        'UcNumberDriverNationalCode
-        '
-        Me.UcNumberDriverNationalCode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcNumberDriverNationalCode.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumberDriverNationalCode.Location = New System.Drawing.Point(269, 3)
-        Me.UcNumberDriverNationalCode.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.UcNumberDriverNationalCode.Name = "UcNumberDriverNationalCode"
-        Me.UcNumberDriverNationalCode.Size = New System.Drawing.Size(90, 25)
-        Me.UcNumberDriverNationalCode.TabIndex = 27
-        Me.UcNumberDriverNationalCode.UCAllowedMaxNumber = CType(9223372036854775807, Long)
-        Me.UcNumberDriverNationalCode.UCAllowedMinNumber = CType(-922337203685477, Long)
-        Me.UcNumberDriverNationalCode.UCBackColor = System.Drawing.Color.White
-        Me.UcNumberDriverNationalCode.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberDriverNationalCode.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
-        Me.UcNumberDriverNationalCode.UCBorder = True
-        Me.UcNumberDriverNationalCode.UCBorderColor = System.Drawing.Color.Black
-        Me.UcNumberDriverNationalCode.UCEnable = True
-        Me.UcNumberDriverNationalCode.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumberDriverNationalCode.UCForeColor = System.Drawing.Color.Black
-        Me.UcNumberDriverNationalCode.UCMultiLine = False
-        Me.UcNumberDriverNationalCode.UCValue = CType(0, Long)
-        '
-        'Label3
-        '
-        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label3.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Label3.Location = New System.Drawing.Point(366, 2)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(42, 23)
-        Me.Label3.TabIndex = 26
-        Me.Label3.Text = "کد ملی"
-        '
         'UCDriverTruck
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -257,6 +261,6 @@ End Sub
     Friend WithEvents UcButtonNew As UCButton
     Friend WithEvents UcNumberStrSmartCardNoSearch As UCNumber
     Friend WithEvents Label2 As Label
-    Friend WithEvents UcNumberDriverNationalCode As UCNumber
     Friend WithEvents Label3 As Label
+    Friend WithEvents UcTextBoxDriverNationalCode As UCTextBox
 End Class

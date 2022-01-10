@@ -69,7 +69,7 @@ Public Class UCDriverTruck
         End Try
     End Sub
 
-    Public Sub UCRefreshGeneral()
+    Public Overloads Sub UCRefreshGeneral()
         Try
             UCRefresh()
             UcNumberStrSmartCardNoSearch.UCRefresh()
@@ -220,7 +220,7 @@ Public Class UCDriverTruck
         UcButtonSabt.Focus()
     End Sub
 
-    Private Sub UcNumberDriverNationalCode_UC13Pressed(UserNumber As String) Handles UcNumberDriverNationalCode.UC13Pressed
+    Private Sub UcTextBoxDriverNationalCode_UC13PressedEvent(UserNumber As String) Handles UcTextBoxDriverNationalCode.UC13PressedEvent
         Try
             Try
                 UcDriver.UCRefreshGeneral()
@@ -249,13 +249,6 @@ Public Class UCDriverTruck
         End Try
     End Sub
 
-    'Private Sub UcDriver_UCDriverInfByNationalCodeRequestedEvent(NationalCode As String) Handles UcDriver.UCDriverInfByNationalCodeRequestedEvent
-    '    Try
-
-    '    Catch ex As Exception
-
-    '    End Try
-    'End Sub
 
 
 #End Region

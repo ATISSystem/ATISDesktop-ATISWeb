@@ -232,6 +232,12 @@
     <Compile Include="CarTruckNobat\UCResuscitationReserveTurn.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="CarTruckNobat\UCResuscitationReserveTurnRegisterRequestIdFounder.Designer.vb">
+      <DependentUpon>UCResuscitationReserveTurnRegisterRequestIdFounder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarTruckNobat\UCResuscitationReserveTurnRegisterRequestIdFounder.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Configuration Management\FrmcClientConfigurations.Designer.vb">
       <DependentUpon>FrmcClientConfigurations.vb</DependentUpon>
     </Compile>
@@ -683,6 +689,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CarTruckNobat\UCResuscitationReserveTurn.resx">
       <DependentUpon>UCResuscitationReserveTurn.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarTruckNobat\UCResuscitationReserveTurnRegisterRequestIdFounder.resx">
+      <DependentUpon>UCResuscitationReserveTurnRegisterRequestIdFounder.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Configuration Management\FrmcClientConfigurations.resx">
       <DependentUpon>FrmcClientConfigurations.vb</DependentUpon>

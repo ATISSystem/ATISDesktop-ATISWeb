@@ -71,7 +71,7 @@ Public Class UCResuscitationReserveTurn
             UCButtonResuscitation.UCEnable = False
             Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
             Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
-            InstanceTurnRegisterRequest.ResuscitationReserveTurn(UcNumberTRRId.UCValue, InstanceTrucks.GetNSSTruck(UcCar.UCGetNSS().nIdCar), True, PayanehClassLibraryRequesters.UCResuscitationReserveTurn, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            InstanceTurnRegisterRequest.ResuscitationReserveTurn(UcResuscitationReserveTurnRegisterRequestIdFounder.UCGetCurrentNSS.TRRId, InstanceTrucks.GetNSSTruck(UcCar.UCGetNSS().nIdCar), True, PayanehClassLibraryRequesters.UCResuscitationReserveTurn, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت رزرو با موفقیت احیاء شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                                 OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
@@ -88,6 +88,7 @@ Public Class UCResuscitationReserveTurn
                                 OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
                                 OrElse TypeOf ex Is GetNSSException _
                                 OrElse TypeOf ex Is GetDataException _
+                                OrElse TypeOf ex Is DataEntryException _
                                 OrElse TypeOf ex Is TurnRegisteringRequestIdIsNotaReserveTypeException _
                                 OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
                                 OrElse TypeOf ex Is TurnNotFoundException _

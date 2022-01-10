@@ -75,10 +75,10 @@ Public Class UCDriver
         RaiseEvent UCRefreshedEvent()
     End Sub
 
-    Public Sub UCRefreshGeneral()
+    Public Overloads Sub UCRefreshGeneral()
         UCRefresh()
         UcPersianTextBoxDriverName.UCRefresh()
-        UcNumberDriverNationalCode.UCRefresh()
+        UcTextBoxDriverNationalCode.UCRefresh()
         RaiseEvent UCRefreshedGeneralEvent()
     End Sub
 
@@ -88,7 +88,7 @@ Public Class UCDriver
             UCRefresh()
             UcNumberDrivernIdPerson.UCValue = myNSS.nIdPerson
             UcPersianTextBoxDriverName.UCValue = myNSS.StrPersonFullName
-            UcNumberDriverNationalCode.UCValue = IIf(IsNumeric(myNSS.StrNationalCode) = True, myNSS.StrNationalCode, 0)
+            UcTextBoxDriverNationalCode.UCValue = IIf(IsNumeric(myNSS.StrNationalCode) = True, myNSS.StrNationalCode, 0)
             UcPersianTextBoxNameFamily.UCValue = myNSS.StrPersonFullName
             UcPersianTextBoxFather.UCValue = myNSS.StrFatherName
             UcTextBoxNationalCode.UCValue = IIf(IsNumeric(myNSS.StrNationalCode) = True, myNSS.StrNationalCode, 0)
@@ -108,7 +108,7 @@ Public Class UCDriver
             UCRefresh()
             UcNumberDrivernIdPerson.UCValue = YourNSS.nIdPerson
             UcPersianTextBoxDriverName.UCValue = YourNSS.StrPersonFullName
-            UcNumberDriverNationalCode.UCValue = IIf(IsNumeric(YourNSS.StrNationalCode) = True, YourNSS.StrNationalCode, 0)
+            UcTextBoxDriverNationalCode.UCValue = IIf(IsNumeric(YourNSS.StrNationalCode) = True, YourNSS.StrNationalCode, 0)
             UcPersianTextBoxNameFamily.UCValue = YourNSS.StrPersonFullName
             UcPersianTextBoxFather.UCValue = YourNSS.StrFatherName
             UcTextBoxNationalCode.UCValue = IIf(IsNumeric(YourNSS.StrNationalCode) = True, YourNSS.StrNationalCode, 0)
@@ -212,11 +212,10 @@ Public Class UCDriver
 
 #Region "Event Handlers"
 
-    Private Sub UcNumberDriverNationalCode_UC13Pressed(UserNumber As String) Handles UcNumberDriverNationalCode.UC13Pressed
+    Private Sub UcTextBoxDriverNationalCode_UC13Pressed(UserNumber As String) Handles UcTextBoxDriverNationalCode.UC13PressedEvent
         Try
             UCRefresh()
-            'RaiseEvent UCDriverInfByNationalCodeRequestedEvent(UserNumber)
-            UCViewFrmDrivers(UcNumberDriverNationalCode.UCValue, FrmcDrivers.ViewType.ByNationalCode, UcNumberDriverNationalCode)
+            UCViewFrmDrivers(UcTextBoxDriverNationalCode.UCValue, FrmcDrivers.ViewType.ByNationalCode, UcTextBoxDriverNationalCode)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

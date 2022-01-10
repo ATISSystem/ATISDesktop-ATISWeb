@@ -170,6 +170,18 @@ Public Class UCTextBox
         End Set
     End Property
 
+    Private _UCBorderCornerRedius As Integer = 0
+    <Browsable(True)>
+    Public Property UCBorderCornerRedius() As Integer
+        Get
+            Return _UCBorderCornerRedius
+        End Get
+        Set(value As Integer)
+            _UCBorderCornerRedius = value
+            PnlMain.CornerRadius = value
+        End Set
+    End Property
+
     <Browsable(True)>
     Public Property UCMaxNumber As Int64 = 99999
 

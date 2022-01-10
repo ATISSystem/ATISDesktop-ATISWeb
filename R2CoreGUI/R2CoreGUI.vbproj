@@ -272,6 +272,12 @@
     <Compile Include="DateAndTime Management\FrmcPersianDateTimePicker.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DateAndTime Management\UCPersianDateTimeEntry.Designer.vb">
+      <DependentUpon>UCPersianDateTimeEntry.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DateAndTime Management\UCPersianDateTimeEntry.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DateAndTime Management\UCShamsiDate.Designer.vb">
       <DependentUpon>UCShamsiDate.vb</DependentUpon>
     </Compile>
@@ -778,6 +784,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DateAndTime Management\FrmcPersianDateTimePicker.resx">
       <DependentUpon>FrmcPersianDateTimePicker.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DateAndTime Management\UCPersianDateTimeEntry.resx">
+      <DependentUpon>UCPersianDateTimeEntry.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DateAndTime Management\UCShamsiDate.resx">
       <DependentUpon>UCShamsiDate.vb</DependentUpon>

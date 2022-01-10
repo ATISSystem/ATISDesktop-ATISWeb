@@ -31,15 +31,14 @@ Partial Class UCTextBox
         '
         'TextBox
         '
-        Me.TextBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.TextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TextBox.BackColor = System.Drawing.Color.White
         Me.TextBox.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.TextBox.Location = New System.Drawing.Point(2, 2)
+        Me.TextBox.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.TextBox.Location = New System.Drawing.Point(13, 3)
         Me.TextBox.Name = "TextBox"
-        Me.TextBox.Size = New System.Drawing.Size(169, 24)
+        Me.TextBox.Size = New System.Drawing.Size(140, 24)
         Me.TextBox.TabIndex = 0
         Me.TextBox.Text = "545454"
         Me.TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -47,23 +46,23 @@ Partial Class UCTextBox
         'PnlMain
         '
         Me.PnlMain.BackColor = System.Drawing.Color.Transparent
-        Me.PnlMain.Border = true
-        Me.PnlMain.BorderColor = System.Drawing.Color.DarkGray
+        Me.PnlMain.Border = True
+        Me.PnlMain.BorderColor = System.Drawing.Color.Black
         Me.PnlMain.Colors.Add(Me.ColorWithAlpha1)
         Me.PnlMain.Colors.Add(Me.ColorWithAlpha2)
         Me.PnlMain.ContentPadding = New System.Windows.Forms.Padding(0)
         Me.PnlMain.Controls.Add(Me.TextBox)
         Me.PnlMain.CornerRadius = 5
-        Me.PnlMain.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
-            Or BlueActivity.Controls.Corner.BottomLeft)  _
-            Or BlueActivity.Controls.Corner.BottomRight),BlueActivity.Controls.Corner)
+        Me.PnlMain.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight) _
+            Or BlueActivity.Controls.Corner.BottomLeft) _
+            Or BlueActivity.Controls.Corner.BottomRight), BlueActivity.Controls.Corner)
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PnlMain.Gradient = true
+        Me.PnlMain.Gradient = True
         Me.PnlMain.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.PnlMain.GradientOffset = 1!
+        Me.PnlMain.GradientOffset = 1.0!
         Me.PnlMain.GradientSize = New System.Drawing.Size(0, 0)
         Me.PnlMain.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.PnlMain.Grayscale = false
+        Me.PnlMain.Grayscale = False
         Me.PnlMain.Image = Nothing
         Me.PnlMain.ImageAlpha = 75
         Me.PnlMain.ImagePadding = New System.Windows.Forms.Padding(5)
@@ -71,8 +70,8 @@ Partial Class UCTextBox
         Me.PnlMain.ImageSize = New System.Drawing.Size(48, 48)
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Rounded = true
-        Me.PnlMain.Size = New System.Drawing.Size(173, 28)
+        Me.PnlMain.Rounded = True
+        Me.PnlMain.Size = New System.Drawing.Size(169, 28)
         Me.PnlMain.TabIndex = 1
         '
         'ColorWithAlpha1
@@ -89,12 +88,12 @@ Partial Class UCTextBox
         '
         'UCTextBox
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCTextBox"
-        Me.Size = New System.Drawing.Size(173, 28)
+        Me.Size = New System.Drawing.Size(169, 28)
         Me.PnlMain.ResumeLayout(false)
         Me.PnlMain.PerformLayout
         Me.ResumeLayout(false)
