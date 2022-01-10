@@ -71,8 +71,8 @@ Partial Class UCTimeEntry
         Me.PnlTimeObjects.ImageSize = New System.Drawing.Size(48, 48)
         Me.PnlTimeObjects.Location = New System.Drawing.Point(20, -1)
         Me.PnlTimeObjects.Name = "PnlTimeObjects"
-        Me.PnlTimeObjects.Rounded = true
-        Me.PnlTimeObjects.Size = New System.Drawing.Size(83, 26)
+        Me.PnlTimeObjects.Rounded = True
+        Me.PnlTimeObjects.Size = New System.Drawing.Size(130, 28)
         Me.PnlTimeObjects.TabIndex = 0
         '
         'ColorWithAlpha1
@@ -89,60 +89,64 @@ Partial Class UCTimeEntry
         '
         'UcTextBoxSecond
         '
-        Me.UcTextBoxSecond.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxSecond.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTextBoxSecond.BackColor = System.Drawing.Color.Transparent
         Me.UcTextBoxSecond.ForeColor = System.Drawing.Color.Black
-        Me.UcTextBoxSecond.Location = New System.Drawing.Point(59, 0)
+        Me.UcTextBoxSecond.Location = New System.Drawing.Point(96, 0)
         Me.UcTextBoxSecond.Name = "UcTextBoxSecond"
         Me.UcTextBoxSecond.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcTextBoxSecond.Size = New System.Drawing.Size(25, 23)
+        Me.UcTextBoxSecond.Size = New System.Drawing.Size(31, 23)
         Me.UcTextBoxSecond.TabIndex = 7
         Me.UcTextBoxSecond.UCBackColor = System.Drawing.Color.White
         Me.UcTextBoxSecond.UCBackColorDisable = System.Drawing.Color.White
-        Me.UcTextBoxSecond.UCBorder = System.Windows.Forms.BorderStyle.None
-        Me.UcTextBoxSecond.UCEnable = true
-        Me.UcTextBoxSecond.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcTextBoxSecond.UCBorder = False
+        Me.UcTextBoxSecond.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcTextBoxSecond.UCBorderCornerRedius = 0
+        Me.UcTextBoxSecond.UCEnable = True
+        Me.UcTextBoxSecond.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcTextBoxSecond.UCForeColor = System.Drawing.Color.Black
         Me.UcTextBoxSecond.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.English
-        Me.UcTextBoxSecond.UCMaxCharacterReached = CType(2,Short)
-        Me.UcTextBoxSecond.UCMaxNumber = CType(59,Long)
-        Me.UcTextBoxSecond.UCMultiLine = false
+        Me.UcTextBoxSecond.UCMaxCharacterReached = CType(2, Short)
+        Me.UcTextBoxSecond.UCMaxNumber = CType(59, Long)
+        Me.UcTextBoxSecond.UCMultiLine = False
         Me.UcTextBoxSecond.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.OnlyDigit
         Me.UcTextBoxSecond.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
         Me.UcTextBoxSecond.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcTextBoxSecond.UCValue = "20"
+        Me.UcTextBoxSecond.UCValue = "88"
         '
         'UcTextBoxMinute
         '
-        Me.UcTextBoxMinute.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxMinute.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTextBoxMinute.BackColor = System.Drawing.Color.Transparent
         Me.UcTextBoxMinute.ForeColor = System.Drawing.Color.Black
-        Me.UcTextBoxMinute.Location = New System.Drawing.Point(31, 0)
+        Me.UcTextBoxMinute.Location = New System.Drawing.Point(51, 0)
         Me.UcTextBoxMinute.Name = "UcTextBoxMinute"
         Me.UcTextBoxMinute.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcTextBoxMinute.Size = New System.Drawing.Size(22, 23)
+        Me.UcTextBoxMinute.Size = New System.Drawing.Size(30, 23)
         Me.UcTextBoxMinute.TabIndex = 5
         Me.UcTextBoxMinute.UCBackColor = System.Drawing.Color.White
         Me.UcTextBoxMinute.UCBackColorDisable = System.Drawing.Color.White
-        Me.UcTextBoxMinute.UCBorder = System.Windows.Forms.BorderStyle.None
-        Me.UcTextBoxMinute.UCEnable = true
-        Me.UcTextBoxMinute.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcTextBoxMinute.UCBorder = False
+        Me.UcTextBoxMinute.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcTextBoxMinute.UCBorderCornerRedius = 0
+        Me.UcTextBoxMinute.UCEnable = True
+        Me.UcTextBoxMinute.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcTextBoxMinute.UCForeColor = System.Drawing.Color.Black
         Me.UcTextBoxMinute.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.English
-        Me.UcTextBoxMinute.UCMaxCharacterReached = CType(2,Short)
-        Me.UcTextBoxMinute.UCMaxNumber = CType(59,Long)
-        Me.UcTextBoxMinute.UCMultiLine = false
+        Me.UcTextBoxMinute.UCMaxCharacterReached = CType(2, Short)
+        Me.UcTextBoxMinute.UCMaxNumber = CType(59, Long)
+        Me.UcTextBoxMinute.UCMultiLine = False
         Me.UcTextBoxMinute.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.OnlyDigit
         Me.UcTextBoxMinute.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
         Me.UcTextBoxMinute.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcTextBoxMinute.UCValue = "20"
+        Me.UcTextBoxMinute.UCValue = "88"
         '
         'Label2
         '
-        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label2.AutoSize = true
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.Label2.Location = New System.Drawing.Point(23, 3)
+        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label2.Location = New System.Drawing.Point(43, 3)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(11, 16)
         Me.Label2.TabIndex = 4
@@ -150,36 +154,38 @@ Partial Class UCTimeEntry
         '
         'UcTextBoxHour
         '
-        Me.UcTextBoxHour.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxHour.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTextBoxHour.BackColor = System.Drawing.Color.Transparent
         Me.UcTextBoxHour.ForeColor = System.Drawing.Color.Black
         Me.UcTextBoxHour.Location = New System.Drawing.Point(4, 0)
         Me.UcTextBoxHour.Name = "UcTextBoxHour"
         Me.UcTextBoxHour.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcTextBoxHour.Size = New System.Drawing.Size(21, 23)
+        Me.UcTextBoxHour.Size = New System.Drawing.Size(42, 23)
         Me.UcTextBoxHour.TabIndex = 1
         Me.UcTextBoxHour.UCBackColor = System.Drawing.Color.White
         Me.UcTextBoxHour.UCBackColorDisable = System.Drawing.Color.White
-        Me.UcTextBoxHour.UCBorder = System.Windows.Forms.BorderStyle.None
-        Me.UcTextBoxHour.UCEnable = true
-        Me.UcTextBoxHour.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcTextBoxHour.UCBorder = False
+        Me.UcTextBoxHour.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcTextBoxHour.UCBorderCornerRedius = 0
+        Me.UcTextBoxHour.UCEnable = True
+        Me.UcTextBoxHour.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcTextBoxHour.UCForeColor = System.Drawing.Color.Black
         Me.UcTextBoxHour.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.English
-        Me.UcTextBoxHour.UCMaxCharacterReached = CType(2,Short)
-        Me.UcTextBoxHour.UCMaxNumber = CType(23,Long)
-        Me.UcTextBoxHour.UCMultiLine = false
+        Me.UcTextBoxHour.UCMaxCharacterReached = CType(2, Short)
+        Me.UcTextBoxHour.UCMaxNumber = CType(23, Long)
+        Me.UcTextBoxHour.UCMultiLine = False
         Me.UcTextBoxHour.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.OnlyDigit
         Me.UcTextBoxHour.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
         Me.UcTextBoxHour.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcTextBoxHour.UCValue = "20"
+        Me.UcTextBoxHour.UCValue = "88"
         '
         'Label1
         '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label1.AutoSize = true
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.Label1.Location = New System.Drawing.Point(53, 3)
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label1.Location = New System.Drawing.Point(86, 3)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(11, 16)
         Me.Label1.TabIndex = 6
@@ -189,18 +195,18 @@ Partial Class UCTimeEntry
         '
         Me.PictureBox.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox.Dock = System.Windows.Forms.DockStyle.Left
-        Me.PictureBox.Image = CType(resources.GetObject("PictureBox.Image"),System.Drawing.Image)
+        Me.PictureBox.Image = CType(resources.GetObject("PictureBox.Image"), System.Drawing.Image)
         Me.PictureBox.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox.Name = "PictureBox"
-        Me.PictureBox.Size = New System.Drawing.Size(22, 25)
+        Me.PictureBox.Size = New System.Drawing.Size(22, 27)
         Me.PictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox.TabIndex = 1
-        Me.PictureBox.TabStop = false
+        Me.PictureBox.TabStop = False
         '
         'PnlMain
         '
         Me.PnlMain.BackColor = System.Drawing.Color.Transparent
-        Me.PnlMain.Border = false
+        Me.PnlMain.Border = False
         Me.PnlMain.BorderColor = System.Drawing.SystemColors.ActiveBorder
         Me.PnlMain.Colors.Add(Me.ColorWithAlpha3)
         Me.PnlMain.Colors.Add(Me.ColorWithAlpha4)
@@ -210,12 +216,12 @@ Partial Class UCTimeEntry
         Me.PnlMain.CornerRadius = 20
         Me.PnlMain.Corners = BlueActivity.Controls.Corner.None
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PnlMain.Gradient = true
+        Me.PnlMain.Gradient = True
         Me.PnlMain.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.PnlMain.GradientOffset = 1!
+        Me.PnlMain.GradientOffset = 1.0!
         Me.PnlMain.GradientSize = New System.Drawing.Size(0, 0)
         Me.PnlMain.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.PnlMain.Grayscale = false
+        Me.PnlMain.Grayscale = False
         Me.PnlMain.Image = Nothing
         Me.PnlMain.ImageAlpha = 75
         Me.PnlMain.ImagePadding = New System.Windows.Forms.Padding(5)
@@ -223,8 +229,8 @@ Partial Class UCTimeEntry
         Me.PnlMain.ImageSize = New System.Drawing.Size(48, 48)
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Rounded = true
-        Me.PnlMain.Size = New System.Drawing.Size(103, 25)
+        Me.PnlMain.Rounded = True
+        Me.PnlMain.Size = New System.Drawing.Size(150, 27)
         Me.PnlMain.TabIndex = 1
         '
         'ColorWithAlpha3
@@ -241,12 +247,12 @@ Partial Class UCTimeEntry
         '
         'UCTimeEntry
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCTimeEntry"
-        Me.Size = New System.Drawing.Size(103, 25)
+        Me.Size = New System.Drawing.Size(150, 27)
         Me.PnlTimeObjects.ResumeLayout(false)
         Me.PnlTimeObjects.PerformLayout
         CType(Me.PictureBox,System.ComponentModel.ISupportInitialize).EndInit

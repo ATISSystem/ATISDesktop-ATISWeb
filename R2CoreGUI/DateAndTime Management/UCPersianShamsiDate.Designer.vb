@@ -44,21 +44,23 @@ Partial Class UCPersianShamsiDate
         '
         Me.UcTextBoxDay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.UcTextBoxDay.BackColor = System.Drawing.Color.Transparent
-        Me.UcTextBoxDay.Location = New System.Drawing.Point(75, 0)
+        Me.UcTextBoxDay.Location = New System.Drawing.Point(93, 0)
         Me.UcTextBoxDay.Name = "UcTextBoxDay"
         Me.UcTextBoxDay.Padding = New System.Windows.Forms.Padding(1)
         Me.UcTextBoxDay.Size = New System.Drawing.Size(30, 23)
         Me.UcTextBoxDay.TabIndex = 4
         Me.UcTextBoxDay.UCBackColor = System.Drawing.Color.White
         Me.UcTextBoxDay.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTextBoxDay.UCBorder = System.Windows.Forms.BorderStyle.None
-        Me.UcTextBoxDay.UCEnable = true
-        Me.UcTextBoxDay.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcTextBoxDay.UCBorder = False
+        Me.UcTextBoxDay.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcTextBoxDay.UCBorderCornerRedius = 0
+        Me.UcTextBoxDay.UCEnable = True
+        Me.UcTextBoxDay.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcTextBoxDay.UCForeColor = System.Drawing.Color.Black
         Me.UcTextBoxDay.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.English
-        Me.UcTextBoxDay.UCMaxCharacterReached = CType(2,Short)
-        Me.UcTextBoxDay.UCMaxNumber = CType(31,Long)
-        Me.UcTextBoxDay.UCMultiLine = false
+        Me.UcTextBoxDay.UCMaxCharacterReached = CType(2, Short)
+        Me.UcTextBoxDay.UCMaxNumber = CType(31, Long)
+        Me.UcTextBoxDay.UCMultiLine = False
         Me.UcTextBoxDay.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.OnlyDigit
         Me.UcTextBoxDay.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
         Me.UcTextBoxDay.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -66,9 +68,9 @@ Partial Class UCPersianShamsiDate
         '
         'Label2
         '
-        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label2.AutoSize = true
-        Me.Label2.Location = New System.Drawing.Point(69, 6)
+        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(87, 6)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(12, 13)
         Me.Label2.TabIndex = 3
@@ -76,9 +78,9 @@ Partial Class UCPersianShamsiDate
         '
         'Label1
         '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label1.AutoSize = true
-        Me.Label1.Location = New System.Drawing.Point(36, 6)
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(54, 6)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(12, 13)
         Me.Label1.TabIndex = 2
@@ -86,23 +88,25 @@ Partial Class UCPersianShamsiDate
         '
         'UcTextBoxMonth
         '
-        Me.UcTextBoxMonth.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxMonth.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTextBoxMonth.BackColor = System.Drawing.Color.Transparent
-        Me.UcTextBoxMonth.Location = New System.Drawing.Point(41, 0)
+        Me.UcTextBoxMonth.Location = New System.Drawing.Point(59, 0)
         Me.UcTextBoxMonth.Name = "UcTextBoxMonth"
         Me.UcTextBoxMonth.Padding = New System.Windows.Forms.Padding(1)
         Me.UcTextBoxMonth.Size = New System.Drawing.Size(26, 23)
         Me.UcTextBoxMonth.TabIndex = 1
         Me.UcTextBoxMonth.UCBackColor = System.Drawing.Color.White
         Me.UcTextBoxMonth.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTextBoxMonth.UCBorder = System.Windows.Forms.BorderStyle.None
-        Me.UcTextBoxMonth.UCEnable = true
-        Me.UcTextBoxMonth.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcTextBoxMonth.UCBorder = False
+        Me.UcTextBoxMonth.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcTextBoxMonth.UCBorderCornerRedius = 0
+        Me.UcTextBoxMonth.UCEnable = True
+        Me.UcTextBoxMonth.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcTextBoxMonth.UCForeColor = System.Drawing.Color.Black
         Me.UcTextBoxMonth.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.English
-        Me.UcTextBoxMonth.UCMaxCharacterReached = CType(2,Short)
-        Me.UcTextBoxMonth.UCMaxNumber = CType(12,Long)
-        Me.UcTextBoxMonth.UCMultiLine = false
+        Me.UcTextBoxMonth.UCMaxCharacterReached = CType(2, Short)
+        Me.UcTextBoxMonth.UCMaxNumber = CType(12, Long)
+        Me.UcTextBoxMonth.UCMultiLine = False
         Me.UcTextBoxMonth.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.OnlyDigit
         Me.UcTextBoxMonth.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
         Me.UcTextBoxMonth.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -110,24 +114,26 @@ Partial Class UCPersianShamsiDate
         '
         'UcTextBoxYear
         '
-        Me.UcTextBoxYear.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxYear.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTextBoxYear.BackColor = System.Drawing.Color.Transparent
         Me.UcTextBoxYear.Location = New System.Drawing.Point(0, 0)
         Me.UcTextBoxYear.Name = "UcTextBoxYear"
         Me.UcTextBoxYear.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcTextBoxYear.Size = New System.Drawing.Size(35, 23)
+        Me.UcTextBoxYear.Size = New System.Drawing.Size(53, 23)
         Me.UcTextBoxYear.TabIndex = 0
         Me.UcTextBoxYear.UCBackColor = System.Drawing.Color.White
         Me.UcTextBoxYear.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTextBoxYear.UCBorder = System.Windows.Forms.BorderStyle.None
-        Me.UcTextBoxYear.UCEnable = true
-        Me.UcTextBoxYear.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcTextBoxYear.UCBorder = False
+        Me.UcTextBoxYear.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcTextBoxYear.UCBorderCornerRedius = 0
+        Me.UcTextBoxYear.UCEnable = True
+        Me.UcTextBoxYear.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcTextBoxYear.UCForeColor = System.Drawing.Color.Black
         Me.UcTextBoxYear.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.English
-        Me.UcTextBoxYear.UCMaxCharacterReached = CType(4,Short)
-        Me.UcTextBoxYear.UCMaxNumber = CType(1500,Long)
-        Me.UcTextBoxYear.UCMultiLine = false
+        Me.UcTextBoxYear.UCMaxCharacterReached = CType(4, Short)
+        Me.UcTextBoxYear.UCMaxNumber = CType(1500, Long)
+        Me.UcTextBoxYear.UCMultiLine = False
         Me.UcTextBoxYear.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.OnlyDigit
         Me.UcTextBoxYear.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
         Me.UcTextBoxYear.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -136,7 +142,7 @@ Partial Class UCPersianShamsiDate
         'PnlMain
         '
         Me.PnlMain.BackColor = System.Drawing.Color.Transparent
-        Me.PnlMain.Border = false
+        Me.PnlMain.Border = False
         Me.PnlMain.BorderColor = System.Drawing.Color.Black
         Me.PnlMain.Colors.Add(Me.ColorWithAlpha1)
         Me.PnlMain.Colors.Add(Me.ColorWithAlpha2)
@@ -146,21 +152,21 @@ Partial Class UCPersianShamsiDate
         Me.PnlMain.CornerRadius = 20
         Me.PnlMain.Corners = BlueActivity.Controls.Corner.None
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PnlMain.Gradient = true
+        Me.PnlMain.Gradient = True
         Me.PnlMain.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.PnlMain.GradientOffset = 1!
+        Me.PnlMain.GradientOffset = 1.0!
         Me.PnlMain.GradientSize = New System.Drawing.Size(0, 0)
         Me.PnlMain.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.PnlMain.Grayscale = false
+        Me.PnlMain.Grayscale = False
         Me.PnlMain.Image = Nothing
         Me.PnlMain.ImageAlpha = 75
         Me.PnlMain.ImagePadding = New System.Windows.Forms.Padding(5)
-        Me.PnlMain.ImagePosition = CType((BlueActivity.Controls.ImagePosition.TopLeft Or BlueActivity.Controls.ImagePosition.TopRight),BlueActivity.Controls.ImagePosition)
+        Me.PnlMain.ImagePosition = CType((BlueActivity.Controls.ImagePosition.TopLeft Or BlueActivity.Controls.ImagePosition.TopRight), BlueActivity.Controls.ImagePosition)
         Me.PnlMain.ImageSize = New System.Drawing.Size(20, 20)
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Rounded = false
-        Me.PnlMain.Size = New System.Drawing.Size(127, 23)
+        Me.PnlMain.Rounded = False
+        Me.PnlMain.Size = New System.Drawing.Size(145, 23)
         Me.PnlMain.TabIndex = 5
         '
         'ColorWithAlpha1
@@ -179,21 +185,21 @@ Partial Class UCPersianShamsiDate
         '
         Me.PictureBox.Cursor = System.Windows.Forms.Cursors.Hand
         Me.PictureBox.Dock = System.Windows.Forms.DockStyle.Left
-        Me.PictureBox.Image = CType(resources.GetObject("PictureBox.Image"),System.Drawing.Image)
+        Me.PictureBox.Image = CType(resources.GetObject("PictureBox.Image"), System.Drawing.Image)
         Me.PictureBox.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox.Name = "PictureBox"
         Me.PictureBox.Size = New System.Drawing.Size(22, 23)
         Me.PictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox.TabIndex = 6
-        Me.PictureBox.TabStop = false
+        Me.PictureBox.TabStop = False
         '
         'PnlDateObjects
         '
-        Me.PnlDateObjects.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlDateObjects.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlDateObjects.BackColor = System.Drawing.Color.Transparent
-        Me.PnlDateObjects.Border = false
+        Me.PnlDateObjects.Border = False
         Me.PnlDateObjects.BorderColor = System.Drawing.SystemColors.ActiveBorder
         Me.PnlDateObjects.Colors.Add(Me.ColorWithAlpha3)
         Me.PnlDateObjects.Colors.Add(Me.ColorWithAlpha4)
@@ -205,12 +211,12 @@ Partial Class UCPersianShamsiDate
         Me.PnlDateObjects.Controls.Add(Me.UcTextBoxDay)
         Me.PnlDateObjects.CornerRadius = 20
         Me.PnlDateObjects.Corners = BlueActivity.Controls.Corner.None
-        Me.PnlDateObjects.Gradient = true
+        Me.PnlDateObjects.Gradient = True
         Me.PnlDateObjects.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.PnlDateObjects.GradientOffset = 1!
+        Me.PnlDateObjects.GradientOffset = 1.0!
         Me.PnlDateObjects.GradientSize = New System.Drawing.Size(0, 0)
         Me.PnlDateObjects.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.PnlDateObjects.Grayscale = false
+        Me.PnlDateObjects.Grayscale = False
         Me.PnlDateObjects.Image = Nothing
         Me.PnlDateObjects.ImageAlpha = 75
         Me.PnlDateObjects.ImagePadding = New System.Windows.Forms.Padding(5)
@@ -218,8 +224,8 @@ Partial Class UCPersianShamsiDate
         Me.PnlDateObjects.ImageSize = New System.Drawing.Size(48, 48)
         Me.PnlDateObjects.Location = New System.Drawing.Point(20, 1)
         Me.PnlDateObjects.Name = "PnlDateObjects"
-        Me.PnlDateObjects.Rounded = true
-        Me.PnlDateObjects.Size = New System.Drawing.Size(105, 22)
+        Me.PnlDateObjects.Rounded = True
+        Me.PnlDateObjects.Size = New System.Drawing.Size(123, 22)
         Me.PnlDateObjects.TabIndex = 5
         '
         'ColorWithAlpha3
@@ -236,13 +242,13 @@ Partial Class UCPersianShamsiDate
         '
         'UCPersianShamsiDate
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCPersianShamsiDate"
-        Me.Size = New System.Drawing.Size(127, 23)
+        Me.Size = New System.Drawing.Size(145, 23)
         Me.PnlMain.ResumeLayout(false)
         CType(Me.PictureBox,System.ComponentModel.ISupportInitialize).EndInit
         Me.PnlDateObjects.ResumeLayout(false)

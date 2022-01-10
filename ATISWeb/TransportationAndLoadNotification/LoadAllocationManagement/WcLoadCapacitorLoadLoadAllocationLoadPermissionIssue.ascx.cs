@@ -83,11 +83,12 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
         {
             bool TurnIsTemporary = false;
             R2CoreTransportationAndLoadNotificationStandardTurnStructure NSSTurn = null;
+            var InstanceCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
+            var InstanceLogin = new ATISWebMClassLoginManager();
             try
             {
                 BtnLoadAllocation.Enabled = false;
                 var InstanceTransportCompanies = new R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager();
-                var InstanceLogin = new ATISWebMClassLoginManager();
                 var NSSTruck = WcSmartCardsInquiry.WcGetNSSTruck;
                 var NSSTruckDriver = WcSmartCardsInquiry.WcGetNSSTruckDriver;
                 var NSSTransportCompany = InstanceTransportCompanies.GetNSSTransportCompnay(InstanceLogin.GetNSSCurrentUser());
@@ -107,11 +108,10 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 }
                 catch (TurnNotFoundException ex)
                 {
-                    var InstanceCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
+                    TurnIsTemporary = true;
                     NSSTurn = InstanceTurns.GetNSSTurn(InstanceCarTruckNobat.GetTurnofKiosk(NSSTruck, NSSTruckDriver, NSSTransportCompany, NSSLoadCapacitorLoad, InstanceLogin.GetNSSCurrentUser()));
                     TempTurnReport = "ناوگان نوبت ندارد.نوبت به صورت خودکار در سامانه صادر شد ";
                     PnlTurnStatus.BackColor = System.Drawing.Color.Red;
-                    TurnIsTemporary = true;
                 }
                 //تخصیص بار - آزاد سازی بار به صورت خودکار توسط سرور انجام می گردد
                 //مشاهده و چاپ مجوز از طریق قسمت مجوزهای صادر شده در بارهای رسوبی قابل مشاهده است
@@ -157,14 +157,22 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                                        ex is RequesterNotAllowTurnIssueBySeqTException ||
                                        ex is RequesterNotAllowTurnIssueByLastLoadPermissionedException)
             {
-                if (TurnIsTemporary)
-                { PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToTrue(NSSTurn.nEnterExitId, true); }
+                if (TurnIsTemporary && !(NSSTurn is null))
+                { InstanceCarTruckNobat.SetbFlagDriverToTrue(NSSTurn.nEnterExitId, true, InstanceLogin.GetNSSCurrentUser()); }
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message.Replace("\r\n", " ") + "');", true);
             }
             catch (PleaseReloginException ex)
-            { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
+            {
+                if (TurnIsTemporary && !(NSSTurn is null))
+                { InstanceCarTruckNobat.SetbFlagDriverToTrue(NSSTurn.nEnterExitId, true, InstanceLogin.GetNSSCurrentUser()); }
+                Response.Redirect("/LoginManagement/Wflogin.aspx");
+            }
             catch (Exception ex)
-            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
+            {
+                if (TurnIsTemporary && !(NSSTurn is null))
+                { InstanceCarTruckNobat.SetbFlagDriverToTrue(NSSTurn.nEnterExitId, true, InstanceLogin.GetNSSCurrentUser()); }
+                Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true);
+            }
         }
 
         #endregion

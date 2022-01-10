@@ -35,10 +35,10 @@ Partial Class UCTextBox
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TextBox.BackColor = System.Drawing.Color.White
         Me.TextBox.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.TextBox.Location = New System.Drawing.Point(13, 3)
+        Me.TextBox.Font = New System.Drawing.Font("B Homa", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.TextBox.Location = New System.Drawing.Point(5, 3)
         Me.TextBox.Name = "TextBox"
-        Me.TextBox.Size = New System.Drawing.Size(140, 24)
+        Me.TextBox.Size = New System.Drawing.Size(75, 22)
         Me.TextBox.TabIndex = 0
         Me.TextBox.Text = "545454"
         Me.TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -71,7 +71,7 @@ Partial Class UCTextBox
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
         Me.PnlMain.Rounded = True
-        Me.PnlMain.Size = New System.Drawing.Size(169, 28)
+        Me.PnlMain.Size = New System.Drawing.Size(87, 29)
         Me.PnlMain.TabIndex = 1
         '
         'ColorWithAlpha1
@@ -93,7 +93,7 @@ Partial Class UCTextBox
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCTextBox"
-        Me.Size = New System.Drawing.Size(169, 28)
+        Me.Size = New System.Drawing.Size(87, 29)
         Me.PnlMain.ResumeLayout(false)
         Me.PnlMain.PerformLayout
         Me.ResumeLayout(false)

@@ -36,7 +36,7 @@ Partial Class FrmcTempExitTerafficCard
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(247, 150)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1500)
         '
         'PnlTempExitTerafficCard
         '
@@ -90,10 +90,17 @@ Partial Class FrmcTempExitTerafficCard
         Me.UcMoney.Name = "UcMoney"
         Me.UcMoney.Size = New System.Drawing.Size(132, 20)
         Me.UcMoney.TabIndex = 2
+        Me.UcMoney.UCBackColor = System.Drawing.Color.White
+        Me.UcMoney.UCBorder = True
+        Me.UcMoney.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcMoney.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcMoney.UCForeColor = System.Drawing.Color.Black
+        Me.UcMoney.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.UcMoney.UCValue = ""
         '
         'UcMoneyWallet
         '
-        Me.UcMoneyWallet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcMoneyWallet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcMoneyWallet.BackColor = System.Drawing.Color.Transparent
         Me.UcMoneyWallet.Location = New System.Drawing.Point(789, 149)
         Me.UcMoneyWallet.Name = "UcMoneyWallet"
@@ -102,23 +109,26 @@ Partial Class FrmcTempExitTerafficCard
         '
         'UcrfidCardTextMaintainer
         '
-        Me.UcrfidCardTextMaintainer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcrfidCardTextMaintainer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcrfidCardTextMaintainer.BackColor = System.Drawing.Color.Transparent
         Me.UcrfidCardTextMaintainer.Location = New System.Drawing.Point(789, 83)
         Me.UcrfidCardTextMaintainer.Name = "UcrfidCardTextMaintainer"
         Me.UcrfidCardTextMaintainer.Padding = New System.Windows.Forms.Padding(3)
         Me.UcrfidCardTextMaintainer.Size = New System.Drawing.Size(188, 34)
         Me.UcrfidCardTextMaintainer.TabIndex = 0
-        Me.UcrfidCardTextMaintainer.UCEnable = true
+        Me.UcrfidCardTextMaintainer.UCEnable = True
         Me.UcrfidCardTextMaintainer.UCValue = ""
         '
         'UcLabel1
         '
-        Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabel1._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
         Me.UcLabel1.Location = New System.Drawing.Point(916, 116)
         Me.UcLabel1.Name = "UcLabel1"
         Me.UcLabel1.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcLabel1.Size = New System.Drawing.Size(50, 32)
         Me.UcLabel1.TabIndex = 3
         Me.UcLabel1.UCBackColor = System.Drawing.Color.White

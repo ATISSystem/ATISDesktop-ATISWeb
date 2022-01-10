@@ -36,7 +36,7 @@ Partial Class FrmcMoneyWalletReturnAmount
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(247, 150)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1000)
         '
         'PnlMoneyWalletReturnAmount
         '
@@ -102,10 +102,17 @@ Partial Class FrmcMoneyWalletReturnAmount
         Me.UcMoney.Name = "UcMoney"
         Me.UcMoney.Size = New System.Drawing.Size(141, 20)
         Me.UcMoney.TabIndex = 2
+        Me.UcMoney.UCBackColor = System.Drawing.Color.White
+        Me.UcMoney.UCBorder = True
+        Me.UcMoney.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcMoney.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcMoney.UCForeColor = System.Drawing.Color.Black
+        Me.UcMoney.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.UcMoney.UCValue = ""
         '
         'UcMoneyWallet
         '
-        Me.UcMoneyWallet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcMoneyWallet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcMoneyWallet.BackColor = System.Drawing.Color.Transparent
         Me.UcMoneyWallet.Location = New System.Drawing.Point(791, 79)
         Me.UcMoneyWallet.Name = "UcMoneyWallet"
@@ -114,11 +121,14 @@ Partial Class FrmcMoneyWalletReturnAmount
         '
         'UcLabel1
         '
-        Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabel1._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
         Me.UcLabel1.Location = New System.Drawing.Point(933, 358)
         Me.UcLabel1.Name = "UcLabel1"
         Me.UcLabel1.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcLabel1.Size = New System.Drawing.Size(50, 32)
         Me.UcLabel1.TabIndex = 3
         Me.UcLabel1.UCBackColor = System.Drawing.Color.White

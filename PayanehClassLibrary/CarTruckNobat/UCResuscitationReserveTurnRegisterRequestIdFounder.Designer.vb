@@ -117,9 +117,9 @@ Partial Class UCResuscitationReserveTurnRegisterRequestIdFounder
         '
         Me.UcPersianDateTimeEntry.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianDateTimeEntry.BackColor = System.Drawing.Color.White
-        Me.UcPersianDateTimeEntry.Location = New System.Drawing.Point(421, 38)
+        Me.UcPersianDateTimeEntry.Location = New System.Drawing.Point(357, 38)
         Me.UcPersianDateTimeEntry.Name = "UcPersianDateTimeEntry"
-        Me.UcPersianDateTimeEntry.Size = New System.Drawing.Size(227, 26)
+        Me.UcPersianDateTimeEntry.Size = New System.Drawing.Size(283, 26)
         Me.UcPersianDateTimeEntry.TabIndex = 350
         '
         'UcLabelTop

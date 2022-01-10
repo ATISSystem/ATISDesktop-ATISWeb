@@ -32,7 +32,7 @@ Partial Class FrmcUserPasswordEdit
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(247, 150)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1500)
         '
         'PnlMain
         '
@@ -68,18 +68,23 @@ Partial Class FrmcUserPasswordEdit
         '
         Me.UcTextBoxNewUserPassword.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcTextBoxNewUserPassword.BackColor = System.Drawing.Color.Transparent
-        Me.UcTextBoxNewUserPassword.Location = New System.Drawing.Point(372, 222)
-        Me.UcTextBoxNewUserPassword.UCMaxCharacterReached = CType(50,Short)
+        Me.UcTextBoxNewUserPassword.Location = New System.Drawing.Point(372, 219)
         Me.UcTextBoxNewUserPassword.Name = "UcTextBoxNewUserPassword"
         Me.UcTextBoxNewUserPassword.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcTextBoxNewUserPassword.Size = New System.Drawing.Size(248, 28)
+        Me.UcTextBoxNewUserPassword.Size = New System.Drawing.Size(248, 31)
         Me.UcTextBoxNewUserPassword.TabIndex = 203
         Me.UcTextBoxNewUserPassword.UCBackColor = System.Drawing.Color.White
         Me.UcTextBoxNewUserPassword.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTextBoxNewUserPassword.UCEnable = true
-        Me.UcTextBoxNewUserPassword.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcTextBoxNewUserPassword.UCBorder = True
+        Me.UcTextBoxNewUserPassword.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcTextBoxNewUserPassword.UCBorderCornerRedius = 5
+        Me.UcTextBoxNewUserPassword.UCEnable = True
+        Me.UcTextBoxNewUserPassword.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcTextBoxNewUserPassword.UCForeColor = System.Drawing.Color.Black
         Me.UcTextBoxNewUserPassword.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
+        Me.UcTextBoxNewUserPassword.UCMaxCharacterReached = CType(50, Short)
+        Me.UcTextBoxNewUserPassword.UCMaxNumber = CType(99999, Long)
+        Me.UcTextBoxNewUserPassword.UCMultiLine = False
         Me.UcTextBoxNewUserPassword.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
         Me.UcTextBoxNewUserPassword.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.UcTextBoxNewUserPassword.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -87,6 +92,8 @@ Partial Class FrmcUserPasswordEdit
         '
         'UcLabel2
         '
+        Me.UcLabel2._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel2._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel2.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcLabel2.BackColor = System.Drawing.Color.Transparent
         Me.UcLabel2.Font = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))

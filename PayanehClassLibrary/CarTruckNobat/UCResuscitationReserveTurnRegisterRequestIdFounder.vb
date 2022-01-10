@@ -2,6 +2,7 @@
 
 Imports System.ComponentModel
 Imports System.Reflection
+
 Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.Turns.Exceptions
@@ -47,7 +48,7 @@ Public Class UCResuscitationReserveTurnRegisterRequestIdFounder
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-
+        UcPersianDateTimeEntry.UCRefreshGeneral()
     End Sub
 
 #End Region

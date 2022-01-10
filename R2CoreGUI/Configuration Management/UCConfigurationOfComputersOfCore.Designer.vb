@@ -24,8 +24,26 @@ Partial Class UCConfigurationOfComputersOfCore
     Private Sub InitializeComponent()
         Me.AlphaGradientPanel1 = New BlueActivity.Controls.AlphaGradientPanel()
         Me.ColorWithAlpha1 = New BlueActivity.Controls.ColorWithAlpha()
-        Me.AlphaGradientPanel3 = New BlueActivity.Controls.AlphaGradientPanel()
+        Me.AlphaGradientPanel4 = New BlueActivity.Controls.AlphaGradientPanel()
         Me.ColorWithAlpha2 = New BlueActivity.Controls.ColorWithAlpha()
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay = New R2CoreGUI.UCNumber()
+        Me.Label38 = New System.Windows.Forms.Label()
+        Me.UcNumberUCUCComputerMessageCollectionTopN = New R2CoreGUI.UCNumber()
+        Me.Label39 = New System.Windows.Forms.Label()
+        Me.UcTextBoxRFIDCardReadersTypeSecond = New R2CoreGUI.UCTextBox()
+        Me.Label31 = New System.Windows.Forms.Label()
+        Me.Label30 = New System.Windows.Forms.Label()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.RBRFIDCardReaderBeepEnableUnActive = New System.Windows.Forms.RadioButton()
+        Me.RBRFIDCardReaderBeepEnableActive = New System.Windows.Forms.RadioButton()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.UcNumberRFIDCardReaderDelay = New R2CoreGUI.UCNumber()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.UcTextBoxRFIDCardNoSimulate = New R2CoreGUI.UCTextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.UcTextBoxRFIDCardReadersTypeFirst = New R2CoreGUI.UCTextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.AlphaGradientPanel3 = New BlueActivity.Controls.AlphaGradientPanel()
         Me.UcNumberDermalogNISTQuality = New R2CoreGUI.UCNumber()
         Me.UcNumberDermalogVerifyScore = New R2CoreGUI.UCNumber()
         Me.UcNumberDermalogLifenessScoreForPresent = New R2CoreGUI.UCNumber()
@@ -63,38 +81,20 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
-        Me.UcTextBoxRFIDCardReadersTypeSecond = New R2CoreGUI.UCTextBox()
-        Me.Label31 = New System.Windows.Forms.Label()
-        Me.Label30 = New System.Windows.Forms.Label()
-        Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.RBRFIDCardReaderBeepEnableUnActive = New System.Windows.Forms.RadioButton()
-        Me.RBRFIDCardReaderBeepEnableActive = New System.Windows.Forms.RadioButton()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.UcNumberRFIDCardReaderDelay = New R2CoreGUI.UCNumber()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.UcTextBoxRFIDCardNoSimulate = New R2CoreGUI.UCTextBox()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.UcTextBoxRFIDCardReadersTypeFirst = New R2CoreGUI.UCTextBox()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.AlphaGradientPanel2 = New BlueActivity.Controls.AlphaGradientPanel()
+        Me.PnlColorErrorInDataEntry = New System.Windows.Forms.Panel()
         Me.PnlColorInformation = New System.Windows.Forms.Panel()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.PnlColorSuccessProccess = New System.Windows.Forms.Panel()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.PnlColorWarning = New System.Windows.Forms.Panel()
         Me.Label18 = New System.Windows.Forms.Label()
-        Me.PnlColorErrorInDataEntry = New System.Windows.Forms.Panel()
         Me.Label17 = New System.Windows.Forms.Label()
         Me.PnlColorErrorType = New System.Windows.Forms.Panel()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.UcNumberTimeOut = New R2CoreGUI.UCNumber()
-        Me.AlphaGradientPanel4 = New BlueActivity.Controls.AlphaGradientPanel()
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay = New R2CoreGUI.UCNumber()
-        Me.Label38 = New System.Windows.Forms.Label()
-        Me.UcNumberUCUCComputerMessageCollectionTopN = New R2CoreGUI.UCNumber()
-        Me.Label39 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -105,27 +105,27 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.Label24 = New System.Windows.Forms.Label()
         Me.Panel13 = New System.Windows.Forms.Panel()
         Me.Label13 = New System.Windows.Forms.Label()
-        Me.AlphaGradientPanel1.SuspendLayout
-        Me.AlphaGradientPanel3.SuspendLayout
-        Me.Panel3.SuspendLayout
-        Me.Panel7.SuspendLayout
-        Me.Panel6.SuspendLayout
-        Me.Panel5.SuspendLayout
-        Me.Panel2.SuspendLayout
-        Me.AlphaGradientPanel2.SuspendLayout
-        Me.AlphaGradientPanel4.SuspendLayout
-        Me.Panel1.SuspendLayout
-        Me.Panel4.SuspendLayout
-        Me.Panel14.SuspendLayout
-        Me.Panel13.SuspendLayout
-        Me.SuspendLayout
+        Me.AlphaGradientPanel1.SuspendLayout()
+        Me.AlphaGradientPanel4.SuspendLayout()
+        Me.Panel2.SuspendLayout()
+        Me.AlphaGradientPanel3.SuspendLayout()
+        Me.Panel3.SuspendLayout()
+        Me.Panel7.SuspendLayout()
+        Me.Panel6.SuspendLayout()
+        Me.Panel5.SuspendLayout()
+        Me.AlphaGradientPanel2.SuspendLayout()
+        Me.Panel1.SuspendLayout()
+        Me.Panel4.SuspendLayout()
+        Me.Panel14.SuspendLayout()
+        Me.Panel13.SuspendLayout()
+        Me.SuspendLayout()
         '
         'AlphaGradientPanel1
         '
-        Me.AlphaGradientPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.AlphaGradientPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AlphaGradientPanel1.BackColor = System.Drawing.Color.Transparent
-        Me.AlphaGradientPanel1.Border = true
+        Me.AlphaGradientPanel1.Border = True
         Me.AlphaGradientPanel1.BorderColor = System.Drawing.Color.Black
         Me.AlphaGradientPanel1.Colors.Add(Me.ColorWithAlpha1)
         Me.AlphaGradientPanel1.Colors.Add(Me.ColorWithAlpha2)
@@ -142,15 +142,15 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.AlphaGradientPanel1.Controls.Add(Me.UcTextBoxRFIDCardReadersTypeFirst)
         Me.AlphaGradientPanel1.Controls.Add(Me.Label3)
         Me.AlphaGradientPanel1.CornerRadius = 20
-        Me.AlphaGradientPanel1.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
-            Or BlueActivity.Controls.Corner.BottomLeft)  _
-            Or BlueActivity.Controls.Corner.BottomRight),BlueActivity.Controls.Corner)
-        Me.AlphaGradientPanel1.Gradient = true
+        Me.AlphaGradientPanel1.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight) _
+            Or BlueActivity.Controls.Corner.BottomLeft) _
+            Or BlueActivity.Controls.Corner.BottomRight), BlueActivity.Controls.Corner)
+        Me.AlphaGradientPanel1.Gradient = True
         Me.AlphaGradientPanel1.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.AlphaGradientPanel1.GradientOffset = 1!
+        Me.AlphaGradientPanel1.GradientOffset = 1.0!
         Me.AlphaGradientPanel1.GradientSize = New System.Drawing.Size(0, 0)
         Me.AlphaGradientPanel1.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.AlphaGradientPanel1.Grayscale = false
+        Me.AlphaGradientPanel1.Grayscale = False
         Me.AlphaGradientPanel1.Image = Nothing
         Me.AlphaGradientPanel1.ImageAlpha = 75
         Me.AlphaGradientPanel1.ImagePadding = New System.Windows.Forms.Padding(5)
@@ -158,7 +158,7 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.AlphaGradientPanel1.ImageSize = New System.Drawing.Size(48, 48)
         Me.AlphaGradientPanel1.Location = New System.Drawing.Point(18, 56)
         Me.AlphaGradientPanel1.Name = "AlphaGradientPanel1"
-        Me.AlphaGradientPanel1.Rounded = true
+        Me.AlphaGradientPanel1.Rounded = True
         Me.AlphaGradientPanel1.Size = New System.Drawing.Size(960, 85)
         Me.AlphaGradientPanel1.TabIndex = 1
         '
@@ -166,14 +166,338 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         Me.ColorWithAlpha1.Alpha = 255
         Me.ColorWithAlpha1.Color = System.Drawing.Color.Transparent
-        Me.ColorWithAlpha1.Parent = Me.AlphaGradientPanel4
+        Me.ColorWithAlpha1.Parent = Me.AlphaGradientPanel2
+        '
+        'AlphaGradientPanel4
+        '
+        Me.AlphaGradientPanel4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.AlphaGradientPanel4.BackColor = System.Drawing.Color.Transparent
+        Me.AlphaGradientPanel4.Border = True
+        Me.AlphaGradientPanel4.BorderColor = System.Drawing.Color.Black
+        Me.AlphaGradientPanel4.Colors.Add(Me.ColorWithAlpha1)
+        Me.AlphaGradientPanel4.Colors.Add(Me.ColorWithAlpha2)
+        Me.AlphaGradientPanel4.ContentPadding = New System.Windows.Forms.Padding(0)
+        Me.AlphaGradientPanel4.Controls.Add(Me.UcNumberUCUCComputerMessageCollectionSweepDelay)
+        Me.AlphaGradientPanel4.Controls.Add(Me.Label38)
+        Me.AlphaGradientPanel4.Controls.Add(Me.UcNumberUCUCComputerMessageCollectionTopN)
+        Me.AlphaGradientPanel4.Controls.Add(Me.Label39)
+        Me.AlphaGradientPanel4.CornerRadius = 20
+        Me.AlphaGradientPanel4.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight) _
+            Or BlueActivity.Controls.Corner.BottomLeft) _
+            Or BlueActivity.Controls.Corner.BottomRight), BlueActivity.Controls.Corner)
+        Me.AlphaGradientPanel4.Gradient = True
+        Me.AlphaGradientPanel4.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
+        Me.AlphaGradientPanel4.GradientOffset = 1.0!
+        Me.AlphaGradientPanel4.GradientSize = New System.Drawing.Size(0, 0)
+        Me.AlphaGradientPanel4.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
+        Me.AlphaGradientPanel4.Grayscale = False
+        Me.AlphaGradientPanel4.Image = Nothing
+        Me.AlphaGradientPanel4.ImageAlpha = 75
+        Me.AlphaGradientPanel4.ImagePadding = New System.Windows.Forms.Padding(5)
+        Me.AlphaGradientPanel4.ImagePosition = BlueActivity.Controls.ImagePosition.BottomRight
+        Me.AlphaGradientPanel4.ImageSize = New System.Drawing.Size(48, 48)
+        Me.AlphaGradientPanel4.Location = New System.Drawing.Point(18, 390)
+        Me.AlphaGradientPanel4.Name = "AlphaGradientPanel4"
+        Me.AlphaGradientPanel4.Rounded = True
+        Me.AlphaGradientPanel4.Size = New System.Drawing.Size(960, 46)
+        Me.AlphaGradientPanel4.TabIndex = 26
+        '
+        'ColorWithAlpha2
+        '
+        Me.ColorWithAlpha2.Alpha = 255
+        Me.ColorWithAlpha2.Color = System.Drawing.Color.Transparent
+        Me.ColorWithAlpha2.Parent = Me.AlphaGradientPanel2
+        '
+        'UcNumberUCUCComputerMessageCollectionSweepDelay
+        '
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.Location = New System.Drawing.Point(617, 20)
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.Name = "UcNumberUCUCComputerMessageCollectionSweepDelay"
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.Size = New System.Drawing.Size(31, 20)
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.TabIndex = 44
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCAllowedMinNumber = CType(-922337203685477580, Long)
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCBackColor = System.Drawing.Color.White
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCBorder = True
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCEnable = True
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCForeColor = System.Drawing.Color.Red
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCMultiLine = False
+        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCValue = CType(3, Long)
+        '
+        'Label38
+        '
+        Me.Label38.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label38.AutoSize = True
+        Me.Label38.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label38.Location = New System.Drawing.Point(652, 16)
+        Me.Label38.Name = "Label38"
+        Me.Label38.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.Label38.Size = New System.Drawing.Size(80, 28)
+        Me.Label38.TabIndex = 43
+        Me.Label38.Text = "تاخیر نمایش"
+        Me.Label38.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'UcNumberUCUCComputerMessageCollectionTopN
+        '
+        Me.UcNumberUCUCComputerMessageCollectionTopN.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberUCUCComputerMessageCollectionTopN.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumberUCUCComputerMessageCollectionTopN.Location = New System.Drawing.Point(743, 20)
+        Me.UcNumberUCUCComputerMessageCollectionTopN.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        Me.UcNumberUCUCComputerMessageCollectionTopN.Name = "UcNumberUCUCComputerMessageCollectionTopN"
+        Me.UcNumberUCUCComputerMessageCollectionTopN.Size = New System.Drawing.Size(31, 20)
+        Me.UcNumberUCUCComputerMessageCollectionTopN.TabIndex = 25
+        Me.UcNumberUCUCComputerMessageCollectionTopN.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberUCUCComputerMessageCollectionTopN.UCAllowedMinNumber = CType(-922337203685477580, Long)
+        Me.UcNumberUCUCComputerMessageCollectionTopN.UCBackColor = System.Drawing.Color.White
+        Me.UcNumberUCUCComputerMessageCollectionTopN.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcNumberUCUCComputerMessageCollectionTopN.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberUCUCComputerMessageCollectionTopN.UCBorder = True
+        Me.UcNumberUCUCComputerMessageCollectionTopN.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcNumberUCUCComputerMessageCollectionTopN.UCEnable = True
+        Me.UcNumberUCUCComputerMessageCollectionTopN.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumberUCUCComputerMessageCollectionTopN.UCForeColor = System.Drawing.Color.Red
+        Me.UcNumberUCUCComputerMessageCollectionTopN.UCMultiLine = False
+        Me.UcNumberUCUCComputerMessageCollectionTopN.UCValue = CType(3, Long)
+        '
+        'Label39
+        '
+        Me.Label39.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label39.AutoSize = True
+        Me.Label39.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label39.Location = New System.Drawing.Point(774, 14)
+        Me.Label39.Name = "Label39"
+        Me.Label39.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.Label39.Size = New System.Drawing.Size(155, 28)
+        Me.Label39.TabIndex = 20
+        Me.Label39.Text = "تعداد پیام ها در هر نمایش"
+        Me.Label39.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'UcTextBoxRFIDCardReadersTypeSecond
+        '
+        Me.UcTextBoxRFIDCardReadersTypeSecond.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxRFIDCardReadersTypeSecond.BackColor = System.Drawing.Color.Transparent
+        Me.UcTextBoxRFIDCardReadersTypeSecond.Location = New System.Drawing.Point(433, 29)
+        Me.UcTextBoxRFIDCardReadersTypeSecond.Name = "UcTextBoxRFIDCardReadersTypeSecond"
+        Me.UcTextBoxRFIDCardReadersTypeSecond.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcTextBoxRFIDCardReadersTypeSecond.Size = New System.Drawing.Size(47, 20)
+        Me.UcTextBoxRFIDCardReadersTypeSecond.TabIndex = 40
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCBackColor = System.Drawing.Color.White
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCBorder = True
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCBorderCornerRedius = 0
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCEnable = True
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCFont = New System.Drawing.Font("Times New Roman", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCForeColor = System.Drawing.Color.Red
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCMaxCharacterReached = CType(50, Short)
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCMaxNumber = CType(99999, Long)
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCMultiLine = False
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.UcTextBoxRFIDCardReadersTypeSecond.UCValue = "USB"
+        '
+        'Label31
+        '
+        Me.Label31.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label31.AutoSize = True
+        Me.Label31.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label31.Location = New System.Drawing.Point(486, 22)
+        Me.Label31.Name = "Label31"
+        Me.Label31.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.Label31.Size = New System.Drawing.Size(92, 28)
+        Me.Label31.TabIndex = 39
+        Me.Label31.Text = "کارت خوان دوم"
+        Me.Label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label30
+        '
+        Me.Label30.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label30.AutoSize = True
+        Me.Label30.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label30.Location = New System.Drawing.Point(640, 22)
+        Me.Label30.Name = "Label30"
+        Me.Label30.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.Label30.Size = New System.Drawing.Size(92, 28)
+        Me.Label30.TabIndex = 38
+        Me.Label30.Text = "کارت خوان اول"
+        Me.Label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Panel2
+        '
+        Me.Panel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel2.Controls.Add(Me.RBRFIDCardReaderBeepEnableUnActive)
+        Me.Panel2.Controls.Add(Me.RBRFIDCardReaderBeepEnableActive)
+        Me.Panel2.Location = New System.Drawing.Point(348, 53)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(134, 29)
+        Me.Panel2.TabIndex = 28
+        '
+        'RBRFIDCardReaderBeepEnableUnActive
+        '
+        Me.RBRFIDCardReaderBeepEnableUnActive.AutoSize = True
+        Me.RBRFIDCardReaderBeepEnableUnActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.RBRFIDCardReaderBeepEnableUnActive.ForeColor = System.Drawing.Color.Red
+        Me.RBRFIDCardReaderBeepEnableUnActive.Location = New System.Drawing.Point(3, 0)
+        Me.RBRFIDCardReaderBeepEnableUnActive.Name = "RBRFIDCardReaderBeepEnableUnActive"
+        Me.RBRFIDCardReaderBeepEnableUnActive.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.RBRFIDCardReaderBeepEnableUnActive.Size = New System.Drawing.Size(68, 27)
+        Me.RBRFIDCardReaderBeepEnableUnActive.TabIndex = 28
+        Me.RBRFIDCardReaderBeepEnableUnActive.Text = "غیر فعال"
+        Me.RBRFIDCardReaderBeepEnableUnActive.UseVisualStyleBackColor = True
+        '
+        'RBRFIDCardReaderBeepEnableActive
+        '
+        Me.RBRFIDCardReaderBeepEnableActive.AutoSize = True
+        Me.RBRFIDCardReaderBeepEnableActive.Checked = True
+        Me.RBRFIDCardReaderBeepEnableActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.RBRFIDCardReaderBeepEnableActive.ForeColor = System.Drawing.Color.Green
+        Me.RBRFIDCardReaderBeepEnableActive.Location = New System.Drawing.Point(77, 0)
+        Me.RBRFIDCardReaderBeepEnableActive.Name = "RBRFIDCardReaderBeepEnableActive"
+        Me.RBRFIDCardReaderBeepEnableActive.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.RBRFIDCardReaderBeepEnableActive.Size = New System.Drawing.Size(52, 27)
+        Me.RBRFIDCardReaderBeepEnableActive.TabIndex = 27
+        Me.RBRFIDCardReaderBeepEnableActive.TabStop = True
+        Me.RBRFIDCardReaderBeepEnableActive.Text = "فعال"
+        Me.RBRFIDCardReaderBeepEnableActive.UseVisualStyleBackColor = True
+        '
+        'Label6
+        '
+        Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label6.Location = New System.Drawing.Point(485, 50)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(204, 28)
+        Me.Label6.TabIndex = 26
+        Me.Label6.Text = "صدای بوق پس از کارت خوانی موفق"
+        Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'UcNumberRFIDCardReaderDelay
+        '
+        Me.UcNumberRFIDCardReaderDelay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberRFIDCardReaderDelay.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumberRFIDCardReaderDelay.Location = New System.Drawing.Point(696, 59)
+        Me.UcNumberRFIDCardReaderDelay.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        Me.UcNumberRFIDCardReaderDelay.Name = "UcNumberRFIDCardReaderDelay"
+        Me.UcNumberRFIDCardReaderDelay.Size = New System.Drawing.Size(55, 20)
+        Me.UcNumberRFIDCardReaderDelay.TabIndex = 25
+        Me.UcNumberRFIDCardReaderDelay.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberRFIDCardReaderDelay.UCAllowedMinNumber = CType(-922337203685477580, Long)
+        Me.UcNumberRFIDCardReaderDelay.UCBackColor = System.Drawing.Color.White
+        Me.UcNumberRFIDCardReaderDelay.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcNumberRFIDCardReaderDelay.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberRFIDCardReaderDelay.UCBorder = True
+        Me.UcNumberRFIDCardReaderDelay.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcNumberRFIDCardReaderDelay.UCEnable = True
+        Me.UcNumberRFIDCardReaderDelay.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumberRFIDCardReaderDelay.UCForeColor = System.Drawing.Color.Red
+        Me.UcNumberRFIDCardReaderDelay.UCMultiLine = False
+        Me.UcNumberRFIDCardReaderDelay.UCValue = CType(1000, Long)
+        '
+        'Label5
+        '
+        Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label5.Location = New System.Drawing.Point(753, 50)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(181, 28)
+        Me.Label5.TabIndex = 24
+        Me.Label5.Text = "زمان تاخیر در فرآیند کارت خوانی"
+        Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'UcTextBoxRFIDCardNoSimulate
+        '
+        Me.UcTextBoxRFIDCardNoSimulate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxRFIDCardNoSimulate.BackColor = System.Drawing.Color.Transparent
+        Me.UcTextBoxRFIDCardNoSimulate.Location = New System.Drawing.Point(20, 28)
+        Me.UcTextBoxRFIDCardNoSimulate.Name = "UcTextBoxRFIDCardNoSimulate"
+        Me.UcTextBoxRFIDCardNoSimulate.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcTextBoxRFIDCardNoSimulate.Size = New System.Drawing.Size(97, 20)
+        Me.UcTextBoxRFIDCardNoSimulate.TabIndex = 23
+        Me.UcTextBoxRFIDCardNoSimulate.UCBackColor = System.Drawing.Color.White
+        Me.UcTextBoxRFIDCardNoSimulate.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcTextBoxRFIDCardNoSimulate.UCBorder = True
+        Me.UcTextBoxRFIDCardNoSimulate.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcTextBoxRFIDCardNoSimulate.UCBorderCornerRedius = 0
+        Me.UcTextBoxRFIDCardNoSimulate.UCEnable = True
+        Me.UcTextBoxRFIDCardNoSimulate.UCFont = New System.Drawing.Font("Times New Roman", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcTextBoxRFIDCardNoSimulate.UCForeColor = System.Drawing.Color.Red
+        Me.UcTextBoxRFIDCardNoSimulate.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
+        Me.UcTextBoxRFIDCardNoSimulate.UCMaxCharacterReached = CType(50, Short)
+        Me.UcTextBoxRFIDCardNoSimulate.UCMaxNumber = CType(99999, Long)
+        Me.UcTextBoxRFIDCardNoSimulate.UCMultiLine = False
+        Me.UcTextBoxRFIDCardNoSimulate.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
+        Me.UcTextBoxRFIDCardNoSimulate.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.UcTextBoxRFIDCardNoSimulate.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.UcTextBoxRFIDCardNoSimulate.UCValue = "BCED3454"
+        '
+        'Label4
+        '
+        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label4.Location = New System.Drawing.Point(120, 22)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(264, 28)
+        Me.Label4.TabIndex = 22
+        Me.Label4.Text = "شماره کارت مجازی برای شبیه سازی کارت خوانی"
+        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'UcTextBoxRFIDCardReadersTypeFirst
+        '
+        Me.UcTextBoxRFIDCardReadersTypeFirst.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxRFIDCardReadersTypeFirst.BackColor = System.Drawing.Color.Transparent
+        Me.UcTextBoxRFIDCardReadersTypeFirst.Location = New System.Drawing.Point(592, 28)
+        Me.UcTextBoxRFIDCardReadersTypeFirst.Name = "UcTextBoxRFIDCardReadersTypeFirst"
+        Me.UcTextBoxRFIDCardReadersTypeFirst.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcTextBoxRFIDCardReadersTypeFirst.Size = New System.Drawing.Size(47, 20)
+        Me.UcTextBoxRFIDCardReadersTypeFirst.TabIndex = 21
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCBackColor = System.Drawing.Color.White
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCBorder = True
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCBorderCornerRedius = 0
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCEnable = True
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCFont = New System.Drawing.Font("Times New Roman", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCForeColor = System.Drawing.Color.Red
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCMaxCharacterReached = CType(50, Short)
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCMaxNumber = CType(99999, Long)
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCMultiLine = False
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.UcTextBoxRFIDCardReadersTypeFirst.UCValue = "USB"
+        '
+        'Label3
+        '
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label3.Location = New System.Drawing.Point(739, 22)
+        Me.Label3.Name = "Label3"
+        Me.Label3.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.Label3.Size = New System.Drawing.Size(195, 28)
+        Me.Label3.TabIndex = 20
+        Me.Label3.Text = "پورت کارت خوان متصل به کلاینت:"
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'AlphaGradientPanel3
         '
-        Me.AlphaGradientPanel3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.AlphaGradientPanel3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AlphaGradientPanel3.BackColor = System.Drawing.Color.Transparent
-        Me.AlphaGradientPanel3.Border = true
+        Me.AlphaGradientPanel3.Border = True
         Me.AlphaGradientPanel3.BorderColor = System.Drawing.Color.Black
         Me.AlphaGradientPanel3.Colors.Add(Me.ColorWithAlpha1)
         Me.AlphaGradientPanel3.Colors.Add(Me.ColorWithAlpha2)
@@ -208,15 +532,15 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.AlphaGradientPanel3.Controls.Add(Me.Label9)
         Me.AlphaGradientPanel3.Controls.Add(Me.Label7)
         Me.AlphaGradientPanel3.CornerRadius = 20
-        Me.AlphaGradientPanel3.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
-            Or BlueActivity.Controls.Corner.BottomLeft)  _
-            Or BlueActivity.Controls.Corner.BottomRight),BlueActivity.Controls.Corner)
-        Me.AlphaGradientPanel3.Gradient = true
+        Me.AlphaGradientPanel3.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight) _
+            Or BlueActivity.Controls.Corner.BottomLeft) _
+            Or BlueActivity.Controls.Corner.BottomRight), BlueActivity.Controls.Corner)
+        Me.AlphaGradientPanel3.Gradient = True
         Me.AlphaGradientPanel3.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.AlphaGradientPanel3.GradientOffset = 1!
+        Me.AlphaGradientPanel3.GradientOffset = 1.0!
         Me.AlphaGradientPanel3.GradientSize = New System.Drawing.Size(0, 0)
         Me.AlphaGradientPanel3.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.AlphaGradientPanel3.Grayscale = false
+        Me.AlphaGradientPanel3.Grayscale = False
         Me.AlphaGradientPanel3.Image = Nothing
         Me.AlphaGradientPanel3.ImageAlpha = 75
         Me.AlphaGradientPanel3.ImagePadding = New System.Windows.Forms.Padding(5)
@@ -224,209 +548,233 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.AlphaGradientPanel3.ImageSize = New System.Drawing.Size(48, 48)
         Me.AlphaGradientPanel3.Location = New System.Drawing.Point(18, 233)
         Me.AlphaGradientPanel3.Name = "AlphaGradientPanel3"
-        Me.AlphaGradientPanel3.Rounded = true
+        Me.AlphaGradientPanel3.Rounded = True
         Me.AlphaGradientPanel3.Size = New System.Drawing.Size(960, 139)
         Me.AlphaGradientPanel3.TabIndex = 24
         '
-        'ColorWithAlpha2
-        '
-        Me.ColorWithAlpha2.Alpha = 255
-        Me.ColorWithAlpha2.Color = System.Drawing.Color.Transparent
-        Me.ColorWithAlpha2.Parent = Me.AlphaGradientPanel4
-        '
         'UcNumberDermalogNISTQuality
         '
-        Me.UcNumberDermalogNISTQuality.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberDermalogNISTQuality.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberDermalogNISTQuality.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberDermalogNISTQuality.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberDermalogNISTQuality.Location = New System.Drawing.Point(85, 85)
         Me.UcNumberDermalogNISTQuality.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberDermalogNISTQuality.Name = "UcNumberDermalogNISTQuality"
         Me.UcNumberDermalogNISTQuality.Size = New System.Drawing.Size(31, 20)
         Me.UcNumberDermalogNISTQuality.TabIndex = 55
+        Me.UcNumberDermalogNISTQuality.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberDermalogNISTQuality.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberDermalogNISTQuality.UCBackColor = System.Drawing.Color.White
         Me.UcNumberDermalogNISTQuality.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberDermalogNISTQuality.UCBorder = true
+        Me.UcNumberDermalogNISTQuality.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberDermalogNISTQuality.UCBorder = True
         Me.UcNumberDermalogNISTQuality.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberDermalogNISTQuality.UCEnable = true
-        Me.UcNumberDermalogNISTQuality.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberDermalogNISTQuality.UCEnable = True
+        Me.UcNumberDermalogNISTQuality.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberDermalogNISTQuality.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberDermalogNISTQuality.UCMultiLine = false
-        Me.UcNumberDermalogNISTQuality.UCValue = CType(10,Long)
+        Me.UcNumberDermalogNISTQuality.UCMultiLine = False
+        Me.UcNumberDermalogNISTQuality.UCValue = CType(10, Long)
         '
         'UcNumberDermalogVerifyScore
         '
-        Me.UcNumberDermalogVerifyScore.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberDermalogVerifyScore.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberDermalogVerifyScore.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberDermalogVerifyScore.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberDermalogVerifyScore.Location = New System.Drawing.Point(208, 85)
         Me.UcNumberDermalogVerifyScore.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberDermalogVerifyScore.Name = "UcNumberDermalogVerifyScore"
         Me.UcNumberDermalogVerifyScore.Size = New System.Drawing.Size(31, 20)
         Me.UcNumberDermalogVerifyScore.TabIndex = 54
+        Me.UcNumberDermalogVerifyScore.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberDermalogVerifyScore.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberDermalogVerifyScore.UCBackColor = System.Drawing.Color.White
         Me.UcNumberDermalogVerifyScore.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberDermalogVerifyScore.UCBorder = true
+        Me.UcNumberDermalogVerifyScore.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberDermalogVerifyScore.UCBorder = True
         Me.UcNumberDermalogVerifyScore.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberDermalogVerifyScore.UCEnable = true
-        Me.UcNumberDermalogVerifyScore.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberDermalogVerifyScore.UCEnable = True
+        Me.UcNumberDermalogVerifyScore.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberDermalogVerifyScore.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberDermalogVerifyScore.UCMultiLine = false
-        Me.UcNumberDermalogVerifyScore.UCValue = CType(10,Long)
+        Me.UcNumberDermalogVerifyScore.UCMultiLine = False
+        Me.UcNumberDermalogVerifyScore.UCValue = CType(10, Long)
         '
         'UcNumberDermalogLifenessScoreForPresent
         '
-        Me.UcNumberDermalogLifenessScoreForPresent.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberDermalogLifenessScoreForPresent.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberDermalogLifenessScoreForPresent.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberDermalogLifenessScoreForPresent.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberDermalogLifenessScoreForPresent.Location = New System.Drawing.Point(317, 85)
         Me.UcNumberDermalogLifenessScoreForPresent.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberDermalogLifenessScoreForPresent.Name = "UcNumberDermalogLifenessScoreForPresent"
         Me.UcNumberDermalogLifenessScoreForPresent.Size = New System.Drawing.Size(31, 20)
         Me.UcNumberDermalogLifenessScoreForPresent.TabIndex = 53
+        Me.UcNumberDermalogLifenessScoreForPresent.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberDermalogLifenessScoreForPresent.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberDermalogLifenessScoreForPresent.UCBackColor = System.Drawing.Color.White
         Me.UcNumberDermalogLifenessScoreForPresent.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberDermalogLifenessScoreForPresent.UCBorder = true
+        Me.UcNumberDermalogLifenessScoreForPresent.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberDermalogLifenessScoreForPresent.UCBorder = True
         Me.UcNumberDermalogLifenessScoreForPresent.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberDermalogLifenessScoreForPresent.UCEnable = true
-        Me.UcNumberDermalogLifenessScoreForPresent.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberDermalogLifenessScoreForPresent.UCEnable = True
+        Me.UcNumberDermalogLifenessScoreForPresent.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberDermalogLifenessScoreForPresent.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberDermalogLifenessScoreForPresent.UCMultiLine = false
-        Me.UcNumberDermalogLifenessScoreForPresent.UCValue = CType(10,Long)
+        Me.UcNumberDermalogLifenessScoreForPresent.UCMultiLine = False
+        Me.UcNumberDermalogLifenessScoreForPresent.UCValue = CType(10, Long)
         '
         'UcNumberSupremaTemplateType
         '
-        Me.UcNumberSupremaTemplateType.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberSupremaTemplateType.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberSupremaTemplateType.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberSupremaTemplateType.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberSupremaTemplateType.Location = New System.Drawing.Point(276, 55)
         Me.UcNumberSupremaTemplateType.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberSupremaTemplateType.Name = "UcNumberSupremaTemplateType"
         Me.UcNumberSupremaTemplateType.Size = New System.Drawing.Size(31, 20)
         Me.UcNumberSupremaTemplateType.TabIndex = 43
+        Me.UcNumberSupremaTemplateType.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberSupremaTemplateType.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberSupremaTemplateType.UCBackColor = System.Drawing.Color.White
         Me.UcNumberSupremaTemplateType.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberSupremaTemplateType.UCBorder = true
+        Me.UcNumberSupremaTemplateType.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberSupremaTemplateType.UCBorder = True
         Me.UcNumberSupremaTemplateType.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberSupremaTemplateType.UCEnable = true
-        Me.UcNumberSupremaTemplateType.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberSupremaTemplateType.UCEnable = True
+        Me.UcNumberSupremaTemplateType.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberSupremaTemplateType.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberSupremaTemplateType.UCMultiLine = false
-        Me.UcNumberSupremaTemplateType.UCValue = CType(10,Long)
+        Me.UcNumberSupremaTemplateType.UCMultiLine = False
+        Me.UcNumberSupremaTemplateType.UCValue = CType(10, Long)
         '
         'UcNumberSupremaSensitivity
         '
-        Me.UcNumberSupremaSensitivity.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberSupremaSensitivity.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberSupremaSensitivity.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberSupremaSensitivity.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberSupremaSensitivity.Location = New System.Drawing.Point(276, 29)
         Me.UcNumberSupremaSensitivity.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberSupremaSensitivity.Name = "UcNumberSupremaSensitivity"
         Me.UcNumberSupremaSensitivity.Size = New System.Drawing.Size(31, 20)
         Me.UcNumberSupremaSensitivity.TabIndex = 35
+        Me.UcNumberSupremaSensitivity.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberSupremaSensitivity.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberSupremaSensitivity.UCBackColor = System.Drawing.Color.White
         Me.UcNumberSupremaSensitivity.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberSupremaSensitivity.UCBorder = true
+        Me.UcNumberSupremaSensitivity.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberSupremaSensitivity.UCBorder = True
         Me.UcNumberSupremaSensitivity.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberSupremaSensitivity.UCEnable = true
-        Me.UcNumberSupremaSensitivity.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberSupremaSensitivity.UCEnable = True
+        Me.UcNumberSupremaSensitivity.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberSupremaSensitivity.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberSupremaSensitivity.UCMultiLine = false
-        Me.UcNumberSupremaSensitivity.UCValue = CType(10,Long)
+        Me.UcNumberSupremaSensitivity.UCMultiLine = False
+        Me.UcNumberSupremaSensitivity.UCValue = CType(10, Long)
         '
         'UcNumberSupremaSecurityLevel
         '
-        Me.UcNumberSupremaSecurityLevel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberSupremaSecurityLevel.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberSupremaSecurityLevel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberSupremaSecurityLevel.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberSupremaSecurityLevel.Location = New System.Drawing.Point(413, 55)
         Me.UcNumberSupremaSecurityLevel.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberSupremaSecurityLevel.Name = "UcNumberSupremaSecurityLevel"
         Me.UcNumberSupremaSecurityLevel.Size = New System.Drawing.Size(31, 20)
         Me.UcNumberSupremaSecurityLevel.TabIndex = 41
+        Me.UcNumberSupremaSecurityLevel.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberSupremaSecurityLevel.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberSupremaSecurityLevel.UCBackColor = System.Drawing.Color.White
         Me.UcNumberSupremaSecurityLevel.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberSupremaSecurityLevel.UCBorder = true
+        Me.UcNumberSupremaSecurityLevel.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberSupremaSecurityLevel.UCBorder = True
         Me.UcNumberSupremaSecurityLevel.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberSupremaSecurityLevel.UCEnable = true
-        Me.UcNumberSupremaSecurityLevel.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberSupremaSecurityLevel.UCEnable = True
+        Me.UcNumberSupremaSecurityLevel.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberSupremaSecurityLevel.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberSupremaSecurityLevel.UCMultiLine = false
-        Me.UcNumberSupremaSecurityLevel.UCValue = CType(10,Long)
+        Me.UcNumberSupremaSecurityLevel.UCMultiLine = False
+        Me.UcNumberSupremaSecurityLevel.UCValue = CType(10, Long)
         '
         'UcNumberSupremaBrightness
         '
-        Me.UcNumberSupremaBrightness.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberSupremaBrightness.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberSupremaBrightness.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberSupremaBrightness.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberSupremaBrightness.Location = New System.Drawing.Point(413, 29)
         Me.UcNumberSupremaBrightness.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberSupremaBrightness.Name = "UcNumberSupremaBrightness"
         Me.UcNumberSupremaBrightness.Size = New System.Drawing.Size(31, 20)
         Me.UcNumberSupremaBrightness.TabIndex = 33
+        Me.UcNumberSupremaBrightness.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberSupremaBrightness.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberSupremaBrightness.UCBackColor = System.Drawing.Color.White
         Me.UcNumberSupremaBrightness.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberSupremaBrightness.UCBorder = true
+        Me.UcNumberSupremaBrightness.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberSupremaBrightness.UCBorder = True
         Me.UcNumberSupremaBrightness.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberSupremaBrightness.UCEnable = true
-        Me.UcNumberSupremaBrightness.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberSupremaBrightness.UCEnable = True
+        Me.UcNumberSupremaBrightness.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberSupremaBrightness.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberSupremaBrightness.UCMultiLine = false
-        Me.UcNumberSupremaBrightness.UCValue = CType(10,Long)
+        Me.UcNumberSupremaBrightness.UCMultiLine = False
+        Me.UcNumberSupremaBrightness.UCValue = CType(10, Long)
         '
         'UcNumberDermalogLifenessScoreForRegister
         '
-        Me.UcNumberDermalogLifenessScoreForRegister.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberDermalogLifenessScoreForRegister.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberDermalogLifenessScoreForRegister.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberDermalogLifenessScoreForRegister.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberDermalogLifenessScoreForRegister.Location = New System.Drawing.Point(526, 86)
         Me.UcNumberDermalogLifenessScoreForRegister.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberDermalogLifenessScoreForRegister.Name = "UcNumberDermalogLifenessScoreForRegister"
         Me.UcNumberDermalogLifenessScoreForRegister.Size = New System.Drawing.Size(31, 20)
         Me.UcNumberDermalogLifenessScoreForRegister.TabIndex = 52
+        Me.UcNumberDermalogLifenessScoreForRegister.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberDermalogLifenessScoreForRegister.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberDermalogLifenessScoreForRegister.UCBackColor = System.Drawing.Color.White
         Me.UcNumberDermalogLifenessScoreForRegister.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberDermalogLifenessScoreForRegister.UCBorder = true
+        Me.UcNumberDermalogLifenessScoreForRegister.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberDermalogLifenessScoreForRegister.UCBorder = True
         Me.UcNumberDermalogLifenessScoreForRegister.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberDermalogLifenessScoreForRegister.UCEnable = true
-        Me.UcNumberDermalogLifenessScoreForRegister.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberDermalogLifenessScoreForRegister.UCEnable = True
+        Me.UcNumberDermalogLifenessScoreForRegister.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberDermalogLifenessScoreForRegister.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberDermalogLifenessScoreForRegister.UCMultiLine = false
-        Me.UcNumberDermalogLifenessScoreForRegister.UCValue = CType(10,Long)
+        Me.UcNumberDermalogLifenessScoreForRegister.UCMultiLine = False
+        Me.UcNumberDermalogLifenessScoreForRegister.UCValue = CType(10, Long)
         '
         'UcNumberSupremaEnrollQuality
         '
-        Me.UcNumberSupremaEnrollQuality.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberSupremaEnrollQuality.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberSupremaEnrollQuality.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberSupremaEnrollQuality.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberSupremaEnrollQuality.Location = New System.Drawing.Point(526, 55)
         Me.UcNumberSupremaEnrollQuality.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberSupremaEnrollQuality.Name = "UcNumberSupremaEnrollQuality"
         Me.UcNumberSupremaEnrollQuality.Size = New System.Drawing.Size(31, 20)
         Me.UcNumberSupremaEnrollQuality.TabIndex = 45
+        Me.UcNumberSupremaEnrollQuality.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberSupremaEnrollQuality.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberSupremaEnrollQuality.UCBackColor = System.Drawing.Color.White
         Me.UcNumberSupremaEnrollQuality.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberSupremaEnrollQuality.UCBorder = true
+        Me.UcNumberSupremaEnrollQuality.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberSupremaEnrollQuality.UCBorder = True
         Me.UcNumberSupremaEnrollQuality.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberSupremaEnrollQuality.UCEnable = true
-        Me.UcNumberSupremaEnrollQuality.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberSupremaEnrollQuality.UCEnable = True
+        Me.UcNumberSupremaEnrollQuality.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberSupremaEnrollQuality.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberSupremaEnrollQuality.UCMultiLine = false
-        Me.UcNumberSupremaEnrollQuality.UCValue = CType(10,Long)
+        Me.UcNumberSupremaEnrollQuality.UCMultiLine = False
+        Me.UcNumberSupremaEnrollQuality.UCValue = CType(10, Long)
         '
         'UcNumberSupremaTimeOut
         '
-        Me.UcNumberSupremaTimeOut.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberSupremaTimeOut.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberSupremaTimeOut.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberSupremaTimeOut.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberSupremaTimeOut.Location = New System.Drawing.Point(526, 29)
         Me.UcNumberSupremaTimeOut.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberSupremaTimeOut.Name = "UcNumberSupremaTimeOut"
         Me.UcNumberSupremaTimeOut.Size = New System.Drawing.Size(31, 20)
         Me.UcNumberSupremaTimeOut.TabIndex = 31
+        Me.UcNumberSupremaTimeOut.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberSupremaTimeOut.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberSupremaTimeOut.UCBackColor = System.Drawing.Color.White
         Me.UcNumberSupremaTimeOut.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberSupremaTimeOut.UCBorder = true
+        Me.UcNumberSupremaTimeOut.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberSupremaTimeOut.UCBorder = True
         Me.UcNumberSupremaTimeOut.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberSupremaTimeOut.UCEnable = true
-        Me.UcNumberSupremaTimeOut.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberSupremaTimeOut.UCEnable = True
+        Me.UcNumberSupremaTimeOut.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberSupremaTimeOut.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberSupremaTimeOut.UCMultiLine = false
-        Me.UcNumberSupremaTimeOut.UCValue = CType(10,Long)
+        Me.UcNumberSupremaTimeOut.UCMultiLine = False
+        Me.UcNumberSupremaTimeOut.UCValue = CType(10, Long)
         '
         'Panel3
         '
-        Me.Panel3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Panel3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel3.Controls.Add(Me.RBSupremaScannerExistUnActive)
         Me.Panel3.Controls.Add(Me.RBSupremaScannerExistActive)
         Me.Panel3.Location = New System.Drawing.Point(709, 22)
@@ -436,8 +784,8 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'RBSupremaScannerExistUnActive
         '
-        Me.RBSupremaScannerExistUnActive.AutoSize = true
-        Me.RBSupremaScannerExistUnActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.RBSupremaScannerExistUnActive.AutoSize = True
+        Me.RBSupremaScannerExistUnActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.RBSupremaScannerExistUnActive.ForeColor = System.Drawing.Color.Red
         Me.RBSupremaScannerExistUnActive.Location = New System.Drawing.Point(3, 0)
         Me.RBSupremaScannerExistUnActive.Name = "RBSupremaScannerExistUnActive"
@@ -445,26 +793,26 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.RBSupremaScannerExistUnActive.Size = New System.Drawing.Size(68, 27)
         Me.RBSupremaScannerExistUnActive.TabIndex = 28
         Me.RBSupremaScannerExistUnActive.Text = "غیر فعال"
-        Me.RBSupremaScannerExistUnActive.UseVisualStyleBackColor = true
+        Me.RBSupremaScannerExistUnActive.UseVisualStyleBackColor = True
         '
         'RBSupremaScannerExistActive
         '
-        Me.RBSupremaScannerExistActive.AutoSize = true
-        Me.RBSupremaScannerExistActive.Checked = true
-        Me.RBSupremaScannerExistActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.RBSupremaScannerExistActive.AutoSize = True
+        Me.RBSupremaScannerExistActive.Checked = True
+        Me.RBSupremaScannerExistActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.RBSupremaScannerExistActive.ForeColor = System.Drawing.Color.Green
         Me.RBSupremaScannerExistActive.Location = New System.Drawing.Point(77, 0)
         Me.RBSupremaScannerExistActive.Name = "RBSupremaScannerExistActive"
         Me.RBSupremaScannerExistActive.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.RBSupremaScannerExistActive.Size = New System.Drawing.Size(52, 27)
         Me.RBSupremaScannerExistActive.TabIndex = 27
-        Me.RBSupremaScannerExistActive.TabStop = true
+        Me.RBSupremaScannerExistActive.TabStop = True
         Me.RBSupremaScannerExistActive.Text = "فعال"
-        Me.RBSupremaScannerExistActive.UseVisualStyleBackColor = true
+        Me.RBSupremaScannerExistActive.UseVisualStyleBackColor = True
         '
         'Panel7
         '
-        Me.Panel7.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Panel7.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel7.Controls.Add(Me.RBVerifyIdentifyFPUCEnableUnActive)
         Me.Panel7.Controls.Add(Me.RBVerifyIdentifyFPUCEnableActive)
         Me.Panel7.Location = New System.Drawing.Point(415, 108)
@@ -474,8 +822,8 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'RBVerifyIdentifyFPUCEnableUnActive
         '
-        Me.RBVerifyIdentifyFPUCEnableUnActive.AutoSize = true
-        Me.RBVerifyIdentifyFPUCEnableUnActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.RBVerifyIdentifyFPUCEnableUnActive.AutoSize = True
+        Me.RBVerifyIdentifyFPUCEnableUnActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.RBVerifyIdentifyFPUCEnableUnActive.ForeColor = System.Drawing.Color.Red
         Me.RBVerifyIdentifyFPUCEnableUnActive.Location = New System.Drawing.Point(3, 0)
         Me.RBVerifyIdentifyFPUCEnableUnActive.Name = "RBVerifyIdentifyFPUCEnableUnActive"
@@ -483,28 +831,28 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.RBVerifyIdentifyFPUCEnableUnActive.Size = New System.Drawing.Size(68, 27)
         Me.RBVerifyIdentifyFPUCEnableUnActive.TabIndex = 28
         Me.RBVerifyIdentifyFPUCEnableUnActive.Text = "غیر فعال"
-        Me.RBVerifyIdentifyFPUCEnableUnActive.UseVisualStyleBackColor = true
+        Me.RBVerifyIdentifyFPUCEnableUnActive.UseVisualStyleBackColor = True
         '
         'RBVerifyIdentifyFPUCEnableActive
         '
-        Me.RBVerifyIdentifyFPUCEnableActive.AutoSize = true
-        Me.RBVerifyIdentifyFPUCEnableActive.Checked = true
-        Me.RBVerifyIdentifyFPUCEnableActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.RBVerifyIdentifyFPUCEnableActive.AutoSize = True
+        Me.RBVerifyIdentifyFPUCEnableActive.Checked = True
+        Me.RBVerifyIdentifyFPUCEnableActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.RBVerifyIdentifyFPUCEnableActive.ForeColor = System.Drawing.Color.Green
         Me.RBVerifyIdentifyFPUCEnableActive.Location = New System.Drawing.Point(77, 0)
         Me.RBVerifyIdentifyFPUCEnableActive.Name = "RBVerifyIdentifyFPUCEnableActive"
         Me.RBVerifyIdentifyFPUCEnableActive.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.RBVerifyIdentifyFPUCEnableActive.Size = New System.Drawing.Size(52, 27)
         Me.RBVerifyIdentifyFPUCEnableActive.TabIndex = 27
-        Me.RBVerifyIdentifyFPUCEnableActive.TabStop = true
+        Me.RBVerifyIdentifyFPUCEnableActive.TabStop = True
         Me.RBVerifyIdentifyFPUCEnableActive.Text = "فعال"
-        Me.RBVerifyIdentifyFPUCEnableActive.UseVisualStyleBackColor = true
+        Me.RBVerifyIdentifyFPUCEnableActive.UseVisualStyleBackColor = True
         '
         'Label37
         '
-        Me.Label37.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label37.AutoSize = true
-        Me.Label37.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label37.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label37.AutoSize = True
+        Me.Label37.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label37.Location = New System.Drawing.Point(547, 106)
         Me.Label37.Name = "Label37"
         Me.Label37.Size = New System.Drawing.Size(390, 28)
@@ -514,9 +862,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label36
         '
-        Me.Label36.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label36.AutoSize = true
-        Me.Label36.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label36.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label36.AutoSize = True
+        Me.Label36.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label36.Location = New System.Drawing.Point(116, 78)
         Me.Label36.Name = "Label36"
         Me.Label36.Size = New System.Drawing.Size(88, 28)
@@ -526,9 +874,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label29
         '
-        Me.Label29.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label29.AutoSize = true
-        Me.Label29.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label29.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label29.AutoSize = True
+        Me.Label29.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label29.Location = New System.Drawing.Point(239, 78)
         Me.Label29.Name = "Label29"
         Me.Label29.Size = New System.Drawing.Size(73, 28)
@@ -538,9 +886,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label27
         '
-        Me.Label27.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label27.AutoSize = true
-        Me.Label27.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label27.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label27.AutoSize = True
+        Me.Label27.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label27.Location = New System.Drawing.Point(352, 78)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(164, 28)
@@ -550,9 +898,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label28
         '
-        Me.Label28.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label28.AutoSize = true
-        Me.Label28.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label28.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label28.AutoSize = True
+        Me.Label28.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label28.Location = New System.Drawing.Point(557, 78)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(143, 28)
@@ -562,9 +910,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label26
         '
-        Me.Label26.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label26.AutoSize = true
-        Me.Label26.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label26.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label26.AutoSize = True
+        Me.Label26.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label26.Location = New System.Drawing.Point(846, 78)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(89, 28)
@@ -574,9 +922,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label25
         '
-        Me.Label25.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label25.AutoSize = true
-        Me.Label25.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label25.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label25.AutoSize = True
+        Me.Label25.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label25.Location = New System.Drawing.Point(557, 50)
         Me.Label25.Name = "Label25"
         Me.Label25.Size = New System.Drawing.Size(91, 28)
@@ -586,9 +934,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label23
         '
-        Me.Label23.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label23.AutoSize = true
-        Me.Label23.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label23.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label23.AutoSize = True
+        Me.Label23.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label23.Location = New System.Drawing.Point(316, 50)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(79, 28)
@@ -598,9 +946,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label22
         '
-        Me.Label22.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label22.AutoSize = true
-        Me.Label22.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label22.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label22.AutoSize = True
+        Me.Label22.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label22.Location = New System.Drawing.Point(451, 50)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(73, 28)
@@ -610,7 +958,7 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Panel6
         '
-        Me.Panel6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Panel6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel6.Controls.Add(Me.RBSupremaDetectFakeUnActive)
         Me.Panel6.Controls.Add(Me.RBSupremaDetectFakeActive)
         Me.Panel6.Location = New System.Drawing.Point(28, 52)
@@ -620,8 +968,8 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'RBSupremaDetectFakeUnActive
         '
-        Me.RBSupremaDetectFakeUnActive.AutoSize = true
-        Me.RBSupremaDetectFakeUnActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.RBSupremaDetectFakeUnActive.AutoSize = True
+        Me.RBSupremaDetectFakeUnActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.RBSupremaDetectFakeUnActive.ForeColor = System.Drawing.Color.Red
         Me.RBSupremaDetectFakeUnActive.Location = New System.Drawing.Point(3, 0)
         Me.RBSupremaDetectFakeUnActive.Name = "RBSupremaDetectFakeUnActive"
@@ -629,28 +977,28 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.RBSupremaDetectFakeUnActive.Size = New System.Drawing.Size(68, 27)
         Me.RBSupremaDetectFakeUnActive.TabIndex = 28
         Me.RBSupremaDetectFakeUnActive.Text = "غیر فعال"
-        Me.RBSupremaDetectFakeUnActive.UseVisualStyleBackColor = true
+        Me.RBSupremaDetectFakeUnActive.UseVisualStyleBackColor = True
         '
         'RBSupremaDetectFakeActive
         '
-        Me.RBSupremaDetectFakeActive.AutoSize = true
-        Me.RBSupremaDetectFakeActive.Checked = true
-        Me.RBSupremaDetectFakeActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.RBSupremaDetectFakeActive.AutoSize = True
+        Me.RBSupremaDetectFakeActive.Checked = True
+        Me.RBSupremaDetectFakeActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.RBSupremaDetectFakeActive.ForeColor = System.Drawing.Color.Green
         Me.RBSupremaDetectFakeActive.Location = New System.Drawing.Point(77, 0)
         Me.RBSupremaDetectFakeActive.Name = "RBSupremaDetectFakeActive"
         Me.RBSupremaDetectFakeActive.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.RBSupremaDetectFakeActive.Size = New System.Drawing.Size(52, 27)
         Me.RBSupremaDetectFakeActive.TabIndex = 27
-        Me.RBSupremaDetectFakeActive.TabStop = true
+        Me.RBSupremaDetectFakeActive.TabStop = True
         Me.RBSupremaDetectFakeActive.Text = "فعال"
-        Me.RBSupremaDetectFakeActive.UseVisualStyleBackColor = true
+        Me.RBSupremaDetectFakeActive.UseVisualStyleBackColor = True
         '
         'Label21
         '
-        Me.Label21.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label21.AutoSize = true
-        Me.Label21.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label21.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label21.Location = New System.Drawing.Point(166, 50)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(103, 28)
@@ -660,7 +1008,7 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Panel5
         '
-        Me.Panel5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Panel5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel5.Controls.Add(Me.RBSupremaDetectCoreUnActive)
         Me.Panel5.Controls.Add(Me.RBSupremaDetectCoreActive)
         Me.Panel5.Location = New System.Drawing.Point(28, 23)
@@ -670,8 +1018,8 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'RBSupremaDetectCoreUnActive
         '
-        Me.RBSupremaDetectCoreUnActive.AutoSize = true
-        Me.RBSupremaDetectCoreUnActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.RBSupremaDetectCoreUnActive.AutoSize = True
+        Me.RBSupremaDetectCoreUnActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.RBSupremaDetectCoreUnActive.ForeColor = System.Drawing.Color.Red
         Me.RBSupremaDetectCoreUnActive.Location = New System.Drawing.Point(3, 0)
         Me.RBSupremaDetectCoreUnActive.Name = "RBSupremaDetectCoreUnActive"
@@ -679,28 +1027,28 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.RBSupremaDetectCoreUnActive.Size = New System.Drawing.Size(68, 27)
         Me.RBSupremaDetectCoreUnActive.TabIndex = 28
         Me.RBSupremaDetectCoreUnActive.Text = "غیر فعال"
-        Me.RBSupremaDetectCoreUnActive.UseVisualStyleBackColor = true
+        Me.RBSupremaDetectCoreUnActive.UseVisualStyleBackColor = True
         '
         'RBSupremaDetectCoreActive
         '
-        Me.RBSupremaDetectCoreActive.AutoSize = true
-        Me.RBSupremaDetectCoreActive.Checked = true
-        Me.RBSupremaDetectCoreActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.RBSupremaDetectCoreActive.AutoSize = True
+        Me.RBSupremaDetectCoreActive.Checked = True
+        Me.RBSupremaDetectCoreActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.RBSupremaDetectCoreActive.ForeColor = System.Drawing.Color.Green
         Me.RBSupremaDetectCoreActive.Location = New System.Drawing.Point(77, 0)
         Me.RBSupremaDetectCoreActive.Name = "RBSupremaDetectCoreActive"
         Me.RBSupremaDetectCoreActive.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.RBSupremaDetectCoreActive.Size = New System.Drawing.Size(52, 27)
         Me.RBSupremaDetectCoreActive.TabIndex = 27
-        Me.RBSupremaDetectCoreActive.TabStop = true
+        Me.RBSupremaDetectCoreActive.TabStop = True
         Me.RBSupremaDetectCoreActive.Text = "فعال"
-        Me.RBSupremaDetectCoreActive.UseVisualStyleBackColor = true
+        Me.RBSupremaDetectCoreActive.UseVisualStyleBackColor = True
         '
         'Label12
         '
-        Me.Label12.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label12.AutoSize = true
-        Me.Label12.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label12.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label12.Location = New System.Drawing.Point(169, 22)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(100, 28)
@@ -710,9 +1058,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label11
         '
-        Me.Label11.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label11.AutoSize = true
-        Me.Label11.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label11.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label11.AutoSize = True
+        Me.Label11.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label11.Location = New System.Drawing.Point(307, 22)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(88, 28)
@@ -722,9 +1070,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label10
         '
-        Me.Label10.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label10.AutoSize = true
-        Me.Label10.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label10.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label10.Location = New System.Drawing.Point(445, 22)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(79, 28)
@@ -734,9 +1082,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label9
         '
-        Me.Label9.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label9.AutoSize = true
-        Me.Label9.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label9.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label9.Location = New System.Drawing.Point(556, 22)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(143, 28)
@@ -746,9 +1094,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label7
         '
-        Me.Label7.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label7.AutoSize = true
-        Me.Label7.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label7.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label7.Location = New System.Drawing.Point(843, 21)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(88, 28)
@@ -756,219 +1104,12 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.Label7.Text = "اسکنر سوپریما"
         Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'UcTextBoxRFIDCardReadersTypeSecond
-        '
-        Me.UcTextBoxRFIDCardReadersTypeSecond.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcTextBoxRFIDCardReadersTypeSecond.BackColor = System.Drawing.Color.Transparent
-        Me.UcTextBoxRFIDCardReadersTypeSecond.Location = New System.Drawing.Point(433, 29)
-        Me.UcTextBoxRFIDCardReadersTypeSecond.Name = "UcTextBoxRFIDCardReadersTypeSecond"
-        Me.UcTextBoxRFIDCardReadersTypeSecond.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcTextBoxRFIDCardReadersTypeSecond.Size = New System.Drawing.Size(47, 20)
-        Me.UcTextBoxRFIDCardReadersTypeSecond.TabIndex = 40
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCBackColor = System.Drawing.Color.White
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCBorder = true
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCEnable = true
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCFont = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCForeColor = System.Drawing.Color.Red
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCMaxCharacterReached = CType(50,Short)
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCMaxNumber = CType(99999,Long)
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCMultiLine = false
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcTextBoxRFIDCardReadersTypeSecond.UCValue = "USB"
-        '
-        'Label31
-        '
-        Me.Label31.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label31.AutoSize = true
-        Me.Label31.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.Label31.Location = New System.Drawing.Point(486, 22)
-        Me.Label31.Name = "Label31"
-        Me.Label31.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Label31.Size = New System.Drawing.Size(92, 28)
-        Me.Label31.TabIndex = 39
-        Me.Label31.Text = "کارت خوان دوم"
-        Me.Label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'Label30
-        '
-        Me.Label30.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label30.AutoSize = true
-        Me.Label30.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.Label30.Location = New System.Drawing.Point(640, 22)
-        Me.Label30.Name = "Label30"
-        Me.Label30.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Label30.Size = New System.Drawing.Size(92, 28)
-        Me.Label30.TabIndex = 38
-        Me.Label30.Text = "کارت خوان اول"
-        Me.Label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'Panel2
-        '
-        Me.Panel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Panel2.Controls.Add(Me.RBRFIDCardReaderBeepEnableUnActive)
-        Me.Panel2.Controls.Add(Me.RBRFIDCardReaderBeepEnableActive)
-        Me.Panel2.Location = New System.Drawing.Point(348, 53)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(134, 29)
-        Me.Panel2.TabIndex = 28
-        '
-        'RBRFIDCardReaderBeepEnableUnActive
-        '
-        Me.RBRFIDCardReaderBeepEnableUnActive.AutoSize = true
-        Me.RBRFIDCardReaderBeepEnableUnActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.RBRFIDCardReaderBeepEnableUnActive.ForeColor = System.Drawing.Color.Red
-        Me.RBRFIDCardReaderBeepEnableUnActive.Location = New System.Drawing.Point(3, 0)
-        Me.RBRFIDCardReaderBeepEnableUnActive.Name = "RBRFIDCardReaderBeepEnableUnActive"
-        Me.RBRFIDCardReaderBeepEnableUnActive.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.RBRFIDCardReaderBeepEnableUnActive.Size = New System.Drawing.Size(68, 27)
-        Me.RBRFIDCardReaderBeepEnableUnActive.TabIndex = 28
-        Me.RBRFIDCardReaderBeepEnableUnActive.Text = "غیر فعال"
-        Me.RBRFIDCardReaderBeepEnableUnActive.UseVisualStyleBackColor = true
-        '
-        'RBRFIDCardReaderBeepEnableActive
-        '
-        Me.RBRFIDCardReaderBeepEnableActive.AutoSize = true
-        Me.RBRFIDCardReaderBeepEnableActive.Checked = true
-        Me.RBRFIDCardReaderBeepEnableActive.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.RBRFIDCardReaderBeepEnableActive.ForeColor = System.Drawing.Color.Green
-        Me.RBRFIDCardReaderBeepEnableActive.Location = New System.Drawing.Point(77, 0)
-        Me.RBRFIDCardReaderBeepEnableActive.Name = "RBRFIDCardReaderBeepEnableActive"
-        Me.RBRFIDCardReaderBeepEnableActive.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.RBRFIDCardReaderBeepEnableActive.Size = New System.Drawing.Size(52, 27)
-        Me.RBRFIDCardReaderBeepEnableActive.TabIndex = 27
-        Me.RBRFIDCardReaderBeepEnableActive.TabStop = true
-        Me.RBRFIDCardReaderBeepEnableActive.Text = "فعال"
-        Me.RBRFIDCardReaderBeepEnableActive.UseVisualStyleBackColor = true
-        '
-        'Label6
-        '
-        Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label6.AutoSize = true
-        Me.Label6.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.Label6.Location = New System.Drawing.Point(485, 50)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(204, 28)
-        Me.Label6.TabIndex = 26
-        Me.Label6.Text = "صدای بوق پس از کارت خوانی موفق"
-        Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'UcNumberRFIDCardReaderDelay
-        '
-        Me.UcNumberRFIDCardReaderDelay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberRFIDCardReaderDelay.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
-        Me.UcNumberRFIDCardReaderDelay.Location = New System.Drawing.Point(696, 59)
-        Me.UcNumberRFIDCardReaderDelay.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.UcNumberRFIDCardReaderDelay.Name = "UcNumberRFIDCardReaderDelay"
-        Me.UcNumberRFIDCardReaderDelay.Size = New System.Drawing.Size(55, 20)
-        Me.UcNumberRFIDCardReaderDelay.TabIndex = 25
-        Me.UcNumberRFIDCardReaderDelay.UCBackColor = System.Drawing.Color.White
-        Me.UcNumberRFIDCardReaderDelay.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberRFIDCardReaderDelay.UCBorder = true
-        Me.UcNumberRFIDCardReaderDelay.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberRFIDCardReaderDelay.UCEnable = true
-        Me.UcNumberRFIDCardReaderDelay.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
-        Me.UcNumberRFIDCardReaderDelay.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberRFIDCardReaderDelay.UCMultiLine = false
-        Me.UcNumberRFIDCardReaderDelay.UCValue = CType(1000,Long)
-        '
-        'Label5
-        '
-        Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label5.AutoSize = true
-        Me.Label5.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.Label5.Location = New System.Drawing.Point(753, 50)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(181, 28)
-        Me.Label5.TabIndex = 24
-        Me.Label5.Text = "زمان تاخیر در فرآیند کارت خوانی"
-        Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'UcTextBoxRFIDCardNoSimulate
-        '
-        Me.UcTextBoxRFIDCardNoSimulate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcTextBoxRFIDCardNoSimulate.BackColor = System.Drawing.Color.Transparent
-        Me.UcTextBoxRFIDCardNoSimulate.Location = New System.Drawing.Point(20, 28)
-        Me.UcTextBoxRFIDCardNoSimulate.Name = "UcTextBoxRFIDCardNoSimulate"
-        Me.UcTextBoxRFIDCardNoSimulate.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcTextBoxRFIDCardNoSimulate.Size = New System.Drawing.Size(97, 20)
-        Me.UcTextBoxRFIDCardNoSimulate.TabIndex = 23
-        Me.UcTextBoxRFIDCardNoSimulate.UCBackColor = System.Drawing.Color.White
-        Me.UcTextBoxRFIDCardNoSimulate.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTextBoxRFIDCardNoSimulate.UCBorder = true
-        Me.UcTextBoxRFIDCardNoSimulate.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcTextBoxRFIDCardNoSimulate.UCEnable = true
-        Me.UcTextBoxRFIDCardNoSimulate.UCFont = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcTextBoxRFIDCardNoSimulate.UCForeColor = System.Drawing.Color.Red
-        Me.UcTextBoxRFIDCardNoSimulate.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
-        Me.UcTextBoxRFIDCardNoSimulate.UCMaxCharacterReached = CType(50,Short)
-        Me.UcTextBoxRFIDCardNoSimulate.UCMaxNumber = CType(99999,Long)
-        Me.UcTextBoxRFIDCardNoSimulate.UCMultiLine = false
-        Me.UcTextBoxRFIDCardNoSimulate.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
-        Me.UcTextBoxRFIDCardNoSimulate.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.UcTextBoxRFIDCardNoSimulate.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcTextBoxRFIDCardNoSimulate.UCValue = "BCED3454"
-        '
-        'Label4
-        '
-        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label4.AutoSize = true
-        Me.Label4.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.Label4.Location = New System.Drawing.Point(120, 22)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(264, 28)
-        Me.Label4.TabIndex = 22
-        Me.Label4.Text = "شماره کارت مجازی برای شبیه سازی کارت خوانی"
-        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'UcTextBoxRFIDCardReadersTypeFirst
-        '
-        Me.UcTextBoxRFIDCardReadersTypeFirst.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcTextBoxRFIDCardReadersTypeFirst.BackColor = System.Drawing.Color.Transparent
-        Me.UcTextBoxRFIDCardReadersTypeFirst.Location = New System.Drawing.Point(592, 28)
-        Me.UcTextBoxRFIDCardReadersTypeFirst.Name = "UcTextBoxRFIDCardReadersTypeFirst"
-        Me.UcTextBoxRFIDCardReadersTypeFirst.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcTextBoxRFIDCardReadersTypeFirst.Size = New System.Drawing.Size(47, 20)
-        Me.UcTextBoxRFIDCardReadersTypeFirst.TabIndex = 21
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCBackColor = System.Drawing.Color.White
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCBorder = true
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCEnable = true
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCFont = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCForeColor = System.Drawing.Color.Red
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCMaxCharacterReached = CType(50,Short)
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCMaxNumber = CType(99999,Long)
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCMultiLine = false
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcTextBoxRFIDCardReadersTypeFirst.UCValue = "USB"
-        '
-        'Label3
-        '
-        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label3.AutoSize = true
-        Me.Label3.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.Label3.Location = New System.Drawing.Point(739, 22)
-        Me.Label3.Name = "Label3"
-        Me.Label3.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Label3.Size = New System.Drawing.Size(195, 28)
-        Me.Label3.TabIndex = 20
-        Me.Label3.Text = "پورت کارت خوان متصل به کلاینت:"
-        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'AlphaGradientPanel2
         '
-        Me.AlphaGradientPanel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.AlphaGradientPanel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AlphaGradientPanel2.BackColor = System.Drawing.Color.Transparent
-        Me.AlphaGradientPanel2.Border = true
+        Me.AlphaGradientPanel2.Border = True
         Me.AlphaGradientPanel2.BorderColor = System.Drawing.Color.Black
         Me.AlphaGradientPanel2.Colors.Add(Me.ColorWithAlpha1)
         Me.AlphaGradientPanel2.Colors.Add(Me.ColorWithAlpha2)
@@ -987,15 +1128,15 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.AlphaGradientPanel2.Controls.Add(Me.Label14)
         Me.AlphaGradientPanel2.Controls.Add(Me.UcNumberTimeOut)
         Me.AlphaGradientPanel2.CornerRadius = 20
-        Me.AlphaGradientPanel2.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
-            Or BlueActivity.Controls.Corner.BottomLeft)  _
-            Or BlueActivity.Controls.Corner.BottomRight),BlueActivity.Controls.Corner)
-        Me.AlphaGradientPanel2.Gradient = true
+        Me.AlphaGradientPanel2.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight) _
+            Or BlueActivity.Controls.Corner.BottomLeft) _
+            Or BlueActivity.Controls.Corner.BottomRight), BlueActivity.Controls.Corner)
+        Me.AlphaGradientPanel2.Gradient = True
         Me.AlphaGradientPanel2.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.AlphaGradientPanel2.GradientOffset = 1!
+        Me.AlphaGradientPanel2.GradientOffset = 1.0!
         Me.AlphaGradientPanel2.GradientSize = New System.Drawing.Size(0, 0)
         Me.AlphaGradientPanel2.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.AlphaGradientPanel2.Grayscale = false
+        Me.AlphaGradientPanel2.Grayscale = False
         Me.AlphaGradientPanel2.Image = Nothing
         Me.AlphaGradientPanel2.ImageAlpha = 75
         Me.AlphaGradientPanel2.ImagePadding = New System.Windows.Forms.Padding(5)
@@ -1003,13 +1144,24 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.AlphaGradientPanel2.ImageSize = New System.Drawing.Size(48, 48)
         Me.AlphaGradientPanel2.Location = New System.Drawing.Point(18, 161)
         Me.AlphaGradientPanel2.Name = "AlphaGradientPanel2"
-        Me.AlphaGradientPanel2.Rounded = true
+        Me.AlphaGradientPanel2.Rounded = True
         Me.AlphaGradientPanel2.Size = New System.Drawing.Size(960, 54)
         Me.AlphaGradientPanel2.TabIndex = 22
         '
+        'PnlColorErrorInDataEntry
+        '
+        Me.PnlColorErrorInDataEntry.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PnlColorErrorInDataEntry.BackColor = System.Drawing.Color.White
+        Me.PnlColorErrorInDataEntry.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlColorErrorInDataEntry.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PnlColorErrorInDataEntry.Location = New System.Drawing.Point(436, 28)
+        Me.PnlColorErrorInDataEntry.Name = "PnlColorErrorInDataEntry"
+        Me.PnlColorErrorInDataEntry.Size = New System.Drawing.Size(20, 15)
+        Me.PnlColorErrorInDataEntry.TabIndex = 36
+        '
         'PnlColorInformation
         '
-        Me.PnlColorInformation.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlColorInformation.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlColorInformation.BackColor = System.Drawing.Color.White
         Me.PnlColorInformation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlColorInformation.Cursor = System.Windows.Forms.Cursors.Hand
@@ -1020,9 +1172,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label20
         '
-        Me.Label20.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label20.AutoSize = true
-        Me.Label20.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label20.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label20.AutoSize = True
+        Me.Label20.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label20.Location = New System.Drawing.Point(128, 20)
         Me.Label20.Name = "Label20"
         Me.Label20.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -1033,7 +1185,7 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'PnlColorSuccessProccess
         '
-        Me.PnlColorSuccessProccess.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlColorSuccessProccess.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlColorSuccessProccess.BackColor = System.Drawing.Color.White
         Me.PnlColorSuccessProccess.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlColorSuccessProccess.Cursor = System.Windows.Forms.Cursors.Hand
@@ -1044,9 +1196,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label19
         '
-        Me.Label19.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label19.AutoSize = true
-        Me.Label19.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label19.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label19.AutoSize = True
+        Me.Label19.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label19.Location = New System.Drawing.Point(223, 20)
         Me.Label19.Name = "Label19"
         Me.Label19.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -1057,7 +1209,7 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'PnlColorWarning
         '
-        Me.PnlColorWarning.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlColorWarning.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlColorWarning.BackColor = System.Drawing.Color.White
         Me.PnlColorWarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlColorWarning.Cursor = System.Windows.Forms.Cursors.Hand
@@ -1068,9 +1220,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label18
         '
-        Me.Label18.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label18.AutoSize = true
-        Me.Label18.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label18.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label18.AutoSize = True
+        Me.Label18.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label18.Location = New System.Drawing.Point(340, 20)
         Me.Label18.Name = "Label18"
         Me.Label18.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -1079,22 +1231,11 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.Label18.Text = "اخطار به کاربر"
         Me.Label18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'PnlColorErrorInDataEntry
-        '
-        Me.PnlColorErrorInDataEntry.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.PnlColorErrorInDataEntry.BackColor = System.Drawing.Color.White
-        Me.PnlColorErrorInDataEntry.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PnlColorErrorInDataEntry.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PnlColorErrorInDataEntry.Location = New System.Drawing.Point(436, 28)
-        Me.PnlColorErrorInDataEntry.Name = "PnlColorErrorInDataEntry"
-        Me.PnlColorErrorInDataEntry.Size = New System.Drawing.Size(20, 15)
-        Me.PnlColorErrorInDataEntry.TabIndex = 36
-        '
         'Label17
         '
-        Me.Label17.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label17.AutoSize = true
-        Me.Label17.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label17.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label17.AutoSize = True
+        Me.Label17.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label17.Location = New System.Drawing.Point(455, 20)
         Me.Label17.Name = "Label17"
         Me.Label17.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -1105,7 +1246,7 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'PnlColorErrorType
         '
-        Me.PnlColorErrorType.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlColorErrorType.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlColorErrorType.BackColor = System.Drawing.Color.White
         Me.PnlColorErrorType.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlColorErrorType.Cursor = System.Windows.Forms.Cursors.Hand
@@ -1116,9 +1257,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label16
         '
-        Me.Label16.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label16.AutoSize = true
-        Me.Label16.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label16.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label16.AutoSize = True
+        Me.Label16.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label16.Location = New System.Drawing.Point(592, 20)
         Me.Label16.Name = "Label16"
         Me.Label16.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -1129,9 +1270,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label15
         '
-        Me.Label15.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label15.AutoSize = true
-        Me.Label15.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label15.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label15.AutoSize = True
+        Me.Label15.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label15.Location = New System.Drawing.Point(676, 20)
         Me.Label15.Name = "Label15"
         Me.Label15.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -1142,9 +1283,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label14
         '
-        Me.Label14.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label14.AutoSize = true
-        Me.Label14.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label14.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label14.Location = New System.Drawing.Point(777, 19)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(155, 28)
@@ -1154,126 +1295,30 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'UcNumberTimeOut
         '
-        Me.UcNumberTimeOut.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberTimeOut.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberTimeOut.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberTimeOut.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberTimeOut.Location = New System.Drawing.Point(746, 25)
         Me.UcNumberTimeOut.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberTimeOut.Name = "UcNumberTimeOut"
         Me.UcNumberTimeOut.Size = New System.Drawing.Size(31, 20)
         Me.UcNumberTimeOut.TabIndex = 25
+        Me.UcNumberTimeOut.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberTimeOut.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberTimeOut.UCBackColor = System.Drawing.Color.White
         Me.UcNumberTimeOut.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberTimeOut.UCBorder = true
+        Me.UcNumberTimeOut.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberTimeOut.UCBorder = True
         Me.UcNumberTimeOut.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberTimeOut.UCEnable = true
-        Me.UcNumberTimeOut.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberTimeOut.UCEnable = True
+        Me.UcNumberTimeOut.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberTimeOut.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberTimeOut.UCMultiLine = false
-        Me.UcNumberTimeOut.UCValue = CType(3,Long)
-        '
-        'AlphaGradientPanel4
-        '
-        Me.AlphaGradientPanel4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.AlphaGradientPanel4.BackColor = System.Drawing.Color.Transparent
-        Me.AlphaGradientPanel4.Border = true
-        Me.AlphaGradientPanel4.BorderColor = System.Drawing.Color.Black
-        Me.AlphaGradientPanel4.Colors.Add(Me.ColorWithAlpha1)
-        Me.AlphaGradientPanel4.Colors.Add(Me.ColorWithAlpha2)
-        Me.AlphaGradientPanel4.ContentPadding = New System.Windows.Forms.Padding(0)
-        Me.AlphaGradientPanel4.Controls.Add(Me.UcNumberUCUCComputerMessageCollectionSweepDelay)
-        Me.AlphaGradientPanel4.Controls.Add(Me.Label38)
-        Me.AlphaGradientPanel4.Controls.Add(Me.UcNumberUCUCComputerMessageCollectionTopN)
-        Me.AlphaGradientPanel4.Controls.Add(Me.Label39)
-        Me.AlphaGradientPanel4.CornerRadius = 20
-        Me.AlphaGradientPanel4.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
-            Or BlueActivity.Controls.Corner.BottomLeft)  _
-            Or BlueActivity.Controls.Corner.BottomRight),BlueActivity.Controls.Corner)
-        Me.AlphaGradientPanel4.Gradient = true
-        Me.AlphaGradientPanel4.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.AlphaGradientPanel4.GradientOffset = 1!
-        Me.AlphaGradientPanel4.GradientSize = New System.Drawing.Size(0, 0)
-        Me.AlphaGradientPanel4.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.AlphaGradientPanel4.Grayscale = false
-        Me.AlphaGradientPanel4.Image = Nothing
-        Me.AlphaGradientPanel4.ImageAlpha = 75
-        Me.AlphaGradientPanel4.ImagePadding = New System.Windows.Forms.Padding(5)
-        Me.AlphaGradientPanel4.ImagePosition = BlueActivity.Controls.ImagePosition.BottomRight
-        Me.AlphaGradientPanel4.ImageSize = New System.Drawing.Size(48, 48)
-        Me.AlphaGradientPanel4.Location = New System.Drawing.Point(18, 390)
-        Me.AlphaGradientPanel4.Name = "AlphaGradientPanel4"
-        Me.AlphaGradientPanel4.Rounded = true
-        Me.AlphaGradientPanel4.Size = New System.Drawing.Size(960, 46)
-        Me.AlphaGradientPanel4.TabIndex = 26
-        '
-        'UcNumberUCUCComputerMessageCollectionSweepDelay
-        '
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.Location = New System.Drawing.Point(617, 20)
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.Name = "UcNumberUCUCComputerMessageCollectionSweepDelay"
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.Size = New System.Drawing.Size(31, 20)
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.TabIndex = 44
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCBackColor = System.Drawing.Color.White
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCBorder = true
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCEnable = true
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCMultiLine = false
-        Me.UcNumberUCUCComputerMessageCollectionSweepDelay.UCValue = CType(3,Long)
-        '
-        'Label38
-        '
-        Me.Label38.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label38.AutoSize = true
-        Me.Label38.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.Label38.Location = New System.Drawing.Point(652, 16)
-        Me.Label38.Name = "Label38"
-        Me.Label38.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Label38.Size = New System.Drawing.Size(80, 28)
-        Me.Label38.TabIndex = 43
-        Me.Label38.Text = "تاخیر نمایش"
-        Me.Label38.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'UcNumberUCUCComputerMessageCollectionTopN
-        '
-        Me.UcNumberUCUCComputerMessageCollectionTopN.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberUCUCComputerMessageCollectionTopN.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
-        Me.UcNumberUCUCComputerMessageCollectionTopN.Location = New System.Drawing.Point(743, 20)
-        Me.UcNumberUCUCComputerMessageCollectionTopN.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.UcNumberUCUCComputerMessageCollectionTopN.Name = "UcNumberUCUCComputerMessageCollectionTopN"
-        Me.UcNumberUCUCComputerMessageCollectionTopN.Size = New System.Drawing.Size(31, 20)
-        Me.UcNumberUCUCComputerMessageCollectionTopN.TabIndex = 25
-        Me.UcNumberUCUCComputerMessageCollectionTopN.UCBackColor = System.Drawing.Color.White
-        Me.UcNumberUCUCComputerMessageCollectionTopN.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberUCUCComputerMessageCollectionTopN.UCBorder = true
-        Me.UcNumberUCUCComputerMessageCollectionTopN.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberUCUCComputerMessageCollectionTopN.UCEnable = true
-        Me.UcNumberUCUCComputerMessageCollectionTopN.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
-        Me.UcNumberUCUCComputerMessageCollectionTopN.UCForeColor = System.Drawing.Color.Red
-        Me.UcNumberUCUCComputerMessageCollectionTopN.UCMultiLine = false
-        Me.UcNumberUCUCComputerMessageCollectionTopN.UCValue = CType(3,Long)
-        '
-        'Label39
-        '
-        Me.Label39.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label39.AutoSize = true
-        Me.Label39.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.Label39.Location = New System.Drawing.Point(774, 14)
-        Me.Label39.Name = "Label39"
-        Me.Label39.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Label39.Size = New System.Drawing.Size(155, 28)
-        Me.Label39.TabIndex = 20
-        Me.Label39.Text = "تعداد پیام ها در هر نمایش"
-        Me.Label39.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcNumberTimeOut.UCMultiLine = False
+        Me.UcNumberTimeOut.UCValue = CType(3, Long)
         '
         'Panel1
         '
-        Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Panel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BackColor = System.Drawing.Color.LightSteelBlue
         Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Location = New System.Drawing.Point(33, 43)
@@ -1283,9 +1328,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label1
         '
-        Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label1.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label1.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label1.Location = New System.Drawing.Point(0, 0)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(929, 29)
@@ -1295,8 +1340,8 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label2
         '
-        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label2.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label2.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label2.Location = New System.Drawing.Point(859, 8)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(115, 32)
@@ -1306,7 +1351,7 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'UcSearcherComputers
         '
-        Me.UcSearcherComputers.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcSearcherComputers.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcSearcherComputers.BackColor = System.Drawing.Color.Transparent
         Me.UcSearcherComputers.Location = New System.Drawing.Point(635, 8)
         Me.UcSearcherComputers.Name = "UcSearcherComputers"
@@ -1314,19 +1359,19 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.UcSearcherComputers.Size = New System.Drawing.Size(218, 31)
         Me.UcSearcherComputers.TabIndex = 20
         Me.UcSearcherComputers.UCBackColor = System.Drawing.Color.White
-        Me.UcSearcherComputers.UCFontList = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcSearcherComputers.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcSearcherComputers.UCFontList = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherComputers.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcSearcherComputers.UCForeColor = System.Drawing.Color.Black
         Me.UcSearcherComputers.UCIcon = Nothing
-        Me.UcSearcherComputers.UCMaximizeHight = CType(200,Long)
-        Me.UcSearcherComputers.UCMinimizeHight = CType(31,Long)
+        Me.UcSearcherComputers.UCMaximizeHight = CType(200, Long)
+        Me.UcSearcherComputers.UCMinimizeHight = CType(31, Long)
         Me.UcSearcherComputers.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.DropDown
-        Me.UcSearcherComputers.UCShowDomainIcon = false
+        Me.UcSearcherComputers.UCShowDomainIcon = False
         '
         'Panel4
         '
-        Me.Panel4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Panel4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel4.BackColor = System.Drawing.Color.LightSteelBlue
         Me.Panel4.Controls.Add(Me.Label8)
         Me.Panel4.Location = New System.Drawing.Point(31, 149)
@@ -1336,9 +1381,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label8
         '
-        Me.Label8.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label8.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label8.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label8.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label8.Location = New System.Drawing.Point(0, 0)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(929, 29)
@@ -1348,8 +1393,8 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Panel14
         '
-        Me.Panel14.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Panel14.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel14.BackColor = System.Drawing.Color.LightSteelBlue
         Me.Panel14.Controls.Add(Me.Label24)
         Me.Panel14.Location = New System.Drawing.Point(31, 222)
@@ -1359,9 +1404,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label24
         '
-        Me.Label24.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label24.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label24.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label24.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label24.Location = New System.Drawing.Point(0, 0)
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(929, 29)
@@ -1371,8 +1416,8 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Panel13
         '
-        Me.Panel13.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Panel13.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel13.BackColor = System.Drawing.Color.LightSteelBlue
         Me.Panel13.Controls.Add(Me.Label13)
         Me.Panel13.Location = New System.Drawing.Point(31, 377)
@@ -1382,9 +1427,9 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'Label13
         '
-        Me.Label13.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label13.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label13.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label13.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label13.Location = New System.Drawing.Point(0, 0)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(929, 29)
@@ -1394,7 +1439,7 @@ Partial Class UCConfigurationOfComputersOfCore
         '
         'UCConfigurationOfComputersOfCore
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.UcSearcherComputers)
         Me.Controls.Add(Me.Panel13)
@@ -1408,7 +1453,7 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.Controls.Add(Me.AlphaGradientPanel1)
         Me.Name = "UCConfigurationOfComputersOfCore"
         Me.Size = New System.Drawing.Size(990, 498)
-        Me.UCViewTitle = false
+        Me.UCViewTitle = False
         Me.Controls.SetChildIndex(Me.AlphaGradientPanel1, 0)
         Me.Controls.SetChildIndex(Me.Panel1, 0)
         Me.Controls.SetChildIndex(Me.Label2, 0)
@@ -1419,25 +1464,25 @@ Partial Class UCConfigurationOfComputersOfCore
         Me.Controls.SetChildIndex(Me.AlphaGradientPanel4, 0)
         Me.Controls.SetChildIndex(Me.Panel13, 0)
         Me.Controls.SetChildIndex(Me.UcSearcherComputers, 0)
-        Me.AlphaGradientPanel1.ResumeLayout(false)
-        Me.AlphaGradientPanel1.PerformLayout
-        Me.AlphaGradientPanel3.ResumeLayout(false)
-        Me.AlphaGradientPanel3.PerformLayout
-        Me.Panel3.ResumeLayout(false)
-        Me.Panel3.PerformLayout
-        Me.Panel7.ResumeLayout(false)
-        Me.Panel7.PerformLayout
-        Me.Panel6.ResumeLayout(false)
-        Me.Panel6.PerformLayout
-        Me.Panel5.ResumeLayout(false)
-        Me.Panel5.PerformLayout
-        Me.Panel2.ResumeLayout(false)
-        Me.Panel2.PerformLayout
-        Me.AlphaGradientPanel2.ResumeLayout(false)
-        Me.AlphaGradientPanel2.PerformLayout
-        Me.AlphaGradientPanel4.ResumeLayout(false)
-        Me.AlphaGradientPanel4.PerformLayout
-        Me.Panel1.ResumeLayout(false)
+        Me.AlphaGradientPanel1.ResumeLayout(False)
+        Me.AlphaGradientPanel1.PerformLayout()
+        Me.AlphaGradientPanel4.ResumeLayout(False)
+        Me.AlphaGradientPanel4.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
+        Me.Panel2.PerformLayout()
+        Me.AlphaGradientPanel3.ResumeLayout(False)
+        Me.AlphaGradientPanel3.PerformLayout()
+        Me.Panel3.ResumeLayout(False)
+        Me.Panel3.PerformLayout()
+        Me.Panel7.ResumeLayout(False)
+        Me.Panel7.PerformLayout()
+        Me.Panel6.ResumeLayout(False)
+        Me.Panel6.PerformLayout()
+        Me.Panel5.ResumeLayout(False)
+        Me.Panel5.PerformLayout()
+        Me.AlphaGradientPanel2.ResumeLayout(False)
+        Me.AlphaGradientPanel2.PerformLayout()
+        Me.Panel1.ResumeLayout(False)
         Me.Panel4.ResumeLayout(false)
         Me.Panel14.ResumeLayout(false)
         Me.Panel13.ResumeLayout(false)

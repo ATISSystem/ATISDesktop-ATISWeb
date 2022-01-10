@@ -44,7 +44,7 @@ Partial Class FrmcPersonnelAttendance
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(248, 137)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1000)
         '
         'PnlPersonnelSabtPrecent
         '

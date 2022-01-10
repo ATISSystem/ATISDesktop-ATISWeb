@@ -57,58 +57,58 @@ Partial Class UCUserChargeSavabeghCollection
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(3, 3)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(572, 517)
+        Me.PnlMain.Size = New System.Drawing.Size(621, 517)
         Me.PnlMain.TabIndex = 0
         '
         'UcTimeEntry2
         '
-        Me.UcTimeEntry2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTimeEntry2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTimeEntry2.BackColor = System.Drawing.Color.Transparent
-        Me.UcTimeEntry2.Location = New System.Drawing.Point(183, 80)
+        Me.UcTimeEntry2.Location = New System.Drawing.Point(223, 80)
         Me.UcTimeEntry2.Name = "UcTimeEntry2"
-        Me.UcTimeEntry2.Size = New System.Drawing.Size(103, 23)
+        Me.UcTimeEntry2.Size = New System.Drawing.Size(136, 23)
         Me.UcTimeEntry2.TabIndex = 737
         Me.UcTimeEntry2.UCBackColor = System.Drawing.Color.White
         Me.UcTimeEntry2.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTimeEntry2.UCEnable = true
-        Me.UcTimeEntry2.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcTimeEntry2.UCEnable = True
+        Me.UcTimeEntry2.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcTimeEntry2.UCUserTime = "23:59:59"
         '
         'UcTimeEntry1
         '
-        Me.UcTimeEntry1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTimeEntry1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTimeEntry1.BackColor = System.Drawing.Color.Transparent
-        Me.UcTimeEntry1.Location = New System.Drawing.Point(380, 80)
+        Me.UcTimeEntry1.Location = New System.Drawing.Point(422, 80)
         Me.UcTimeEntry1.Name = "UcTimeEntry1"
-        Me.UcTimeEntry1.Size = New System.Drawing.Size(103, 23)
+        Me.UcTimeEntry1.Size = New System.Drawing.Size(134, 23)
         Me.UcTimeEntry1.TabIndex = 736
         Me.UcTimeEntry1.UCBackColor = System.Drawing.Color.White
         Me.UcTimeEntry1.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTimeEntry1.UCEnable = true
-        Me.UcTimeEntry1.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcTimeEntry1.UCEnable = True
+        Me.UcTimeEntry1.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcTimeEntry1.UCUserTime = "00:00:00"
         '
         'UcPersianShamsiDate2
         '
-        Me.UcPersianShamsiDate2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcPersianShamsiDate2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianShamsiDate2.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
         Me.UcPersianShamsiDate2.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianShamsiDate2.Location = New System.Drawing.Point(183, 55)
+        Me.UcPersianShamsiDate2.Location = New System.Drawing.Point(223, 55)
         Me.UcPersianShamsiDate2.Name = "UcPersianShamsiDate2"
-        Me.UcPersianShamsiDate2.Size = New System.Drawing.Size(127, 23)
+        Me.UcPersianShamsiDate2.Size = New System.Drawing.Size(136, 23)
         Me.UcPersianShamsiDate2.TabIndex = 735
-        Me.UcPersianShamsiDate2.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcPersianShamsiDate2.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         '
         'UcPersianShamsiDate1
         '
-        Me.UcPersianShamsiDate1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcPersianShamsiDate1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianShamsiDate1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
         Me.UcPersianShamsiDate1.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianShamsiDate1.Location = New System.Drawing.Point(380, 55)
+        Me.UcPersianShamsiDate1.Location = New System.Drawing.Point(422, 55)
         Me.UcPersianShamsiDate1.Name = "UcPersianShamsiDate1"
-        Me.UcPersianShamsiDate1.Size = New System.Drawing.Size(127, 23)
+        Me.UcPersianShamsiDate1.Size = New System.Drawing.Size(134, 23)
         Me.UcPersianShamsiDate1.TabIndex = 734
-        Me.UcPersianShamsiDate1.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcPersianShamsiDate1.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         '
         'UcButton
         '
@@ -120,21 +120,21 @@ Partial Class UCUserChargeSavabeghCollection
         Me.UcButton.TabIndex = 730
         Me.UcButton.UCBackColor = System.Drawing.Color.OrangeRed
         Me.UcButton.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButton.UCEnable = true
-        Me.UcButton.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButton.UCEnable = True
+        Me.UcButton.UCFont = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButton.UCForeColor = System.Drawing.Color.White
         Me.UcButton.UCValue = "نمایش درآمد"
         '
         'PnlUCs
         '
-        Me.PnlUCs.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.PnlUCs.AutoScroll = true
+        Me.PnlUCs.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PnlUCs.AutoScroll = True
         Me.PnlUCs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlUCs.Location = New System.Drawing.Point(3, 135)
         Me.PnlUCs.Name = "PnlUCs"
-        Me.PnlUCs.Size = New System.Drawing.Size(566, 379)
+        Me.PnlUCs.Size = New System.Drawing.Size(615, 379)
         Me.PnlUCs.TabIndex = 2
         '
         'UcLabel1
@@ -146,7 +146,7 @@ Partial Class UCUserChargeSavabeghCollection
         Me.UcLabel1.Location = New System.Drawing.Point(0, 0)
         Me.UcLabel1.Name = "UcLabel1"
         Me.UcLabel1.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabel1.Size = New System.Drawing.Size(572, 49)
+        Me.UcLabel1.Size = New System.Drawing.Size(621, 49)
         Me.UcLabel1.TabIndex = 1
         Me.UcLabel1.UCBackColor = System.Drawing.Color.DodgerBlue
         Me.UcLabel1.UCFont = New System.Drawing.Font("B Homa", 20.25!)
@@ -156,12 +156,12 @@ Partial Class UCUserChargeSavabeghCollection
         '
         'Label25
         '
-        Me.Label25.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label25.AutoSize = true
+        Me.Label25.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label25.AutoSize = True
         Me.Label25.BackColor = System.Drawing.Color.LightSteelBlue
-        Me.Label25.Font = New System.Drawing.Font("B Zar", 9.75!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic),System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label25.Font = New System.Drawing.Font("B Zar", 9.75!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label25.ForeColor = System.Drawing.Color.Navy
-        Me.Label25.Location = New System.Drawing.Point(318, 58)
+        Me.Label25.Location = New System.Drawing.Point(367, 58)
         Me.Label25.Name = "Label25"
         Me.Label25.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label25.Size = New System.Drawing.Size(43, 21)
@@ -171,12 +171,12 @@ Partial Class UCUserChargeSavabeghCollection
         '
         'Label23
         '
-        Me.Label23.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label23.AutoSize = true
+        Me.Label23.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label23.AutoSize = True
         Me.Label23.BackColor = System.Drawing.Color.LightSteelBlue
-        Me.Label23.Font = New System.Drawing.Font("B Zar", 9.75!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic),System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label23.Font = New System.Drawing.Font("B Zar", 9.75!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label23.ForeColor = System.Drawing.Color.Navy
-        Me.Label23.Location = New System.Drawing.Point(318, 82)
+        Me.Label23.Location = New System.Drawing.Point(367, 82)
         Me.Label23.Name = "Label23"
         Me.Label23.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label23.Size = New System.Drawing.Size(49, 21)
@@ -186,12 +186,12 @@ Partial Class UCUserChargeSavabeghCollection
         '
         'Label24
         '
-        Me.Label24.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label24.AutoSize = true
+        Me.Label24.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label24.AutoSize = True
         Me.Label24.BackColor = System.Drawing.Color.LightSteelBlue
-        Me.Label24.Font = New System.Drawing.Font("B Zar", 9.75!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic),System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label24.Font = New System.Drawing.Font("B Zar", 9.75!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label24.ForeColor = System.Drawing.Color.Navy
-        Me.Label24.Location = New System.Drawing.Point(513, 82)
+        Me.Label24.Location = New System.Drawing.Point(562, 82)
         Me.Label24.Name = "Label24"
         Me.Label24.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label24.Size = New System.Drawing.Size(49, 21)
@@ -201,12 +201,12 @@ Partial Class UCUserChargeSavabeghCollection
         '
         'Label26
         '
-        Me.Label26.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label26.AutoSize = true
+        Me.Label26.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label26.AutoSize = True
         Me.Label26.BackColor = System.Drawing.Color.LightSteelBlue
-        Me.Label26.Font = New System.Drawing.Font("B Zar", 9.75!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic),System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label26.Font = New System.Drawing.Font("B Zar", 9.75!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label26.ForeColor = System.Drawing.Color.Navy
-        Me.Label26.Location = New System.Drawing.Point(513, 58)
+        Me.Label26.Location = New System.Drawing.Point(562, 58)
         Me.Label26.Name = "Label26"
         Me.Label26.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label26.Size = New System.Drawing.Size(46, 21)
@@ -225,20 +225,20 @@ Partial Class UCUserChargeSavabeghCollection
         Me.UcLabelDaramad.Size = New System.Drawing.Size(160, 32)
         Me.UcLabelDaramad.TabIndex = 731
         Me.UcLabelDaramad.UCBackColor = System.Drawing.Color.White
-        Me.UcLabelDaramad.UCFont = New System.Drawing.Font("IRMehr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabelDaramad.UCFont = New System.Drawing.Font("IRMehr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabelDaramad.UCForeColor = System.Drawing.Color.Black
         Me.UcLabelDaramad.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelDaramad.UCValue = "0"
         '
         'UCUserChargeSavabeghCollection
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCUserChargeSavabeghCollection"
         Me.Padding = New System.Windows.Forms.Padding(3)
-        Me.Size = New System.Drawing.Size(578, 523)
+        Me.Size = New System.Drawing.Size(627, 523)
         Me.PnlMain.ResumeLayout(false)
         Me.PnlMain.PerformLayout
         Me.ResumeLayout(false)

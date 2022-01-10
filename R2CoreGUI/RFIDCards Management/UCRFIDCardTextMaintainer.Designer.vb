@@ -57,14 +57,17 @@ Partial Class UCRFIDCardTextMaintainer
         Me.UcTextBoxRFIDCardId.Size = New System.Drawing.Size(54, 29)
         Me.UcTextBoxRFIDCardId.TabIndex = 3
         Me.UcTextBoxRFIDCardId.UCBackColor = System.Drawing.Color.White
-        Me.UcTextBoxRFIDCardId.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTextBoxRFIDCardId.UCBorder = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcTextBoxRFIDCardId.UCEnable = false
-        Me.UcTextBoxRFIDCardId.UCFont = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcTextBoxRFIDCardId.UCBackColorDisable = System.Drawing.Color.White
+        Me.UcTextBoxRFIDCardId.UCBorder = True
+        Me.UcTextBoxRFIDCardId.UCBorderColor = System.Drawing.Color.DimGray
+        Me.UcTextBoxRFIDCardId.UCBorderCornerRedius = 5
+        Me.UcTextBoxRFIDCardId.UCEnable = False
+        Me.UcTextBoxRFIDCardId.UCFont = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcTextBoxRFIDCardId.UCForeColor = System.Drawing.Color.Black
         Me.UcTextBoxRFIDCardId.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
-        Me.UcTextBoxRFIDCardId.UCMaxCharacterReached = CType(50,Short)
-        Me.UcTextBoxRFIDCardId.UCMultiLine = false
+        Me.UcTextBoxRFIDCardId.UCMaxCharacterReached = CType(50, Short)
+        Me.UcTextBoxRFIDCardId.UCMaxNumber = CType(99999, Long)
+        Me.UcTextBoxRFIDCardId.UCMultiLine = False
         Me.UcTextBoxRFIDCardId.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
         Me.UcTextBoxRFIDCardId.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
         Me.UcTextBoxRFIDCardId.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
@@ -72,9 +75,9 @@ Partial Class UCRFIDCardTextMaintainer
         '
         'UcTextBoxRFIDCardNO
         '
-        Me.UcTextBoxRFIDCardNO.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxRFIDCardNO.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTextBoxRFIDCardNO.BackColor = System.Drawing.Color.Transparent
         Me.UcTextBoxRFIDCardNO.Location = New System.Drawing.Point(84, 0)
         Me.UcTextBoxRFIDCardNO.Name = "UcTextBoxRFIDCardNO"
@@ -83,13 +86,16 @@ Partial Class UCRFIDCardTextMaintainer
         Me.UcTextBoxRFIDCardNO.TabIndex = 0
         Me.UcTextBoxRFIDCardNO.UCBackColor = System.Drawing.Color.White
         Me.UcTextBoxRFIDCardNO.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTextBoxRFIDCardNO.UCBorder = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcTextBoxRFIDCardNO.UCEnable = true
-        Me.UcTextBoxRFIDCardNO.UCFont = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcTextBoxRFIDCardNO.UCBorder = True
+        Me.UcTextBoxRFIDCardNO.UCBorderColor = System.Drawing.Color.Gray
+        Me.UcTextBoxRFIDCardNO.UCBorderCornerRedius = 5
+        Me.UcTextBoxRFIDCardNO.UCEnable = True
+        Me.UcTextBoxRFIDCardNO.UCFont = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcTextBoxRFIDCardNO.UCForeColor = System.Drawing.Color.Black
         Me.UcTextBoxRFIDCardNO.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.English
-        Me.UcTextBoxRFIDCardNO.UCMaxCharacterReached = CType(50,Short)
-        Me.UcTextBoxRFIDCardNO.UCMultiLine = false
+        Me.UcTextBoxRFIDCardNO.UCMaxCharacterReached = CType(50, Short)
+        Me.UcTextBoxRFIDCardNO.UCMaxNumber = CType(99999, Long)
+        Me.UcTextBoxRFIDCardNO.UCMultiLine = False
         Me.UcTextBoxRFIDCardNO.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
         Me.UcTextBoxRFIDCardNO.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
         Me.UcTextBoxRFIDCardNO.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center

@@ -84,10 +84,10 @@ Partial Class UCRFIDCardInitialRegistration
         '
         Me.UcrfidCardTextMaintainer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.UcrfidCardTextMaintainer.BackColor = System.Drawing.Color.Transparent
-        Me.UcrfidCardTextMaintainer.Location = New System.Drawing.Point(240, 84)
+        Me.UcrfidCardTextMaintainer.Location = New System.Drawing.Point(234, 84)
         Me.UcrfidCardTextMaintainer.Name = "UcrfidCardTextMaintainer"
         Me.UcrfidCardTextMaintainer.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcrfidCardTextMaintainer.Size = New System.Drawing.Size(201, 34)
+        Me.UcrfidCardTextMaintainer.Size = New System.Drawing.Size(207, 34)
         Me.UcrfidCardTextMaintainer.TabIndex = 205
         Me.UcrfidCardTextMaintainer.UCEnable = false
         Me.UcrfidCardTextMaintainer.UCValue = ""

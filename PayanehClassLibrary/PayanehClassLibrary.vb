@@ -571,6 +571,26 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
+        Public Sub SetbFlagDriverToTrue(YournEnterExitId As Int64, DoSendtoTWSFlag As Boolean, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
+            Try
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim InstanceCarTrucks = New PayanehClassLibraryMClassCarTrucksManager
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.CancelledUser & ",bFlag=1,bFlagDriver=1,nUserIdExit=" & YourNSSSoftwareUser.UserId & " Where nEnterExitId=" & YournEnterExitId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+                If DoSendtoTWSFlag Then
+                    Dim NSSCarTruck As R2StandardCarTruckStructure = InstanceCarTrucks.GetNSSCarTruckByCarId(InstanceTurns.GetNSSTruck(YournEnterExitId).NSSCar.nIdCar)
+                    TWSClassLibrary.TDBClientManagement.TWSClassTDBClientManagement.DelNobat(NSSCarTruck.NSSCar.StrCarNo, NSSCarTruck.NSSCar.StrCarSerialNo)
+                End If
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
     End Class
 
     Public Class PayanehClassLibraryMClassCarTruckNobatManagement

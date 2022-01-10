@@ -32,7 +32,7 @@ Partial Class FrmcChangeDriverTruckAndCarTruckNumberPlateComputerMessageProducer
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(248, 137)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1000)
         '
         'PnlComputerMessageSender
         '
@@ -41,8 +41,8 @@ Partial Class FrmcChangeDriverTruckAndCarTruckNumberPlateComputerMessageProducer
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.PnlComputerMessageSender.BackColor = System.Drawing.Color.Transparent
         Me.PnlComputerMessageSender.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PnlComputerMessageSender.Controls.Add(Me.UcComputerMessageProducerChangeDriverTruck1)
         Me.PnlComputerMessageSender.Controls.Add(Me.UcComputerMessageProducerChangeCarTruckNumberPlate1)
+        Me.PnlComputerMessageSender.Controls.Add(Me.UcComputerMessageProducerChangeDriverTruck1)
         Me.PnlComputerMessageSender.Location = New System.Drawing.Point(5, 50)
         Me.PnlComputerMessageSender.Name = "PnlComputerMessageSender"
         Me.PnlComputerMessageSender.Size = New System.Drawing.Size(995, 512)
@@ -50,33 +50,33 @@ Partial Class FrmcChangeDriverTruckAndCarTruckNumberPlateComputerMessageProducer
         '
         'UcComputerMessageProducerChangeDriverTruck1
         '
-        Me.UcComputerMessageProducerChangeDriverTruck1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcComputerMessageProducerChangeDriverTruck1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcComputerMessageProducerChangeDriverTruck1.BackColor = System.Drawing.Color.Transparent
-        Me.UcComputerMessageProducerChangeDriverTruck1.Location = New System.Drawing.Point(112, 252)
+        Me.UcComputerMessageProducerChangeDriverTruck1.Location = New System.Drawing.Point(112, 251)
         Me.UcComputerMessageProducerChangeDriverTruck1.Name = "UcComputerMessageProducerChangeDriverTruck1"
         Me.UcComputerMessageProducerChangeDriverTruck1.Padding = New System.Windows.Forms.Padding(10)
         Me.UcComputerMessageProducerChangeDriverTruck1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.UcComputerMessageProducerChangeDriverTruck1.Size = New System.Drawing.Size(768, 251)
+        Me.UcComputerMessageProducerChangeDriverTruck1.Size = New System.Drawing.Size(768, 263)
         Me.UcComputerMessageProducerChangeDriverTruck1.TabIndex = 1
         Me.UcComputerMessageProducerChangeDriverTruck1.UCCMNote = ""
+        Me.UcComputerMessageProducerChangeDriverTruck1.UCSendIsActive = False
         Me.UcComputerMessageProducerChangeDriverTruck1.UCTitle = ""
-        Me.UcComputerMessageProducerChangeDriverTruck1.UCSendIsActive = false
         '
         'UcComputerMessageProducerChangeCarTruckNumberPlate1
         '
-        Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.BackColor = System.Drawing.Color.Transparent
-        Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.Location = New System.Drawing.Point(112, 6)
+        Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.Location = New System.Drawing.Point(112, -4)
         Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.Name = "UcComputerMessageProducerChangeCarTruckNumberPlate1"
         Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.Padding = New System.Windows.Forms.Padding(10)
         Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.Size = New System.Drawing.Size(768, 251)
+        Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.Size = New System.Drawing.Size(768, 264)
         Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.TabIndex = 0
         Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.UCCMNote = ""
-        Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.UCtitle = ""
-        Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.UCSendIsActive = false
+        Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.UCSendIsActive = False
+        Me.UcComputerMessageProducerChangeCarTruckNumberPlate1.UCTitle = ""
         '
         'FrmcChangeDriverTruckAndCarTruckNumberPlateComputerMessageProducer
         '

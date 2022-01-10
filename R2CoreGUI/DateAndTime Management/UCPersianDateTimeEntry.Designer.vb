@@ -30,9 +30,10 @@ Partial Class UCPersianDateTimeEntry
         'UcTimeEntry
         '
         Me.UcTimeEntry.BackColor = System.Drawing.Color.Transparent
-        Me.UcTimeEntry.Location = New System.Drawing.Point(120, -2)
+        Me.UcTimeEntry.Dock = System.Windows.Forms.DockStyle.Right
+        Me.UcTimeEntry.Location = New System.Drawing.Point(137, 0)
         Me.UcTimeEntry.Name = "UcTimeEntry"
-        Me.UcTimeEntry.Size = New System.Drawing.Size(103, 25)
+        Me.UcTimeEntry.Size = New System.Drawing.Size(151, 29)
         Me.UcTimeEntry.TabIndex = 4
         Me.UcTimeEntry.UCBackColor = System.Drawing.Color.White
         Me.UcTimeEntry.UCBackColorDisable = System.Drawing.Color.Gainsboro
@@ -44,9 +45,10 @@ Partial Class UCPersianDateTimeEntry
         '
         Me.UcPersianShamsiDate.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
         Me.UcPersianShamsiDate.BackColor = System.Drawing.Color.White
-        Me.UcPersianShamsiDate.Location = New System.Drawing.Point(-1, -2)
+        Me.UcPersianShamsiDate.Dock = System.Windows.Forms.DockStyle.Left
+        Me.UcPersianShamsiDate.Location = New System.Drawing.Point(0, 0)
         Me.UcPersianShamsiDate.Name = "UcPersianShamsiDate"
-        Me.UcPersianShamsiDate.Size = New System.Drawing.Size(127, 23)
+        Me.UcPersianShamsiDate.Size = New System.Drawing.Size(131, 29)
         Me.UcPersianShamsiDate.TabIndex = 3
         Me.UcPersianShamsiDate.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         '
@@ -58,7 +60,7 @@ Partial Class UCPersianDateTimeEntry
         Me.Controls.Add(Me.UcTimeEntry)
         Me.Controls.Add(Me.UcPersianShamsiDate)
         Me.Name = "UCPersianDateTimeEntry"
-        Me.Size = New System.Drawing.Size(227, 22)
+        Me.Size = New System.Drawing.Size(288, 29)
         Me.ResumeLayout(False)
 
     End Sub

@@ -27,6 +27,7 @@ Partial Class UCLoadAllocationManipulation
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PnlOutter = New System.Windows.Forms.Panel()
         Me.PnlInner = New System.Windows.Forms.Panel()
+        Me.UcButtonNewnEstelamIdRemain = New R2CoreGUI.UCButton()
         Me.UcPersianTextBoxLoadAllocationDateTimeComposite = New R2CoreGUI.UCPersianTextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.UcButtonLoadAllocationCancelling = New R2CoreGUI.UCButton()
@@ -40,12 +41,11 @@ Partial Class UCLoadAllocationManipulation
         Me.PnlHolder = New System.Windows.Forms.Panel()
         Me.UcViewerNSSLoadCapacitorLoadDataEntry = New R2CoreTransportationAndLoadNotification.UCViewerNSSLoadCapacitorLoadDataEntry()
         Me.UcViewerNSSTurnDataEntry = New R2CoreTransportationAndLoadNotification.UCViewerNSSTurnDataEntry()
-        Me.UcButtonNewnEstelamIdRemain = New R2CoreGUI.UCButton()
-        Me.PnlMain.SuspendLayout
-        Me.PnlOutter.SuspendLayout
-        Me.PnlInner.SuspendLayout
-        Me.PnlHolder.SuspendLayout
-        Me.SuspendLayout
+        Me.PnlMain.SuspendLayout()
+        Me.PnlOutter.SuspendLayout()
+        Me.PnlInner.SuspendLayout()
+        Me.PnlHolder.SuspendLayout()
+        Me.SuspendLayout()
         '
         'PnlMain
         '
@@ -53,7 +53,7 @@ Partial Class UCLoadAllocationManipulation
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(5, 5)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(940, 115)
+        Me.PnlMain.Size = New System.Drawing.Size(940, 125)
         Me.PnlMain.TabIndex = 0
         '
         'PnlOutter
@@ -65,7 +65,7 @@ Partial Class UCLoadAllocationManipulation
         Me.PnlOutter.Location = New System.Drawing.Point(0, 0)
         Me.PnlOutter.Name = "PnlOutter"
         Me.PnlOutter.Padding = New System.Windows.Forms.Padding(2)
-        Me.PnlOutter.Size = New System.Drawing.Size(940, 115)
+        Me.PnlOutter.Size = New System.Drawing.Size(940, 125)
         Me.PnlOutter.TabIndex = 0
         '
         'PnlInner
@@ -86,34 +86,49 @@ Partial Class UCLoadAllocationManipulation
         Me.PnlInner.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlInner.Location = New System.Drawing.Point(2, 2)
         Me.PnlInner.Name = "PnlInner"
-        Me.PnlInner.Size = New System.Drawing.Size(934, 109)
+        Me.PnlInner.Size = New System.Drawing.Size(934, 119)
         Me.PnlInner.TabIndex = 0
+        '
+        'UcButtonNewnEstelamIdRemain
+        '
+        Me.UcButtonNewnEstelamIdRemain.BackColor = System.Drawing.Color.Transparent
+        Me.UcButtonNewnEstelamIdRemain.Location = New System.Drawing.Point(57, 1)
+        Me.UcButtonNewnEstelamIdRemain.Name = "UcButtonNewnEstelamIdRemain"
+        Me.UcButtonNewnEstelamIdRemain.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcButtonNewnEstelamIdRemain.Size = New System.Drawing.Size(87, 30)
+        Me.UcButtonNewnEstelamIdRemain.TabIndex = 18
+        Me.UcButtonNewnEstelamIdRemain.UCBackColor = System.Drawing.Color.MidnightBlue
+        Me.UcButtonNewnEstelamIdRemain.UCBackColorDisable = System.Drawing.Color.Gray
+        Me.UcButtonNewnEstelamIdRemain.UCEnable = True
+        Me.UcButtonNewnEstelamIdRemain.UCFont = New System.Drawing.Font("B Homa", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcButtonNewnEstelamIdRemain.UCForeColor = System.Drawing.Color.White
+        Me.UcButtonNewnEstelamIdRemain.UCValue = "جدید-حفظ کدبار"
         '
         'UcPersianTextBoxLoadAllocationDateTimeComposite
         '
-        Me.UcPersianTextBoxLoadAllocationDateTimeComposite.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBoxLoadAllocationDateTimeComposite.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxLoadAllocationDateTimeComposite.BackColor = System.Drawing.Color.Transparent
         Me.UcPersianTextBoxLoadAllocationDateTimeComposite.Location = New System.Drawing.Point(560, 4)
-        Me.UcPersianTextBoxLoadAllocationDateTimeComposite.MaxCharacterReached = CType(50,Short)
+        Me.UcPersianTextBoxLoadAllocationDateTimeComposite.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxLoadAllocationDateTimeComposite.Name = "UcPersianTextBoxLoadAllocationDateTimeComposite"
         Me.UcPersianTextBoxLoadAllocationDateTimeComposite.Size = New System.Drawing.Size(139, 25)
         Me.UcPersianTextBoxLoadAllocationDateTimeComposite.TabIndex = 6
         Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCBackColor = System.Drawing.Color.Gainsboro
-        Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCBorder = true
+        Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCBorder = True
         Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCEnable = false
-        Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCFont = New System.Drawing.Font("IRMehr", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCEnable = False
+        Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCFont = New System.Drawing.Font("IRMehr", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCForeColor = System.Drawing.Color.Black
-        Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCMultiLine = false
+        Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCMultiLine = False
         Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
         Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.UcPersianTextBoxLoadAllocationDateTimeComposite.UCValue = "1397/08/88 88:88:88"
         '
         'Label4
         '
-        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label4.AutoSize = true
-        Me.Label4.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.SteelBlue
         Me.Label4.Location = New System.Drawing.Point(468, 3)
         Me.Label4.Name = "Label4"
@@ -131,8 +146,8 @@ Partial Class UCLoadAllocationManipulation
         Me.UcButtonLoadAllocationCancelling.TabIndex = 16
         Me.UcButtonLoadAllocationCancelling.UCBackColor = System.Drawing.Color.OrangeRed
         Me.UcButtonLoadAllocationCancelling.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonLoadAllocationCancelling.UCEnable = true
-        Me.UcButtonLoadAllocationCancelling.UCFont = New System.Drawing.Font("B Homa", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonLoadAllocationCancelling.UCEnable = True
+        Me.UcButtonLoadAllocationCancelling.UCFont = New System.Drawing.Font("B Homa", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonLoadAllocationCancelling.UCForeColor = System.Drawing.Color.White
         Me.UcButtonLoadAllocationCancelling.UCValue = "کنسلی تخصیص بار"
         '
@@ -146,8 +161,8 @@ Partial Class UCLoadAllocationManipulation
         Me.UcButtonLoadAllocationRegistering.TabIndex = 7
         Me.UcButtonLoadAllocationRegistering.UCBackColor = System.Drawing.Color.ForestGreen
         Me.UcButtonLoadAllocationRegistering.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonLoadAllocationRegistering.UCEnable = true
-        Me.UcButtonLoadAllocationRegistering.UCFont = New System.Drawing.Font("B Homa", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonLoadAllocationRegistering.UCEnable = True
+        Me.UcButtonLoadAllocationRegistering.UCFont = New System.Drawing.Font("B Homa", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonLoadAllocationRegistering.UCForeColor = System.Drawing.Color.White
         Me.UcButtonLoadAllocationRegistering.UCValue = "تخصیص بار"
         '
@@ -161,36 +176,36 @@ Partial Class UCLoadAllocationManipulation
         Me.UcButtonNew.TabIndex = 15
         Me.UcButtonNew.UCBackColor = System.Drawing.Color.MidnightBlue
         Me.UcButtonNew.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonNew.UCEnable = true
-        Me.UcButtonNew.UCFont = New System.Drawing.Font("B Homa", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonNew.UCEnable = True
+        Me.UcButtonNew.UCFont = New System.Drawing.Font("B Homa", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonNew.UCForeColor = System.Drawing.Color.White
         Me.UcButtonNew.UCValue = "جدید"
         '
         'UcPersianTextBoxLoadAllocationStatus
         '
-        Me.UcPersianTextBoxLoadAllocationStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBoxLoadAllocationStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxLoadAllocationStatus.BackColor = System.Drawing.Color.Transparent
         Me.UcPersianTextBoxLoadAllocationStatus.Location = New System.Drawing.Point(383, 4)
-        Me.UcPersianTextBoxLoadAllocationStatus.MaxCharacterReached = CType(50,Short)
+        Me.UcPersianTextBoxLoadAllocationStatus.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxLoadAllocationStatus.Name = "UcPersianTextBoxLoadAllocationStatus"
         Me.UcPersianTextBoxLoadAllocationStatus.Size = New System.Drawing.Size(82, 25)
         Me.UcPersianTextBoxLoadAllocationStatus.TabIndex = 12
         Me.UcPersianTextBoxLoadAllocationStatus.UCBackColor = System.Drawing.Color.Gainsboro
-        Me.UcPersianTextBoxLoadAllocationStatus.UCBorder = true
+        Me.UcPersianTextBoxLoadAllocationStatus.UCBorder = True
         Me.UcPersianTextBoxLoadAllocationStatus.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcPersianTextBoxLoadAllocationStatus.UCEnable = false
-        Me.UcPersianTextBoxLoadAllocationStatus.UCFont = New System.Drawing.Font("IRMehr", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcPersianTextBoxLoadAllocationStatus.UCEnable = False
+        Me.UcPersianTextBoxLoadAllocationStatus.UCFont = New System.Drawing.Font("IRMehr", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcPersianTextBoxLoadAllocationStatus.UCForeColor = System.Drawing.Color.Black
-        Me.UcPersianTextBoxLoadAllocationStatus.UCMultiLine = false
+        Me.UcPersianTextBoxLoadAllocationStatus.UCMultiLine = False
         Me.UcPersianTextBoxLoadAllocationStatus.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
         Me.UcPersianTextBoxLoadAllocationStatus.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.UcPersianTextBoxLoadAllocationStatus.UCValue = "کنسل شده"
         '
         'Label3
         '
-        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label3.AutoSize = true
-        Me.Label3.Font = New System.Drawing.Font("B Homa", 9!)
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("B Homa", 9.0!)
         Me.Label3.ForeColor = System.Drawing.Color.SteelBlue
         Me.Label3.Location = New System.Drawing.Point(702, 3)
         Me.Label3.Name = "Label3"
@@ -200,28 +215,31 @@ Partial Class UCLoadAllocationManipulation
         '
         'UcNumberLoadAllocationId
         '
-        Me.UcNumberLoadAllocationId.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcNumberLoadAllocationId.Font = New System.Drawing.Font("Alborz Titr", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberLoadAllocationId.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberLoadAllocationId.Font = New System.Drawing.Font("Alborz Titr", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberLoadAllocationId.Location = New System.Drawing.Point(755, 4)
         Me.UcNumberLoadAllocationId.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberLoadAllocationId.Name = "UcNumberLoadAllocationId"
         Me.UcNumberLoadAllocationId.Size = New System.Drawing.Size(65, 25)
         Me.UcNumberLoadAllocationId.TabIndex = 4
+        Me.UcNumberLoadAllocationId.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberLoadAllocationId.UCAllowedMinNumber = CType(-922337203685477580, Long)
         Me.UcNumberLoadAllocationId.UCBackColor = System.Drawing.Color.White
         Me.UcNumberLoadAllocationId.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberLoadAllocationId.UCBorder = true
+        Me.UcNumberLoadAllocationId.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberLoadAllocationId.UCBorder = True
         Me.UcNumberLoadAllocationId.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberLoadAllocationId.UCEnable = false
-        Me.UcNumberLoadAllocationId.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.UcNumberLoadAllocationId.UCEnable = False
+        Me.UcNumberLoadAllocationId.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.UcNumberLoadAllocationId.UCForeColor = System.Drawing.Color.Black
-        Me.UcNumberLoadAllocationId.UCMultiLine = false
-        Me.UcNumberLoadAllocationId.UCValue = CType(8888888,Long)
+        Me.UcNumberLoadAllocationId.UCMultiLine = False
+        Me.UcNumberLoadAllocationId.UCValue = CType(8888888, Long)
         '
         'Label2
         '
-        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label2.AutoSize = true
-        Me.Label2.Font = New System.Drawing.Font("B Homa", 9!)
+        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("B Homa", 9.0!)
         Me.Label2.ForeColor = System.Drawing.Color.SteelBlue
         Me.Label2.Location = New System.Drawing.Point(819, 3)
         Me.Label2.Name = "Label2"
@@ -231,9 +249,9 @@ Partial Class UCLoadAllocationManipulation
         '
         'Label1
         '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label1.AutoSize = true
-        Me.Label1.Font = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.SteelBlue
         Me.Label1.Location = New System.Drawing.Point(848, -1)
         Me.Label1.Name = "Label1"
@@ -243,25 +261,25 @@ Partial Class UCLoadAllocationManipulation
         '
         'PnlHolder
         '
-        Me.PnlHolder.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlHolder.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlHolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlHolder.Controls.Add(Me.UcViewerNSSLoadCapacitorLoadDataEntry)
         Me.PnlHolder.Controls.Add(Me.UcViewerNSSTurnDataEntry)
         Me.PnlHolder.Location = New System.Drawing.Point(3, 16)
         Me.PnlHolder.Name = "PnlHolder"
-        Me.PnlHolder.Size = New System.Drawing.Size(928, 90)
+        Me.PnlHolder.Size = New System.Drawing.Size(928, 100)
         Me.PnlHolder.TabIndex = 0
         '
         'UcViewerNSSLoadCapacitorLoadDataEntry
         '
-        Me.UcViewerNSSLoadCapacitorLoadDataEntry.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcViewerNSSLoadCapacitorLoadDataEntry.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcViewerNSSLoadCapacitorLoadDataEntry.BackColor = System.Drawing.Color.Transparent
         Me.UcViewerNSSLoadCapacitorLoadDataEntry.Location = New System.Drawing.Point(468, 35)
         Me.UcViewerNSSLoadCapacitorLoadDataEntry.Name = "UcViewerNSSLoadCapacitorLoadDataEntry"
-        Me.UcViewerNSSLoadCapacitorLoadDataEntry.Size = New System.Drawing.Size(452, 50)
+        Me.UcViewerNSSLoadCapacitorLoadDataEntry.Size = New System.Drawing.Size(452, 57)
         Me.UcViewerNSSLoadCapacitorLoadDataEntry.TabIndex = 1
         Me.UcViewerNSSLoadCapacitorLoadDataEntry.UCNSSCurrent = Nothing
         '
@@ -270,34 +288,19 @@ Partial Class UCLoadAllocationManipulation
         Me.UcViewerNSSTurnDataEntry.BackColor = System.Drawing.Color.Transparent
         Me.UcViewerNSSTurnDataEntry.Location = New System.Drawing.Point(7, 9)
         Me.UcViewerNSSTurnDataEntry.Name = "UcViewerNSSTurnDataEntry"
-        Me.UcViewerNSSTurnDataEntry.Size = New System.Drawing.Size(454, 79)
+        Me.UcViewerNSSTurnDataEntry.Size = New System.Drawing.Size(454, 86)
         Me.UcViewerNSSTurnDataEntry.TabIndex = 0
         Me.UcViewerNSSTurnDataEntry.UCNSSCurrent = Nothing
         '
-        'UcButtonNewnEstelamIdRemain
-        '
-        Me.UcButtonNewnEstelamIdRemain.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonNewnEstelamIdRemain.Location = New System.Drawing.Point(57, 1)
-        Me.UcButtonNewnEstelamIdRemain.Name = "UcButtonNewnEstelamIdRemain"
-        Me.UcButtonNewnEstelamIdRemain.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcButtonNewnEstelamIdRemain.Size = New System.Drawing.Size(87, 30)
-        Me.UcButtonNewnEstelamIdRemain.TabIndex = 18
-        Me.UcButtonNewnEstelamIdRemain.UCBackColor = System.Drawing.Color.MidnightBlue
-        Me.UcButtonNewnEstelamIdRemain.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonNewnEstelamIdRemain.UCEnable = true
-        Me.UcButtonNewnEstelamIdRemain.UCFont = New System.Drawing.Font("B Homa", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
-        Me.UcButtonNewnEstelamIdRemain.UCForeColor = System.Drawing.Color.White
-        Me.UcButtonNewnEstelamIdRemain.UCValue = "جدید-حفظ کدبار"
-        '
         'UCLoadAllocationManipulation
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCLoadAllocationManipulation"
         Me.Padding = New System.Windows.Forms.Padding(5)
-        Me.Size = New System.Drawing.Size(950, 125)
+        Me.Size = New System.Drawing.Size(950, 135)
         Me.PnlMain.ResumeLayout(false)
         Me.PnlOutter.ResumeLayout(false)
         Me.PnlInner.ResumeLayout(false)

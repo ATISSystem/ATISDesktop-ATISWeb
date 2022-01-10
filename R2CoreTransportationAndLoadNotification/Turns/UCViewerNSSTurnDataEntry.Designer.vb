@@ -27,6 +27,7 @@ Partial Class UCViewerNSSTurnDataEntry
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PnlOutter = New System.Windows.Forms.Panel()
         Me.PnlInner = New System.Windows.Forms.Panel()
+        Me.UcTextBoxTurnId = New R2CoreGUI.UCTextBox()
         Me.UcNumberTargetYear = New R2CoreGUI.UCNumber()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.UcLabelTurnStatus = New R2CoreGUI.UCLabel()
@@ -34,7 +35,6 @@ Partial Class UCViewerNSSTurnDataEntry
         Me.UcLabelTruckDriver = New R2CoreGUI.UCLabel()
         Me.UcLabelDateTimeComposite = New R2CoreGUI.UCLabel()
         Me.UcucSequentialTurnCollection = New R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection()
-        Me.UcTextBoxTurnId = New R2CoreGUI.UCTextBox()
         Me.PnlMain.SuspendLayout()
         Me.PnlOutter.SuspendLayout()
         Me.PnlInner.SuspendLayout()
@@ -80,6 +80,32 @@ Partial Class UCViewerNSSTurnDataEntry
         Me.PnlInner.Name = "PnlInner"
         Me.PnlInner.Size = New System.Drawing.Size(582, 51)
         Me.PnlInner.TabIndex = 0
+        '
+        'UcTextBoxTurnId
+        '
+        Me.UcTextBoxTurnId.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcTextBoxTurnId.BackColor = System.Drawing.Color.Transparent
+        Me.UcTextBoxTurnId.Location = New System.Drawing.Point(499, 21)
+        Me.UcTextBoxTurnId.Name = "UcTextBoxTurnId"
+        Me.UcTextBoxTurnId.Size = New System.Drawing.Size(57, 25)
+        Me.UcTextBoxTurnId.TabIndex = 11
+        Me.UcTextBoxTurnId.UCBackColor = System.Drawing.Color.White
+        Me.UcTextBoxTurnId.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcTextBoxTurnId.UCBorder = True
+        Me.UcTextBoxTurnId.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcTextBoxTurnId.UCBorderCornerRedius = 5
+        Me.UcTextBoxTurnId.UCEnable = True
+        Me.UcTextBoxTurnId.UCFont = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcTextBoxTurnId.UCForeColor = System.Drawing.Color.Red
+        Me.UcTextBoxTurnId.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
+        Me.UcTextBoxTurnId.UCMaxCharacterReached = CType(50, Short)
+        Me.UcTextBoxTurnId.UCMaxNumber = CType(99999, Long)
+        Me.UcTextBoxTurnId.UCMultiLine = False
+        Me.UcTextBoxTurnId.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
+        Me.UcTextBoxTurnId.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
+        Me.UcTextBoxTurnId.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.UcTextBoxTurnId.UCValue = "545454"
         '
         'UcNumberTargetYear
         '
@@ -197,35 +223,10 @@ Partial Class UCViewerNSSTurnDataEntry
         R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnColor = "Yellow"
         R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnId = CType(2, Long)
         R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnKeyWord = "T"
-        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnTitle = "تسلسل نوبت جاده ای"
+        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnTitle = "تسلسل نوبت تریلی"
         R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.ViewFlag = True
         Me.UcucSequentialTurnCollection.UCCurrentNSS = R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1
         Me.UcucSequentialTurnCollection.UCSimulatedSequentialTurnId = CType(2, Long)
-        '
-        'UcTextBoxTurnId
-        '
-        Me.UcTextBoxTurnId.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcTextBoxTurnId.BackColor = System.Drawing.Color.Transparent
-        Me.UcTextBoxTurnId.Location = New System.Drawing.Point(499, 21)
-        Me.UcTextBoxTurnId.Name = "UcTextBoxTurnId"
-        Me.UcTextBoxTurnId.Size = New System.Drawing.Size(57, 25)
-        Me.UcTextBoxTurnId.TabIndex = 11
-        Me.UcTextBoxTurnId.UCBackColor = System.Drawing.Color.White
-        Me.UcTextBoxTurnId.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcTextBoxTurnId.UCBorder = True
-        Me.UcTextBoxTurnId.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcTextBoxTurnId.UCEnable = True
-        Me.UcTextBoxTurnId.UCFont = New System.Drawing.Font("IRMehr", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcTextBoxTurnId.UCForeColor = System.Drawing.Color.Red
-        Me.UcTextBoxTurnId.UCInputLanguageType = R2Core.R2Enums.InputLanguageType.None
-        Me.UcTextBoxTurnId.UCMaxCharacterReached = CType(50, Short)
-        Me.UcTextBoxTurnId.UCMaxNumber = CType(99999, Long)
-        Me.UcTextBoxTurnId.UCMultiLine = False
-        Me.UcTextBoxTurnId.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
-        Me.UcTextBoxTurnId.UCPasswordChar = Global.Microsoft.VisualBasic.ChrW(0)
-        Me.UcTextBoxTurnId.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcTextBoxTurnId.UCValue = "545454"
         '
         'UCViewerNSSTurnDataEntry
         '

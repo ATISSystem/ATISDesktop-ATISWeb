@@ -91,13 +91,14 @@ Partial Class UCDriverTruck
         '
         Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label3.Font = New System.Drawing.Font("B Homa", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Label3.Location = New System.Drawing.Point(288, 2)
+        Me.Label3.Location = New System.Drawing.Point(288, 3)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(166, 23)
+        Me.Label3.Size = New System.Drawing.Size(154, 22)
         Me.Label3.TabIndex = 26
         Me.Label3.Text = "کد ملی(استعلام از سایت هوشمند)"
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Label2
         '
