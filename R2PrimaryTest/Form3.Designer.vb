@@ -46,6 +46,7 @@ Partial Class Form3
         Me.Button22 = New System.Windows.Forms.Button()
         Me.Button28 = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Button9 = New System.Windows.Forms.Button()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -283,11 +284,21 @@ Partial Class Form3
         Me.PictureBox1.TabIndex = 33
         Me.PictureBox1.TabStop = False
         '
+        'Button9
+        '
+        Me.Button9.Location = New System.Drawing.Point(12, 126)
+        Me.Button9.Name = "Button9"
+        Me.Button9.Size = New System.Drawing.Size(75, 23)
+        Me.Button9.TabIndex = 34
+        Me.Button9.Text = "Button9"
+        Me.Button9.UseVisualStyleBackColor = True
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1078, 450)
+        Me.Controls.Add(Me.Button9)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.Button28)
         Me.Controls.Add(Me.Button22)
@@ -343,4 +354,5 @@ Partial Class Form3
     Friend WithEvents Button22 As Button
     Friend WithEvents Button28 As Button
     Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents Button9 As Button
 End Class
