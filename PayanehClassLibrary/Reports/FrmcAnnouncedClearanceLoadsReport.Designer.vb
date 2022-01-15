@@ -53,13 +53,14 @@ Partial Class FrmcAnnouncedClearanceLoadsReport
         '
         'UcClearanceLoadsReport
         '
-        Me.UcClearanceLoadsReport.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcClearanceLoadsReport.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcClearanceLoadsReport.BackColor = System.Drawing.Color.Transparent
-        Me.UcClearanceLoadsReport.Location = New System.Drawing.Point(382, 128)
+        Me.UcClearanceLoadsReport.Location = New System.Drawing.Point(6, -53)
         Me.UcClearanceLoadsReport.Name = "UcClearanceLoadsReport"
-        Me.UcClearanceLoadsReport.Size = New System.Drawing.Size(229, 247)
+        Me.UcClearanceLoadsReport.Size = New System.Drawing.Size(981, 386)
         Me.UcClearanceLoadsReport.TabIndex = 0
-        Me.UcClearanceLoadsReport.UCViewTitle = True
+        Me.UcClearanceLoadsReport.UCViewTitle = False
         '
         'PnlAnnouncedLoadsReport
         '
@@ -76,12 +77,13 @@ Partial Class FrmcAnnouncedClearanceLoadsReport
         '
         'UcAnnouncedLoadsReport
         '
-        Me.UcAnnouncedLoadsReport.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcAnnouncedLoadsReport.Location = New System.Drawing.Point(382, 128)
+        Me.UcAnnouncedLoadsReport.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcAnnouncedLoadsReport.Location = New System.Drawing.Point(6, -53)
         Me.UcAnnouncedLoadsReport.Name = "UcAnnouncedLoadsReport"
-        Me.UcAnnouncedLoadsReport.Size = New System.Drawing.Size(229, 247)
+        Me.UcAnnouncedLoadsReport.Size = New System.Drawing.Size(981, 386)
         Me.UcAnnouncedLoadsReport.TabIndex = 0
-        Me.UcAnnouncedLoadsReport.UCViewTitle = True
+        Me.UcAnnouncedLoadsReport.UCViewTitle = False
         '
         'FrmcAnnouncedClearanceLoadsReport
         '

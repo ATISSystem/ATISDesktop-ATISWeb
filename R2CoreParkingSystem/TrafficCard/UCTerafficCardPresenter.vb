@@ -44,7 +44,6 @@ Public Class UCTerafficCardPresenter
             UcLabelCardNo.UCValue = YourTrafficCard.CardNo
             UcLabelCardId.UCValue = YourTrafficCard.CardId
             UcLabelCardTypeName.UCValue = UCGetCardTypeName
-
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

@@ -4601,7 +4601,7 @@ Namespace ReportsManagement
             End Try
         End Sub
 
-        Public Shared Sub ReportingInformationProviderClearanceLoadsReport(YourDate1 As R2StandardDateAndTimeStructure, YourDate2 As R2StandardDateAndTimeStructure)
+        Public Shared Sub ReportingInformationProviderClearanceLoadsReport(YourDate1 As R2StandardDateAndTimeStructure, YourDate2 As R2StandardDateAndTimeStructure, YourAHId As Int64, YourAHSGId As Int64)
             'گزارش بار آزاد شده
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
@@ -4609,12 +4609,21 @@ Namespace ReportsManagement
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblClearanceLoadsReport" : CmdSql.ExecuteNonQuery()
-                CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblClearanceLoadsReport
+                If YourAHId = Int64.MinValue Then
+                    CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblClearanceLoadsReport
                                          Select Loads.nBarCode,Products.strGoodName, Count(*),'" & YourDate1.DateShamsiFull & "','" & YourDate2.DateShamsiFull & "' from dbtransport.dbo.tbEnterExit as Turns
                                             Inner Join dbtransport.dbo.tbElam  as Loads On Turns.nEstelamID=Loads.nEstelamID 
                                             Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode =Products.strGoodCode 
-                                         Where (Turns.strExitDate>='" & YourDate1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDate2.DateShamsiFull & "') and Turns.LoadPermissionStatus=1
+                                         Where (Turns.strExitDate>='" & YourDate1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDate2.DateShamsiFull & "') and Turns.LoadPermissionStatus=1 and Loads.AHSGId=" & YourAHSGId & "
                                          Group By Loads.nBarCode,Products.strGoodName"
+                Else
+                    CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblClearanceLoadsReport
+                                         Select Loads.nBarCode,Products.strGoodName, Count(*),'" & YourDate1.DateShamsiFull & "','" & YourDate2.DateShamsiFull & "' from dbtransport.dbo.tbEnterExit as Turns
+                                            Inner Join dbtransport.dbo.tbElam  as Loads On Turns.nEstelamID=Loads.nEstelamID 
+                                            Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode =Products.strGoodCode 
+                                         Where (Turns.strExitDate>='" & YourDate1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDate2.DateShamsiFull & "') and Turns.LoadPermissionStatus=1 and Loads.AHId=" & YourAHId & "
+                                         Group By Loads.nBarCode,Products.strGoodName"
+                End If
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             Catch ex As Exception
@@ -4625,7 +4634,7 @@ Namespace ReportsManagement
             End Try
         End Sub
 
-        Public Shared Sub ReportingInformationProviderAnnouncedLoadsReport(YourDate1 As R2StandardDateAndTimeStructure, YourDate2 As R2StandardDateAndTimeStructure)
+        Public Shared Sub ReportingInformationProviderAnnouncedLoadsReport(YourDate1 As R2StandardDateAndTimeStructure, YourDate2 As R2StandardDateAndTimeStructure, YourAHId As Int64, YourAHSGId As Int64)
             'گزارش بار آزاد شده
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
@@ -4633,12 +4642,21 @@ Namespace ReportsManagement
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblAnnouncedLoadsReport" : CmdSql.ExecuteNonQuery()
-                CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblAnnouncedLoadsReport
+                If YourAHId = Int64.MinValue Then
+                    CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblAnnouncedLoadsReport
                                          Select Loads.nBarCode,Products.strGoodName, sum(Loads.nCarNumKol) ,'" & YourDate1.DateShamsiFull & "','" & YourDate2.DateShamsiFull & "'
 	                                     from dbtransport.dbo.tbElam AS Loads
                                              Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode =Products.strGoodCode 
-                                         Where Loads.dDateElam>='" & YourDate1.DateShamsiFull & "' and dDateElam<='" & YourDate2.DateShamsiFull & "' and (LoadStatus<>3 and LoadStatus<>4 and LoadStatus<>6)
+                                         Where Loads.dDateElam>='" & YourDate1.DateShamsiFull & "' and dDateElam<='" & YourDate2.DateShamsiFull & "' and (LoadStatus<>3 and LoadStatus<>4 and LoadStatus<>6)  and Loads.AHSGId=" & YourAHSGId & "
                                          Group By Loads.nBarCode,Products.strGoodName"
+                Else
+                    CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblAnnouncedLoadsReport
+                                         Select Loads.nBarCode,Products.strGoodName, sum(Loads.nCarNumKol) ,'" & YourDate1.DateShamsiFull & "','" & YourDate2.DateShamsiFull & "'
+	                                     from dbtransport.dbo.tbElam AS Loads
+                                             Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode =Products.strGoodCode 
+                                         Where Loads.dDateElam>='" & YourDate1.DateShamsiFull & "' and dDateElam<='" & YourDate2.DateShamsiFull & "' and (LoadStatus<>3 and LoadStatus<>4 and LoadStatus<>6)  and Loads.AHId=" & YourAHId & "
+                                         Group By Loads.nBarCode,Products.strGoodName"
+                End If
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             Catch ex As Exception

@@ -1,7 +1,7 @@
 ﻿
 Imports System.ComponentModel
 Imports System.Reflection
-
+Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
 
@@ -19,7 +19,12 @@ Public Class UCAnnouncementHallSelection
     <Browsable(False)>
     Public ReadOnly Property UCNSSCurrentAnnouncementHall() As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure
         Get
-            Return _UCNSSCurrentAnnouncementHall
+            Try
+                If _UCNSSCurrentAnnouncementHall Is Nothing Then Throw New DataEntryException
+                Return _UCNSSCurrentAnnouncementHall
+            Catch ex As DataEntryException
+                Throw ex
+            End Try
         End Get
     End Property
 
@@ -27,7 +32,12 @@ Public Class UCAnnouncementHallSelection
     <Browsable(False)>
     Public ReadOnly Property UCNSSCurrentAnnouncementHallSubGroup() As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure
         Get
-            Return _UCNSSCurrentAnnouncementHallSubGroup
+            Try
+                If _UCNSSCurrentAnnouncementHallSubGroup Is Nothing Then Throw New DataEntryException
+                Return _UCNSSCurrentAnnouncementHallSubGroup
+            Catch ex As DataEntryException
+                Throw ex
+            End Try
         End Get
     End Property
 

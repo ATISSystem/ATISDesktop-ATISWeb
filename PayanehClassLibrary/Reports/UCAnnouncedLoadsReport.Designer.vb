@@ -28,7 +28,12 @@ Partial Class UCAnnouncedLoadsReport
         Me.UcLabelTop = New R2CoreGUI.UCLabel()
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.UcDateTimeHolder = New R2CoreGUI.UCDateTimeHolder()
+        Me.UcAnnouncementHallSelection = New R2CoreTransportationAndLoadNotification.UCAnnouncementHallSelection()
+        Me.RBSubGroup = New System.Windows.Forms.RadioButton()
+        Me.RBAll = New System.Windows.Forms.RadioButton()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.PnlMain.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'UcLabelTop
@@ -40,7 +45,7 @@ Partial Class UCAnnouncedLoadsReport
         Me.UcLabelTop.Location = New System.Drawing.Point(0, 0)
         Me.UcLabelTop.Name = "UcLabelTop"
         Me.UcLabelTop.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelTop.Size = New System.Drawing.Size(229, 52)
+        Me.UcLabelTop.Size = New System.Drawing.Size(923, 52)
         Me.UcLabelTop.TabIndex = 350
         Me.UcLabelTop.UCBackColor = System.Drawing.Color.DodgerBlue
         Me.UcLabelTop.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
@@ -50,19 +55,21 @@ Partial Class UCAnnouncedLoadsReport
         '
         'PnlMain
         '
+        Me.PnlMain.Controls.Add(Me.Panel1)
+        Me.PnlMain.Controls.Add(Me.UcAnnouncementHallSelection)
         Me.PnlMain.Controls.Add(Me.UcDateTimeHolder)
         Me.PnlMain.Controls.Add(Me.UcLabelTop)
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(229, 247)
+        Me.PnlMain.Size = New System.Drawing.Size(923, 394)
         Me.PnlMain.TabIndex = 1
         '
         'UcDateTimeHolder
         '
         Me.UcDateTimeHolder.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcDateTimeHolder.BackColor = System.Drawing.Color.Transparent
-        Me.UcDateTimeHolder.Location = New System.Drawing.Point(4, 58)
+        Me.UcDateTimeHolder.Location = New System.Drawing.Point(359, 195)
         Me.UcDateTimeHolder.Name = "UcDateTimeHolder"
         Me.UcDateTimeHolder.Padding = New System.Windows.Forms.Padding(3)
         Me.UcDateTimeHolder.Size = New System.Drawing.Size(204, 186)
@@ -72,14 +79,66 @@ Partial Class UCAnnouncedLoadsReport
         Me.UcDateTimeHolder.UCTime2 = "23:59:59"
         Me.UcDateTimeHolder.UCViewTitle = False
         '
+        'UcAnnouncementHallSelection
+        '
+        Me.UcAnnouncementHallSelection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcAnnouncementHallSelection.BackColor = System.Drawing.Color.Transparent
+        Me.UcAnnouncementHallSelection.Location = New System.Drawing.Point(12, 100)
+        Me.UcAnnouncementHallSelection.Name = "UcAnnouncementHallSelection"
+        Me.UcAnnouncementHallSelection.Size = New System.Drawing.Size(898, 80)
+        Me.UcAnnouncementHallSelection.TabIndex = 352
+        '
+        'RBSubGroup
+        '
+        Me.RBSubGroup.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.RBSubGroup.AutoSize = True
+        Me.RBSubGroup.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.RBSubGroup.ForeColor = System.Drawing.Color.MidnightBlue
+        Me.RBSubGroup.Location = New System.Drawing.Point(8, 3)
+        Me.RBSubGroup.Name = "RBSubGroup"
+        Me.RBSubGroup.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.RBSubGroup.Size = New System.Drawing.Size(161, 32)
+        Me.RBSubGroup.TabIndex = 359
+        Me.RBSubGroup.Text = "بار مرتبط با زیرگروه سالن"
+        Me.RBSubGroup.UseVisualStyleBackColor = True
+        '
+        'RBAll
+        '
+        Me.RBAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.RBAll.AutoSize = True
+        Me.RBAll.Checked = True
+        Me.RBAll.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.RBAll.ForeColor = System.Drawing.Color.MidnightBlue
+        Me.RBAll.Location = New System.Drawing.Point(176, 3)
+        Me.RBAll.Name = "RBAll"
+        Me.RBAll.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.RBAll.Size = New System.Drawing.Size(94, 32)
+        Me.RBAll.TabIndex = 358
+        Me.RBAll.TabStop = True
+        Me.RBAll.Text = "کل بار سالن"
+        Me.RBAll.UseVisualStyleBackColor = True
+        '
+        'Panel1
+        '
+        Me.Panel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Panel1.Controls.Add(Me.RBAll)
+        Me.Panel1.Controls.Add(Me.RBSubGroup)
+        Me.Panel1.Location = New System.Drawing.Point(637, 58)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(273, 40)
+        Me.Panel1.TabIndex = 360
+        '
         'UCAnnouncedLoadsReport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCAnnouncedLoadsReport"
-        Me.Size = New System.Drawing.Size(229, 247)
+        Me.Size = New System.Drawing.Size(923, 394)
         Me.PnlMain.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -87,4 +146,8 @@ Partial Class UCAnnouncedLoadsReport
     Friend WithEvents UcLabelTop As UCLabel
     Friend WithEvents PnlMain As Windows.Forms.Panel
     Friend WithEvents UcDateTimeHolder As UCDateTimeHolder
+    Friend WithEvents UcAnnouncementHallSelection As R2CoreTransportationAndLoadNotification.UCAnnouncementHallSelection
+    Friend WithEvents Panel1 As Windows.Forms.Panel
+    Friend WithEvents RBAll As Windows.Forms.RadioButton
+    Friend WithEvents RBSubGroup As Windows.Forms.RadioButton
 End Class
