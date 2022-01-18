@@ -3,6 +3,7 @@ Imports System.Reflection
 Imports R2Core.ExceptionManagement
 Imports R2CoreParkingSystem.TrafficCardsManagement
 Imports R2CoreParkingSystem.Cars
+Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
 
 Public Class UCCarAndTerafficCard
     Inherits UCCarAndDriverPresenter
@@ -26,10 +27,8 @@ Public Class UCCarAndTerafficCard
             Dim mynIdCar As Int64 = 0
             mynIdCar = R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(YourTerafficCard.CardId)
             UCSetCar(mynIdCar)
-        Catch exxx As GetNSSException
-            Throw exxx
-        Catch exx As GetDataException
-            Throw exx
+        Catch ex As R2CoreParkingSystemRelatedCarNotExistException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

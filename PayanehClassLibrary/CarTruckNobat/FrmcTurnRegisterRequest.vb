@@ -197,8 +197,6 @@ Public Class FrmcTurnRegisterRequest
                 R2CoreGUIMClassProcessesManagement.OpenProccess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(PayanehClassLibraryProcesses.FrmcCarAndDriversInformation), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             ElseIf UC.UCNSSMenu.MenuPanel = "PnlAccounting" Then
                 UcAccountingCollection.UCViewAccounting(_NSSTrafficCard)
-            ElseIf UC.UCNSSMenu.MenuPanel = "PnlConsole" Then
-                UcucLoggCollection.UCViewLoggOptional1(_NSSTrafficCard.CardNo)
             ElseIf UC.UCNSSMenu.MenuPanel = "PnlCarTruckTurns" Then
                 UcucCarTruckNobatCollectionPnlCarTruckTurns.UCForceToReadTerraficCard()
             End If

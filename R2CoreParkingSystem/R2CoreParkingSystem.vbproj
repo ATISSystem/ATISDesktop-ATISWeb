@@ -268,6 +268,18 @@
     <Compile Include="EnterExit\UCUCEnterExitCollection.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Logging Management\FrmcCarEntryExitLogViewer.Designer.vb">
+      <DependentUpon>FrmcCarEntryExitLogViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Logging Management\FrmcCarEntryExitLogViewer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Logging Management\UCEntryExitLogsViewer.Designer.vb">
+      <DependentUpon>UCEntryExitLogsViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Logging Management\UCEntryExitLogsViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolExitCarProcessInstrument.Designer.vb">
       <DependentUpon>UCMonetarySettingToolExitCarProcessInstrument.vb</DependentUpon>
     </Compile>
@@ -621,6 +633,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EnterExit\UCUCEnterExitCollection.resx">
       <DependentUpon>UCUCEnterExitCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Logging Management\FrmcCarEntryExitLogViewer.resx">
+      <DependentUpon>FrmcCarEntryExitLogViewer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Logging Management\UCEntryExitLogsViewer.resx">
+      <DependentUpon>UCEntryExitLogsViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolExitCarProcessInstrument.resx">
       <DependentUpon>UCMonetarySettingToolExitCarProcessInstrument.vb</DependentUpon>

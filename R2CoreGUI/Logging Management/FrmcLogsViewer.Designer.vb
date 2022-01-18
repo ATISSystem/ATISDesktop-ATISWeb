@@ -2,7 +2,7 @@
 Imports R2CoreGUI
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class FrmcConsole
+Partial Class FrmcLogsViewer
     Inherits FrmcGeneral
 
     'Form overrides dispose to clean up the component list.
@@ -32,7 +32,7 @@ Partial Class FrmcConsole
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(247, 150)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1500)
         '
         'PnlConsole
         '
@@ -54,19 +54,18 @@ Partial Class FrmcConsole
         Me.UcucLoggCollection.Location = New System.Drawing.Point(10, 10)
         Me.UcucLoggCollection.Name = "UcucLoggCollection"
         Me.UcucLoggCollection.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcucLoggCollection.RecordCounttoView = CType(10,Short)
         Me.UcucLoggCollection.Size = New System.Drawing.Size(973, 490)
         Me.UcucLoggCollection.TabIndex = 0
         '
-        'FrmcConsole
+        'FrmcLogsViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
         Me.Controls.Add(Me.PnlConsole)
         Me.Location = New System.Drawing.Point(0, 0)
-        Me.Name = "FrmcConsole"
-        Me.Text = "FrmcConsole"
+        Me.Name = "FrmcLogsViewer"
+        Me.Text = "FrmcLogsViewer"
         Me.Controls.SetChildIndex(Me.PnlConsole, 0)
         Me.PnlConsole.ResumeLayout(false)
         Me.ResumeLayout(false)

@@ -10,7 +10,7 @@ Imports R2Core.PublicProc
 Public Class UCLog
     Inherits UCGeneral
 
-    Private _DateTime As New R2DateTime
+    Public Event UCViewLogRequested(NSSLog As R2CoreStandardLoggingStructure)
 
 
 #Region "General Properties"
@@ -41,25 +41,9 @@ Public Class UCLog
 
     End Sub
 
-    Public Sub UCRefresh()
-        UcLabelSharh.UCValue = "" : UcLabelDateShamsi.UCValue = "" : UcLabelUserName.UCValue = "" : UcLabelOptional1.UCValue = ""
-    End Sub
-
-    Private Sub UCViewLog(YourLog As R2CoreStandardLoggingStructure)
+    Public Sub UCViewLog(YourLog As R2CoreStandardLoggingStructure)
         Try
-            UCRefresh()
-            UcLabelSharh.UCValue = YourLog.Sharh
-            UcLabelDateShamsi.UCValue = YourLog.DateShamsi
-            UcLabelTime.UCValue = _DateTime.GetTimeOfDate(YourLog.DateTimeMilladi)
-            UcLabelUserName.UCValue = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourLog.UserId).UserName.Trim
-            UcLabelOptional1.UCValue = YourLog.Optional1
-            PnlMain.BackColor = R2CoreMClassLoggingManagement.GetNSSLogtype(YourLog.Logtype).LogColor
-            Dim InvertColor As Color = R2CoreMClassPublicProcedures.GetInvertColor(PnlMain.BackColor)
-            UcLabelDateShamsi.UCForeColor = InvertColor
-            UcLabelTime.UCForeColor = InvertColor
-            UcLabelOptional1.UCForeColor = InvertColor
-            UcLabelSharh.UCForeColor = InvertColor
-            UcLabelUserName.UCForeColor = InvertColor
+            RaiseEvent UCViewLogRequested(YourLog)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

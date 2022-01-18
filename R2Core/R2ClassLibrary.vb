@@ -3440,6 +3440,8 @@ Namespace LoggingManagement
             _LogTitle = String.Empty
             _LogColor = Color.White
             _Core = String.Empty
+            _AssemblyDll = String.Empty
+            _AssemblyPath = String.Empty
             _DateTimeMilladi = Now
             _DateShamsi = String.Empty
             _Time = String.Empty
@@ -3447,12 +3449,14 @@ Namespace LoggingManagement
             _Deleted = False
         End Sub
 
-        Public Sub New(ByVal YourLogId As Int64, YourLogName As String, YourLogTitle As String, YourLogColor As Color, YourCore As String, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourActive As Boolean, YourDeleted As Boolean)
+        Public Sub New(ByVal YourLogId As Int64, YourLogName As String, YourLogTitle As String, YourLogColor As Color, YourCore As String, YourAssemblyDll As String, YourAssemblyPath As String, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourActive As Boolean, YourDeleted As Boolean)
             _LogId = YourLogId
             _LogName = YourLogName
             _LogTitle = YourLogTitle
             _LogColor = YourLogColor
             _Core = YourCore
+            _AssemblyDll = YourAssemblyDll
+            _AssemblyPath = YourAssemblyPath
             _DateTimeMilladi = YourDateTimeMilladi
             _DateShamsi = YourDateShamsi
             _Time = YourTime
@@ -3465,6 +3469,8 @@ Namespace LoggingManagement
         Public Property LogTitle As String
         Public Property LogColor As Color
         Public Property Core As String
+        Public Property AssemblyDll As String
+        Public Property AssemblyPath As String
         Public Property DateTimeMilladi As DateTime
         Public Property DateShamsi As String
         Public Property Time As String
@@ -3523,6 +3529,25 @@ Namespace LoggingManagement
 
     End Class
 
+    Public Class R2CoreStandardLoggingExtendedStructure
+        Inherits R2CoreStandardLoggingStructure
+        Public Sub New()
+            MyBase.New()
+            _UserName = String.Empty
+            _LogTypeColor = Color.Empty
+        End Sub
+
+        Public Sub New(ByVal YourNSSLog As R2CoreStandardLoggingStructure, ByVal YourUserName As String, ByVal YourLogTypeColor As Color)
+            MyBase.New(YourNSSLog.LogId, YourNSSLog.LogType, YourNSSLog.Sharh, YourNSSLog.Optional1, YourNSSLog.Optional2, YourNSSLog.Optional3, YourNSSLog.Optional4, YourNSSLog.Optional5, YourNSSLog.UserId, YourNSSLog.DateTimeMilladi, YourNSSLog.DateShamsi)
+            _UserName = YourUserName
+            _LogTypeColor = YourLogTypeColor
+        End Sub
+
+        Public Property UserName As String
+        Public Property LogTypeColor As Color
+
+    End Class
+
     Public Class R2CoreInstanceLoggingManager
         Private _DateTime As New R2DateTime
         Public Sub LogRegister(ByVal YourLog As R2CoreStandardLoggingStructure)
@@ -3544,7 +3569,7 @@ Namespace LoggingManagement
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet = Nothing
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimaryLogging.dbo.TblLoggingTypes Where LogId=" & YourTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New LoggingTypeNotFoundException
-                Return New R2CoreStandardLogTypeStructure(DS.Tables(0).Rows(0).Item("LogId"), DS.Tables(0).Rows(0).Item("LogName").trim, DS.Tables(0).Rows(0).Item("LogTitle").trim, Color.FromName(DS.Tables(0).Rows(0).Item("LogColor").trim), DS.Tables(0).Rows(0).Item("Core").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreStandardLogTypeStructure(DS.Tables(0).Rows(0).Item("LogId"), DS.Tables(0).Rows(0).Item("LogName").trim, DS.Tables(0).Rows(0).Item("LogTitle").trim, Color.FromName(DS.Tables(0).Rows(0).Item("LogColor").trim), DS.Tables(0).Rows(0).Item("Core").trim, DS.Tables(0).Rows(0).Item("AssemblyDll").trim, DS.Tables(0).Rows(0).Item("AssemblyPath").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As LoggingTypeNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -3562,7 +3587,7 @@ Namespace LoggingManagement
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimaryLogging.dbo.TblLoggingTypes Where LogId=" & YourLogId & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New R2CoreLogTypeNotFoundException
-                Return New R2CoreStandardLogTypeStructure(Ds.Tables(0).Rows(0).Item("LogId"), Ds.Tables(0).Rows(0).Item("LogName").trim, Ds.Tables(0).Rows(0).Item("LogTitle").trim, Color.FromName(Ds.Tables(0).Rows(0).Item("LogColor").trim), Ds.Tables(0).Rows(0).Item("Core").trim, Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi").trim, Ds.Tables(0).Rows(0).Item("Time").trim, Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreStandardLogTypeStructure(Ds.Tables(0).Rows(0).Item("LogId"), Ds.Tables(0).Rows(0).Item("LogName").trim, Ds.Tables(0).Rows(0).Item("LogTitle").trim, Color.FromName(Ds.Tables(0).Rows(0).Item("LogColor").trim), Ds.Tables(0).Rows(0).Item("Core").trim, Ds.Tables(0).Rows(0).Item("AssemblyDll").trim, Ds.Tables(0).Rows(0).Item("AssemblyPath").trim, Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi").trim, Ds.Tables(0).Rows(0).Item("Time").trim, Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -3615,7 +3640,7 @@ Namespace DesktopProcessesManagement
 
     Public MustInherit Class R2CoreDesktopProcesses
         Public Shared ReadOnly None As Int64 = 0
-        Public Shared ReadOnly FrmcConsol As Int64 = 1
+        Public Shared ReadOnly XXX As Int64 = 1
         Public Shared ReadOnly FrmcUserPasswordEdit As Int64 = 2
         Public Shared ReadOnly FrmcComputerMessageBox As Int64 = 30
         Public Shared ReadOnly FrmcPersonnelInf As Int64 = 35

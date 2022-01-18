@@ -9,18 +9,10 @@ Public Class UCUCLogCollection
     Inherits UCGeneral
 
 
+    Public Event UCViewCollectionCompeletedEvent()
 
 #Region "General Properties"
 
-    Private _RecordCounttoView As Int16 = 10
-    Public Property RecordCounttoView As Int16
-        Get
-            Return _RecordCounttoView
-        End Get
-        Set(value As Int16)
-            _RecordCounttoView = value
-        End Set
-    End Property
 
 #End Region
 
@@ -36,34 +28,71 @@ Public Class UCUCLogCollection
     End Sub
 
     Public Sub UCRefresh()
-        PnlMain.Controls.Clear()
-        'PnlMain.Visible = False
-        'Do While PnlMain.Controls.Count <> 0
-        '    For Each C As Windows.Forms.Control In PnlMain.Controls
-        '        PnlMain.Controls.Remove(C)
-        '        C.Dispose()
-        '    Next
-        'Loop
+        PnlUCs.SuspendLayout()
+        PnlUCs.Controls.Clear()
+        PnlUCs.ResumeLayout()
     End Sub
 
-    Public Sub UCViewLoggOptional1(YourOptional1 As String)
+    Private Function UCCreateUCLog(YourNSSLog As R2CoreStandardLoggingStructure) As UCLog
         Try
-            Cursor.Current = Cursors.WaitCursor
-            UCRefresh()
-            PnlMain.SuspendLayout()
-            Dim Ds As New DataSet
-            R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select top " & RecordCounttoView & " * from R2PrimaryLogging.dbo.TblLogging Where Optional1 Like '%" & YourOptional1 & "%' order by DateTimeMilladi desc", 1, Ds)
-            For Loopx As Int64 = Ds.Tables(0).Rows.Count - 1 To 0 Step -1
-                Dim UC As UCLog = New UCLog(New R2CoreStandardLoggingStructure(Ds.Tables(0).Rows(Loopx).Item("logid"), Ds.Tables(0).Rows(Loopx).Item("LogType"), Ds.Tables(0).Rows(Loopx).Item("sharh").trim, Ds.Tables(0).Rows(Loopx).Item("optional1").trim, Ds.Tables(0).Rows(Loopx).Item("optional2").trim, Ds.Tables(0).Rows(Loopx).Item("optional3").trim, Ds.Tables(0).Rows(Loopx).Item("optional4").trim, Ds.Tables(0).Rows(Loopx).Item("optional5").trim, Ds.Tables(0).Rows(Loopx).Item("userid"), Ds.Tables(0).Rows(Loopx).Item("datetimemilladi"), Ds.Tables(0).Rows(Loopx).Item("dateshamsi").trim))
-                UC.Dock = DockStyle.Top
-                PnlMain.Controls.Add(UC)
-            Next
-            PnlMain.ResumeLayout()
+            Dim InstanceLogging = New R2CoreInstanceLoggingManager
+            Dim NSSLogType = InstanceLogging.GetNSSLogType(YourNSSLog.LogType)
+            Dim Assembly_ As Assembly = Assembly.LoadFrom(NSSLogType.AssemblyDll)
+            Dim ObjectInstanceType = Assembly_.GetType(NSSLogType.AssemblyPath)
+            Dim objUC As UCLog = CType(Activator.CreateInstance(ObjectInstanceType), UCLog)
+            objUC.UCViewLog(YourNSSLog)
+            Return objUC
         Catch ex As Exception
-            Cursor.Current = Cursors.Default
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
-        Cursor.Current = Cursors.Default
+    End Function
+
+    Private WithEvents _TTimer As System.Windows.Forms.Timer
+    Private Lst As List(Of R2CoreStandardLoggingStructure)
+    Private _Counting As Int64
+    Private _Counter As Int64
+    Private Sub UCViewCollection(YourCollection As List(Of R2CoreStandardLoggingStructure))
+        Try
+            UCRefresh()
+            Lst = YourCollection
+            If Lst.Count < 1 Then
+                RaiseEvent UCViewCollectionCompeletedEvent()
+                Exit Sub
+            End If
+            _Counting = Lst.Count
+            _Counter = Lst.Count - 1
+
+            _TTimer = New Timer()
+            _TTimer.Interval = 1
+            _TTimer.Enabled = True
+            _TTimer.Start()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Private Delegate Sub UCViewCollectionDelegate()
+    Private Sub UCViewCollection()
+        Try
+            Dim UC As UCLog = UCCreateUCLog(Lst(_Counter))
+            UC.Dock = DockStyle.Top
+            If PnlUCs.InvokeRequired Then
+                PnlUCs.Invoke(New UCViewCollectionDelegate(AddressOf UCViewCollection))
+            Else
+                PnlUCs.Controls.Add(UC)
+            End If
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Public Sub UCViewLogs(YourLogs As List(Of R2CoreStandardLoggingStructure))
+        Try
+            If YourLogs Is Nothing Then Exit Sub
+            UCViewCollection(YourLogs)
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
     End Sub
 
 
@@ -73,6 +102,27 @@ Public Class UCUCLogCollection
 #End Region
 
 #Region "Event Handlers"
+
+    Private Sub _TTimer_Tick(sender As Object, e As EventArgs) Handles _TTimer.Tick
+        Try
+            _TTimer.Enabled = False
+            _TTimer.Stop()
+
+            UCViewCollection()
+
+            _Counter = _Counter - 1
+            If _Counter = -1 Then
+                RaiseEvent UCViewCollectionCompeletedEvent()
+                Exit Sub
+            End If
+
+            _TTimer.Enabled = True
+            _TTimer.Start()
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
 #End Region
 
 #Region "Override Methods"

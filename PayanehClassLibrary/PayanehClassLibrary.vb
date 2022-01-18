@@ -93,11 +93,12 @@ Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
 Imports R2Core.PermissionManagement.Exceptions
 Imports PayanehClassLibrary.ComputerMessages
 Imports R2CoreParkingSystem.CarType
+Imports R2CoreParkingSystem.Logging
 
 Namespace Logging
 
     Public MustInherit Class PayanehClassLibraryLogType
-        Inherits R2CoreLogType
+        Inherits R2CoreParkingSystemLogType
 
         Public Shared ReadOnly Property CarTruckUpdateInfSuccess As Int64 = 17
         Public Shared ReadOnly Property CarTruckUpdateInfNotSuccess As Int64 = 18
@@ -4609,7 +4610,7 @@ Namespace ReportsManagement
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblClearanceLoadsReport" : CmdSql.ExecuteNonQuery()
-                If YourAHId = Int64.MinValue Then
+                If YourAHId = Nothing Then
                     CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblClearanceLoadsReport
                                          Select Loads.nBarCode,Products.strGoodName, Count(*),'" & YourDate1.DateShamsiFull & "','" & YourDate2.DateShamsiFull & "' from dbtransport.dbo.tbEnterExit as Turns
                                             Inner Join dbtransport.dbo.tbElam  as Loads On Turns.nEstelamID=Loads.nEstelamID 
@@ -4642,7 +4643,7 @@ Namespace ReportsManagement
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblAnnouncedLoadsReport" : CmdSql.ExecuteNonQuery()
-                If YourAHId = Int64.MinValue Then
+                If YourAHId = Nothing Then
                     CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblAnnouncedLoadsReport
                                          Select Loads.nBarCode,Products.strGoodName, sum(Loads.nCarNumKol) ,'" & YourDate1.DateShamsiFull & "','" & YourDate2.DateShamsiFull & "'
 	                                     from dbtransport.dbo.tbElam AS Loads

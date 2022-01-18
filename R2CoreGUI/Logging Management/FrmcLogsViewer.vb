@@ -3,11 +3,12 @@ Imports System.Reflection
 
 Imports R2CoreGUI
 Imports R2Core.DesktopProcessesManagement
+Imports R2Core.LoggingManagement
 
-Public Class FrmcConsole
+Public Class FrmcLogsViewer
     Inherits FrmcGeneral
 
-
+    Public Event RFIDCardReadedEvent(RFCardNo As String)
 
 #Region "General Properties"
 #End Region
@@ -20,12 +21,11 @@ Public Class FrmcConsole
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        InitializeSpecial()
     End Sub
 
-    Protected Overrides Sub SetNSSProcess()
+    Protected Sub ViewLogs(YourLogs As List(Of R2CoreStandardLoggingStructure))
         Try
-            SetProcess(R2CoreMClassDesktopProcessesManagement.GetNSSProcess(R2CoreDesktopProcesses.FrmcConsol))
+            UcucLoggCollection.UCViewLogs(YourLogs)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -39,11 +39,11 @@ Public Class FrmcConsole
 
 #Region "Event Handlers"
 
-    Private Sub FrmcConsole__RFIDCardReadedEvent(CardNo As String) Handles Me._RFIDCardReadedEvent
+    Private Sub FrmcLogsViewer__RFIDCardReadedEvent(CardNo As String) Handles Me._RFIDCardReadedEvent
         Try
-            UcucLoggCollection.UCViewLoggOptional1(CardNo)
+            RaiseEvent RFIDCardReadedEvent(CardNo)
         Catch ex As Exception
-            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType,MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name +vbCrLf + ex.Message,"", FrmcMessageDialog.MessageType.ErrorMessage , Nothing, Me)
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
 
         Try
@@ -54,7 +54,7 @@ Public Class FrmcConsole
 
     End Sub
 
-    Private Sub FrmcConsole__RFIDCardStartToReadEvent() Handles Me._RFIDCardStartToReadEvent
+    Private Sub FrmcLogsViewer__RFIDCardStartToReadEvent() Handles Me._RFIDCardStartToReadEvent
     End Sub
 
 #End Region

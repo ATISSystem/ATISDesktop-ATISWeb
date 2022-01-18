@@ -55,6 +55,40 @@ Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
 
+Namespace Logging
+
+    Public MustInherit Class R2CoreParkingSystemLogType
+        Inherits R2CoreLogType
+
+        Public Shared ReadOnly Property EntryExit As Int64 = 61
+    End Class
+
+    Public Class R2CoreParkingSystemLogManager
+
+        Public Function GetEntryExitLogsWithTrafficCard(YourTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure) As List(Of R2CoreStandardLoggingExtendedStructure)
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim Ds As New DataSet
+                InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                     "Select Top 50 Logs.*,SoftwareUsers.UserName,LoggingTypes.LogColor from R2PrimaryLogging.dbo.TblLogging as Logs
+                       Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On Logs.Userid=SoftwareUsers.UserId 
+                       Inner Join R2PrimaryLogging.dbo.TblLoggingTypes as LoggingTypes On Logs.LogType=LoggingTypes.LogId 
+                      Where Optional1 Like '%" & YourTrafficCard.CardNo & "%' order by DateTimeMilladi desc", 0, Ds)
+                Dim Lst As New List(Of R2CoreStandardLoggingExtendedStructure)
+                For Loopx As Int64 = Ds.Tables(0).Rows.Count - 1 To 0 Step -1
+                    Dim NSSLog = New R2CoreStandardLoggingExtendedStructure(New R2CoreStandardLoggingStructure(Ds.Tables(0).Rows(Loopx).Item("logid"), Ds.Tables(0).Rows(Loopx).Item("LogType"), Ds.Tables(0).Rows(Loopx).Item("sharh").trim, Ds.Tables(0).Rows(Loopx).Item("optional1").trim, Ds.Tables(0).Rows(Loopx).Item("optional2").trim, Ds.Tables(0).Rows(Loopx).Item("optional3").trim, Ds.Tables(0).Rows(Loopx).Item("optional4").trim, Ds.Tables(0).Rows(Loopx).Item("optional5").trim, Ds.Tables(0).Rows(Loopx).Item("userid"), Ds.Tables(0).Rows(Loopx).Item("datetimemilladi"), Ds.Tables(0).Rows(Loopx).Item("dateshamsi").trim), Ds.Tables(0).Rows(Loopx).Item("UserName").trim, Color.FromName(Ds.Tables(0).Rows(Loopx).Item("LogColor").trim))
+                    Lst.Add(NSSLog)
+                Next
+                Return Lst
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+    End Class
+
+End Namespace
+
 Namespace DataBaseManagement
 
     Public Class R2ClassSqlConnectionSepas
@@ -296,7 +330,6 @@ Namespace CamerasManagement
                 Throw exx
             Catch ex As Exception
                 Throw New R2CoreParkingSystemCameraFailException
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
     End Class
@@ -866,6 +899,8 @@ Namespace EnterExitManagement
                 Ds.Tables.Clear()
                 If Da.Fill(Ds) = 0 Then Throw New CarHasNoEnterExitRecordException
                 Return Ds.Tables(0).Rows(0).Item("EnterExitId")
+            Catch ex As CarHasNoEnterExitRecordException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception("R2ParkingSystem.EnterExit.R2MClassEnterExit.GetCarCapturedImageEnter()." + ex.Message.ToString)
             End Try
@@ -941,20 +976,6 @@ Namespace EnterExitManagement
             Catch exx As MoneyWalletCurrentChargeNotEnoughException
                 Throw exx
             Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Public Shared Sub SetFlagATOTrueIntbGhabz(YourTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure)
-            Dim CmdSql As New SqlClient.SqlCommand
-            CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection
-            Try
-                CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update dbtransport.dbo.tbGhabz Set FlagA=1 Where StrBarcodeNo='" & YourTerafficCard.CardNo & "'"
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Connection.Close()
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
@@ -1080,6 +1101,14 @@ Namespace EnterExitManagement
         End Property
     End Class
 
+    Public Class TrafficCardMustReadingBySecondRFReaderException
+        Inherits ApplicationException
+        Public Overrides ReadOnly Property Message As String
+            Get
+                Return "ورود کارت با کارت خوان دوم امکان پذير نيست"
+            End Get
+        End Property
+    End Class
 
 End Namespace
 
@@ -1351,6 +1380,22 @@ Namespace TrafficCardsManagement
                 End If
             Catch exx As TerraficCardNotFoundException
                 Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSTrafficCard(ByVal YourCardNo As String) As R2CoreParkingSystemStandardTrafficCardStructure
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim Ds As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblRFIDCards Where Cardno='" & YourCardNo & "' Order By CardId Desc", 1, Ds).GetRecordsCount() = 0 Then
+                    Throw New TerraficCardNotFoundException
+                Else
+                    Return New R2CoreParkingSystemStandardTrafficCardStructure(Ds.Tables(0).Rows(0).Item("CardId"), Ds.Tables(0).Rows(0).Item("CardNo"), Ds.Tables(0).Rows(0).Item("Charge"), Ds.Tables(0).Rows(0).Item("UserIdSabt"), Ds.Tables(0).Rows(0).Item("UserIdEdit"), Ds.Tables(0).Rows(0).Item("PelakType"), Ds.Tables(0).Rows(0).Item("Pelak"), Ds.Tables(0).Rows(0).Item("Serial"), Ds.Tables(0).Rows(0).Item("NoMoney"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("CompanyName"), Ds.Tables(0).Rows(0).Item("NameFamily"), Ds.Tables(0).Rows(0).Item("Mobile"), Ds.Tables(0).Rows(0).Item("Address"), Ds.Tables(0).Rows(0).Item("Tel"), Ds.Tables(0).Rows(0).Item("Tahvilg"), Ds.Tables(0).Rows(0).Item("DateTimeMilladiSabt"), Ds.Tables(0).Rows(0).Item("DateTimeMilladiEdit"), Ds.Tables(0).Rows(0).Item("DateShamsiSabt"), Ds.Tables(0).Rows(0).Item("DateShamsiEdit"), Ds.Tables(0).Rows(0).Item("CardType"), Ds.Tables(0).Rows(0).Item("TempCardType"))
+                End If
+            Catch ex As TerraficCardNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -1639,6 +1684,40 @@ Namespace TrafficCardsManagement
             Public Overrides ReadOnly Property Message As String
                 Get
                     Return "کارت تردد یافت نشد"
+                End Get
+            End Property
+        End Class
+
+        Public Class TrafficCardNotActiveException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "كارت تردد غير فعال است " + vbCrLf + "استفاده از اين كارت ممنوع و غير مجاز است"
+                End Get
+            End Property
+        End Class
+
+        Public Class TrafficCardTypeNotSupportedOnThisComputerException
+            Inherits ApplicationException
+
+            Private _Message As String = String.Empty
+
+            Public Sub New(YourMessage As String)
+                _Message = YourMessage
+            End Sub
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "این نوع کارت تردد در این کامپیوتر پشتيبانی نمی شود" + vbCrLf + _Message
+                End Get
+            End Property
+        End Class
+
+        Public Class TrafficCardNotMatchWithThisGateException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "وضعیت ورود یا خروج کارت با این معبر مطابقت ندارد"
                 End Get
             End Property
         End Class
@@ -2725,9 +2804,9 @@ Namespace Cars
                 If Da.Fill(Ds) <> 0 Then
                     Return Ds.Tables(0).Rows(0).Item("nCarId")
                 Else
-                    Throw New RelatedTerraficCardNotFoundException
+                    Throw New R2CoreParkingSystemRelatedCarNotExistException
                 End If
-            Catch ex As RelatedTerraficCardNotFoundException
+            Catch ex As R2CoreParkingSystemRelatedCarNotExistException
                 Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -2841,18 +2920,16 @@ Namespace Cars
                 Try
                     CarImage = GetCarImage(New R2CoreFile(R2CoreParkingSystemMClassEnterExitManagement.GetCarLastEnterExitId(_NSSTerafficCard).ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2)), YourNSSUser)
                     Return CarImage
-
+                Catch ex As CarHasNoEnterExitRecordException
                 Catch exx As R2CoreParkingSystemCarImageNotExistException
-                    If _NSSTerafficCard.CardType = TerafficCardType.Savari Then
-                        Return New R2CoreImage(My.Resources.DefaultCarImageSavari)
-                    ElseIf _NSSTerafficCard.CardType = TerafficCardType.Tereili Then
-                        Return New R2CoreImage(My.Resources.DefaultCarImageTereilli)
-                    ElseIf _NSSTerafficCard.CardType = TerafficCardType.SixCharkh Or _NSSTerafficCard.CardType = TerafficCardType.TenCharkh Then
-                        Return New R2CoreImage(My.Resources.DefaultCarImageTereilli)
-                    End If
-                Catch ex As Exception
-                    Throw ex
                 End Try
+                If _NSSTerafficCard.CardType = TerafficCardType.Savari Then
+                    Return New R2CoreImage(My.Resources.DefaultCarImageSavari)
+                ElseIf _NSSTerafficCard.CardType = TerafficCardType.Tereili Then
+                    Return New R2CoreImage(My.Resources.DefaultCarImageTereilli)
+                ElseIf _NSSTerafficCard.CardType = TerafficCardType.SixCharkh Or _NSSTerafficCard.CardType = TerafficCardType.TenCharkh Then
+                    Return New R2CoreImage(My.Resources.DefaultCarImageTereilli)
+                End If
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -2977,6 +3054,15 @@ Namespace Cars
         Public Overrides ReadOnly Property Message As String
             Get
                 Return "تصویر خودروی مورد نظر یافت نشد"
+            End Get
+        End Property
+    End Class
+
+    Public Class R2CoreParkingSystemRelatedCarNotExistException
+        Inherits ApplicationException
+        Public Overrides ReadOnly Property Message As String
+            Get
+                Return "خودروی مرتبط یافت نشد"
             End Get
         End Property
     End Class
@@ -4107,6 +4193,7 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcLoadTargetsTravelLength As Int64 = 57
         Public Shared ReadOnly FrmcTerraficCardsIdentityReport As Int64 = 59
         Public Shared ReadOnly FrmcBlackListReport As Int64 = 60
+        Public Shared ReadOnly FrmcCarEntryExitLogViewer As Int64 = 69
 
 
     End Class

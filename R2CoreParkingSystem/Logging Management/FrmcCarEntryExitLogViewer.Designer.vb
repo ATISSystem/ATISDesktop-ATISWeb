@@ -1,10 +1,12 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class UCLog
-    Inherits UCGeneral
+﻿
+Imports R2CoreGUI
 
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+Partial Class FrmcCarEntryExitLogViewer
+    Inherits FrmcLogsViewer
 
-    'UserControl overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()>
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -21,18 +23,22 @@ Partial Class UCLog
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()>
+    <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.SuspendLayout()
         '
-        'UCLog
+        '_FrmMessageDialog
+        '
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1000)
+        '
+        'FrmcCarEntryExitLogViewer
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.Transparent
-        Me.Name = "UCLog"
-        Me.Padding = New System.Windows.Forms.Padding(5)
-        Me.Size = New System.Drawing.Size(194, 32)
+        Me.ClientSize = New System.Drawing.Size(1005, 600)
+        Me.Location = New System.Drawing.Point(0, 0)
+        Me.Name = "FrmcCarEntryExitLogViewer"
+        Me.Text = "FrmcCarEntryExitLogViewer"
         Me.ResumeLayout(False)
 
     End Sub

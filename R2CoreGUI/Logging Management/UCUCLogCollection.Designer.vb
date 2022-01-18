@@ -23,12 +23,15 @@ Partial Class UCUCLogCollection
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.PnlMain = New System.Windows.Forms.Panel()
-        Me.SuspendLayout
+        Me.PnlUCs = New System.Windows.Forms.Panel()
+        Me.PnlMain.SuspendLayout()
+        Me.SuspendLayout()
         '
         'PnlMain
         '
-        Me.PnlMain.AutoScroll = true
+        Me.PnlMain.AutoScroll = True
         Me.PnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlMain.Controls.Add(Me.PnlUCs)
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(3, 3)
         Me.PnlMain.Name = "PnlMain"
@@ -36,18 +39,29 @@ Partial Class UCUCLogCollection
         Me.PnlMain.Size = New System.Drawing.Size(651, 438)
         Me.PnlMain.TabIndex = 0
         '
-        'UCUCLoggCollection
+        'PnlUCs
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.PnlUCs.AutoScroll = True
+        Me.PnlUCs.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.PnlUCs.Location = New System.Drawing.Point(3, 3)
+        Me.PnlUCs.Name = "PnlUCs"
+        Me.PnlUCs.Size = New System.Drawing.Size(643, 430)
+        Me.PnlUCs.TabIndex = 0
+        '
+        'UCUCLogCollection
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
-        Me.Name = "UCUCLoggCollection"
+        Me.Name = "UCUCLogCollection"
         Me.Padding = New System.Windows.Forms.Padding(3)
         Me.Size = New System.Drawing.Size(657, 444)
-        Me.ResumeLayout(false)
+        Me.PnlMain.ResumeLayout(False)
+        Me.ResumeLayout(False)
 
-End Sub
+    End Sub
 
     Friend WithEvents PnlMain As Panel
+    Friend WithEvents PnlUCs As Panel
 End Class

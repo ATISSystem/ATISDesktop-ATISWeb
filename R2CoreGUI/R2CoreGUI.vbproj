@@ -517,10 +517,10 @@
     <Compile Include="Information Management\UCComputerMessageProducerGeneralMessage.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Logging Management\FrmcConsole.Designer.vb">
-      <DependentUpon>FrmcConsole.vb</DependentUpon>
+    <Compile Include="Logging Management\FrmcLogsViewer.Designer.vb">
+      <DependentUpon>FrmcLogsViewer.vb</DependentUpon>
     </Compile>
-    <Compile Include="Logging Management\FrmcConsole.vb">
+    <Compile Include="Logging Management\FrmcLogsViewer.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI Management\UCActiveForm.Designer.vb">
@@ -902,8 +902,8 @@
     <EmbeddedResource Include="Information Management\UCComputerMessageProducerGeneralMessage.resx">
       <DependentUpon>UCComputerMessageProducerGeneralMessage.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Logging Management\FrmcConsole.resx">
-      <DependentUpon>FrmcConsole.vb</DependentUpon>
+    <EmbeddedResource Include="Logging Management\FrmcLogsViewer.resx">
+      <DependentUpon>FrmcLogsViewer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI Management\UCActiveForm.resx">
       <DependentUpon>UCActiveForm.vb</DependentUpon>
