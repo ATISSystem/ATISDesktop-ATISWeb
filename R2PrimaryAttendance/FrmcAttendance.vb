@@ -184,7 +184,7 @@ Public Class FrmcAttendane
                 _MinimizeWithDelayTimer.Stop()
                 _MinimizeWithDelayTimer.Start()
                 MaximizeForm()
-                R2Core.RFIDCardsManagement.R2CoreRFIDCardReaderInterface.StartReading(Me, R2CoreRFIDCardReaderInterface.InterfaceMode.TestForRFIDCardConfirm)
+                'R2Core.RFIDCardsManagement.R2CoreRFIDCardReaderInterface.StartReading(Me, R2CoreRFIDCardReaderInterface.InterfaceMode.TestForRFIDCardConfirm)
                 CaptureFingerPrint()
             End If
         Catch ex As Exception
