@@ -30,6 +30,7 @@ Imports PayanehClassLibrary.LoadNotification.LoadPermission
 Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
 Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
 Imports PayanehClassLibrary.TurnRegisterRequest
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
 
 Public Class FrmcTurnRegisterRequest
     Inherits FrmcGeneral
@@ -128,7 +129,7 @@ Public Class FrmcTurnRegisterRequest
             LoadNotificationLoadPermissionManagement.DoControlforTruckPresentInParkingAndLastLoadPermission(_NSSTruck)
             Dim TurnId As Int64 = Int64.MinValue
             Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
-            Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(_NSSTruck, False, True, TurnId, PayanehClassLibraryRequesters.FrmcTurnRegisterRequest, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(_NSSTruck, False, True, TurnId, PayanehClassLibraryRequesters.FrmcTurnRegisterRequest, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + TurnRegisterRequestId.ToString & vbCrLf & "شماره نوبت :" + TurnId.ToString, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             RaiseEvent _SodorNobatSuccessEvent()
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
@@ -151,7 +152,8 @@ Public Class FrmcTurnRegisterRequest
                                 OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
                                 OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
                                 OrElse TypeOf ex Is TerraficCardNotFoundException _
-                                OrElse TypeOf ex Is DriverTruckInformationNotExistException
+                                OrElse TypeOf ex Is DriverTruckInformationNotExistException _
+                                OrElse TypeOf ex Is LoadCapacitorLoadNotFoundException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Information, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)

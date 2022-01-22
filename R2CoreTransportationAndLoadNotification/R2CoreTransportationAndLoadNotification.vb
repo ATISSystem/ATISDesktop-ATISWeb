@@ -698,6 +698,13 @@ Namespace TransportTarrifs
 End Namespace
 
 Namespace Turns
+
+    Public Enum TurnType
+        None = 0
+        Temporary = 1 'موقتی
+        Permanent = 2 'دائمی
+    End Enum
+
     Public MustInherit Class TurnStatuses
         Public Shared ReadOnly Property None = 0
         Public Shared ReadOnly Property Registered = 1
@@ -744,9 +751,10 @@ Namespace Turns
             _OtaghdarTurnNumber = String.Empty
             _StrCardNo = Int64.MinValue
             _TurnStatus = Turns.TurnStatuses.None
+            _RegisteringTimeStamp = DateTime.Now
         End Sub
 
-        Public Sub New(ByVal YournEnterExitId As Int64, ByVal YourEnterDate As String, YourEnterTime As String, YourNSSTruckDriver As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure, YourbFlagDriver As Boolean, YournUserIdEnter As Int64, YourOtaghdarTurnNumber As String, YourStrCardNo As Int64, YourTurnStatus As Int64)
+        Public Sub New(ByVal YournEnterExitId As Int64, ByVal YourEnterDate As String, YourEnterTime As String, YourNSSTruckDriver As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure, YourbFlagDriver As Boolean, YournUserIdEnter As Int64, YourOtaghdarTurnNumber As String, YourStrCardNo As Int64, YourTurnStatus As Int64, YourRegisteringTimeStamp As DateTime)
             _nEnterExitId = YournEnterExitId
             _EnterDate = YourEnterDate
             _EnterTime = YourEnterTime
@@ -756,6 +764,7 @@ Namespace Turns
             _OtaghdarTurnNumber = YourOtaghdarTurnNumber
             _StrCardNo = YourStrCardNo
             _TurnStatus = YourTurnStatus
+            _RegisteringTimeStamp = YourRegisteringTimeStamp
         End Sub
 
         Public Property nEnterExitId As Int64
@@ -767,6 +776,8 @@ Namespace Turns
         Public Property OtaghdarTurnNumber As String
         Public Property StrCardNo As Int64
         Public Property TurnStatus() As Int64
+        Public Property RegisteringTimeStamp As DateTime
+
     End Class
 
     Public Class R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure
@@ -779,8 +790,8 @@ Namespace Turns
             _TruckDriver = String.Empty
         End Sub
 
-        Public Sub New(ByVal YournEnterExitId As Int64, ByVal YourEnterDate As String, YourEnterTime As String, YourNSSTruckDriver As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure, YourbFlagDriver As Boolean, YournUserIdEnter As Int64, YourOtaghdarTurnNumber As String, YourStrCardNo As Int64, YourTurnStatus As Int64, YourLicensePlatePString As String, YourTurnStatusTitle As String, YourUserName As String, YourTruckDriver As String)
-            MyBase.New(YournEnterExitId, YourEnterDate, YourEnterTime, YourNSSTruckDriver, YourbFlagDriver, YournUserIdEnter, YourOtaghdarTurnNumber, YourStrCardNo, YourTurnStatus)
+        Public Sub New(ByVal YournEnterExitId As Int64, ByVal YourEnterDate As String, YourEnterTime As String, YourNSSTruckDriver As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure, YourbFlagDriver As Boolean, YournUserIdEnter As Int64, YourOtaghdarTurnNumber As String, YourStrCardNo As Int64, YourTurnStatus As Int64, YourRegisteringTimeStamp As DateTime, YourLicensePlatePString As String, YourTurnStatusTitle As String, YourUserName As String, YourTruckDriver As String)
+            MyBase.New(YournEnterExitId, YourEnterDate, YourEnterTime, YourNSSTruckDriver, YourbFlagDriver, YournUserIdEnter, YourOtaghdarTurnNumber, YourStrCardNo, YourTurnStatus, YourRegisteringTimeStamp)
             _LicensePlatePString = YourLicensePlatePString
             _TurnStatusTitle = YourTurnStatusTitle
             _UserName = YourUserName
@@ -810,7 +821,7 @@ Namespace Turns
                   Where Turns.nEnterExitId>@TopTurn and (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") 
                         and substring(Turns.OtaghdarTurnNumber,1,1)='" & YourNSSSequentialTurn.SequentialTurnKeyWord & "' 
                   Order By Turns.nEnterExitId Asc", 300, DS).GetRecordsCount = 0 Then Throw New FirstActiveTurnNotFoundException
-                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(DS.Tables(0).Rows(0).Item("nEnterExitId"), DS.Tables(0).Rows(0).Item("StrEnterDate").trim, DS.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(DS.Tables(0).Rows(0).Item("nDriverCode"))), DS.Tables(0).Rows(0).Item("bFlagDriver"), DS.Tables(0).Rows(0).Item("nUserIdEnter"), DS.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, DS.Tables(0).Rows(0).Item("StrCardNo"), DS.Tables(0).Rows(0).Item("TurnStatus"))
+                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(DS.Tables(0).Rows(0).Item("nEnterExitId"), DS.Tables(0).Rows(0).Item("StrEnterDate").trim, DS.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(DS.Tables(0).Rows(0).Item("nDriverCode"))), DS.Tables(0).Rows(0).Item("bFlagDriver"), DS.Tables(0).Rows(0).Item("nUserIdEnter"), DS.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, DS.Tables(0).Rows(0).Item("StrCardNo"), DS.Tables(0).Rows(0).Item("TurnStatus"), DS.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
             Catch ex As FirstActiveTurnNotFoundException
                 Throw New FirstActiveTurnNotFoundException
             Catch ex As Exception
@@ -828,7 +839,7 @@ Namespace Turns
                              Where SeqT.Active=1 and SeqT.Deleted=0 and SeqT.SeqTKeyWord Collate Arabic_CI_AI_WS=SUBSTRING(DataBox.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS and TurnsX.nEnterExitId<DataBox.nEnterExitId and (TurnsX.TurnStatus=1 or TurnsX.TurnStatus=7 or TurnsX.TurnStatus=8 or TurnsX.TurnStatus=9 or TurnsX.TurnStatus=10)) as TurnDistanceToValidity,DataBox.*
                     from
                       (Select Top 5 Turns.nEnterExitId,Turns.StrEnterDate,Turns.StrEnterTime,Turns.nDriverCode,Turns.bFlagDriver,Turns.nUserIdEnter,Turns.OtaghdarTurnNumber,Turns.StrCardNo,
-                                    Turns.TurnStatus,Cars.strCarNo +'-'+ Cars.strCarSerialNo as LPString,Persons.strPersonFullName,TurnStatuses.TurnStatusTitle,SoftwareUsers.UserName as Username
+                                    Turns.TurnStatus,Cars.strCarNo +'-'+ Cars.strCarSerialNo as LPString,Persons.strPersonFullName,TurnStatuses.TurnStatusTitle,SoftwareUsers.UserName as Username,Turns.RegisteringTimeStamp
                        from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
 	                     Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1
 	                     Inner Join dbtransport.dbo.TbDriver as Drivers On EntityRelations.E2=Drivers.nIDDriver 
@@ -860,6 +871,7 @@ Namespace Turns
                     NSS.TruckDriver = Ds.Tables(0).Rows(Loopx).Item("strPersonFullName").trim
                     NSS.TurnStatusTitle = Ds.Tables(0).Rows(Loopx).Item("TurnStatusTitle").trim
                     NSS.UserName = Ds.Tables(0).Rows(Loopx).Item("Username").trim
+                    NSS.RegisteringTimeStamp = Ds.Tables(0).Rows(Loopx).Item("RegisteringTimeStamp")
                     Lst.Add(NSS)
                 Next
                 Return Lst
@@ -875,7 +887,7 @@ Namespace Turns
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim Ds As DataSet
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
-                   "Select Top 1 TurnCreatorUsers.UserName,TurnStatus.TurnStatusTitle,Persons.strPersonFullName,Cars.strCarNo+'-'+Cars.strCarSerialNo as LPString,Turns.nEnterExitId,Turns.strEnterDate,Turns.strEnterTime,Turns.nDriverCode,Turns.bFlagDriver,Turns.nUserIdEnter,Turns.OtaghdarTurnNumber,Turns.strCardno,Turns.TurnStatus
+                   "Select Top 1 TurnCreatorUsers.UserName,TurnStatus.TurnStatusTitle,Persons.strPersonFullName,Cars.strCarNo+'-'+Cars.strCarSerialNo as LPString,Turns.nEnterExitId,Turns.strEnterDate,Turns.strEnterTime,Turns.nDriverCode,Turns.bFlagDriver,Turns.nUserIdEnter,Turns.OtaghdarTurnNumber,Turns.strCardno,Turns.TurnStatus,Turns.RegisteringTimeStamp
                    from dbtransport.dbo.tbEnterExit as Turns
                        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnStatuses as TurnStatus On Turns.TurnStatus=TurnStatus.TurnStatusId
                        Inner Join R2Primary.DBO.TblSoftwareUsers AS TurnCreatorUsers On Turns.nUserIdEnter=TurnCreatorUsers.UserId 
@@ -904,6 +916,7 @@ Namespace Turns
                 NSS.TruckDriver = Ds.Tables(0).Rows(0).Item("strPersonFullName").trim
                 NSS.TurnStatusTitle = Ds.Tables(0).Rows(0).Item("TurnStatusTitle").trim
                 NSS.UserName = Ds.Tables(0).Rows(0).Item("Username").trim
+                NSS.RegisteringTimeStamp = Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp")
                 Return NSS
             Catch ex As TruckDriverNotFoundException
                 Throw ex
@@ -919,7 +932,7 @@ Namespace Turns
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim Ds As DataSet
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
-                         "Select Users.UserName,TurnStatus.TurnStatusTitle,Person.strPersonFullName,Car.strCarNo+'-'+car.strCarSerialNo as LPString, EnterExit.nEnterExitId,EnterExit.strEnterDate,EnterExit.strEnterTime,EnterExit.nDriverCode,EnterExit.bFlagDriver,EnterExit.nUserIdEnter,EnterExit.OtaghdarTurnNumber,EnterExit.strCardno,EnterExit.TurnStatus
+                         "Select Users.UserName,TurnStatus.TurnStatusTitle,Person.strPersonFullName,Car.strCarNo+'-'+car.strCarSerialNo as LPString, EnterExit.nEnterExitId,EnterExit.strEnterDate,EnterExit.strEnterTime,EnterExit.nDriverCode,EnterExit.bFlagDriver,EnterExit.nUserIdEnter,EnterExit.OtaghdarTurnNumber,EnterExit.strCardno,EnterExit.TurnStatus,EnterExit.RegisteringTimeStamp
                             from dbtransport.dbo.tbEnterExit as EnterExit 
                                Inner Join dbtransport.dbo.TbCar as Car On EnterExit.strCardno=Car.nIDCar
                                Inner Join dbtransport.dbo.TbPerson as Person On EnterExit.nDriverCode=Person.nIDPerson
@@ -940,6 +953,7 @@ Namespace Turns
                 NSS.TruckDriver = Ds.Tables(0).Rows(0).Item("strPersonFullName").trim
                 NSS.TurnStatusTitle = Ds.Tables(0).Rows(0).Item("TurnStatusTitle").trim
                 NSS.UserName = Ds.Tables(0).Rows(0).Item("Username").trim
+                NSS.RegisteringTimeStamp = Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp")
                 Return NSS
             Catch exx As TurnNotFoundException
                 Throw exx
@@ -1173,7 +1187,7 @@ Namespace Turns
                      "Select Top 1 * from dbtransport.dbo.TbEnterExit Where StrCardNo=" & YourNSSTruck.NSSCar.nIdCar & " and (bFlagDriver=0) Order By nEnterExitId desc", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New TurnNotFoundException
                 End If
-                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate").trim, Ds.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode"))), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("TurnStatus"))
+                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate").trim, Ds.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode"))), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("TurnStatus"), Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
             Catch ex As TurnNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -1193,7 +1207,7 @@ Namespace Turns
                       Where EntityRelations.RelationActive=1 and EntityRelations.ERTypeId=1 and TurnRegisterRequests.TRRId=" & YourNSSTurnRegisteringRequest.TRRId & "", 0, Ds).GetRecordsCount() = 0 Then
                     Throw New TurnNotFoundException
                 End If
-                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate").trim, Ds.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode"))), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("TurnStatus"))
+                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate").trim, Ds.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode"))), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("TurnStatus"), Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
             Catch ex As TurnNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -1201,6 +1215,15 @@ Namespace Turns
             End Try
         End Function
 
+        Public Function GetTurnRegisteringTimeStampWithTurnType(YourTurnType As TurnType) As R2StandardDateAndTimeStructure
+            Try
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim TurnRegisteringTimeStamp As DateTime = IIf(YourTurnType = TurnType.Permanent, InstanceConfiguration.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 4), _DateTime.GetCurrentDateTimeMilladi)
+                Return New R2StandardDateAndTimeStructure(TurnRegisteringTimeStamp, Nothing, Nothing)
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
     End Class
 
@@ -1224,123 +1247,11 @@ Namespace Turns
             End Try
         End Function
 
-        Public Shared Function GetNSSTurn(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As R2CoreTransportationAndLoadNotificationStandardTurnStructure
-            Try
-                Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                   "Select Top 1 TurnCreatorUsers.UserName,TurnStatus.TurnStatusTitle,Persons.strPersonFullName,Cars.strCarNo+'-'+Cars.strCarSerialNo as LPString,Turns.nEnterExitId,Turns.strEnterDate,Turns.strEnterTime,Turns.nDriverCode,Turns.bFlagDriver,Turns.nUserIdEnter,Turns.OtaghdarTurnNumber,Turns.strCardno,Turns.TurnStatus
-                     from dbtransport.dbo.tbEnterExit as Turns
-                       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnStatuses as TurnStatus On Turns.TurnStatus=TurnStatus.TurnStatusId
-                       Inner Join R2Primary.DBO.TblSoftwareUsers AS TurnCreatorUsers On Turns.nUserIdEnter=TurnCreatorUsers.UserId 
-                       Inner Join dbtransport.dbo.TbCar as Cars On Turns.strCardno=Cars.nIDCar 
-                       Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Cars.nIDCar=CarAndPersons.nIDCar 
-                       Inner Join dbtransport.dbo.TbDriver as Drivers On CarAndPersons.nIDPerson=Drivers.nIDDriver 
-	                   Inner Join dbtransport.dbo.TbPerson as Persons On Persons.nIDPerson=Drivers.nIDDriver 
-	                   Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On Drivers.nIDDriver=EntityRelations.E2 
-	                   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On EntityRelations.E1=SoftwareUsers.UserId 
-                     Where (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and Cars.ViewFlag=1 
-                           and EntityRelations.ERTypeId=" & R2CoreParkingSystem.EntityRelations.R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 and SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and CarAndPersons.snRelation=2 
-                           and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
-                     Order By CarAndPersons.nIDCarAndPerson Desc,Turns.nEnterExitId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
-                Dim NSS As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure = New R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure
-                NSS.nEnterExitId = Ds.Tables(0).Rows(0).Item("nEnterExitId")
-                NSS.EnterDate = Ds.Tables(0).Rows(0).Item("StrEnterDate")
-                NSS.EnterTime = Ds.Tables(0).Rows(0).Item("StrEnterTime")
-                NSS.NSSTruckDriver = R2CoreTransportationAndLoadNotificationMClassTruckDriversManagement.GetNSSTruckDriver(Ds.Tables(0).Rows(0).Item("nDriverCode"))
-                NSS.bFlagDriver = Ds.Tables(0).Rows(0).Item("bFlagDriver")
-                NSS.nUserIdEnter = Ds.Tables(0).Rows(0).Item("nUserIdEnter")
-                NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber")
-                NSS.StrCardNo = Ds.Tables(0).Rows(0).Item("StrCardNo")
-                NSS.TurnStatus = Ds.Tables(0).Rows(0).Item("TurnStatus")
-                NSS.LicensePlatePString = Ds.Tables(0).Rows(0).Item("LPString").trim
-                NSS.TruckDriver = Ds.Tables(0).Rows(0).Item("strPersonFullName").trim
-                NSS.TurnStatusTitle = Ds.Tables(0).Rows(0).Item("TurnStatusTitle").trim
-                NSS.UserName = Ds.Tables(0).Rows(0).Item("Username").trim
-                Return NSS
-            Catch ex As TurnNotFoundException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Shared Function GetNSSSoftwareUser(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure) As R2CoreStandardSoftwareUserStructure
-            Try
-                Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                     "Select Top 1 SoftwareUsers.UserId from dbtransport.dbo.tbEnterExit as Turns
-                        Inner Join dbtransport.dbo.TbCar as Trucks On Turns.strCardno=Trucks.nIDCar 
-                    	Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Trucks.nIDCar=CarAndPersons.nIDCar 
-	                    Inner Join dbtransport.dbo.TbDriver as Drivers On CarAndPersons.nIDPerson=Drivers.nIDDriver 
-	                    Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On Drivers.nIDDriver=EntityRelations.E2 
-	                    Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On EntityRelations.E1=SoftwareUsers.UserId 
-                      Where  Trucks.ViewFlag=1 and CarAndPersons.snRelation=2 and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and
-                             EntityRelations.RelationActive=1 and SoftwareUsers.Deleted=0 and SoftwareUsers.UserTypeId=" & R2CoreParkingSystem.SoftwareUsersManagement.R2CoreParkingSystemSoftwareUserTypes.Driver & " and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) and
-                             Turns.nEnterExitId=" & YourNSSTurn.nEnterExitId & " 
-                      Order By CarAndPersons.nIDCarAndPerson Desc", 0, Ds).GetRecordsCount = 0 Then Throw New SoftwareUserRelatedTurnNotFoundException
-                Return R2CoreMClassSoftwareUsersManagement.GetNSSUser(Ds.Tables(0).Rows(0).Item("UserId"))
-            Catch ex As SoftwareUserRelatedTurnNotFoundException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Shared Function GetTurns(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
-            Try
-                Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                   "Select  (Select Count(*) from dbtransport.dbo.tbEnterExit as TurnsX
-                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SeqT On SUBSTRING(TurnsX.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS=SeqT.SeqTKeyWord Collate Arabic_CI_AI_WS
-                             Where SeqT.Active=1 and SeqT.Deleted=0 and SeqT.SeqTKeyWord Collate Arabic_CI_AI_WS=SUBSTRING(DataBox.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS and TurnsX.nEnterExitId<DataBox.nEnterExitId and (TurnsX.TurnStatus=1 or TurnsX.TurnStatus=7 or TurnsX.TurnStatus=8 or TurnsX.TurnStatus=9 or TurnsX.TurnStatus=10)) as TurnDistanceToValidity,DataBox.*
-                    from
-                      (Select Top 5 Turns.nEnterExitId,Turns.StrEnterDate,Turns.StrEnterTime,Turns.nDriverCode,Turns.bFlagDriver,Turns.nUserIdEnter,Turns.OtaghdarTurnNumber,Turns.StrCardNo,
-                                    Turns.TurnStatus,Cars.strCarNo +'-'+ Cars.strCarSerialNo as LPString,Persons.strPersonFullName,TurnStatuses.TurnStatusTitle,SoftwareUsers.UserName as Username
-                       from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
-	                     Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1
-	                     Inner Join dbtransport.dbo.TbDriver as Drivers On EntityRelations.E2=Drivers.nIDDriver 
-                         Inner Join dbtransport.dbo.TbPerson as Persons On Drivers.nIDDriver=Persons.nIDPerson 
-                         Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Drivers.nIDDriver=CarAndPersons.nIDPerson
-                         Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
-                         Inner Join dbtransport.dbo.tbCarType as CarTypes On Cars.snCarType=CarTypes.snCarType 
-                         Inner Join dbtransport.dbo.tbEnterExit as Turns On Cars.nIDCar=Turns.strCardno 
-                         Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnStatuses as TurnStatuses On Turns.TurnStatus=TurnStatuses.TurnStatusId 
-                         Inner Join R2Primary.dbo.TblSoftwareUsers as TurnCreatorUsers On Turns.nUserIdEnter=TurnCreatorUsers.UserId 
-                       Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 and Cars.ViewFlag=1 and CarAndPersons.snRelation=2 
-                             and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
-	                   Order By CarAndPersons.nIDCarAndPerson Desc,Turns.nEnterExitId Desc) as DataBox
-                    Order By DataBox.nEnterExitId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
-                Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
-                For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    Dim NSS As New R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure
-                    NSS.nEnterExitId = Ds.Tables(0).Rows(Loopx).Item("nEnterExitId")
-                    NSS.EnterDate = Ds.Tables(0).Rows(Loopx).Item("StrEnterDate")
-                    NSS.EnterTime = Ds.Tables(0).Rows(Loopx).Item("StrEnterTime")
-                    NSS.NSSTruckDriver = R2CoreTransportationAndLoadNotificationMClassTruckDriversManagement.GetNSSTruckDriver(Ds.Tables(0).Rows(Loopx).Item("nDriverCode"))
-                    NSS.bFlagDriver = Ds.Tables(0).Rows(Loopx).Item("bFlagDriver")
-                    NSS.nUserIdEnter = Ds.Tables(0).Rows(Loopx).Item("nUserIdEnter")
-                    NSS.TurnStatus = Ds.Tables(0).Rows(Loopx).Item("TurnStatus")
-                    NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber").ToString + " - " + IIf(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTurnReadeyforLoadAllocationRegistering(NSS), Ds.Tables(0).Rows(Loopx).Item("TurnDistanceToValidity").ToString, "اعتبار ندارد")
-                    NSS.StrCardNo = Ds.Tables(0).Rows(Loopx).Item("StrCardNo")
-                    NSS.LicensePlatePString = Ds.Tables(0).Rows(Loopx).Item("LPString").trim
-                    NSS.TruckDriver = Ds.Tables(0).Rows(Loopx).Item("strPersonFullName").trim
-                    NSS.TurnStatusTitle = Ds.Tables(0).Rows(Loopx).Item("TurnStatusTitle").trim
-                    NSS.UserName = Ds.Tables(0).Rows(Loopx).Item("Username").trim
-                    Lst.Add(NSS)
-                Next
-                Return Lst
-            Catch ex As TurnNotFoundException
-                Throw ex
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
         Public Shared Function GetNSSTurn(YourTurnId As Int64) As R2CoreTransportationAndLoadNotificationStandardTurnStructure
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                         "Select Users.UserName,TurnStatus.TurnStatusTitle,Person.strPersonFullName,Car.strCarNo+'-'+car.strCarSerialNo as LPString, EnterExit.nEnterExitId,EnterExit.strEnterDate,EnterExit.strEnterTime,EnterExit.nDriverCode,EnterExit.bFlagDriver,EnterExit.nUserIdEnter,EnterExit.OtaghdarTurnNumber,EnterExit.strCardno,EnterExit.TurnStatus
+                         "Select Users.UserName,TurnStatus.TurnStatusTitle,Person.strPersonFullName,Car.strCarNo+'-'+car.strCarSerialNo as LPString, EnterExit.nEnterExitId,EnterExit.strEnterDate,EnterExit.strEnterTime,EnterExit.nDriverCode,EnterExit.bFlagDriver,EnterExit.nUserIdEnter,EnterExit.OtaghdarTurnNumber,EnterExit.strCardno,EnterExit.TurnStatus,EnterExit.RegisteringTimeStamp
                             from dbtransport.dbo.tbEnterExit as EnterExit 
                                Inner Join dbtransport.dbo.TbCar as Car On EnterExit.strCardno=Car.nIDCar
                                Inner Join dbtransport.dbo.TbPerson as Person On EnterExit.nDriverCode=Person.nIDPerson
@@ -1360,6 +1271,7 @@ Namespace Turns
                 NSS.TruckDriver = Ds.Tables(0).Rows(0).Item("strPersonFullName").trim
                 NSS.TurnStatusTitle = Ds.Tables(0).Rows(0).Item("TurnStatusTitle").trim
                 NSS.UserName = Ds.Tables(0).Rows(0).Item("Username").trim
+                NSS.RegisteringTimeStamp = Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp")
                 Return NSS
             Catch exx As TurnNotFoundException
                 Throw exx
@@ -1373,7 +1285,7 @@ Namespace Turns
                 Dim CurrentSalShamsiFull As String = _DateTime.GetCurrentSalShamsiFull
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                          "Select Users.UserName,TurnStatus.TurnStatusTitle,Person.strPersonFullName,Car.strCarNo+'-'+car.strCarSerialNo as LPString, EnterExit.nEnterExitId,EnterExit.strEnterDate,EnterExit.strEnterTime,EnterExit.nDriverCode,EnterExit.bFlagDriver,EnterExit.nUserIdEnter,EnterExit.OtaghdarTurnNumber,EnterExit.strCardno,EnterExit.TurnStatus
+                          "Select Users.UserName,TurnStatus.TurnStatusTitle,Person.strPersonFullName,Car.strCarNo+'-'+car.strCarSerialNo as LPString, EnterExit.nEnterExitId,EnterExit.strEnterDate,EnterExit.strEnterTime,EnterExit.nDriverCode,EnterExit.bFlagDriver,EnterExit.nUserIdEnter,EnterExit.OtaghdarTurnNumber,EnterExit.strCardno,EnterExit.TurnStatus,EnterExit.RegisteringTimeStamp
                                 from dbtransport.dbo.tbEnterExit as EnterExit 
                                   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SeqT On SUBSTRING(EnterExit.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS= SeqT.SeqTKeyWord Collate Arabic_CI_AI_WS
                                   Inner Join dbtransport.dbo.TbCar as Car On EnterExit.strCardno=Car.nIDCar
@@ -1395,6 +1307,7 @@ Namespace Turns
                 NSS.TruckDriver = Ds.Tables(0).Rows(0).Item("strPersonFullName").trim
                 NSS.TurnStatusTitle = Ds.Tables(0).Rows(0).Item("TurnStatusTitle").trim
                 NSS.UserName = Ds.Tables(0).Rows(0).Item("Username").trim
+                NSS.RegisteringTimeStamp = Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp")
                 Return NSS
             Catch exx As TurnNotFoundException
                 Throw exx
@@ -1402,70 +1315,6 @@ Namespace Turns
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
-
-        Private Shared Sub LoadAllocationRegistering_(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure)
-            Dim CmdSql As New SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
-            Try
-                'کنترل وضعیت نوبت
-                If Not (YourNSSTurn.TurnStatus = TurnStatuses.Registered Or YourNSSTurn.TurnStatus = TurnStatuses.UsedLoadAllocationRegistered Or YourNSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadAllocationCancelled Or YourNSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadPermissionCancelled Or YourNSSTurn.TurnStatus = TurnStatuses.ResuscitationUser) Then Throw New TurnHandlingNotAllowedBecuaseTurnStatusException
-                'تغییر وضعیت نوبت
-                CmdSql.Connection.Open()
-                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
-                CmdSql.CommandText = "Select Top 1 nEnterExitId From dbtransport.dbo.TbEnterExit with (tablockx) Where nEnterExitId=" & YourNSSTurn.nEnterExitId & ""
-                CmdSql.ExecuteNonQuery()
-                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " Where nEnterExitId=" & YourNSSTurn.nEnterExitId & ""
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then
-                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
-                End If
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Public Shared Sub LoadAllocationRegistering(YourTurnId As Int64)
-            Try
-                Dim NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(YourTurnId)
-                LoadAllocationRegistering_(NSSTurn)
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Public Shared Sub LoadAllocationRegistering(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure)
-            Try
-                LoadAllocationRegistering_(YourNSSTurn)
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-        Public Shared Sub LoadAllocationCancelling(YourTurnId As Int64)
-            Dim CmdSql As New SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
-            Try
-                Dim NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(YourTurnId)
-                'کنترل وضعیت نوبت
-                If Not (NSSTurn.TurnStatus = TurnStatuses.CancelledUser Or NSSTurn.TurnStatus = TurnStatuses.CancelledUnderScore Or NSSTurn.TurnStatus = TurnStatuses.CancelledSystem Or NSSTurn.TurnStatus = TurnStatuses.CancelledLoadPermissionCancelled Or NSSTurn.TurnStatus = TurnStatuses.UsedLoadPermissionRegistered Or NSSTurn.TurnStatus = TurnStatuses.UsedLoadAllocationRegistered Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadAllocationCancelled Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadPermissionCancelled Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationUser Or NSSTurn.TurnStatus = TurnStatuses.TurnExpired) Then Throw New TurnHandlingNotAllowedBecuaseTurnStatusException
-                'تغییر وضعیت نوبت
-                CmdSql.Connection.Open()
-                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
-                CmdSql.CommandText = "Select Top 1 nEnterExitId From dbtransport.dbo.TbEnterExit with (tablockx) Where nEnterExitId=" & YourTurnId & ""
-                CmdSql.ExecuteNonQuery()
-                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " Where nEnterExitId=" & NSSTurn.nEnterExitId & ""
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
-            Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
-                Throw ex
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then
-                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
-                End If
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
 
         Public Shared Sub LoadPermissionRegistering(YourTurnId As Int64)
             Dim CmdSql As New SqlCommand
@@ -1596,29 +1445,6 @@ Namespace Turns
             End Try
         End Function
 
-        Public Shared Function IsTurnReadyforLoadAllocationChangePriorityandCancelling(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure)
-            Try
-                If YourNSSTurn.TurnStatus = TurnStatuses.UsedLoadPermissionRegistered Or YourNSSTurn.TurnStatus = TurnStatuses.TurnExpired Or
-                   YourNSSTurn.TurnStatus = TurnStatuses.CancelledLoadPermissionCancelled Or YourNSSTurn.TurnStatus = TurnStatuses.CancelledSystem Or
-                   YourNSSTurn.TurnStatus = TurnStatuses.CancelledUnderScore Or YourNSSTurn.TurnStatus = TurnStatuses.CancelledUser Then
-                    Return False
-                Else
-                    Return True
-                End If
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Shared Function IsTurnReadeyforLoadAllocationRegistering(YourTurnId As Int64) As Boolean
-            Try
-                Dim NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(YourTurnId)
-                Return IsTurnReadeyforLoadAllocationRegistering_(NSSTurn)
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
         Public Shared Function IsTurnReadeyforLoadAllocationRegistering(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure) As Boolean
             Try
                 Return IsTurnReadeyforLoadAllocationRegistering_(YourNSSTurn)
@@ -1646,10 +1472,6 @@ Namespace Turns
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
-
-
-
-
 
     End Class
 

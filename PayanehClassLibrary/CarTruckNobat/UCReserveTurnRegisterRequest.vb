@@ -10,6 +10,7 @@ Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Trucks.Exceptions
+Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions
 
@@ -34,7 +35,7 @@ Public Class UCReserveTurnRegisterRequest
         Try
             Dim InstanceComputers = New R2CoreMClassComputersManager
             Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
-            Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.ReserveTurnRegisterRequest(InstanceComputers.GetNSSCurrentComputer().MId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.ReserveTurnRegisterRequest(InstanceComputers.GetNSSCurrentComputer().MId, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             If YourViewMessage Then UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "درخواست صدور نوبت رزرو با موفقیت صادر شد" + vbCrLf + "شماره درخواست" + vbCrLf + TurnRegisterRequestId.ToString(), "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
                                 OrElse TypeOf ex Is UserCanNotRequestReserveTurnRegisteringException _

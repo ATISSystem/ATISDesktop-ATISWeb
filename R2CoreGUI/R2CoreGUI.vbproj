@@ -95,17 +95,13 @@
     <Reference Include="R2CoreLPR">
       <HintPath>..\R2CoreLPRecognizer\bin\Debug\R2CoreLPR.dll</HintPath>
     </Reference>
-    <Reference Include="Suprema.UFDatabase, Version=3.5.0.0, Culture=neutral">
+    <Reference Include="Suprema.UFMatcher, Version=3.7.5.1935, Culture=neutral, PublicKeyToken=48f19decc3fc5c20, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\ATISDesktopRefrences\Suprema.UFDatabase.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Suprema\BioMini\bin\x64\Suprema.UFMatcher.dll</HintPath>
     </Reference>
-    <Reference Include="Suprema.UFMatcher, Version=3.5.0.0, Culture=neutral">
+    <Reference Include="Suprema.UFScanner, Version=3.7.5.1935, Culture=neutral, PublicKeyToken=48f19decc3fc5c20, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\ATISDesktopRefrences\Suprema.UFMatcher.dll</HintPath>
-    </Reference>
-    <Reference Include="Suprema.UFScanner, Version=3.5.0.0, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\ATISDesktopRefrences\Suprema.UFScanner.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Suprema\BioMini\bin\x64\Suprema.UFScanner.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

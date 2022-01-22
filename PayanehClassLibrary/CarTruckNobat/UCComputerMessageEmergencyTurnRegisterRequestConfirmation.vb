@@ -11,6 +11,7 @@ Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.Cars
 Imports R2CoreParkingSystem.EnterExitManagement
+Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions
 
@@ -46,7 +47,7 @@ Public Class UCComputerMessageEmergencyTurnRegisterRequestConfirmation
     Private Sub UcButtonConfirmation_UCClickedEvent() Handles UcButtonConfirmation.UCClickedEvent
         Try
             Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
-            InstanceTurnRegisterRequest.EmergencyTurnRegister(_NSS.DataStruct, True, PayanehClassLibraryRequesters.UCComputerMessageEmergencyTurnRegisterRequestConfirmation, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            InstanceTurnRegisterRequest.EmergencyTurnRegister(_NSS.DataStruct, True, PayanehClassLibraryRequesters.UCComputerMessageEmergencyTurnRegisterRequestConfirmation, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCDeactiveComputerMessage()
         Catch ex As Exception When TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException OrElse TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException OrElse TypeOf ex Is DriverTruckInformationNotExistException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, True)

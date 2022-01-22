@@ -48,6 +48,7 @@ Imports PayanehClassLibrary.LoadNotification.LoadPermission
 Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
 Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
 Imports R2CoreParkingSystem.Logging
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
 
 Public Class FrmcEnterExit
     Inherits FrmcGeneral
@@ -316,14 +317,14 @@ Public Class FrmcEnterExit
                     LoadNotificationLoadPermissionManagement.DoControlforTruckPresentInParkingAndLastLoadPermission(NSSTruckTemp)
                     Dim TurnId As Int64 = Int64.MinValue
                     Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
-                    Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(NSSTruckTemp, False, False, TurnId, PayanehClassLibraryRequesters.FrmcEnterExit, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+                    Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(NSSTruckTemp, False, False, TurnId, PayanehClassLibraryRequesters.FrmcEnterExit, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                     _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + TurnRegisterRequestId.ToString & vbCrLf & "شماره نوبت :" + TurnId.ToString, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 End If
                 UcTurnRegisterRequestConfirmation.UCChkTruckNobat = True
                 R2CoreRFIDCardReaderInterface.BeepRFIDCardReader(0)
             ElseIf myEnterExitRequest = R2EnterExitRequestType.ExitRequest Then
                 Dim myMessage As String = "خروج امكان پذير است"
-                R2CoreParkingSystemMClassDriverMonitor.UpdateDriverMonitorInfForMaabar(New R2CoreParkingSystemDriverMonitorStructure(R2CoreMClassConfigurationManagement.GetComputerCode, _NSSTrafficCard.CardId, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, UcMoneyWallet.UCGetMblgh, UcMoneyWallet.UCGetReminderCharge, myMessage, 22, Color.Green, myLP,CurrentDateTime.DateTimeMilladi))
+                R2CoreParkingSystemMClassDriverMonitor.UpdateDriverMonitorInfForMaabar(New R2CoreParkingSystemDriverMonitorStructure(R2CoreMClassConfigurationManagement.GetComputerCode, _NSSTrafficCard.CardId, UcMoneyWallet.UCGetMoneyWalletCurrentCharge, UcMoneyWallet.UCGetMblgh, UcMoneyWallet.UCGetReminderCharge, myMessage, 22, Color.Green, myLP, CurrentDateTime.DateTimeMilladi))
                 R2CoreParkingSystemMClassEnterExitManagement.OpenGate(myEnterExitRequest)
                 If (R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreParkingSystemConfigurations.SepasSystem, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 1) = True) And (UcMoneyWallet.UCGetReminderCharge > 10000) Then
                     UcMoneyWallet.UCPrintBillan(UcMoneyWallet.PrintType.Reminder)
@@ -361,7 +362,8 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is R2CoreParkingSystemCameraFailException _
                             OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
                             OrElse TypeOf ex Is CarNotExistException _
-                            OrElse TypeOf ex Is R2CoreParkingSystemRelatedCarNotExistException
+                            OrElse TypeOf ex Is R2CoreParkingSystemRelatedCarNotExistException _
+                            OrElse TypeOf ex Is LoadCapacitorLoadNotFoundException
             InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreParkingSystemLogType.EntryExit, "بروز خطا هنگام ثبت تردد خودرو", _NSSTrafficCard.CardNo, ex.Message, myLP.GetLPString, myEnterExitRequest.ToString, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, CurrentDateTime.DateTimeMilladiFormated, CurrentDateTime.DateShamsiFull))
             Throw ex
         Catch ex As Exception
@@ -375,7 +377,7 @@ Public Class FrmcEnterExit
             Dim InstanceComputers = New R2CoreMClassComputersManager
             Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
             Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
-            InstanceTurnRegisterRequest.ReserveTurnRegisterRequest(InstanceComputers.GetNSSCurrentComputer().MId, InstanceSoftwareUsers.GetNSSSystemUser)
+            InstanceTurnRegisterRequest.ReserveTurnRegisterRequest(InstanceComputers.GetNSSCurrentComputer().MId, TurnType.Permanent, InstanceSoftwareUsers.GetNSSSystemUser)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -424,7 +426,8 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is R2CoreParkingSystemCameraFailException _
                             OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
                             OrElse TypeOf ex Is CarNotExistException _
-                            OrElse TypeOf ex Is R2CoreParkingSystemRelatedCarNotExistException
+                            OrElse TypeOf ex Is R2CoreParkingSystemRelatedCarNotExistException _
+                            OrElse TypeOf ex Is LoadCapacitorLoadNotFoundException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
             PleaseReserveTurn()
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
@@ -571,7 +574,8 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is R2CoreParkingSystemCameraFailException _
                             OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
                             OrElse TypeOf ex Is CarNotExistException _
-                            OrElse TypeOf ex Is R2CoreParkingSystemRelatedCarNotExistException
+                            OrElse TypeOf ex Is R2CoreParkingSystemRelatedCarNotExistException _
+                            OrElse TypeOf ex Is LoadCapacitorLoadNotFoundException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Information, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Nothing, True)
@@ -615,7 +619,8 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is R2CoreParkingSystemCameraFailException _
                             OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
                             OrElse TypeOf ex Is CarNotExistException _
-                            OrElse TypeOf ex Is R2CoreParkingSystemRelatedCarNotExistException
+                            OrElse TypeOf ex Is R2CoreParkingSystemRelatedCarNotExistException _
+                            OrElse TypeOf ex Is LoadCapacitorLoadNotFoundException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Information, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Nothing, True)

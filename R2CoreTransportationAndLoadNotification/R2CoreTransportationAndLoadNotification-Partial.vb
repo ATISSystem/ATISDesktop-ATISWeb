@@ -2187,6 +2187,8 @@ Namespace LoadCapacitor
                     YourNSS.AHSGId = NSSAnnouncementHallSubGroup.AHSGId
                     YourNSS.LoadStatus = NSSCurrentLoadCapacitorLoad.LoadStatus
 
+                    If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then Throw New LoadCapacitorLoadEditTimePassedException
+
                     'ویرایش گروه اصلی اعلام بار امکان پذیر نیست در صورتی که کاربر اشتباه کرده باشد باید بار را کامل حذف کند یک بار دیگر ثبت نماید
                     If NSSCurrentLoadCapacitorLoad.AHId <> YourNSS.AHId Then Throw New LoadCapacitorLoadEditingChangeAHIdNotAllowedException
 
@@ -2221,8 +2223,6 @@ Namespace LoadCapacitor
                                     Throw New LoadCapacitorLoadEditTimePassedException
                                 End If
                             End If
-                        Else
-                            If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then Throw New LoadCapacitorLoadEditTimePassedException
                         End If
                     End If
 
@@ -2334,6 +2334,10 @@ Namespace LoadCapacitor
 
                     Dim NSSAnnouncementHall = InstanceAnnouncementHalls.GetNSSAnnouncementHall(YourNSS.AHId)
                     Dim NSSAnnouncementHallSubGroup = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroupByLoaderTypeId(YourNSS.nTruckType)
+
+                    'کنترل اتمام زمان حذف بار
+                    If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then Throw New LoadCapacitorLoadDeleteTimePassedException
+
                     'بررسی بار فردا
                     Dim ComposeSearchString As String = NSSAnnouncementHallSubGroup.AHSGId.ToString + "="
                     Dim AllTommorowConfigforAHId As String() = Split(InstanceConfigurationOfAnnouncementHalls.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.TommorowLoads, NSSAnnouncementHall.AHId), "-")
@@ -2357,9 +2361,6 @@ Namespace LoadCapacitor
                                (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) Then
                                 Throw New LoadCapacitorLoadDeleteTimePassedException
                             End If
-                        Else
-                            'کنترل اتمام زمان حذف بار
-                            If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then Throw New LoadCapacitorLoadDeleteTimePassedException
                         End If
                     End If
 
@@ -4322,8 +4323,10 @@ Namespace LoadPermission
                       "Select Top 1 nEstelamID from dbtransport.dbo.tbEnterExit
                        Where strCardno = " & YourNSSCarTruck.NSSCar.nIdCar & " And isnull(nestelamid,0)<>0 and TurnStatus=" & TurnStatuses.UsedLoadPermissionRegistered & " 
                        Order By nEnterExitId Desc", 0, DS).GetRecordsCount() = 0 Then Throw New TruckHasNotAnyLoadPermissionException
-                Return InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(DS.Tables(0).Rows(0).Item("nEstelamID"))
+                Return InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(Convert.ToInt64(DS.Tables(0).Rows(0).Item("nEstelamID")))
             Catch ex As TruckHasNotAnyLoadPermissionException
+                Throw ex
+            Catch ex As LoadCapacitorLoadNotFoundException
                 Throw ex
             Catch ex As GetNSSException
                 Throw ex

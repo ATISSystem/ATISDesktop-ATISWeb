@@ -129,7 +129,6 @@ Public Class UCViewerNSSLoadAllocationExtended
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
-
     End Sub
 
     Private Sub PicBoxLoadAllocationCancellation_Click(sender As Object, e As EventArgs) Handles PicBoxLoadAllocationCancellation.Click

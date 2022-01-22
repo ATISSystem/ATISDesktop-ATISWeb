@@ -92,7 +92,7 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                 var LPSerial = Content.Split(';')[3];
 
                 var InstanceTurnRegisterRequest = new PayanehClassLibraryMClassTurnRegisterRequestManager();
-                InstanceTurnRegisterRequest.RealTimeTurnRegisterRequestWithLicensePlate(LPPelak, LPSerial, NSSSoftwareuser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullTurnControllerRealTimeTurnRegisterRequest);
+                InstanceTurnRegisterRequest.RealTimeTurnRegisterRequestWithLicensePlate(LPPelak, LPSerial, NSSSoftwareuser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullTurnControllerRealTimeTurnRegisterRequest,TurnType.Permanent);
 
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;

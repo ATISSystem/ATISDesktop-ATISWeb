@@ -155,7 +155,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                                        ex is TurnHandlingNotAllowedBecuaseTurnStatusException ||
                                        ex is UnableAllocatingTommorowLoadException ||
                                        ex is RequesterNotAllowTurnIssueBySeqTException ||
-                                       ex is RequesterNotAllowTurnIssueByLastLoadPermissionedException)
+                                       ex is RequesterNotAllowTurnIssueByLastLoadPermissionedException ||
+                                       ex is LoadCapacitorLoadNotFoundException)
             {
                 if (TurnIsTemporary && !(NSSTurn is null))
                 { InstanceCarTruckNobat.SetbFlagDriverToTrue(NSSTurn.nEnterExitId, true, InstanceLogin.GetNSSCurrentUser()); }

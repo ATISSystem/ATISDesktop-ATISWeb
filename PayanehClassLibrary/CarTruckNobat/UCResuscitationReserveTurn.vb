@@ -15,6 +15,7 @@ Imports R2CoreParkingSystem.MoneyWalletManagement
 Imports R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Trucks
 Imports R2CoreTransportationAndLoadNotification.Trucks.Exceptions
+Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions
 
@@ -71,7 +72,7 @@ Public Class UCResuscitationReserveTurn
             UCButtonResuscitation.UCEnable = False
             Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
             Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
-            InstanceTurnRegisterRequest.ResuscitationReserveTurn(UcResuscitationReserveTurnRegisterRequestIdFounder.UCGetCurrentNSS.TRRId, InstanceTrucks.GetNSSTruck(UcCar.UCGetNSS().nIdCar), True, PayanehClassLibraryRequesters.UCResuscitationReserveTurn, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            InstanceTurnRegisterRequest.ResuscitationReserveTurn(UcResuscitationReserveTurnRegisterRequestIdFounder.UCGetCurrentNSS.TRRId, InstanceTrucks.GetNSSTruck(UcCar.UCGetNSS().nIdCar), True, PayanehClassLibraryRequesters.UCResuscitationReserveTurn, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت رزرو با موفقیت احیاء شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                                 OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _

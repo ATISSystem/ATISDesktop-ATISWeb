@@ -94,6 +94,7 @@ Imports R2Core.PermissionManagement.Exceptions
 Imports PayanehClassLibrary.ComputerMessages
 Imports R2CoreParkingSystem.CarType
 Imports R2CoreParkingSystem.Logging
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
 
 Namespace Logging
 
@@ -146,14 +147,15 @@ Namespace CarTruckNobatManagement
         Private _NUserIdEnter As Int64
         Private _OtaghdarTurnNumber As String
         Private _StrCardNo As Int64
+        Private _RegisteringTimeStamp As DateTime
 
 
         Public Sub New()
             MyBase.New()
-            _nEnterExitId = 0 : _EnterDate = "" : _EnterTime = "" : _NSSDriverTruck = Nothing : _bFlagDriver = True : _NUserIdEnter = 0 : _OtaghdarTurnNumber = "" : _StrCardNo = 0
+            _nEnterExitId = 0 : _EnterDate = "" : _EnterTime = "" : _NSSDriverTruck = Nothing : _bFlagDriver = True : _NUserIdEnter = 0 : _OtaghdarTurnNumber = "" : _StrCardNo = 0 : _RegisteringTimeStamp = Now
         End Sub
 
-        Public Sub New(ByVal YournEnterExitId As Int64, ByVal YourEnterDate As String, YourEnterTime As String, YourNSSDriverTruck As R2StandardDriverTruckStructure, YourbFlagDriver As Boolean, YournUserIdEnter As Int64, YourOtaghdarTurnNumber As String, YourStrCardNo As Int64)
+        Public Sub New(ByVal YournEnterExitId As Int64, ByVal YourEnterDate As String, YourEnterTime As String, YourNSSDriverTruck As R2StandardDriverTruckStructure, YourbFlagDriver As Boolean, YournUserIdEnter As Int64, YourOtaghdarTurnNumber As String, YourStrCardNo As Int64, YourRegisteringTimeStamp As DateTime)
             _nEnterExitId = YournEnterExitId
             _EnterDate = YourEnterDate
             _EnterTime = YourEnterTime
@@ -162,6 +164,7 @@ Namespace CarTruckNobatManagement
             _NUserIdEnter = YournUserIdEnter
             _OtaghdarTurnNumber = YourOtaghdarTurnNumber
             _StrCardNo = YourStrCardNo
+            _RegisteringTimeStamp = YourRegisteringTimeStamp
         End Sub
 
         Public Property nEnterExitId() As Int64
@@ -231,6 +234,14 @@ Namespace CarTruckNobatManagement
             End Get
             Set(ByVal Value As Int64)
                 _StrCardNo = Value
+            End Set
+        End Property
+        Public Property RegisteringTimeStamp() As DateTime
+            Get
+                Return _RegisteringTimeStamp
+            End Get
+            Set(ByVal Value As DateTime)
+                _RegisteringTimeStamp = Value
             End Set
         End Property
 
@@ -378,7 +389,7 @@ Namespace CarTruckNobatManagement
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Dim TurnId = Int64.MinValue
                 Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
-                Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(YourNSSTruck, True, True, TurnId, PayanehClassLibraryRequesters.GetTurnofKiosk, YourUserNSS)
+                Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(YourNSSTruck, True, True, TurnId, PayanehClassLibraryRequesters.GetTurnofKiosk, TurnType.Temporary, YourUserNSS)
                 Return TurnId
             Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                                 OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
@@ -398,7 +409,8 @@ Namespace CarTruckNobatManagement
                                 OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
                                 OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
                                 OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
-                                OrElse TypeOf ex Is SoftwareUserMoneyWalletNotFoundException
+                                OrElse TypeOf ex Is SoftwareUserMoneyWalletNotFoundException _
+                                OrElse TypeOf ex Is LoadCapacitorLoadNotFoundException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                 End If
@@ -508,6 +520,7 @@ Namespace CarTruckNobatManagement
                 NSS.nUserIdEnter = Ds.Tables(0).Rows(0).Item("nUserIdEnter")
                 NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber")
                 NSS.StrCardNo = Ds.Tables(0).Rows(0).Item("StrCardNo")
+                NSS.RegisteringTimeStamp = Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp")
                 Return NSS
             Catch exx As GetNSSException
                 Throw exx
@@ -516,7 +529,7 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
-        Public Function GetReserveTurn(YourTurnRegisterRequestId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
+        Public Function GetReserveTurn(YourTurnRegisterRequestId As Int64, YourTurnType As TurnType, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -544,9 +557,11 @@ Namespace CarTruckNobatManagement
                 CmdSql.CommandText = "Select top 1 Substring(OtaghdarTurnNumber,7,20) from tbenterexit with (tablockx) Where Substring(OtaghdarTurnNumber,1,5)='" & NSSSeqT.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() & "' order by OtaghdarTurnNumber desc"
                 SequentialTurnId = CmdSql.ExecuteScalar + 1
                 SequentialTurnId_ = NSSSeqT.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - SequentialTurnId.ToString().Trim().Length) + SequentialTurnId.ToString().Trim()
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim TurnRegisteringTimeStamp = InstanceTurns.GetTurnRegisteringTimeStampWithTurnType(YourTurnType)
 
                 'ثبت نوبت ناوگان باری
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTRR.Description & "',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',1,1," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatuses.CancelledSystem & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ")"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTRR.Description & "',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',1,1," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatuses.CancelledSystem & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladiFormated & "')"
                 CmdSql.ExecuteNonQuery()
 
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -726,6 +741,7 @@ Namespace CarTruckNobatManagement
                 NSS.nUserIdEnter = Ds.Tables(0).Rows(0).Item("nUserIdEnter")
                 NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber")
                 NSS.StrCardNo = Ds.Tables(0).Rows(0).Item("StrCardNo")
+                NSS.RegisteringTimeStamp = Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp")
                 Return NSS
             Catch exx As GetNSSException
                 Throw exx
@@ -734,7 +750,7 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
-        Public Shared Function GetReserveTurn(YourTurnRegisterRequestId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
+        Public Shared Function GetReserveTurn(YourTurnRegisterRequestId As Int64, YourTurnType As TurnType, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -758,9 +774,11 @@ Namespace CarTruckNobatManagement
                 CmdSql.CommandText = "Select top 1 Substring(OtaghdarTurnNumber,7,20) from tbenterexit with (tablockx) Where Substring(OtaghdarTurnNumber,1,5)='" & NSSSeqT.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() & "' order by OtaghdarTurnNumber desc"
                 SequentialTurnId = CmdSql.ExecuteScalar + 1
                 SequentialTurnId_ = NSSSeqT.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - SequentialTurnId.ToString().Trim().Length) + SequentialTurnId.ToString().Trim()
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim TurnRegisteringTimeStamp = InstanceTurns.GetTurnRegisteringTimeStampWithTurnType(YourTurnType)
 
                 'ثبت نوبت ناوگان باری
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTRR.Description & "',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',1,1," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatuses.CancelledSystem & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ")"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTRR.Description & "',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',1,1," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatuses.CancelledSystem & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladiFormated & "')"
                 CmdSql.ExecuteNonQuery()
 
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -1065,7 +1083,7 @@ Namespace CarTruckNobatManagement
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select Top 1 * from dbtransport.dbo.TbEnterExit Where StrCardNo=" & YourNSSCar.nIdCar & " and (bFlagDriver=0) Order By nEnterExitId desc", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNobatException("ناوگان نوبت ندارد")
                 End If
-                Return New R2StandardCarTruckNobatStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate"), Ds.Tables(0).Rows(0).Item("StrEnterTime"), PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(Ds.Tables(0).Rows(0).Item("nDriverCode")), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"))
+                Return New R2StandardCarTruckNobatStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate"), Ds.Tables(0).Rows(0).Item("StrEnterTime"), PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(Ds.Tables(0).Rows(0).Item("nDriverCode")), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
             Catch exx As GetNobatException
                 Throw exx
             Catch ex As Exception
@@ -1111,7 +1129,7 @@ Namespace CarTruckNobatManagement
                 Dim Ds As New DataSet
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select Top " & YourTotalNumberofRecordsRequested & " * from dbtransport.dbo.TbEnterExit Where StrCardNo='" & YourTruckId & "' Order By nEnterExitId Desc", 1, Ds)
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    Dim NSS As R2StandardCarTruckNobatStructure = New R2StandardCarTruckNobatStructure(Ds.Tables(0).Rows(Loopx).Item("nEnterExitId"), Ds.Tables(0).Rows(Loopx).Item("StrEnterDate"), Ds.Tables(0).Rows(Loopx).Item("StrEnterTime"), PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(Ds.Tables(0).Rows(Loopx).Item("nDriverCode")), Ds.Tables(0).Rows(Loopx).Item("bFlagDriver"), Ds.Tables(0).Rows(Loopx).Item("nUserIdEnter"), Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber"), Ds.Tables(0).Rows(Loopx).Item("StrCardNo"))
+                    Dim NSS As R2StandardCarTruckNobatStructure = New R2StandardCarTruckNobatStructure(Ds.Tables(0).Rows(Loopx).Item("nEnterExitId"), Ds.Tables(0).Rows(Loopx).Item("StrEnterDate"), Ds.Tables(0).Rows(Loopx).Item("StrEnterTime"), PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(Ds.Tables(0).Rows(Loopx).Item("nDriverCode")), Ds.Tables(0).Rows(Loopx).Item("bFlagDriver"), Ds.Tables(0).Rows(Loopx).Item("nUserIdEnter"), Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber"), Ds.Tables(0).Rows(Loopx).Item("StrCardNo"), Ds.Tables(0).Rows(Loopx).Item("RegisteringTimeStamp"))
                     Lst.Add(NSS)
                 Next
                 Return Lst
@@ -1172,7 +1190,7 @@ Namespace CarTruckNobatManagement
                             Dim NSSCarTruck = New R2CoreTransportationAndLoadNotificationStandardTruckStructure(New R2StandardCarStructure(nIdCar, Nothing, Nothing, Nothing, Nothing), Nothing)
                             Dim TurnId As Int64 = Int64.MinValue
                             Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
-                            Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(NSSCarTruck, True, True, TurnId, PayanehClassLibraryRequesters.AutomaticTurnRegistering, InstanceSoftwareUsers.GetNSSSystemUser())
+                            Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(NSSCarTruck, True, True, TurnId, PayanehClassLibraryRequesters.AutomaticTurnRegistering, TurnType.Permanent, InstanceSoftwareUsers.GetNSSSystemUser())
                             If InstanceLogging.GetNSSLogType(PayanehClassLibraryLogType.AutomaticTurnRegistering).Active Then
                                 InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.AutomaticTurnRegistering, InstanceLogging.GetNSSLogType(PayanehClassLibraryLogType.AutomaticTurnRegistering).LogTitle, "nIdCar=" + nIdCar.ToString(), "TurnRegisterRequestId=" + TurnRegisterRequestId.ToString(), String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), Nothing))
                             End If
@@ -1193,7 +1211,9 @@ Namespace CarTruckNobatManagement
                                 OrElse TypeOf ex Is GetDataException _
                                 OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
                                 OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
-                                OrElse TypeOf ex Is TurnPrintingInfNotFoundException
+                                OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
+                                OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
+                                OrElse TypeOf ex Is LoadCapacitorLoadNotFoundException
                             If InstanceLogging.GetNSSLogType(PayanehClassLibraryLogType.AutomaticTurnRegistering).Active Then
                                 InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.AutomaticTurnRegistering, InstanceLogging.GetNSSLogType(PayanehClassLibraryLogType.AutomaticTurnRegistering).LogTitle, "nIdCar=" + nIdCar.ToString(), ex.Message, "CurrentTurnId=" + nEnterExitId.ToString(), "AHId=" + AHId.ToString(), "AHSGId=" + AHSGId.ToString(), R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), Nothing))
                             End If
@@ -1219,6 +1239,7 @@ Namespace CarTruckNobatManagement
         Protected NSSDriverTruck As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure = Nothing
         Protected NSSSoftwareUser As R2CoreStandardSoftwareUserStructure = Nothing
         Protected NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = Nothing
+        Protected TurnType As TurnType = TurnType.None
         Private CostOfTurnRegistering As Int64 = Int64.MinValue
 
         Public ReadOnly Property GetCostOfTurnRegistering As Int64
@@ -1236,11 +1257,12 @@ Namespace CarTruckNobatManagement
         Public Sub New()
         End Sub
 
-        Public Sub New(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourNSSTurnRegisteringRequest As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure, YourRequesterId As Int64)
+        Public Sub New(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourNSSTurnRegisteringRequest As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure, YourRequesterId As Int64, YourTurnType As TurnType)
             Try
                 NSSTrafficCard = YourNSSTrafficCard
                 NSSTurnRegisteringRequest = YourNSSTurnRegisteringRequest
                 NSSSoftwareUser = YourUserNSS
+                TurnType = YourTurnType
 
                 Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
                 Dim InstanceTruckDrivers = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
@@ -1268,6 +1290,8 @@ Namespace CarTruckNobatManagement
                     NSSLoad = InstanceLoadPermission.GetTruckLastLoadWhichPermissioned(NSSTruck)
                     If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.RequesterCanSendRequestforTurnIssueByLastLoadPermissioned, YourRequesterId, NSSLoad.AHSGId) Then Throw New RequesterNotAllowTurnIssueByLastLoadPermissionedException
                 Catch ex As RequesterNotAllowTurnIssueByLastLoadPermissionedException
+                    Throw ex
+                Catch ex As LoadCapacitorLoadNotFoundException
                     Throw ex
                 Catch ex As TruckHasNotAnyLoadPermissionException
                 Catch ex As Exception
@@ -1330,7 +1354,8 @@ Namespace CarTruckNobatManagement
                                 OrElse TypeOf ex Is TruckNotFoundException _
                                 OrElse TypeOf ex Is SequentialTurnIsNotActiveException _
                                 OrElse TypeOf ex Is TruckDriverNotFoundException _
-                                OrElse TypeOf ex Is DriverTruckInformationNotExistException
+                                OrElse TypeOf ex Is DriverTruckInformationNotExistException _
+                                OrElse TypeOf ex Is LoadCapacitorLoadNotFoundException
                 Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1370,14 +1395,15 @@ Namespace CarTruckNobatManagement
     Public Class RealTimeTurnRegisteringStrategy
         Inherits TurnRegisteringStrategy
 
-        Public Sub New(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourNSSTurnRegisteringRequest As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure, YourRequesterId As Int64)
-            MyBase.New(YourNSSTrafficCard, YourNSSTurnRegisteringRequest, YourUserNSS, YourRequesterId)
+        Public Sub New(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourNSSTurnRegisteringRequest As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure, YourRequesterId As Int64, YourTurnType As TurnType)
+            MyBase.New(YourNSSTrafficCard, YourNSSTurnRegisteringRequest, YourUserNSS, YourRequesterId, YourTurnType)
         End Sub
 
         Private Sub DoStrategyRequestedEvent_Handler() Handles MyClass.DoStrategyRequestedEvent
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
                 'تراکنش صدور نوبت
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
@@ -1395,13 +1421,12 @@ Namespace CarTruckNobatManagement
                     SequentialTurnId = Split(TurnIdTemp, ":")(0) + 1
                 End If
                 SequentialTurnId_ = NSSSequentialTurn.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - SequentialTurnId.ToString().Trim().Length) + SequentialTurnId.ToString().Trim()
-
+                Dim TurnRegisteringTimeStamp = InstanceTurns.GetTurnRegisteringTimeStampWithTurnType(TurnType)
                 'ثبت نوبت ناوگان باری
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTurnRegisteringRequest.Description & "',0," & NSSSoftwareUser.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',0,0," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatuses.Registered & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ")"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTurnRegisteringRequest.Description & "',0," & NSSSoftwareUser.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',0,0," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatuses.Registered & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladiFormated & "')"
                 CmdSql.ExecuteNonQuery()
 
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
-                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
                 NSSTurn = InstanceTurns.GetNSSTurn(mynIdEnterExit)
                 DoStrategyComplementaryWorks()
             Catch ex As Exception When TypeOf ex Is TurnNotFoundException OrElse TypeOf ex Is ReserveTurnAlreadyUsedException
@@ -1422,8 +1447,8 @@ Namespace CarTruckNobatManagement
     Public Class ReserveTurnRegisteringStrategy
         Inherits TurnRegisteringStrategy
 
-        Public Sub New(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourNSSTurnRegisteringRequest As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure, YourRequesterId As Int64)
-            MyBase.New(YourNSSTrafficCard, YourNSSTurnRegisteringRequest, YourUserNSS, YourRequesterId)
+        Public Sub New(YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourNSSTurnRegisteringRequest As R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure, YourUserNSS As R2CoreStandardSoftwareUserStructure, YourRequesterId As Int64, YourTurnType As TurnType)
+            MyBase.New(YourNSSTrafficCard, YourNSSTurnRegisteringRequest, YourUserNSS, YourRequesterId, YourTurnType)
         End Sub
 
         Private Sub DoStrategyRequestedEvent_Handler() Handles MyClass.DoStrategyRequestedEvent
@@ -1444,10 +1469,11 @@ Namespace CarTruckNobatManagement
                 If TurnIdTemp = String.Empty Then Throw New ResuscitationReserveTurnFailedException
                 SequentialTurnId = Split(TurnIdTemp, ":")(0)
                 SequentialTurnId_ = NSSSequentialTurn.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - SequentialTurnId.ToString().Trim().Length) + SequentialTurnId.ToString().Trim() + ":" + NSSTurn.nEnterExitId.ToString
-
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim TurnRegisteringTimeStamp = IIf(TurnType = TurnType.Permanent, InstanceConfiguration.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 4), _DateTime.GetCurrentDateTimeMilladiFormated)
                 'احیاء نوبت رزرو
                 CmdSql.CommandText = "Update dbtransport.dbo.tbEnterExit 
-                                      Set strCardno=" & NSSTruck.NSSCar.nIdCar & ",strDriverName='" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',strDesc=strDesc+' - " & NSSSoftwareUser.UserName & "',bFlag=0,bFlagDriver=0,nDriverCode=" & NSSDriverTruck.NSSDriver.nIdPerson & ",OtaghdarTurnNumber='" & SequentialTurnId_ & "',TurnStatus=" & TurnStatuses.Registered & " 
+                                      Set strCardno=" & NSSTruck.NSSCar.nIdCar & ",strDriverName='" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',strDesc=strDesc+' - " & NSSSoftwareUser.UserName & "',bFlag=0,bFlagDriver=0,nDriverCode=" & NSSDriverTruck.NSSDriver.nIdPerson & ",OtaghdarTurnNumber='" & SequentialTurnId_ & "',TurnStatus=" & TurnStatuses.Registered & ",RegisteringTimeStamp='" & TurnRegisteringTimeStamp & "'
                                       Where nEnterExitId = " & NSSTurn.nEnterExitId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -1588,7 +1614,7 @@ Namespace TurnRegisterRequest
     Public NotInheritable Class PayanehClassLibraryMClassTurnRegisterRequestManager
         Private _DateTime As New R2DateTime
 
-        Public Sub RealTimeTurnRegisterRequestWithLicensePlate(YourLPPelak As String, YourLPSerial As String, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourRequesterId As Int64)
+        Public Sub RealTimeTurnRegisterRequestWithLicensePlate(YourLPPelak As String, YourLPSerial As String, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourRequesterId As Int64, YourTurnType As TurnType)
             Try
                 Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
                 InstanceSQLInjectionPrevention.GeneralAuthorization(YourLPPelak)
@@ -1606,7 +1632,7 @@ Namespace TurnRegisterRequest
                     NSSTruck = InstanceTrucks.GetNSSTruck(TruckId)
                     LoadNotificationLoadPermissionManagement.DoControlforTruckPresentInParkingAndLastLoadPermission(NSSTruck)
                     Dim TurnId As Int64
-                    InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(NSSTruck, False, True, TurnId, YourRequesterId, YourNSSSoftwareUser)
+                    InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(NSSTruck, False, True, TurnId, YourRequesterId, YourTurnType, YourNSSSoftwareUser)
                 Else
                     Throw New TruckNotFoundException
                 End If
@@ -1653,7 +1679,7 @@ Namespace TurnRegisterRequest
             End Try
         End Function
 
-        Public Function RealTimeTurnRegisterRequest(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourTurnPrintRedirect As Boolean, YourMoneyWalletInventoryControl As Boolean, ByRef YourTurnId As Int64, YourRequesterId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
+        Public Function RealTimeTurnRegisterRequest(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourTurnPrintRedirect As Boolean, YourMoneyWalletInventoryControl As Boolean, ByRef YourTurnId As Int64, YourRequesterId As Int64, YourTurnType As TurnType, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Try
                 Dim InstanceTrafficCard = New R2CoreParkingSystemInstanceTrafficCardsManager
                 Dim InstanceTurnRegisterRequest = New R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManager
@@ -1664,7 +1690,7 @@ Namespace TurnRegisterRequest
                 'ثبت درخواست صدور نوبت بلادرنگ
                 Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.TurnRegisterRequestRegistering(New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(Nothing, TurnRegisterRequestTypes.RealTime, YourNSSTruck.NSSCar.nIdCar, InstanceTurnRegisterRequest.GetNSSTurnRegisterRequestType(TurnRegisterRequestTypes.RealTime).TRRTypeTitle, Nothing, Nothing, Nothing, Nothing), Nothing, YourUserNSS)
                 'ثبت نوبت
-                Dim Strategy = New RealTimeTurnRegisteringStrategy(NSSTrafficCard, InstanceTurnRegisterRequest.GetNSSTurnRegisterRequest(TurnRegisterRequestId), YourUserNSS, YourRequesterId)
+                Dim Strategy = New RealTimeTurnRegisteringStrategy(NSSTrafficCard, InstanceTurnRegisterRequest.GetNSSTurnRegisterRequest(TurnRegisterRequestId), YourUserNSS, YourRequesterId, YourTurnType)
                 Strategy.DoStrategy()
                 YourTurnId = Strategy.GetNSSTurn.nEnterExitId
                 'ثبت رابطه نوبت با درخواست صدور نوبت از طریق فضانام مدیریت روابط نهادی
@@ -1693,7 +1719,9 @@ Namespace TurnRegisterRequest
                                 OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
                                 OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
                                 OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
-                                OrElse TypeOf ex Is DriverTruckInformationNotExistException
+                                OrElse TypeOf ex Is DriverTruckInformationNotExistException _
+                                OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
+                                OrElse TypeOf ex Is LoadCapacitorLoadNotFoundException
                 Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1729,14 +1757,14 @@ Namespace TurnRegisterRequest
         End Function
 
         'Note YourDataStruct: Data1=nCarId Data2=TurnRegisterRequestId
-        Public Sub EmergencyTurnRegister(YourDataStruct As DataStruct, YourTurnPrintRedirect As Boolean, YourRequesterId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure)
+        Public Sub EmergencyTurnRegister(YourDataStruct As DataStruct, YourTurnPrintRedirect As Boolean, YourRequesterId As Int64, YourTurnType As TurnType, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Try
                 Dim InstanceTrafficCards = New R2CoreParkingSystemInstanceTrafficCardsManager
                 Dim InstanceCars = New R2CoreParkingSystemInstanceCarsManager
                 Dim NSSTrafficCard = InstanceTrafficCards.GetNSSTrafficCard(InstanceCars.GetCardIdFromnIdCar(YourDataStruct.Data1))
                 'ثبت نوبت
                 Dim InstanceTurnRegisterRequest = New R2CoreTransportationAndLoadNotificationMClassTurnRegisterRequestManager
-                Dim Strategy = New RealTimeTurnRegisteringStrategy(NSSTrafficCard, InstanceTurnRegisterRequest.GetNSSTurnRegisterRequest(YourDataStruct.Data2), YourUserNSS, YourRequesterId)
+                Dim Strategy = New RealTimeTurnRegisteringStrategy(NSSTrafficCard, InstanceTurnRegisterRequest.GetNSSTurnRegisterRequest(YourDataStruct.Data2), YourUserNSS, YourRequesterId, YourTurnType)
                 Strategy.DoStrategy()
                 Dim TurnId = Strategy.GetNSSTurn.nEnterExitId
                 'ثبت رابطه نوبت با درخواست صدور نوبت از طریق فضانام مدیریت روابط نهادی
@@ -1770,7 +1798,7 @@ Namespace TurnRegisterRequest
             End Try
         End Sub
 
-        Public Function ReserveTurnRegisterRequest(YourComputerId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
+        Public Function ReserveTurnRegisterRequest(YourComputerId As Int64, YourTurnType As TurnType, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Try
                 Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
                 'کنترل مجوز
@@ -1782,7 +1810,7 @@ Namespace TurnRegisterRequest
                 Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.TurnRegisterRequestRegistering(New R2CoreTransportationAndLoadNotificationStandardTurnRegisterRequestStructure(Nothing, TurnRegisterRequestTypes.Reserve, InstanceConfiguration.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 1), InstanceTurnRegisterRequest.GetNSSTurnRegisterRequestType(TurnRegisterRequestTypes.Reserve).TRRTypeTitle, Nothing, Nothing, Nothing, Nothing), Nothing, YourUserNSS)
                 'ثبت نوبت
                 Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
-                Dim TurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetReserveTurn(TurnRegisterRequestId, YourUserNSS)
+                Dim TurnId = PayanehClassLibraryMClassCarTruckNobatManagement.GetReserveTurn(TurnRegisterRequestId, YourTurnType, YourUserNSS)
                 'ثبت رابطه نوبت با درخواست صدور نوبت از طریق فضانام مدیریت روابط نهادی
                 R2CoreMClassEntityRelationManagement.RegisteringEntityRelation(New R2StandardEntityRelationStructure(Nothing, R2CoreTransportationAndLoadNotificationEntityRelationTypes.Turn_TurnRegisterRequest, TurnId, TurnRegisterRequestId, Nothing), RelationDeactiveTypes.BothDeactive)
 
@@ -1803,7 +1831,7 @@ Namespace TurnRegisterRequest
             End Try
         End Function
 
-        Public Function ResuscitationReserveTurn(YourTurnRegisterRequestId As Int64, YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourMoneyWalletInventoryControl As Boolean, YourRequesterId As Int64, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
+        Public Function ResuscitationReserveTurn(YourTurnRegisterRequestId As Int64, YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourMoneyWalletInventoryControl As Boolean, YourRequesterId As Int64, YourTurnType As TurnType, YourUserNSS As R2CoreStandardSoftwareUserStructure) As Int64
             Try
                 Dim InstancePermissions = New R2CoreInstansePermissionsManager
                 If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.UserCanResuscitationReserveTurn, YourUserNSS.UserId, 0) Then Throw New UserCanNotResuscitationReserveTurnException
@@ -1821,7 +1849,7 @@ Namespace TurnRegisterRequest
                 If YourMoneyWalletInventoryControl Then If Not IsMoneyWalletInventoryIsEnoughForTurnRegistering(NSSTrafficCard) Then Throw New MoneyWalletCurrentChargeNotEnoughException
 
                 'ثبت نوبت
-                Dim Strategy = New ReserveTurnRegisteringStrategy(NSSTrafficCard, InstanceTurnRegisterRequest.GetNSSTurnRegisterRequest(YourTurnRegisterRequestId), YourUserNSS, YourRequesterId)
+                Dim Strategy = New ReserveTurnRegisteringStrategy(NSSTrafficCard, InstanceTurnRegisterRequest.GetNSSTurnRegisterRequest(YourTurnRegisterRequestId), YourUserNSS, YourRequesterId, YourTurnType)
                 Strategy.DoStrategy()
                 Return Strategy.GetNSSTurn.nEnterExitId
             Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _

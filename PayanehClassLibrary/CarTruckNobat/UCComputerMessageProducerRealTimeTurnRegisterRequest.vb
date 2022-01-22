@@ -12,6 +12,7 @@ Imports R2CoreGUI
 Imports R2CoreParkingSystem.EnterExitManagement
 Imports R2CoreParkingSystem.MoneyWalletManagement
 Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
 Imports R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Trucks
 Imports R2CoreTransportationAndLoadNotification.Trucks.Exceptions
@@ -43,7 +44,7 @@ Public Class UCComputerMessageProducerRealTimeTurnRegisterRequest
             'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
             LoadNotificationLoadPermissionManagement.DoControlforTruckPresentInParkingAndLastLoadPermission(NSSTruckTemp)
             Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
-            InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(NSSTruckTemp, True, True, Nothing, PayanehClassLibraryRequesters.UCComputerMessageProducerRealTimeTurnRegisterRequest, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(NSSTruckTemp, True, True, Nothing, PayanehClassLibraryRequesters.UCComputerMessageProducerRealTimeTurnRegisterRequest, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                                 OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                                 OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
@@ -64,7 +65,8 @@ Public Class UCComputerMessageProducerRealTimeTurnRegisterRequest
                                 OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
                                 OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
                                 OrElse TypeOf ex Is TerraficCardNotFoundException _
-                                OrElse TypeOf ex Is DriverTruckInformationNotExistException
+                                OrElse TypeOf ex Is DriverTruckInformationNotExistException _
+                                OrElse TypeOf ex Is LoadCapacitorLoadNotFoundException
             Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -105,7 +107,8 @@ Public Class UCComputerMessageProducerRealTimeTurnRegisterRequest
                                 OrElse TypeOf ex Is TurnPrintingInfNotFoundException _
                                 OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
                                 OrElse TypeOf ex Is TerraficCardNotFoundException _
-                                OrElse TypeOf ex Is DriverTruckInformationNotExistException
+                                OrElse TypeOf ex Is DriverTruckInformationNotExistException _
+                                OrElse TypeOf ex Is LoadCapacitorLoadNotFoundException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Information, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
