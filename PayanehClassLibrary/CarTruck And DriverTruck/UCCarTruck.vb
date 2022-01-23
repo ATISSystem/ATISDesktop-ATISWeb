@@ -13,7 +13,7 @@ Public Class UCCarTruck
 
 
     Public Event UCViewCarTruckInformationCompletedEvent(CarId As String)
-    Public Event UCViewCarTruckInformationNotCompletedEvent()
+    Public Event UCViewCarTruckInformationNotCompletedEvent(Message As String)
     Public Event UCRefreshedGeneralEvent()
     Private _CurrentNSS As R2StandardCarTruckStructure = Nothing
     Private _WS As PayanehWS.PayanehWebService = New PayanehWS.PayanehWebService()
@@ -158,10 +158,10 @@ Public Class UCCarTruck
             UcCar.UCViewCarInformation(_CurrentNSS.NSSCar)
         Catch ex As System.Web.Services.Protocols.SoapException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-            RaiseEvent UCViewCarTruckInformationNotCompletedEvent()
+            RaiseEvent UCViewCarTruckInformationNotCompletedEvent(ex.Message)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-            RaiseEvent UCViewCarTruckInformationNotCompletedEvent()
+            RaiseEvent UCViewCarTruckInformationNotCompletedEvent(ex.Message)
         End Try
     End Sub
 

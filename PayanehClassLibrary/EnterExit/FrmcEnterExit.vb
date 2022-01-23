@@ -585,11 +585,11 @@ Public Class FrmcEnterExit
         StartReading()
     End Sub
 
-    Private Sub UcCarTruckUpdateInf_UCViewCarTruckInformationNotCompletedEvent() Handles UcCarTruckUpdateInf.UCViewCarTruckInformationNotCompletedEvent
+    Private Sub UcCarTruckUpdateInf_UCViewCarTruckInformationNotCompletedEvent(Message As String) Handles UcCarTruckUpdateInf.UCViewCarTruckInformationNotCompletedEvent
         Try
             UcCarTruckUpdateInf.Visible = False
             UcCarTruckUpdateInf.SendToBack()
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.CarTruckUpdateInfNotSuccess, "عدم موفقیت در آپدیت اطلاعات ناوگان باری", UcCarTruckUpdateInf.UcCarTruck.UcNumberStrBodyNoSearch.UCValue, _NSSTrafficCard.CardNo, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.CarTruckUpdateInfNotSuccess, "عدم موفقیت در آپدیت اطلاعات ناوگان باری", UcCarTruckUpdateInf.UcCarTruck.UcNumberStrBodyNoSearch.UCValue, _NSSTrafficCard.CardNo, 0, 0, Message, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
             DoProccess(_NSSTrafficCard.CardNo, False)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                             OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
@@ -629,6 +629,9 @@ Public Class FrmcEnterExit
         End Try
         StartReading()
     End Sub
+
+
+
 
 
 

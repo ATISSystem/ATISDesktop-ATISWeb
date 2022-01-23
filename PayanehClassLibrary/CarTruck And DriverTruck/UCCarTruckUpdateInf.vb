@@ -14,7 +14,7 @@ Public Class UCCarTruckUpdateInf
     Inherits UCGeneral
 
     Public Event UCViewCarTruckInformationCompletedEvent(CarId As String)
-    Public Event UCViewCarTruckInformationNotCompletedEvent()
+    Public Event UCViewCarTruckInformationNotCompletedEvent(Message As String)
 
 
 
@@ -65,14 +65,6 @@ Public Class UCCarTruckUpdateInf
         End Try
     End Sub
 
-    Private Sub UcCarTruck_UCViewCarTruckInformationNotCompletedEvent() Handles UcCarTruck.UCViewCarTruckInformationNotCompletedEvent
-        Try
-            RaiseEvent UCViewCarTruckInformationNotCompletedEvent()
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
     Private Sub UCCarTruckUpdateInf_UCGotFocusedEvent() Handles Me.UCGotFocusedEvent
         Try
             UcCarTruck.UCFocus()
@@ -80,6 +72,17 @@ Public Class UCCarTruckUpdateInf
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
+
+    Private Sub UcCarTruck_UCViewCarTruckInformationNotCompletedEvent(Message As String) Handles UcCarTruck.UCViewCarTruckInformationNotCompletedEvent
+        Try
+            RaiseEvent UCViewCarTruckInformationNotCompletedEvent(Message)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+
+
 
 
 
