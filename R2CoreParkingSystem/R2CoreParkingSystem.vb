@@ -2141,6 +2141,7 @@ Namespace MoneyWalletManagement
                 Dim myNSSCar As R2StandardCarStructure = Nothing
                 Try
                     myNSSCar = InstanceCars.GetNSSCar(InstanceCars.GetnIdCarFromCardId(YourNSSTrafficCard.CardId))
+                Catch ex As R2CoreParkingSystemRelatedCarNotExistException
                 Catch ex As RelatedTerraficCardNotFoundException
                 Catch exx As GetDataException
                 Catch ex As GetNSSException
@@ -2188,6 +2189,8 @@ Namespace MoneyWalletManagement
                 Dim myNSSCar As R2StandardCarStructure = Nothing
                 Try
                     myNSSCar = R2CoreParkingSystemMClassCars.GetNSSCar(R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(YourNSSTrafficCard.CardId))
+                Catch ex As R2CoreParkingSystemRelatedCarNotExistException
+                Catch ex As RelatedTerraficCardNotFoundException
                 Catch exx As GetDataException
                 Catch ex As GetNSSException
                 End Try
@@ -2728,9 +2731,9 @@ Namespace Cars
                     NSS.nIdCity = Ds.Tables(0).Rows(0).Item("nIdCity")
                     Return NSS
                 Else
-                    Throw New GetNSSException
+                    Throw New RelatedTerraficCardNotFoundException
                 End If
-            Catch exx As GetNSSException
+            Catch exx As RelatedTerraficCardNotFoundException
                 Throw exx
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -3062,7 +3065,7 @@ Namespace Cars
         Inherits ApplicationException
         Public Overrides ReadOnly Property Message As String
             Get
-                Return "خودروی مرتبط یافت نشد"
+                Return "اطلاعات خودروی مرتبط با کارت تردد یافت نشد" + vbCrLf + "به واحد ثبت مشخصات مراجعه نمایید"
             End Get
         End Property
     End Class

@@ -2187,8 +2187,6 @@ Namespace LoadCapacitor
                     YourNSS.AHSGId = NSSAnnouncementHallSubGroup.AHSGId
                     YourNSS.LoadStatus = NSSCurrentLoadCapacitorLoad.LoadStatus
 
-                    If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then Throw New LoadCapacitorLoadEditTimePassedException
-
                     'ویرایش گروه اصلی اعلام بار امکان پذیر نیست در صورتی که کاربر اشتباه کرده باشد باید بار را کامل حذف کند یک بار دیگر ثبت نماید
                     If NSSCurrentLoadCapacitorLoad.AHId <> YourNSS.AHId Then Throw New LoadCapacitorLoadEditingChangeAHIdNotAllowedException
 
@@ -2219,7 +2217,8 @@ Namespace LoadCapacitor
                                    (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) And
                                    (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) And
                                    (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering) And
-                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) Then
+                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) And
+                                   InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then
                                     Throw New LoadCapacitorLoadEditTimePassedException
                                 End If
                             End If
