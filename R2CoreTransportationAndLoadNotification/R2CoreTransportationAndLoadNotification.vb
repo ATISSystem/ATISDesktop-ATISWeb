@@ -1100,11 +1100,9 @@ Namespace Turns
             End Try
         End Function
 
-        Public Function IsTurnReadeyforLoadPermissionRegistering(YourTurnId As Int64) As Boolean
+        Public Function IsTurnReadeyforLoadPermissionRegistering(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure) As Boolean
             Try
-                Dim InstanceTurn = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
-                Dim NSSTurn = InstanceTurn.GetNSSTurn(YourTurnId)
-                If NSSTurn.TurnStatus = TurnStatuses.UsedLoadAllocationRegistered Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadAllocationCancelled Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadPermissionCancelled Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationUser Then
+                If YourNSSTurn.TurnStatus = TurnStatuses.UsedLoadAllocationRegistered Or YourNSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadAllocationCancelled Or YourNSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadPermissionCancelled Or YourNSSTurn.TurnStatus = TurnStatuses.ResuscitationUser Then
                     Return True
                 Else
                     Return False
@@ -1114,38 +1112,18 @@ Namespace Turns
             End Try
         End Function
 
-        Public Sub LoadPermissionRegistering(YourTurnId As Int64)
-            Dim CmdSql As New SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+        Public Sub LoadPermissionRegistering(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure, YourTransaction As SqlCommand)
             Try
-                Dim InstanceTurn = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
-                Dim InstanceTruck = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
-                Dim NSSTurn = InstanceTurn.GetNSSTurn(YourTurnId)
-                Dim NSSTruck = InstanceTruck.GetNSSTruck(NSSTurn)
                 'کنترل وضعیت نوبت
-                If Not (NSSTurn.TurnStatus = TurnStatuses.UsedLoadAllocationRegistered Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadAllocationCancelled Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadPermissionCancelled) Then Throw New TurnHandlingNotAllowedBecuaseTurnStatusException
+                If Not (YourNSSTurn.TurnStatus = TurnStatuses.UsedLoadAllocationRegistered Or YourNSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadAllocationCancelled Or YourNSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadPermissionCancelled) Then Throw New TurnHandlingNotAllowedBecuaseTurnStatusException
                 'تغییر وضعیت نوبت
-                CmdSql.Connection.Open()
-                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
-                CmdSql.CommandText = "Select Top 1 nEnterExitId From dbtransport.dbo.TbEnterExit with (tablockx) Where nEnterExitId=" & YourTurnId & ""
-                CmdSql.ExecuteNonQuery()
-                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.UsedLoadPermissionRegistered & ",bFlag=1,bFlagDriver=1 Where nEnterExitId=" & NSSTurn.nEnterExitId & ""
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                YourTransaction.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.UsedLoadPermissionRegistered & ",bFlag=1,bFlagDriver=1 Where nEnterExitId=" & YourNSSTurn.nEnterExitId & ""
+                YourTransaction.ExecuteNonQuery()
             Catch ex As GetNSSException
-                If CmdSql.Connection.State <> ConnectionState.Closed Then
-                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
-                End If
                 Throw ex
             Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
-                If CmdSql.Connection.State <> ConnectionState.Closed Then
-                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
-                End If
                 Throw ex
             Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then
-                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
-                End If
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
