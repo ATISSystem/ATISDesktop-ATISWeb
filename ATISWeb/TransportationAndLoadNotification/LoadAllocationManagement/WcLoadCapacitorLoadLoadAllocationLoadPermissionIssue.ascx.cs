@@ -81,7 +81,6 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 
         private void BtnLoadAllocation_Click(object sender, EventArgs e)
         {
-            bool TurnIsTemporary = false;
             R2CoreTransportationAndLoadNotificationStandardTurnStructure NSSTurn = null;
             var InstanceCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
             var InstanceLogin = new ATISWebMClassLoginManager();
@@ -104,11 +103,9 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                     NSSTurn = InstanceTurns.GetNSSTurn(NSSTruck);
                     TempTurnReport = "ناوگان نوبت دارد.برای تخصیص بار از نوبت موجود استفاده شد ";
                     PnlTurnStatus.BackColor = System.Drawing.Color.Green;
-                    TurnIsTemporary = false;
                 }
                 catch (TurnNotFoundException ex)
                 {
-                    TurnIsTemporary = true;
                     NSSTurn = InstanceTurns.GetNSSTurn(InstanceCarTruckNobat.GetTurnofKiosk(NSSTruck, NSSTruckDriver, NSSTransportCompany, NSSLoadCapacitorLoad, InstanceLogin.GetNSSCurrentUser()));
                     TempTurnReport = "ناوگان نوبت ندارد.نوبت به صورت خودکار در سامانه صادر شد ";
                     PnlTurnStatus.BackColor = System.Drawing.Color.Red;
@@ -157,23 +154,11 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                                        ex is RequesterNotAllowTurnIssueBySeqTException ||
                                        ex is RequesterNotAllowTurnIssueByLastLoadPermissionedException ||
                                        ex is LoadCapacitorLoadNotFoundException)
-            {
-                if (TurnIsTemporary && !(NSSTurn is null))
-                { InstanceCarTruckNobat.SetbFlagDriverToTrue(NSSTurn.nEnterExitId, true, InstanceLogin.GetNSSCurrentUser()); }
-                Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message.Replace("\r\n", " ") + "');", true);
-            }
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message.Replace("\r\n", " ") + "');", true); }
             catch (PleaseReloginException ex)
-            {
-                if (TurnIsTemporary && !(NSSTurn is null))
-                { InstanceCarTruckNobat.SetbFlagDriverToTrue(NSSTurn.nEnterExitId, true, InstanceLogin.GetNSSCurrentUser()); }
-                Response.Redirect("/LoginManagement/Wflogin.aspx");
-            }
+            { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
             catch (Exception ex)
-            {
-                if (TurnIsTemporary && !(NSSTurn is null))
-                { InstanceCarTruckNobat.SetbFlagDriverToTrue(NSSTurn.nEnterExitId, true, InstanceLogin.GetNSSCurrentUser()); }
-                Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true);
-            }
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
         }
 
         #endregion

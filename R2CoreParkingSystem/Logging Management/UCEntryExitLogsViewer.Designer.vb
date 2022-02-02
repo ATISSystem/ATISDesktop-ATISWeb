@@ -61,7 +61,7 @@ Partial Class UCEntryExitLogsViewer
         Me.Panel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.Controls.Add(Me.UcPersianTextBoxUserName)
         Me.Panel1.Controls.Add(Me.UcLabel7)
-        Me.Panel1.Location = New System.Drawing.Point(632, 63)
+        Me.Panel1.Location = New System.Drawing.Point(632, 73)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(248, 27)
         Me.Panel1.TabIndex = 12
@@ -113,7 +113,7 @@ Partial Class UCEntryExitLogsViewer
         Me.Panel2.Controls.Add(Me.UcPersianTextBoxTime)
         Me.Panel2.Controls.Add(Me.UcPersianTextBoxDateShamsi)
         Me.Panel2.Controls.Add(Me.UcLabel9)
-        Me.Panel2.Location = New System.Drawing.Point(632, 35)
+        Me.Panel2.Location = New System.Drawing.Point(632, 45)
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(247, 28)
         Me.Panel2.TabIndex = 13
@@ -186,7 +186,7 @@ Partial Class UCEntryExitLogsViewer
         Me.Panel3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel3.Controls.Add(Me.UcPersianTextBoxEntryExitTitle)
         Me.Panel3.Controls.Add(Me.UcLabel12)
-        Me.Panel3.Location = New System.Drawing.Point(632, 142)
+        Me.Panel3.Location = New System.Drawing.Point(632, 152)
         Me.Panel3.Name = "Panel3"
         Me.Panel3.Size = New System.Drawing.Size(249, 31)
         Me.Panel3.TabIndex = 17
@@ -237,7 +237,7 @@ Partial Class UCEntryExitLogsViewer
         Me.Panel4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel4.Controls.Add(Me.UcPersianTextBoxLPString)
         Me.Panel4.Controls.Add(Me.UcLabel14)
-        Me.Panel4.Location = New System.Drawing.Point(632, 117)
+        Me.Panel4.Location = New System.Drawing.Point(632, 127)
         Me.Panel4.Name = "Panel4"
         Me.Panel4.Size = New System.Drawing.Size(249, 31)
         Me.Panel4.TabIndex = 16
@@ -292,7 +292,7 @@ Partial Class UCEntryExitLogsViewer
         Me.Panel5.Controls.Add(Me.UcLabel16)
         Me.Panel5.Location = New System.Drawing.Point(3, 38)
         Me.Panel5.Name = "Panel5"
-        Me.Panel5.Size = New System.Drawing.Size(623, 134)
+        Me.Panel5.Size = New System.Drawing.Size(623, 152)
         Me.Panel5.TabIndex = 15
         '
         'UcPersianTextBoxMessage
@@ -304,7 +304,7 @@ Partial Class UCEntryExitLogsViewer
         Me.UcPersianTextBoxMessage.Location = New System.Drawing.Point(3, 1)
         Me.UcPersianTextBoxMessage.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxMessage.Name = "UcPersianTextBoxMessage"
-        Me.UcPersianTextBoxMessage.Size = New System.Drawing.Size(549, 129)
+        Me.UcPersianTextBoxMessage.Size = New System.Drawing.Size(549, 147)
         Me.UcPersianTextBoxMessage.TabIndex = 20
         Me.UcPersianTextBoxMessage.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBoxMessage.UCBorder = True
@@ -328,7 +328,7 @@ Partial Class UCEntryExitLogsViewer
         Me.UcLabel16.Name = "UcLabel16"
         Me.UcLabel16.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabel16.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcLabel16.Size = New System.Drawing.Size(76, 134)
+        Me.UcLabel16.Size = New System.Drawing.Size(76, 152)
         Me.UcLabel16.TabIndex = 6
         Me.UcLabel16.UCBackColor = System.Drawing.Color.Transparent
         Me.UcLabel16.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
@@ -341,7 +341,7 @@ Partial Class UCEntryExitLogsViewer
         Me.Panel6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel6.Controls.Add(Me.UcLabel18)
         Me.Panel6.Controls.Add(Me.UcPersianTextBoxTrafficCard)
-        Me.Panel6.Location = New System.Drawing.Point(632, 91)
+        Me.Panel6.Location = New System.Drawing.Point(632, 101)
         Me.Panel6.Name = "Panel6"
         Me.Panel6.Size = New System.Drawing.Size(249, 31)
         Me.Panel6.TabIndex = 14
@@ -401,7 +401,7 @@ Partial Class UCEntryExitLogsViewer
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(3, 3)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(882, 177)
+        Me.PnlMain.Size = New System.Drawing.Size(882, 195)
         Me.PnlMain.TabIndex = 19
         '
         'UcLabelSharh
@@ -430,7 +430,7 @@ Partial Class UCEntryExitLogsViewer
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCEntryExitLogsViewer"
         Me.Padding = New System.Windows.Forms.Padding(3)
-        Me.Size = New System.Drawing.Size(888, 183)
+        Me.Size = New System.Drawing.Size(888, 201)
         Me.Panel1.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
         Me.Panel3.ResumeLayout(False)

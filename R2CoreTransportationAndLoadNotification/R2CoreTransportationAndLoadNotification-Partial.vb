@@ -5821,7 +5821,7 @@ Namespace LoadAllocation
                     InstanceLoadPermission.LoadPermissionRegistering(YourNSSLoadAllocation, YourNSSLoadCapacitorLoad, YourCurrentDateTime, YourUserNSS)
                     CmdSql.Connection.Open()
                     CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
-                                              Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & ",LANote='مجوز صادر شده',DateTimeMilladi='" & _DateTime.GetCurrentDateTimeMilladiFormated & "',DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "',Time='" & _DateTime.GetCurrentTime & "' 
+                                              Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & ",LANote='مجوز صادر شده',DateTimeMilladi='" & YourCurrentDateTime.DateTimeMilladiFormated & "',DateShamsi='" & YourCurrentDateTime.DateShamsiFull & "',Time='" & YourCurrentDateTime.Time & "' 
                                           Where LAId=" & YourNSSLoadAllocation.LAId & ""
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Connection.Close()

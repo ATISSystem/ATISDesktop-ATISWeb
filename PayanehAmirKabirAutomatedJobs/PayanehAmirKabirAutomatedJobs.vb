@@ -111,6 +111,14 @@ Public Class PayanehAmirKabirAutomatedJobs
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 
+            'ابطال نوبت های موقت
+            Try
+                PayanehClassLibraryMClassCarTruckNobatManagement.TempTurnsCancellation()
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TempTurnsCancellation:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
+
 
 
         Catch ex As Exception

@@ -103,7 +103,7 @@ Namespace Logging
 
         Public Shared ReadOnly Property CarTruckUpdateInfSuccess As Int64 = 17
         Public Shared ReadOnly Property CarTruckUpdateInfNotSuccess As Int64 = 18
-        Public Shared ReadOnly Property TurnsCancellationBaseOnDuration As Int64 = 21
+        Public Shared ReadOnly Property TurnsCancellation As Int64 = 21
         Public Shared ReadOnly Property AutomaticTurnRegistering As Int64 = 52
     End Class
 
@@ -974,7 +974,7 @@ Namespace CarTruckNobatManagement
                     If Not ConfigSeqTTurnsCancellationActiveFlag Then Continue For
                     Dim TopFirstDayToCancell = InstancePersianCallendar.GetFirstDateShamsiInRangeWithoutHoliday(_DateTime.GetCurrentDateShamsiFull, ConfigSeqTTurnsCancellationDuration)
                     Dim DSTurns As DataSet = Nothing
-                    Dim TotalTurns = InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                    Dim TotalTurns = InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                            "Select nEnterExitId from dbtransport.dbo.TbEnterExit as Turns
                                 Where Substring(Turns.OtaghdarTurnNumber,1,1) = '" & LstSeqTs(Loopx).SequentialTurnKeyWord & "' and
                                       (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and 
@@ -997,7 +997,7 @@ Namespace CarTruckNobatManagement
                         For LoopxLog As Int64 = 0 To DSTurns.Tables(0).Rows.Count - 1
                             TurnsSB.Append(DSTurns.Tables(0).Rows(LoopxLog).Item("nEnterExitId")).Append(",")
                         Next
-                        R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, PayanehClassLibraryLogType.TurnsCancellationBaseOnDuration, "کنسل کردن گروهی نوبت ها بر اساس زمان اعتبار", "SeqT=" + LstSeqTs(Loopx).SequentialTurnTitle, "TurnsCancellationDuration=" + ConfigSeqTTurnsCancellationDuration.ToString(), "TopFirstDayToCancell=" + TopFirstDayToCancell, "TotalTurns=" + TotalTurns.ToString(), TurnsSB.ToString(), R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
+                        R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, PayanehClassLibraryLogType.TurnsCancellation, "کنسل کردن گروهی نوبت ها بر اساس زمان اعتبار", "SeqT=" + LstSeqTs(Loopx).SequentialTurnTitle, "TurnsCancellationDuration=" + ConfigSeqTTurnsCancellationDuration.ToString(), "TopFirstDayToCancell=" + TopFirstDayToCancell, "TotalTurns=" + TotalTurns.ToString(), TurnsSB.ToString(), R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
                     End If
                 Next
                 _TurnsCancellationBaseOnDurationProcessExcecutedFlag = True
@@ -1005,6 +1005,36 @@ Namespace CarTruckNobatManagement
                 Throw ex
             Catch ex As FirstDateShamsiInRangeWithoutHolidayException
                 Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Shared Sub TempTurnsCancellation()
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                'آیا سرویس ابطال نوبت های موقت بر اساس کانفیگ فعال است یا نه
+                If Not InstanceConfiguration.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 3) Then Return
+                Dim myCurrentDateShamsi = _DateTime.GetCurrentDateShamsiFull
+                Dim TotalTurns As Int64
+                Dim DS As DataSet
+                TotalTurns = InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                     "Select nEnterExitId from dbtransport.dbo.tbEnterExit
+                      Where strEnterDate='" & myCurrentDateShamsi & "' and (TurnStatus=1 or TurnStatus=7 or TurnStatus=8 or TurnStatus=9 or TurnStatus=10) 
+                            and DATEDIFF(MINUTE,RegisteringTimeStamp,GETDATE())>" & InstanceConfiguration.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 4) & " and RegisteringTimeStamp<>'2015-01-01 00:00:00.000'", 0, DS).GetRecordsCount
+                If TotalTurns <> 0 Then
+                    CmdSql.CommandText = "Update dbtransport.dbo.tbEnterExit Set TurnStatus=" & TurnStatuses.CancelledSystem & ",bFlag=1,bFlagDriver=1,nUserIdExit=1
+                                          Where strEnterDate='" & myCurrentDateShamsi & "' and (TurnStatus=1 or TurnStatus=7 or TurnStatus=8 or TurnStatus=9 or TurnStatus=10)
+                                                and DATEDIFF(MINUTE,RegisteringTimeStamp,GETDATE())>" & InstanceConfiguration.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 4) & " and RegisteringTimeStamp<>'2015-01-01 00:00:00.000'"
+                    CmdSql.Connection.Open()
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.Connection.Close()
+                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, PayanehClassLibraryLogType.TurnsCancellation, "کنسل کردن نوبت های موقت", "TotalTurns=" + TotalTurns.ToString, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
+                End If
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
