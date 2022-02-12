@@ -2210,15 +2210,18 @@ Namespace LoadCapacitor
                             If Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationRegistering And InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.UserCanEditLoadCapacitorLoadInLoadAllocationTiming, YourUserNSS.UserId, 0) Then
                                 'امکان ویرایش بار هنگام تخصیص بار فقط توسط کاربر خاص که مجوز دارد
                             Else
-                                If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And
-                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) And
-                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) And
-                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) And
-                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) And
-                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) And
-                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering) And
-                                   (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) And
-                                   InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then
+                                If (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) Or
+                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Or
+                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) Or
+                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) Or
+                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) Or
+                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) Or
+                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering) Or
+                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) Then
+                                    If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then
+                                        Throw New LoadCapacitorLoadEditTimePassedException
+                                    End If
+                                Else
                                     Throw New LoadCapacitorLoadEditTimePassedException
                                 End If
                             End If
@@ -2350,14 +2353,18 @@ Namespace LoadCapacitor
                         Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                         If InstanceAnnouncementTiming.IsTimingActive(YourNSS.AHId, YourNSS.AHSGId) Then
                             Dim Timing = InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime)
-                            If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) Then
+                            If (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) Or
+                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Or
+                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) Or
+                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) Or
+                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) Or
+                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) Or
+                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering) Or
+                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) Then
+                                If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then
+                                    Throw New LoadCapacitorLoadDeleteTimePassedException
+                                End If
+                            Else
                                 Throw New LoadCapacitorLoadDeleteTimePassedException
                             End If
                         End If

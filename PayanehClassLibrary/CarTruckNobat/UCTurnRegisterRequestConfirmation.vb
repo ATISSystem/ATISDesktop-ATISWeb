@@ -12,6 +12,7 @@ Public Class UCTurnRegisterRequestConfirmation
     Inherits UCGeneral
 
     Private _NSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure
+    Public Event UCUserChangedStatusEvent(Status As Boolean)
 
 #Region "General Properties"
 
@@ -52,12 +53,21 @@ Public Class UCTurnRegisterRequestConfirmation
     End Sub
 
 
+
+
 #End Region
 
 #Region "Events"
 #End Region
 
 #Region "Event Handlers"
+    Private Sub ChkNobatTruck_CheckedChanged(sender As Object, e As EventArgs) Handles ChkNobatTruck.CheckedChanged
+        Try
+            RaiseEvent UCUserChangedStatusEvent(ChkNobatTruck.Checked)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
 #End Region
 
 #Region "Override Methods"

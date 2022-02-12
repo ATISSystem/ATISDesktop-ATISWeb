@@ -262,8 +262,8 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            PayanehClassLibraryMClassCarTruckNobatManagement.TempTurnsCancellation()
-            'Dim NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(TextBoxConcat1.Text, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+            'PayanehClassLibraryMClassCarTruckNobatManagement.TempTurnsCancellation()
+            Dim NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(TextBoxConcat1.Text, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
 
             ''صدور خودکار نوبت ها
             'Try

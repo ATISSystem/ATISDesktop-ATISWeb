@@ -46,8 +46,8 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PnlHolder = New System.Windows.Forms.Panel()
-        Me.UcSearcherTransportCompanies = New R2CoreTransportationAndLoadNotification.UCSearcherTransportCompanies()
         Me.UcSearcherLoaderTypes = New R2CoreTransportationAndLoadNotification.UCSearcherLoaderTypes()
+        Me.UcSearcherTransportCompanies = New R2CoreTransportationAndLoadNotification.UCSearcherTransportCompanies()
         Me.UcSearcherLoadSources = New R2CoreTransportationAndLoadNotification.UCSearcherLoadSources()
         Me.UcSearcherLoadTargets = New R2CoreTransportationAndLoadNotification.UCSearcherLoadTargets()
         Me.UcSearcherGoods = New R2CoreTransportationAndLoadNotification.UCSearcherGoods()
@@ -57,7 +57,6 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcNumberTransportPrice = New R2CoreGUI.UCNumber()
         Me.UcNumbernCarNumKol = New R2CoreGUI.UCNumber()
         Me.UcLabelnCarNumKol = New R2CoreGUI.UCLabel()
-        Me.UcLabelNoeBargir1 = New R2CoreTransportationAndLoadNotification.UCLabelNoeBargir()
         Me.UcLabelSherkatHamloNaghl1 = New R2CoreTransportationAndLoadNotification.UCLabelSherkatHamloNaghl()
         Me.UcLabelMaghsadeBar1 = New R2CoreTransportationAndLoadNotification.UCLabelMaghsadeBar()
         Me.UcLabelTransportPrice = New R2CoreGUI.UCLabel()
@@ -66,13 +65,12 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabel2 = New R2CoreGUI.UCLabel()
         Me.UcLabelNoeBar1 = New R2CoreTransportationAndLoadNotification.UCLabelNoeBar()
         Me.UcLabel1 = New R2CoreGUI.UCLabel()
+        Me.UcLabelNoeBargir1 = New R2CoreTransportationAndLoadNotification.UCLabelNoeBargir()
         Me.UcucLoadCapacitorAccountingCollection = New R2CoreTransportationAndLoadNotification.UCUCLoadCapacitorAccountingCollection()
-        Me.Panel3 = New System.Windows.Forms.Panel()
         Me.PnlMain.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.PnlHolder.SuspendLayout()
-        Me.Panel3.SuspendLayout()
         Me.SuspendLayout()
         '
         'PnlMain
@@ -399,7 +397,7 @@ Partial Class UCLoadCapacitorLoadManipulation
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlHolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PnlHolder.Controls.Add(Me.Panel3)
+        Me.PnlHolder.Controls.Add(Me.UcSearcherLoaderTypes)
         Me.PnlHolder.Controls.Add(Me.UcSearcherTransportCompanies)
         Me.PnlHolder.Controls.Add(Me.UcSearcherLoadSources)
         Me.PnlHolder.Controls.Add(Me.UcSearcherLoadTargets)
@@ -418,20 +416,39 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.PnlHolder.Controls.Add(Me.UcLabel2)
         Me.PnlHolder.Controls.Add(Me.UcLabelNoeBar1)
         Me.PnlHolder.Controls.Add(Me.UcLabel1)
+        Me.PnlHolder.Controls.Add(Me.UcLabelNoeBargir1)
         Me.PnlHolder.Location = New System.Drawing.Point(3, 24)
         Me.PnlHolder.Name = "PnlHolder"
         Me.PnlHolder.Size = New System.Drawing.Size(1025, 130)
         Me.PnlHolder.TabIndex = 0
+        '
+        'UcSearcherLoaderTypes
+        '
+        Me.UcSearcherLoaderTypes.BackColor = System.Drawing.Color.Transparent
+        Me.UcSearcherLoaderTypes.Location = New System.Drawing.Point(7, 14)
+        Me.UcSearcherLoaderTypes.Name = "UcSearcherLoaderTypes"
+        Me.UcSearcherLoaderTypes.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcSearcherLoaderTypes.Size = New System.Drawing.Size(238, 31)
+        Me.UcSearcherLoaderTypes.TabIndex = 7
+        Me.UcSearcherLoaderTypes.UCBackColor = System.Drawing.Color.White
+        Me.UcSearcherLoaderTypes.UCFontList = New System.Drawing.Font("IRMehr", 8.25!)
+        Me.UcSearcherLoaderTypes.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherLoaderTypes.UCForeColor = System.Drawing.Color.Black
+        Me.UcSearcherLoaderTypes.UCIcon = Nothing
+        Me.UcSearcherLoaderTypes.UCMaximizeHight = CType(120, Long)
+        Me.UcSearcherLoaderTypes.UCMinimizeHight = CType(31, Long)
+        Me.UcSearcherLoaderTypes.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.DropDown
+        Me.UcSearcherLoaderTypes.UCShowDomainIcon = False
         '
         'UcSearcherTransportCompanies
         '
         Me.UcSearcherTransportCompanies.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcSearcherTransportCompanies.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherTransportCompanies.Location = New System.Drawing.Point(729, 14)
+        Me.UcSearcherTransportCompanies.Location = New System.Drawing.Point(767, 14)
         Me.UcSearcherTransportCompanies.Name = "UcSearcherTransportCompanies"
         Me.UcSearcherTransportCompanies.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcSearcherTransportCompanies.Size = New System.Drawing.Size(197, 31)
+        Me.UcSearcherTransportCompanies.Size = New System.Drawing.Size(159, 31)
         Me.UcSearcherTransportCompanies.TabIndex = 1
         Me.UcSearcherTransportCompanies.UCBackColor = System.Drawing.Color.White
         Me.UcSearcherTransportCompanies.UCFontList = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
@@ -442,26 +459,6 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcSearcherTransportCompanies.UCMinimizeHight = CType(31, Long)
         Me.UcSearcherTransportCompanies.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.DropDown
         Me.UcSearcherTransportCompanies.UCShowDomainIcon = False
-        '
-        'UcSearcherLoaderTypes
-        '
-        Me.UcSearcherLoaderTypes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcSearcherLoaderTypes.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherLoaderTypes.Location = New System.Drawing.Point(0, 0)
-        Me.UcSearcherLoaderTypes.Name = "UcSearcherLoaderTypes"
-        Me.UcSearcherLoaderTypes.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcSearcherLoaderTypes.Size = New System.Drawing.Size(191, 31)
-        Me.UcSearcherLoaderTypes.TabIndex = 7
-        Me.UcSearcherLoaderTypes.UCBackColor = System.Drawing.Color.White
-        Me.UcSearcherLoaderTypes.UCFontList = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcSearcherLoaderTypes.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcSearcherLoaderTypes.UCForeColor = System.Drawing.Color.Black
-        Me.UcSearcherLoaderTypes.UCIcon = Nothing
-        Me.UcSearcherLoaderTypes.UCMaximizeHight = CType(120, Long)
-        Me.UcSearcherLoaderTypes.UCMinimizeHight = CType(31, Long)
-        Me.UcSearcherLoaderTypes.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.DropDown
-        Me.UcSearcherLoaderTypes.UCShowDomainIcon = False
         '
         'UcSearcherLoadSources
         '
@@ -486,7 +483,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         'UcSearcherLoadTargets
         '
         Me.UcSearcherLoadTargets.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherLoadTargets.Location = New System.Drawing.Point(262, 14)
+        Me.UcSearcherLoadTargets.Location = New System.Drawing.Point(297, 14)
         Me.UcSearcherLoadTargets.Name = "UcSearcherLoadTargets"
         Me.UcSearcherLoadTargets.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcSearcherLoadTargets.Size = New System.Drawing.Size(185, 31)
@@ -504,7 +501,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         'UcSearcherGoods
         '
         Me.UcSearcherGoods.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherGoods.Location = New System.Drawing.Point(500, 14)
+        Me.UcSearcherGoods.Location = New System.Drawing.Point(535, 14)
         Me.UcSearcherGoods.Name = "UcSearcherGoods"
         Me.UcSearcherGoods.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcSearcherGoods.Size = New System.Drawing.Size(188, 31)
@@ -641,23 +638,6 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelnCarNumKol.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelnCarNumKol.UCValue = "تعداد کل"
         '
-        'UcLabelNoeBargir1
-        '
-        Me.UcLabelNoeBargir1._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabelNoeBargir1._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabelNoeBargir1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcLabelNoeBargir1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelNoeBargir1.Location = New System.Drawing.Point(191, -3)
-        Me.UcLabelNoeBargir1.Name = "UcLabelNoeBargir1"
-        Me.UcLabelNoeBargir1.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelNoeBargir1.Size = New System.Drawing.Size(57, 32)
-        Me.UcLabelNoeBargir1.TabIndex = 6
-        Me.UcLabelNoeBargir1.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelNoeBargir1.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabelNoeBargir1.UCForeColor = System.Drawing.Color.Black
-        Me.UcLabelNoeBargir1.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.UcLabelNoeBargir1.UCValue = "نوع بارگیر"
-        '
         'UcLabelSherkatHamloNaghl1
         '
         Me.UcLabelSherkatHamloNaghl1._UCBackColorPopup = System.Drawing.Color.Transparent
@@ -680,7 +660,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelMaghsadeBar1._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabelMaghsadeBar1._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelMaghsadeBar1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelMaghsadeBar1.Location = New System.Drawing.Point(440, 12)
+        Me.UcLabelMaghsadeBar1.Location = New System.Drawing.Point(475, 11)
         Me.UcLabelMaghsadeBar1.Name = "UcLabelMaghsadeBar1"
         Me.UcLabelMaghsadeBar1.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelMaghsadeBar1.Size = New System.Drawing.Size(65, 36)
@@ -763,7 +743,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelNoeBar1._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabelNoeBar1._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelNoeBar1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelNoeBar1.Location = New System.Drawing.Point(687, 14)
+        Me.UcLabelNoeBar1.Location = New System.Drawing.Point(722, 13)
         Me.UcLabelNoeBar1.Name = "UcLabelNoeBar1"
         Me.UcLabelNoeBar1.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelNoeBar1.Size = New System.Drawing.Size(48, 32)
@@ -791,6 +771,22 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabel1.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabel1.UCValue = "گیرنده"
         '
+        'UcLabelNoeBargir1
+        '
+        Me.UcLabelNoeBargir1._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabelNoeBargir1._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabelNoeBargir1.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabelNoeBargir1.Location = New System.Drawing.Point(243, 13)
+        Me.UcLabelNoeBargir1.Name = "UcLabelNoeBargir1"
+        Me.UcLabelNoeBargir1.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabelNoeBargir1.Size = New System.Drawing.Size(57, 32)
+        Me.UcLabelNoeBargir1.TabIndex = 6
+        Me.UcLabelNoeBargir1.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabelNoeBargir1.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabelNoeBargir1.UCForeColor = System.Drawing.Color.Black
+        Me.UcLabelNoeBargir1.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcLabelNoeBargir1.UCValue = "نوع بارگیر"
+        '
         'UcucLoadCapacitorAccountingCollection
         '
         Me.UcucLoadCapacitorAccountingCollection.BackColor = System.Drawing.Color.Transparent
@@ -801,15 +797,6 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcucLoadCapacitorAccountingCollection.Size = New System.Drawing.Size(1037, 178)
         Me.UcucLoadCapacitorAccountingCollection.TabIndex = 1
         Me.UcucLoadCapacitorAccountingCollection.UCViewUCPictureExit = True
-        '
-        'Panel3
-        '
-        Me.Panel3.Controls.Add(Me.UcLabelNoeBargir1)
-        Me.Panel3.Controls.Add(Me.UcSearcherLoaderTypes)
-        Me.Panel3.Location = New System.Drawing.Point(8, 14)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(240, 31)
-        Me.Panel3.TabIndex = 20
         '
         'UCLoadCapacitorLoadManipulation
         '
@@ -825,7 +812,6 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
         Me.PnlHolder.ResumeLayout(False)
-        Me.Panel3.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -841,7 +827,6 @@ Partial Class UCLoadCapacitorLoadManipulation
     Friend WithEvents UcPersianTextBoxLoadCapacitorLoadDateTimeComposite As R2CoreGUI.UCPersianTextBox
     Friend WithEvents UcSearcherGoods As UCSearcherGoods
     Friend WithEvents UcLabelNoeBar1 As UCLabelNoeBar
-    Friend WithEvents UcSearcherLoaderTypes As UCSearcherLoaderTypes
     Friend WithEvents UcLabelNoeBargir1 As UCLabelNoeBargir
     Friend WithEvents UcSearcherLoadSources As UCSearcherLoadSources
     Friend WithEvents UcLabelMabdaeBar1 As UCLabelMabdaeBar
@@ -872,5 +857,5 @@ Partial Class UCLoadCapacitorLoadManipulation
     Friend WithEvents UcButtonLoadCapacitorAccounting As R2CoreGUI.UCButton
     Friend WithEvents UcucLoadCapacitorAccountingCollection As UCUCLoadCapacitorAccountingCollection
     Friend WithEvents UcButtonLoadCapacitorLoadSedimentation As R2CoreGUI.UCButton
-    Friend WithEvents Panel3 As Panel
+    Friend WithEvents UcSearcherLoaderTypes As UCSearcherLoaderTypes
 End Class

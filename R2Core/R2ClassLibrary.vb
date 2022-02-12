@@ -3429,7 +3429,7 @@ Namespace LoggingManagement
         Public Shared ReadOnly Property Delete As Int64 = 8
         Public Shared ReadOnly Property Update As Int64 = 9
         Public Shared ReadOnly Property CameraError As Int64 = 10
-
+        Public Shared ReadOnly Property TimeStamp As Int64 = 11
     End Class
 
     Public Class R2CoreStandardLogTypeStructure

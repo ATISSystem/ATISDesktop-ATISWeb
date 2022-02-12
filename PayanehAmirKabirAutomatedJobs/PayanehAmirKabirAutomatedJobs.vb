@@ -60,6 +60,8 @@ Public Class PayanehAmirKabirAutomatedJobs
 
     Private Sub _AutomatedJobsTimer_Elapsed(sender As Object, e As ElapsedEventArgs) Handles _AutomatedJobsTimer.Elapsed
         Try
+            Dim InstanceLogging = New R2CoreInstanceLoggingManager
+
             _AutomatedJobsTimer.Enabled = False
             _AutomatedJobsTimer.Stop()
 

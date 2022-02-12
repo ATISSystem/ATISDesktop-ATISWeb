@@ -101,6 +101,8 @@ Public Class FrmcEnterExit
             UcCarImage.UCSetMarginColor(Color.White)
             UcBlackListCompositBlackListViewer.Visible = False
             _TimerClearLastReadedTeraficCard.Interval = R2CoreMClassConfigurationOfComputersManagement.GetConfigInt64(R2CoreParkingSystemConfigurations.FrmcEnterExitSetting, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0)
+            myLP = New R2StandardLicensePlateStructure("", "", "", R2PelakType.None)
+            myEnterExitRequest = R2EnterExitRequestType.None
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -603,7 +605,7 @@ Public Class FrmcEnterExit
         Try
             UcCarTruckUpdateInf.Visible = False
             UcCarTruckUpdateInf.SendToBack()
-            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.CarTruckUpdateInfNotSuccess, "عدم موفقیت در آپدیت اطلاعات ناوگان باری", _NSSTrafficCard.CardNo, "SmartCardNo=" + UcCarTruckUpdateInf.UcCarTruck.UcNumberStrBodyNoSearch.UCValue, 0, 0, Message, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing))
+            R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.CarTruckUpdateInfNotSuccess, "عدم موفقیت در آپدیت اطلاعات ناوگان باری", _NSSTrafficCard.CardNo, "SmartCardNo=" + UcCarTruckUpdateInf.UcCarTruck.UcNumberStrBodyNoSearch.UCValue.ToString, 0, 0, Message, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing))
             DoProccess(_NSSTrafficCard.CardNo, False)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                             OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
@@ -647,9 +649,13 @@ Public Class FrmcEnterExit
         StartReading()
     End Sub
 
-
-
-
+    Private Sub UcTurnRegisterRequestConfirmation_UCUserChangedStatusEvent(Status As Boolean) Handles UcTurnRegisterRequestConfirmation.UCUserChangedStatusEvent
+        Try
+            InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreParkingSystemLogType.EntryExit, "ثبت تردد خودرو", String.Empty, String.Empty, String.Empty, String.Empty, "TurnRegisterRequestConfirmation-StatusChangedTo:" + Status.ToString, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing))
+        Catch ex As Exception
+            _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
 
 
 #End Region
