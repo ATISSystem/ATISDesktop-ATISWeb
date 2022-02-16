@@ -2765,6 +2765,8 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcTruckersAssociationControllingMoneyWallet As Int64 = 65
         Public Shared ReadOnly FrmcClearanceLoadsReport As Int64 = 66
         Public Shared ReadOnly FrmcSaleOfSoftwareUserActivationSMSReport As Int64 = 67
+        Public Shared ReadOnly FrmcSoftwareUserManagement As Int64 = 70
+
 
     End Class
 

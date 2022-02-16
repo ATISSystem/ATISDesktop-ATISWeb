@@ -1203,6 +1203,12 @@ End Namespace
 
 Namespace SoftwareUserManagement
 
+    Public Enum R2CoreSoftwareUsersOrderingOptions
+        None = 0
+        UserName = 1
+        MobileNumber = 2
+    End Enum
+
     Public MustInherit Class R2CoreSoftwareUserTypes
         Public Shared ReadOnly Property None As Int64 = 0
         Public Shared ReadOnly Property General As Int64 = 1
@@ -1673,6 +1679,40 @@ Namespace SoftwareUserManagement
             End Try
         End Sub
 
+        Public Function GetSoftwareUserTypes(YourSearchString As String) As List(Of R2StandardStructure)
+            Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourSearchString)
+
+                Dim Ds As DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUserTypes Where Active=1 and ViewFlag=1 and UTTitle Like  '%" & YourSearchString & "%' Order By UTId", 3600, Ds)
+                Dim Lst As New List(Of R2StandardStructure)
+                For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                    Lst.Add(New R2CoreStandardSoftwareUserTypeStructure(Ds.Tables(0).Rows(Loopx).Item("UTId"), Ds.Tables(0).Rows(Loopx).Item("UTTitle").trim, Ds.Tables(0).Rows(Loopx).Item("UTTitle").trim, Color.FromName(Ds.Tables(0).Rows(Loopx).Item("UTColor").trim), Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("Deleted")))
+                Next
+                Return Lst
+            Catch ex As SqlInjectionException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        'Public Function GetNSSSoftwareUserType(YourSoftwareUserType As String) As R2CoreStandardSoftwareUserStructure
+        '    Try
+        '        Dim Instanse = New R2CoreInstanseSqlDataBOXManager
+        '        Dim Ds As DataSet
+        '        If Instanse.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where ApiKey='" & YourApiKey & "'", 0, Ds).GetRecordsCount() = 0 Then
+        '            Throw New UserNotExistByApiKeyException
+        '        End If
+        '        Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration"), Ds.Tables(0).Rows(0).Item("UserName").trim, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("VerificationCodeCount"), Ds.Tables(0).Rows(0).Item("Nonce"), Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce"), Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("Captcha"), Ds.Tables(0).Rows(0).Item("CaptchaValid"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
+        '    Catch exx As UserNotExistByApiKeyException
+        '        Throw exx
+        '    Catch ex As Exception
+        '        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        '    End Try
+        'End Function
 
     End Class
 

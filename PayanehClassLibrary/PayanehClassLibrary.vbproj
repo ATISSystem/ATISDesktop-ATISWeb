@@ -292,6 +292,12 @@
     <Compile Include="CarTruck And DriverTruck\UCComputerMessageProducerChangeDriverTruck.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="SoftwareUser Management\FrmcSoftwareUserManagement.Designer.vb">
+      <DependentUpon>FrmcSoftwareUserManagement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SoftwareUser Management\FrmcSoftwareUserManagement.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MonetarySupply\MonetarySettingTools\UCMonetarySettingToolTruckersAssociationControllingMoneyWalletInstrument.Designer.vb">
       <DependentUpon>UCMonetarySettingToolTruckersAssociationControllingMoneyWalletInstrument.vb</DependentUpon>
     </Compile>
@@ -860,6 +866,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UCTrucksAverageOfSleepDaysToGetLoadPermissionReport.resx">
       <DependentUpon>UCTrucksAverageOfSleepDaysToGetLoadPermissionReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SoftwareUser Management\FrmcSoftwareUserManagement.resx">
+      <DependentUpon>FrmcSoftwareUserManagement.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Transport Companies\UCResuscitationSedimentedLoadbynEstelamId.resx">
       <DependentUpon>UCResuscitationSedimentedLoadbynEstelamId.vb</DependentUpon>
