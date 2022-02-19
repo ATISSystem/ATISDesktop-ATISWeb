@@ -47,6 +47,7 @@ Partial Class Form3
         Me.Button28 = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Button9 = New System.Windows.Forms.Button()
+        Me.Button13 = New System.Windows.Forms.Button()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -293,11 +294,24 @@ Partial Class Form3
         Me.Button9.Text = "Button9"
         Me.Button9.UseVisualStyleBackColor = True
         '
+        'Button13
+        '
+        Me.Button13.BackColor = System.Drawing.Color.Red
+        Me.Button13.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Button13.ForeColor = System.Drawing.Color.White
+        Me.Button13.Location = New System.Drawing.Point(14, 257)
+        Me.Button13.Name = "Button13"
+        Me.Button13.Size = New System.Drawing.Size(154, 41)
+        Me.Button13.TabIndex = 35
+        Me.Button13.Text = "چاپ مجوز بارگیری"
+        Me.Button13.UseVisualStyleBackColor = False
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1078, 450)
+        Me.Controls.Add(Me.Button13)
         Me.Controls.Add(Me.Button9)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.Button28)
@@ -355,4 +369,5 @@ Partial Class Form3
     Friend WithEvents Button28 As Button
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents Button9 As Button
+    Friend WithEvents Button13 As Button
 End Class

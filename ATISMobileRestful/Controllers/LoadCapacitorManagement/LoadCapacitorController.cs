@@ -47,7 +47,7 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                 var ListType = Content.Split(';')[5];
                 var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
                 Int64 ListTypeConv = Convert.ToInt64(ListType) == (long)LoadCapacitorLoadsListType.NotSedimented ? Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.AllOfLoadsWithoutSedimentedLoads) : Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.SedimentedLoads);
-                var Lst = InstanceLoadCapacitorLoad.GetLoadCapacitorLoads(Convert.ToInt64(AHId), Convert.ToInt64(AHSGId), ListTypeConv, false, true, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.TargetProvince, Int64.MinValue, Convert.ToInt64(ProvinceId));
+                var Lst = InstanceLoadCapacitorLoad.GetLoadCapacitorLoadsfromSubscriptionDB(Convert.ToInt64(AHId), Convert.ToInt64(AHSGId), ListTypeConv, false, true, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.TargetProvince, Int64.MinValue, Convert.ToInt64(ProvinceId));
                 List<Models.LoadCapacitorLoad> _Loads = new List<Models.LoadCapacitorLoad>();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {

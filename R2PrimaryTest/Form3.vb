@@ -34,6 +34,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
 Imports R2CoreTransportationAndLoadNotification.LoadPermission
+Imports R2CoreTransportationAndLoadNotification.LoadPermission.LoadPermissionPrinting
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
 Imports R2CoreTransportationAndLoadNotification.RequesterManagement
 Imports R2CoreTransportationAndLoadNotification.Rmto
@@ -262,8 +263,11 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
+            Cmdsql.Connection.Open()
+            Throw New Exception("TEST")
+            Cmdsql.Connection.Close()
             'PayanehClassLibraryMClassCarTruckNobatManagement.TempTurnsCancellation()
-            Dim NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(TextBoxConcat1.Text, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+            'Dim NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(TextBoxConcat1.Text, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
 
             ''صدور خودکار نوبت ها
             'Try
@@ -350,6 +354,9 @@ Public Class Form3
             'End If
 
         Catch ex As Exception
+            If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
+            End If
             MessageBox.Show(ex.Message)
         End Try
         'Try
@@ -610,5 +617,15 @@ Public Class Form3
         Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager()
         Dim NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(38).nEstelamKey)
 
+    End Sub
+
+    Private Sub Button13_Click_1(sender As Object, e As EventArgs) Handles Button13.Click
+        Try
+            Dim x As New R2CoreTransportationAndLoadNotificationInstanceLoadPermissionPrintingManager
+            x.PrintLoadPermission(TextBoxConcat1.Text.Trim)
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
     End Sub
 End Class
