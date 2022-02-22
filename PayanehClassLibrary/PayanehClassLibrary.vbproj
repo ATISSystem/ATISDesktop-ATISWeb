@@ -319,12 +319,6 @@
     <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcIndigenousTrucksWithUNNativeLP.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcShowRmtoWebServiceInf.Designer.vb">
-      <DependentUpon>FrmcShowRmtoWebServiceInf.vb</DependentUpon>
-    </Compile>
-    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcShowRmtoWebServiceInf.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="DriverTrucks FingerPrints IdentificationVerification\UCDriverTruckPresentCollection.Designer.vb">
       <DependentUpon>UCDriverTruckPresentCollection.vb</DependentUpon>
     </Compile>
@@ -737,9 +731,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\FrmcIndigenousTrucksWithUNNativeLP.resx">
       <DependentUpon>FrmcIndigenousTrucksWithUNNativeLP.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\FrmcShowRmtoWebServiceInf.resx">
-      <DependentUpon>FrmcShowRmtoWebServiceInf.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\UCDriverTruckPresentCollection.resx">
       <DependentUpon>UCDriverTruckPresentCollection.vb</DependentUpon>

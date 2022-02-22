@@ -24,6 +24,7 @@ Imports PayanehClassLibrary.DriverTrucksManagement
 Imports PayanehClassLibrary.ProcessesManagement
 Imports R2Core.FingerPrintsManagement.DermalogSystem
 Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
+Imports R2CoreTransportationAndLoadNotification.Turns
 
 Public Class FrmcDriverTruckPresentDermalog
     Inherits FrmcGeneral
@@ -331,7 +332,8 @@ Public Class FrmcDriverTruckPresentDermalog
 
             'نمایش مشخصات آخرین نوبت فعال
             Try
-                UcCarTruckNobat.UCViewInf(_NSSCar)
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                UcCarTruckNobat.UCViewInf(InstanceTurns.GetLastActiveTurn(_NSSCar))
             Catch exx As GetNobatException
                 R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreLogType.Warn, "اثر انگشت راننده باری" + vbCrLf + exx.Message, _NSSTerafficCard.CardNo, 0, 0, 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, _DateTime.GetCurrentDateTimeMilladiFormated(), _DateTime.GetCurrentDateShamsiFull))
                 _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)

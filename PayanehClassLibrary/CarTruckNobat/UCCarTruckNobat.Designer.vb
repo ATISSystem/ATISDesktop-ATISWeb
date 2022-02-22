@@ -111,20 +111,20 @@ Partial Class UCCarTruckNobat
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.Label1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Silver
-        Me.Label1.Location = New System.Drawing.Point(736, 2)
+        Me.Label1.Location = New System.Drawing.Point(736, 3)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(50, 23)
         Me.Label1.TabIndex = 8
-        Me.Label1.Text = "شماره"
+        Me.Label1.Text = "شاخص"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Label4
         '
-        Me.Label4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label4.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label4.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.Silver
-        Me.Label4.Location = New System.Drawing.Point(317, 3)
+        Me.Label4.Location = New System.Drawing.Point(359, 3)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(41, 23)
         Me.Label4.TabIndex = 11
@@ -133,37 +133,37 @@ Partial Class UCCarTruckNobat
         '
         'Label5
         '
-        Me.Label5.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label5.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label5.ForeColor = System.Drawing.Color.Silver
-        Me.Label5.Location = New System.Drawing.Point(172, 3)
+        Me.Label5.Location = New System.Drawing.Point(217, 3)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(46, 23)
+        Me.Label5.Size = New System.Drawing.Size(49, 23)
         Me.Label5.TabIndex = 12
         Me.Label5.Text = "وضعیت"
         Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Label3
         '
-        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.Silver
-        Me.Label3.Location = New System.Drawing.Point(474, 3)
+        Me.Label3.Location = New System.Drawing.Point(453, 3)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(39, 23)
+        Me.Label3.Size = New System.Drawing.Size(70, 23)
         Me.Label3.TabIndex = 10
-        Me.Label3.Text = "ساعت"
+        Me.Label3.Text = "ساعت صدور"
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Label2
         '
-        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.Silver
-        Me.Label2.Location = New System.Drawing.Point(577, 2)
+        Me.Label2.Location = New System.Drawing.Point(558, 3)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(33, 23)
+        Me.Label2.Size = New System.Drawing.Size(65, 23)
         Me.Label2.TabIndex = 9
-        Me.Label2.Text = "تاریخ"
+        Me.Label2.Text = "تاریخ صدور"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'UcButtonChop
@@ -176,16 +176,16 @@ Partial Class UCCarTruckNobat
         Me.UcButtonChop.TabIndex = 0
         Me.UcButtonChop.UCBackColor = System.Drawing.Color.OrangeRed
         Me.UcButtonChop.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonChop.UCEnable = true
-        Me.UcButtonChop.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonChop.UCEnable = True
+        Me.UcButtonChop.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonChop.UCForeColor = System.Drawing.Color.White
         Me.UcButtonChop.UCValue = "چاپ"
         '
         'PnlSubMain
         '
-        Me.PnlSubMain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlSubMain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlSubMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlSubMain.Controls.Add(Me.LblSequentialNumber)
         Me.PnlSubMain.Controls.Add(Me.LblStatus)
@@ -200,7 +200,7 @@ Partial Class UCCarTruckNobat
         '
         'LblSequentialNumber
         '
-        Me.LblSequentialNumber.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LblSequentialNumber.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LblSequentialNumber.BackColor = System.Drawing.Color.Transparent
         Me.LblSequentialNumber.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LblSequentialNumber.ForeColor = System.Drawing.Color.Black
@@ -216,23 +216,23 @@ Partial Class UCCarTruckNobat
         Me.LblStatus.BackColor = System.Drawing.Color.Transparent
         Me.LblStatus.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LblStatus.ForeColor = System.Drawing.Color.Black
-        Me.LblStatus.Location = New System.Drawing.Point(158, 6)
+        Me.LblStatus.Location = New System.Drawing.Point(172, 6)
         Me.LblStatus.Name = "LblStatus"
-        Me.LblStatus.Size = New System.Drawing.Size(64, 23)
+        Me.LblStatus.Size = New System.Drawing.Size(131, 23)
         Me.LblStatus.TabIndex = 38
         Me.LblStatus.Text = "عملیات"
         Me.LblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'LblDriver
         '
-        Me.LblDriver.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LblDriver.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LblDriver.BackColor = System.Drawing.Color.Transparent
         Me.LblDriver.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LblDriver.ForeColor = System.Drawing.Color.Black
-        Me.LblDriver.Location = New System.Drawing.Point(224, 6)
+        Me.LblDriver.Location = New System.Drawing.Point(309, 6)
         Me.LblDriver.Name = "LblDriver"
-        Me.LblDriver.Size = New System.Drawing.Size(215, 23)
+        Me.LblDriver.Size = New System.Drawing.Size(130, 23)
         Me.LblDriver.TabIndex = 37
         Me.LblDriver.Text = "عملیات"
         Me.LblDriver.TextAlign = System.Drawing.ContentAlignment.MiddleCenter

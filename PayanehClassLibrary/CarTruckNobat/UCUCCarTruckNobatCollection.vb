@@ -15,21 +15,18 @@ Imports PayanehClassLibrary.DriverTrucksManagement
 Imports R2Core.RFIDCardsManagement
 Imports R2CoreTransportationAndLoadNotification.Turns
 Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
+Imports R2CoreTransportationAndLoadNotification.Trucks
 
 Public Class UCUCCarTruckNobatCollection
     Inherits UCGeneral
     Implements R2CoreRFIDCardRequester
 
-    Private _NSSCarTruck As R2StandardCarTruckStructure
+    Private _NSSTruck As R2StandardCarStructure
     Public Event _UCTerraficCardReadedEvent(NSSTerraficCard As R2CoreParkingSystemStandardTrafficCardStructure)
-    Public Event UCSelectedNSSChangedEvent(NSS As R2StandardCarTruckNobatStructure)
+    Public Event UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
     Public Event UCViewCollectionCompeletedEvent()
 
 #Region "General Properties"
-
-    Private Property UCTotalNumberOfRecordstoView As Int32 = 10
-
-
 #End Region
 
 #Region "Subroutins And Functions"
@@ -55,10 +52,10 @@ Public Class UCUCCarTruckNobatCollection
     End Sub
 
     Private WithEvents _TTimer As System.Windows.Forms.Timer
-    Private Lst As List(Of R2StandardCarTruckNobatStructure)
+    Private Lst As List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
     Private _Counting As Int64
     Private _Counter As Int64
-    Private Sub UCViewCollection(YourCollection As List(Of R2StandardCarTruckNobatStructure))
+    Private Sub UCViewCollection(YourCollection As List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure))
         Try
             Lst = YourCollection
             If Lst.Count < 1 Then
@@ -79,24 +76,28 @@ Public Class UCUCCarTruckNobatCollection
 
     Public Sub UCViewCollection(YourTerraficCard As R2CoreParkingSystemStandardTrafficCardStructure)
         Try
+            Dim InstanceCars = New R2CoreParkingSystemInstanceCarsManager
+            Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
             If Not R2CoreTransportationAndLoadNotificationMClassTurnsManagement.IsTerraficCardTypeforTurnRegistering(YourTerraficCard) Then
                 Throw New ViewCarTruckTurnsTerraficCardNotSupportException
             End If
-            Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(R2CoreParkingSystemMClassCars.GetnIdCarFromCardId(YourTerraficCard.CardId))
-            UCViewCollection(NSSCarTruck)
-        Catch exx As ViewCarTruckTurnsTerraficCardNotSupportException
-            Throw exx
+            Dim NSSTruck = InstanceTrucks.GetNSSTruck(InstanceCars.GetnIdCarFromCardId(YourTerraficCard.CardId))
+            UCViewCollection(NSSTruck.NSSCar)
+        Catch ex As ViewCarTruckTurnsTerraficCardNotSupportException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Sub
 
-    Public Sub UCViewCollection(YourCarTruck As R2StandardCarTruckStructure)
+    Public Sub UCViewCollection(YourTruck As R2StandardCarStructure)
         Try
+            Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+            Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
             UCRefresh()
-            _NSSCarTruck = YourCarTruck
-            UcCarPresenter.UCViewCarInformation(_NSSCarTruck.NSSCar)
-            UCViewCollection(PayanehClassLibraryMClassCarTruckNobatManagement.GetCarTruckNobatCollection(_NSSCarTruck.NSSCar.nIdCar, UCTotalNumberOfRecordstoView))
+            _NSSTruck = YourTruck
+            UcCarPresenter.UCViewCarInformation(_NSSTruck)
+            UCViewCollection(InstanceTurns.GetTurns(InstanceTrucks.GetNSSTruck(_NSSTruck.nIdCar)))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -140,7 +141,7 @@ Public Class UCUCCarTruckNobatCollection
 
     Private Sub PicRefresh_Click(sender As Object, e As EventArgs) Handles PicRefresh.Click
         Try
-            UCViewCollection(_NSSCarTruck)
+            UCViewCollection(_NSSTruck)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

@@ -1765,8 +1765,8 @@ Namespace AccountingManagement
         AnjomanHazinehNobat = 4 'هزینه نوبت انجمن - تریلی و اطاقدار 
         AnjomanHazinehSodorMojavezUpTo72Saat = 5 'در سالن
         AnjomanHazinehSodorMojavezKiosk = 6 'در کیوسک
-        SherkatHazinehSodoorMojavezUpTo72Saat = 7 'در سالن
-        SherkatHazinehSodoorMojavezKiosk = 8 'در کیوسک
+        XXX1 = 7
+        XXX2 = 8
         HazinehKart = 9 'هزینه کارت تردد
         TransferallChargeToAnother = 10 'انتقال همه موجودی کارت
         SherkatHazinehNobat = 11 'منظور هزینه شرکت وقتی نوبت در اتاق کامپیوتر صادر می گردد

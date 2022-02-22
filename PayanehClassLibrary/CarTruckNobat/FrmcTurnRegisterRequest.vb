@@ -184,7 +184,7 @@ Public Class FrmcTurnRegisterRequest
     Private Sub UcCarTruckPnlCarTruckTurns_UCViewCarTruckInformationCompletedEvent(CarId As String) Handles UcCarTruckPnlCarTruckTurns.UCViewCarTruckInformationCompletedEvent
         Try
             Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(CarId)
-            UcucCarTruckNobatCollectionPnlCarTruckTurns.UCViewCollection(NSSCarTruck)
+            UcucCarTruckNobatCollectionPnlCarTruckTurns.UCViewCollection(NSSCarTruck.NSSCar)
             UcCarImagePnlCarTruckTurns.UCViewCarEnterExitImage(NSSCarTruck.NSSCar)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

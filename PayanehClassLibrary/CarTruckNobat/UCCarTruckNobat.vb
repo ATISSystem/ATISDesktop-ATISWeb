@@ -14,7 +14,7 @@ Imports PayanehClassLibrary.CarTruckNobatManagement.Exceptions
 Public Class UCCarTruckNobat
     Inherits UCGeneral
 
-    Private _NSSCarTruckNobat As R2StandardCarTruckNobatStructure
+    Private _NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure
     Public Event UCClickedEvent(UC As UCCarTruckNobat)
 
 #Region "General Properties"
@@ -39,9 +39,9 @@ Public Class UCCarTruckNobat
     End Property
 
     <Browsable(False)>
-    Public ReadOnly Property UCGetNSS() As R2StandardCarTruckNobatStructure
+    Public ReadOnly Property UCGetNSS() As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure
         Get
-            Return _NSSCarTruckNobat
+            Return _NSSTurn
         End Get
     End Property
 
@@ -63,41 +63,24 @@ Public Class UCCarTruckNobat
         LblnEnterExitId.Text = "" : LblEnterDate.Text = "" : LblEnterTime.Text = "" : LblDriver.Text = "" : LblStatus.Text = ""
     End Sub
 
-    Public Sub UCViewInf(YourNSSNobat As R2StandardCarTruckNobatStructure)
+    Public Sub UCViewInf(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
         Try
             UCRefresh()
-            _NSSCarTruckNobat = YourNSSNobat
-            ''UcLabelnEnterExitId.UCValue = YourNSSNobat.nEnterExitId
-            ''UcLabelEnterDate.UCValue = YourNSSNobat.EnterDate
-            ''UcLabelEnterTime.UCValue = YourNSSNobat.EnterTime
-            ''UcLabelDriver.UCValue = YourNSSNobat.NSSDriverTruck.NSSDriver.StrPersonFullName
-            ''UcLabelStatus.UCValue = IIf(YourNSSNobat.bFlagDriver = True, "غیرفعال", "فعال")
-
-            LblnEnterExitId.Text = YourNSSNobat.nEnterExitId
-            LblSequentialNumber.Text = Mid(YourNSSNobat.OtaghdarTurnNumber, 7, 20).Trim
-            LblEnterDate.Text = YourNSSNobat.EnterDate
-            LblEnterTime.Text = YourNSSNobat.EnterTime
-            LblDriver.Text = YourNSSNobat.NSSDriverTruck.NSSDriver.StrPersonFullName
-            LblStatus.Text = IIf(YourNSSNobat.bFlagDriver = True, "غیرفعال", "فعال")
-
-            UcButtonChop.UCEnable = Not YourNSSNobat.bFlagDriver
-            UcButtonEbtalNobat.UCEnable = Not YourNSSNobat.bFlagDriver
-            UcButtonResuscitationNobat.UCEnable = YourNSSNobat.bFlagDriver
+            _NSSTurn = YourNSSTurn
+            LblnEnterExitId.Text = YourNSSTurn.nEnterExitId
+            LblSequentialNumber.Text = Mid(YourNSSTurn.OtaghdarTurnNumber, 7, 20).Trim
+            LblEnterDate.Text = YourNSSTurn.EnterDate
+            LblEnterTime.Text = YourNSSTurn.EnterTime
+            LblDriver.Text = YourNSSTurn.NSSTruckDriver.NSSDriver.StrPersonFullName
+            LblStatus.Text = YourNSSTurn.TurnStatusTitle
+            UcButtonChop.UCEnable = Not YourNSSTurn.bFlagDriver
+            UcButtonEbtalNobat.UCEnable = Not YourNSSTurn.bFlagDriver
+            UcButtonResuscitationNobat.UCEnable = YourNSSTurn.bFlagDriver
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Sub
 
-    Public Sub UCViewInf(YourNSSCar As R2StandardCarStructure)
-        Try
-            UCRefresh()
-            UCViewInf(PayanehClassLibraryMClassCarTruckNobatManagement.GetLastActiveNSSNobat(YourNSSCar))
-        Catch exx As GetNobatException
-            Throw exx
-        Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-        End Try
-    End Sub
 
 
 
@@ -111,7 +94,7 @@ Public Class UCCarTruckNobat
     Private Sub UcButtonChop_UCClickedEvent() Handles UcButtonChop.UCClickedEvent
         Try
             Dim InstanceTurnPrinting = New R2CoreTransportationAndLoadNotificationMClassTurnPrintingManager
-            InstanceTurnPrinting.TurnPrint(_NSSCarTruckNobat.nEnterExitId)
+            InstanceTurnPrinting.TurnPrint(_NSSTurn.nEnterExitId)
         Catch exx As GetNSSException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + exx.Message, "اطلاعات پایه برای چاپ نوبت ناوگان باری تکمیل نیست", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         Catch ex As Exception
@@ -121,9 +104,9 @@ Public Class UCCarTruckNobat
 
     Private Sub UcButtonEbtalNobat_UCClickedEvent() Handles UcButtonEbtalNobat.UCClickedEvent
         Try
-            PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToTrue(_NSSCarTruckNobat.nEnterExitId, True)
-            _NSSCarTruckNobat.bFlagDriver = True
-            UCViewInf(_NSSCarTruckNobat)
+            PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToTrue(_NSSTurn.nEnterExitId, True)
+            _NSSTurn.bFlagDriver = True
+            UCViewInf(_NSSTurn)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت باطل شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
@@ -132,9 +115,9 @@ Public Class UCCarTruckNobat
 
     Private Sub UcButtonResuscitationNobat_UCClickedEvent() Handles UcButtonResuscitationNobat.UCClickedEvent
         Try
-            PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToFalse(_NSSCarTruckNobat.nEnterExitId)
-            _NSSCarTruckNobat.bFlagDriver = False
-            UCViewInf(_NSSCarTruckNobat)
+            PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToFalse(_NSSTurn.nEnterExitId)
+            _NSSTurn.bFlagDriver = False
+            UCViewInf(_NSSTurn)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت احیاء شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

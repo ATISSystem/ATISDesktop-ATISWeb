@@ -1153,21 +1153,6 @@ Namespace CarTruckNobatManagement
             End Try
         End Sub
 
-        Public Shared Function GetCarTruckNobatCollection(YourTruckId As Int64, YourTotalNumberofRecordsRequested As Int64) As List(Of R2StandardCarTruckNobatStructure)
-            Try
-                Dim Lst As List(Of R2StandardCarTruckNobatStructure) = New List(Of R2StandardCarTruckNobatStructure)
-                Dim Ds As New DataSet
-                R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select Top " & YourTotalNumberofRecordsRequested & " * from dbtransport.dbo.TbEnterExit Where StrCardNo='" & YourTruckId & "' Order By nEnterExitId Desc", 1, Ds)
-                For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    Dim NSS As R2StandardCarTruckNobatStructure = New R2StandardCarTruckNobatStructure(Ds.Tables(0).Rows(Loopx).Item("nEnterExitId"), Ds.Tables(0).Rows(Loopx).Item("StrEnterDate"), Ds.Tables(0).Rows(Loopx).Item("StrEnterTime"), PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(Ds.Tables(0).Rows(Loopx).Item("nDriverCode")), Ds.Tables(0).Rows(Loopx).Item("bFlagDriver"), Ds.Tables(0).Rows(Loopx).Item("nUserIdEnter"), Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber"), Ds.Tables(0).Rows(Loopx).Item("StrCardNo"), Ds.Tables(0).Rows(Loopx).Item("RegisteringTimeStamp"))
-                    Lst.Add(NSS)
-                Next
-                Return Lst
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
         Public Shared Sub AutomaticTurnRegistering()
             Try
                 'ابتدا تولید رشته ساب کوری

@@ -71,7 +71,7 @@ Public Class FrmcAnnouncementHallAutomation
                 FrmcViewLocalMessage("اطلاعات پایه کارت تردد و خودرو و روابط آن ها تکمیل نیست")
             End Try
             UcCarAndDriverPresenter.UCSetCar(CarId)
-            UcucCarTruckNobatCollection.UCViewCollection(NSSCarTruck)
+            UcucCarTruckNobatCollection.UCViewCollection(NSSCarTruck.NSSCar)
         Catch exx As GetNSSException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch exxx As GetDataException
