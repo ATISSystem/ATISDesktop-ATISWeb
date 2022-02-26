@@ -18,6 +18,7 @@ using R2Core.SecurityAlgorithmsManagement.Hashing;
 using ATISMobileRestful.Logging;
 using R2Core.PermissionManagement;
 using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
+using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 
 namespace ATISMobileRestful.Controllers.ReportManagement
 {
@@ -53,5 +54,64 @@ namespace ATISMobileRestful.Controllers.ReportManagement
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
+
+        [HttpPost]
+        public HttpResponseMessage AnnouncedLoadsReport()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientRequestAnnouncedLoadsReportClearanceLoadsReport );
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var AHSGId = Convert.ToInt64(Content.Split(';')[2]);
+                var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
+                List<KeyValuePair<string, string>> Lst = InstanceLoadCapacitorLoad.ReportingInformationProviderAnnouncedLoadsReport (AHSGId, NSSSoftwareuser);
+                List<Models.AnnouncedLoadsReportClearanceLoadsReport> _AnnouncedLoadsReportClearanceLoadsReport = new List<Models.AnnouncedLoadsReportClearanceLoadsReport>();
+                for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
+                {
+                    var Item = new Models.AnnouncedLoadsReportClearanceLoadsReport();
+                    Item.ReportItemHeader = Lst[Loopx].Key;
+                    Item.ReportItemDetails = Lst[Loopx].Value;
+                    _AnnouncedLoadsReportClearanceLoadsReport.Add(Item);
+                }
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(_AnnouncedLoadsReportClearanceLoadsReport), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+        }
+
+        [HttpPost]
+        public HttpResponseMessage ClearanceLoadsReport()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientRequestAnnouncedLoadsReportClearanceLoadsReport);
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var AHSGId = Convert.ToInt64(Content.Split(';')[2]);
+                var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
+                List<KeyValuePair<string, string>> Lst = InstanceLoadCapacitorLoad.ReportingInformationProviderClearanceLoadsReport(AHSGId, NSSSoftwareuser);
+                List<Models.AnnouncedLoadsReportClearanceLoadsReport> _AnnouncedLoadsReportClearanceLoadsReport = new List<Models.AnnouncedLoadsReportClearanceLoadsReport>();
+                for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
+                {
+                    var Item = new Models.AnnouncedLoadsReportClearanceLoadsReport();
+                    Item.ReportItemHeader = Lst[Loopx].Key;
+                    Item.ReportItemDetails = Lst[Loopx].Value;
+                    _AnnouncedLoadsReportClearanceLoadsReport.Add(Item);
+                }
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(_AnnouncedLoadsReportClearanceLoadsReport), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+        }
+
     }
 }

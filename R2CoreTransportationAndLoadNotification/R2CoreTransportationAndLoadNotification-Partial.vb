@@ -70,6 +70,7 @@ Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement.Exception
 Imports R2CoreParkingSystem.TrafficCardsManagement
 Imports R2CoreParkingSystem.AccountingManagement
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
+Imports R2Core.PermissionManagement.Exceptions
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -1234,6 +1235,77 @@ Namespace LoadCapacitor
 
         Public Class R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
             Private _DateTime As New R2DateTime
+
+            Public Function ReportingInformationProviderAnnouncedLoadsReport(YourAHSGId As Int64, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of KeyValuePair(Of String, String))
+                'گزارش بار اعلام شده
+                Try
+                    Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                    InstanceSQLInjectionPrevention.GeneralAuthorization(YourAHSGId)
+
+                    Dim InstancePermissions = New R2CoreInstansePermissionsManager
+                    If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.SoftwareUserCanViewAnnouncedLoadsReportOrClearanceLoadsReport, YourNSSSoftwareUser.UserId, 0) Then Throw New PermissionException
+
+                    Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
+                    Dim DS As DataSet
+                    InstanceSqlDataBox.GetDataBOX(New R2PrimarySqlConnection,
+                           "Select Loads.nBarCode, Products.strGoodName, sum(Loads.nCarNumKol) as nCarNumKol
+                            From dbtransport.dbo.tbElam as Loads
+                               Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode =Products.strGoodCode 
+                            Where Loads.dDateElam ='" & _DateTime.GetCurrentDateShamsiFull & "' and (LoadStatus<>3 and LoadStatus<>4 and LoadStatus<>6) and Loads.AHSGId=" & YourAHSGId & "
+                            Group By Loads.nBarCode, Products.strGoodName", 0, DS)
+                    Dim Lst = New List(Of KeyValuePair(Of String, String))
+                    Dim StringB As New StringBuilder
+                    For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                        Dim ValueHeader = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("strGoodName"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("strGoodName").ToString().Trim()) + vbCrLf
+                        StringB.Clear()
+                        StringB.Append("تعداد :" + IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("nCarNumKol"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("nCarNumKol").ToString().Trim()))
+                        Lst.Add(New KeyValuePair(Of String, String)(ValueHeader, StringB.ToString()))
+                    Next
+                    Return Lst
+                Catch ex As PermissionException
+                    Throw ex
+                Catch ex As SqlInjectionException
+                    Throw ex
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function ReportingInformationProviderClearanceLoadsReport(YourAHSGId As Int64, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of KeyValuePair(Of String, String))
+                'گزارش بار آزاد شده
+                Try
+                    Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                    InstanceSQLInjectionPrevention.GeneralAuthorization(YourAHSGId)
+
+                    Dim InstancePermissions = New R2CoreInstansePermissionsManager
+                    If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.SoftwareUserCanViewAnnouncedLoadsReportOrClearanceLoadsReport, YourNSSSoftwareUser.UserId, 0) Then Throw New PermissionException
+
+                    Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
+                    Dim DS As DataSet
+                    InstanceSqlDataBox.GetDataBOX(New R2PrimarySqlConnection,
+                        "Select Loads.nBarCode,Products.strGoodName, Count(*) as Counting
+                         from dbtransport.dbo.tbEnterExit as Turns
+                            Inner Join dbtransport.dbo.tbElam  as Loads On Turns.nEstelamID=Loads.nEstelamID 
+                            Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode =Products.strGoodCode 
+                         Where Turns.strExitDate='" & _DateTime.GetCurrentDateShamsiFull & "' and Turns.LoadPermissionStatus=1 and Loads.AHSGId=" & YourAHSGId & "
+                         Group By Loads.nBarCode,Products.strGoodName", 0, DS)
+                    Dim Lst = New List(Of KeyValuePair(Of String, String))
+                    Dim StringB As New StringBuilder
+                    For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                        Dim ValueHeader = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("strGoodName"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("strGoodName").ToString().Trim()) + vbCrLf
+                        StringB.Clear()
+                        StringB.Append("تعداد :" + IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("Counting"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("Counting").ToString().Trim()))
+                        Lst.Add(New KeyValuePair(Of String, String)(ValueHeader, StringB.ToString()))
+                    Next
+                    Return Lst
+                Catch ex As PermissionException
+                    Throw ex
+                Catch ex As SqlInjectionException
+                    Throw ex
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
 
             Public Function GetLoadCapacitorLoadsfromSubscriptionDB(YourAHId As Int64, YourAHSGId As Int64, YourAHATTypeId As Int64, YournCarNumViewZeroFlag As Boolean, YourLoadStatusLimitation As Boolean, YourOrderingOptions As R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions, Optional YourTransportCompanyId As Int64 = Int64.MinValue, Optional YourProvinceId As Int64 = Int64.MinValue) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
                 Try
@@ -5890,15 +5962,26 @@ Namespace LoadAllocation
             Try
                 Dim InstanceLoadPermission = New R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager
                 'کنترل وضعیت تخصیص بار
-                If YourNSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser Or YourNSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded Or YourNSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledSystem Or YourNSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionCancelled Then Throw New LoadAllocationLoadPermissionRegisteringNotAllowedBecauseLoadAllocationStatusException
+                Try
+                    If YourNSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledUser Or YourNSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded Or YourNSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledSystem Or YourNSSLoadAllocation.LAStatusId = R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionCancelled Then Throw New LoadAllocationLoadPermissionRegisteringNotAllowedBecauseLoadAllocationStatusException
+                Catch ex As LoadAllocationLoadPermissionRegisteringNotAllowedBecauseLoadAllocationStatusException
+                    Throw ex
+                Catch ex As Exception
+                    Throw New Exception("Location:1:" + ex.Message)
+                End Try
+
                 Try
                     InstanceLoadPermission.LoadPermissionRegistering(YourNSSLoadAllocation, YourNSSLoadCapacitorLoad, YourCurrentDateTime, YourUserNSS)
-                    CmdSql.Connection.Open()
-                    CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
+                    Try
+                        CmdSql.Connection.Open()
+                        CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
                                               Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & ",LANote='مجوز صادر شده',DateTimeMilladi='" & YourCurrentDateTime.DateTimeMilladiFormated & "',DateShamsi='" & YourCurrentDateTime.DateShamsiFull & "',Time='" & YourCurrentDateTime.Time & "' 
-                                          Where LAId=" & YourNSSLoadAllocation.LAId & ""
-                    CmdSql.ExecuteNonQuery()
-                    CmdSql.Connection.Close()
+                                              Where LAId=" & YourNSSLoadAllocation.LAId & ""
+                        CmdSql.ExecuteNonQuery()
+                        CmdSql.Connection.Close()
+                    Catch ex As Exception
+                        Throw New Exception("Location:2:" + ex.Message)
+                    End Try
                 Catch ex As Exception When TypeOf ex Is TurnHandlingNotAllowedBecuaseTurnStatusException OrElse TypeOf ex Is LoadPermisionRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException OrElse TypeOf ex Is LoadPermisionRegisteringFailedBecauseTurnIsNotReadyException OrElse TypeOf ex Is PresentNotRegisteredInLast30MinuteException OrElse TypeOf ex Is PresentsNotEnoughException OrElse TypeOf ex Is LoadPermisionRegisteringFailedBecauseBlackListException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is LoadCapacitorLoadReleaseNotAllowedBecuasenCarNumException OrElse TypeOf ex Is LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException OrElse TypeOf ex Is LoadCapacitorLoadReleaseTimeNotReachedException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is GetDataException OrElse TypeOf ex Is AnnouncementHallSubGroupNotFoundException OrElse TypeOf ex Is AnnouncementHallSubGroupRelationTruckNotExistException
                     'مارک تخصیص به حالت فی لد Falied
                     CmdSql.Connection.Open()

@@ -642,6 +642,7 @@ namespace ATISMobileRestful
             public static Int64 WebApiClientGetLastTurnIdWhichCancelledDuringTurnsCancellationProcess = 58;
             public static Int64 WebApiClientGetLoadPermissionsViaLicensePlate = 59;
             public static Int64 WebApiClientTurnCancellation = 60;
+            public static Int64 WebApiClientRequestAnnouncedLoadsReportClearanceLoadsReport = 62;
         }
 
     }

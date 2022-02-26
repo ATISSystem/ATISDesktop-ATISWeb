@@ -95,6 +95,8 @@ namespace ATISMobileRestful.Models
     public class PermissionsIssued
     { public string ReportItemHeader { get; set; } public string ReportItemDetails { get; set; } }
 
+    public class AnnouncedLoadsReportClearanceLoadsReport
+    { public string ReportItemHeader { get; set; } public string ReportItemDetails { get; set; } }
 
 
 }
