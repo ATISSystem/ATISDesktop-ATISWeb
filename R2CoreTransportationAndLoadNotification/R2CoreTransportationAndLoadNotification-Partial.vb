@@ -1255,12 +1255,15 @@ Namespace LoadCapacitor
                             Group By Loads.nBarCode, Products.strGoodName", 0, DS)
                     Dim Lst = New List(Of KeyValuePair(Of String, String))
                     Dim StringB As New StringBuilder
+                    Dim Total As Int64 = 0
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                         Dim ValueHeader = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("strGoodName"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("strGoodName").ToString().Trim()) + vbCrLf
                         StringB.Clear()
-                        StringB.Append("تعداد :" + IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("nCarNumKol"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("nCarNumKol").ToString().Trim()))
+                        StringB.Append("تعداد : " + IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("nCarNumKol"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("nCarNumKol").ToString().Trim()))
                         Lst.Add(New KeyValuePair(Of String, String)(ValueHeader, StringB.ToString()))
+                        Total = Total + IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("nCarNumKol"), DBNull.Value), 0, DS.Tables(0).Rows(Loopx).Item("nCarNumKol"))
                     Next
+                    If Total <> 0 Then Lst.Add(New KeyValuePair(Of String, String)("جمع کل : ", Total.ToString))
                     Return Lst
                 Catch ex As PermissionException
                     Throw ex
@@ -1291,12 +1294,15 @@ Namespace LoadCapacitor
                          Group By Loads.nBarCode,Products.strGoodName", 0, DS)
                     Dim Lst = New List(Of KeyValuePair(Of String, String))
                     Dim StringB As New StringBuilder
+                    Dim Total As Int64 = 0
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                         Dim ValueHeader = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("strGoodName"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("strGoodName").ToString().Trim()) + vbCrLf
                         StringB.Clear()
-                        StringB.Append("تعداد :" + IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("Counting"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("Counting").ToString().Trim()))
+                        StringB.Append("تعداد : " + IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("Counting"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("Counting").ToString().Trim()))
                         Lst.Add(New KeyValuePair(Of String, String)(ValueHeader, StringB.ToString()))
+                        Total = Total + IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("Counting"), DBNull.Value), 0, DS.Tables(0).Rows(Loopx).Item("Counting"))
                     Next
+                    If Total <> 0 Then Lst.Add(New KeyValuePair(Of String, String)("جمع کل : ", Total.ToString))
                     Return Lst
                 Catch ex As PermissionException
                     Throw ex
@@ -2240,14 +2246,11 @@ Namespace LoadCapacitor
                         Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                         If InstanceAnnouncementTiming.IsTimingActive(YourNSS.AHId, YourNSS.AHSGId) Then
                             Dim Timing = InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime)
-                            If (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering) And
-                               (Timing <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) Then
+                            If _DateTime.GetCurrentTime() > InstanceAnnouncementHalls.GetAnnouncementHallLeastAnnounceTime(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId).Time Then
+                                Throw New LoadCapacitorLoadRegisterTimePassedException
+                            End If
+                            If Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadAllocationRegistering Or
+                               Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationRegistering Then
                                 Throw New LoadCapacitorLoadRegisterTimePassedException
                             End If
                         Else
@@ -2349,18 +2352,7 @@ Namespace LoadCapacitor
                             If Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationRegistering And InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.UserCanEditLoadCapacitorLoadInLoadAllocationTiming, YourUserNSS.UserId, 0) Then
                                 'امکان ویرایش بار هنگام تخصیص بار فقط توسط کاربر خاص که مجوز دارد
                             Else
-                                If (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) Or
-                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Or
-                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) Or
-                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) Or
-                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) Or
-                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) Or
-                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering) Or
-                                   (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) Then
-                                    If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then
-                                        Throw New LoadCapacitorLoadEditTimePassedException
-                                    End If
-                                Else
+                                If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then
                                     Throw New LoadCapacitorLoadEditTimePassedException
                                 End If
                             End If
@@ -2492,18 +2484,7 @@ Namespace LoadCapacitor
                         Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                         If InstanceAnnouncementTiming.IsTimingActive(YourNSS.AHId, YourNSS.AHSGId) Then
                             Dim Timing = InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime)
-                            If (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InBeforAllProcesses) Or
-                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InMiddleOfProcesses) Or
-                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartLoadPermissionRegistering) Or
-                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) Or
-                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartSedimenting) Or
-                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting) Or
-                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.StartAutomaticTurnRegistering) Or
-                               (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering) Then
-                                If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then
-                                    Throw New LoadCapacitorLoadDeleteTimePassedException
-                                End If
-                            Else
+                            If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then
                                 Throw New LoadCapacitorLoadDeleteTimePassedException
                             End If
                         End If
@@ -3324,7 +3305,6 @@ Namespace LoadCapacitor
         End Class
 
     End Namespace
-
 
 End Namespace
 
