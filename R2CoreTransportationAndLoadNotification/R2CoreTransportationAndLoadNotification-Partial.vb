@@ -5964,13 +5964,17 @@ Namespace LoadAllocation
                     End Try
                 Catch ex As Exception When TypeOf ex Is TurnHandlingNotAllowedBecuaseTurnStatusException OrElse TypeOf ex Is LoadPermisionRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException OrElse TypeOf ex Is LoadPermisionRegisteringFailedBecauseTurnIsNotReadyException OrElse TypeOf ex Is PresentNotRegisteredInLast30MinuteException OrElse TypeOf ex Is PresentsNotEnoughException OrElse TypeOf ex Is LoadPermisionRegisteringFailedBecauseBlackListException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is LoadCapacitorLoadReleaseNotAllowedBecuasenCarNumException OrElse TypeOf ex Is LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException OrElse TypeOf ex Is LoadCapacitorLoadReleaseTimeNotReachedException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is GetDataException OrElse TypeOf ex Is AnnouncementHallSubGroupNotFoundException OrElse TypeOf ex Is AnnouncementHallSubGroupRelationTruckNotExistException
                     'مارک تخصیص به حالت فی لد Falied
-                    CmdSql.Connection.Open()
-                    CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
+                    Try
+                        CmdSql.Connection.Open()
+                        CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
                                                   Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed & ",LANote='" & ex.Message & "',
                                                       DateTimeMilladi='" & YourCurrentDateTime.DateTimeMilladiFormated & "',DateShamsi='" & YourCurrentDateTime.DateShamsiFull & "',Time='" & YourCurrentDateTime.Time & "' 
                                           Where LAId=" & YourNSSLoadAllocation.LAId & ""
-                    CmdSql.ExecuteNonQuery()
-                    CmdSql.Connection.Close()
+                        CmdSql.ExecuteNonQuery()
+                        CmdSql.Connection.Close()
+                    Catch exy As Exception
+                        Throw New Exception("Location:3:" + exy.Message)
+                    End Try
                     Throw ex
                 End Try
             Catch ex As Exception When TypeOf ex Is TurnHandlingNotAllowedBecuaseTurnStatusException _

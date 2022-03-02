@@ -368,20 +368,20 @@ End Namespace
 Namespace ConfigurationsManagement
     Public MustInherit Class R2CoreTransportationAndLoadNotificationConfigurations
         Inherits R2CoreConfigurations
-        Public Shared ReadOnly Property TurnControlling = 34
-        Public Shared ReadOnly Property AnnouncementHallMonitoring = 52
-        Public Shared ReadOnly Property LoadCapacitorLoadManipulationSetting = 54
-        Public Shared ReadOnly Property AnnouncementHallAnnounceTime = 55
-        Public Shared ReadOnly Property AnnouncementHallsTurnCancellationSetting = 56
-        Public Shared ReadOnly Property AnnouncementHallsTruckDriverAttendance = 57
-        Public Shared ReadOnly Property DefaultTransportationAndLoadNotificationConfigs = 58
-        Public Shared ReadOnly Property AnnouncementHallsLoadAllocationsLoadPermissionRegisteringSetting = 59
-        Public Shared ReadOnly Property AnnouncementHallsTurnRegisteringSetting = 61
-        Public Shared ReadOnly Property AnnouncementHallsLoadPermissionsSetting = 62
-        Public Shared ReadOnly Property AnnouncementHallsLoadSedimentationSetting = 63
-        Public Shared ReadOnly Property AnnouncementHallsAutomaticProcessesTiming = 68
-        Public Shared ReadOnly Property AnnouncementHallsLoadAllocationSetting = 69
-        Public Shared ReadOnly Property TommorowLoads = 71
+        Public Shared ReadOnly Property TurnControlling As Int64 = 34
+        Public Shared ReadOnly Property AnnouncementHallMonitoring As Int64 = 52
+        Public Shared ReadOnly Property LoadCapacitorLoadManipulationSetting As Int64 = 54
+        Public Shared ReadOnly Property AnnouncementHallAnnounceTime As Int64 = 55
+        Public Shared ReadOnly Property AnnouncementHallsTurnCancellationSetting As Int64 = 56
+        Public Shared ReadOnly Property AnnouncementHallsTruckDriverAttendance As Int64 = 57
+        Public Shared ReadOnly Property DefaultTransportationAndLoadNotificationConfigs As Int64 = 58
+        Public Shared ReadOnly Property AnnouncementHallsLoadAllocationsLoadPermissionRegisteringSetting As Int64 = 59
+        Public Shared ReadOnly Property AnnouncementHallsTurnRegisteringSetting As Int64 = 61
+        Public Shared ReadOnly Property AnnouncementHallsLoadPermissionsSetting As Int64 = 62
+        Public Shared ReadOnly Property AnnouncementHallsLoadSedimentationSetting As Int64 = 63
+        Public Shared ReadOnly Property AnnouncementHallsAutomaticProcessesTiming As Int64 = 68
+        Public Shared ReadOnly Property AnnouncementHallsLoadAllocationSetting As Int64 = 69
+        Public Shared ReadOnly Property TommorowLoads As Int64 = 71
     End Class
 
     Public Class R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager

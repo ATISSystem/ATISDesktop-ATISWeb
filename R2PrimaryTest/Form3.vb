@@ -263,9 +263,13 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            Cmdsql.Connection.Open()
-            Throw New Exception("TEST")
-            Cmdsql.Connection.Close()
+            Do While 1 = 1
+                Cmdsql.Connection.Open()
+                Cmdsql.Connection.Close()
+                Cmdsql.Connection.Close()
+            Loop
+            'Throw New Exception("TEST")
+            'Cmdsql.Connection.Close()
             'PayanehClassLibraryMClassCarTruckNobatManagement.TempTurnsCancellation()
             'Dim NSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating(TextBoxConcat1.Text, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
 
@@ -354,9 +358,9 @@ Public Class Form3
             'End If
 
         Catch ex As Exception
-            If Cmdsql.Connection.State <> ConnectionState.Closed Then
-                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
-            End If
+            'If Cmdsql.Connection.State <> ConnectionState.Closed Then
+            '    Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
+            'End If
             MessageBox.Show(ex.Message)
         End Try
         'Try
