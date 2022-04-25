@@ -17,6 +17,8 @@ using R2Core.SecurityAlgorithmsManagement.Exceptions;
 using R2CoreTransportationAndLoadNotification.Trucks;
 using R2CoreTransportationAndLoadNotification.TruckDrivers;
 using PayanehClassLibrary.DriverTrucksManagement.Exceptions;
+using PayanehClassLibrary.PayanehWS;
+using PayanehClassLibrary.CarTrucksManagement.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.SmartCards
 {
@@ -24,7 +26,6 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
     {
 
         #region "General Properties"
-        private PayanehClassLibrary.PayanehWS.PayanehWebService WS = new PayanehClassLibrary.PayanehWS.PayanehWebService();
 
         private R2CoreTransportationAndLoadNotificationStandardTruckStructure _WcNSSTruck = null;
         public R2CoreTransportationAndLoadNotificationStandardTruckStructure WcGetNSSTruck
@@ -56,6 +57,7 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
         {
             try
             {
+                if (TxtTruckDriverNationalCode.Text == String.Empty) { return; }
                 R2StandardDriverTruckStructure NSS = null;
                 var InstacneLogin = new ATISWebMClassLoginManager();
                 var InstanceTruckDrivers = new R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager();
@@ -66,11 +68,11 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
                 }
                 catch (DriverTruckInformationNotExistException ex)
                 {
+                    PayanehWebService WS = new PayanehWebService();
                     var TruckDriverId = WS.WebMethodGetDriverTruckByNationalCodefromRMTO(TxtTruckDriverNationalCode.Text, WS.WebMethodLogin(InstacneLogin.GetNSSCurrentUser().UserShenaseh, InstacneLogin.GetNSSCurrentUser().UserPassword));
                     _WcNSSTruckDriver = InstanceTruckDrivers.GetNSSTruckDriver(TruckDriverId);
+                    WS = null;
                 }
-
-
             }
             catch (Exception ex) when (ex is SqlInjectionException || ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
             { throw ex; }
@@ -84,17 +86,31 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
         {
             try
             {
-                var InstanceLogin = new ATISWebMClassLoginManager();
-                var CarId = WS.WebMethodGetnIdCarTruckBySmartCarNo(TxtTruckSmartCardNo.Text, WS.WebMethodLogin(InstanceLogin.GetNSSCurrentUser().UserShenaseh, InstanceLogin.GetNSSCurrentUser().UserPassword));
+                if (TxtTruckSmartCardNo.Text == String.Empty) { return; }
+                R2StandardCarTruckStructure NSSCarTruck = null;
+                var InstacneLogin = new ATISWebMClassLoginManager();
                 var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
-                _WcNSSTruck = InstanceTrucks.GetNSSTruck(CarId);
+                var InstanceCarTruck = new PayanehClassLibraryMClassCarTrucksManager();
+                try
+                {
+                    NSSCarTruck = InstanceCarTruck.GetNSSCarTruckBySmartCardNo(TxtTruckSmartCardNo.Text);
+                    _WcNSSTruck = InstanceTrucks.GetNSSTruck(Convert.ToInt64(NSSCarTruck.NSSCar.nIdCar));
+                }
+                catch (TruckInformationNotExistException ex)
+                {
+                    PayanehWebService WS =  new PayanehWebService();
+                    var TruckId = WS.WebMethodGetnIdCarTruckBySmartCarNo(TxtTruckSmartCardNo.Text, WS.WebMethodLogin(InstacneLogin.GetNSSCurrentUser().UserShenaseh, InstacneLogin.GetNSSCurrentUser().UserPassword));
+                    _WcNSSTruck = InstanceTrucks.GetNSSTruck(TruckId);
+                    WS = null;
+                }
             }
-            catch (Exception ex) when (ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
-            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+            catch (Exception ex) when (ex is SqlInjectionException || ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
+            { throw ex; }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
             catch (Exception ex)
             { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
+
         }
 
         #endregion

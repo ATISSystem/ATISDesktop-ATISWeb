@@ -95,6 +95,7 @@ Imports PayanehClassLibrary.ComputerMessages
 Imports R2CoreParkingSystem.CarType
 Imports R2CoreParkingSystem.Logging
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
+Imports PayanehClassLibrary.CarTrucksManagement.Exceptions
 
 Namespace Logging
 
@@ -2549,6 +2550,39 @@ Namespace CarTrucksManagement
             End Try
         End Function
 
+        Public Function GetNSSCarTruckBySmartCardNo(YourSmartCardNo As String) As R2StandardCarTruckStructure
+            Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourSmartCardNo)
+
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+               "Select Top 1 * from dbtransport.dbo.TbCar Where StrBodyNo='" & YourSmartCardNo.Trim() & "' and ViewFlag=1 Order By nIdCar Desc",
+                                                          0, Ds).GetRecordsCount() <> 0 Then
+                    Dim NSSCarTruck As R2StandardCarTruckStructure = Nothing
+                    Dim NSSCar = New R2StandardCarStructure()
+                    NSSCarTruck = New R2StandardCarTruckStructure()
+                    NSSCar.nIdCar = Ds.Tables(0).Rows(0).Item("nIdCar")
+                    NSSCar.StrCarNo = Ds.Tables(0).Rows(0).Item("StrCarNo").trim
+                    NSSCar.StrCarSerialNo = Ds.Tables(0).Rows(0).Item("StrCarSerialNo")
+                    NSSCar.nIdCity = Ds.Tables(0).Rows(0).Item("nIdCity")
+                    NSSCar.snCarType = Ds.Tables(0).Rows(0).Item("snCarType")
+                    NSSCarTruck.NSSCar = NSSCar
+                    NSSCarTruck.StrBodyNo = Ds.Tables(0).Rows(0).Item("StrBodyNo")
+                    Return NSSCarTruck
+                Else
+                    Throw New TruckInformationNotExistException
+                End If
+            Catch ex As SqlInjectionException
+                Throw ex
+            Catch ex As TruckInformationNotExistException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+
     End Class
 
     Public Class PayanehClassLibraryMClassCarTrucksManagement
@@ -2710,6 +2744,17 @@ Namespace CarTrucksManagement
     End Class
 
 
+    Namespace Exceptions
+        Public Class TruckInformationNotExistException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "اطلاعات پایه ناوگان ثبت نشده است"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
 
 End Namespace
 
