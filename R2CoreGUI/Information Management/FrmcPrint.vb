@@ -1,6 +1,7 @@
 ﻿
 Imports System.Reflection
 Imports Microsoft.Reporting.WinForms
+Imports System.Drawing
 
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DesktopProcessesManagement
