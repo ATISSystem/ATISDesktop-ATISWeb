@@ -43,7 +43,7 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 var InstanceAES = new AESAlgorithmsManager();
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable (new R2CoreSoftwareUserMobile(MobileNumber));
                 var Amount = Convert.ToInt32(Content.Split(';')[2]) * 10;
                 if (Amount > 1000000)
                 { throw new ChargingAmountInvalidException(); }

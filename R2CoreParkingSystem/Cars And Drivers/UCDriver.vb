@@ -9,17 +9,19 @@ Imports R2Core.EntityRelationManagement
 Imports R2Core.EntityRelationManagement.Exceptions
 Imports R2Core.ExceptionManagement
 Imports R2Core.PermissionManagement
-Imports R2Core.SMSSendAndRecieved
+Imports R2Core.SMS
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
+Imports R2CoreParkingSystem.AccountingManagement
 Imports R2CoreParkingSystem.Drivers
+Imports R2CoreParkingSystem.MoneyWalletManagement
 Imports R2CoreParkingSystem.SoftwareUsersManagement
 
 Public Class UCDriver
     Inherits UCGeneral
 
 
-    Public Event UCViewDriverInformationCompleted(DriverId As String)
+    Public Event UCViewDriverInformationCompletedEvent(DriverId As String)
     Public Event UCRefreshedEvent()
     Public Event UCRefreshedGeneralEvent()
 
@@ -34,19 +36,23 @@ Public Class UCDriver
         Set(value As Boolean)
             _UCViewButtons = value
             If value = True Then
-                UcButtonDel.Visible = True
-                UcButtonNew.Visible = True
-                UcButtonSabt.Visible = True
+                CButtonDelete.Visible = True
+                CButtonNew.Visible = True
+                CButtonSabt.Visible = True
                 CButtonViewPrintUserShenasehPassword.Visible = True
                 CButtonSoftwareUserVerificationCodeInjection.Visible = True
                 CButtonSendSmsUserShenasehPassword.Visible = True
+                UcActivateSMSOwner.Visible = True
+                UcUnActivateSMSOwner.Visible = True
             Else
-                UcButtonDel.Visible = False
-                UcButtonNew.Visible = False
-                UcButtonSabt.Visible = False
+                CButtonDelete.Visible = False
+                CButtonNew.Visible = False
+                CButtonSabt.Visible = False
                 CButtonViewPrintUserShenasehPassword.Visible = False
                 CButtonSoftwareUserVerificationCodeInjection.Visible = False
                 CButtonSendSmsUserShenasehPassword.Visible = False
+                UcActivateSMSOwner.Visible = False
+                UcUnActivateSMSOwner.Visible = False
             End If
         End Set
     End Property
@@ -95,7 +101,7 @@ Public Class UCDriver
             UcPersianTextBoxTel.UCValue = myNSS.StrIdNo
             UcNumberLicenseNo.UCValue = IIf(IsNumeric(myNSS.strDrivingLicenceNo) = True, myNSS.strDrivingLicenceNo, 0)
             UcPersianTextBoxAddress.UCValue = myNSS.StrAddress
-            RaiseEvent UCViewDriverInformationCompleted(myNSS.nIdPerson)
+            OnUCViewDriverInformationCompletedEvent(myNSS.nIdPerson)
         Catch exx As GetNSSException
             Throw exx
         Catch ex As Exception
@@ -115,7 +121,7 @@ Public Class UCDriver
             UcPersianTextBoxTel.UCValue = YourNSS.StrIdNo
             UcNumberLicenseNo.UCValue = IIf(IsNumeric(YourNSS.strDrivingLicenceNo) = True, YourNSS.strDrivingLicenceNo, 0)
             UcPersianTextBoxAddress.UCValue = YourNSS.StrAddress
-            RaiseEvent UCViewDriverInformationCompleted(YourNSS.nIdPerson)
+            OnUCViewDriverInformationCompletedEvent(YourNSS.nIdPerson)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -205,12 +211,26 @@ Public Class UCDriver
         End Try
     End Function
 
+    Private Sub OnUCViewDriverInformationCompletedEvent(YourDriverId As Int64)
+        Try
+            Dim InstanceSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
+            Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
+            UcActivateSMSOwner.UCNSSCurrent = NSSSoftwareUser
+            UcUnActivateSMSOwner.UCNSSCurrent = NSSSoftwareUser
+            RaiseEvent UCViewDriverInformationCompletedEvent(YourDriverId)
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+
 #End Region
 
 #Region "Events"
 #End Region
 
 #Region "Event Handlers"
+
 
     Private Sub UcTextBoxDriverNationalCode_UC13Pressed(UserNumber As String) Handles UcTextBoxDriverNationalCode.UC13PressedEvent
         Try
@@ -230,11 +250,11 @@ Public Class UCDriver
         End Try
     End Sub
 
-    Private Sub UcButtonNew_UCClickedEvent() Handles UcButtonNew.UCClickedEvent
+    Private Sub CButtonNew_Click(sender As Object, e As EventArgs) Handles CButtonNew.Click
         UCRefresh()
     End Sub
 
-    Private Sub UcButtonSabt_UCClickedEvent() Handles UcButtonSabt.UCClickedEvent
+    Private Sub CButtonSabt_Click(sender As Object, e As EventArgs) Handles CButtonSabt.Click
         Try
             UCSabtRoutin()
         Catch ex As Exception
@@ -242,7 +262,7 @@ Public Class UCDriver
         End Try
     End Sub
 
-    Private Sub UcButtonDel_UCClickedEvent() Handles UcButtonDel.UCClickedEvent
+    Private Sub CButtonDelete_Click(sender As Object, e As EventArgs) Handles CButtonDelete.Click
         Try
             UCDelRoutin()
         Catch ex As Exception
@@ -271,15 +291,7 @@ Public Class UCDriver
     End Sub
 
     Private Sub UcNumberLicenseNo_UC13Pressed(UserNumber As String) Handles UcNumberLicenseNo.UC13Pressed
-        UcButtonSabt.Focus()
-    End Sub
-
-    Private Sub UcButtonSabt_UC13PressedEvent() Handles UcButtonSabt.UC13PressedEvent
-        Try
-            UCSabtRoutin()
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
+        CButtonSabt.Focus()
     End Sub
 
     Private WithEvents PrintDocument As PrintDocument = New PrintDocument
@@ -318,15 +330,24 @@ Public Class UCDriver
 
     Private Sub CButtonSendSmsUserShenasehPassword_Click(sender As Object, e As EventArgs) Handles CButtonSendSmsUserShenasehPassword.Click
         Try
-
+            CButtonSendSmsUserShenasehPassword.Enabled = False
+            Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
             Dim InstancePermissions = New R2CoreInstansePermissionsManager
             If Not InstancePermissions.ExistPermission(R2CorePermissionTypes.UserCanSendSoftwareUserShenasehPasswordViaSMS, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, 0) Then Throw New UserNotAllowedRunThisProccessException
             Dim InstanceSoftwareUser = New R2CoreParkingSystemInstanceSoftwareUsersManager
-            CButtonSendSmsUserShenasehPassword.Enabled = False
             Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCGetNSS.nIdPerson)
+            'کسر هزینه از بابت اس ام اس
+            Dim InstanceMoneyWallet = New R2CoreParkingSystemInstanceMoneyWalletManager
+            Dim NSSTrafficCard = InstanceMoneyWallet.GetNSSMoneyWallet(NSSSoftwareUser)
+            If InstanceConfiguration.GetConfigBoolean(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 10) Then
+                If Not NSSTrafficCard.NoMoney Then
+                    Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                    InstanceMoneyWallet.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 11), R2CoreParkingSystemAccountings.SoftwareUserShenasehPasswordSMSCost, InstanceSoftwareUsers.GetNSSSystemUser())
+                End If
+            End If
             Dim SMSSender As New R2CoreSMSSendRecive
             Dim SMSMessage = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 3) + vbCrLf + "شناسه شخصی:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز شخصی:" + NSSSoftwareUser.UserPassword
-            SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, 1, Nothing, Nothing))
+            SMSSender.SendSms(New R2CoreStandardSMSStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, 1, Nothing, Nothing))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "شناسه و رمز شخصی ارسال شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As UserNotAllowedRunThisProccessException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -374,6 +395,8 @@ Public Class UCDriver
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
+
+
 
 #End Region
 

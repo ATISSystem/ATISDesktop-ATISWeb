@@ -16,7 +16,7 @@ Public Class TestforAES
             Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
             Dim InstanceSoftwareusers = New R2CoreInstanseSoftwareUsersManager()
             Dim InstanceHash = New SHAHasher()
-            Dim NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(New R2CoreSoftwareUserMobile("09130843148"))
+            Dim NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(New R2CoreSoftwareUserMobile("09130843148"))
             TxtResult.Text = InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3))
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -30,7 +30,7 @@ Public Class TestforAES
             Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
             Dim InstanceSoftwareusers = New R2CoreInstanseSoftwareUsersManager()
             Dim InstanceHash = New SHAHasher()
-            Dim NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(New R2CoreSoftwareUserMobile("09130843148"))
+            Dim NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(New R2CoreSoftwareUserMobile("09130843148"))
             TxtResult.Text = InstanceAES.Encrypt(NSSSoftwareuser.MobileNumber, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3))
         Catch ex As Exception
             MessageBox.Show(ex.Message)

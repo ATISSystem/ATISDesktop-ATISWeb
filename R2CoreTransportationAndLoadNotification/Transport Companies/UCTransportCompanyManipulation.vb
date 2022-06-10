@@ -20,6 +20,8 @@ Imports R2Core.ConfigurationManagement
 Imports R2CoreParkingSystem.AccountingManagement
 Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions
 Imports R2Core.PermissionManagement
+Imports R2Core.SMS
+Imports R2Core.MoneyWallet.Exceptions
 
 Public Class UCTransportCompanyManipulation
     Inherits UCTransportCompany
@@ -160,7 +162,7 @@ Public Class UCTransportCompanyManipulation
             End If
             Dim SMSSender As New R2CoreSMSSendRecive
             Dim SMSMessage = "سامانه آتیس وب" + vbCrLf + "ATISMobile.ir" + vbCrLf + "شناسه کاربر:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز عبور کاربر:" + NSSSoftwareUser.UserPassword
-            SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, True, Nothing, Nothing))
+            SMSSender.SendSms(New R2CoreStandardSMSStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, True, Nothing, Nothing))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "شناسه و رمز عبور کاربر ارسال شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As UserNotAllowedRunThisProccessException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)

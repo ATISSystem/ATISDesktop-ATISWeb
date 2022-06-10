@@ -40,6 +40,7 @@ Imports PcPosDll
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
 Imports R2Core.MonetarySupply
+Imports R2Core.SMS.Exceptions
 
 Namespace MonetarySupply
 
@@ -2133,6 +2134,8 @@ Namespace PermissionManagement
         Public Shared ReadOnly UserCanSendSoftwareUserShenasehPasswordViaSMS As Int64 = 7
         Public Shared ReadOnly UserCanViewAndPrintUserShenasehPassword As Int64 = 8
         Public Shared ReadOnly UserCanInject123VerificationCodeforAppActivation As Int64 = 9
+        Public Shared ReadOnly SoftwareUserCanActivateUnactivateSMSOwner As Int64 = 22
+
     End Class
 
     Public Class R2StandardPermissionTypeStructure
@@ -2222,7 +2225,7 @@ Namespace PermissionManagement
             Try
                 Dim Instanse = New R2CoreInstanseSqlDataBOXManager
                 Dim Ds As DataSet
-                If Instanse.GetDataBOX(New R2PrimarySqlConnection,
+                If Instanse.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                       "Select * from R2Primary.dbo.TblPermissions as Permissions 
                        Where Permissions.PermissionTypeId=" & YourPermissionTypeId & " and Permissions.RelationActive=1 and Permissions.EntityIdFirst=" & YourEntityIdFirst & " and Permissions.EntityIdSecond=" & YourEntityIdSecond & "", 3600, Ds).GetRecordsCount() = 0 Then
                     Return False
@@ -2697,222 +2700,6 @@ Namespace MobileProcessesManagement
 
 End Namespace
 
-Namespace SMSSendAndRecieved
-
-    Public Enum SmsSendReciveType
-        None = 0
-        ForSend = 1
-        Recived = 2
-    End Enum
-
-    Public Class R2CoreSMSStandardSmsStructure
-
-        Public Sub New()
-            MyBase.New()
-            SmsId = Int64.MinValue
-            MobileNumber = String.Empty
-            Message = String.Empty
-            EndHours = Int16.MinValue
-            DateTimeMilladi = Now.Date
-            Active = Boolean.FalseString
-            DateShamsi = String.Empty
-            Time = String.Empty
-        End Sub
-
-        Public Sub New(ByVal YourSmsId As Int64, ByVal YourMobileNumber As String, ByVal YourMessage As String, ByVal YourEndHours As Int16, ByVal YourDateTimeMilladi As DateTime, ByVal YourActive As Boolean, ByVal YourDateShamsi As String, ByVal YourTime As String)
-            SmsId = YourSmsId
-            MobileNumber = YourMobileNumber
-            Message = YourMessage
-            EndHours = YourEndHours
-            DateTimeMilladi = YourDateTimeMilladi
-            Active = YourActive
-            DateShamsi = YourDateShamsi
-            Time = YourTime
-        End Sub
-
-        Public Property SmsId As Int64
-        Public Property MobileNumber As String
-        Public Property Message As String
-        Public Property EndHours As Int16
-        Public Property DateTimeMilladi As DateTime
-        Public Property Active As Boolean
-        Public Property DateShamsi As String
-        Public Property Time As String
-    End Class
-
-    Public Class R2CoreSMSSendRecive
-
-        Private _DateTime As New R2DateTime
-
-        Public Sub New()
-            MyBase.New()
-            Try
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Sub
-
-        Public Sub SendSms(ByVal YourNSS As R2CoreSMSStandardSmsStructure)
-            Dim CmdSql As New SqlClient.SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
-            Try
-                If YourNSS.MobileNumber.Trim.Length <> 11 Then Throw New MobileNumberInvallidException
-                If YourNSS.Message.Trim = "" Then Throw New SmsMessageEmptyException
-                CmdSql.Connection.Open()
-                CmdSql.CommandText = "Insert Into R2PrimarySMSSystem.dbo.TblSMSWareHouse(MobileNumber,Message,EndHours,DateTimeMilladi,Active,DateShamsi,SmsType) values('" & YourNSS.MobileNumber & "','" & YourNSS.Message & "'," & YourNSS.EndHours & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "',1,'" & _DateTime.GetCurrentDateShamsiFull & "'," & SmsSendReciveType.ForSend & ")"
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Connection.Close()
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
-            End Try
-        End Sub
-
-        'Public Function RecivedSms() As R2StandardSmsRecivedStructure()
-        '    Try
-        '        DsSmsRecived.Tables.Clear()
-        '        DaSmsRecived.Fill(DsSmsRecived)
-        '        myNumberOfRecivedSms = DsSmsRecived.Tables(0).Rows.Count
-        '        ReDim SmsArray(myNumberOfRecivedSms - 1)
-        '        For loopx As Int32 = 0 To myNumberOfRecivedSms - 1
-        '            SmsArray(loopx) = New R2StandardSmsRecivedStructure(DsSmsRecived.Tables(0).Rows(loopx).Item("SMSId"), DsSmsRecived.Tables(0).Rows(loopx).Item("Mobile").trim, DsSmsRecived.Tables(0).Rows(loopx).Item("Message").trim, DsSmsRecived.Tables(0).Rows(loopx).Item("EndHours"), DsSmsRecived.Tables(0).Rows(loopx).Item("SabtDateTimeMilladi"), DsSmsRecived.Tables(0).Rows(loopx).Item("Active"), DsSmsRecived.Tables(0).Rows(loopx).Item("SabtDateShamsi"), DsSmsRecived.Tables(0).Rows(loopx).Item("SabtTime"))
-        '        Next
-        '        Return SmsArray
-        '    Catch ex As Exception
-        '        Throw New Exception("Sms.RecivedSms()." + ex.Message.ToString)
-        '    End Try
-        'End Function
-
-        'Public Sub RecivedSmsHandled(ByVal SmsId As Int64)
-        '    Dim CmdSql As New SqlClient.SqlCommand
-        '    CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
-        '    Try
-        '        CmdSqlSmsSystem.Connection.Open()
-        '        CmdSqlSmsSystem.CommandText = "update TblSmsWareHouse Set Active=0 where SmsId=" & SmsId & ""
-        '        CmdSqlSmsSystem.ExecuteNonQuery()
-        '        CmdSqlSmsSystem.Connection.Close()
-        '    Catch ex As Exception
-        '        If CmdSqlSmsSystem.Connection.State <> ConnectionState.Closed Then CmdSqlSmsSystem.Connection.Close()
-        '        Throw New Exception("SmsCore.Sms.RecivedSmsHandled()." + ex.Message.ToString)
-        '    End Try
-        'End Sub
-
-
-
-
-    End Class
-
-    Public MustInherit Class R2CoreSMSMClassSMSDomainManagement
-
-        Private Shared _SepahanSMS As New net.sepahansms.smsSendWebServiceforPHP()
-        Private Shared _DateTime As New R2DateTime
-
-        Public Shared Sub SMSDomainSendRecieved()
-            Dim CmdSql As New SqlClient.SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
-            Try
-                'ارسالی            
-                If R2CoreMClassConfigurationManagement.GetConfigBoolean(R2CoreConfigurations.SmsSystemSetting, 0) = True Then
-                    Dim DS As DataSet
-                    R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimarySMSSystem.dbo.TblSmsWareHouse where Active=1 and SmsType=" & SmsSendReciveType.ForSend & "", 0, DS)
-
-                    For Loopx As Int32 = 0 To DS.Tables(0).Rows.Count - 1
-                        Dim mySmsId As String = DS.Tables(0).Rows(Loopx).Item("SmsId")
-                        If DateDiff(DateInterval.Hour, _DateTime.GetCurrentDateTimeMilladi, Convert.ToDateTime(DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"))) <= DS.Tables(0).Rows(Loopx).Item("EndHours") Then
-                            Dim myMessage As String = DS.Tables(0).Rows(Loopx).Item("message").trim
-                            Dim myMobilenumber As String = DS.Tables(0).Rows(Loopx).Item("mobilenumber").trim
-                            Dim SmsId() As Long = _SepahanSMS.SendSms(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 2), R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 3), R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 5), New String() {myMessage}, New String() {myMobilenumber}, R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 4),
-                                                     net.sepahansms.SendType.DynamicText, net.sepahansms.SmsMode.SaveInPhone)
-                            If SmsId(0) > 0 Then
-                                CmdSql.Connection.Open()
-                                CmdSql.CommandText = "Update  R2PrimarySMSSystem.dbo.TblSmsWareHouse Set Active=0 where SmsId=" & mySmsId & ""
-                                CmdSql.ExecuteNonQuery()
-                                CmdSql.Connection.Close()
-                            End If
-                        Else
-                            CmdSql.Connection.Open()
-                            CmdSql.CommandText = "Update  R2PrimarySMSSystem.dbo.TblSmsWareHouse Set Active=0 where SmsId=" & mySmsId & ""
-                            CmdSql.ExecuteNonQuery()
-                            CmdSql.Connection.Close()
-                        End If
-                    Next
-                Else
-                    Throw New SmsSystemIsDisabledException
-                End If
-
-
-                ''دریافتی
-                'ReDim ReceiveSmsOneLine(10)
-                'ReceiveSmsOneLine = SepahanSMS.GetReceiveSMSWithNumber(com.sepahansms.www.ReceiveType.UnRead, "30006016635245", Nothing, "", "")
-                'If ReceiveSmsOneLine.Length = 0 Then
-                '    EventLog.WriteEntry("SmsServiceSource", "ReceiveSmsOneLine.Length = 0", EventLogEntryType.Information)
-                '    Exit Try
-                'End If
-                'CmdSqlSmsSystem.CommandText = "select top 1 smsid from TblSmsWareHouse order by smsid desc"
-                'Dim mySmsIdStart As Int32 = CmdSqlSmsSystem.ExecuteScalar + 1
-                'For loopx As Int32 = 0 To ReceiveSmsOneLine.Length - 1
-                '    Dim SmsText As String = ReceiveSmsOneLine(loopx).SmsText
-                '    If SmsText.Trim <> "" Then
-                '        Dim myMobile As String = ReceiveSmsOneLine(loopx).FromNumber
-                '        Dim myDate As String = ReceiveSmsOneLine(loopx).Date
-                '        Dim myMessage As String = ReceiveSmsOneLine(loopx).SmsText
-                '        If ((myMessage = "Biinfo878*03*0") Or (myMessage = "Biinfo878*03*1")) And (myMobile = SmsSystemConfiguration.GetSmsSystemGeneralNumber) Then
-                '            If myMessage = "Biinfo878*03*0" Then mySendSmsStatus = False
-                '            If myMessage = "Biinfo878*03*1" Then mySendSmsStatus = True
-                '        Else
-                '            CmdSqlSmsSystem.CommandText = "insert into TblSmsWareHouse(SmsId,Mobile,Message,EndHours,SabtDateTimeMilladi,Active,SabtDateShamsi,SabtTime,SmsType) values(" & mySmsIdStart & ",'" & myMobile & "','" & myMessage & "',0,'" & myR2DateTime.GetCurrentDateTimeMilladi.ToString("yyyy-MM-dd HH:mm:ss") & "',1,'" & myDate & "','" & myR2DateTime.GetCurrentTime & "'," & SmsSendReciveType.Recived & ")"
-                '            CmdSqlSmsSystem.ExecuteNonQuery()
-                '            mySmsIdStart += 1
-                '        End If
-                '    End If
-                'Next
-
-            Catch ex As SmsSystemIsDisabledException
-                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
-                Throw ex
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
-    End Class
-
-    Namespace Exceptions
-
-        Public Class MobileNumberInvallidException
-            Inherits ApplicationException
-            Public Overrides ReadOnly Property Message As String
-                Get
-                    Return "شماره موبایل نادرست است"
-                End Get
-            End Property
-        End Class
-
-        Public Class SmsSystemIsDisabledException
-            Inherits ApplicationException
-            Public Overrides ReadOnly Property Message As String
-                Get
-                    Return "سیستم اس ام اس از طریق جدول پیکربندی غیر فعال است"
-                End Get
-            End Property
-        End Class
-
-        Public Class SmsMessageEmptyException
-            Inherits ApplicationException
-            Public Overrides ReadOnly Property Message As String
-                Get
-                    Return "در پیام ارسالی متنی وجود ندارد"
-                End Get
-            End Property
-        End Class
-
-
-
-    End Namespace
-
-End Namespace
-
 Namespace WhatsAppMessenger
 
 End Namespace
@@ -3092,7 +2879,7 @@ Namespace BlackIPs
                 'اجرای استراتژی ها
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DsBlackIPTypes As DataSet = Nothing
-                InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                     "Select BlackIPTypeId,StrategyQuery 
                      from R2Primary.dbo.TblBlackIPTypes 
                      Where Active=1 and Deleted=0", 3600, DsBlackIPTypes)
@@ -3115,7 +2902,7 @@ Namespace BlackIPs
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet = Nothing
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblBlackIPTypes Where BlackIPTypeId=" & YourBlackIPTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New BlackIPTypeNotFoundException
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 * from R2Primary.dbo.TblBlackIPTypes Where BlackIPTypeId=" & YourBlackIPTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New BlackIPTypeNotFoundException
                 Return New R2StandardBlackIPTypeStructure(YourBlackIPTypeId, DS.Tables(0).Rows(0).Item("BlackIPName").trim, DS.Tables(0).Rows(0).Item("LockMinutes"), DS.Tables(0).Rows(0).Item("StrategyQuery").trim, Color.FromName(DS.Tables(0).Rows(0).Item("Color").trim), DS.Tables(0).Rows(0).Item("Description").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As BlackIPTypeNotFoundException
                 Throw ex
@@ -3176,7 +2963,7 @@ Namespace BlackIPs
 
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet = Nothing
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                         "Select Top 1 BlackIPId from R2Primary.dbo.TblBlackIPs 
                          Where BlackIP='" & YourNSS.BlackIP & "' and LockStatus=1 and DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes", 0, DS).GetRecordsCount = 0 Then Return False
                 Return True
@@ -3266,6 +3053,58 @@ Namespace BlackIPs
 End Namespace
 
 Namespace MoneyWallet
+
+    Namespace MoneyWallet
+
+        Public Class R2CoreStandardMoneyWalletStructure
+            Inherits R2StandardStructure
+
+            Public Sub New()
+                MyBase.New()
+                MoneyWalletId = Int64.MinValue
+                Charge = Int64.MinValue
+                MoneyWalletTypeId = Int64.MinValue
+                UserId = Int64.MinValue
+                DateTimeMilladi = Now
+                DateShamsi = String.Empty
+                Time = String.Empty
+                Active = Boolean.FalseString
+                ViewFlag = Boolean.FalseString
+                Deleted = Boolean.TrueString
+            End Sub
+
+            Public Sub New(YourMoneyWalletId As Int64, YourCharge As Int64, YourMoneyWalletTypeId As Int64, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
+                MyBase.New(YourMoneyWalletId, YourMoneyWalletId)
+                MoneyWalletId = YourMoneyWalletId
+                Charge = YourCharge
+                MoneyWalletTypeId = YourMoneyWalletTypeId
+                UserId = YourUserId
+                DateTimeMilladi = YourDateTimeMilladi
+                DateShamsi = YourDateShamsi
+                Time = YourTime
+                Active = YourActive
+                ViewFlag = YourViewFlag
+                Deleted = YourDeleted
+            End Sub
+
+            Public Property MoneyWalletId As Int64
+            Public Property Charge As Int64
+            Public Property MoneyWalletTypeId As Int64
+            Public Property UserId As Int64
+            Public Property DateTimeMilladi As DateTime
+            Public Property DateShamsi As String
+            Public Property Time As String
+            Public Property Active As Boolean
+            Public Property ViewFlag As Boolean
+            Public Property Deleted As Boolean
+
+        End Class
+
+        Public Class R2CoreMClassMoneyWalletManager
+
+        End Class
+
+    End Namespace
 
     Namespace PaymentRequests
 
@@ -3471,7 +3310,387 @@ Namespace MoneyWallet
 
     End Namespace
 
+    Namespace Exceptions
+        Public Class SoftwareUserMoneyWalletNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کیف پول مرتبط با کاربر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
 
 
 End Namespace
+
+Namespace SMS
+
+    Public Enum R2CoreSMSSendReciveType
+        None = 0
+        ForSend = 1
+        Recived = 2
+    End Enum
+
+    Public Class R2CoreStandardSMSStructure
+
+        Public Sub New()
+            MyBase.New()
+            SmsId = Int64.MinValue
+            MobileNumber = String.Empty
+            Message = String.Empty
+            EndHours = Int16.MinValue
+            DateTimeMilladi = Now.Date
+            Active = Boolean.FalseString
+            DateShamsi = String.Empty
+            Time = String.Empty
+        End Sub
+
+        Public Sub New(ByVal YourSmsId As Int64, ByVal YourMobileNumber As String, ByVal YourMessage As String, ByVal YourEndHours As Int16, ByVal YourDateTimeMilladi As DateTime, ByVal YourActive As Boolean, ByVal YourDateShamsi As String, ByVal YourTime As String)
+            SmsId = YourSmsId
+            MobileNumber = YourMobileNumber
+            Message = YourMessage
+            EndHours = YourEndHours
+            DateTimeMilladi = YourDateTimeMilladi
+            Active = YourActive
+            DateShamsi = YourDateShamsi
+            Time = YourTime
+        End Sub
+
+        Public Property SmsId As Int64
+        Public Property MobileNumber As String
+        Public Property Message As String
+        Public Property EndHours As Int16
+        Public Property DateTimeMilladi As DateTime
+        Public Property Active As Boolean
+        Public Property DateShamsi As String
+        Public Property Time As String
+    End Class
+
+    Public Class R2CoreStandardSMSTypeStructure
+
+        Public Sub New()
+            MyBase.New()
+            TypeId = Int64.MinValue
+            TypeName = String.Empty
+            TypeTitle = String.Empty
+            TypeColor = Color.Black
+            Description = String.Empty
+            SendingTime = String.Empty
+            Core = String.Empty
+            UserId = Int64.MinValue
+            DateTimeMilladi = Now
+            DateShamsi = String.Empty
+            Time = String.Empty
+            ViewFlag = False
+            Active = False
+            Deleted = True
+        End Sub
+
+        Public Sub New(YourTypeId As Int64, YourTypeName As String, YourTypeTitle As String, YourTypeColor As Color, YourDescription As String, YourSendingTime As String, YourCore As String, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+            TypeId = YourTypeId
+            TypeName = YourTypeName
+            TypeTitle = YourTypeTitle
+            TypeColor = YourTypeColor
+            Description = YourDescription
+            SendingTime = YourSendingTime
+            Core = YourCore
+            UserId = YourUserId
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            Time = YourTime
+            ViewFlag = YourViewFlag
+            Active = YourActive
+            Deleted = YourDeleted
+        End Sub
+
+        Public Property TypeId As Int64
+        Public Property TypeName As String
+        Public Property TypeTitle As String
+        Public Property TypeColor As Color
+        Public Property Description As String
+        Public Property SendingTime As String
+        Public Property Core As String
+        Public Property UserId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property Time As String
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+
+    End Class
+
+    Public Class R2CoreStandardSMSOwnerStructure
+
+        Public Sub New()
+            MyBase.New()
+            UserId = Int64.MinValue
+            MoneyWalletId = Int64.MinValue
+            IsSendingActive = Boolean.FalseString
+            DateTimeMilladi = Now
+            DateShamsi = String.Empty
+            Time = String.Empty
+            UserCreatorId = Int64.MinValue
+            ViewFlag = Boolean.FalseString
+            Active = Boolean.FalseString
+            Deleted = Boolean.TrueString
+        End Sub
+
+        Public Sub New(YourUserId As Int64, YourMoneyWalletId As Int64, YourIsSendingActive As Boolean, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourUserCreatorId As Int64, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+            UserId = YourUserId
+            MoneyWalletId = YourMoneyWalletId
+            IsSendingActive = YourIsSendingActive
+            DateTimeMilladi = YourDateTimeMilladi
+            DateShamsi = YourDateShamsi
+            Time = YourTime
+            UserCreatorId = YourUserCreatorId
+            ViewFlag = YourViewFlag
+            Active = YourActive
+            Deleted = YourDeleted
+        End Sub
+
+        Public Property UserId As Int64
+        Public Property MoneyWalletId As Int64
+        Public Property IsSendingActive As Boolean
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property Time As String
+        Public Property UserCreatorId As Int64
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+
+
+    End Class
+
+    Public Class R2CoreMClassSMSManager
+        Private _DateTime As New R2DateTime
+
+        Public Sub UnactivateSMSOwner(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourUserCreatorId As Int64)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
+                CmdSql.CommandText = "Update R2PrimarySMSSystem.dbo.TblSMSOwners Set Active=0,UserCreatorId=" & YourUserCreatorId & " Where UserId=" & YourNSSSoftwareUser.UserId & " and Active=1"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Function GetNSSSMSOwner(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure) As R2CoreStandardSMSOwnerStructure
+            Try
+                Dim DS As DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2PrimarySMSSystem.dbo.TblSMSOwners Where UserId=" & YourNSSSoftwareUser.UserId & " Order By DateTimeMilladi Desc", 0, DS).GetRecordsCount <> 0 Then
+                    Return New R2CoreStandardSMSOwnerStructure(DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("MoneyWalletId"), DS.Tables(0).Rows(0).Item("IsSendingActive"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi").trim, DS.Tables(0).Rows(0).Item("Time").trim, DS.Tables(0).Rows(0).Item("UserCreatorId"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Else
+                    Throw New SMSOwnerForSoftwareUserDoNotRegisteredYetException
+                End If
+            Catch ex As SMSOwnerForSoftwareUserDoNotRegisteredYetException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+
+    End Class
+
+    Public Class R2CoreSMSSendRecive
+
+        Private _DateTime As New R2DateTime
+
+        Public Sub New()
+            MyBase.New()
+            Try
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub SendSms(ByVal YourNSS As R2CoreStandardSMSStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                If YourNSS.MobileNumber.Trim.Length <> 11 Then Throw New MobileNumberInvallidException
+                If YourNSS.Message.Trim = "" Then Throw New SmsMessageEmptyException
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Insert Into R2PrimarySMSSystem.dbo.TblSMSWareHouse(MobileNumber,Message,EndHours,DateTimeMilladi,Active,DateShamsi,SmsType) values('" & YourNSS.MobileNumber & "','" & YourNSS.Message & "'," & YourNSS.EndHours & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "',1,'" & _DateTime.GetCurrentDateShamsiFull & "'," & R2CoreSMSSendReciveType.ForSend & ")"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Sub
+
+        'Public Function RecivedSms() As R2StandardSmsRecivedStructure()
+        '    Try
+        '        DsSmsRecived.Tables.Clear()
+        '        DaSmsRecived.Fill(DsSmsRecived)
+        '        myNumberOfRecivedSms = DsSmsRecived.Tables(0).Rows.Count
+        '        ReDim SmsArray(myNumberOfRecivedSms - 1)
+        '        For loopx As Int32 = 0 To myNumberOfRecivedSms - 1
+        '            SmsArray(loopx) = New R2StandardSmsRecivedStructure(DsSmsRecived.Tables(0).Rows(loopx).Item("SMSId"), DsSmsRecived.Tables(0).Rows(loopx).Item("Mobile").trim, DsSmsRecived.Tables(0).Rows(loopx).Item("Message").trim, DsSmsRecived.Tables(0).Rows(loopx).Item("EndHours"), DsSmsRecived.Tables(0).Rows(loopx).Item("SabtDateTimeMilladi"), DsSmsRecived.Tables(0).Rows(loopx).Item("Active"), DsSmsRecived.Tables(0).Rows(loopx).Item("SabtDateShamsi"), DsSmsRecived.Tables(0).Rows(loopx).Item("SabtTime"))
+        '        Next
+        '        Return SmsArray
+        '    Catch ex As Exception
+        '        Throw New Exception("Sms.RecivedSms()." + ex.Message.ToString)
+        '    End Try
+        'End Function
+
+        'Public Sub RecivedSmsHandled(ByVal SmsId As Int64)
+        '    Dim CmdSql As New SqlClient.SqlCommand
+        '    CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+        '    Try
+        '        CmdSqlSmsSystem.Connection.Open()
+        '        CmdSqlSmsSystem.CommandText = "update TblSmsWareHouse Set Active=0 where SmsId=" & SmsId & ""
+        '        CmdSqlSmsSystem.ExecuteNonQuery()
+        '        CmdSqlSmsSystem.Connection.Close()
+        '    Catch ex As Exception
+        '        If CmdSqlSmsSystem.Connection.State <> ConnectionState.Closed Then CmdSqlSmsSystem.Connection.Close()
+        '        Throw New Exception("SmsCore.Sms.RecivedSmsHandled()." + ex.Message.ToString)
+        '    End Try
+        'End Sub
+
+
+
+
+    End Class
+
+    Public MustInherit Class R2CoreSMSMClassSMSDomainManagement
+
+        Private Shared _SepahanSMS As New net.sepahansms.smsSendWebServiceforPHP()
+        Private Shared _DateTime As New R2DateTime
+
+        Public Shared Sub SMSDomainSendRecieved()
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                'ارسالی            
+                If R2CoreMClassConfigurationManagement.GetConfigBoolean(R2CoreConfigurations.SmsSystemSetting, 0) = True Then
+                    Dim DS As DataSet
+                    R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimarySMSSystem.dbo.TblSmsWareHouse where Active=1 and SmsType=" & R2CoreSMSSendReciveType.ForSend & "", 0, DS)
+
+                    For Loopx As Int32 = 0 To DS.Tables(0).Rows.Count - 1
+                        Dim mySmsId As String = DS.Tables(0).Rows(Loopx).Item("SmsId")
+                        If DateDiff(DateInterval.Hour, _DateTime.GetCurrentDateTimeMilladi, Convert.ToDateTime(DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"))) <= DS.Tables(0).Rows(Loopx).Item("EndHours") Then
+                            Dim myMessage As String = DS.Tables(0).Rows(Loopx).Item("message").trim
+                            Dim myMobilenumber As String = DS.Tables(0).Rows(Loopx).Item("mobilenumber").trim
+                            Dim SmsId() As Long = _SepahanSMS.SendSms(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 2), R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 3), R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 5), New String() {myMessage}, New String() {myMobilenumber}, R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 4),
+                                                     net.sepahansms.SendType.DynamicText, net.sepahansms.SmsMode.SaveInPhone)
+                            If SmsId(0) > 0 Then
+                                CmdSql.Connection.Open()
+                                CmdSql.CommandText = "Update  R2PrimarySMSSystem.dbo.TblSmsWareHouse Set Active=0 where SmsId=" & mySmsId & ""
+                                CmdSql.ExecuteNonQuery()
+                                CmdSql.Connection.Close()
+                            End If
+                        Else
+                            CmdSql.Connection.Open()
+                            CmdSql.CommandText = "Update  R2PrimarySMSSystem.dbo.TblSmsWareHouse Set Active=0 where SmsId=" & mySmsId & ""
+                            CmdSql.ExecuteNonQuery()
+                            CmdSql.Connection.Close()
+                        End If
+                    Next
+                Else
+                    Throw New SmsSystemIsDisabledException
+                End If
+
+
+                ''دریافتی
+                'ReDim ReceiveSmsOneLine(10)
+                'ReceiveSmsOneLine = SepahanSMS.GetReceiveSMSWithNumber(com.sepahansms.www.ReceiveType.UnRead, "30006016635245", Nothing, "", "")
+                'If ReceiveSmsOneLine.Length = 0 Then
+                '    EventLog.WriteEntry("SmsServiceSource", "ReceiveSmsOneLine.Length = 0", EventLogEntryType.Information)
+                '    Exit Try
+                'End If
+                'CmdSqlSmsSystem.CommandText = "select top 1 smsid from TblSmsWareHouse order by smsid desc"
+                'Dim mySmsIdStart As Int32 = CmdSqlSmsSystem.ExecuteScalar + 1
+                'For loopx As Int32 = 0 To ReceiveSmsOneLine.Length - 1
+                '    Dim SmsText As String = ReceiveSmsOneLine(loopx).SmsText
+                '    If SmsText.Trim <> "" Then
+                '        Dim myMobile As String = ReceiveSmsOneLine(loopx).FromNumber
+                '        Dim myDate As String = ReceiveSmsOneLine(loopx).Date
+                '        Dim myMessage As String = ReceiveSmsOneLine(loopx).SmsText
+                '        If ((myMessage = "Biinfo878*03*0") Or (myMessage = "Biinfo878*03*1")) And (myMobile = SmsSystemConfiguration.GetSmsSystemGeneralNumber) Then
+                '            If myMessage = "Biinfo878*03*0" Then mySendSmsStatus = False
+                '            If myMessage = "Biinfo878*03*1" Then mySendSmsStatus = True
+                '        Else
+                '            CmdSqlSmsSystem.CommandText = "insert into TblSmsWareHouse(SmsId,Mobile,Message,EndHours,SabtDateTimeMilladi,Active,SabtDateShamsi,SabtTime,SmsType) values(" & mySmsIdStart & ",'" & myMobile & "','" & myMessage & "',0,'" & myR2DateTime.GetCurrentDateTimeMilladi.ToString("yyyy-MM-dd HH:mm:ss") & "',1,'" & myDate & "','" & myR2DateTime.GetCurrentTime & "'," & SmsSendReciveType.Recived & ")"
+                '            CmdSqlSmsSystem.ExecuteNonQuery()
+                '            mySmsIdStart += 1
+                '        End If
+                '    End If
+                'Next
+
+            Catch ex As SmsSystemIsDisabledException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+    End Class
+
+    Namespace Exceptions
+
+        Public Class MobileNumberInvallidException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "شماره موبایل نادرست است"
+                End Get
+            End Property
+        End Class
+
+        Public Class SmsSystemIsDisabledException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "سیستم اس ام اس از طریق جدول پیکربندی غیر فعال است"
+                End Get
+            End Property
+        End Class
+
+        Public Class SmsMessageEmptyException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "در پیام ارسالی متنی وجود ندارد"
+                End Get
+            End Property
+        End Class
+
+        Public Class SMSOwnerForSoftwareUserDoNotRegisteredYetException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "برای کاربر مورد نظر هنوز رکوردی درخصوص اس ام اس در لیست مربوطه ثبت نشده است"
+                End Get
+            End Property
+        End Class
+
+        Public Class SMSOwnerHasCreditYetException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "سرویس اس ام اس کاربر قبلا فعال شده است و هنوز معتبر است"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
+
+End Namespace
+
 

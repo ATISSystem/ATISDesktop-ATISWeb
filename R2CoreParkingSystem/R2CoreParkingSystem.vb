@@ -54,6 +54,10 @@ Imports R2CoreParkingSystem.AccountingManagement.ExceptionManagement
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
+Imports R2Core.MoneyWallet.MoneyWallet
+Imports R2Core.MoneyWallet.Exceptions
+Imports R2Core.SMS
+Imports R2Core.SMS.Exceptions
 
 Namespace Logging
 
@@ -1783,6 +1787,7 @@ Namespace AccountingManagement
         TruckersAssociationControllingMoneyWallet = 22 'کارکرد کیف پول کنترلی کامیونداران
         RegisteringSoftwareUserSMSCost = 23 'هزینه اس ام اس فرآیند فعال سازی کاربر
         SoftwareUserShenasehPasswordSMSCost = 24 'هزینه ارسال اس ام اس شناسه و رمز عبور کاربر
+        SoftwareUserSMSOwnerServiceCost = 25 'هزینه فعال سازی سرویس اس ام اس
     End Enum
 
     Public Class R2StandardEnterExitAccountingStructure
@@ -2177,6 +2182,36 @@ Namespace MoneyWalletManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
+
+        Public Function GetNSSMoneyWallet(YourNSSSoftwareuser As R2CoreStandardSoftwareUserStructure) As R2CoreParkingSystemStandardTrafficCardStructure
+            Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+            Dim InstanceTrafficCards = New R2CoreParkingSystemInstanceTrafficCardsManager
+            Try
+                Dim Ds As New DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                   "Select Top 1 TCardsRCar.CardId
+                    from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                          Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1 
+                          Inner Join dbtransport.dbo.TbDriver as Drivers On EntityRelations.E2=Drivers.nIDDriver 
+                          Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Drivers.nIDDriver=CarAndPersons.nIDPerson
+                          Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
+                          Inner Join R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars as TCardsRCar On Cars.nIDCar=TCardsRCar.nCarId 
+                    Where SoftwareUsers.UserId=" & YourNSSSoftwareuser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.RelationActive=1 and  
+                              EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and Cars.ViewFlag=1 and TCardsRCar.RelationActive=1 and CarAndPersons.snRelation=2 
+                              and ((DATEDIFF(SECOND,TCardsRCar.RelationTimeStamp,getdate())<120) or (TCardsRCar.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                              and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                    Order By CarAndPersons.nIDCarAndPerson Desc,TCardsRCar.RelationId Desc,TCardsRCar.RelationTimeStamp Desc", 0, Ds).GetRecordsCount <> 0 Then
+                    Return InstanceTrafficCards.GetNSSTrafficCard(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CardId")))
+                Else
+                    Throw New SoftwareUserMoneyWalletNotFoundException
+                End If
+            Catch ex As SoftwareUserMoneyWalletNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+
+        End Function
 
     End Class
 
@@ -3288,10 +3323,10 @@ Namespace BlackList
                 Dim InstanceSqlDataBox = New R2CoreInstanseSqlDataBOXManager
                 Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
                 Dim Ds As DataSet
-                If InstanceSqlDataBox.GetDataBOX(New R2ClassSqlConnectionSepas, "
+                If InstanceSqlDataBox.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "
                   Select Top 1 * from dbtransport.dbo.TbBlackList Where ltrim(rtrim(nTruckNo))='" & YourNSSCar.StrCarNo & "' 
                      and ltrim(rtrim(nPlakSerial))='" & YourNSSCar.StrCarSerialNo & "' and 
-                     nPlakPlac=" & YourNSSCar.nIdCity & " and flaga=0 Order By nId Desc", 1, Ds).GetRecordsCount <> 0 Then
+                     nPlakPlac=" & YourNSSCar.nIdCity & " and flaga=0 Order By nId Desc", 3600, Ds).GetRecordsCount <> 0 Then
                     YourNSSBlackList = New R2StandardBlackListStructure(Ds.Tables(0).Rows(0).Item("nId"), Ds.Tables(0).Rows(0).Item("nTruckNo"), Ds.Tables(0).Rows(0).Item("nPlakSerial"), Ds.Tables(0).Rows(0).Item("nPlakPlac"), Ds.Tables(0).Rows(0).Item("StrDesc"), Ds.Tables(0).Rows(0).Item("FlagA"), Ds.Tables(0).Rows(0).Item("nAmount"), IIf(Object.Equals(Ds.Tables(0).Rows(0).Item("StrDate"), DBNull.Value), "", Ds.Tables(0).Rows(0).Item("StrDate")), IIf(Object.Equals(Ds.Tables(0).Rows(0).Item("nUser"), DBNull.Value), InstanceSoftwareUsers.GetNSSSystemUser.UserId, Ds.Tables(0).Rows(0).Item("nUser")))
                     Return True
                 Else
@@ -4256,7 +4291,7 @@ Namespace ReportsManagement
                 Dim _Concat1 As String = YourDateTime1.GetConcatString
                 Dim _Concat2 As String = YourDateTime2.GetConcatString
                 Dim DS As New DataSet
-                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Sum(Mblgh) as Sumx,UserId from R2Primary.dbo.TblMoneyWalletCharges where (Replace(DateShamsi,'/','')+Replace(TimeCharge,':','')>='" & _Concat1 & "') and (Replace(DateShamsi,'/','')+Replace(TimeCharge,':','')<='" & _Concat2 & "') Group By UserId Order By UserId", 1, DS)
+                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Sum(Mblgh) as Sumx,UserId from R2Primary.dbo.TblMoneyWalletCharges where (Replace(DateShamsi,'/','')+Replace(TimeCharge,':','')>='" & _Concat1 & "') and (Replace(DateShamsi,'/','')+Replace(TimeCharge,':','')<='" & _Concat2 & "') Group By UserId Order By UserId", 3600, DS)
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "delete R2PrimaryReports.dbo.TblRFIDCardChargeUserReport" : CmdSql.ExecuteNonQuery()
@@ -4320,7 +4355,7 @@ Namespace ReportsManagement
                         Group By   EnterExit.DateShamsiExit, RFIDCards.CardType) as Inf
                        Inner Join R2PrimaryParkingSystem.dbo.TblTerafficCardType as TerafficCardType On inf.CardType=TerafficCardType.TypeCode  
                              Order By DateShamsi,CardType,EE")
-                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
+                Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
                 Da.Fill(Ds)
 
                 CmdSql.Connection.Open()
@@ -4368,7 +4403,7 @@ Namespace ReportsManagement
                      Where RFIDCards.CardType = " & YourTerraficCardType & " and EnterExit.FlagA=0 and EnterExit.DateShamsiEnter>='" & YourDateTime.DateShamsiFull & "'
 	                 ORDER BY EnterExit.DateShamsiEnter ,EnterExit.TimeEnter ")
                 End If
-                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
+                Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
                 Da.Fill(Ds)
 
                 CmdSql.Connection.Open()
@@ -4446,7 +4481,7 @@ Namespace ReportsManagement
                            Inner Join R2Primary.dbo.TblComputers as ComputerExit On EnterExit.GateExit = ComputerExit.MId
                       Where " + SqlTerraficCardOrNumberPlate + SqlEntranceDateTimeSupport + " Order By EnterExit.DateTimeMilladiEnter")
 
-                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
+                Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
                 Da.Fill(Ds)
 
                 CmdSql.Connection.Open()
@@ -4735,4 +4770,95 @@ Namespace PredefinedMessagesManagement
         Public Shared ReadOnly AmountInvalid As Int64 = 5
     End Class
 
+End Namespace
+
+Namespace SMS
+    Public Class R2CoreParkingSystemMCLassSMSManager
+        Private _DateTime As New R2DateTime
+
+        Private Sub RegisteringSMSOwner(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourUserCreatorId As Int64)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Try
+                Dim InstanceMoneyWallet = New R2CoreParkingSystemInstanceMoneyWalletManager
+                Dim NSSMoneyWallet = InstanceMoneyWallet.GetNSSMoneyWallet(YourNSSSoftwareUser)
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
+                CmdSql.CommandText = "Update R2PrimarySMSSystem.dbo.TblSMSOwners Set Active=0 Where UserId=" & YourNSSSoftwareUser.UserId & " and Active=1"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Insert Into R2PrimarySMSSystem.dbo.TblSMSOwners(UserId,MoneyWalletId,IsSendingActive,DateTimeMilladi,DateShamsi,Time,UserCreatorId,ViewFlag,Active,Deleted)
+                                      Values(" & YourNSSSoftwareUser.UserId & "," & NSSMoneyWallet.CardId & ",1,'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentTime & "'," & YourUserCreatorId & ",1,1,0)"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As SoftwareUserMoneyWalletNotFoundException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Private Sub RegisterAndActiveSMSOwner(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourUserCreatorId As Int64)
+            Try
+                Dim InstanceSoftwareUser = New R2CoreInstanseSoftwareUsersManager
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim InstanceMoneyWallet = New R2CoreParkingSystemInstanceMoneyWalletManager
+                Dim NSSMoneyWallet = InstanceMoneyWallet.GetNSSMoneyWallet(YourNSSSoftwareUser)
+                If NSSMoneyWallet.Charge < InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.SmsSystemSetting, 7) Then
+                    Throw New MoneyWalletCurrentChargeNotEnoughException
+                End If
+                'کسر هزینه فعال سازی برای مدت معین
+                InstanceMoneyWallet.ActMoneyWalletNextStatus(NSSMoneyWallet, BagPayType.MinusMoney, InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.SmsSystemSetting, 7), R2CoreParkingSystemAccountings.SoftwareUserSMSOwnerServiceCost, InstanceSoftwareUser.GetNSSSystemUser())
+                RegisteringSMSOwner(YourNSSSoftwareUser, YourUserCreatorId)
+            Catch ex As SoftwareUserMoneyWalletNotFoundException
+                Throw ex
+            Catch ex As MoneyWalletCurrentChargeNotEnoughException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub ActivateSMSOwner(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourUserCreatorId As Int64)
+            Try
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim InstanceSMS = New R2CoreMClassSMSManager
+                Dim NSSSMSOwner As R2CoreStandardSMSOwnerStructure = Nothing
+
+                Try
+                    NSSSMSOwner = InstanceSMS.GetNSSSMSOwner(YourNSSSoftwareUser)
+                Catch ex As SMSOwnerForSoftwareUserDoNotRegisteredYetException
+                    RegisterAndActiveSMSOwner(YourNSSSoftwareUser, YourUserCreatorId)
+                    Return
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+
+                If NSSSMSOwner.Active Then
+                    If DateDiff(DateInterval.Year, NSSSMSOwner.DateTimeMilladi, _DateTime.GetCurrentDateTimeMilladi) < InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.SmsSystemSetting, 6) Then
+                        Throw New SMSOwnerHasCreditYetException
+                    Else
+                        RegisterAndActiveSMSOwner(YourNSSSoftwareUser, YourUserCreatorId)
+                    End If
+                Else
+                    RegisterAndActiveSMSOwner(YourNSSSoftwareUser, YourUserCreatorId)
+                End If
+            Catch ex As SoftwareUserMoneyWalletNotFoundException
+                Throw ex
+            Catch ex As MoneyWalletCurrentChargeNotEnoughException
+                Throw ex
+            Catch ex As SMSOwnerHasCreditYetException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+
+    End Class
 End Namespace

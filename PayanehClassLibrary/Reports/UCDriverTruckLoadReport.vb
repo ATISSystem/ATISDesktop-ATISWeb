@@ -50,7 +50,7 @@ Public Class UCDriverTruckLoadReport
         Cursor.Current = Cursors.Default
     End Sub
 
-    Private Sub UcDriver_UCViewDriverInformationCompleted(DriverId As String) Handles UcDriver.UCViewDriverInformationCompleted
+    Private Sub UcDriver_UCViewDriverInformationCompleted(DriverId As String) Handles UcDriver.UCViewDriverInformationCompletedEvent
         Try
             UcDriverImage.UCViewDriverImage(PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(DriverId).NSSDriver)
         Catch ex As Exception

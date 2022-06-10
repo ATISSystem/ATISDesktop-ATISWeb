@@ -1,15 +1,17 @@
 ﻿
 Imports System.Reflection
+Imports System.Windows.Forms
 
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
+Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
 
 Public Class UCLstViewerAllOfnEnterExitId
     Inherits UCGeneral
 
-    Public Event UCSelectedValueChanged(Value As String)
+    Public Event UCSelectedValueChanged()
 
 
 #Region "General Properties"
@@ -36,10 +38,12 @@ Public Class UCLstViewerAllOfnEnterExitId
 
     Private Sub UCViewInf()
         Try
+            Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
             LstViewerAllOfnEnterExitId.Items.Clear()
-            Dim Lst As List(Of String) = PayanehClassLibraryMClassCarTruckNobatManagement.GetListOfAllnEnterExitId(UcucSequentialTurnCollection.UCCurrentNSS)
-            For Each S As String In Lst
-                LstViewerAllOfnEnterExitId.Items.Add(S)
+            Dim Lst = InstanceCarTruckNobat.GetAllofActiveTurns(UcucSequentialTurnCollection.UCCurrentNSS)
+            For Each TurnDetails As PayanehClassLibraryTurnDetails In Lst
+                Dim TurnItem = New TurnItem(TurnDetails)
+                LstViewerAllOfnEnterExitId.Items.Add(TurnItem)
             Next
         Catch exx As GetDataException
             Throw exx
@@ -48,24 +52,12 @@ Public Class UCLstViewerAllOfnEnterExitId
         End Try
     End Sub
 
-    Public Function UCGetSelectedSequentialTurnNumber() As String
+    Public Function UCGetSelectedTurnId() As Int64
         Try
             If LstViewerAllOfnEnterExitId.SelectedIndex >= 0 Then
-                Return Split(LstViewerAllOfnEnterExitId.Items(LstViewerAllOfnEnterExitId.SelectedIndex), "-")(0).Trim
+                Return DirectCast(LstViewerAllOfnEnterExitId.Items(LstViewerAllOfnEnterExitId.SelectedIndex), TurnItem).TurnDetails.nEnterExitId
             Else
-                Throw New Exception("شماره اعتبار را انتخاب نمایید")
-            End If
-        Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-        End Try
-    End Function
-
-    Public Function UCGetSelectedTargetYear() As String
-        Try
-            If LstViewerAllOfnEnterExitId.SelectedIndex >= 0 Then
-                Return Mid(Split(LstViewerAllOfnEnterExitId.Items(LstViewerAllOfnEnterExitId.SelectedIndex), "-")(1).Trim, 1, 4)
-            Else
-                Throw New Exception("شماره اعتبار را انتخاب نمایید")
+                Throw New Exception("شماره نوبت انتخاب نشده است")
             End If
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -88,7 +80,7 @@ Public Class UCLstViewerAllOfnEnterExitId
 #Region "Event Handlers"
 
     Private Sub LstViewerAllOfnEnterExitId_SelectedValueChanged(sender As Object, e As EventArgs) Handles LstViewerAllOfnEnterExitId.SelectedValueChanged
-        RaiseEvent UCSelectedValueChanged(LstViewerAllOfnEnterExitId.Items(LstViewerAllOfnEnterExitId.SelectedIndex))
+        RaiseEvent UCSelectedValueChanged()
     End Sub
 
     Private Sub UcucSequentialTurnCollection_UCCurrentNSSChangedEvent() Handles UcucSequentialTurnCollection.UCCurrentNSSChangedEvent
@@ -114,3 +106,23 @@ Public Class UCLstViewerAllOfnEnterExitId
 
 
 End Class
+
+Public Class TurnItem
+    Inherits ListViewItem
+    Public TurnButton As Button
+
+    Public TurnDetails As PayanehClassLibraryTurnDetails = Nothing
+
+    Public Sub New(ByVal YourTurnDetails As PayanehClassLibraryTurnDetails)
+        TurnDetails = YourTurnDetails
+        Me.Text = YourTurnDetails.OtaghdarSeqTurnNumber
+        'customButton = New Button
+        'customButton.Left = Me.GetBounds(ItemBoundsPortion.Entire).Left
+        'customButton.Left = Me.GetBounds(ItemBoundsPortion.Entire).Left
+        'customButton.Width = Me.GetBounds(ItemBoundsPortion.Entire).Width
+        'customButton.Text = buttonText
+        'ListView.Controls.Add(customButton)
+    End Sub
+
+End Class
+

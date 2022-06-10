@@ -5,6 +5,7 @@ Imports R2Core.BlackIPs
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
+Imports R2Core.SMS
 Imports R2Core.SMSSendAndRecieved
 Imports R2Core.SoftwareUserManagement
 

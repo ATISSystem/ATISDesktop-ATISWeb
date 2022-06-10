@@ -93,7 +93,9 @@ Public Class PayanehAmirKabirAutomatedJobs
 
             'ابطال گروهی نوبت ها
             Try
-                PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellationBaseOnDuration()
+                'Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                'Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
+                'InstanceCarTruckNobat.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser())
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TurnsCancellation:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try

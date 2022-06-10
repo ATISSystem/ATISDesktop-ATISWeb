@@ -40,6 +40,7 @@ Imports R2Core.LoggingManagement
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2Core.RFIDCardsManagement.Exceptions
+Imports R2Core.SMS
 
 Public Class R2Enums
 
@@ -1386,7 +1387,7 @@ Namespace SoftwareUserManagement
             Try
                 Dim Instanse = New R2CoreInstanseSqlDataBOXManager
                 Dim Ds As DataSet
-                If Instanse.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where ApiKey='" & YourApiKey & "'", 0, Ds).GetRecordsCount() = 0 Then
+                If Instanse.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select * from R2Primary.dbo.TblSoftwareUsers Where ApiKey='" & YourApiKey & "'", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New UserNotExistByApiKeyException
                 End If
                 Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration"), Ds.Tables(0).Rows(0).Item("UserName").trim, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("VerificationCodeCount"), Ds.Tables(0).Rows(0).Item("Nonce"), Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce"), Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("Captcha"), Ds.Tables(0).Rows(0).Item("CaptchaValid"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
@@ -1397,13 +1398,32 @@ Namespace SoftwareUserManagement
             End Try
         End Function
 
-        Public Function GetNSSUser(YourSoftWareUserMobile As R2CoreSoftwareUserMobile) As R2CoreStandardSoftwareUserStructure
+        Public Function GetNSSUserChangeableData(YourSoftWareUserMobile As R2CoreSoftwareUserMobile) As R2CoreStandardSoftwareUserStructure
             Try
                 Dim InstanceEVA = New ExpressionValidationAlgorithmsManager
-                Dim Instanse = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 InstanceEVA.ValidationMobileNumber(YourSoftWareUserMobile.SoftwareUserMobileNumber)
                 Dim Ds As DataSet
-                If Instanse.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblSoftwareUsers Where MobileNumber='" & YourSoftWareUserMobile.SoftwareUserMobileNumber & "' Order By UserId Desc", 0, Ds).GetRecordsCount() = 0 Then
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                       "Select Top 1 UserId,ApiKey,APIKeyExpiration,UserShenaseh,UserPassword,UserPasswordExpiration,MobileNumber,UserStatus,VerificationCode,VerificationCodeTimeStamp,VerificationCodeCount,Nonce,NonceTimeStamp,NonceCount,PersonalNonce,PersonalNonceTimeStamp,Captcha,CaptchaValid
+                        from R2Primary.dbo.TblSoftwareUsers Where MobileNumber='" & YourSoftWareUserMobile.SoftwareUserMobileNumber & "' Order By UserId Desc", 0, Ds).GetRecordsCount() = 0 Then
+                    Throw New UserNotExistByMobileNumberException
+                End If
+                Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration").trim, Nothing, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration").trim, Nothing, Nothing, Nothing, Nothing, Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("VerificationCodeCount"), Ds.Tables(0).Rows(0).Item("Nonce").trim, Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce").trim, Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("Captcha").trim, Ds.Tables(0).Rows(0).Item("CaptchaValid"), Nothing, Nothing, Nothing, Nothing, Nothing)
+            Catch exx As UserNotExistByMobileNumberException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSUserUnChangeable(YourSoftWareUserMobile As R2CoreSoftwareUserMobile) As R2CoreStandardSoftwareUserStructure
+            Try
+                Dim InstanceEVA = New ExpressionValidationAlgorithmsManager
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                InstanceEVA.ValidationMobileNumber(YourSoftWareUserMobile.SoftwareUserMobileNumber)
+                Dim Ds As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 * from R2Primary.dbo.TblSoftwareUsers Where MobileNumber='" & YourSoftWareUserMobile.SoftwareUserMobileNumber & "' Order By UserId Desc", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New UserNotExistByMobileNumberException
                 End If
                 Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration"), Ds.Tables(0).Rows(0).Item("UserName").trim, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration"), Ds.Tables(0).Rows(0).Item("UserPinCode").trim, Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("VerificationCodeCount"), Ds.Tables(0).Rows(0).Item("Nonce").trim, Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce").trim, Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("Captcha").trim, Ds.Tables(0).Rows(0).Item("CaptchaValid"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi").trim, Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
@@ -1414,6 +1434,7 @@ Namespace SoftwareUserManagement
             End Try
         End Function
 
+
         Public Function GetNSSUser(YourUserId As Int64) As R2CoreStandardSoftwareUserStructure
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
@@ -1422,6 +1443,16 @@ Namespace SoftwareUserManagement
                     Throw New UserIdNotExistException
                 End If
                 Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration"), Ds.Tables(0).Rows(0).Item("UserName").trim, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration"), Ds.Tables(0).Rows(0).Item("UserPinCode"), Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("VerificationCodeCount"), Ds.Tables(0).Rows(0).Item("Nonce"), Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce"), Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("Captcha"), Ds.Tables(0).Rows(0).Item("CaptchaValid"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
+            Catch ex As UserIdNotExistException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetSystemUserId() As Int64
+            Try
+                Return 1
             Catch ex As UserIdNotExistException
                 Throw ex
             Catch ex As Exception
@@ -1468,7 +1499,7 @@ Namespace SoftwareUserManagement
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Connection.Close()
                     Dim SMSSender As New R2CoreSMSSendRecive
-                    SMSSender.SendSms(New R2CoreSMSStandardSmsStructure(Nothing, Ds.Tables(0).Rows(0).Item("MobileNumber"), VerificationCode, 1, Nothing, 1, Nothing, Nothing))
+                    SMSSender.SendSms(New R2CoreStandardSMSStructure(Nothing, Ds.Tables(0).Rows(0).Item("MobileNumber"), VerificationCode, 1, Nothing, 1, Nothing, Nothing))
                     Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
                 Else
                     Throw New MobileNumberNotFoundException
@@ -1515,12 +1546,12 @@ Namespace SoftwareUserManagement
             End Try
         End Sub
 
-        Public Sub AuthenticationUserByMobileNumber(YourSoftwareUserMobile As R2CoreSoftwareUserMobile)
+        Public Sub AuthenticationUserByMobileNumber(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
             Try
                 Dim InstanseSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet
-                If InstanseSqlDataBOX.GetDataBOX(New DatabaseManagement.R2PrimarySqlConnection,
-                         "Select * from R2Primary.dbo.TblSoftwareUsers where MobileNumber='" & YourSoftwareUserMobile.SoftwareUserMobileNumber & "'", 0, DS).GetRecordsCount = 0 Then
+                If InstanseSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                         "Select UserActive from R2Primary.dbo.TblSoftwareUsers where MobileNumber='" & YourNSSSoftwareUser.MobileNumber & "'", 3600, DS).GetRecordsCount = 0 Then
                     Throw New UserNotExistException
                 Else
                     If DS.Tables(0).Rows(0).Item("UserActive") = False Then Throw New UserIsNotActiveException
@@ -1552,13 +1583,13 @@ Namespace SoftwareUserManagement
             End Try
         End Function
 
-        Public Sub DecreaseNonceCountforSoftwareUser(YourSoftwareUserMobile As R2CoreSoftwareUserMobile)
+        Public Sub DecreaseNonceCountforSoftwareUser(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
-                AuthenticationUserByMobileNumber(YourSoftwareUserMobile)
+                AuthenticationUserByMobileNumber(YourNSSSoftwareUser)
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set NonceCount=NonceCount-1 Where MobileNumber='" & YourSoftwareUserMobile.SoftwareUserMobileNumber & "'"
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set NonceCount=NonceCount-1 Where MobileNumber='" & YourNSSSoftwareUser.MobileNumber & "'"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException
@@ -1569,13 +1600,13 @@ Namespace SoftwareUserManagement
             End Try
         End Sub
 
-        Public Sub DecreaseVerificationCodeCountforSoftwareUser(YourSoftwareUserMobile As R2CoreSoftwareUserMobile)
+        Public Sub DecreaseVerificationCodeCountforSoftwareUser(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
-                AuthenticationUserByMobileNumber(YourSoftwareUserMobile)
+                AuthenticationUserByMobileNumber(YourNSSSoftwareUser)
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set VerificationCodeCount=VerificationCodeCount-1 Where MobileNumber='" & YourSoftwareUserMobile.SoftwareUserMobileNumber & "'"
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set VerificationCodeCount=VerificationCodeCount-1 Where MobileNumber='" & YourNSSSoftwareUser.MobileNumber & "'"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException
@@ -1646,14 +1677,14 @@ Namespace SoftwareUserManagement
             End Try
         End Function
 
-        Public Sub CaptchaInvalidateforSoftwareUser(YourSoftwareUserMobile As R2CoreSoftwareUserMobile)
+        Public Sub CaptchaInvalidateforSoftwareUser(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
-                AuthenticationUserByMobileNumber(YourSoftwareUserMobile)
+                AuthenticationUserByMobileNumber(YourNSSSoftwareUser)
                 Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set Captcha='',CaptchaValid=0 Where MobileNumber='" & YourSoftwareUserMobile.SoftwareUserMobileNumber & "'"
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set Captcha='',CaptchaValid=0 Where MobileNumber='" & YourNSSSoftwareUser.MobileNumber & "'"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception
@@ -2326,7 +2357,7 @@ Namespace DatabaseManagement
         Private Shared yourSqlString As String = Nothing
         Private Shared yourDisposeCounter As Int16 = Nothing
 
-        Public Shared Function GetDataBOX(ByVal Sqlcnn As R2ClassSqlConnection, ByVal SqlString As String, ByVal DisposeCounter As Int16, ByRef DS As DataSet) As R2ClassSqlDataBOX
+        Public Shared Function GetDataBOX(ByVal Sqlcnn As R2ClassSqlConnection, ByVal SqlString As String, ByVal DisposeCounter As Int32, ByRef DS As DataSet) As R2ClassSqlDataBOX
             Try
                 yourSqlcnn = Sqlcnn
                 yourSqlString = SqlString : yourDisposeCounter = DisposeCounter
@@ -2579,7 +2610,7 @@ Namespace ConfigurationManagement
             Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
             Try
                 Dim Ds As DataSet
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 CValue from R2Primary.dbo.TblConfigurations Where CId=" & YourCId & "", 2000, Ds).GetRecordsCount = 0 Then
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 CValue from R2Primary.dbo.TblConfigurations Where CId=" & YourCId & "", 3600, Ds).GetRecordsCount = 0 Then
                     Throw New GetDataException
                 End If
                 Return Split(Ds.Tables(0).Rows(0).Item("CValue"), ";")(YourIndex)
@@ -2592,7 +2623,7 @@ Namespace ConfigurationManagement
             Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
             Try
                 Dim Ds As DataSet
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 CValue from R2Primary.dbo.TblConfigurations Where CId=" & YourCId & "", 3600, Ds).GetRecordsCount = 0 Then
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 CValue from R2Primary.dbo.TblConfigurations Where CId=" & YourCId & "", 3600, Ds).GetRecordsCount = 0 Then
                     Throw New GetDataException
                 End If
                 Return Ds.Tables(0).Rows(0).Item("CValue")
@@ -2968,7 +2999,7 @@ Namespace DateAndTimeManagement
     End Class
     Public Class R2DateTime
         'Dim mycurrenttime As String = Trim(Mid(DateAndTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), 12, 8))
-        Private myOpenConnection As R2Core.DatabaseManagement.R2PrimarySqlConnection = New R2Core.DatabaseManagement.R2PrimarySqlConnection
+        Private myOpenConnection As R2PrimarySubscriptionDBSqlConnection = New R2PrimarySubscriptionDBSqlConnection
         Private PC As New System.Globalization.PersianCalendar()
         Private HC As New System.Globalization.HijriCalendar()
 
@@ -3608,7 +3639,7 @@ Namespace LoggingManagement
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet = Nothing
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimaryLogging.dbo.TblLoggingTypes Where LogId=" & YourTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New LoggingTypeNotFoundException
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select * from R2PrimaryLogging.dbo.TblLoggingTypes Where LogId=" & YourTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New LoggingTypeNotFoundException
                 Return New R2CoreStandardLogTypeStructure(DS.Tables(0).Rows(0).Item("LogId"), DS.Tables(0).Rows(0).Item("LogName").trim, DS.Tables(0).Rows(0).Item("LogTitle").trim, Color.FromName(DS.Tables(0).Rows(0).Item("LogColor").trim), DS.Tables(0).Rows(0).Item("Core").trim, DS.Tables(0).Rows(0).Item("AssemblyDll").trim, DS.Tables(0).Rows(0).Item("AssemblyPath").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As LoggingTypeNotFoundException
                 Throw ex
@@ -3622,16 +3653,6 @@ Namespace LoggingManagement
     Public Class R2CoreMClassLoggingManagement
 
         Private Shared _DateTime As New R2DateTime
-
-        Public Shared Function GetNSSLogType(YourLogId As Int64) As R2CoreStandardLogTypeStructure
-            Try
-                Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimaryLogging.dbo.TblLoggingTypes Where LogId=" & YourLogId & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New R2CoreLogTypeNotFoundException
-                Return New R2CoreStandardLogTypeStructure(Ds.Tables(0).Rows(0).Item("LogId"), Ds.Tables(0).Rows(0).Item("LogName").trim, Ds.Tables(0).Rows(0).Item("LogTitle").trim, Color.FromName(Ds.Tables(0).Rows(0).Item("LogColor").trim), Ds.Tables(0).Rows(0).Item("Core").trim, Ds.Tables(0).Rows(0).Item("AssemblyDll").trim, Ds.Tables(0).Rows(0).Item("AssemblyPath").trim, Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi").trim, Ds.Tables(0).Rows(0).Item("Time").trim, Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("Deleted"))
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
 
         Public Shared Sub LogRegister(ByVal YourLog As R2CoreStandardLoggingStructure)
             Dim CmdSql As New SqlClient.SqlCommand
@@ -4624,7 +4645,7 @@ Namespace ComputersManagement
             Try
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 Da.SelectCommand = New SqlCommand("Select Top 1 CValue from R2Primary.dbo.TblConfigurationsOfComputers Where CId=" & YourCId & " and MId=" & YourMId & "")
-                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
+                Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
                 If Da.Fill(Ds) = 0 Then Throw New GetDataException
                 Return Ds.Tables(0).Rows(0).Item("CValue").trim
             Catch ex As Exception
@@ -4632,24 +4653,24 @@ Namespace ComputersManagement
             End Try
         End Function
 
-        Public Function GetConfigRealTime(YourCId As Int64, YourMId As Int64, YourIndex As Int64) As Object
-            Try
-                Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
-                Da.SelectCommand = New SqlCommand("Select Top 1 CValue from R2Primary.dbo.TblConfigurationsOfComputers Where CId=" & YourCId & " and MId=" & YourMId & "")
-                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
-                Ds.Tables.Clear()
-                If Da.Fill(Ds) = 0 Then Throw New GetDataException
-                Return Split(Ds.Tables(0).Rows(0).Item("CValue"), ";")(YourIndex)
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
+        'Public Function GetConfigRealTime(YourCId As Int64, YourMId As Int64, YourIndex As Int64) As Object
+        '    Try
+        '        Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
+        '        Da.SelectCommand = New SqlCommand("Select Top 1 CValue from R2Primary.dbo.TblConfigurationsOfComputers Where CId=" & YourCId & " and MId=" & YourMId & "")
+        '        Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
+        '        Ds.Tables.Clear()
+        '        If Da.Fill(Ds) = 0 Then Throw New GetDataException
+        '        Return Split(Ds.Tables(0).Rows(0).Item("CValue"), ";")(YourIndex)
+        '    Catch ex As Exception
+        '        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        '    End Try
+        'End Function
 
         Public Function GetConfig(YourCId As Int64, YourMId As Int64, YourIndex As Int64) As Object
             Try
                 Dim Ds As DataSet
                 Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 CValue from R2Primary.dbo.TblConfigurationsOfComputers Where CId=" & YourCId & " and MId=" & YourMId & "", 0, Ds).GetRecordsCount = 0 Then
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 CValue from R2Primary.dbo.TblConfigurationsOfComputers Where CId=" & YourCId & " and MId=" & YourMId & "", 3600, Ds).GetRecordsCount = 0 Then
                     Throw New GetDataException
                 End If
                 Return Split(Ds.Tables(0).Rows(0).Item("CValue"), ";")(YourIndex)
@@ -4721,23 +4742,23 @@ Namespace ComputersManagement
             End Try
         End Function
 
-        Public Function GetConfigurationOfComputer(YourMId As Int64) As List(Of R2CoreStandardConfigurationOfComputerStructure)
-            Try
-                Dim Ds As DataSet
-                Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
-                InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
-                    "Select Configs.CId,Configs.CName,Configs.Description,Configs.Orientation,ConfigOfComps.CValue,ConfigOfComps.MId from R2Primary.dbo.TblConfigurations as Configs 
-                       Inner Join R2Primary.dbo.TblConfigurationsOfComputers as ConfigOfComps On Configs.CId=ConfigOfComps.CId
-                     Where ConfigOfComps.MId=" & YourMId & " Order By CId", 1, Ds)
-                Dim Lst As New List(Of R2CoreStandardConfigurationOfComputerStructure)
-                For Loopx As Int64 = Ds.Tables(0).Rows.Count - 1 To 0 Step -1
-                    Lst.Add(New R2CoreStandardConfigurationOfComputerStructure(New R2CoreStandardConfigurationStructure(Ds.Tables(0).Rows(Loopx).Item("CId"), Ds.Tables(0).Rows(Loopx).Item("CName").trim, Ds.Tables(0).Rows(Loopx).Item("CValue").trim, Ds.Tables(0).Rows(Loopx).Item("Orientation").trim, Ds.Tables(0).Rows(Loopx).Item("Description").trim), YourMId, Ds.Tables(0).Rows(Loopx).Item("CValue").trim))
-                Next
-                Return Lst
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
+        'Public Function GetConfigurationOfComputer(YourMId As Int64) As List(Of R2CoreStandardConfigurationOfComputerStructure)
+        '    Try
+        '        Dim Ds As DataSet
+        '        Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
+        '        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+        '            "Select Configs.CId,Configs.CName,Configs.Description,Configs.Orientation,ConfigOfComps.CValue,ConfigOfComps.MId from R2Primary.dbo.TblConfigurations as Configs 
+        '               Inner Join R2Primary.dbo.TblConfigurationsOfComputers as ConfigOfComps On Configs.CId=ConfigOfComps.CId
+        '             Where ConfigOfComps.MId=" & YourMId & " Order By CId", 1, Ds)
+        '        Dim Lst As New List(Of R2CoreStandardConfigurationOfComputerStructure)
+        '        For Loopx As Int64 = Ds.Tables(0).Rows.Count - 1 To 0 Step -1
+        '            Lst.Add(New R2CoreStandardConfigurationOfComputerStructure(New R2CoreStandardConfigurationStructure(Ds.Tables(0).Rows(Loopx).Item("CId"), Ds.Tables(0).Rows(Loopx).Item("CName").trim, Ds.Tables(0).Rows(Loopx).Item("CValue").trim, Ds.Tables(0).Rows(Loopx).Item("Orientation").trim, Ds.Tables(0).Rows(Loopx).Item("Description").trim), YourMId, Ds.Tables(0).Rows(Loopx).Item("CValue").trim))
+        '        Next
+        '        Return Lst
+        '    Catch ex As Exception
+        '        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        '    End Try
+        'End Function
 
         Public Sub SetConfigurationOfComputer(YourNSS As R2CoreStandardConfigurationOfComputerStructure)
             Dim CmdSql As New SqlCommand
@@ -4781,7 +4802,7 @@ Namespace ComputersManagement
             Try
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 Da.SelectCommand = New SqlCommand("Select Top 1 CValue from R2Primary.dbo.TblConfigurationsOfComputers Where CId=" & YourCId & " and MId=" & YourMId & "")
-                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
+                Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
                 If Da.Fill(Ds) = 0 Then Throw New GetDataException
                 Return Ds.Tables(0).Rows(0).Item("CValue").trim
             Catch ex As Exception
@@ -4789,23 +4810,23 @@ Namespace ComputersManagement
             End Try
         End Function
 
-        Public Shared Function GetConfigRealTime(YourCId As Int64, YourMId As Int64, YourIndex As Int64) As Object
-            Try
-                Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
-                Da.SelectCommand = New SqlCommand("Select Top 1 CValue from R2Primary.dbo.TblConfigurationsOfComputers Where CId=" & YourCId & " and MId=" & YourMId & "")
-                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
-                Ds.Tables.Clear()
-                If Da.Fill(Ds) = 0 Then Throw New GetDataException
-                Return Split(Ds.Tables(0).Rows(0).Item("CValue"), ";")(YourIndex)
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
+        'Public Shared Function GetConfigRealTime(YourCId As Int64, YourMId As Int64, YourIndex As Int64) As Object
+        '    Try
+        '        Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
+        '        Da.SelectCommand = New SqlCommand("Select Top 1 CValue from R2Primary.dbo.TblConfigurationsOfComputers Where CId=" & YourCId & " and MId=" & YourMId & "")
+        '        Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
+        '        Ds.Tables.Clear()
+        '        If Da.Fill(Ds) = 0 Then Throw New GetDataException
+        '        Return Split(Ds.Tables(0).Rows(0).Item("CValue"), ";")(YourIndex)
+        '    Catch ex As Exception
+        '        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        '    End Try
+        'End Function
 
         Public Shared Function GetConfig(YourCId As Int64, YourMId As Int64, YourIndex As Int64) As Object
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 CValue from R2Primary.dbo.TblConfigurationsOfComputers Where CId=" & YourCId & " and MId=" & YourMId & "", 0, Ds).GetRecordsCount = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 CValue from R2Primary.dbo.TblConfigurationsOfComputers Where CId=" & YourCId & " and MId=" & YourMId & "", 3600, Ds).GetRecordsCount = 0 Then
                     Throw New GetDataException
                 End If
                 Return Split(Ds.Tables(0).Rows(0).Item("CValue"), ";")(YourIndex)
@@ -4880,10 +4901,10 @@ Namespace ComputersManagement
         Public Shared Function GetConfigurationOfComputer(YourMId As Int64) As List(Of R2CoreStandardConfigurationOfComputerStructure)
             Try
                 Dim Ds As DataSet
-                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                     "Select Configs.CId,Configs.CName,Configs.Description,Configs.Orientation,ConfigOfComps.CValue,ConfigOfComps.MId from R2Primary.dbo.TblConfigurations as Configs 
                        Inner Join R2Primary.dbo.TblConfigurationsOfComputers as ConfigOfComps On Configs.CId=ConfigOfComps.CId
-                     Where ConfigOfComps.MId=" & YourMId & " Order By CId", 1, Ds)
+                     Where ConfigOfComps.MId=" & YourMId & " Order By CId", 3600, Ds)
                 Dim Lst As New List(Of R2CoreStandardConfigurationOfComputerStructure)
                 For Loopx As Int64 = Ds.Tables(0).Rows.Count - 1 To 0 Step -1
                     Lst.Add(New R2CoreStandardConfigurationOfComputerStructure(New R2CoreStandardConfigurationStructure(Ds.Tables(0).Rows(Loopx).Item("CId"), Ds.Tables(0).Rows(Loopx).Item("CName").trim, Ds.Tables(0).Rows(Loopx).Item("CValue").trim, Ds.Tables(0).Rows(Loopx).Item("Orientation").trim, Ds.Tables(0).Rows(Loopx).Item("Description").trim), YourMId, Ds.Tables(0).Rows(Loopx).Item("CValue").trim))

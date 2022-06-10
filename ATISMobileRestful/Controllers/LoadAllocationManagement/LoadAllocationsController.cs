@@ -44,35 +44,33 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             try
             {
                 TimeSpan now = DateTime.Now.TimeOfDay;
-                if ((new TimeSpan(09, 0, 0) <= now && now <= new TimeSpan(09, 05, 0)) || 
-                    (new TimeSpan(10, 0, 0) <= now && now <= new TimeSpan(10, 05, 0)) ||
-                    (new TimeSpan(13, 0, 0) <= now && now <= new TimeSpan(13, 07, 0)))
+                if (new TimeSpan(13, 0, 0) <= now && now <= new TimeSpan(13, 10, 0))
                 { throw new TimingNotReachedException(); }
 
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientLoadAllocationRegisteringRequest);
 
-                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
-                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
-                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceAES = new AESAlgorithmsManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
                 var nEstelamId = Convert.ToInt64(Content.Split(';')[2]);
-                var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
-                var NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamId).nEstelamKey);
+                //var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
+                //var NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamId).nEstelamKey);
 
-                Int64 myTurnId = Int64.MinValue;
+                R2CoreTransportationAndLoadNotificationStandardTurnStructure myNSSTurn = null ;
                 try
                 {
                     var InstanceTurns = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
-                    myTurnId = InstanceTurns.GetNSSTurn(NSSSoftwareuser).nEnterExitId;
+                    myNSSTurn = InstanceTurns.GetNSSTurn(NSSSoftwareuser);
                 }
                 catch (Exception ex)
                 { throw ex; }
 
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                Int64 LAId = InstanceLoadAllocation.LoadAllocationRegistering(NSSLoadCapacitorLoad.nEstelamId, myTurnId, NSSSoftwareuser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent);
+                InstanceLoadAllocation.LoadAllocationRegistering(nEstelamId, myNSSTurn, NSSSoftwareuser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
@@ -106,7 +104,7 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             {
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
                 var InstanceTurn = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
-                if (InstanceTurn.GetNSSTurn(YourNSSSoftwareUser).nEnterExitId != InstanceLoadAllocation.GetNSSLoadAllocation(YourLoadAllocationId).TurnId)
+                if (InstanceTurn.GetNSSTurn(YourNSSSoftwareUser).nEnterExitId != InstanceLoadAllocation.GetTurnIdfromLoadAllocationId(YourLoadAllocationId))
                 { throw new LoadAllocationIdNotPairWithDriverException(); }
             }
             catch (Exception ex)
@@ -127,7 +125,7 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 var InstanceAES = new AESAlgorithmsManager();
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
                 var LoadAllocationId = Convert.ToInt64(Content.Split(';')[2]);
                 AuthorizationLoadAllocationIdWithSoftwareUser(NSSSoftwareuser, LoadAllocationId);
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
@@ -268,7 +266,7 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 var InstanceAES = new AESAlgorithmsManager();
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
                 var LoadAllocationId = Convert.ToInt64(Content.Split(';')[2]);
                 AuthorizationLoadAllocationIdWithSoftwareUser(NSSSoftwareuser, LoadAllocationId);
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
@@ -310,7 +308,7 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 var InstanceAES = new AESAlgorithmsManager();
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
                 var LoadAllocationId = Convert.ToInt64(Content.Split(';')[2]);
                 AuthorizationLoadAllocationIdWithSoftwareUser(NSSSoftwareuser, LoadAllocationId);
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();

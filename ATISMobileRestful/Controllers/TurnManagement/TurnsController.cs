@@ -162,8 +162,8 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                 var TopSequentialTurnNumber = Content.Split(';')[2];
                 var YearShamsi = Content.Split(';')[3];
 
-                var InstanceCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
-                InstanceCarTruckNobat.TurnsCancellation(TopSequentialTurnNumber, InstanceSequentialTrun.GetNSSSequentialTurn(2), YearShamsi, NSSSoftwareuser);
+                //var InstanceCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
+                //InstanceCarTruckNobat.TurnsCancellation(TopSequentialTurnNumber, InstanceSequentialTrun.GetNSSSequentialTurn(2), YearShamsi, NSSSoftwareuser);
 
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;

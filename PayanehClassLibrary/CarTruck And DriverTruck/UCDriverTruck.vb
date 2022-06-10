@@ -141,7 +141,7 @@ Public Class UCDriverTruck
 
 #Region "Event Handlers"
 
-    Private Sub UcDriver_UCViewDriverInformationCompleted(DriverId As String) Handles UcDriver.UCViewDriverInformationCompleted
+    Private Sub UcDriver_UCViewDriverInformationCompleted(DriverId As String) Handles UcDriver.UCViewDriverInformationCompletedEvent
         Try
             _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(DriverId)
             UcNumberStrSmartCardNo.UCValue = _CurrentNSS.StrSmartCardNo

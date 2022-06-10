@@ -21,7 +21,6 @@ using R2CoreTransportationAndLoadNotification.LoadAllocation;
 using R2CoreTransportationAndLoadNotification.RequesterManagement;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions;
 using R2Core.ExceptionManagement;
-using R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions;
 using R2CoreParkingSystem.MoneyWalletManagement;
 using R2CoreParkingSystem.EnterExitManagement;
 using R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions;
@@ -30,6 +29,7 @@ using R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions;
 using R2CoreTransportationAndLoadNotification.Trucks.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
 using PayanehClassLibrary.CarTruckNobatManagement.Exceptions;
+using R2Core.MoneyWallet.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -113,7 +113,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 //تخصیص بار - آزاد سازی بار به صورت خودکار توسط سرور انجام می گردد
                 //مشاهده و چاپ مجوز از طریق قسمت مجوزهای صادر شده در بارهای رسوبی قابل مشاهده است
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                Int64 LAId = InstanceLoadAllocation.LoadAllocationRegistering(NSSLoadCapacitorLoad.nEstelamId, NSSTurn.nEnterExitId, InstanceLogin.GetNSSCurrentUser(), R2CoreTransportationAndLoadNotificationRequesters.WcLoadCapacitorLoadAllocationLoadPermissionIssue);
+                InstanceLoadAllocation.LoadAllocationRegistering(NSSLoadCapacitorLoad.nEstelamId, NSSTurn, InstanceLogin.GetNSSCurrentUser(), R2CoreTransportationAndLoadNotificationRequesters.WcLoadCapacitorLoadAllocationLoadPermissionIssue);
                 LblTurnStatus.Text = TempTurnReport;
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','تخصیص بار با موفقیت انجام شد');", true);
             }

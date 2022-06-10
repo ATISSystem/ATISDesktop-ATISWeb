@@ -28,26 +28,30 @@ Partial Class UCDriver
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim CBlendItems7 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems1 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems2 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems3 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
+        Dim CBlendItems4 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
+        Dim CBlendItems5 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Me.PnlMain = New System.Windows.Forms.Panel()
+        Me.CButtonDelete = New CButtonLib.CButton()
+        Me.CButtonNew = New CButtonLib.CButton()
+        Me.CButtonSabt = New CButtonLib.CButton()
         Me.UcTextBoxDriverNationalCode = New R2CoreGUI.UCTextBox()
         Me.UcNumberDrivernIdPerson = New R2CoreGUI.UCNumber()
         Me.Label9 = New System.Windows.Forms.Label()
-        Me.UcButtonNew = New R2CoreGUI.UCButton()
-        Me.UcButtonDel = New R2CoreGUI.UCButton()
-        Me.UcButtonSabt = New R2CoreGUI.UCButton()
         Me.UcPersianTextBoxDriverName = New R2CoreGUI.UCPersianTextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.UcUnActivateSMSOwner = New R2CoreParkingSystem.UCUnActivateSMSOwner()
+        Me.UcActivateSMSOwner = New R2CoreParkingSystem.UCActivateSMSOwner()
         Me.CButtonSendSmsUserShenasehPassword = New CButtonLib.CButton()
         Me.CButtonSoftwareUserVerificationCodeInjection = New CButtonLib.CButton()
         Me.CButtonViewPrintUserShenasehPassword = New CButtonLib.CButton()
         Me.UcTextBoxNationalCode = New R2CoreGUI.UCTextBox()
         Me.UcNumberLicenseNo = New R2CoreGUI.UCNumber()
-        Me.Label8 = New System.Windows.Forms.Label()
         Me.UcPersianTextBoxNameFamily = New R2CoreGUI.UCPersianTextBox()
         Me.UcPersianTextBoxFather = New R2CoreGUI.UCPersianTextBox()
         Me.UcPersianTextBoxTel = New R2CoreGUI.UCPersianTextBox()
@@ -57,6 +61,7 @@ Partial Class UCDriver
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
         Me.PnlMain.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -64,12 +69,14 @@ Partial Class UCDriver
         'PnlMain
         '
         Me.PnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlMain.Controls.Add(Me.UcUnActivateSMSOwner)
+        Me.PnlMain.Controls.Add(Me.CButtonDelete)
+        Me.PnlMain.Controls.Add(Me.UcActivateSMSOwner)
+        Me.PnlMain.Controls.Add(Me.CButtonNew)
+        Me.PnlMain.Controls.Add(Me.CButtonSabt)
         Me.PnlMain.Controls.Add(Me.UcTextBoxDriverNationalCode)
         Me.PnlMain.Controls.Add(Me.UcNumberDrivernIdPerson)
         Me.PnlMain.Controls.Add(Me.Label9)
-        Me.PnlMain.Controls.Add(Me.UcButtonNew)
-        Me.PnlMain.Controls.Add(Me.UcButtonDel)
-        Me.PnlMain.Controls.Add(Me.UcButtonSabt)
         Me.PnlMain.Controls.Add(Me.UcPersianTextBoxDriverName)
         Me.PnlMain.Controls.Add(Me.Label2)
         Me.PnlMain.Controls.Add(Me.Label1)
@@ -77,17 +84,65 @@ Partial Class UCDriver
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(3, 3)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(914, 97)
+        Me.PnlMain.Size = New System.Drawing.Size(981, 95)
         Me.PnlMain.TabIndex = 0
+        '
+        'CButtonDelete
+        '
+        CBlendItems7.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems7.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonDelete.ColorFillBlend = CBlendItems7
+        Me.CButtonDelete.Corners.LowerRight = 10
+        Me.CButtonDelete.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CButtonDelete.DesignerSelected = False
+        Me.CButtonDelete.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.CButtonDelete.ImageIndex = 0
+        Me.CButtonDelete.Location = New System.Drawing.Point(122, 6)
+        Me.CButtonDelete.Name = "CButtonDelete"
+        Me.CButtonDelete.Size = New System.Drawing.Size(48, 22)
+        Me.CButtonDelete.TabIndex = 28
+        Me.CButtonDelete.Text = "حذف"
+        '
+        'CButtonNew
+        '
+        CBlendItems1.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems1.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonNew.ColorFillBlend = CBlendItems1
+        Me.CButtonNew.Corners.LowerRight = 10
+        Me.CButtonNew.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CButtonNew.DesignerSelected = False
+        Me.CButtonNew.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.CButtonNew.ImageIndex = 0
+        Me.CButtonNew.Location = New System.Drawing.Point(68, 6)
+        Me.CButtonNew.Name = "CButtonNew"
+        Me.CButtonNew.Size = New System.Drawing.Size(48, 22)
+        Me.CButtonNew.TabIndex = 27
+        Me.CButtonNew.Text = "جدید"
+        '
+        'CButtonSabt
+        '
+        CBlendItems2.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems2.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonSabt.ColorFillBlend = CBlendItems2
+        Me.CButtonSabt.Corners.LowerRight = 10
+        Me.CButtonSabt.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CButtonSabt.DesignerSelected = False
+        Me.CButtonSabt.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.CButtonSabt.ImageIndex = 0
+        Me.CButtonSabt.Location = New System.Drawing.Point(14, 6)
+        Me.CButtonSabt.Name = "CButtonSabt"
+        Me.CButtonSabt.Size = New System.Drawing.Size(48, 22)
+        Me.CButtonSabt.TabIndex = 26
+        Me.CButtonSabt.Text = "ثبت"
         '
         'UcTextBoxDriverNationalCode
         '
         Me.UcTextBoxDriverNationalCode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTextBoxDriverNationalCode.BackColor = System.Drawing.Color.Transparent
-        Me.UcTextBoxDriverNationalCode.Location = New System.Drawing.Point(508, 4)
+        Me.UcTextBoxDriverNationalCode.Location = New System.Drawing.Point(627, 4)
         Me.UcTextBoxDriverNationalCode.Name = "UcTextBoxDriverNationalCode"
         Me.UcTextBoxDriverNationalCode.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcTextBoxDriverNationalCode.Size = New System.Drawing.Size(95, 26)
+        Me.UcTextBoxDriverNationalCode.Size = New System.Drawing.Size(89, 26)
         Me.UcTextBoxDriverNationalCode.TabIndex = 24
         Me.UcTextBoxDriverNationalCode.UCBackColor = System.Drawing.Color.White
         Me.UcTextBoxDriverNationalCode.UCBackColorDisable = System.Drawing.Color.Gainsboro
@@ -110,7 +165,7 @@ Partial Class UCDriver
         '
         Me.UcNumberDrivernIdPerson.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcNumberDrivernIdPerson.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumberDrivernIdPerson.Location = New System.Drawing.Point(400, 5)
+        Me.UcNumberDrivernIdPerson.Location = New System.Drawing.Point(519, 5)
         Me.UcNumberDrivernIdPerson.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberDrivernIdPerson.Name = "UcNumberDrivernIdPerson"
         Me.UcNumberDrivernIdPerson.Size = New System.Drawing.Size(77, 25)
@@ -134,65 +189,20 @@ Partial Class UCDriver
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Label9.Location = New System.Drawing.Point(481, 3)
+        Me.Label9.Location = New System.Drawing.Point(600, 3)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(21, 23)
         Me.Label9.TabIndex = 19
         Me.Label9.Text = "کد"
         '
-        'UcButtonNew
-        '
-        Me.UcButtonNew.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonNew.Location = New System.Drawing.Point(172, 0)
-        Me.UcButtonNew.Name = "UcButtonNew"
-        Me.UcButtonNew.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcButtonNew.Size = New System.Drawing.Size(84, 32)
-        Me.UcButtonNew.TabIndex = 6
-        Me.UcButtonNew.UCBackColor = System.Drawing.Color.OrangeRed
-        Me.UcButtonNew.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonNew.UCEnable = True
-        Me.UcButtonNew.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcButtonNew.UCForeColor = System.Drawing.Color.White
-        Me.UcButtonNew.UCValue = "جدید"
-        '
-        'UcButtonDel
-        '
-        Me.UcButtonDel.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonDel.Location = New System.Drawing.Point(109, 0)
-        Me.UcButtonDel.Name = "UcButtonDel"
-        Me.UcButtonDel.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcButtonDel.Size = New System.Drawing.Size(57, 32)
-        Me.UcButtonDel.TabIndex = 5
-        Me.UcButtonDel.UCBackColor = System.Drawing.Color.OrangeRed
-        Me.UcButtonDel.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonDel.UCEnable = True
-        Me.UcButtonDel.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcButtonDel.UCForeColor = System.Drawing.Color.White
-        Me.UcButtonDel.UCValue = "حذف"
-        '
-        'UcButtonSabt
-        '
-        Me.UcButtonSabt.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonSabt.Location = New System.Drawing.Point(19, 0)
-        Me.UcButtonSabt.Name = "UcButtonSabt"
-        Me.UcButtonSabt.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcButtonSabt.Size = New System.Drawing.Size(84, 32)
-        Me.UcButtonSabt.TabIndex = 4
-        Me.UcButtonSabt.UCBackColor = System.Drawing.Color.OrangeRed
-        Me.UcButtonSabt.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonSabt.UCEnable = True
-        Me.UcButtonSabt.UCFont = New System.Drawing.Font("B Homa", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcButtonSabt.UCForeColor = System.Drawing.Color.White
-        Me.UcButtonSabt.UCValue = "ثبت"
-        '
         'UcPersianTextBoxDriverName
         '
         Me.UcPersianTextBoxDriverName.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxDriverName.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxDriverName.Location = New System.Drawing.Point(667, 5)
+        Me.UcPersianTextBoxDriverName.Location = New System.Drawing.Point(763, 5)
         Me.UcPersianTextBoxDriverName.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxDriverName.Name = "UcPersianTextBoxDriverName"
-        Me.UcPersianTextBoxDriverName.Size = New System.Drawing.Size(135, 24)
+        Me.UcPersianTextBoxDriverName.Size = New System.Drawing.Size(106, 24)
         Me.UcPersianTextBoxDriverName.TabIndex = 2
         Me.UcPersianTextBoxDriverName.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBoxDriverName.UCBorder = True
@@ -211,7 +221,7 @@ Partial Class UCDriver
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Label2.Location = New System.Drawing.Point(609, 3)
+        Me.Label2.Location = New System.Drawing.Point(719, 3)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(42, 23)
         Me.Label2.TabIndex = 1
@@ -223,7 +233,7 @@ Partial Class UCDriver
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.OrangeRed
-        Me.Label1.Location = New System.Drawing.Point(805, 4)
+        Me.Label1.Location = New System.Drawing.Point(872, 4)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(92, 23)
         Me.Label1.TabIndex = 0
@@ -240,7 +250,6 @@ Partial Class UCDriver
         Me.Panel1.Controls.Add(Me.CButtonViewPrintUserShenasehPassword)
         Me.Panel1.Controls.Add(Me.UcTextBoxNationalCode)
         Me.Panel1.Controls.Add(Me.UcNumberLicenseNo)
-        Me.Panel1.Controls.Add(Me.Label8)
         Me.Panel1.Controls.Add(Me.UcPersianTextBoxNameFamily)
         Me.Panel1.Controls.Add(Me.UcPersianTextBoxFather)
         Me.Panel1.Controls.Add(Me.UcPersianTextBoxTel)
@@ -250,23 +259,42 @@ Partial Class UCDriver
         Me.Panel1.Controls.Add(Me.Label5)
         Me.Panel1.Controls.Add(Me.Label4)
         Me.Panel1.Controls.Add(Me.Label3)
+        Me.Panel1.Controls.Add(Me.Label8)
         Me.Panel1.Location = New System.Drawing.Point(6, 17)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(900, 75)
+        Me.Panel1.Size = New System.Drawing.Size(967, 73)
         Me.Panel1.TabIndex = 0
+        '
+        'UcUnActivateSMSOwner
+        '
+        Me.UcUnActivateSMSOwner.BackColor = System.Drawing.Color.Transparent
+        Me.UcUnActivateSMSOwner.Location = New System.Drawing.Point(336, 4)
+        Me.UcUnActivateSMSOwner.Name = "UcUnActivateSMSOwner"
+        Me.UcUnActivateSMSOwner.Size = New System.Drawing.Size(179, 27)
+        Me.UcUnActivateSMSOwner.TabIndex = 25
+        Me.UcUnActivateSMSOwner.UCNSSCurrent = Nothing
+        '
+        'UcActivateSMSOwner
+        '
+        Me.UcActivateSMSOwner.BackColor = System.Drawing.Color.Transparent
+        Me.UcActivateSMSOwner.Location = New System.Drawing.Point(176, 4)
+        Me.UcActivateSMSOwner.Name = "UcActivateSMSOwner"
+        Me.UcActivateSMSOwner.Size = New System.Drawing.Size(159, 27)
+        Me.UcActivateSMSOwner.TabIndex = 24
+        Me.UcActivateSMSOwner.UCNSSCurrent = Nothing
         '
         'CButtonSendSmsUserShenasehPassword
         '
         Me.CButtonSendSmsUserShenasehPassword.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems1.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems1.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonSendSmsUserShenasehPassword.ColorFillBlend = CBlendItems1
+        CBlendItems3.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems3.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonSendSmsUserShenasehPassword.ColorFillBlend = CBlendItems3
         Me.CButtonSendSmsUserShenasehPassword.Corners.LowerRight = 10
         Me.CButtonSendSmsUserShenasehPassword.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonSendSmsUserShenasehPassword.DesignerSelected = False
         Me.CButtonSendSmsUserShenasehPassword.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButtonSendSmsUserShenasehPassword.ImageIndex = 0
-        Me.CButtonSendSmsUserShenasehPassword.Location = New System.Drawing.Point(12, 46)
+        Me.CButtonSendSmsUserShenasehPassword.Location = New System.Drawing.Point(12, 44)
         Me.CButtonSendSmsUserShenasehPassword.Name = "CButtonSendSmsUserShenasehPassword"
         Me.CButtonSendSmsUserShenasehPassword.Size = New System.Drawing.Size(147, 22)
         Me.CButtonSendSmsUserShenasehPassword.TabIndex = 23
@@ -275,16 +303,16 @@ Partial Class UCDriver
         'CButtonSoftwareUserVerificationCodeInjection
         '
         Me.CButtonSoftwareUserVerificationCodeInjection.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems2.iColor = New System.Drawing.Color() {System.Drawing.Color.DeepPink, System.Drawing.Color.Purple, System.Drawing.Color.Black}
-        CBlendItems2.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonSoftwareUserVerificationCodeInjection.ColorFillBlend = CBlendItems2
+        CBlendItems4.iColor = New System.Drawing.Color() {System.Drawing.Color.DeepPink, System.Drawing.Color.Purple, System.Drawing.Color.Black}
+        CBlendItems4.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonSoftwareUserVerificationCodeInjection.ColorFillBlend = CBlendItems4
         Me.CButtonSoftwareUserVerificationCodeInjection.ColorFillSolid = System.Drawing.SystemColors.ActiveCaption
         Me.CButtonSoftwareUserVerificationCodeInjection.Corners.LowerRight = 10
         Me.CButtonSoftwareUserVerificationCodeInjection.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonSoftwareUserVerificationCodeInjection.DesignerSelected = False
         Me.CButtonSoftwareUserVerificationCodeInjection.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButtonSoftwareUserVerificationCodeInjection.ImageIndex = 0
-        Me.CButtonSoftwareUserVerificationCodeInjection.Location = New System.Drawing.Point(269, 47)
+        Me.CButtonSoftwareUserVerificationCodeInjection.Location = New System.Drawing.Point(269, 45)
         Me.CButtonSoftwareUserVerificationCodeInjection.Name = "CButtonSoftwareUserVerificationCodeInjection"
         Me.CButtonSoftwareUserVerificationCodeInjection.Size = New System.Drawing.Size(113, 22)
         Me.CButtonSoftwareUserVerificationCodeInjection.TabIndex = 22
@@ -293,15 +321,15 @@ Partial Class UCDriver
         'CButtonViewPrintUserShenasehPassword
         '
         Me.CButtonViewPrintUserShenasehPassword.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems3.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems3.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonViewPrintUserShenasehPassword.ColorFillBlend = CBlendItems3
+        CBlendItems5.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems5.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonViewPrintUserShenasehPassword.ColorFillBlend = CBlendItems5
         Me.CButtonViewPrintUserShenasehPassword.Corners.LowerRight = 10
         Me.CButtonViewPrintUserShenasehPassword.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonViewPrintUserShenasehPassword.DesignerSelected = False
         Me.CButtonViewPrintUserShenasehPassword.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButtonViewPrintUserShenasehPassword.ImageIndex = 0
-        Me.CButtonViewPrintUserShenasehPassword.Location = New System.Drawing.Point(163, 47)
+        Me.CButtonViewPrintUserShenasehPassword.Location = New System.Drawing.Point(163, 45)
         Me.CButtonViewPrintUserShenasehPassword.Name = "CButtonViewPrintUserShenasehPassword"
         Me.CButtonViewPrintUserShenasehPassword.Size = New System.Drawing.Size(100, 22)
         Me.CButtonViewPrintUserShenasehPassword.TabIndex = 21
@@ -312,7 +340,7 @@ Partial Class UCDriver
         Me.UcTextBoxNationalCode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTextBoxNationalCode.BackColor = System.Drawing.Color.Transparent
         Me.UcTextBoxNationalCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcTextBoxNationalCode.Location = New System.Drawing.Point(357, 16)
+        Me.UcTextBoxNationalCode.Location = New System.Drawing.Point(424, 16)
         Me.UcTextBoxNationalCode.Name = "UcTextBoxNationalCode"
         Me.UcTextBoxNationalCode.Padding = New System.Windows.Forms.Padding(1)
         Me.UcTextBoxNationalCode.Size = New System.Drawing.Size(113, 24)
@@ -339,10 +367,10 @@ Partial Class UCDriver
         Me.UcNumberLicenseNo.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcNumberLicenseNo.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumberLicenseNo.Location = New System.Drawing.Point(389, 44)
+        Me.UcNumberLicenseNo.Location = New System.Drawing.Point(12, 16)
         Me.UcNumberLicenseNo.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberLicenseNo.Name = "UcNumberLicenseNo"
-        Me.UcNumberLicenseNo.Size = New System.Drawing.Size(152, 25)
+        Me.UcNumberLicenseNo.Size = New System.Drawing.Size(186, 25)
         Me.UcNumberLicenseNo.TabIndex = 19
         Me.UcNumberLicenseNo.UCAllowedMaxNumber = CType(9223372036854775807, Long)
         Me.UcNumberLicenseNo.UCAllowedMinNumber = CType(-9223372036854775, Long)
@@ -357,26 +385,14 @@ Partial Class UCDriver
         Me.UcNumberLicenseNo.UCMultiLine = False
         Me.UcNumberLicenseNo.UCValue = CType(0, Long)
         '
-        'Label8
-        '
-        Me.Label8.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label8.AutoSize = True
-        Me.Label8.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label8.Location = New System.Drawing.Point(539, 44)
-        Me.Label8.Name = "Label8"
-        Me.Label8.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.Label8.Size = New System.Drawing.Size(61, 23)
-        Me.Label8.TabIndex = 18
-        Me.Label8.Text = "گواهینامه :"
-        '
         'UcPersianTextBoxNameFamily
         '
         Me.UcPersianTextBoxNameFamily.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxNameFamily.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxNameFamily.Location = New System.Drawing.Point(660, 16)
+        Me.UcPersianTextBoxNameFamily.Location = New System.Drawing.Point(727, 16)
         Me.UcPersianTextBoxNameFamily.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxNameFamily.Name = "UcPersianTextBoxNameFamily"
-        Me.UcPersianTextBoxNameFamily.Size = New System.Drawing.Size(125, 24)
+        Me.UcPersianTextBoxNameFamily.Size = New System.Drawing.Size(135, 24)
         Me.UcPersianTextBoxNameFamily.TabIndex = 17
         Me.UcPersianTextBoxNameFamily.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBoxNameFamily.UCBorder = True
@@ -393,7 +409,7 @@ Partial Class UCDriver
         '
         Me.UcPersianTextBoxFather.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxFather.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxFather.Location = New System.Drawing.Point(527, 16)
+        Me.UcPersianTextBoxFather.Location = New System.Drawing.Point(594, 16)
         Me.UcPersianTextBoxFather.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxFather.Name = "UcPersianTextBoxFather"
         Me.UcPersianTextBoxFather.Size = New System.Drawing.Size(75, 24)
@@ -411,13 +427,12 @@ Partial Class UCDriver
         '
         'UcPersianTextBoxTel
         '
-        Me.UcPersianTextBoxTel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBoxTel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxTel.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxTel.Location = New System.Drawing.Point(12, 16)
+        Me.UcPersianTextBoxTel.Location = New System.Drawing.Point(259, 16)
         Me.UcPersianTextBoxTel.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxTel.Name = "UcPersianTextBoxTel"
-        Me.UcPersianTextBoxTel.Size = New System.Drawing.Size(301, 24)
+        Me.UcPersianTextBoxTel.Size = New System.Drawing.Size(121, 24)
         Me.UcPersianTextBoxTel.TabIndex = 14
         Me.UcPersianTextBoxTel.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBoxTel.UCBorder = True
@@ -432,12 +447,13 @@ Partial Class UCDriver
         '
         'UcPersianTextBoxAddress
         '
-        Me.UcPersianTextBoxAddress.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBoxAddress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxAddress.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxAddress.Location = New System.Drawing.Point(606, 43)
+        Me.UcPersianTextBoxAddress.Location = New System.Drawing.Point(388, 43)
         Me.UcPersianTextBoxAddress.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxAddress.Name = "UcPersianTextBoxAddress"
-        Me.UcPersianTextBoxAddress.Size = New System.Drawing.Size(179, 24)
+        Me.UcPersianTextBoxAddress.Size = New System.Drawing.Size(474, 24)
         Me.UcPersianTextBoxAddress.TabIndex = 7
         Me.UcPersianTextBoxAddress.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBoxAddress.UCBorder = True
@@ -455,7 +471,7 @@ Partial Class UCDriver
         Me.Label7.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label7.Location = New System.Drawing.Point(792, 41)
+        Me.Label7.Location = New System.Drawing.Point(863, 41)
         Me.Label7.Name = "Label7"
         Me.Label7.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label7.Size = New System.Drawing.Size(42, 23)
@@ -467,7 +483,7 @@ Partial Class UCDriver
         Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label6.Location = New System.Drawing.Point(314, 18)
+        Me.Label6.Location = New System.Drawing.Point(381, 18)
         Me.Label6.Name = "Label6"
         Me.Label6.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label6.Size = New System.Drawing.Size(37, 23)
@@ -479,7 +495,7 @@ Partial Class UCDriver
         Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label5.Location = New System.Drawing.Point(476, 18)
+        Me.Label5.Location = New System.Drawing.Point(543, 18)
         Me.Label5.Name = "Label5"
         Me.Label5.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label5.Size = New System.Drawing.Size(45, 23)
@@ -491,7 +507,7 @@ Partial Class UCDriver
         Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label4.Location = New System.Drawing.Point(600, 18)
+        Me.Label4.Location = New System.Drawing.Point(667, 18)
         Me.Label4.Name = "Label4"
         Me.Label4.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label4.Size = New System.Drawing.Size(46, 23)
@@ -503,12 +519,24 @@ Partial Class UCDriver
         Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label3.Location = New System.Drawing.Point(791, 18)
+        Me.Label3.Location = New System.Drawing.Point(863, 18)
         Me.Label3.Name = "Label3"
         Me.Label3.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label3.Size = New System.Drawing.Size(98, 23)
         Me.Label3.TabIndex = 7
         Me.Label3.Text = "نام و نام خانوادگی :"
+        '
+        'Label8
+        '
+        Me.Label8.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label8.Location = New System.Drawing.Point(197, 18)
+        Me.Label8.Name = "Label8"
+        Me.Label8.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.Label8.Size = New System.Drawing.Size(61, 23)
+        Me.Label8.TabIndex = 18
+        Me.Label8.Text = "گواهینامه :"
         '
         'UCDriver
         '
@@ -518,7 +546,7 @@ Partial Class UCDriver
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCDriver"
         Me.Padding = New System.Windows.Forms.Padding(3)
-        Me.Size = New System.Drawing.Size(920, 103)
+        Me.Size = New System.Drawing.Size(987, 101)
         Me.PnlMain.ResumeLayout(false)
         Me.PnlMain.PerformLayout
         Me.Panel1.ResumeLayout(false)
@@ -528,9 +556,6 @@ Partial Class UCDriver
 End Sub
 
     Friend WithEvents PnlMain As Panel
-    Friend WithEvents UcButtonNew As R2CoreGUI.UCButton
-    Friend WithEvents UcButtonDel As R2CoreGUI.UCButton
-    Friend WithEvents UcButtonSabt As R2CoreGUI.UCButton
     Friend WithEvents UcPersianTextBoxDriverName As R2CoreGUI.UCPersianTextBox
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
@@ -553,4 +578,9 @@ End Sub
     Friend WithEvents CButtonSoftwareUserVerificationCodeInjection As CButtonLib.CButton
     Friend WithEvents CButtonSendSmsUserShenasehPassword As CButtonLib.CButton
     Friend WithEvents UcTextBoxDriverNationalCode As UCTextBox
+    Friend WithEvents UcUnActivateSMSOwner As UCUnActivateSMSOwner
+    Friend WithEvents UcActivateSMSOwner As UCActivateSMSOwner
+    Friend WithEvents CButtonSabt As CButtonLib.CButton
+    Friend WithEvents CButtonDelete As CButtonLib.CButton
+    Friend WithEvents CButtonNew As CButtonLib.CButton
 End Class

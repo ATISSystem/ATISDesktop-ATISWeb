@@ -424,6 +424,18 @@
     <Compile Include="Reports\RFIDCards\UCTerraficCardsIdentity.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="SMS Management\UCActivateSMSOwner.Designer.vb">
+      <DependentUpon>UCActivateSMSOwner.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SMS Management\UCActivateSMSOwner.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SMS Management\UCUnActivateSMSOwner.Designer.vb">
+      <DependentUpon>UCUnActivateSMSOwner.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SMS Management\UCUnActivateSMSOwner.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="TrafficCard\FrmcTempExitTerafficCard.Designer.vb">
       <DependentUpon>FrmcTempExitTerafficCard.vb</DependentUpon>
     </Compile>
@@ -711,6 +723,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\RFIDCards\UCTerraficCardsIdentity.resx">
       <DependentUpon>UCTerraficCardsIdentity.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SMS Management\UCActivateSMSOwner.resx">
+      <DependentUpon>UCActivateSMSOwner.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SMS Management\UCUnActivateSMSOwner.resx">
+      <DependentUpon>UCUnActivateSMSOwner.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TrafficCard\FrmcTempExitTerafficCard.resx">
       <DependentUpon>FrmcTempExitTerafficCard.vb</DependentUpon>

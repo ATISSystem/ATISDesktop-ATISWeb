@@ -27,7 +27,7 @@ using R2Core.PredefinedMessagesManagement;
 using R2CoreTransportationAndLoadNotification.TerraficCardsManagement;
 using R2CoreParkingSystem.MoneyWalletManagement;
 using R2CoreParkingSystem.AccountingManagement;
-using R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions;
+using R2Core.MoneyWallet.Exceptions;
 
 namespace ATISMobileRestful.Controllers.SoftwareUserManagement
 {
@@ -104,7 +104,7 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
                 var InstanceSoftwareUser = new R2CoreInstanseSoftwareUsersManager();
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = Content.Split(';')[0];
-                var NSSSoftwareuser = InstanceSoftwareUser.GetNSSUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var NSSSoftwareuser = InstanceSoftwareUser.GetNSSUserUnChangeable (new R2CoreSoftwareUserMobile(MobileNumber));
                 InstanceSoftwareusers.LoginSoftwareUser(NSSSoftwareuser.MobileNumber);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 var AMUStatus = InstanceAES.Encrypt(NSSSoftwareuser.MobileNumber, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) + ";" + InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
@@ -172,7 +172,8 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
                 var InstanceAES = new AESAlgorithmsManager();
                 var Content = JsonConvert.DeserializeObject<string>(YourRequest.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                InstanceSoftwareusers.CaptchaInvalidateforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable (new R2CoreSoftwareUserMobile(MobileNumber));
+                InstanceSoftwareusers.CaptchaInvalidateforSoftwareUser(NSSSoftwareuser);
             }
             catch (Exception ex)
             { throw ex; }

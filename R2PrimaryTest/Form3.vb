@@ -17,6 +17,7 @@ Imports R2Core.PermissionManagement
 Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
 Imports R2Core.SecurityAlgorithmsManagement.Captcha
 Imports R2Core.SecurityAlgorithmsManagement.Hashing
+Imports R2Core.SMS
 Imports R2Core.SMSSendAndRecieved
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
@@ -603,7 +604,7 @@ Public Class Form3
 
     Private Sub Button19_Click(sender As Object, e As EventArgs) Handles Button19.Click
         Try
-            R2Core.SMSSendAndRecieved.R2CoreSMSMClassSMSDomainManagement.SMSDomainSendRecieved()
+            R2Core.SMS.R2CoreSMSMClassSMSDomainManagement.SMSDomainSendRecieved()
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
