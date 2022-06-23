@@ -2245,10 +2245,10 @@ Namespace LoadCapacitor
                     CmdSql.Parameters.Add(P)
                     P = New SqlClient.SqlParameter("@dTimeElam", SqlDbType.Char) : P.Value = _DateTime.GetCurrentTime()
                     CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@bflagCarNum", DBNull.Value)
-                    CmdSql.Parameters.AddWithValue("@strIssueNo", DBNull.Value)
-                    CmdSql.Parameters.AddWithValue("@strIssueOwner", DBNull.Value)
-                    CmdSql.Parameters.AddWithValue("@nTonajKol", DBNull.Value)
+                    CmdSql.Parameters.AddWithValue("@bflagCarNum", 0)
+                    CmdSql.Parameters.AddWithValue("@strIssueNo", 0)
+                    CmdSql.Parameters.AddWithValue("@strIssueOwner", 0)
+                    CmdSql.Parameters.AddWithValue("@nTonajKol", 0)
                     P = New SqlClient.SqlParameter("@nCarNumKol", SqlDbType.Int) : P.Value = YourNSS.nCarNumKol
                     CmdSql.Parameters.Add(P)
                     P = New SqlClient.SqlParameter("@StrPriceSug", SqlDbType.VarChar) : P.Value = Tarrif
@@ -2487,7 +2487,7 @@ Namespace LoadCapacitor
                     Dim NSSAnnouncementHallSubGroup = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroupByLoaderTypeId(YourNSS.nTruckType)
 
                     'کنترل اتمام زمان حذف بار
-                    If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then Throw New LoadCapacitorLoadDeleteTimePassedException
+                    'If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then Throw New LoadCapacitorLoadDeleteTimePassedException
 
                     'بررسی بار فردا
                     Dim ComposeSearchString As String = NSSAnnouncementHallSubGroup.AHSGId.ToString + "="
@@ -4197,7 +4197,7 @@ Namespace LoadPermission
                     StringB.Append("شرکت حمل و نقل : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("TCTitle"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("TCTitle").ToString().Trim()) + vbCrLf)
                     StringB.Append("کدبار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("nEstelamID"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("nEstelamID").ToString().Trim()) + " تخصیص: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("LAId"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("LAId").ToString().Trim()) + " اولویت : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("Priority"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("Priority").ToString().Trim()) + vbCrLf)
                     StringB.Append("توضیحات بار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strDescription"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strDescription").ToString().Trim()) + " " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strAddress"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strAddress").ToString().Trim()) + " " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strBarName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strBarName").ToString().Trim()) + vbCrLf)
-                    StringB.Append("تناژ بار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("nTonaj"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("nTonaj").ToString().Trim()))
+                    StringB.Append("تناژ بار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("nTonaj"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("nTonaj").ToString().Trim()) + vbCrLf)
                     StringB.Append("پلاک ناوگان: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("Truck"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("Truck").ToString().Trim()))
                     Lst.Add(New KeyValuePair(Of String, String)(ValueHeader, StringB.ToString()))
                 Next
