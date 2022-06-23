@@ -40,13 +40,22 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards {
         protected global::System.Web.UI.WebControls.TextBox TxtTruckSmartCardNo;
         
         /// <summary>
-        /// BtnTruckSmartCardInquiry control.
+        /// BtnTruckSmartCardInquiryfromRMTO control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnTruckSmartCardInquiry;
+        protected global::System.Web.UI.WebControls.Button BtnTruckSmartCardInquiryfromRMTO;
+        
+        /// <summary>
+        /// BtnTruckSmartCardInquiryfromATIS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnTruckSmartCardInquiryfromATIS;
         
         /// <summary>
         /// LblTruck control.
@@ -76,13 +85,22 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards {
         protected global::System.Web.UI.WebControls.TextBox TxtTruckDriverNationalCode;
         
         /// <summary>
-        /// BtnTruckDriverNationalCodeInquiry control.
+        /// BtnTruckDriverNationalCodeInquiryfromRMTO control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnTruckDriverNationalCodeInquiry;
+        protected global::System.Web.UI.WebControls.Button BtnTruckDriverNationalCodeInquiryfromRMTO;
+        
+        /// <summary>
+        /// BtnTruckDriverNationalCodeInquiryfromATIS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnTruckDriverNationalCodeInquiryfromATIS;
         
         /// <summary>
         /// LblTruckDriver control.

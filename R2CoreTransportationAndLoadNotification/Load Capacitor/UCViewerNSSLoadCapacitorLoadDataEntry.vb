@@ -73,7 +73,8 @@ Public Class UCViewerNSSLoadCapacitorLoadDataEntry
 
     Private Sub UcNumbernEstelamId_UC13Pressed(UserNumber As String) Handles UcNumbernEstelamId.UC13Pressed
         Try
-            UCNSSCurrent = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue)
+            Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            UCNSSCurrent = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue, False)
             UCViewInformation()
             RaiseEvent UC13PressedEvent()
         Catch ex As Exception

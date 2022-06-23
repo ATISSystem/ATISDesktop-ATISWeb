@@ -83,6 +83,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                     tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].nCarNumKol.ToString(); tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     tempCell = new TableCell();
+                    tempCell.Text = Lst[Loopx].nTonaj.ToString(); tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
+                    tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].LoaderTypeTitle; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].LoadTargetTitle; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;

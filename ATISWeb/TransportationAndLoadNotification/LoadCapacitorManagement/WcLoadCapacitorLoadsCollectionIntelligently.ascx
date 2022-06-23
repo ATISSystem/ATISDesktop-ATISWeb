@@ -26,6 +26,7 @@
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">تعرفه حمل</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">تعداد باقیمانده</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">تعداد کل</asp:TableHeaderCell>
+                        <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">تناژ</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">بارگیر</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">مقصد</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">شرح بار</asp:TableHeaderCell>

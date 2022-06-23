@@ -61,11 +61,13 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         Me.LabelLoadAllocationNotOK = New System.Windows.Forms.Label()
         Me.LabelUserName = New System.Windows.Forms.Label()
         Me.PnlAccounting = New System.Windows.Forms.Panel()
-        Me.PnlMain.SuspendLayout
-        Me.PnlOutter.SuspendLayout
-        Me.PnlInner.SuspendLayout
-        Me.PnlTop.SuspendLayout
-        Me.SuspendLayout
+        Me.OrderingOptionTonaj = New System.Windows.Forms.Label()
+        Me.LabelnTonaj = New System.Windows.Forms.Label()
+        Me.PnlMain.SuspendLayout()
+        Me.PnlOutter.SuspendLayout()
+        Me.PnlInner.SuspendLayout()
+        Me.PnlTop.SuspendLayout()
+        Me.SuspendLayout()
         '
         'PnlMain
         '
@@ -116,7 +118,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         'OrderingOptionUser
         '
         Me.OrderingOptionUser.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.OrderingOptionUser.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.OrderingOptionUser.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.OrderingOptionUser.ForeColor = System.Drawing.Color.DarkGray
         Me.OrderingOptionUser.Location = New System.Drawing.Point(6, 58)
         Me.OrderingOptionUser.Name = "OrderingOptionUser"
@@ -128,7 +130,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         'Label9
         '
         Me.Label9.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Label9.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label9.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.DarkGray
         Me.Label9.Location = New System.Drawing.Point(109, 58)
         Me.Label9.Name = "Label9"
@@ -139,10 +141,10 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'OrderingOptionAddress
         '
-        Me.OrderingOptionAddress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.OrderingOptionAddress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OrderingOptionAddress.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.OrderingOptionAddress.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.OrderingOptionAddress.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.OrderingOptionAddress.ForeColor = System.Drawing.Color.DarkGray
         Me.OrderingOptionAddress.Location = New System.Drawing.Point(210, 58)
         Me.OrderingOptionAddress.Name = "OrderingOptionAddress"
@@ -153,9 +155,9 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'OrderingOptionProductReciever
         '
-        Me.OrderingOptionProductReciever.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.OrderingOptionProductReciever.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OrderingOptionProductReciever.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.OrderingOptionProductReciever.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.OrderingOptionProductReciever.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.OrderingOptionProductReciever.ForeColor = System.Drawing.Color.DarkGray
         Me.OrderingOptionProductReciever.Location = New System.Drawing.Point(314, 58)
         Me.OrderingOptionProductReciever.Name = "OrderingOptionProductReciever"
@@ -166,9 +168,9 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'Label12
         '
-        Me.Label12.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Label12.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label12.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Label12.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label12.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label12.ForeColor = System.Drawing.Color.DarkGray
         Me.Label12.Location = New System.Drawing.Point(522, 58)
         Me.Label12.Name = "Label12"
@@ -179,9 +181,9 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'OrderingOptionLoadStatus
         '
-        Me.OrderingOptionLoadStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.OrderingOptionLoadStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OrderingOptionLoadStatus.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.OrderingOptionLoadStatus.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.OrderingOptionLoadStatus.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.OrderingOptionLoadStatus.ForeColor = System.Drawing.Color.DarkGray
         Me.OrderingOptionLoadStatus.Location = New System.Drawing.Point(843, 58)
         Me.OrderingOptionLoadStatus.Name = "OrderingOptionLoadStatus"
@@ -192,9 +194,9 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'OrderingOptiondTimeElam
         '
-        Me.OrderingOptiondTimeElam.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.OrderingOptiondTimeElam.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OrderingOptiondTimeElam.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.OrderingOptiondTimeElam.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.OrderingOptiondTimeElam.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.OrderingOptiondTimeElam.ForeColor = System.Drawing.Color.DarkGray
         Me.OrderingOptiondTimeElam.Location = New System.Drawing.Point(699, 58)
         Me.OrderingOptiondTimeElam.Name = "OrderingOptiondTimeElam"
@@ -205,9 +207,11 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'PnlTop
         '
-        Me.PnlTop.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlTop.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlTop.BackColor = System.Drawing.Color.MistyRose
+        Me.PnlTop.Controls.Add(Me.LabelnTonaj)
+        Me.PnlTop.Controls.Add(Me.OrderingOptionTonaj)
         Me.PnlTop.Controls.Add(Me.UcMinimizeMaximize)
         Me.PnlTop.Controls.Add(Me.Label7)
         Me.PnlTop.Controls.Add(Me.OrderingOptionLoaderType)
@@ -243,7 +247,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         'Label7
         '
         Me.Label7.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Label7.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label7.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label7.ForeColor = System.Drawing.Color.DarkGray
         Me.Label7.Location = New System.Drawing.Point(8, -6)
         Me.Label7.Name = "Label7"
@@ -255,7 +259,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         'OrderingOptionLoaderType
         '
         Me.OrderingOptionLoaderType.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.OrderingOptionLoaderType.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.OrderingOptionLoaderType.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.OrderingOptionLoaderType.ForeColor = System.Drawing.Color.DarkGray
         Me.OrderingOptionLoaderType.Location = New System.Drawing.Point(71, -6)
         Me.OrderingOptionLoaderType.Name = "OrderingOptionLoaderType"
@@ -267,7 +271,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         'OrderingOptionTransportPrice
         '
         Me.OrderingOptionTransportPrice.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.OrderingOptionTransportPrice.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.OrderingOptionTransportPrice.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.OrderingOptionTransportPrice.ForeColor = System.Drawing.Color.DarkGray
         Me.OrderingOptionTransportPrice.Location = New System.Drawing.Point(199, -6)
         Me.OrderingOptionTransportPrice.Name = "OrderingOptionTransportPrice"
@@ -279,7 +283,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         'OrderingOptionnCarNumKol
         '
         Me.OrderingOptionnCarNumKol.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.OrderingOptionnCarNumKol.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.OrderingOptionnCarNumKol.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.OrderingOptionnCarNumKol.ForeColor = System.Drawing.Color.DarkGray
         Me.OrderingOptionnCarNumKol.Location = New System.Drawing.Point(305, -6)
         Me.OrderingOptionnCarNumKol.Name = "OrderingOptionnCarNumKol"
@@ -291,7 +295,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         'OrderingOptionTargetCity
         '
         Me.OrderingOptionTargetCity.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.OrderingOptionTargetCity.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.OrderingOptionTargetCity.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.OrderingOptionTargetCity.ForeColor = System.Drawing.Color.DarkGray
         Me.OrderingOptionTargetCity.Location = New System.Drawing.Point(364, -6)
         Me.OrderingOptionTargetCity.Name = "OrderingOptionTargetCity"
@@ -303,34 +307,34 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         'OrderingOptionProduct
         '
         Me.OrderingOptionProduct.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.OrderingOptionProduct.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.OrderingOptionProduct.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.OrderingOptionProduct.ForeColor = System.Drawing.Color.DarkGray
-        Me.OrderingOptionProduct.Location = New System.Drawing.Point(499, -6)
+        Me.OrderingOptionProduct.Location = New System.Drawing.Point(549, -6)
         Me.OrderingOptionProduct.Name = "OrderingOptionProduct"
-        Me.OrderingOptionProduct.Size = New System.Drawing.Size(142, 23)
+        Me.OrderingOptionProduct.Size = New System.Drawing.Size(140, 23)
         Me.OrderingOptionProduct.TabIndex = 36
         Me.OrderingOptionProduct.Text = "نوع بار"
         Me.OrderingOptionProduct.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'OrderingOptionTransportCompany
         '
-        Me.OrderingOptionTransportCompany.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.OrderingOptionTransportCompany.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OrderingOptionTransportCompany.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.OrderingOptionTransportCompany.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.OrderingOptionTransportCompany.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.OrderingOptionTransportCompany.ForeColor = System.Drawing.Color.DarkGray
-        Me.OrderingOptionTransportCompany.Location = New System.Drawing.Point(635, -6)
+        Me.OrderingOptionTransportCompany.Location = New System.Drawing.Point(695, -6)
         Me.OrderingOptionTransportCompany.Name = "OrderingOptionTransportCompany"
-        Me.OrderingOptionTransportCompany.Size = New System.Drawing.Size(191, 23)
+        Me.OrderingOptionTransportCompany.Size = New System.Drawing.Size(131, 23)
         Me.OrderingOptionTransportCompany.TabIndex = 35
         Me.OrderingOptionTransportCompany.Text = "شرکت حمل ونقل"
         Me.OrderingOptionTransportCompany.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'OrderingOptionnEstelamId
         '
-        Me.OrderingOptionnEstelamId.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.OrderingOptionnEstelamId.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OrderingOptionnEstelamId.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.OrderingOptionnEstelamId.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.OrderingOptionnEstelamId.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.OrderingOptionnEstelamId.ForeColor = System.Drawing.Color.DarkGray
         Me.OrderingOptionnEstelamId.Location = New System.Drawing.Point(832, -6)
         Me.OrderingOptionnEstelamId.Name = "OrderingOptionnEstelamId"
@@ -341,10 +345,10 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'LabelnEstelamId
         '
-        Me.LabelnEstelamId.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelnEstelamId.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LabelnEstelamId.BackColor = System.Drawing.Color.Transparent
         Me.LabelnEstelamId.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelnEstelamId.Font = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.LabelnEstelamId.Font = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.LabelnEstelamId.ForeColor = System.Drawing.Color.Red
         Me.LabelnEstelamId.Location = New System.Drawing.Point(832, 15)
         Me.LabelnEstelamId.Name = "LabelnEstelamId"
@@ -355,15 +359,15 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'LabelTransportCompanyTitle
         '
-        Me.LabelTransportCompanyTitle.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelTransportCompanyTitle.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LabelTransportCompanyTitle.BackColor = System.Drawing.Color.Transparent
         Me.LabelTransportCompanyTitle.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelTransportCompanyTitle.Font = New System.Drawing.Font("IRMehr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LabelTransportCompanyTitle.Font = New System.Drawing.Font("IRMehr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelTransportCompanyTitle.ForeColor = System.Drawing.Color.DarkBlue
-        Me.LabelTransportCompanyTitle.Location = New System.Drawing.Point(631, 12)
+        Me.LabelTransportCompanyTitle.Location = New System.Drawing.Point(690, 12)
         Me.LabelTransportCompanyTitle.Name = "LabelTransportCompanyTitle"
-        Me.LabelTransportCompanyTitle.Size = New System.Drawing.Size(195, 23)
+        Me.LabelTransportCompanyTitle.Size = New System.Drawing.Size(136, 23)
         Me.LabelTransportCompanyTitle.TabIndex = 56
         Me.LabelTransportCompanyTitle.Text = "شمشاد ترابر سپاهان"
         Me.LabelTransportCompanyTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -372,11 +376,11 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         Me.LabelGoodTitle.BackColor = System.Drawing.Color.Transparent
         Me.LabelGoodTitle.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelGoodTitle.Font = New System.Drawing.Font("IRMehr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LabelGoodTitle.Font = New System.Drawing.Font("IRMehr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelGoodTitle.ForeColor = System.Drawing.Color.Black
-        Me.LabelGoodTitle.Location = New System.Drawing.Point(498, 12)
+        Me.LabelGoodTitle.Location = New System.Drawing.Point(553, 12)
         Me.LabelGoodTitle.Name = "LabelGoodTitle"
-        Me.LabelGoodTitle.Size = New System.Drawing.Size(142, 23)
+        Me.LabelGoodTitle.Size = New System.Drawing.Size(136, 23)
         Me.LabelGoodTitle.TabIndex = 57
         Me.LabelGoodTitle.Text = "تیرآن 14"
         Me.LabelGoodTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -385,7 +389,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         Me.LabelLoadTargetTitle.BackColor = System.Drawing.Color.Transparent
         Me.LabelLoadTargetTitle.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelLoadTargetTitle.Font = New System.Drawing.Font("IRMehr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LabelLoadTargetTitle.Font = New System.Drawing.Font("IRMehr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelLoadTargetTitle.ForeColor = System.Drawing.Color.Black
         Me.LabelLoadTargetTitle.Location = New System.Drawing.Point(363, 12)
         Me.LabelLoadTargetTitle.Name = "LabelLoadTargetTitle"
@@ -398,7 +402,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         Me.LabelnCarNumKol.BackColor = System.Drawing.Color.Transparent
         Me.LabelnCarNumKol.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelnCarNumKol.Font = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.LabelnCarNumKol.Font = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.LabelnCarNumKol.ForeColor = System.Drawing.Color.Red
         Me.LabelnCarNumKol.Location = New System.Drawing.Point(305, 14)
         Me.LabelnCarNumKol.Name = "LabelnCarNumKol"
@@ -411,7 +415,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         Me.LabelTransportPrice.BackColor = System.Drawing.Color.Transparent
         Me.LabelTransportPrice.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelTransportPrice.Font = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.LabelTransportPrice.Font = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.LabelTransportPrice.ForeColor = System.Drawing.Color.Black
         Me.LabelTransportPrice.Location = New System.Drawing.Point(199, 16)
         Me.LabelTransportPrice.Name = "LabelTransportPrice"
@@ -434,11 +438,11 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'LabelStrDescription
         '
-        Me.LabelStrDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelStrDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LabelStrDescription.BackColor = System.Drawing.Color.Transparent
         Me.LabelStrDescription.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelStrDescription.Font = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LabelStrDescription.Font = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelStrDescription.ForeColor = System.Drawing.Color.Blue
         Me.LabelStrDescription.Location = New System.Drawing.Point(50, 31)
         Me.LabelStrDescription.Name = "LabelStrDescription"
@@ -450,7 +454,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         Me.LabelnCarNum.BackColor = System.Drawing.Color.Transparent
         Me.LabelnCarNum.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelnCarNum.Font = New System.Drawing.Font("Alborz Titr", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2,Byte))
+        Me.LabelnCarNum.Font = New System.Drawing.Font("Alborz Titr", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
         Me.LabelnCarNum.ForeColor = System.Drawing.Color.Red
         Me.LabelnCarNum.Location = New System.Drawing.Point(4, 15)
         Me.LabelnCarNum.Name = "LabelnCarNum"
@@ -461,7 +465,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'LabelDateTimeComposite
         '
-        Me.LabelDateTimeComposite.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelDateTimeComposite.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LabelDateTimeComposite.BackColor = System.Drawing.Color.Transparent
         Me.LabelDateTimeComposite.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LabelDateTimeComposite.ForeColor = System.Drawing.Color.Green
@@ -474,7 +478,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'LabelLoadStatusTitle
         '
-        Me.LabelLoadStatusTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelLoadStatusTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LabelLoadStatusTitle.BackColor = System.Drawing.Color.Transparent
         Me.LabelLoadStatusTitle.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LabelLoadStatusTitle.ForeColor = System.Drawing.Color.Black
@@ -486,7 +490,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'LabelLoadSourceTitle
         '
-        Me.LabelLoadSourceTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelLoadSourceTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LabelLoadSourceTitle.BackColor = System.Drawing.Color.Transparent
         Me.LabelLoadSourceTitle.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LabelLoadSourceTitle.ForeColor = System.Drawing.Color.Black
@@ -498,7 +502,7 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'LabelStrBarName
         '
-        Me.LabelStrBarName.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelStrBarName.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LabelStrBarName.BackColor = System.Drawing.Color.Transparent
         Me.LabelStrBarName.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LabelStrBarName.ForeColor = System.Drawing.Color.Black
@@ -510,8 +514,8 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'LabelStrAddress
         '
-        Me.LabelStrAddress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelStrAddress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LabelStrAddress.BackColor = System.Drawing.Color.Transparent
         Me.LabelStrAddress.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LabelStrAddress.ForeColor = System.Drawing.Color.Black
@@ -545,30 +549,55 @@ Partial Class UCViewerNSSLoadCapacitorLoadExtended
         '
         'PnlAccounting
         '
-        Me.PnlAccounting.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlAccounting.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlAccounting.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlAccounting.Location = New System.Drawing.Point(10, 107)
         Me.PnlAccounting.Name = "PnlAccounting"
         Me.PnlAccounting.Size = New System.Drawing.Size(903, 253)
         Me.PnlAccounting.TabIndex = 65
         '
+        'OrderingOptionTonaj
+        '
+        Me.OrderingOptionTonaj.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.OrderingOptionTonaj.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.OrderingOptionTonaj.ForeColor = System.Drawing.Color.DarkGray
+        Me.OrderingOptionTonaj.Location = New System.Drawing.Point(498, -6)
+        Me.OrderingOptionTonaj.Name = "OrderingOptionTonaj"
+        Me.OrderingOptionTonaj.Size = New System.Drawing.Size(49, 23)
+        Me.OrderingOptionTonaj.TabIndex = 64
+        Me.OrderingOptionTonaj.Text = "تناژ"
+        Me.OrderingOptionTonaj.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'LabelnTonaj
+        '
+        Me.LabelnTonaj.BackColor = System.Drawing.Color.Transparent
+        Me.LabelnTonaj.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.LabelnTonaj.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.LabelnTonaj.ForeColor = System.Drawing.Color.Red
+        Me.LabelnTonaj.Location = New System.Drawing.Point(498, 15)
+        Me.LabelnTonaj.Name = "LabelnTonaj"
+        Me.LabelnTonaj.Size = New System.Drawing.Size(49, 23)
+        Me.LabelnTonaj.TabIndex = 65
+        Me.LabelnTonaj.Text = "27.5"
+        Me.LabelnTonaj.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'UCViewerNSSLoadCapacitorLoadExtended
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCViewerNSSLoadCapacitorLoadExtended"
         Me.Padding = New System.Windows.Forms.Padding(10)
         Me.Size = New System.Drawing.Size(949, 83)
-        Me.PnlMain.ResumeLayout(false)
-        Me.PnlOutter.ResumeLayout(false)
-        Me.PnlInner.ResumeLayout(false)
-        Me.PnlTop.ResumeLayout(false)
-        Me.ResumeLayout(false)
+        Me.PnlMain.ResumeLayout(False)
+        Me.PnlOutter.ResumeLayout(False)
+        Me.PnlInner.ResumeLayout(False)
+        Me.PnlTop.ResumeLayout(False)
+        Me.ResumeLayout(False)
 
-End Sub
+    End Sub
 
     Friend WithEvents PnlMain As System.Windows.Forms.Panel
     Friend WithEvents PnlOutter As System.Windows.Forms.Panel
@@ -607,4 +636,6 @@ End Sub
     Friend WithEvents LabelLoadAllocationNotOK As Label
     Friend WithEvents LabelUserName As Label
     Friend WithEvents PnlAccounting As Panel
+    Friend WithEvents LabelnTonaj As Label
+    Friend WithEvents OrderingOptionTonaj As Label
 End Class

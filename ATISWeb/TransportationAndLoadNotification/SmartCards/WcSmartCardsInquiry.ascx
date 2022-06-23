@@ -15,7 +15,8 @@
                         </div>
                     </div>
                     <div class="">
-                        <asp:Button runat="server" ID="BtnTruckSmartCardInquiry" CssClass="btn border border-success mr-2 R2FontBYekanSmall" Text="استعلام ناوگان" Style="background-color: transparent;" />
+                        <asp:Button runat="server" ID="BtnTruckSmartCardInquiryfromRMTO"  Enabled="false"  CssClass="btn border border-success mr-2 R2FontBYekanSmall" Text="استعلام ناوگان از سامانه هوشمند" Style="background-color: transparent;" />
+                        <asp:Button runat="server" ID="BtnTruckSmartCardInquiryfromATIS" CssClass="btn border border-success mr-2 R2FontBYekanSmall" Text="استعلام ناوگان از سامانه آتیس" Style="background-color: transparent;" />
                     </div>
                     <div class="text-center mr-3">
                         <asp:Label runat="server" ID="LblTruck" CssClass="R2FontBHomaSmall text-primary" dir="rtl"></asp:Label>
@@ -23,7 +24,8 @@
                 </div>
             </ContentTemplate>
             <Triggers>
-                <asp:AsyncPostBackTrigger ControlID="BtnTruckSmartCardInquiry" EventName="Click" />
+                <asp:AsyncPostBackTrigger ControlID="BtnTruckSmartCardInquiryfromATIS" EventName="Click" />
+                <asp:AsyncPostBackTrigger ControlID="BtnTruckSmartCardInquiryfromRMTO" EventName="Click" />
             </Triggers>
         </asp:UpdatePanel>
     </div>
@@ -39,7 +41,8 @@
                         </div>
                     </div>
                     <div class="">
-                        <asp:Button runat="server" ID="BtnTruckDriverNationalCodeInquiry" CssClass="btn border border-success mr-2 R2FontBYekanSmall" Text="استعلام راننده" Style="background-color: transparent; color: black" />
+                        <asp:Button runat="server" ID="BtnTruckDriverNationalCodeInquiryfromRMTO"  Enabled="false" CssClass="btn border border-success mr-2 R2FontBYekanSmall" Text="استعلام راننده از سامانه هوشمند" Style="background-color: transparent; color: black" />
+                        <asp:Button runat="server" ID="BtnTruckDriverNationalCodeInquiryfromATIS" CssClass="btn border border-success mr-2 R2FontBYekanSmall" Text="استعلام راننده از سامانه آتیس" Style="background-color: transparent; color: black" />
                     </div>
                     <div class="text-center mr-3">
                         <asp:Label runat="server" ID="LblTruckDriver" CssClass="R2FontBHomaMedium text-primary" Style="direction: rtl"></asp:Label>
@@ -47,7 +50,8 @@
                 </div>
             </ContentTemplate>
             <Triggers>
-                <asp:AsyncPostBackTrigger ControlID="BtnTruckDriverNationalCodeInquiry" EventName="Click" />
+                <asp:AsyncPostBackTrigger ControlID="BtnTruckDriverNationalCodeInquiryfromATIS" EventName="Click" />
+                <asp:AsyncPostBackTrigger ControlID="BtnTruckDriverNationalCodeInquiryfromRMTO" EventName="Click" />
             </Triggers>
         </asp:UpdatePanel>
     </div>

@@ -1434,7 +1434,6 @@ Namespace SoftwareUserManagement
             End Try
         End Function
 
-
         Public Function GetNSSUser(YourUserId As Int64) As R2CoreStandardSoftwareUserStructure
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager

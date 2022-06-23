@@ -26,8 +26,8 @@ Imports R2Core.SecurityAlgorithmsManagement
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2Core.EntityRelationManagement.Exceptions
 Imports R2Core.PredefinedMessagesManagement.Exceptions
-Imports R2Core.SMSSendAndRecieved
-Imports R2Core.SMSSendAndRecieved.Exceptions
+Imports R2Core.SMS
+Imports R2Core.SMS.Exceptions
 Imports R2Core.EntityRelationManagement
 Imports R2Core.MobileProcessesManagement.Exceptions
 Imports R2Core.WebProcessesManagement.Exceptions
@@ -40,7 +40,6 @@ Imports PcPosDll
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
 Imports R2Core.MonetarySupply
-Imports R2Core.SMS.Exceptions
 
 Namespace MonetarySupply
 

@@ -26,7 +26,6 @@ Public Class UCLoadCapacitorLoadManipulation
     Public Event UCLoadCapacitorLoadCancelledEvent(NSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure)
     Public Event UCLoadCapacitorLoadFreeLinedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure)
     Public Event UCLoadCapacitorLoadSedimentedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure)
-    Private _DateTime As New R2DateTime
 
 #Region "General Properties"
 
@@ -75,6 +74,7 @@ Public Class UCLoadCapacitorLoadManipulation
             UcPersianTextBoxLoadCapacitorLoadDateTimeComposite.UCRefresh()
             UcPersianTextBoxLoadPermissionStatus.UCRefresh()
             UcNumbernCarNum.UCRefresh()
+            UcNumericFloatTonaj.UCRefresh()
             UcNumbernCarNumKol.UCRefresh()
             UcNumberTransportPrice.UCRefresh()
             UcPersianTextBoxStrBarname.UCRefresh()
@@ -113,6 +113,7 @@ Public Class UCLoadCapacitorLoadManipulation
             UcSearcherLoadTargets.UCViewNSS(R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetNSSLoadTarget(UCNSSCurrent.nCityCode))
             UcSearcherLoadSources.UCViewNSS(R2CoreTransportationAndLoadNotificationMclassLoadSourcesManagement.GetNSSLoadSource(UCNSSCurrent.nBarSource))
             UcNumbernCarNumKol.UCValue = UCNSSCurrent.nCarNumKol
+            UcNumericFloatTonaj.UCValue = UCNSSCurrent.nTonaj
             UcNumberTransportPrice.UCValue = UCNSSCurrent.StrPriceSug
             UcPersianTextBoxStrBarname.UCValue = UCNSSCurrent.StrBarName
             UcSearcherLoaderTypes.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoaderTypesManagement.GetNSSLoaderType(UCNSSCurrent.nTruckType))
@@ -134,19 +135,20 @@ Public Class UCLoadCapacitorLoadManipulation
     Private Sub UcButtonLoadCapacitorLoadRegisteringEditing_UCClickedEvent() Handles UcButtonLoadCapacitorLoadRegisteringEditing.UCClickedEvent
         Dim InstanceLoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
         Try
+            Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
             Dim NSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure
             If UcNumbernEstelamId.UCValue = 0 Then
                 'ثبت بار جدید
-                NSS = New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, String.Empty, UcPersianTextBoxStrBarname.UCValue, UcSearcherLoadTargets.UCGetSelectedNSS.OCode, UcSearcherGoods.UCGetSelectedNSS.OCode, UcSearcherTransportCompanies.UCGetSelectedNSS.OCode, False, UcSearcherLoaderTypes.UCGetSelectedNSS.OCode, UcPersianTextBoxAddress.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, UcNumbernCarNumKol.UCValue, UcNumberTransportPrice.UCValue, UcPersianTextBoxStrDescription.UCValue, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), UcNumbernCarNumKol.UCValue, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, UcSearcherLoadSources.UCGetSelectedNSS.OCode, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHId, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHSGId)
+                NSS = New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, String.Empty, UcPersianTextBoxStrBarname.UCValue, UcSearcherLoadTargets.UCGetSelectedNSS.OCode, UcNumericFloatTonaj.UCValue, UcSearcherGoods.UCGetSelectedNSS.OCode, UcSearcherTransportCompanies.UCGetSelectedNSS.OCode, False, UcSearcherLoaderTypes.UCGetSelectedNSS.OCode, UcPersianTextBoxAddress.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, UcNumbernCarNumKol.UCValue, UcNumberTransportPrice.UCValue, UcPersianTextBoxStrDescription.UCValue, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), UcNumbernCarNumKol.UCValue, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, UcSearcherLoadSources.UCGetSelectedNSS.OCode, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHId, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHSGId)
                 UcNumbernEstelamId.UCValue = InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadRegistering(NSS)
                 RaiseEvent UCLoadCapacitorLoadRegisteredEvent(UCNSSCurrent)
             Else
                 'ویرایش اطلاعات بار
-                NSS = New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(UcNumbernEstelamId.UCValue, String.Empty, UcPersianTextBoxStrBarname.UCValue, UcSearcherLoadTargets.UCGetSelectedNSS.OCode, UcSearcherGoods.UCGetSelectedNSS.OCode, UcSearcherTransportCompanies.UCGetSelectedNSS.OCode, False, UcSearcherLoaderTypes.UCGetSelectedNSS.OCode, UcPersianTextBoxAddress.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, UcNumbernCarNumKol.UCValue, UcNumberTransportPrice.UCValue, UcPersianTextBoxStrDescription.UCValue, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), UcNumbernCarNumKol.UCValue, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, UcSearcherLoadSources.UCGetSelectedNSS.OCode, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHId, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHSGId)
+                NSS = New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(UcNumbernEstelamId.UCValue, String.Empty, UcPersianTextBoxStrBarname.UCValue, UcSearcherLoadTargets.UCGetSelectedNSS.OCode, UcNumericFloatTonaj.UCValue, UcSearcherGoods.UCGetSelectedNSS.OCode, UcSearcherTransportCompanies.UCGetSelectedNSS.OCode, False, UcSearcherLoaderTypes.UCGetSelectedNSS.OCode, UcPersianTextBoxAddress.UCValue, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, UcNumbernCarNumKol.UCValue, UcNumberTransportPrice.UCValue, UcPersianTextBoxStrDescription.UCValue, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), UcNumbernCarNumKol.UCValue, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, UcSearcherLoadSources.UCGetSelectedNSS.OCode, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHId, R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallSubGroupByLoaderTypeId(UcSearcherLoaderTypes.UCGetSelectedNSS.OCode).AHSGId)
                 InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadEditing(NSS, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                 RaiseEvent UCLoadCapacitorLoadEditedEvent(UCNSSCurrent)
             End If
-            UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue))
+            UCViewNSS(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue, True))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ثبت بار انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As SqlInjectionException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -162,7 +164,8 @@ Public Class UCLoadCapacitorLoadManipulation
     Private Sub UcButtonLoadCapacitorLoadDeleting_UCClickedEvent() Handles UcButtonLoadCapacitorLoadDeleting.UCClickedEvent
         Try
             Dim InstanceLoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
-            Dim NSS = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue)
+            Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            Dim NSS = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue, False)
             InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadDeleting(NSS, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCRefreshGeneral()
             RaiseEvent UCLoadCapacitorLoadDeletedEvent(UCNSSCurrent)
@@ -187,7 +190,7 @@ Public Class UCLoadCapacitorLoadManipulation
         Try
             Dim InstanceLoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
             Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
-            Dim NSS = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue)
+            Dim NSS = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue, True)
             InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadCancelling(NSS, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             RaiseEvent UCLoadCapacitorLoadCancelledEvent(UCNSSCurrent)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "وضعیت بار تغییر یافت", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -221,6 +224,10 @@ Public Class UCLoadCapacitorLoadManipulation
     End Sub
 
     Private Sub UcNumberTransportPrice_UC13Pressed(UserNumber As String) Handles UcNumberTransportPrice.UC13Pressed
+        UcNumericFloatTonaj.UCFocus()
+    End Sub
+
+    Private Sub UcNumericFloatTonaj_UC13Pressed(UserNumber As Decimal) Handles UcNumericFloatTonaj.UC13Pressed
         UcPersianTextBoxStrBarname.UCFocus()
     End Sub
 
@@ -266,6 +273,7 @@ Public Class UCLoadCapacitorLoadManipulation
         End Try
 
     End Sub
+
 
 
 

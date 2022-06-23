@@ -214,6 +214,12 @@
     <Compile Include="Base Graphical UCs\UCNumber.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Base Graphical UCs\UCNumericFloat.Designer.vb">
+      <DependentUpon>UCNumericFloat.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Base Graphical UCs\UCNumericFloat.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Base Graphical UCs\UCPanel.Designer.vb">
       <DependentUpon>UCPanel.vb</DependentUpon>
     </Compile>
@@ -774,6 +780,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Base Graphical UCs\UCNumber.resx">
       <DependentUpon>UCNumber.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Base Graphical UCs\UCNumericFloat.resx">
+      <DependentUpon>UCNumericFloat.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Base Graphical UCs\UCPersianTextBox.resx">
       <DependentUpon>UCPersianTextBox.vb</DependentUpon>

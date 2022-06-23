@@ -53,6 +53,7 @@ Public Class UCViewerNSSLoadCapacitorLoadExtended
             LabelGoodTitle.Text = String.Empty
             LabelLoadTargetTitle.Text = String.Empty
             LabelnCarNumKol.Text = String.Empty
+            LabelnTonaj.Text = String.Empty
             LabelTransportPrice.Text = String.Empty
             LabelLoaderTypeTitle.Text = String.Empty
             LabelnCarNum.Text = String.Empty
@@ -110,6 +111,8 @@ Public Class UCViewerNSSLoadCapacitorLoadExtended
                 UCOrderingOptionChangedApply(R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.Address)
             ElseIf sender Is OrderingOptionUser Then
                 UCOrderingOptionChangedApply(R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.User)
+            ElseIf sender Is OrderingOptionTonaj Then
+                UCOrderingOptionChangedApply(R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.Tonaj)
             End If
         Catch ex As Exception
             MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -161,6 +164,7 @@ Public Class UCViewerNSSLoadCapacitorLoadExtended
             LabelGoodTitle.Text = NSS.GoodTitle
             LabelLoadTargetTitle.Text = NSS.LoadTargetTitle
             LabelnCarNumKol.Text = NSS.nCarNumKol
+            LabelnTonaj.Text = NSS.nTonaj.ToString
             LabelTransportPrice.Text = NSS.StrPriceSug
             LabelLoaderTypeTitle.Text = NSS.LoaderTypeTitle
             LabelnCarNum.Text = NSS.nCarNum
@@ -170,6 +174,7 @@ Public Class UCViewerNSSLoadCapacitorLoadExtended
         End Try
 
     End Sub
+
 
 
 

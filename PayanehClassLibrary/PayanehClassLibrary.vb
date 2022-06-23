@@ -49,7 +49,6 @@ Imports R2CoreParkingSystem.TrafficCardsManagement
 Imports R2CoreParkingSystem.BlackList
 Imports R2CoreParkingSystem.City
 Imports R2CoreParkingSystem.ProcessesManagement
-Imports R2Core.SMSSendAndRecieved
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
 Imports R2CoreTransportationAndLoadNotification.ComputerMessages
 Imports R2CoreTransportationAndLoadNotification.ConfigurationsManagement
@@ -3952,7 +3951,7 @@ Namespace ReportsManagement
                 If YourAnnouncementHallId = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.General Then
                     If YourCompanyCode = Int64.MinValue Then
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,CT.StrCarName 
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,CT.StrCarName 
                             from DBTransport.dbo.tbElam as E 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
@@ -3962,7 +3961,7 @@ Namespace ReportsManagement
                             Order By E.dDateElam,E.nCompCode,E.nTruckType,E.dTimeElam")
                     Else
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,CT.StrCarName 
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,CT.StrCarName 
                             from DBTransport.dbo.tbElam as E 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
@@ -3974,7 +3973,7 @@ Namespace ReportsManagement
                 Else
                     If YourCompanyCode = Int64.MinValue Then
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,CT.StrCarName 
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,CT.StrCarName 
                             from DBTransport.dbo.tbElam as E 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
@@ -3984,7 +3983,7 @@ Namespace ReportsManagement
                             Order By E.dDateElam,E.nCompCode,E.dTimeElam")
                     Else
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,CT.StrCarName 
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,CT.StrCarName 
                             from DBTransport.dbo.tbElam as E 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
@@ -4013,6 +4012,7 @@ Namespace ReportsManagement
                         Dim mynEstelamid As String = Ds.Tables(0).Rows(Loopx).Item("nEstelamId")
                         Dim myStrGoodName As String = Ds.Tables(0).Rows(Loopx).Item("strGoodName").trim
                         Dim myStrCityName As String = Ds.Tables(0).Rows(Loopx).Item("strCityName").trim
+                        Dim mynTonaj As Double = Ds.Tables(0).Rows(Loopx).Item("nTonaj")
                         Dim mynCarNumKol As Int64 = Ds.Tables(0).Rows(Loopx).Item("nCarNumKol")
                         Dim myStrPriceSug As String = Ds.Tables(0).Rows(Loopx).Item("strPriceSug").trim
                         Dim myStrDescription As String = Ds.Tables(0).Rows(Loopx).Item("strDescription").trim
@@ -4035,7 +4035,7 @@ Namespace ReportsManagement
                             Dim Truck As String = LoadPermissions(LoopPermissions)(4).trim + " - " + LoadPermissions(LoopPermissions)(5).trim
                             CompositStringDriverName = CompositStringDriverName & LoadPermissions(LoopPermissions)(3).trim & " " & Truck & vbCrLf
                         Next
-                        CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(nEstelamId,StrGoodName,StrCityName,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,StrCarName,StrExitDate,StrExitTime,StrDriverName) values(" & mynEstelamid & ",'" & myStrGoodName & "','" & myStrCityName & "'," & mynCarNumKol & ",'" & myCompanyName & "','" & myStrPriceSug & "','" & myStrDescription & "','" & myStrAddress & "','" & myStrBarname & "','" & mydDateElam & "','" & mydTimeElam & "','" & myStrCarName & "','" & CompositStringDate & "','" & CompositStringTime & "','" & CompositStringDriverName & "')"
+                        CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(nEstelamId,StrGoodName,StrCityName,nTonaj,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,StrCarName,StrExitDate,StrExitTime,StrDriverName) values(" & mynEstelamid & ",'" & myStrGoodName & "','" & myStrCityName & "'," & mynTonaj & "," & mynCarNumKol & ",'" & myCompanyName & "','" & myStrPriceSug & "','" & myStrDescription & "','" & myStrAddress & "','" & myStrBarname & "','" & mydDateElam & "','" & mydTimeElam & "','" & myStrCarName & "','" & CompositStringDate & "','" & CompositStringTime & "','" & CompositStringDriverName & "')"
                         CmdSql.ExecuteNonQuery()
                     Next
                 End If
@@ -5570,40 +5570,6 @@ Namespace TransportCompanies
             End Get
         End Property
     End Class
-
-
-End Namespace
-
-Namespace LoadNotification.LoadManipulation
-
-
-
-
-End Namespace
-
-Namespace LoadNotification.LoadAllocation
-
-    Public NotInheritable Class LoadNotificationLoadAllocationManagement
-        Private Shared _DateTime As New R2DateTime
-
-        Public Shared Sub TransportCompanyLoadCapacitorSedimentLoadAllocationMessageProduce(YourComapnyCode As Int64, YournEstelamId As Int64, YourCarTruckSmartCardNo As String, YourDriverTruckSmartCardNo As String)
-            Try
-                Dim DataStruct As DataStruct = New DataStruct()
-                DataStruct.Data1 = YourComapnyCode
-                DataStruct.Data2 = YournEstelamId
-                DataStruct.Data3 = YourCarTruckSmartCardNo
-                DataStruct.Data4 = YourDriverTruckSmartCardNo
-                R2CoreMClassComputerMessagesManagement.SendComputerMessage(New R2StandardComputerMessageStructure(Nothing, "شماره هوشمند ناوگان باری :" + YourCarTruckSmartCardNo.Trim, 6, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, DataStruct))
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-
-        End Sub
-
-    End Class
-
-
-
 
 
 End Namespace

@@ -125,7 +125,13 @@
                                 <span class="input-group-text R2FontBHomaSmall" style="background-color: yellow; color: blue">تعداد</span>
                             </div>
                         </div>
-                        <div class="input-group col-sm-6 col-lg-6">
+                        <div class="input-group col-sm-3 col-lg-3">
+                            <asp:TextBox runat="server" ID="TxtnTonaj" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
+                            <div class="input-group-append">
+                                <span class="input-group-text R2FontBHomaSmall" style="background-color: yellow; color: blue">تناژ</span>
+                            </div>
+                        </div>
+                        <div class="input-group col-sm-3 col-lg-3">
                             <asp:TextBox runat="server" ID="TxtLoadReciever" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
                             <div class="input-group-append">
                                 <span class="input-group-text R2FontBHomaSmall" style="background-color: yellow; color: blue">گیرنده</span>

@@ -107,8 +107,8 @@ Public Class UCLoadAllocationManipulation
             UcButtonNew.UCEnable = True
             UcButtonNewnEstelamIdRemain.UCEnable = True
             Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
-            InstanceLoadAllocation.LoadAllocationRegistering(UcViewerNSSLoadCapacitorLoadDataEntry.UCNSSCurrent.nEstelamId, UcViewerNSSTurnDataEntry.UCNSSCurrent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, R2CoreTransportationAndLoadNotification.RequesterManagement.R2CoreTransportationAndLoadNotificationRequesters.UCLoadAllocationManipulation)
-            'UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(UcNumberLoadAllocationId.UCValue))
+            Dim LAId = InstanceLoadAllocation.LoadAllocationRegistering(UcViewerNSSLoadCapacitorLoadDataEntry.UCNSSCurrent.nEstelamId, UcViewerNSSTurnDataEntry.UCNSSCurrent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, R2CoreTransportationAndLoadNotification.RequesterManagement.R2CoreTransportationAndLoadNotificationRequesters.UCLoadAllocationManipulation, True)
+            UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(LAId))
             RaiseEvent UCLoadAllocationRegisteredEvent(UCNSSCurrent)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخصیص بارانجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadAllocationRegisteringReachedEndTimeException
@@ -189,6 +189,15 @@ Public Class UCLoadAllocationManipulation
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
+
+    Private Sub UCLoadAllocationManipulation_UCNSSCurrentChangedtoNull() Handles Me.UCNSSCurrentChangedtoNull
+        Try
+            UCRefresh()
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
 
 
 

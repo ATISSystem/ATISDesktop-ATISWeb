@@ -46,6 +46,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PnlHolder = New System.Windows.Forms.Panel()
+        Me.UcNumericFloatTonaj = New R2CoreGUI.UCNumericFloat()
         Me.UcSearcherLoaderTypes = New R2CoreTransportationAndLoadNotification.UCSearcherLoaderTypes()
         Me.UcSearcherTransportCompanies = New R2CoreTransportationAndLoadNotification.UCSearcherTransportCompanies()
         Me.UcSearcherLoadSources = New R2CoreTransportationAndLoadNotification.UCSearcherLoadSources()
@@ -66,6 +67,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelNoeBar1 = New R2CoreTransportationAndLoadNotification.UCLabelNoeBar()
         Me.UcLabel1 = New R2CoreGUI.UCLabel()
         Me.UcLabelNoeBargir1 = New R2CoreTransportationAndLoadNotification.UCLabelNoeBargir()
+        Me.UcLabel4 = New R2CoreGUI.UCLabel()
         Me.UcucLoadCapacitorAccountingCollection = New R2CoreTransportationAndLoadNotification.UCUCLoadCapacitorAccountingCollection()
         Me.PnlMain.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -397,6 +399,7 @@ Partial Class UCLoadCapacitorLoadManipulation
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlHolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlHolder.Controls.Add(Me.UcNumericFloatTonaj)
         Me.PnlHolder.Controls.Add(Me.UcSearcherLoaderTypes)
         Me.PnlHolder.Controls.Add(Me.UcSearcherTransportCompanies)
         Me.PnlHolder.Controls.Add(Me.UcSearcherLoadSources)
@@ -417,10 +420,32 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.PnlHolder.Controls.Add(Me.UcLabelNoeBar1)
         Me.PnlHolder.Controls.Add(Me.UcLabel1)
         Me.PnlHolder.Controls.Add(Me.UcLabelNoeBargir1)
+        Me.PnlHolder.Controls.Add(Me.UcLabel4)
         Me.PnlHolder.Location = New System.Drawing.Point(3, 24)
         Me.PnlHolder.Name = "PnlHolder"
         Me.PnlHolder.Size = New System.Drawing.Size(1025, 130)
         Me.PnlHolder.TabIndex = 0
+        '
+        'UcNumericFloatTonaj
+        '
+        Me.UcNumericFloatTonaj.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumericFloatTonaj.BackColor = System.Drawing.Color.Transparent
+        Me.UcNumericFloatTonaj.Location = New System.Drawing.Point(465, 53)
+        Me.UcNumericFloatTonaj.Name = "UcNumericFloatTonaj"
+        Me.UcNumericFloatTonaj.Size = New System.Drawing.Size(61, 24)
+        Me.UcNumericFloatTonaj.TabIndex = 21
+        Me.UcNumericFloatTonaj.UCAllowedMaxNumber = 7.9228162514264338E+28R
+        Me.UcNumericFloatTonaj.UCAllowedMinNumber = -7.9228162514264338E+28R
+        Me.UcNumericFloatTonaj.UCBackColor = System.Drawing.Color.White
+        Me.UcNumericFloatTonaj.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcNumericFloatTonaj.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumericFloatTonaj.UCBorder = True
+        Me.UcNumericFloatTonaj.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcNumericFloatTonaj.UCEnable = True
+        Me.UcNumericFloatTonaj.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumericFloatTonaj.UCForeColor = System.Drawing.Color.Black
+        Me.UcNumericFloatTonaj.UCMultiLine = False
+        Me.UcNumericFloatTonaj.UCValue = 0R
         '
         'UcSearcherLoaderTypes
         '
@@ -564,7 +589,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcPersianTextBoxStrBarname.Location = New System.Drawing.Point(7, 50)
         Me.UcPersianTextBoxStrBarname.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxStrBarname.Name = "UcPersianTextBoxStrBarname"
-        Me.UcPersianTextBoxStrBarname.Size = New System.Drawing.Size(498, 28)
+        Me.UcPersianTextBoxStrBarname.Size = New System.Drawing.Size(411, 28)
         Me.UcPersianTextBoxStrBarname.TabIndex = 15
         Me.UcPersianTextBoxStrBarname.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBoxStrBarname.UCBorder = True
@@ -760,7 +785,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel1.Location = New System.Drawing.Point(500, 48)
+        Me.UcLabel1.Location = New System.Drawing.Point(417, 48)
         Me.UcLabel1.Name = "UcLabel1"
         Me.UcLabel1.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabel1.Size = New System.Drawing.Size(47, 32)
@@ -786,6 +811,23 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelNoeBargir1.UCForeColor = System.Drawing.Color.Black
         Me.UcLabelNoeBargir1.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelNoeBargir1.UCValue = "نوع بارگیر"
+        '
+        'UcLabel4
+        '
+        Me.UcLabel4._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel4._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcLabel4.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabel4.Location = New System.Drawing.Point(525, 48)
+        Me.UcLabel4.Name = "UcLabel4"
+        Me.UcLabel4.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel4.Size = New System.Drawing.Size(51, 32)
+        Me.UcLabel4.TabIndex = 20
+        Me.UcLabel4.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabel4.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel4.UCForeColor = System.Drawing.Color.Black
+        Me.UcLabel4.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.UcLabel4.UCValue = "تناژ بار"
         '
         'UcucLoadCapacitorAccountingCollection
         '
@@ -858,4 +900,6 @@ Partial Class UCLoadCapacitorLoadManipulation
     Friend WithEvents UcucLoadCapacitorAccountingCollection As UCUCLoadCapacitorAccountingCollection
     Friend WithEvents UcButtonLoadCapacitorLoadSedimentation As R2CoreGUI.UCButton
     Friend WithEvents UcSearcherLoaderTypes As UCSearcherLoaderTypes
+    Friend WithEvents UcLabel4 As R2CoreGUI.UCLabel
+    Friend WithEvents UcNumericFloatTonaj As R2CoreGUI.UCNumericFloat
 End Class

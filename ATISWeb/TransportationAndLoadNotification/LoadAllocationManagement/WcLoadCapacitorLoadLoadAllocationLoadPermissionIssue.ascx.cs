@@ -113,7 +113,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 //تخصیص بار - آزاد سازی بار به صورت خودکار توسط سرور انجام می گردد
                 //مشاهده و چاپ مجوز از طریق قسمت مجوزهای صادر شده در بارهای رسوبی قابل مشاهده است
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                InstanceLoadAllocation.LoadAllocationRegistering(NSSLoadCapacitorLoad.nEstelamId, NSSTurn, InstanceLogin.GetNSSCurrentUser(), R2CoreTransportationAndLoadNotificationRequesters.WcLoadCapacitorLoadAllocationLoadPermissionIssue);
+                InstanceLoadAllocation.LoadAllocationRegistering(NSSLoadCapacitorLoad.nEstelamId, NSSTurn, InstanceLogin.GetNSSCurrentUser(), R2CoreTransportationAndLoadNotificationRequesters.WcLoadCapacitorLoadAllocationLoadPermissionIssue,false );
                 LblTurnStatus.Text = TempTurnReport;
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','تخصیص بار با موفقیت انجام شد');", true);
             }

@@ -33,6 +33,7 @@ Imports R2CoreTransportationAndLoadNotification.ConfigurationsManagement
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadManipulation
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation
 Imports R2CoreTransportationAndLoadNotification.LoadPermission
 Imports R2CoreTransportationAndLoadNotification.LoadPermission.LoadPermissionPrinting
@@ -264,11 +265,22 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            Do While 1 = 1
-                Cmdsql.Connection.Open()
-                Cmdsql.Connection.Close()
-                Cmdsql.Connection.Close()
-            Loop
+            Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            Dim InstanceLoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
+            Dim NSS = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(462365, True)
+            NSS.nCityCode = 542154
+            InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadEditing(NSS, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+
+
+            'Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+            'Dim InstanceTruck = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
+            'Dim NSSTruck = InstanceTruck.GetNSSTruck(InstanceTurns.GetNSSTurn(943632))
+            'InstanceTurns = Nothing
+            'Do While 1 = 1
+            '    Cmdsql.Connection.Open()
+            '    Cmdsql.Connection.Close()
+            '    Cmdsql.Connection.Close()
+            'Loop
             'Throw New Exception("TEST")
             'Cmdsql.Connection.Close()
             'PayanehClassLibraryMClassCarTruckNobatManagement.TempTurnsCancellation()
@@ -620,7 +632,7 @@ Public Class Form3
 
     Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
         Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager()
-        Dim NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(38).nEstelamKey)
+        Dim NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(38, True).nEstelamKey, False)
 
     End Sub
 

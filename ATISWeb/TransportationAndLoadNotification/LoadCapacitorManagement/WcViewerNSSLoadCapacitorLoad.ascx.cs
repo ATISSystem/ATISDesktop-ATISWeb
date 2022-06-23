@@ -24,7 +24,11 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 {
                     if (TxtnEstelamId.Text == string.Empty)
                     { throw new DataEntryException(); }
-                    else { return R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(Convert.ToInt64(TxtnEstelamId.Text)); }
+                    else
+                    {
+                        var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
+                        return InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(Convert.ToInt64(TxtnEstelamId.Text), true);
+                    }
                 }
                 catch (DataEntryException ex)
                 { throw ex; }
@@ -59,7 +63,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         {
             try
             {
-                var NSS = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId);
+                var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
+                var NSS = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(YournEstelamId,true);
                 TxtnEstelamId.Text = NSS.nEstelamId.ToString();
                 LblDateTimeofLoadRegistering.Text = NSS.dDateElam + " - " + NSS.dTimeElam;
                 LblLoadTitle.Text = NSS.GoodTitle;

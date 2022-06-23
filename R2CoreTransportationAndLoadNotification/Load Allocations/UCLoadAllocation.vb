@@ -12,6 +12,7 @@ Imports R2CoreTransportationAndLoadNotification.Turns
 Public Class UCLoadAllocation
     Inherits UCGeneralExtended
 
+    Public Event UCNSSCurrentChangedtoNull()
     Public Event UCNSSCurrentChanged(NSSCurrent As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
     Protected Event UCViewNSSRequested(NSSCurrent As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
     Protected Event UCViewNSSLoadCapacitorLoadRequestedEvent(NSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure)
@@ -29,7 +30,12 @@ Public Class UCLoadAllocation
         End Get
         Set(value As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
             _UCNSSCurrent = value
-            RaiseEvent UCNSSCurrentChanged(_UCNSSCurrent)
+            If value Is Nothing Then
+                RaiseEvent UCNSSCurrentChangedtoNull()
+            Else
+                RaiseEvent UCNSSCurrentChanged(_UCNSSCurrent)
+            End If
+
         End Set
     End Property
 

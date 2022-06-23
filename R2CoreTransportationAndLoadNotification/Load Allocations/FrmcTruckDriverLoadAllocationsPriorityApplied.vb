@@ -78,7 +78,7 @@ Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
     Private Sub UcucLoadCapacitorLoadCollectionAdvance_UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure) Handles UcucLoadCapacitorLoadCollectionAdvance.UCSelectedNSSChangedEvent
         Try
             Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
-            InstanceLoadAllocation.LoadAllocationRegistering(NSS.nEstelamId, UcViewerNSSTurnDataEntry.UCNSSCurrent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, R2CoreTransportationAndLoadNotification.RequesterManagement.R2CoreTransportationAndLoadNotificationRequesters.FrmcTruckDriverLoadAllocationsPriorityApplied)
+            InstanceLoadAllocation.LoadAllocationRegistering(NSS.nEstelamId, UcViewerNSSTurnDataEntry.UCNSSCurrent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, R2CoreTransportationAndLoadNotification.RequesterManagement.R2CoreTransportationAndLoadNotificationRequesters.FrmcTruckDriverLoadAllocationsPriorityApplied, False)
             UcucLoadAllocationCollection.UCRefreshGeneral()
             UcucLoadAllocationCollection.UCViewCollection(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocations(UcViewerNSSTurnDataEntry.UCNSSCurrent))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخصیص بارانجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)

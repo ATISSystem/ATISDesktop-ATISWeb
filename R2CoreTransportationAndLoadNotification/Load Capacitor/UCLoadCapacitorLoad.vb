@@ -67,7 +67,8 @@ Public Class UCLoadCapacitorLoad
 
     Public Sub UCViewNSS(YournEstelamId As Int64)
         Try
-            UCNSSCurrent = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoad(YournEstelamId)
+            Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            UCNSSCurrent = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(YournEstelamId, False)
             RaiseEvent UCViewNSSRequested(UCNSSCurrent)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
