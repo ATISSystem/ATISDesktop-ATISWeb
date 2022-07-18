@@ -165,7 +165,7 @@ Public Class UCLoadCapacitorLoadManipulation
         Try
             Dim InstanceLoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
             Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
-            Dim NSS = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue, False)
+            Dim NSS = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue, True)
             InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadDeleting(NSS, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCRefreshGeneral()
             RaiseEvent UCLoadCapacitorLoadDeletedEvent(UCNSSCurrent)

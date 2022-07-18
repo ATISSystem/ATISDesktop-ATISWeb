@@ -4,8 +4,17 @@ Imports System.Reflection
 Imports System.Windows.Forms
 
 Imports R2CoreGUI
+Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
+Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadPermission
+Imports R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions
+Imports R2CoreTransportationAndLoadNotification.RequesterManagement
+Imports R2CoreTransportationAndLoadNotification.TruckDrivers
+Imports R2CoreTransportationAndLoadNotification.Trucks.Exceptions
+Imports R2CoreTransportationAndLoadNotification.Turns
+Imports R2CoreTransportationAndLoadNotification.Turns.Exceptions
 
 Public Class UCLoadPermissionCancellation
     Inherits UCLoadPermission
@@ -105,13 +114,54 @@ Public Class UCLoadPermissionCancellation
 
     Private Sub UcButtonLoadPermissionCancelling_UCClickedEvent() Handles UcButtonLoadPermissionCancelling.UCClickedEvent
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement.LoadPermissionCancelling(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId, CheckBoxTurn.Checked, CheckBoxLoadCapacitorLoad.Checked, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            UcCar.UCRefreshGeneral()
+            R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement.LoadPermissionCancelling(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId, CheckBoxTurn.Checked, CheckBoxLoadCapacitorLoad.Checked, UcPersianTextBoxDescription.UCValue.Trim, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+
+            'تخصیص به راننده دیگر
+            If CheckBoxLoadAllocation.Checked Then
+                Dim PrimaryTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure
+                PrimaryTurn = R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement.GetNSSPrimaryTurn(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId)
+                Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+                InstanceLoadAllocation.LoadAllocationRegistering(UCNSSCurrent.nEstelamId, PrimaryTurn, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, R2CoreTransportationAndLoadNotificationRequesters.UCLoadPermissionCancellation, False, False)
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim NSSTruck = InstanceTurns.GetNSSTruck(PrimaryTurn.nEnterExitId)
+                UcCar.UCViewCarInformation(NSSTruck.NSSCar.nIdCar)
+                Dim InstanceTruckDrivers = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
+                UcDriver.UCViewDriverInformation(InstanceTruckDrivers.GetNSSTruckDriverWithTruckId(NSSTruck.NSSCar.nIdCar).NSSDriver.nIdPerson)
+            End If
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "کنسلی مجوز بارگیری انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             UCViewNSS(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId)
             RaiseEvent UCCancellationCompleteEvent()
+        Catch ex As Exception When TypeOf ex Is AnnouncementHallSubGroupUnActiveException _
+                OrElse TypeOf ex Is AnnouncementHallSubGroupRelationTruckNotExistException _
+                OrElse TypeOf ex Is AnnouncementHallSubGroupNotFoundException _
+                OrElse TypeOf ex Is LoadAllocationRegisteringReachedEndTimeException _
+                OrElse TypeOf ex Is LoadAllocationMaximumAllowedNumberReachedException _
+                OrElse TypeOf ex Is LoadCapacitorLoadAHSGIdViaTruckAHSGIdNotAllowedException _
+                OrElse TypeOf ex Is LoadAllocationRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException _
+                OrElse TypeOf ex Is LoadAllocationRegisteringFailedBecauseTurnIsNotReadyException _
+                OrElse TypeOf ex Is LoadCapacitorLoadLoaderTypeViaSequentialTurnOfTurnNotAllowedException _
+                OrElse TypeOf ex Is LoadAllocationNotAllowedBecuaseAHSGLoadAllocationIsUnactiveException _
+                OrElse TypeOf ex Is LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException _
+                OrElse TypeOf ex Is RegisteredLoadAllocationIsRepetitiousException _
+                OrElse TypeOf ex Is RequesterHasNotPermissionforLoadAllocationRegisteringException _
+                OrElse TypeOf ex Is LoadAllocationNotAllowedBecauseCarHasBlackListException _
+                OrElse TypeOf ex Is TimingNotReachedException _
+                OrElse TypeOf ex Is TurnNotFoundException _
+                OrElse TypeOf ex Is TruckNotFoundException _
+                OrElse TypeOf ex Is TurnHandlingNotAllowedBecuaseTurnStatusException _
+                OrElse TypeOf ex Is UnableAllocatingTommorowLoadException _
+                OrElse TypeOf ex Is LoadPermissionCancellingNotAllowedBecuaseLoadPermissionStatusException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As PrimaryTurnNotFoundException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
+    End Sub
+
+    Private Sub CheckBoxLoadCapacitorLoad_CheckStateChanged(sender As Object, e As EventArgs) Handles CheckBoxLoadCapacitorLoad.CheckStateChanged
+        CheckBoxLoadAllocation.Checked = CheckBoxLoadCapacitorLoad.Checked
     End Sub
 
 #End Region

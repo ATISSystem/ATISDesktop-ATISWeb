@@ -44,7 +44,8 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             try
             {
                 TimeSpan now = DateTime.Now.TimeOfDay;
-                if (new TimeSpan(13, 0, 0) <= now && now <= new TimeSpan(13, 10, 0))
+                if ((new TimeSpan(12, 45, 0) <= now && now <= new TimeSpan(13, 00, 0)) || 
+                    (new TimeSpan(15, 30, 0) <= now && now <= new TimeSpan(15, 35, 0)))
                 { throw new TimingNotReachedException(); }
 
                 //تایید اعتبار کلاینت
@@ -68,7 +69,7 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 { throw ex; }
 
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                InstanceLoadAllocation.LoadAllocationRegistering(nEstelamId, myNSSTurn, NSSSoftwareuser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent,false );
+                InstanceLoadAllocation.LoadAllocationRegistering(nEstelamId, myNSSTurn, NSSSoftwareuser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent,false ,false );
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }

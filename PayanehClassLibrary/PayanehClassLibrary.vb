@@ -3827,12 +3827,12 @@ Namespace ReportsManagement
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 Da.SelectCommand = New SqlClient.SqlCommand("
                   Select LoadAllocations.LAId,Turns.strDriverName,c.strCarNo,c.strCarSerialNo,co.strCompName,Turns.strExitDate,Turns.nEstelamID,Turns.OtaghdarTurnNumber,ci.strCityName,p.strGoodName,Turns.strBarnameNo as LoadPermissionLocation 
-                  from tbenterexit as Turns
+                  from Dbtransport.dbo.tbenterexit as Turns
 	                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId 
-	                 Inner Join tbcar as C on Turns.strCardno=C.nIDCar 
-	                 Inner Join tbCompany as Co on Turns.nCompCode=CO.nCompCode 
-	                 Inner Join tbCity as Ci on Turns.nCityCode=CI.nCityCode 
-	                 Inner Join tbProducts as P on Turns.nBarCode=p.strGoodCode 
+	                 Inner Join Dbtransport.dbo.tbcar as C on Turns.strCardno=C.nIDCar 
+	                 Inner Join Dbtransport.dbo.tbCompany as Co on Turns.nCompCode=CO.nCompCode 
+	                 Inner Join Dbtransport.dbo.tbCity as Ci on Turns.nCityCode=CI.nCityCode 
+	                 Inner Join Dbtransport.dbo.tbProducts as P on Turns.nBarCode=p.strGoodCode 
                   where Turns.nDriverCode='" & YourDriverId & "' and Turns.strExitDate>='" & YourDateTime1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDateTime2.DateShamsiFull & "'  and LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & " 
                   Order By Turns.nEnterExitId Desc")
                 Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
@@ -3875,7 +3875,7 @@ Namespace ReportsManagement
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 If YourAnnouncementHallSubGroupId = AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.None Then
                     Da.SelectCommand = New SqlClient.SqlCommand("
-                             Select E.nEstelamID,P.strGoodName,C.strCityName,E.nCarNum,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,CT.StrCarName 
+                             Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNum,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,CT.StrCarName 
                              from DBTransport.dbo.tbElam as E 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
@@ -3887,7 +3887,7 @@ Namespace ReportsManagement
                              Order By C.nProvince,strCityName,nTruckType")
                 Else
                     Da.SelectCommand = New SqlClient.SqlCommand("
-                             Select E.nEstelamID,P.strGoodName,C.strCityName,E.nCarNum,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,CT.StrCarName 
+                             Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNum,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,CT.StrCarName 
                              from DBTransport.dbo.tbElam as E 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
 	                           inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
@@ -3914,6 +3914,7 @@ Namespace ReportsManagement
                     Dim mynEstelamid As String = Ds.Tables(0).Rows(Loopx).Item("nEstelamId")
                     Dim myStrGoodName As String = Ds.Tables(0).Rows(Loopx).Item("strGoodName").trim
                     Dim myStrCityName As String = Ds.Tables(0).Rows(Loopx).Item("strCityName").trim
+                    Dim mynTonaj As Int64 = Ds.Tables(0).Rows(Loopx).Item("nTonaj")
                     Dim mynCarNum As Int64 = Ds.Tables(0).Rows(Loopx).Item("nCarNum")
                     Dim myStrPriceSug As String = Ds.Tables(0).Rows(Loopx).Item("strPriceSug").trim
                     Dim myStrDescription As String = Ds.Tables(0).Rows(Loopx).Item("strDescription").trim
@@ -3923,7 +3924,7 @@ Namespace ReportsManagement
                     Dim mydTimeElam As String = Ds.Tables(0).Rows(Loopx).Item("dTimeElam").trim
                     Dim myCompanyName As String = Ds.Tables(0).Rows(Loopx).Item("StrCompName").trim
                     Dim myStrCarName As String = Ds.Tables(0).Rows(Loopx).Item("StrCarName").trim
-                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblCapacitorLoadsforAnnounceReport (AnnoucementHallName,nEstelamId,StrGoodName,StrCityName,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,StrCarName) values('" & myAnnouncementHallName & "'," & mynEstelamid & ",'" & myStrGoodName & "','" & myStrCityName & "'," & mynCarNum & ",'" & myCompanyName & "','" & myStrPriceSug & "','" & myStrDescription & "','" & myStrAddress & "','" & myStrBarname & "','" & mydDateElam & "','" & mydTimeElam & "','" & myStrCarName & "')"
+                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblCapacitorLoadsforAnnounceReport (AnnoucementHallName,nEstelamId,StrGoodName,StrCityName,nTonaj,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,StrCarName) values('" & myAnnouncementHallName & "'," & mynEstelamid & ",'" & myStrGoodName & "','" & myStrCityName & "'," & mynTonaj & "," & mynCarNum & ",'" & myCompanyName & "','" & myStrPriceSug & "','" & myStrDescription & "','" & myStrAddress & "','" & myStrBarname & "','" & mydDateElam & "','" & mydTimeElam & "','" & myStrCarName & "')"
                     CmdSql.ExecuteNonQuery()
                 Next
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -4439,7 +4440,7 @@ Namespace ReportsManagement
 			                         Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationSequentialTurns as AHRSeqT On AH.AHId=AHRSeqT.AHId
 			                         Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SeqT On AHRSeqT.SeqTId=SeqT.SeqTId 
 			                       Where AH.AHId=" & YourAnnouncementHallId & " and AH.Deleted=0 and AHRSeqT.RelationActive=1)")
-                Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
+                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 Da.Fill(Ds)
 
@@ -4469,7 +4470,7 @@ Namespace ReportsManagement
                 Da.SelectCommand = New SqlCommand("Select Citys.nCityCode,Citys.strCityName,Cast(Citys.nDistance/25 as bigint) as TravelLength,Provinces.ProvinceName from dbtransport.dbo.tbCity as Citys
                                                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces On Citys.nProvince=Provinces.ProvinceId
                                                     Where Citys.Deleted=0 and Provinces.Deleted=0 and Citys.ViewFlag=1 Order By Provinces.ProvinceName")
-                Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
+                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 Da.Fill(Ds)
 
@@ -5597,7 +5598,6 @@ Namespace LoadNotification.LoadPermission
         End Function
 
 
-
     End Class
 
     Public NotInheritable Class LoadNotificationLoadPermissionManagement
@@ -5825,6 +5825,8 @@ Namespace LoadNotification.LoadPermission
             End Try
         End Sub
 
+
+
     End Class
 
     Public Class TransportCompanyMoneyWalletInventoryIsLowException
@@ -5978,6 +5980,7 @@ Namespace RequesterManagement
         Public Shared ReadOnly UCComputerMessageProducerRealTimeTurnRegisterRequest As Int64 = 9
         Public Shared ReadOnly GetTurnofKiosk As Int64 = 10
         Public Shared ReadOnly UCResuscitationReserveTurn As Int64 = 11
+
     End Class
 
 

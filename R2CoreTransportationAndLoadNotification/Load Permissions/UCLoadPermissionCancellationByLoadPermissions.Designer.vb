@@ -46,7 +46,7 @@ Partial Class UCLoadPermissionCancellationByLoadPermissions
         Me.UcLoadPermissionCancellation.Dock = System.Windows.Forms.DockStyle.Top
         Me.UcLoadPermissionCancellation.Location = New System.Drawing.Point(0, 0)
         Me.UcLoadPermissionCancellation.Name = "UcLoadPermissionCancellation"
-        Me.UcLoadPermissionCancellation.Size = New System.Drawing.Size(913, 125)
+        Me.UcLoadPermissionCancellation.Size = New System.Drawing.Size(913, 217)
         Me.UcLoadPermissionCancellation.TabIndex = 1
         Me.UcLoadPermissionCancellation.UCBackColor = System.Drawing.Color.Black
         Me.UcLoadPermissionCancellation.UCBackColorDisable = System.Drawing.Color.Gray
@@ -54,13 +54,13 @@ Partial Class UCLoadPermissionCancellationByLoadPermissions
         '
         'UcucLoadPermissionCollectionAdvance
         '
-        Me.UcucLoadPermissionCollectionAdvance.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcucLoadPermissionCollectionAdvance.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcucLoadPermissionCollectionAdvance.BackColor = System.Drawing.Color.Transparent
-        Me.UcucLoadPermissionCollectionAdvance.Location = New System.Drawing.Point(0, 131)
+        Me.UcucLoadPermissionCollectionAdvance.Location = New System.Drawing.Point(0, 223)
         Me.UcucLoadPermissionCollectionAdvance.Name = "UcucLoadPermissionCollectionAdvance"
-        Me.UcucLoadPermissionCollectionAdvance.Size = New System.Drawing.Size(913, 417)
+        Me.UcucLoadPermissionCollectionAdvance.Size = New System.Drawing.Size(913, 325)
         Me.UcucLoadPermissionCollectionAdvance.TabIndex = 0
         '
         'UCLoadPermissionCancellationByLoadPermissions

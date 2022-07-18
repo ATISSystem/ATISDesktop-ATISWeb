@@ -2698,7 +2698,7 @@ Namespace Cars
         Public Function GetnIdPersonFirst(YournIdCar As Int64) As Int64
             Try
                 Dim da As New SqlDataAdapter : Dim ds As New DataSet
-                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=2) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) Or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By nIDCarAndPerson Desc")
+                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=2) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<240) Or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By nIDCarAndPerson Desc")
                 da.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
                 ds.Tables.Clear()
                 If da.Fill(ds) <> 0 Then

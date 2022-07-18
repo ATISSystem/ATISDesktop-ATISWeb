@@ -3699,7 +3699,7 @@ Namespace RequesterManagement
         Public Shared ReadOnly FrmcTruckDriverLoadAllocationsPriorityApplied As Int64 = 3
         Public Shared ReadOnly WcLoadCapacitorLoadAllocationLoadPermissionIssue As Int64 = 4
         Public Shared ReadOnly ATISRestfullTurnControllerRealTimeTurnRegisterRequest As Int64 = 12
-
+        Public Shared ReadOnly UCLoadPermissionCancellation As Int64 = 13
     End Class
 
 

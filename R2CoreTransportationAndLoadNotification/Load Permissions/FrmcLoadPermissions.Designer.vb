@@ -25,14 +25,14 @@ Partial Class FrmcLoadPermissions
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.PnlLoadPermissions = New System.Windows.Forms.Panel()
+        Me.UcucLoadPermissionCollectionAdvance = New R2CoreTransportationAndLoadNotification.UCUCLoadPermissionCollectionAdvance()
         Me.PnlLoadPermissionCancellation = New BlueActivity.Controls.AlphaGradientPanel()
         Me.ColorWithAlpha1 = New BlueActivity.Controls.ColorWithAlpha()
         Me.ColorWithAlpha2 = New BlueActivity.Controls.ColorWithAlpha()
         Me.UcLoadPermissionCancellation = New R2CoreTransportationAndLoadNotification.UCLoadPermissionCancellation()
-        Me.UcucLoadPermissionCollectionAdvance = New R2CoreTransportationAndLoadNotification.UCUCLoadPermissionCollectionAdvance()
-        Me.PnlLoadPermissions.SuspendLayout
-        Me.PnlLoadPermissionCancellation.SuspendLayout
-        Me.SuspendLayout
+        Me.PnlLoadPermissions.SuspendLayout()
+        Me.PnlLoadPermissionCancellation.SuspendLayout()
+        Me.SuspendLayout()
         '
         '_FrmMessageDialog
         '
@@ -40,9 +40,9 @@ Partial Class FrmcLoadPermissions
         '
         'PnlLoadPermissions
         '
-        Me.PnlLoadPermissions.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlLoadPermissions.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlLoadPermissions.BackColor = System.Drawing.Color.Transparent
         Me.PnlLoadPermissions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlLoadPermissions.Controls.Add(Me.UcucLoadPermissionCollectionAdvance)
@@ -51,28 +51,37 @@ Partial Class FrmcLoadPermissions
         Me.PnlLoadPermissions.Size = New System.Drawing.Size(995, 512)
         Me.PnlLoadPermissions.TabIndex = 49
         '
+        'UcucLoadPermissionCollectionAdvance
+        '
+        Me.UcucLoadPermissionCollectionAdvance.BackColor = System.Drawing.Color.Transparent
+        Me.UcucLoadPermissionCollectionAdvance.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.UcucLoadPermissionCollectionAdvance.Location = New System.Drawing.Point(0, 0)
+        Me.UcucLoadPermissionCollectionAdvance.Name = "UcucLoadPermissionCollectionAdvance"
+        Me.UcucLoadPermissionCollectionAdvance.Size = New System.Drawing.Size(993, 510)
+        Me.UcucLoadPermissionCollectionAdvance.TabIndex = 0
+        '
         'PnlLoadPermissionCancellation
         '
-        Me.PnlLoadPermissionCancellation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlLoadPermissionCancellation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlLoadPermissionCancellation.BackColor = System.Drawing.Color.Transparent
-        Me.PnlLoadPermissionCancellation.Border = true
+        Me.PnlLoadPermissionCancellation.Border = True
         Me.PnlLoadPermissionCancellation.BorderColor = System.Drawing.SystemColors.ActiveBorder
         Me.PnlLoadPermissionCancellation.Colors.Add(Me.ColorWithAlpha1)
         Me.PnlLoadPermissionCancellation.Colors.Add(Me.ColorWithAlpha2)
         Me.PnlLoadPermissionCancellation.ContentPadding = New System.Windows.Forms.Padding(0)
         Me.PnlLoadPermissionCancellation.Controls.Add(Me.UcLoadPermissionCancellation)
         Me.PnlLoadPermissionCancellation.CornerRadius = 20
-        Me.PnlLoadPermissionCancellation.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
-            Or BlueActivity.Controls.Corner.BottomLeft)  _
-            Or BlueActivity.Controls.Corner.BottomRight),BlueActivity.Controls.Corner)
-        Me.PnlLoadPermissionCancellation.Gradient = true
+        Me.PnlLoadPermissionCancellation.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight) _
+            Or BlueActivity.Controls.Corner.BottomLeft) _
+            Or BlueActivity.Controls.Corner.BottomRight), BlueActivity.Controls.Corner)
+        Me.PnlLoadPermissionCancellation.Gradient = True
         Me.PnlLoadPermissionCancellation.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.PnlLoadPermissionCancellation.GradientOffset = 1!
+        Me.PnlLoadPermissionCancellation.GradientOffset = 1.0!
         Me.PnlLoadPermissionCancellation.GradientSize = New System.Drawing.Size(0, 0)
         Me.PnlLoadPermissionCancellation.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.PnlLoadPermissionCancellation.Grayscale = false
+        Me.PnlLoadPermissionCancellation.Grayscale = False
         Me.PnlLoadPermissionCancellation.Image = Nothing
         Me.PnlLoadPermissionCancellation.ImageAlpha = 75
         Me.PnlLoadPermissionCancellation.ImagePadding = New System.Windows.Forms.Padding(5)
@@ -80,7 +89,7 @@ Partial Class FrmcLoadPermissions
         Me.PnlLoadPermissionCancellation.ImageSize = New System.Drawing.Size(48, 48)
         Me.PnlLoadPermissionCancellation.Location = New System.Drawing.Point(5, 50)
         Me.PnlLoadPermissionCancellation.Name = "PnlLoadPermissionCancellation"
-        Me.PnlLoadPermissionCancellation.Rounded = true
+        Me.PnlLoadPermissionCancellation.Rounded = True
         Me.PnlLoadPermissionCancellation.Size = New System.Drawing.Size(995, 512)
         Me.PnlLoadPermissionCancellation.TabIndex = 50
         '
@@ -98,29 +107,20 @@ Partial Class FrmcLoadPermissions
         '
         'UcLoadPermissionCancellation
         '
-        Me.UcLoadPermissionCancellation.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLoadPermissionCancellation.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLoadPermissionCancellation.BackColor = System.Drawing.Color.Transparent
         Me.UcLoadPermissionCancellation.Location = New System.Drawing.Point(7, 15)
         Me.UcLoadPermissionCancellation.Name = "UcLoadPermissionCancellation"
-        Me.UcLoadPermissionCancellation.Size = New System.Drawing.Size(981, 125)
+        Me.UcLoadPermissionCancellation.Size = New System.Drawing.Size(981, 346)
         Me.UcLoadPermissionCancellation.TabIndex = 0
         Me.UcLoadPermissionCancellation.UCBackColor = System.Drawing.Color.SkyBlue
         Me.UcLoadPermissionCancellation.UCBackColorDisable = System.Drawing.Color.Gray
         Me.UcLoadPermissionCancellation.UCNSSCurrent = Nothing
         '
-        'UcucLoadPermissionCollectionAdvance
-        '
-        Me.UcucLoadPermissionCollectionAdvance.BackColor = System.Drawing.Color.Transparent
-        Me.UcucLoadPermissionCollectionAdvance.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.UcucLoadPermissionCollectionAdvance.Location = New System.Drawing.Point(0, 0)
-        Me.UcucLoadPermissionCollectionAdvance.Name = "UcucLoadPermissionCollectionAdvance"
-        Me.UcucLoadPermissionCollectionAdvance.Size = New System.Drawing.Size(993, 510)
-        Me.UcucLoadPermissionCollectionAdvance.TabIndex = 0
-        '
         'FrmcLoadPermissions
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
         Me.Controls.Add(Me.PnlLoadPermissions)
@@ -130,7 +130,7 @@ Partial Class FrmcLoadPermissions
         Me.Text = "FrmcLoadPermissions"
         Me.Controls.SetChildIndex(Me.PnlLoadPermissionCancellation, 0)
         Me.Controls.SetChildIndex(Me.PnlLoadPermissions, 0)
-        Me.PnlLoadPermissions.ResumeLayout(false)
+        Me.PnlLoadPermissions.ResumeLayout(False)
         Me.PnlLoadPermissionCancellation.ResumeLayout(false)
         Me.ResumeLayout(false)
 
