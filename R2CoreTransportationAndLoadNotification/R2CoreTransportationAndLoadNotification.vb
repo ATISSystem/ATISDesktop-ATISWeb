@@ -82,7 +82,6 @@ Imports R2CoreParkingSystem.EntityRelations
 Imports R2CoreParkingSystem.RequesterManagement
 Imports R2CoreParkingSystem.PermissionManagement
 Imports R2CoreParkingSystem.EntityManagement
-Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement.Exceptions
@@ -2112,7 +2111,7 @@ Namespace Turns
                     R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                         "Select Distinct SeqT.SeqTId,SeqT.SeqTTitle,SeqT.SeqTColor,SeqT.SeqTKeyWord,SeqT.Active,SeqT.ViewFlag,SeqT.Deleted 
                          from R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SeqT
-                         Where SeqT.Deleted=0 and SeqT.Active=1", 86400, Ds)
+                         Where SeqT.Deleted=0 and SeqT.Active=1", 3600, Ds)
                     Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure)
                     For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                         Lst.Add(New R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure(Ds.Tables(0).Rows(Loopx).Item("SeqTId"), Ds.Tables(0).Rows(Loopx).Item("SeqTTitle").trim, Ds.Tables(0).Rows(Loopx).Item("SeqTColor").trim, Ds.Tables(0).Rows(Loopx).Item("SeqTKeyWord"), Ds.Tables(0).Rows(Loopx).Item("ViewFlag"), Ds.Tables(0).Rows(Loopx).Item("Active"), Ds.Tables(0).Rows(Loopx).Item("Deleted")))
@@ -2295,6 +2294,30 @@ Namespace Turns
     End Namespace
 
     Namespace TurnExpiration
+        Public Class R2CoreTransportationAndLoadNotificationMClassTurnExpirationManager
+            Private _DateTime As New R2DateTime
+
+            Public Sub TurnCreditRegistering(YourNSSSeqTurn As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure, YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+                Dim CmdSql As New SqlClient.SqlCommand
+                CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+                Try
+                    CmdSql.Connection.Open()
+                    CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                    CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblTurnCredits Set Active=0 Where Active=1 and SeqTId=" & YourNSSSeqTurn.SequentialTurnId & ""
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTurnCredits(SeqTId,SignificantTurnId,OtaghdarTurnNumber,DateTimeMilladi,DateShamsi,Time,UserId,Active,ViewFlag,Deleted)
+                                          Values(" & YourNSSSeqTurn.SequentialTurnId & "," & YourNSSTurn.nEnterExitId & ",'" & YourNSSTurn.OtaghdarTurnNumber.Trim & "','" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentTime & "'," & YourNSSSoftwareUser.UserId & ",1,1,0)"
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Catch ex As Exception
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then
+                        CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                    End If
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+        End Class
+
         Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTurnExpirationManagement
             Private Shared _DateTime As New R2DateTime
 

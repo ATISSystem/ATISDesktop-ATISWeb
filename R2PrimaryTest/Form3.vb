@@ -265,12 +265,8 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
-            Dim InstanceLoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
-            Dim NSS = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(462365, True)
-            NSS.nCityCode = 542154
-            InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadEditing(NSS, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
-
+            Dim X As New PayanehClassLibraryMClassCarTruckNobatManager
+            X.TurnsCancellation(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
 
             'Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
             'Dim InstanceTruck = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager

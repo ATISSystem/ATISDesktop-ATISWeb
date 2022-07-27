@@ -73,6 +73,9 @@ Public Class UCLoadPermissionCancellation
         Try
             UcViewerNSSLoadPermissionExtended.UCRefreshGeneral()
             CheckBoxTurn.Checked = True
+            CheckBoxLoadCapacitorLoad.Checked = True
+            UcCar.UCRefreshGeneral()
+            UcDriver.UCRefreshGeneral()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -122,7 +125,7 @@ Public Class UCLoadPermissionCancellation
                 Dim PrimaryTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure
                 PrimaryTurn = R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement.GetNSSPrimaryTurn(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId)
                 Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
-                InstanceLoadAllocation.LoadAllocationRegistering(UCNSSCurrent.nEstelamId, PrimaryTurn, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, R2CoreTransportationAndLoadNotificationRequesters.UCLoadPermissionCancellation, False, False)
+                InstanceLoadAllocation.LoadAllocationRegistering(UCNSSCurrent.nEstelamId, PrimaryTurn, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, R2CoreTransportationAndLoadNotificationRequesters.UCLoadPermissionCancellation, False, True)
                 Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
                 Dim NSSTruck = InstanceTurns.GetNSSTruck(PrimaryTurn.nEnterExitId)
                 UcCar.UCViewCarInformation(NSSTruck.NSSCar.nIdCar)

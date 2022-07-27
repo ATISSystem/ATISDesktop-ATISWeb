@@ -54,8 +54,8 @@ Public Class UCLstViewerAllOfnEnterExitId
 
     Public Function UCGetSelectedTurnId() As Int64
         Try
-            If LstViewerAllOfnEnterExitId.SelectedIndex >= 0 Then
-                Return DirectCast(LstViewerAllOfnEnterExitId.Items(LstViewerAllOfnEnterExitId.SelectedIndex), TurnItem).TurnDetails.nEnterExitId
+            If LstViewerAllOfnEnterExitId.SelectedItems IsNot Nothing Then
+                Return DirectCast(LstViewerAllOfnEnterExitId.SelectedItems(0), TurnItem).TurnDetails.nEnterExitId
             Else
                 Throw New Exception("شماره نوبت انتخاب نشده است")
             End If
@@ -79,7 +79,7 @@ Public Class UCLstViewerAllOfnEnterExitId
 
 #Region "Event Handlers"
 
-    Private Sub LstViewerAllOfnEnterExitId_SelectedValueChanged(sender As Object, e As EventArgs) Handles LstViewerAllOfnEnterExitId.SelectedValueChanged
+    Private Sub LstViewerAllOfnEnterExitId_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LstViewerAllOfnEnterExitId.SelectedIndexChanged
         RaiseEvent UCSelectedValueChanged()
     End Sub
 
@@ -109,19 +109,12 @@ End Class
 
 Public Class TurnItem
     Inherits ListViewItem
-    Public TurnButton As Button
 
     Public TurnDetails As PayanehClassLibraryTurnDetails = Nothing
 
     Public Sub New(ByVal YourTurnDetails As PayanehClassLibraryTurnDetails)
         TurnDetails = YourTurnDetails
-        Me.Text = YourTurnDetails.OtaghdarSeqTurnNumber
-        'customButton = New Button
-        'customButton.Left = Me.GetBounds(ItemBoundsPortion.Entire).Left
-        'customButton.Left = Me.GetBounds(ItemBoundsPortion.Entire).Left
-        'customButton.Width = Me.GetBounds(ItemBoundsPortion.Entire).Width
-        'customButton.Text = buttonText
-        'ListView.Controls.Add(customButton)
+        Me.Text = YourTurnDetails.nEnterExitId.ToString + " - " + YourTurnDetails.OtaghdarSeqTurnNumber + "   -   " + YourTurnDetails.StrEnterDate + " - " + YourTurnDetails.StrEnterTime + " - " + YourTurnDetails.TruckLPString + " - " + YourTurnDetails.TurnStatusTitle + " - " + YourTurnDetails.TruckDriver
     End Sub
 
 End Class

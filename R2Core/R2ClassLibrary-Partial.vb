@@ -846,10 +846,10 @@ Namespace SecurityAlgorithmsManagement
         Public Sub New()
         End Sub
 
-        Public Function Login(YourUserShenaseh As String, YourUserPassword As String) As Int64
+        Public Function Login(YourUserShenaseh As String, YourUserPassword As String, YourUserTypeId As Int64) As Int64
             Try
                 R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardSoftwareUserStructure(Nothing, Nothing, Nothing, Nothing, YourUserShenaseh, YourUserPassword, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
-                Dim NSS = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserShenaseh, YourUserPassword)
+                Dim NSS = R2CoreMClassSoftwareUsersManagement.GetNSSUser(YourUserShenaseh, YourUserPassword, YourUserTypeId)
                 If _LstUsers.Exists(Function(x) x.UserId = NSS.UserId) Then
                     _LstUsers.Where(Function(x) x.UserId = NSS.UserId)(0).StartDateTime = Now
                     Return _LstUsers.Where(Function(x) x.UserId = NSS.UserId)(0).ExchangeKey

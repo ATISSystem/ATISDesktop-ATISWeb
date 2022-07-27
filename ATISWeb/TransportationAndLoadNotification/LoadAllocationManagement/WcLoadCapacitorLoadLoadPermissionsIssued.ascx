@@ -113,7 +113,7 @@
                     </div>
 
                     <div style="width: 100%; text-align: right;">
-                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small;"><span>جهت حمل <%=PPDS.GoodName%> تناژ:<%=PPDS.Tonaj%></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small;"><span>جهت حمل <%=PPDS.GoodName%>   با تناژ:<%=PPDS.Tonaj%></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                         <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small;"><span>از اصفهان به مقصد <%=PPDS.TargetCity%></span>&nbsp;&nbsp;&nbsp;</div>
                     </div>
                     <br />
@@ -171,7 +171,7 @@
                     </div>
 
                     <div style="width: 100%; text-align: right;">
-                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small;"><span>جهت حمل <%=PPDS.GoodName%> تناژ:<%=PPDS.Tonaj%></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small;"><span>جهت حمل <%=PPDS.GoodName%>   با تناژ:<%=PPDS.Tonaj%></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                         <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: x-small;"><span>از اصفهان به مقصد <%=PPDS.TargetCity%></span>&nbsp;&nbsp;&nbsp;</div>
                     </div>
                     <br />

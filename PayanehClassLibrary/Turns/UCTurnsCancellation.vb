@@ -2,16 +2,15 @@
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
+Imports System.Reflection
 
 Imports R2CoreGUI
 Imports PayanehClassLibrary.CarTruckNobatManagement
-Imports System.Reflection
-Imports R2Core.DateAndTimeManagement
+Imports R2CoreTransportationAndLoadNotification.Turns.TurnExpiration
+Imports R2CoreTransportationAndLoadNotification.Turns
 
 Public Class UCTurnsCancellation
     Inherits UCGeneral
-
-    Private _DateTime As New R2DateTime
 
 #Region "General Properties"
 
@@ -41,7 +40,7 @@ Public Class UCTurnsCancellation
         Try
             UCRefresh()
         Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message) 
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
         End Try
 
     End Sub
@@ -57,7 +56,7 @@ Public Class UCTurnsCancellation
     Public Sub UCRefresh()
         Try
         Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message) 
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
         End Try
     End Sub
 
@@ -70,13 +69,25 @@ Public Class UCTurnsCancellation
 
     Private Sub CButtonTurnsCancellation_Click(sender As Object, e As EventArgs) Handles CButtonTurnsCancellation.Click
         Try
-            'Cursor.Current = Cursors.WaitCursor
-            'PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellation(UcLstViewerAllOfnEnterExitId.UCGetSelectedSequentialTurnNumber, UcLstViewerAllOfnEnterExitId.UCGetCurrentNSSSequentialTurn, UcLstViewerAllOfnEnterExitId.UCGetSelectedTargetYear)
-            'UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ابطال گروهی نوبت ها انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+            Cursor.Current = Cursors.WaitCursor
+            Dim InstanceTurns = New PayanehClassLibraryMClassCarTruckNobatManager
+            InstanceTurns.TurnsCancellation(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ابطال گروهی نوبت ها انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
         Cursor.Current = Cursors.Default
+    End Sub
+
+    Private Sub UcLstViewerAllOfnEnterExitId_UCSelectedValueChanged() Handles UcLstViewerAllOfnEnterExitId.UCSelectedValueChanged
+        Try
+            Dim InstanceTurnExpiration = New R2CoreTransportationAndLoadNotificationMClassTurnExpirationManager
+            Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+            InstanceTurnExpiration.TurnCreditRegistering(UcLstViewerAllOfnEnterExitId.UCGetCurrentNSSSequentialTurn, InstanceTurns.GetNSSTurn(UcLstViewerAllOfnEnterExitId.UCGetSelectedTurnId), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "شماره اعتبار مورد نظر ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
     End Sub
 
 #End Region
