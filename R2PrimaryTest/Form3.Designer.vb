@@ -48,7 +48,16 @@ Partial Class Form3
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Button9 = New System.Windows.Forms.Button()
         Me.Button13 = New System.Windows.Forms.Button()
+        Me.Button14 = New System.Windows.Forms.Button()
+        Me.TxtCalendarYear = New System.Windows.Forms.TextBox()
+        Me.TxtCalendarMonth = New System.Windows.Forms.TextBox()
+        Me.TxtCalendarTotalDay = New System.Windows.Forms.TextBox()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Button1
@@ -306,11 +315,97 @@ Partial Class Form3
         Me.Button13.Text = "چاپ مجوز بارگیری"
         Me.Button13.UseVisualStyleBackColor = False
         '
+        'Button14
+        '
+        Me.Button14.BackColor = System.Drawing.Color.Khaki
+        Me.Button14.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Button14.Location = New System.Drawing.Point(0, 0)
+        Me.Button14.Name = "Button14"
+        Me.Button14.Size = New System.Drawing.Size(200, 37)
+        Me.Button14.TabIndex = 36
+        Me.Button14.Text = "پر کردن تقویم"
+        Me.Button14.UseVisualStyleBackColor = False
+        '
+        'TxtCalendarYear
+        '
+        Me.TxtCalendarYear.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.TxtCalendarYear.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.TxtCalendarYear.Location = New System.Drawing.Point(8, 61)
+        Me.TxtCalendarYear.Name = "TxtCalendarYear"
+        Me.TxtCalendarYear.Size = New System.Drawing.Size(55, 23)
+        Me.TxtCalendarYear.TabIndex = 37
+        Me.TxtCalendarYear.Text = "1401"
+        Me.TxtCalendarYear.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'TxtCalendarMonth
+        '
+        Me.TxtCalendarMonth.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.TxtCalendarMonth.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.TxtCalendarMonth.Location = New System.Drawing.Point(69, 60)
+        Me.TxtCalendarMonth.Name = "TxtCalendarMonth"
+        Me.TxtCalendarMonth.Size = New System.Drawing.Size(55, 23)
+        Me.TxtCalendarMonth.TabIndex = 38
+        Me.TxtCalendarMonth.Text = "06"
+        Me.TxtCalendarMonth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'TxtCalendarTotalDay
+        '
+        Me.TxtCalendarTotalDay.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.TxtCalendarTotalDay.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.TxtCalendarTotalDay.Location = New System.Drawing.Point(130, 60)
+        Me.TxtCalendarTotalDay.Name = "TxtCalendarTotalDay"
+        Me.TxtCalendarTotalDay.Size = New System.Drawing.Size(55, 23)
+        Me.TxtCalendarTotalDay.TabIndex = 39
+        Me.TxtCalendarTotalDay.Text = "31"
+        Me.TxtCalendarTotalDay.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.Label3)
+        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Controls.Add(Me.Button14)
+        Me.Panel1.Controls.Add(Me.TxtCalendarTotalDay)
+        Me.Panel1.Controls.Add(Me.TxtCalendarYear)
+        Me.Panel1.Controls.Add(Me.TxtCalendarMonth)
+        Me.Panel1.Location = New System.Drawing.Point(255, 304)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(200, 100)
+        Me.Panel1.TabIndex = 40
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(24, 42)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(27, 13)
+        Me.Label1.TabIndex = 41
+        Me.Label1.Text = "سال"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(87, 44)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(22, 13)
+        Me.Label2.TabIndex = 42
+        Me.Label2.Text = "ماه"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(124, 42)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(66, 13)
+        Me.Label3.TabIndex = 43
+        Me.Label3.Text = "ماه چند روزه"
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1078, 450)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Button13)
         Me.Controls.Add(Me.Button9)
         Me.Controls.Add(Me.PictureBox1)
@@ -339,6 +434,8 @@ Partial Class Form3
         Me.Name = "Form3"
         Me.Text = "Form3"
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -370,4 +467,12 @@ Partial Class Form3
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents Button9 As Button
     Friend WithEvents Button13 As Button
+    Friend WithEvents Button14 As Button
+    Friend WithEvents TxtCalendarYear As TextBox
+    Friend WithEvents TxtCalendarMonth As TextBox
+    Friend WithEvents TxtCalendarTotalDay As TextBox
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Label1 As Label
 End Class

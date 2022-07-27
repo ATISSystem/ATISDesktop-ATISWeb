@@ -641,4 +641,27 @@ Public Class Form3
             MessageBox.Show(ex.Message)
         End Try
     End Sub
+
+    Private Sub Button14_Click_1(sender As Object, e As EventArgs) Handles Button14.Click
+        Dim CmdSql As New SqlClient.SqlCommand
+        CmdSql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
+        Try
+            Dim InstancePublicProcedures = New R2Core.PublicProc.R2CoreInstancePublicProceduresManager
+            CmdSql.Connection.Open()
+            CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+            For loopx As Int64 = 1 To Convert.ToInt64(TxtCalendarTotalDay.Text)
+                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar(DateShamsi,PCType) Values('" & TxtCalendarYear.Text + "/" + TxtCalendarMonth.Text + "/" + InstancePublicProcedures.RepeatStr("0", 2 - loopx.ToString.Length) + loopx.ToString & "',0)"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Insert Into  R2Primary.dbo.TblPersianCalendar (DateShamsi,PCType) Values('" & TxtCalendarYear.Text + "/" + TxtCalendarMonth.Text + "/" + InstancePublicProcedures.RepeatStr("0", 2 - loopx.ToString.Length) + loopx.ToString & "',0)"
+                CmdSql.ExecuteNonQuery()
+            Next
+            CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            MessageBox.Show("Ok...")
+        Catch ex As Exception
+            If CmdSql.Connection.State <> ConnectionState.Closed Then
+                CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+            End If
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
 End Class

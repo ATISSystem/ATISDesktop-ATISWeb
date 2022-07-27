@@ -77,9 +77,9 @@ Public Class FrmcIndigenousTrucksWithUNNativeLP
         Me.UcPanel1 = New R2CoreGUI.UCPanel()
         Me.UcLabel2 = New R2CoreGUI.UCLabel()
         Me.UcPanelNewTruck = New R2CoreGUI.UCPanel()
+        Me.ChkExpirationShamsiDate = New System.Windows.Forms.CheckBox()
         Me.UcLabel1 = New R2CoreGUI.UCLabel()
         Me.UcPersianShamsiDate = New R2CoreGUI.UCPersianShamsiDate()
-        Me.ChkExpirationShamsiDate = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.PnlBoomiExceptTrucks.SuspendLayout()
@@ -89,7 +89,7 @@ Public Class FrmcIndigenousTrucksWithUNNativeLP
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(247, 150)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1500)
         '
         'Panel1
         '
@@ -338,6 +338,19 @@ Public Class FrmcIndigenousTrucksWithUNNativeLP
         Me.UcPanelNewTruck.Size = New System.Drawing.Size(252, 249)
         Me.UcPanelNewTruck.TabIndex = 201
         '
+        'ChkExpirationShamsiDate
+        '
+        Me.ChkExpirationShamsiDate.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.ChkExpirationShamsiDate.AutoSize = True
+        Me.ChkExpirationShamsiDate.Font = New System.Drawing.Font("IRMehr", 15.75!)
+        Me.ChkExpirationShamsiDate.Location = New System.Drawing.Point(64, 122)
+        Me.ChkExpirationShamsiDate.Name = "ChkExpirationShamsiDate"
+        Me.ChkExpirationShamsiDate.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.ChkExpirationShamsiDate.Size = New System.Drawing.Size(125, 41)
+        Me.ChkExpirationShamsiDate.TabIndex = 202
+        Me.ChkExpirationShamsiDate.Text = "تاریخ انقضاء"
+        Me.ChkExpirationShamsiDate.UseVisualStyleBackColor = True
+        '
         'UcLabel1
         '
         Me.UcLabel1._UCBackColorPopup = System.Drawing.Color.Transparent
@@ -362,24 +375,11 @@ Public Class FrmcIndigenousTrucksWithUNNativeLP
         Me.UcPersianShamsiDate.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
         Me.UcPersianShamsiDate.BackColor = System.Drawing.Color.Transparent
         Me.UcPersianShamsiDate.Enabled = False
-        Me.UcPersianShamsiDate.Location = New System.Drawing.Point(63, 159)
+        Me.UcPersianShamsiDate.Location = New System.Drawing.Point(41, 159)
         Me.UcPersianShamsiDate.Name = "UcPersianShamsiDate"
-        Me.UcPersianShamsiDate.Size = New System.Drawing.Size(126, 25)
+        Me.UcPersianShamsiDate.Size = New System.Drawing.Size(162, 25)
         Me.UcPersianShamsiDate.TabIndex = 200
         Me.UcPersianShamsiDate.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        '
-        'ChkExpirationShamsiDate
-        '
-        Me.ChkExpirationShamsiDate.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.ChkExpirationShamsiDate.AutoSize = True
-        Me.ChkExpirationShamsiDate.Font = New System.Drawing.Font("IRMehr", 15.75!)
-        Me.ChkExpirationShamsiDate.Location = New System.Drawing.Point(64, 122)
-        Me.ChkExpirationShamsiDate.Name = "ChkExpirationShamsiDate"
-        Me.ChkExpirationShamsiDate.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.ChkExpirationShamsiDate.Size = New System.Drawing.Size(125, 41)
-        Me.ChkExpirationShamsiDate.TabIndex = 202
-        Me.ChkExpirationShamsiDate.Text = "تاریخ انقضاء"
-        Me.ChkExpirationShamsiDate.UseVisualStyleBackColor = True
         '
         'FrmcIndigenousTrucksWithUNNativeLP
         '

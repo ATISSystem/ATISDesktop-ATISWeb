@@ -264,7 +264,7 @@ Namespace CarTruckNobatManagement
     Public Class PayanehClassLibraryMClassCarTruckNobatManager
         Private _DateTime As New DateAndTimeManagement.R2DateTime
 
-        Private Sub TurnsCancellation(YourNSSSequentialTurn As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure, NSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+        Private Sub TurnsCancellation(YourNSSSequentialTurn As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -310,7 +310,7 @@ Namespace CarTruckNobatManagement
                     CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                     CmdSql.CommandText =
                      "Update dbtransport.dbo.TbEnterExit
-                      Set TurnStatus=" & TurnStatuses.CancelledUnderScore & ",bFlag=1,bFlagDriver=1,strElamDate='" & TimeOfDay.DateShamsiFull & "',strElamTime='" & TimeOfDay.Time & "' 
+                      Set TurnStatus=" & TurnStatuses.CancelledUnderScore & ",bFlag=1,bFlagDriver=1,strElamDate='" & TimeOfDay.DateShamsiFull & "',strElamTime='" & TimeOfDay.Time & "',nUserIdExit=" & YourNSSSoftwareUser.UserId & " 
                       Where nEnterExitId In   
                        (Select nEnterExitId from dbtransport.dbo.tbEnterExit as Turns
                         Where (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and
@@ -351,11 +351,11 @@ Namespace CarTruckNobatManagement
                         Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTruck(DSTurns.Tables(0).Rows(LoopOnLine).Item("nEnterExitId")).NSSCar.nIdCar)
                         TWSClassLibrary.TDBClientManagement.TWSClassTDBClientManagement.DelNobat(NSSCarTruck.NSSCar.StrCarNo, NSSCarTruck.NSSCar.StrCarSerialNo)
                     Next
-                    Dim TurnsSB = New StringBuilder
-                    For LoopxLog As Int64 = 0 To DSTurns.Tables(0).Rows.Count - 1
-                        TurnsSB.Append(DSTurns.Tables(0).Rows(LoopxLog).Item("nEnterExitId")).Append(",")
-                    Next
-                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, PayanehClassLibraryLogType.TurnsCancellation, "کنسل کردن گروهی نوبت ها", "SeqT=" + YourNSSSequentialTurn.SequentialTurnTitle, "TotalTurn=" + TotalTurns.ToString, TurnsSB.ToString(), String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
+                    'Dim TurnsSB = New StringBuilder
+                    'For LoopxLog As Int64 = 0 To DSTurns.Tables(0).Rows.Count - 1
+                    '    TurnsSB.Append(DSTurns.Tables(0).Rows(LoopxLog).Item("nEnterExitId")).Append(",")
+                    'Next
+                    R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(Nothing, PayanehClassLibraryLogType.TurnsCancellation, "کنسل کردن گروهی نوبت ها", "SeqT=" + YourNSSSequentialTurn.SequentialTurnTitle, "TotalTurn=" + TotalTurns.ToString, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserId, Nothing, Nothing))
                 End If
             Catch ex As SqlInjectionException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
@@ -381,6 +381,9 @@ Namespace CarTruckNobatManagement
                 Dim TimeofDay = _DateTime.GetCurrentTime
                 'طبق کانفیگ سیستم کلا ابطال نوبت ها فعال باشد یا نه
                 If Not InstanceConfigurations.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 0) Then Return
+                'کنترل این که ممکن است هنوز آزاد سازی بار تمام نشده باشد لذا ابطال نوبت ها نباید انجام گیرد حتی اگر زمان ابطال نوبت ها فرارسیده باشد
+                Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+                If InstanceLoadAllocation.GetLoadAllocationsforLoadPermissionRegistering().Count <> 0 Then Exit Sub
                 'ابطال نوبت ها
                 Dim LstSeqTs = InstanceSequentialTurns.GetSequentialTurns()
                 For Loopx As Int64 = 0 To LstSeqTs.Count - 1
