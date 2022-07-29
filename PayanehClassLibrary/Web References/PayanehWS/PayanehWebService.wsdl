@@ -141,7 +141,8 @@
       <s:element name="WebMethodReportingInformationPrividerCapacitorLoadsTransportCompaniesRegisteredLoadsReport">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="YourAnnouncementHallId" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourAHId" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourAHSGId" type="s:long" />
             <s:element minOccurs="1" maxOccurs="1" name="YourCompanyCode" type="s:long" />
             <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
             <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
@@ -1020,10 +1021,10 @@
   </wsdl:binding>
   <wsdl:service name="PayanehWebService">
     <wsdl:port name="PayanehWebServiceSoap" binding="tns:PayanehWebServiceSoap">
-      <soap:address location="http://192.168.1.2:2012/PayanehWebService.asmx" />
+      <soap:address location="http://localhost:2012/PayanehWebService.asmx" />
     </wsdl:port>
     <wsdl:port name="PayanehWebServiceSoap12" binding="tns:PayanehWebServiceSoap12">
-      <soap12:address location="http://192.168.1.2:2012/PayanehWebService.asmx" />
+      <soap12:address location="http://localhost:2012/PayanehWebService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

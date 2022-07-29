@@ -2,10 +2,10 @@
 Imports System.Reflection
 Imports System.Windows.Forms
 
-Imports PayanehClassLibrary.AnnouncementHallsManagement.AnnouncementHalls
 Imports PayanehClassLibrary.ProcessesManagement
 Imports PayanehClassLibrary.ReportsManagement
 Imports R2Core.DesktopProcessesManagement
+Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
 Imports R2CoreGUI
 
 Public Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
@@ -58,24 +58,26 @@ Public Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
     Private Sub UcDateTimeHolder_UCDoCommand() Handles UcDateTimeHolder.UCDoCommand
         Try
             Cursor.Current = Cursors.WaitCursor
-            Dim AnnouncemenetHall As Int64
+
+            Dim AHId = AnnouncementHalls.None
+            Dim AHSGId = AnnouncementHallSubGroups.None
             If RBAllAnnouncementHall.Checked = True Then
-                AnnouncemenetHall = AnnouncementHalls.General
+                If UcAnnouncementHallSelection.UCNSSCurrentAnnouncementHall Is Nothing Then Throw New R2Core.ExceptionManagement.DataEntryException
+                AHId = UcAnnouncementHallSelection.UCNSSCurrentAnnouncementHall.AHId
+                AHSGId = AnnouncementHallSubGroups.None
             Else
-                If UcucAnnouncementHallCollection.UCCurrentNSS Is Nothing Then
-                    _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "سالن اعلام بار مورد نظر را انتخاب نمایید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-                    Exit Try
-                End If
-                AnnouncemenetHall = UcucAnnouncementHallCollection.UCCurrentNSS.AHId
+                If UcAnnouncementHallSelection.UCNSSCurrentAnnouncementHallSubGroup Is Nothing Then Throw New R2Core.ExceptionManagement.DataEntryException
+                AHId = AnnouncementHalls.None
+                AHSGId = UcAnnouncementHallSelection.UCNSSCurrentAnnouncementHallSubGroup.AHSGId
             End If
 
             Dim TargetCityId As Int64
             If ChkLoadTargetCity.Checked Then TargetCityId = UcSearcherLoadTargets.UCGetSelectedNSS.OCode Else TargetCityId = Int64.MinValue
 
             If RBAllCompany.Checked = True Then
-                WS.WebMethodReportingInformationPrividerCapacitorLoadsTransportCompaniesRegisteredLoadsReport(AnnouncemenetHall, Int64.MinValue, UcDateTimeHolder.UCGetDateTime1.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime1.DateShamsiFull, UcDateTimeHolder.UCGetDateTime1.Time, UcDateTimeHolder.UCGetDateTime2.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime2.DateShamsiFull, UcDateTimeHolder.UCGetDateTime2.Time, TargetCityId,WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
+                WS.WebMethodReportingInformationPrividerCapacitorLoadsTransportCompaniesRegisteredLoadsReport(AHId, AHSGId, Int64.MinValue, UcDateTimeHolder.UCGetDateTime1.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime1.DateShamsiFull, UcDateTimeHolder.UCGetDateTime1.Time, UcDateTimeHolder.UCGetDateTime2.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime2.DateShamsiFull, UcDateTimeHolder.UCGetDateTime2.Time, TargetCityId, WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
             ElseIf RBSpecialCompany.Checked = True Then
-                WS.WebMethodReportingInformationPrividerCapacitorLoadsTransportCompaniesRegisteredLoadsReport(AnnouncemenetHall, UcSearcherTransportCompanies.UCGetSelectedNSS.OCode, UcDateTimeHolder.UCGetDateTime1.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime1.DateShamsiFull, UcDateTimeHolder.UCGetDateTime1.Time, UcDateTimeHolder.UCGetDateTime2.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime2.DateShamsiFull, UcDateTimeHolder.UCGetDateTime2.Time, TargetCityId,WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
+                WS.WebMethodReportingInformationPrividerCapacitorLoadsTransportCompaniesRegisteredLoadsReport(AHId, AHSGId, UcSearcherTransportCompanies.UCGetSelectedNSS.OCode, UcDateTimeHolder.UCGetDateTime1.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime1.DateShamsiFull, UcDateTimeHolder.UCGetDateTime1.Time, UcDateTimeHolder.UCGetDateTime2.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime2.DateShamsiFull, UcDateTimeHolder.UCGetDateTime2.Time, TargetCityId, WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
             End If
 
             R2CoreGUIMClassInformationManagement.PrintReport(PayanehReports.CapacitorLoadsTransportCompaniesRegisteredLoadsReport)

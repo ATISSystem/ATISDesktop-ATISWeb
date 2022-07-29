@@ -51,11 +51,11 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                     var OtaghdarTurnNumber = Lst[Loopx].OtaghdarTurnNumber.Trim().Split('-')[0];
                     var TurnDistanceToValidity = Lst[Loopx].OtaghdarTurnNumber.Trim().Split('-')[1];
                     Item.OtaghdarTurnNumber = "شماره نوبت : " + OtaghdarTurnNumber + " فاصله شما تا اعتبار : " + TurnDistanceToValidity;
-                    if (Loopx == 0)
-                    {
-                        var NSSSeqTurn = InstanceSequentialTurns.GetNSSSequentialTurn(Lst[Loopx]);
-                        Item.OtaghdarTurnNumber += "\r\n" + "شماره اعتبار : " + InstanceTurns.GetFirstActiveTurn(NSSSeqTurn).OtaghdarTurnNumber ;
-                    }
+                    //if (Loopx == 0)
+                    //{
+                    //    var NSSSeqTurn = InstanceSequentialTurns.GetNSSSequentialTurn(Lst[Loopx]);
+                    //    Item.OtaghdarTurnNumber += "\r\n" + "شماره اعتبار : " + InstanceTurns.GetFirstActiveTurn(NSSSeqTurn).OtaghdarTurnNumber ;
+                    //}
                     Item.TurnDateTime = "زمان: " + Lst[Loopx].EnterDate.Trim() + " - " + Lst[Loopx].EnterTime.Trim();
                     Item.TurnStatusTitle = "وضعیت نوبت: " + Lst[Loopx].TurnStatusTitle.Trim();
                     Item.LPPString = "ناوگان: " + Lst[Loopx].LicensePlatePString.Trim();

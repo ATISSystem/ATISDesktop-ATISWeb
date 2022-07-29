@@ -105,7 +105,7 @@ Namespace Trucks
                            Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
                            Inner Join dbtransport.dbo.tbCarType as CarTypes On Cars.snCarType=CarTypes.snCarType 
                          Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and
-                               EntityRelations.RelationActive=1 and Cars.ViewFlag=1 and CarAndPersons.snRelation=2 and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000'))  
+                               EntityRelations.RelationActive=1 and Cars.ViewFlag=1 and CarAndPersons.snRelation=2 and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000'))  
                          Order By CarAndPersons.nIDCarAndPerson Desc", 300, DS).GetRecordsCount() = 0 Then Throw New TruckNotFoundException
                 Dim NSS As R2CoreTransportationAndLoadNotificationStandardTruckStructure = New R2CoreTransportationAndLoadNotificationStandardTruckStructure
                 Dim InstanceCars = New R2CoreParkingSystemInstanceCarsManager
@@ -130,7 +130,7 @@ Namespace Trucks
                         "Select AHSGs.AHSGTitle from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars AS AHSGsCars
                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On AHSGsCars.AHSGId=AHSGs.AHSGId 
                          Where AHSGsCars.CarId=" & YourNSSTruck.NSSCar.nIdCar & " and AHSGsCars.RelationActive=1 and AHSGs.Deleted=0
-                               and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<120) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                               and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<240) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                          Order By Priority Asc,AHSGsCars.RelationId Desc", 0, Ds).GetRecordsCount() = 0 Then
                     Throw New AnnouncementHallSubGroupRelationTruckNotExistException
                 End If
@@ -184,7 +184,7 @@ Namespace Trucks
                     Da.SelectCommand = New SqlCommand(
                         "Select AHSGId from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGsCars 
                          Where CarId=" & YourNSSTruck.NSSCar.nIdCar & " and RelationActive=1
-                               and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<120) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                               and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<240) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                          Order By Priority Asc,AHSGsCars.RelationId Desc")
                     Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
                     If Da.Fill(Ds) = 0 Then Throw New AnnouncementHallSubGroupRelationTruckNotExistException
@@ -193,7 +193,7 @@ Namespace Trucks
                     If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                         "Select AHSGId from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGsCars 
                          Where CarId=" & YourNSSTruck.NSSCar.nIdCar & " and RelationActive=1
-                               and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<120) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                               and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<240) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                          Order By Priority Asc,AHSGsCars.RelationId Desc", 3600, Ds).GetRecordsCount() = 0 Then
                         Throw New AnnouncementHallSubGroupRelationTruckNotExistException
                     End If
@@ -236,7 +236,7 @@ Namespace Trucks
                 Dim Ds As New DataSet
                 If InstanceSqlDataBox.GetDataBOX(New R2PrimarySqlConnection,
                    "Select Top 1 AHSGId from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGsCars  
-                    Where CarId=" & YourNSSTruck.NSSCar.nIdCar & " and RelationActive=1 and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<120) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000'))
+                    Where CarId=" & YourNSSTruck.NSSCar.nIdCar & " and RelationActive=1 and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<240) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000'))
                     Order By Priority Asc,AHSGsCars.RelationId Desc", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New AnnouncementHallSubGroupRelationTruckNotExistException
                 End If
@@ -334,7 +334,7 @@ Namespace Trucks
                            Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
                            Inner Join dbtransport.dbo.tbCarType as CarTypes On Cars.snCarType=CarTypes.snCarType 
                          Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and
-                               EntityRelations.RelationActive=1 and Cars.ViewFlag=1 and CarAndPersons.snRelation=2 and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000'))   
+                               EntityRelations.RelationActive=1 and Cars.ViewFlag=1 and CarAndPersons.snRelation=2 and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000'))   
                          Order By CarAndPersons.nIDCarAndPerson Desc", 1, DS).GetRecordsCount() = 0 Then Throw New TruckNotFoundException
                 Dim NSS As R2CoreTransportationAndLoadNotificationStandardTruckStructure = New R2CoreTransportationAndLoadNotificationStandardTruckStructure
                 NSS.NSSCar = R2CoreParkingSystemMClassCars.GetNSSCar(DS.Tables(0).Rows(0).Item("nIdCar"))
@@ -353,7 +353,7 @@ Namespace Trucks
                 Dim Ds As New DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                    "Select Top 1 AHSGId from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGsCars  
-                    Where CarId=" & YourNSSTruck.NSSCar.nIdCar & " and RelationActive=1 and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<120) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000'))  
+                    Where CarId=" & YourNSSTruck.NSSCar.nIdCar & " and RelationActive=1 and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<240) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000'))  
                     Order By Priority Asc,AHSGsCars.RelationId Desc", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New AnnouncementHallSubGroupRelationTruckNotExistException
                 End If
@@ -378,7 +378,7 @@ Namespace Trucks
                         "Select AHSGs.AHSGTitle from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars AS AHSGsCars
                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On AHSGsCars.AHSGId=AHSGs.AHSGId 
                          Where AHSGsCars.CarId=" & YourNSSTruck.NSSCar.nIdCar & " and AHSGsCars.RelationActive=1 and AHSGs.Deleted=0
-                               and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<120) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                               and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<240) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                          Order By Priority Asc,AHSGsCars.RelationId Desc", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New AnnouncementHallSubGroupRelationTruckNotExistException
                 End If
@@ -402,7 +402,7 @@ Namespace Trucks
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                         "Select AHSGId from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGsCars
                          Where CarId=" & YourNSSTruck.NSSCar.nIdCar & " and RelationActive=1
-                               and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<120) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                               and ((DATEDIFF(SECOND,AHSGsCars.RelationTimeStamp,getdate())<240) or (AHSGsCars.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                          Order By Priority Asc,AHSGsCars.RelationId Desc", 0, Ds).GetRecordsCount() = 0 Then
                     Throw New AnnouncementHallSubGroupRelationTruckNotExistException
                 End If
@@ -480,7 +480,7 @@ Namespace Trucks
                 CmdSql.ExecuteNonQuery()
                 CmdSql.CommandText = "Select Top 1 AnnouncementHallSubGroupsRelationCars.Priority from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AnnouncementHallSubGroupsRelationCars
                                       Where AnnouncementHallSubGroupsRelationCars.CarId=" & YourTruck.NSSCar.nIdCar & " and AnnouncementHallSubGroupsRelationCars.RelationActive=1 
-                                      and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) or (RelationTimeStamp='2015-01-01 00:00:00.000'))
+                                      and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<240) or (RelationTimeStamp='2015-01-01 00:00:00.000'))
                                       Order By AnnouncementHallSubGroupsRelationCars.Priority Desc,RelationId Desc"
                 Dim PriorityAnnouncementHallSubGroups = CmdSql.ExecuteScalar + 1
                 CmdSql.ExecuteNonQuery()
@@ -680,7 +680,7 @@ Namespace TruckDrivers
                          Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Persons.nIDPerson=CarAndPersons.nIDPerson
                       Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and 
                             EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 
-                            and CarAndPersons.snRelation=2 and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                            and CarAndPersons.snRelation=2 and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                             Order By CarAndPersons.nIDCarAndPerson Desc", 300, DS).GetRecordsCount() = 0 Then Throw New TruckDriverNotFoundException
                 Dim NSS As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure = New R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
                 Dim InstanceDrivers = New R2CoreParkingSystemInstanceDriversManager
@@ -722,7 +722,7 @@ Namespace TruckDrivers
                               Inner Join dbtransport.dbo.TbPerson as Persons On CarAndPersons.nIDPerson=Persons.nIDPerson 
                               Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver 
                       Where  Cars.nIDCar=" & YourTruckId & " and Cars.ViewFlag=1 and CarAndPersons.snRelation=2  
-                             and CarAndPersons.snRelation=2 and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                             and CarAndPersons.snRelation=2 and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                       Order By CarAndPersons.nIDCarAndPerson Desc", 1, DS).GetRecordsCount() = 0 Then Throw New TruckDriverNotFoundException
                 Dim NSS As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure = New R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
                 NSS.NSSDriver = R2CoreParkingSystemMClassDrivers.GetNSSDriver(DS.Tables(0).Rows(0).Item("nIdDriver"))
@@ -808,7 +808,7 @@ Namespace TruckDrivers
                          Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Persons.nIDPerson=CarAndPersons.nIDPerson
                       Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and 
                             EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 and CarAndPersons.snRelation=2 
-                            and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                            and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                             Order By CarAndPersons.nIDCarAndPerson Desc", 1, DS).GetRecordsCount() = 0 Then Throw New TruckDriverNotFoundException
                 Dim NSS As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure = New R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
                 NSS.NSSDriver = R2CoreParkingSystemMClassDrivers.GetNSSDriver(DS.Tables(0).Rows(0).Item("nIdDriver"))
@@ -2221,10 +2221,10 @@ Namespace LoadCapacitor
                         End If
                     End If
                     'استاندارد سازی نرخ حمل بر اساس تعرفه های سازمانی
-                    Dim Tarrif As Int64 = YourNSS.StrPriceSug
+                    Dim Tarrif As Int64
                     Try
-                        Dim TarrifTemp = InstanceTransportTarrifs.GetNSSTransportTarrif(YourNSS).Tarrif
-                        If Tarrif < TarrifTemp Then Tarrif = TarrifTemp
+                        Tarrif = InstanceTransportTarrifs.GetNSSTransportTarrif(YourNSS).Tarrif
+                        Tarrif = InstanceTransportTarrifs.GetUltimateTransportTarrif(YourNSS.AHSGId, YourNSS.nTonaj, Tarrif)
                     Catch exx As TransportPriceTarrifNotFoundException
                     End Try
 
@@ -2369,9 +2369,10 @@ Namespace LoadCapacitor
                     End If
 
                     'استاندارد سازی نرخ حمل بر اساس تعرفه های سازمانی
-                    Dim Tarrif As String = 0
+                    Dim Tarrif As Int64
                     Try
                         Tarrif = InstanceTransportTarrifs.GetNSSTransportTarrif(YourNSS).Tarrif
+                        Tarrif = InstanceTransportTarrifs.GetUltimateTransportTarrif(YourNSS.AHSGId, YourNSS.nTonaj, Tarrif)
                     Catch exx As TransportPriceTarrifNotFoundException
                     End Try
 
@@ -5212,7 +5213,7 @@ Namespace LoadAllocation
        Inner Join dbtransport.dbo.tbEnterExit as Turns On Cars.nIDCar=Turns.strCardno 
     Where SoftwareUsers.UserId=" & YourSoftwareUserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 and Cars.ViewFlag=1 and CarAndPersons.snRelation=2 
           and (Turns.TurnStatus=" & TurnStatuses.UsedLoadPermissionRegistered & " or Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ")	
-          and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+          and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
     Order By CarAndPersons.nIDCarAndPerson Desc,Turns.nEnterExitId Desc
     Select LoadCapacitor.nEstelamID as LoadCapacitorLoadnEstelamId,Targets.strCityName as LoadCapacitorLoadTargetTitle,Products.strGoodName as  LoadCapacitorLoadGoodTitle,LoadCapacitor.nCarNumKol as LoadCapacitorLoadnCarNumKol,LoadCapacitor.nTonaj as LoadCapacitorLoadnTonaj,LoadCapacitor.strPriceSug as LoadCapacitorLoadStrPriceSug,LoadCapacitor.strDescription as LoadCapacitorLoadStrDescription,LoaderTypes.LoaderTypeTitle as LoadCapacitorLoadLoaderTypeTitle,
 	       LoadCapacitor.strAddress as LoadCapacitorLoadStrAddress,LoadCapacitor.strBarName as LoadCapacitorLoadstrBarName,LoadCapacitor.dTimeElam as LoadCapacitorLoaddTimeElam,LoadCapacitor.dDateElam  as  LoadCapacitorLoaddDateElam,LoadCapacitorLoadStatuses.LoadStatusName as LoadCapacitorLoadStatusTitle,AHs.AHTitle as LoadCapacitorLoadAHTitle,AHSGs.AHSGTitle as LoadCapacitorLoadAHSGTitle,TransportCompanies.TCTitle as  TransportCompanyTitle,TransportCompanies.TCTel as  TransportCompanyTel,Turns.nEnterExitId as  TurnnEnterExitId,
@@ -5237,7 +5238,7 @@ Namespace LoadAllocation
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On LoadCapacitor.nCompCode=TransportCompanies.TCId 
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadPermissionStatuses as LoadPermissionStatuses On Turns.LoadPermissionStatus=LoadPermissionStatuses.LoadPermissionStatusId 
     Where Turns.nEnterExitId=" & IIf(YourTurnId = Int64.MinValue, "@LastTurnId", YourTurnId) & " and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=2 or LoadAllocations.LAStatusId=3 or LoadAllocations.LAStatusId=5) and CarAndPersons.snRelation=2 and AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "'  
-          and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+          and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
     Order By CarAndPersons.nIDCarAndPerson Desc,LoadAllocations.LAStatusId Asc,LoadAllocations.Priority Asc", 0, DS)
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
@@ -6104,7 +6105,7 @@ Namespace LoadAllocation
        Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
        Inner Join dbtransport.dbo.tbEnterExit as Turns On Cars.nIDCar=Turns.strCardno 
     Where SoftwareUsers.UserId=" & YourSoftwareUserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 and Cars.ViewFlag=1 and CarAndPersons.snRelation=2  
-          and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+          and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
           Order By CarAndPersons.nIDCarAndPerson Desc,Turns.nEnterExitId Desc
     Select LoadCapacitor.nEstelamID as LoadCapacitorLoadnEstelamId,Targets.strCityName as LoadCapacitorLoadTargetTitle,Products.strGoodName as  LoadCapacitorLoadGoodTitle,LoadCapacitor.nCarNumKol as LoadCapacitorLoadnCarNumKol,LoadCapacitor.nTonaj as LoadCapacitorLoadnTonaj,LoadCapacitor.strPriceSug as LoadCapacitorLoadStrPriceSug,LoadCapacitor.strDescription as LoadCapacitorLoadStrDescription,LoaderTypes.LoaderTypeTitle as LoadCapacitorLoadLoaderTypeTitle,
 	       LoadCapacitor.strAddress as LoadCapacitorLoadStrAddress,LoadCapacitor.strBarName as LoadCapacitorLoadstrBarName,LoadCapacitor.dTimeElam as LoadCapacitorLoaddTimeElam,LoadCapacitor.dDateElam  as  LoadCapacitorLoaddDateElam,LoadCapacitorLoadStatuses.LoadStatusName as LoadCapacitorLoadStatusTitle,AHs.AHTitle as LoadCapacitorLoadAHTitle,AHSGs.AHSGTitle as LoadCapacitorLoadAHSGTitle,TransportCompanies.TCTitle as  TransportCompanyTitle,TransportCompanies.TCTel as  TransportCompanyTel,Turns.nEnterExitId as  TurnnEnterExitId,
@@ -6129,7 +6130,7 @@ Namespace LoadAllocation
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On LoadCapacitor.nCompCode=TransportCompanies.TCId 
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadPermissionStatuses as LoadPermissionStatuses On Turns.LoadPermissionStatus=LoadPermissionStatuses.LoadPermissionStatusId 
     Where Turns.nEnterExitId=" & IIf(YourTurnId = Int64.MinValue, "@LastTurnId", YourTurnId) & " and (LoadAllocations.LAStatusId=1 or LoadAllocations.LAStatusId=2 or LoadAllocations.LAStatusId=3 or LoadAllocations.LAStatusId=5) and CarAndPersons.snRelation=2 and AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "' 
-          and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+          and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
     Order By CarAndPersons.nIDCarAndPerson Desc,LoadAllocations.LAStatusId Asc,LoadAllocations.Priority Asc", 0, DS).GetRecordsCount() = 0 Then Throw New LoadAllocationsNotFoundException
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1

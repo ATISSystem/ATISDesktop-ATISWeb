@@ -106,6 +106,7 @@ Public Class UCViewerNSSLoadPermissionExtended
         Try
             Dim NSS As R2CoreTransportationAndLoadNotificationStandardLoadPermissionExtendedStructure = UCNSSCurrent
             LabelTransportCompanyTitle.Text = NSS.TransportCompanyTitle
+            LblnEstelamId.Text = NSS.nEstelamId
             LabelGoodTitle.Text = NSS.GoodTitle
             LabelLoadTargetTitle.Text = NSS.LoadTargetTitle
             LabelTruck.Text = NSS.Truck

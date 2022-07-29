@@ -5,6 +5,7 @@ Imports System.Text
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.PayanehWS
+Imports PayanehClassLibrary.ReportsManagement
 Imports PayanehClassLibrary.TurnRegisterRequest
 Imports R2Core.BlackIPs
 Imports R2Core.ConfigurationManagement
@@ -40,6 +41,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadPermission.LoadPermissionPri
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
 Imports R2CoreTransportationAndLoadNotification.RequesterManagement
 Imports R2CoreTransportationAndLoadNotification.Rmto
+Imports R2CoreTransportationAndLoadNotification.TransportTarrifs
 Imports R2CoreTransportationAndLoadNotification.Trucks
 Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.TurnRegisterRequest
@@ -410,10 +412,15 @@ Public Class Form3
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         Try
-            Dim listOfStrings = New String() {"as", "AS"}
-            Dim myString = TextBoxConcat1.Text
-            Dim b = listOfStrings.Any(Function(s) myString.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0)
-            MessageBox.Show(b)
+            RmtoWebService.GetNSSTruck("2646978")
+            'Dim x As New R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsManager
+            'MessageBox.Show(x.GetUltimateTransportTarrif(14, 25, 17447890))
+
+            'PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(2, 7, Int64.MinValue, New R2StandardDateAndTimeStructure(Nothing, "1400/01/01", Nothing), New R2StandardDateAndTimeStructure(Nothing, "1401/12/01", Nothing), Int64.MinValue)
+            'Dim listOfStrings = New String() {"as", "AS"}
+            'Dim myString = TextBoxConcat1.Text
+            'Dim b = listOfStrings.Any(Function(s) myString.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0)
+            'MessageBox.Show(b)
             'listOfStrings.Any(s >= s.Equals(myString, StringComparison.OrdinalIgnoreCase));
 
             'Dim X As New R2Core.LoggingManagement.R2CoreInstanceLoggingManager

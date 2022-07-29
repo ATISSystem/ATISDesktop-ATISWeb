@@ -64,7 +64,7 @@ Public Class UCUserLogin
     Private Sub UCAuthenticationUserByShenasehPassword()
         Try
             R2CoreMClassSoftwareUsersManagement.AuthenticationUserbyShenasehPassword(New R2CoreStandardSoftwareUserStructure(0, Nothing, Nothing, Nothing, UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue, Nothing, False, False, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
-            Dim NSS As R2CoreStandardSoftwareUserStructure = R2CoreMClassSoftwareUsersManagement.GetNSSUser(UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue, R2CoreSoftwareUserTypes.General)
+            Dim NSS As R2CoreStandardSoftwareUserStructure = R2CoreMClassSoftwareUsersManagement.GetNSSUser(UcTextBoxUserShenaseh.UCValue, UcTextBoxUserPassword.UCValue)
             'بررسی مجوز کاربر برای دسترسی به کامپیوتر
             If GetUserComputerPermission(NSS) = False Then
                 UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "کاربر مجوز لازم برای دسترسی به این کامپیوتر را ندارد", R2CoreMClassComputersManagement.GetNSSCurrentComputer().MName, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)

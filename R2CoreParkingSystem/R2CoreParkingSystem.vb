@@ -2198,8 +2198,8 @@ Namespace MoneyWalletManagement
                           Inner Join R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars as TCardsRCar On Cars.nIDCar=TCardsRCar.nCarId 
                     Where SoftwareUsers.UserId=" & YourNSSSoftwareuser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.RelationActive=1 and  
                               EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and Cars.ViewFlag=1 and TCardsRCar.RelationActive=1 and CarAndPersons.snRelation=2 
-                              and ((DATEDIFF(SECOND,TCardsRCar.RelationTimeStamp,getdate())<120) or (TCardsRCar.RelationTimeStamp='2015-01-01 00:00:00.000')) 
-                              and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                              and ((DATEDIFF(SECOND,TCardsRCar.RelationTimeStamp,getdate())<240) or (TCardsRCar.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                              and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                     Order By CarAndPersons.nIDCarAndPerson Desc,TCardsRCar.RelationId Desc,TCardsRCar.RelationTimeStamp Desc", 0, Ds).GetRecordsCount <> 0 Then
                     Return InstanceTrafficCards.GetNSSTrafficCard(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CardId")))
                 Else
@@ -2680,7 +2680,7 @@ Namespace Cars
         Public Function GetnIdCarFromCardId(YourCardId As String) As Int64
             Try
                 Dim Da As New SqlDataAdapter : Dim Ds As New DataSet
-                Da.SelectCommand = New SqlCommand("Select Top 1 nCarId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (CardId='" & YourCardId & "') and (RelationActive=1) and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By RelationId Desc")
+                Da.SelectCommand = New SqlCommand("Select Top 1 nCarId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (CardId='" & YourCardId & "') and (RelationActive=1) and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<240) or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By RelationId Desc")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 If Da.Fill(Ds) <> 0 Then
@@ -2716,7 +2716,7 @@ Namespace Cars
         Public Function GetCardIdFromnIdCar(YournCarId As Int64) As Int64
             Try
                 Dim Da As New SqlDataAdapter : Dim Ds As New DataSet
-                Da.SelectCommand = New SqlCommand("Select Top 1 CardId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (nCarId=" & YournCarId & ") and (RelationActive=1) and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By RelationId Desc")
+                Da.SelectCommand = New SqlCommand("Select Top 1 CardId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (nCarId=" & YournCarId & ") and (RelationActive=1) and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<240) or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By RelationId Desc")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 If Da.Fill(Ds) <> 0 Then
@@ -2836,7 +2836,7 @@ Namespace Cars
         Public Shared Function GetnIdCarFromCardId(YourCardId As String) As Int64
             Try
                 Dim Da As New SqlDataAdapter : Dim Ds As New DataSet
-                Da.SelectCommand = New SqlCommand("Select Top 1 nCarId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (CardId='" & YourCardId & "') and (RelationActive=1) and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By RelationId Desc")
+                Da.SelectCommand = New SqlCommand("Select Top 1 nCarId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (CardId='" & YourCardId & "') and (RelationActive=1) and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<240) or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By RelationId Desc")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 If Da.Fill(Ds) <> 0 Then
@@ -2854,7 +2854,7 @@ Namespace Cars
         Public Shared Function GetCardIdFromnIdCar(YournCarId As Int64) As Int64
             Try
                 Dim Da As New SqlDataAdapter : Dim Ds As New DataSet
-                Da.SelectCommand = New SqlCommand("Select Top 1 CardId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (nCarId=" & YournCarId & ") and (RelationActive=1) and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By RelationId Desc")
+                Da.SelectCommand = New SqlCommand("Select Top 1 CardId from R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars Where (nCarId=" & YournCarId & ") and (RelationActive=1) and ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<240) or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By RelationId Desc")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 If Da.Fill(Ds) <> 0 Then
@@ -2872,7 +2872,7 @@ Namespace Cars
         Public Shared Function GetnIdPersonFirst(YournIdCar As Int64) As Int64
             Try
                 Dim da As New SqlDataAdapter : Dim ds As New DataSet
-                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=2) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) Or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By nIDCarAndPerson Desc")
+                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=2) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<240) Or (RelationTimeStamp='2015-01-01 00:00:00.000')) Order By nIDCarAndPerson Desc")
                 da.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
                 ds.Tables.Clear()
                 If da.Fill(ds) <> 0 Then
@@ -2890,7 +2890,7 @@ Namespace Cars
         Public Shared Function GetnIdPersonSecond(YournIdCar As Int64) As Int64
             Try
                 Dim da As New SqlDataAdapter : Dim ds As New DataSet
-                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=3) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) Or (RelationTimeStamp='2015-01-01 00:00:00.000'))  Order By nIDCarAndPerson Desc")
+                da.SelectCommand = New SqlCommand("Select Top 1 nIdPerson from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YournIdCar & ") and (snRelation=3) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<240) Or (RelationTimeStamp='2015-01-01 00:00:00.000'))  Order By nIDCarAndPerson Desc")
                 da.SelectCommand.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
                 ds.Tables.Clear()
                 If da.Fill(ds) <> 0 Then
@@ -3701,7 +3701,7 @@ Namespace Drivers
         Public Shared Function GetCountOfCarsSecondDriverAttached(YourNSSSecondDriver As R2StandardDriverStructure) As Int64
             Try
                 Dim Ds As New DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "select Count(*) as CountX from dbtransport.dbo.TbCarAndPerson where (nIdPerson=" & YourNSSSecondDriver.nIdPerson & ") and (SnRelation=3) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) Or (RelationTimeStamp='2015-01-01 00:00:00.000'))", 1, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "select Count(*) as CountX from dbtransport.dbo.TbCarAndPerson where (nIdPerson=" & YourNSSSecondDriver.nIdPerson & ") and (SnRelation=3) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<240) Or (RelationTimeStamp='2015-01-01 00:00:00.000'))", 1, Ds).GetRecordsCount() = 0 Then
                     Return 0
                 Else
                     Return Ds.Tables(0).Rows(0).Item("CountX")
@@ -3714,7 +3714,7 @@ Namespace Drivers
         Public Shared Function GetCountOfDriversAttachedCar(YourNSSCar As R2StandardCarStructure) As Int64
             Try
                 Dim Ds As New DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "select Count(*) as CountX from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YourNSSCar.nIdCar & ") and (SnRelation=2 or SnRelation=3) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<120) Or (RelationTimeStamp='2015-01-01 00:00:00.000'))", 1, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "select Count(*) as CountX from dbtransport.dbo.TbCarAndPerson where (nIdCar=" & YourNSSCar.nIdCar & ") and (SnRelation=2 or SnRelation=3) And ((DATEDIFF(SECOND,RelationTimeStamp,getdate())<240) Or (RelationTimeStamp='2015-01-01 00:00:00.000'))", 1, Ds).GetRecordsCount() = 0 Then
                     Return 0
                 Else
                     Return Ds.Tables(0).Rows(0).Item("CountX")

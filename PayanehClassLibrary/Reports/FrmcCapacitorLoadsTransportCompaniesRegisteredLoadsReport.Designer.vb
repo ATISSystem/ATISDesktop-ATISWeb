@@ -25,13 +25,12 @@ Partial Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport))
-        Dim R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1 As R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure = New R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure()
         Me.PnlCapacitorLoadsTransportCompaniesRegisteredLoadsReport = New System.Windows.Forms.Panel()
+        Me.UcSearcherTransportCompanies = New PayanehClassLibrary.UCSearcherTransportCompanies()
         Me.UcSearcherLoadTargets = New R2CoreTransportationAndLoadNotification.UCSearcherLoadTargets()
         Me.ChkLoadTargetCity = New System.Windows.Forms.CheckBox()
-        Me.UcSearcherTransportCompanies = New PayanehClassLibrary.UCSearcherTransportCompanies()
         Me.PnlAnnouncementHallSelection = New System.Windows.Forms.Panel()
-        Me.UcucAnnouncementHallCollection = New R2CoreTransportationAndLoadNotification.UCUCAnnouncementHallCollection()
+        Me.UcAnnouncementHallSelection = New R2CoreTransportationAndLoadNotification.UCAnnouncementHallSelection()
         Me.RBAllAnnouncementHall = New System.Windows.Forms.RadioButton()
         Me.RBSpecialAnnouncementHall = New System.Windows.Forms.RadioButton()
         Me.RBSpecialCompany = New System.Windows.Forms.RadioButton()
@@ -64,11 +63,31 @@ Partial Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
         Me.PnlCapacitorLoadsTransportCompaniesRegisteredLoadsReport.Size = New System.Drawing.Size(995, 512)
         Me.PnlCapacitorLoadsTransportCompaniesRegisteredLoadsReport.TabIndex = 209
         '
+        'UcSearcherTransportCompanies
+        '
+        Me.UcSearcherTransportCompanies.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcSearcherTransportCompanies.BackColor = System.Drawing.Color.Transparent
+        Me.UcSearcherTransportCompanies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.UcSearcherTransportCompanies.Location = New System.Drawing.Point(548, 142)
+        Me.UcSearcherTransportCompanies.Name = "UcSearcherTransportCompanies"
+        Me.UcSearcherTransportCompanies.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcSearcherTransportCompanies.Size = New System.Drawing.Size(229, 33)
+        Me.UcSearcherTransportCompanies.TabIndex = 18
+        Me.UcSearcherTransportCompanies.UCBackColor = System.Drawing.Color.OrangeRed
+        Me.UcSearcherTransportCompanies.UCFontList = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherTransportCompanies.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherTransportCompanies.UCForeColor = System.Drawing.Color.Black
+        Me.UcSearcherTransportCompanies.UCIcon = CType(resources.GetObject("UcSearcherTransportCompanies.UCIcon"), System.Drawing.Image)
+        Me.UcSearcherTransportCompanies.UCMaximizeHight = CType(200, Long)
+        Me.UcSearcherTransportCompanies.UCMinimizeHight = CType(31, Long)
+        Me.UcSearcherTransportCompanies.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.DropDown
+        Me.UcSearcherTransportCompanies.UCShowDomainIcon = True
+        '
         'UcSearcherLoadTargets
         '
         Me.UcSearcherLoadTargets.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcSearcherLoadTargets.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherLoadTargets.Location = New System.Drawing.Point(548, 158)
+        Me.UcSearcherLoadTargets.Location = New System.Drawing.Point(548, 181)
         Me.UcSearcherLoadTargets.Name = "UcSearcherLoadTargets"
         Me.UcSearcherLoadTargets.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcSearcherLoadTargets.Size = New System.Drawing.Size(229, 31)
@@ -88,7 +107,7 @@ Partial Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
         Me.ChkLoadTargetCity.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.ChkLoadTargetCity.AutoSize = True
         Me.ChkLoadTargetCity.Font = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.ChkLoadTargetCity.Location = New System.Drawing.Point(878, 155)
+        Me.ChkLoadTargetCity.Location = New System.Drawing.Point(878, 178)
         Me.ChkLoadTargetCity.Name = "ChkLoadTargetCity"
         Me.ChkLoadTargetCity.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.ChkLoadTargetCity.Size = New System.Drawing.Size(82, 33)
@@ -96,56 +115,27 @@ Partial Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
         Me.ChkLoadTargetCity.Text = "مقصد بار"
         Me.ChkLoadTargetCity.UseVisualStyleBackColor = True
         '
-        'UcSearcherTransportCompanies
-        '
-        Me.UcSearcherTransportCompanies.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcSearcherTransportCompanies.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherTransportCompanies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcSearcherTransportCompanies.Location = New System.Drawing.Point(548, 119)
-        Me.UcSearcherTransportCompanies.Name = "UcSearcherTransportCompanies"
-        Me.UcSearcherTransportCompanies.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcSearcherTransportCompanies.Size = New System.Drawing.Size(229, 33)
-        Me.UcSearcherTransportCompanies.TabIndex = 18
-        Me.UcSearcherTransportCompanies.UCBackColor = System.Drawing.Color.OrangeRed
-        Me.UcSearcherTransportCompanies.UCFontList = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcSearcherTransportCompanies.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcSearcherTransportCompanies.UCForeColor = System.Drawing.Color.Black
-        Me.UcSearcherTransportCompanies.UCIcon = CType(resources.GetObject("UcSearcherTransportCompanies.UCIcon"), System.Drawing.Image)
-        Me.UcSearcherTransportCompanies.UCMaximizeHight = CType(200, Long)
-        Me.UcSearcherTransportCompanies.UCMinimizeHight = CType(31, Long)
-        Me.UcSearcherTransportCompanies.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.DropDown
-        Me.UcSearcherTransportCompanies.UCShowDomainIcon = True
-        '
         'PnlAnnouncementHallSelection
         '
         Me.PnlAnnouncementHallSelection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.PnlAnnouncementHallSelection.Controls.Add(Me.UcucAnnouncementHallCollection)
+        Me.PnlAnnouncementHallSelection.Controls.Add(Me.UcAnnouncementHallSelection)
         Me.PnlAnnouncementHallSelection.Controls.Add(Me.RBAllAnnouncementHall)
         Me.PnlAnnouncementHallSelection.Controls.Add(Me.RBSpecialAnnouncementHall)
         Me.PnlAnnouncementHallSelection.Location = New System.Drawing.Point(3, 10)
         Me.PnlAnnouncementHallSelection.Name = "PnlAnnouncementHallSelection"
-        Me.PnlAnnouncementHallSelection.Size = New System.Drawing.Size(989, 103)
+        Me.PnlAnnouncementHallSelection.Size = New System.Drawing.Size(989, 126)
         Me.PnlAnnouncementHallSelection.TabIndex = 16
         '
-        'UcucAnnouncementHallCollection
+        'UcAnnouncementHallSelection
         '
-        Me.UcucAnnouncementHallCollection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.UcAnnouncementHallSelection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcucAnnouncementHallCollection.BackColor = System.Drawing.Color.Transparent
-        Me.UcucAnnouncementHallCollection.Location = New System.Drawing.Point(27, 47)
-        Me.UcucAnnouncementHallCollection.Name = "UcucAnnouncementHallCollection"
-        Me.UcucAnnouncementHallCollection.Size = New System.Drawing.Size(940, 46)
-        Me.UcucAnnouncementHallCollection.TabIndex = 17
-        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.Active = True
-        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.AHColor = "Green"
-        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.AHId = CType(2, Long)
-        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.AHTitle = "سالن اعلام بار جاده ای"
-        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.Deleted = False
-        R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1.ViewFlag = True
-        Me.UcucAnnouncementHallCollection.UCCurrentNSS = R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure1
-        Me.UcucAnnouncementHallCollection.UCDefaultAHId = CType(2, Long)
-        Me.UcucAnnouncementHallCollection.UCViewBorder = True
+        Me.UcAnnouncementHallSelection.BackColor = System.Drawing.Color.Transparent
+        Me.UcAnnouncementHallSelection.Location = New System.Drawing.Point(26, 39)
+        Me.UcAnnouncementHallSelection.Name = "UcAnnouncementHallSelection"
+        Me.UcAnnouncementHallSelection.Size = New System.Drawing.Size(934, 80)
+        Me.UcAnnouncementHallSelection.TabIndex = 21
         '
         'RBAllAnnouncementHall
         '
@@ -153,7 +143,7 @@ Partial Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
         Me.RBAllAnnouncementHall.AutoSize = True
         Me.RBAllAnnouncementHall.Checked = True
         Me.RBAllAnnouncementHall.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.RBAllAnnouncementHall.Location = New System.Drawing.Point(886, 14)
+        Me.RBAllAnnouncementHall.Location = New System.Drawing.Point(886, 3)
         Me.RBAllAnnouncementHall.Name = "RBAllAnnouncementHall"
         Me.RBAllAnnouncementHall.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.RBAllAnnouncementHall.Size = New System.Drawing.Size(71, 27)
@@ -167,12 +157,12 @@ Partial Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
         Me.RBSpecialAnnouncementHall.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.RBSpecialAnnouncementHall.AutoSize = True
         Me.RBSpecialAnnouncementHall.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.RBSpecialAnnouncementHall.Location = New System.Drawing.Point(688, 14)
+        Me.RBSpecialAnnouncementHall.Location = New System.Drawing.Point(700, 3)
         Me.RBSpecialAnnouncementHall.Name = "RBSpecialAnnouncementHall"
         Me.RBSpecialAnnouncementHall.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.RBSpecialAnnouncementHall.Size = New System.Drawing.Size(160, 27)
+        Me.RBSpecialAnnouncementHall.Size = New System.Drawing.Size(148, 27)
         Me.RBSpecialAnnouncementHall.TabIndex = 15
-        Me.RBSpecialAnnouncementHall.Text = "بار مرتبط با سالن انتخاب شده"
+        Me.RBSpecialAnnouncementHall.Text = "بار مرتبط با زیرگروه اعلام بار"
         Me.RBSpecialAnnouncementHall.UseVisualStyleBackColor = True
         '
         'RBSpecialCompany
@@ -180,7 +170,7 @@ Partial Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
         Me.RBSpecialCompany.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.RBSpecialCompany.AutoSize = True
         Me.RBSpecialCompany.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.RBSpecialCompany.Location = New System.Drawing.Point(794, 122)
+        Me.RBSpecialCompany.Location = New System.Drawing.Point(794, 145)
         Me.RBSpecialCompany.Name = "RBSpecialCompany"
         Me.RBSpecialCompany.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.RBSpecialCompany.Size = New System.Drawing.Size(57, 27)
@@ -194,7 +184,7 @@ Partial Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
         Me.RBAllCompany.AutoSize = True
         Me.RBAllCompany.Checked = True
         Me.RBAllCompany.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.RBAllCompany.Location = New System.Drawing.Point(867, 122)
+        Me.RBAllCompany.Location = New System.Drawing.Point(867, 145)
         Me.RBAllCompany.Name = "RBAllCompany"
         Me.RBAllCompany.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.RBAllCompany.Size = New System.Drawing.Size(93, 27)
@@ -207,10 +197,10 @@ Partial Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
         '
         Me.UcDateTimeHolder.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcDateTimeHolder.BackColor = System.Drawing.Color.Transparent
-        Me.UcDateTimeHolder.Location = New System.Drawing.Point(398, 229)
+        Me.UcDateTimeHolder.Location = New System.Drawing.Point(393, 234)
         Me.UcDateTimeHolder.Name = "UcDateTimeHolder"
         Me.UcDateTimeHolder.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcDateTimeHolder.Size = New System.Drawing.Size(199, 186)
+        Me.UcDateTimeHolder.Size = New System.Drawing.Size(209, 186)
         Me.UcDateTimeHolder.TabIndex = 9
         Me.UcDateTimeHolder.UCDisableTimeSetting = False
         Me.UcDateTimeHolder.UCTime1 = "00:00:00"
@@ -241,8 +231,8 @@ End Sub
     Friend WithEvents RBAllAnnouncementHall As System.Windows.Forms.RadioButton
     Friend WithEvents PnlAnnouncementHallSelection As System.Windows.Forms.Panel
     Friend WithEvents RBSpecialAnnouncementHall As System.Windows.Forms.RadioButton
-    Friend WithEvents UcucAnnouncementHallCollection As R2CoreTransportationAndLoadNotification.UCUCAnnouncementHallCollection
     Friend WithEvents UcSearcherTransportCompanies As UCSearcherTransportCompanies
     Friend WithEvents ChkLoadTargetCity As Windows.Forms.CheckBox
     Friend WithEvents UcSearcherLoadTargets As R2CoreTransportationAndLoadNotification.UCSearcherLoadTargets
+    Friend WithEvents UcAnnouncementHallSelection As R2CoreTransportationAndLoadNotification.UCAnnouncementHallSelection
 End Class

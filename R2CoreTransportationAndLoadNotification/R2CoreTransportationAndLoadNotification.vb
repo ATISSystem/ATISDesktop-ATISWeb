@@ -673,6 +673,24 @@ Namespace TransportTarrifs
             End Try
         End Function
 
+        Public Function GetUltimateTransportTarrif(YourAHSGId As Int64, YournTonaj As Double, YourTarrif As Int64) As Double
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.Parameters.Add("@AHSGId", SqlDbType.BigInt) : CmdSql.Parameters("@AHSGId").Value = YourAHSGId
+                CmdSql.Parameters.Add("@Tarrif", SqlDbType.BigInt) : CmdSql.Parameters("@Tarrif").Value = YourTarrif
+                CmdSql.Parameters.Add("@Tonaj", SqlDbType.Float) : CmdSql.Parameters("@Tonaj").Value = YournTonaj
+                CmdSql.CommandType = CommandType.StoredProcedure
+                CmdSql.CommandText = "R2PrimaryTransportationAndLoadNotification.dbo.GetUltimateTransportTarrif"
+                Dim Tarrif = CmdSql.ExecuteScalar
+                CmdSql.Connection.Close()
+                Return Tarrif
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
     End Class
 
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTransportTarrifsManagement
@@ -860,14 +878,10 @@ Namespace Turns
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim InstanceTruckDrivers = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "
-                  Declare @TopTurn int
-                  Select Top 1 @TopTurn=Turns.nEnterExitId from dbtransport.dbo.tbEnterExit as Turns
-                  Where substring(OtaghdarTurnNumber,1,1)='" & YourNSSSequentialTurn.SequentialTurnKeyWord & "' and TurnStatus=" & TurnStatuses.CancelledUnderScore & " 
-                  Order By nEnterExitId Desc
                   Select Top 1 * from dbtransport.dbo.tbEnterExit as Turns
-                  Where Turns.nEnterExitId>@TopTurn and (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") 
+                  Where (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") 
                         and substring(Turns.OtaghdarTurnNumber,1,1)='" & YourNSSSequentialTurn.SequentialTurnKeyWord & "' 
-                  Order By Turns.nEnterExitId Asc", 300, DS).GetRecordsCount = 0 Then Throw New FirstActiveTurnNotFoundException
+                  Order By Turns.nEnterExitId", 300, DS).GetRecordsCount = 0 Then Throw New FirstActiveTurnNotFoundException
                 Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(DS.Tables(0).Rows(0).Item("nEnterExitId"), DS.Tables(0).Rows(0).Item("StrEnterDate").trim, DS.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(DS.Tables(0).Rows(0).Item("nDriverCode"))), DS.Tables(0).Rows(0).Item("bFlagDriver"), DS.Tables(0).Rows(0).Item("nUserIdEnter"), DS.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, DS.Tables(0).Rows(0).Item("StrCardNo"), DS.Tables(0).Rows(0).Item("TurnStatus"), DS.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
             Catch ex As FirstActiveTurnNotFoundException
                 Throw New FirstActiveTurnNotFoundException
@@ -914,7 +928,7 @@ Namespace Turns
                          Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTurnStatuses as TurnStatuses On Turns.TurnStatus=TurnStatuses.TurnStatusId 
                          Inner Join R2Primary.dbo.TblSoftwareUsers as TurnCreatorUsers On Turns.nUserIdEnter=TurnCreatorUsers.UserId 
                        Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 and Cars.ViewFlag=1 and CarAndPersons.snRelation=2 
-                             and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                             and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
 	                   Order By CarAndPersons.nIDCarAndPerson Desc,Turns.nEnterExitId Desc) as DataBox
                     Order By DataBox.nEnterExitId Desc", 300, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure) = New List(Of R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure)
@@ -1005,7 +1019,7 @@ Namespace Turns
 	                   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On EntityRelations.E1=SoftwareUsers.UserId 
                      Where (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and Cars.ViewFlag=1  and CarAndPersons.snRelation=2
                            and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 and SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 
-                           and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                           and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                      Order By CarAndPersons.nIDCarAndPerson Desc,Turns.nEnterExitId Desc", 300, Ds).GetRecordsCount() = 0 Then Throw New TurnNotFoundException
                 Dim NSS As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure = New R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure
                 NSS.nEnterExitId = Ds.Tables(0).Rows(0).Item("nEnterExitId")
@@ -1611,8 +1625,8 @@ Namespace Turns
 							Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallsRelationAnnouncementHallSubGroups AS AHRAHSG On AHSG.AHSGId=AHRAHSG.AHSGId
 							Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AH On AHRAHSG.AHId=AH.AHId
                        Where EnterExit.nEnterExitId=" & YourTurnId & " and RFIDCardRCar.RelationActive=1 
-                             and ((DATEDIFF(SECOND,RFIDCardRCar.RelationTimeStamp,getdate())<120) or (RFIDCardRCar.RelationTimeStamp='2015-01-01 00:00:00.000'))  
-                             and ((DATEDIFF(SECOND,AHSGRCar.RelationTimeStamp,getdate())<120) or (AHSGRCar.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                             and ((DATEDIFF(SECOND,RFIDCardRCar.RelationTimeStamp,getdate())<240) or (RFIDCardRCar.RelationTimeStamp='2015-01-01 00:00:00.000'))  
+                             and ((DATEDIFF(SECOND,AHSGRCar.RelationTimeStamp,getdate())<240) or (AHSGRCar.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                              and AHRAHSG.RelationActive=1 and AHSGRCar.RelationActive=1 
                        Order By AHSGRCar.Priority Asc,RFIDCardRCar.RelationId Desc,AHSGRCar.RelationId Desc", 1, DS).GetRecordsCount() = 0 Then Throw New TurnPrintingInfNotFoundException
                     Dim TurnPrintingInf As New R2CoreTransportationAndLoadNotificationTurnPrintingInf
@@ -2210,7 +2224,7 @@ Namespace Turns
                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationCars as AHSGRCar On AHSG.AHSGId=AHSGRCar.AHSGId
                             Inner Join dbtransport.dbo.TbCar as Car On AHSGRCar.CarId=Car.nIDCar
                         Where AHRSeqT.RelationActive=1 and AH.Deleted=0 and AHRAHSG.RelationActive=1 and AHSG.Deleted=0 and AHSGRCar.RelationActive=1 and Car.nIDCar=" & YourNSSTruck.NSSCar.nIdCar & " and Car.ViewFlag=1 
-                              and ((DATEDIFF(SECOND,AHSGRCar.RelationTimeStamp,getdate())<120) or (AHSGRCar.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                              and ((DATEDIFF(SECOND,AHSGRCar.RelationTimeStamp,getdate())<240) or (AHSGRCar.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                         Order By AHSGRCar.Priority Asc,AHSGRCar.RelationId Desc", 1, DS).GetRecordsCount() = 0 Then Throw New TruckRelatedSequentialTurnNotFoundException
                     Return New R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure(DS.Tables(0).Rows(0).Item("SeqTId"), DS.Tables(0).Rows(0).Item("SeqTTitle").trim, DS.Tables(0).Rows(0).Item("SeqTColor").trim, DS.Tables(0).Rows(0).Item("SeqTKeyWord").trim, DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
                 Catch ex As TruckRelatedSequentialTurnNotFoundException
@@ -2911,8 +2925,8 @@ Namespace TerraficCardsManagement
                           Inner Join R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars as TCardsRCar On Cars.nIDCar=TCardsRCar.nCarId 
                         Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.RelationActive=1 and  
                               EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and Cars.ViewFlag=1 and TCardsRCar.RelationActive=1 and CarAndPersons.snRelation=2 
-                              and ((DATEDIFF(SECOND,TCardsRCar.RelationTimeStamp,getdate())<120) or (TCardsRCar.RelationTimeStamp='2015-01-01 00:00:00.000')) 
-                              and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                              and ((DATEDIFF(SECOND,TCardsRCar.RelationTimeStamp,getdate())<240) or (TCardsRCar.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                              and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                         Order By CarAndPersons.nIDCarAndPerson Desc,TCardsRCar.RelationId Desc,TCardsRCar.RelationTimeStamp Desc", 0, Ds).GetRecordsCount <> 0 Then
                     Return InstanceTrafficCards.GetNSSTrafficCard(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CardId")))
                 Else
@@ -2963,8 +2977,8 @@ Namespace TerraficCardsManagement
                           Inner Join R2PrimaryParkingSystem.dbo.TblTrafficCardsRelationCars as TCardsRCar On Cars.nIDCar=TCardsRCar.nCarId 
                         Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.RelationActive=1 and  
                               EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and Cars.ViewFlag=1 and TCardsRCar.RelationActive=1  and CarAndPersons.snRelation=2 
-                              and ((DATEDIFF(SECOND,TCardsRCar.RelationTimeStamp,getdate())<120) or (TCardsRCar.RelationTimeStamp='2015-01-01 00:00:00.000'))  
-                              and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<120) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+                              and ((DATEDIFF(SECOND,TCardsRCar.RelationTimeStamp,getdate())<240) or (TCardsRCar.RelationTimeStamp='2015-01-01 00:00:00.000'))  
+                              and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
                         Order By CarAndPersons.nIDCarAndPerson Desc,TCardsRCar.RelationId Desc,TCardsRCar.RelationTimeStamp Desc", 10, Ds).GetRecordsCount <> 0 Then
                     Return R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(System.Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CardId")))
                 Else

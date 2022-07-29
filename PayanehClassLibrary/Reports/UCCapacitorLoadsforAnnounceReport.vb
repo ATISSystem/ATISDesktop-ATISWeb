@@ -71,7 +71,7 @@ Public Class UCCapacitorLoadsforAnnounceReport
             Cursor.Current = Cursors.WaitCursor
             UcucAnnouncementHallSubGroupCollection.UCViewCollection(UcucAnnouncementHallCollection.UCCurrentNSS.AHId)
             If RBAll.Checked = True Then
-                WS.WebMethodReportingInformationPrividerCapacitorLoadsforAnnounceReport(UcucAnnouncementHallCollection.UCCurrentNSS.AHId, AnnouncementHallsManagement.AnnouncementHalls.AnnouncementHalls.None,WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
+                WS.WebMethodReportingInformationPrividerCapacitorLoadsforAnnounceReport(UcucAnnouncementHallCollection.UCCurrentNSS.AHId, AnnouncementHalls.None, WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
                 R2CoreGUIMClassInformationManagement.PrintReport(PayanehReports.CapacitorLoadsforAnnounceReport)
             End If
         Catch ex As Exception

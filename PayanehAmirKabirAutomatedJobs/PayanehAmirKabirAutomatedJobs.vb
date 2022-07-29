@@ -91,6 +91,13 @@ Public Class PayanehAmirKabirAutomatedJobs
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "SedimentingProcess:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 
+            'صدور خودکار نوبت ها
+            Try
+                PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
             'ابطال گروهی نوبت ها
             Try
                 Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
@@ -100,21 +107,6 @@ Public Class PayanehAmirKabirAutomatedJobs
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TurnsCancellation:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 
-            'ثبت اکانتینگ کیف پول کنترلی کامیونداران
-            Try
-                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
-                TruckersAssociationControllingMoneyWalletManagement.ControllingMoneyWalletAccounting(InstanceSoftwareUsers.GetNSSSystemUser())
-            Catch ex As Exception
-                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "ControllingMoneyWalletAccounting:" + ex.Message.ToString, EventLogEntryType.Error)
-            End Try
-
-            'صدور خودکار نوبت ها
-            Try
-                PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
-            Catch ex As Exception
-                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
-            End Try
-
             'ابطال نوبت های موقت
             Try
                 PayanehClassLibraryMClassCarTruckNobatManagement.TempTurnsCancellation()
@@ -122,6 +114,13 @@ Public Class PayanehAmirKabirAutomatedJobs
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TempTurnsCancellation:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 
+            'ثبت اکانتینگ کیف پول کنترلی کامیونداران
+            Try
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                TruckersAssociationControllingMoneyWalletManagement.ControllingMoneyWalletAccounting(InstanceSoftwareUsers.GetNSSSystemUser())
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "ControllingMoneyWalletAccounting:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
 
 
 

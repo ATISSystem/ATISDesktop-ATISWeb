@@ -28,6 +28,7 @@ Partial Class UCViewerNSSLoadPermissionExtended
         Me.PnlInner = New System.Windows.Forms.Panel()
         Me.LabelUserName = New System.Windows.Forms.Label()
         Me.PnlTop = New System.Windows.Forms.Panel()
+        Me.PicDoPrintLoadPermission = New System.Windows.Forms.PictureBox()
         Me.UcMinimizeMaximize = New R2CoreGUI.UCMinimizeMaximize()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
@@ -43,13 +44,14 @@ Partial Class UCViewerNSSLoadPermissionExtended
         Me.LabelLoadPermissionStatus = New System.Windows.Forms.Label()
         Me.LabelStrDescription = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.PicDoPrintLoadPermission = New System.Windows.Forms.PictureBox()
-        Me.PnlMain.SuspendLayout
-        Me.PnlOutter.SuspendLayout
-        Me.PnlInner.SuspendLayout
-        Me.PnlTop.SuspendLayout
-        CType(Me.PicDoPrintLoadPermission,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.SuspendLayout
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.LblnEstelamId = New System.Windows.Forms.Label()
+        Me.PnlMain.SuspendLayout()
+        Me.PnlOutter.SuspendLayout()
+        Me.PnlInner.SuspendLayout()
+        Me.PnlTop.SuspendLayout()
+        CType(Me.PicDoPrintLoadPermission, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
         '
         'PnlMain
         '
@@ -98,9 +100,11 @@ Partial Class UCViewerNSSLoadPermissionExtended
         '
         'PnlTop
         '
-        Me.PnlTop.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlTop.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlTop.BackColor = System.Drawing.Color.PaleTurquoise
+        Me.PnlTop.Controls.Add(Me.LblnEstelamId)
+        Me.PnlTop.Controls.Add(Me.Label6)
         Me.PnlTop.Controls.Add(Me.PicDoPrintLoadPermission)
         Me.PnlTop.Controls.Add(Me.UcMinimizeMaximize)
         Me.PnlTop.Controls.Add(Me.Label7)
@@ -121,6 +125,17 @@ Partial Class UCViewerNSSLoadPermissionExtended
         Me.PnlTop.Size = New System.Drawing.Size(969, 60)
         Me.PnlTop.TabIndex = 1
         '
+        'PicDoPrintLoadPermission
+        '
+        Me.PicDoPrintLoadPermission.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PicDoPrintLoadPermission.Image = CType(resources.GetObject("PicDoPrintLoadPermission.Image"), System.Drawing.Image)
+        Me.PicDoPrintLoadPermission.Location = New System.Drawing.Point(0, 0)
+        Me.PicDoPrintLoadPermission.Name = "PicDoPrintLoadPermission"
+        Me.PicDoPrintLoadPermission.Size = New System.Drawing.Size(19, 21)
+        Me.PicDoPrintLoadPermission.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PicDoPrintLoadPermission.TabIndex = 64
+        Me.PicDoPrintLoadPermission.TabStop = False
+        '
         'UcMinimizeMaximize
         '
         Me.UcMinimizeMaximize.BackColor = System.Drawing.Color.Transparent
@@ -132,7 +147,7 @@ Partial Class UCViewerNSSLoadPermissionExtended
         '
         'Label7
         '
-        Me.Label7.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label7.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label7.ForeColor = System.Drawing.Color.DarkGray
         Me.Label7.Location = New System.Drawing.Point(8, -6)
         Me.Label7.Name = "Label7"
@@ -143,7 +158,7 @@ Partial Class UCViewerNSSLoadPermissionExtended
         '
         'Label8
         '
-        Me.Label8.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label8.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label8.ForeColor = System.Drawing.Color.DarkGray
         Me.Label8.Location = New System.Drawing.Point(278, -6)
         Me.Label8.Name = "Label8"
@@ -154,7 +169,7 @@ Partial Class UCViewerNSSLoadPermissionExtended
         '
         'Label4
         '
-        Me.Label4.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label4.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.DarkGray
         Me.Label4.Location = New System.Drawing.Point(103, -6)
         Me.Label4.Name = "Label4"
@@ -165,7 +180,7 @@ Partial Class UCViewerNSSLoadPermissionExtended
         '
         'Label3
         '
-        Me.Label3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.DarkGray
         Me.Label3.Location = New System.Drawing.Point(373, -6)
         Me.Label3.Name = "Label3"
@@ -176,20 +191,20 @@ Partial Class UCViewerNSSLoadPermissionExtended
         '
         'Label2
         '
-        Me.Label2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.DarkGray
         Me.Label2.Location = New System.Drawing.Point(568, -6)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(178, 23)
+        Me.Label2.Size = New System.Drawing.Size(94, 23)
         Me.Label2.TabIndex = 36
         Me.Label2.Text = "نوع بار"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Label1
         '
-        Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.Label1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.DarkGray
         Me.Label1.Location = New System.Drawing.Point(752, -6)
         Me.Label1.Name = "Label1"
@@ -200,11 +215,11 @@ Partial Class UCViewerNSSLoadPermissionExtended
         '
         'LabelTransportCompanyTitle
         '
-        Me.LabelTransportCompanyTitle.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelTransportCompanyTitle.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LabelTransportCompanyTitle.BackColor = System.Drawing.Color.Transparent
         Me.LabelTransportCompanyTitle.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelTransportCompanyTitle.Font = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LabelTransportCompanyTitle.Font = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelTransportCompanyTitle.ForeColor = System.Drawing.Color.DarkBlue
         Me.LabelTransportCompanyTitle.Location = New System.Drawing.Point(756, 12)
         Me.LabelTransportCompanyTitle.Name = "LabelTransportCompanyTitle"
@@ -220,7 +235,7 @@ Partial Class UCViewerNSSLoadPermissionExtended
         Me.LabelGoodTitle.ForeColor = System.Drawing.Color.Black
         Me.LabelGoodTitle.Location = New System.Drawing.Point(572, 12)
         Me.LabelGoodTitle.Name = "LabelGoodTitle"
-        Me.LabelGoodTitle.Size = New System.Drawing.Size(174, 23)
+        Me.LabelGoodTitle.Size = New System.Drawing.Size(90, 23)
         Me.LabelGoodTitle.TabIndex = 57
         Me.LabelGoodTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -276,11 +291,11 @@ Partial Class UCViewerNSSLoadPermissionExtended
         '
         'LabelStrDescription
         '
-        Me.LabelStrDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.LabelStrDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LabelStrDescription.BackColor = System.Drawing.Color.Transparent
         Me.LabelStrDescription.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LabelStrDescription.Font = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.LabelStrDescription.Font = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelStrDescription.ForeColor = System.Drawing.Color.Blue
         Me.LabelStrDescription.Location = New System.Drawing.Point(50, 31)
         Me.LabelStrDescription.Name = "LabelStrDescription"
@@ -291,7 +306,7 @@ Partial Class UCViewerNSSLoadPermissionExtended
         '
         'Label5
         '
-        Me.Label5.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.Label5.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label5.ForeColor = System.Drawing.Color.DarkGray
         Me.Label5.Location = New System.Drawing.Point(872, 66)
         Me.Label5.Name = "Label5"
@@ -300,16 +315,29 @@ Partial Class UCViewerNSSLoadPermissionExtended
         Me.Label5.Text = "کاربر"
         Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'PicDoPrintLoadPermission
+        'Label6
         '
-        Me.PicDoPrintLoadPermission.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PicDoPrintLoadPermission.Image = CType(resources.GetObject("PicDoPrintLoadPermission.Image"),System.Drawing.Image)
-        Me.PicDoPrintLoadPermission.Location = New System.Drawing.Point(0, 0)
-        Me.PicDoPrintLoadPermission.Name = "PicDoPrintLoadPermission"
-        Me.PicDoPrintLoadPermission.Size = New System.Drawing.Size(19, 21)
-        Me.PicDoPrintLoadPermission.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PicDoPrintLoadPermission.TabIndex = 64
-        Me.PicDoPrintLoadPermission.TabStop = false
+        Me.Label6.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label6.ForeColor = System.Drawing.Color.DarkGray
+        Me.Label6.Location = New System.Drawing.Point(668, -6)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(78, 23)
+        Me.Label6.TabIndex = 65
+        Me.Label6.Text = "کد بار"
+        Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'LblnEstelamId
+        '
+        Me.LblnEstelamId.BackColor = System.Drawing.Color.Transparent
+        Me.LblnEstelamId.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.LblnEstelamId.Font = New System.Drawing.Font("IRMehr", 9.75!)
+        Me.LblnEstelamId.ForeColor = System.Drawing.Color.Red
+        Me.LblnEstelamId.Location = New System.Drawing.Point(672, 12)
+        Me.LblnEstelamId.Name = "LblnEstelamId"
+        Me.LblnEstelamId.Size = New System.Drawing.Size(78, 23)
+        Me.LblnEstelamId.TabIndex = 66
+        Me.LblnEstelamId.Text = "123456"
+        Me.LblnEstelamId.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'UCViewerNSSLoadPermissionExtended
         '
@@ -350,4 +378,6 @@ End Sub
     Friend WithEvents LabelStrDescription As System.Windows.Forms.Label
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents PicDoPrintLoadPermission As Windows.Forms.PictureBox
+    Friend WithEvents LblnEstelamId As Windows.Forms.Label
+    Friend WithEvents Label6 As Windows.Forms.Label
 End Class

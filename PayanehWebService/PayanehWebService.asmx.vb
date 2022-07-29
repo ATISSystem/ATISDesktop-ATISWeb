@@ -40,7 +40,7 @@ Public Class PayanehWebService
     <WebMethod()>
     Public Function WebMethodLogin(YourUserShenaseh As String, YourUserPassword As String) As Int64
         Try
-            Return _ExchangeKeyManager.Login(YourUserShenaseh, YourUserPassword, R2CoreSoftwareUserTypes.SysAdmin)
+            Return _ExchangeKeyManager.Login(YourUserShenaseh, YourUserPassword)
         Catch ex As SqlInjectionException
             Throw New Exception("شناسه یا رمز عبور قابل پذیرش نیست")
         Catch ex As Exception When TypeOf (ex) Is UserIsNotActiveException OrElse TypeOf (ex) Is UserNotExistException OrElse TypeOf (ex) Is GetNSSException
@@ -149,10 +149,10 @@ Public Class PayanehWebService
     End Sub
 
     <WebMethod()>
-    Public Sub WebMethodReportingInformationPrividerCapacitorLoadsTransportCompaniesRegisteredLoadsReport(YourAnnouncementHallId As Int64, YourCompanyCode As Int64, YourDateTimeMilladi1 As DateTime, YourDateShamsiFull1 As String, YourTime1 As String, YourDateTimeMilladi2 As DateTime, YourDateShamsiFull2 As String, YourTime2 As String, YourTargetCityId As Int64, YourExchangeKey As Int64)
+    Public Sub WebMethodReportingInformationPrividerCapacitorLoadsTransportCompaniesRegisteredLoadsReport(YourAHId As Int64, YourAHSGId As Int64, YourCompanyCode As Int64, YourDateTimeMilladi1 As DateTime, YourDateShamsiFull1 As String, YourTime1 As String, YourDateTimeMilladi2 As DateTime, YourDateShamsiFull2 As String, YourTime2 As String, YourTargetCityId As Int64, YourExchangeKey As Int64)
         Try
             _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)
-            PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(YourAnnouncementHallId, YourCompanyCode, New R2StandardDateAndTimeStructure(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1), New R2StandardDateAndTimeStructure(YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2), YourTargetCityId)
+            PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(YourAHId, YourAHSGId, YourCompanyCode, New R2StandardDateAndTimeStructure(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1), New R2StandardDateAndTimeStructure(YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2), YourTargetCityId)
         Catch ex As ExchangeKeyTimeRangePassedException
             Throw ex
         Catch ex As ExchangeKeyNotExistException
