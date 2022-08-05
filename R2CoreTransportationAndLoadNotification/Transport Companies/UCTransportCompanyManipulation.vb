@@ -9,7 +9,6 @@ Imports R2CoreTransportationAndLoadNotification.TransportCompanies
 Imports R2Core.BaseStandardClass
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement
-Imports R2Core.SMSSendAndRecieved
 Imports R2Core.ExceptionManagement
 Imports R2CoreParkingSystem.City
 Imports R2Core.SoftwareUserManagement
@@ -18,7 +17,6 @@ Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement
 Imports R2CoreParkingSystem.MoneyWalletManagement
 Imports R2Core.ConfigurationManagement
 Imports R2CoreParkingSystem.AccountingManagement
-Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions
 Imports R2Core.PermissionManagement
 Imports R2Core.SMS
 Imports R2Core.MoneyWallet.Exceptions
@@ -61,6 +59,7 @@ Public Class UCTransportCompanyManipulation
             UcPersianTextBoxTCTel.UCRefresh()
             UcPersianTextBoxManagerNameFamily.UCRefresh()
             UcPersianTextBoxManagerMobileNumber.UCRefresh()
+            UcPersianTextBoxEmailAddress.UCRefresh()
             ChkActive.Checked = True
             ChkViewFlag.Checked = True
             UcSearcherTransportCompanies.UCRefreshGeneral()
@@ -96,7 +95,7 @@ Public Class UCTransportCompanyManipulation
         Try
             Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
             If UCNSSCurrent IsNot Nothing Then Return
-            UcNumberTCId.UCValue = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.RegisteringTransportCompany(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(0, UcPersianTextBoxTCTitle.UCValue, UcPersianTextBoxTCOrganizationCode.UCValue, UcSearcherCities.UCGetSelectedNSS.OCode, Nothing, UcPersianTextBoxTCTel.UCValue, UcPersianTextBoxManagerNameFamily.UCValue, UcPersianTextBoxManagerMobileNumber.UCValue, ChkViewFlag.Checked, ChkActive.Checked, 0), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            UcNumberTCId.UCValue = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.RegisteringTransportCompany(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(0, UcPersianTextBoxTCTitle.UCValue, UcPersianTextBoxTCOrganizationCode.UCValue, UcSearcherCities.UCGetSelectedNSS.OCode, Nothing, UcPersianTextBoxTCTel.UCValue, UcPersianTextBoxManagerNameFamily.UCValue, UcPersianTextBoxManagerMobileNumber.UCValue, UcPersianTextBoxEmailAddress.UCValue, ChkViewFlag.Checked, ChkActive.Checked, 0), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCViewNSS(InstanceTransportCompanies.GetNSSTransportCompany(UcNumberTCId.UCValue))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ثبت اطلاعات شرکت حمل و نقل با موفقیت انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As DataEntryException
@@ -110,7 +109,7 @@ Public Class UCTransportCompanyManipulation
         Try
             Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
             If UCNSSCurrent Is Nothing Then Return
-            R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.UpdatingTransportCompany(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(UCNSSCurrent.TCId, UcPersianTextBoxTCTitle.UCValue, UcPersianTextBoxTCOrganizationCode.UCValue, UcSearcherCities.UCGetSelectedNSS.OCode, Nothing, UcPersianTextBoxTCTel.UCValue, UcPersianTextBoxManagerNameFamily.UCValue, UcPersianTextBoxManagerMobileNumber.UCValue, ChkViewFlag.Checked, ChkActive.Checked, False), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.UpdatingTransportCompany(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(UCNSSCurrent.TCId, UcPersianTextBoxTCTitle.UCValue, UcPersianTextBoxTCOrganizationCode.UCValue, UcSearcherCities.UCGetSelectedNSS.OCode, Nothing, UcPersianTextBoxTCTel.UCValue, UcPersianTextBoxManagerNameFamily.UCValue, UcPersianTextBoxManagerMobileNumber.UCValue, UcPersianTextBoxEmailAddress.UCValue, ChkViewFlag.Checked, ChkActive.Checked, False), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCViewNSS(InstanceTransportCompanies.GetNSSTransportCompany(UcNumberTCId.UCValue))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ویرایش اطلاعات شرکت حمل و نقل با موفقیت انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As DataEntryException
@@ -242,6 +241,7 @@ Public Class UCTransportCompanyManipulation
             UcPersianTextBoxManagerNameFamily.UCValue = NSSCurrent.TCManagerNameFamily.Trim
             UcPersianTextBoxManagerMobileNumber.UCValue = NSSCurrent.TCManagerMobileNumber.Trim
             ChkActive.Checked = NSSCurrent.Active
+            UcPersianTextBoxEmailAddress.UCValue = NSSCurrent.EmailAddress.Trim
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

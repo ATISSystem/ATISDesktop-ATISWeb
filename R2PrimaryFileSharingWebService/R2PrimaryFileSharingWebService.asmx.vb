@@ -98,5 +98,19 @@ Public Class R2PrimaryFileSharingWebService
         End Try
     End Sub
 
+    <WebMethod()>
+    Public Sub WebMethodDeleteFileButKeepDeleted(YourRawGroupId As Int64, YourFileName As String, YourExchangeKey As Int64)
+        Try
+            _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)
+            Dim RGFileHolder = New R2CoreRawGroupFileHolder(YourRawGroupId, New R2CoreFile(YourFileName))
+            RGFileHolder.DeleteFileButKeepDeleted()
+        Catch ex As ExchangeKeyTimeRangePassedException
+            Throw ex
+        Catch ex As ExchangeKeyNotExistException
+            Throw ex
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
 
 End Class

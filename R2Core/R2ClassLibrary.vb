@@ -26,7 +26,6 @@ Imports R2Core.PublicProc
 Imports R2Core.R2PrimaryFileSharingWS
 Imports R2Core.SoftwareUserManagement
 Imports R2Core.SoftwareUserManagement.Exceptions
-Imports R2Core.SMSSendAndRecieved
 Imports R2Core.SecurityAlgorithmsManagement.Hashing
 Imports R2Core.LoggingManagement.ExceptionManagemen
 Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
@@ -184,6 +183,32 @@ End Namespace
 
 Namespace PublicProc
     Public Class R2CoreInstancePublicProceduresManager
+        Private _R2PrimaryFSWS = New R2PrimaryFileSharingWebService()
+
+        Public Sub SaveFile(YourRawGroupId As Int64, YourFileName As String, YourFile As Byte(), YourNSSUser As R2CoreStandardSoftwareUserStructure)
+            Try
+                _R2PrimaryFSWS.WebMethodSaveFile(YourRawGroupId, YourFileName, YourFile, _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Sub
+
+        Public Function IsExistFile(YourRawGroupId As Int64, YourFileName As String, YourNSSUser As R2CoreStandardSoftwareUserStructure) As Boolean
+            Try
+                Return _R2PrimaryFSWS.WebMethodIOFileExist(YourRawGroupId, YourFileName, _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetFile(YourRawGroupId As Int64, YourFileName As String, YourNSSUser As R2CoreStandardSoftwareUserStructure) As Byte()
+            Try
+                Return _R2PrimaryFSWS.WebMethodGetFile(YourRawGroupId, YourFileName, _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Function
+
         Public Function ParseSignDigitToSignString(ByVal YourDig As Int64) As String
             Try
                 If YourDig < 0 Then
@@ -2560,6 +2585,7 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property ZarrinPalPaymentGate As Int64 = 79
         Public Shared ReadOnly Property SoftwareUserTypesAccessWebProcesses As Int64 = 80
         Public Shared ReadOnly Property SoftwareUserTypesRelationWebProcessGroups As Int64 = 81
+        Public Shared ReadOnly Property EmailSystem As Int64 = 83
 
     End Class
 
@@ -5210,7 +5236,7 @@ Namespace FileShareRawGroupsManagement
         Public Shared ReadOnly None As Int64 = 0
         Public Shared ReadOnly UserImages As Int64 = 1
         Public Shared ReadOnly PersonnelImages As Int64 = 4
-
+        Public Shared ReadOnly UploadedFiles As Int64 = 6
 
     End Class
 
@@ -5286,6 +5312,15 @@ Namespace FileShareRawGroupsManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
+
+        Public Sub DeleteFileButKeepDeleted()
+            Try
+                IO.File.Move(GetFullPath(RawGroupId, RawGroupFile), GetFullPath(RawGroupId, New R2CoreFile(RawGroupFile.FileName + ".del")))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
 
 
     End Class

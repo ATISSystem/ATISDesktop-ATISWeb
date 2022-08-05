@@ -41,8 +41,6 @@ Public Class PayanehAmirKabirAutomatedJobs
         Catch ex As Exception
             EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "OnStart()." + ex.Message.ToString, EventLogEntryType.Error)
         End Try
-
-
     End Sub
 
     Protected Overrides Sub OnStop()

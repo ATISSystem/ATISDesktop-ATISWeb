@@ -58,6 +58,8 @@ Partial Class UCTransportCompanyManipulation
         Me.UcPersianTextBoxManagerMobileNumber = New R2CoreGUI.UCPersianTextBox()
         Me.UcSearcherCities = New R2CoreTransportationAndLoadNotification.UCSearcherLoadTargets()
         Me.UcLabelSherkatHamloNaghl5 = New R2CoreTransportationAndLoadNotification.UCLabelSherkatHamloNaghl()
+        Me.UcPersianTextBoxEmailAddress = New R2CoreGUI.UCPersianTextBox()
+        Me.UcLabelSherkatHamloNaghl6 = New R2CoreTransportationAndLoadNotification.UCLabelSherkatHamloNaghl()
         Me.PnlMain.SuspendLayout()
         Me.PnlOutter.SuspendLayout()
         Me.PnlInner.SuspendLayout()
@@ -71,7 +73,7 @@ Partial Class UCTransportCompanyManipulation
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(5, 5)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(814, 159)
+        Me.PnlMain.Size = New System.Drawing.Size(817, 181)
         Me.PnlMain.TabIndex = 0
         '
         'PnlOutter
@@ -82,7 +84,7 @@ Partial Class UCTransportCompanyManipulation
         Me.PnlOutter.Location = New System.Drawing.Point(0, 0)
         Me.PnlOutter.Name = "PnlOutter"
         Me.PnlOutter.Padding = New System.Windows.Forms.Padding(3)
-        Me.PnlOutter.Size = New System.Drawing.Size(814, 159)
+        Me.PnlOutter.Size = New System.Drawing.Size(817, 181)
         Me.PnlOutter.TabIndex = 0
         '
         'PnlInner
@@ -102,7 +104,7 @@ Partial Class UCTransportCompanyManipulation
         Me.PnlInner.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlInner.Location = New System.Drawing.Point(3, 3)
         Me.PnlInner.Name = "PnlInner"
-        Me.PnlInner.Size = New System.Drawing.Size(808, 153)
+        Me.PnlInner.Size = New System.Drawing.Size(811, 175)
         Me.PnlInner.TabIndex = 0
         '
         'CButtonViewUserPassword
@@ -116,7 +118,7 @@ Partial Class UCTransportCompanyManipulation
         Me.CButtonViewUserPassword.DesignerSelected = False
         Me.CButtonViewUserPassword.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButtonViewUserPassword.ImageIndex = 0
-        Me.CButtonViewUserPassword.Location = New System.Drawing.Point(216, 123)
+        Me.CButtonViewUserPassword.Location = New System.Drawing.Point(216, 145)
         Me.CButtonViewUserPassword.Name = "CButtonViewUserPassword"
         Me.CButtonViewUserPassword.Size = New System.Drawing.Size(153, 22)
         Me.CButtonViewUserPassword.TabIndex = 30
@@ -133,7 +135,7 @@ Partial Class UCTransportCompanyManipulation
         Me.CButtonSendSMSUserPassword.DesignerSelected = False
         Me.CButtonSendSMSUserPassword.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButtonSendSMSUserPassword.ImageIndex = 0
-        Me.CButtonSendSMSUserPassword.Location = New System.Drawing.Point(18, 123)
+        Me.CButtonSendSMSUserPassword.Location = New System.Drawing.Point(18, 145)
         Me.CButtonSendSMSUserPassword.Name = "CButtonSendSMSUserPassword"
         Me.CButtonSendSMSUserPassword.Size = New System.Drawing.Size(193, 22)
         Me.CButtonSendSMSUserPassword.TabIndex = 26
@@ -145,7 +147,7 @@ Partial Class UCTransportCompanyManipulation
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.Black
-        Me.Label2.Location = New System.Drawing.Point(327, 6)
+        Me.Label2.Location = New System.Drawing.Point(330, 6)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(126, 28)
         Me.Label2.TabIndex = 4
@@ -157,7 +159,7 @@ Partial Class UCTransportCompanyManipulation
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Black
-        Me.Label1.Location = New System.Drawing.Point(674, 7)
+        Me.Label1.Location = New System.Drawing.Point(677, 7)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(109, 28)
         Me.Label1.TabIndex = 2
@@ -232,7 +234,7 @@ Partial Class UCTransportCompanyManipulation
         Me.UcNumberTCId.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcNumberTCId.BackColor = System.Drawing.Color.Transparent
         Me.UcNumberTCId.Font = New System.Drawing.Font("Alborz Titr", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumberTCId.Location = New System.Drawing.Point(256, 13)
+        Me.UcNumberTCId.Location = New System.Drawing.Point(259, 13)
         Me.UcNumberTCId.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberTCId.Name = "UcNumberTCId"
         Me.UcNumberTCId.Size = New System.Drawing.Size(65, 19)
@@ -254,7 +256,7 @@ Partial Class UCTransportCompanyManipulation
         '
         Me.UcSearcherTransportCompanies.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcSearcherTransportCompanies.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherTransportCompanies.Location = New System.Drawing.Point(469, 7)
+        Me.UcSearcherTransportCompanies.Location = New System.Drawing.Point(472, 7)
         Me.UcSearcherTransportCompanies.Name = "UcSearcherTransportCompanies"
         Me.UcSearcherTransportCompanies.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcSearcherTransportCompanies.Size = New System.Drawing.Size(203, 31)
@@ -275,6 +277,8 @@ Partial Class UCTransportCompanyManipulation
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BackColor = System.Drawing.Color.Transparent
+        Me.Panel1.Controls.Add(Me.UcPersianTextBoxEmailAddress)
+        Me.Panel1.Controls.Add(Me.UcLabelSherkatHamloNaghl6)
         Me.Panel1.Controls.Add(Me.UcLabelSherkatHamloNaghl1)
         Me.Panel1.Controls.Add(Me.UcPersianTextBoxTCOrganizationCode)
         Me.Panel1.Controls.Add(Me.UcLabelSherkatHamloNaghl2)
@@ -295,7 +299,7 @@ Partial Class UCTransportCompanyManipulation
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Opacity = 25
         Me.Panel1.Radius = 5.0!
-        Me.Panel1.Size = New System.Drawing.Size(802, 116)
+        Me.Panel1.Size = New System.Drawing.Size(805, 138)
         Me.Panel1.TabIndex = 31
         '
         'UcLabelSherkatHamloNaghl1
@@ -304,7 +308,7 @@ Partial Class UCTransportCompanyManipulation
         Me.UcLabelSherkatHamloNaghl1._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelSherkatHamloNaghl1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelSherkatHamloNaghl1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelSherkatHamloNaghl1.Location = New System.Drawing.Point(698, 18)
+        Me.UcLabelSherkatHamloNaghl1.Location = New System.Drawing.Point(701, 18)
         Me.UcLabelSherkatHamloNaghl1.Name = "UcLabelSherkatHamloNaghl1"
         Me.UcLabelSherkatHamloNaghl1.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelSherkatHamloNaghl1.Size = New System.Drawing.Size(97, 33)
@@ -319,7 +323,7 @@ Partial Class UCTransportCompanyManipulation
         '
         Me.UcPersianTextBoxTCOrganizationCode.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxTCOrganizationCode.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxTCOrganizationCode.Location = New System.Drawing.Point(490, 55)
+        Me.UcPersianTextBoxTCOrganizationCode.Location = New System.Drawing.Point(493, 55)
         Me.UcPersianTextBoxTCOrganizationCode.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxTCOrganizationCode.Name = "UcPersianTextBoxTCOrganizationCode"
         Me.UcPersianTextBoxTCOrganizationCode.Size = New System.Drawing.Size(91, 28)
@@ -341,7 +345,7 @@ Partial Class UCTransportCompanyManipulation
         Me.UcLabelSherkatHamloNaghl2._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelSherkatHamloNaghl2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelSherkatHamloNaghl2.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelSherkatHamloNaghl2.Location = New System.Drawing.Point(579, 51)
+        Me.UcLabelSherkatHamloNaghl2.Location = New System.Drawing.Point(582, 51)
         Me.UcLabelSherkatHamloNaghl2.Name = "UcLabelSherkatHamloNaghl2"
         Me.UcLabelSherkatHamloNaghl2.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelSherkatHamloNaghl2.Size = New System.Drawing.Size(63, 33)
@@ -360,7 +364,7 @@ Partial Class UCTransportCompanyManipulation
         Me.UcPersianTextBoxTCTitle.Location = New System.Drawing.Point(482, 22)
         Me.UcPersianTextBoxTCTitle.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxTCTitle.Name = "UcPersianTextBoxTCTitle"
-        Me.UcPersianTextBoxTCTitle.Size = New System.Drawing.Size(212, 28)
+        Me.UcPersianTextBoxTCTitle.Size = New System.Drawing.Size(215, 28)
         Me.UcPersianTextBoxTCTitle.TabIndex = 16
         Me.UcPersianTextBoxTCTitle.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBoxTCTitle.UCBorder = True
@@ -393,7 +397,7 @@ Partial Class UCTransportCompanyManipulation
         '
         Me.UcPersianTextBoxTCTel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxTCTel.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxTCTel.Location = New System.Drawing.Point(648, 55)
+        Me.UcPersianTextBoxTCTel.Location = New System.Drawing.Point(651, 55)
         Me.UcPersianTextBoxTCTel.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxTCTel.Name = "UcPersianTextBoxTCTel"
         Me.UcPersianTextBoxTCTel.Size = New System.Drawing.Size(111, 28)
@@ -414,7 +418,7 @@ Partial Class UCTransportCompanyManipulation
         Me.ChkViewFlag.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ChkViewFlag.AutoSize = True
         Me.ChkViewFlag.Font = New System.Drawing.Font("IRMehr", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.ChkViewFlag.Location = New System.Drawing.Point(616, 87)
+        Me.ChkViewFlag.Location = New System.Drawing.Point(619, 87)
         Me.ChkViewFlag.Name = "ChkViewFlag"
         Me.ChkViewFlag.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.ChkViewFlag.Size = New System.Drawing.Size(169, 25)
@@ -428,7 +432,7 @@ Partial Class UCTransportCompanyManipulation
         Me.UcLabelSherkatHamloNaghl3._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelSherkatHamloNaghl3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelSherkatHamloNaghl3.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelSherkatHamloNaghl3.Location = New System.Drawing.Point(760, 51)
+        Me.UcLabelSherkatHamloNaghl3.Location = New System.Drawing.Point(763, 51)
         Me.UcLabelSherkatHamloNaghl3.Name = "UcLabelSherkatHamloNaghl3"
         Me.UcLabelSherkatHamloNaghl3.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelSherkatHamloNaghl3.Size = New System.Drawing.Size(41, 33)
@@ -443,7 +447,7 @@ Partial Class UCTransportCompanyManipulation
         '
         Me.UcPersianTextBoxManagerNameFamily.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxManagerNameFamily.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxManagerNameFamily.Location = New System.Drawing.Point(243, 55)
+        Me.UcPersianTextBoxManagerNameFamily.Location = New System.Drawing.Point(246, 55)
         Me.UcPersianTextBoxManagerNameFamily.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxManagerNameFamily.Name = "UcPersianTextBoxManagerNameFamily"
         Me.UcPersianTextBoxManagerNameFamily.Size = New System.Drawing.Size(153, 28)
@@ -477,7 +481,7 @@ Partial Class UCTransportCompanyManipulation
         Me.UcLabelSherkatHamloNaghl4._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelSherkatHamloNaghl4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelSherkatHamloNaghl4.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelSherkatHamloNaghl4.Location = New System.Drawing.Point(402, 51)
+        Me.UcLabelSherkatHamloNaghl4.Location = New System.Drawing.Point(405, 51)
         Me.UcLabelSherkatHamloNaghl4.Name = "UcLabelSherkatHamloNaghl4"
         Me.UcLabelSherkatHamloNaghl4.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelSherkatHamloNaghl4.Size = New System.Drawing.Size(76, 33)
@@ -492,7 +496,7 @@ Partial Class UCTransportCompanyManipulation
         '
         Me.UcPersianTextBoxManagerMobileNumber.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxManagerMobileNumber.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxManagerMobileNumber.Location = New System.Drawing.Point(7, 55)
+        Me.UcPersianTextBoxManagerMobileNumber.Location = New System.Drawing.Point(10, 55)
         Me.UcPersianTextBoxManagerMobileNumber.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxManagerMobileNumber.Name = "UcPersianTextBoxManagerMobileNumber"
         Me.UcPersianTextBoxManagerMobileNumber.Size = New System.Drawing.Size(102, 28)
@@ -532,7 +536,7 @@ Partial Class UCTransportCompanyManipulation
         Me.UcLabelSherkatHamloNaghl5._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelSherkatHamloNaghl5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelSherkatHamloNaghl5.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelSherkatHamloNaghl5.Location = New System.Drawing.Point(115, 51)
+        Me.UcLabelSherkatHamloNaghl5.Location = New System.Drawing.Point(118, 51)
         Me.UcLabelSherkatHamloNaghl5.Name = "UcLabelSherkatHamloNaghl5"
         Me.UcLabelSherkatHamloNaghl5.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelSherkatHamloNaghl5.Size = New System.Drawing.Size(131, 33)
@@ -543,6 +547,43 @@ Partial Class UCTransportCompanyManipulation
         Me.UcLabelSherkatHamloNaghl5.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.UcLabelSherkatHamloNaghl5.UCValue = "شماره موبایل مدیر عامل"
         '
+        'UcPersianTextBoxEmailAddress
+        '
+        Me.UcPersianTextBoxEmailAddress.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBoxEmailAddress.BackColor = System.Drawing.Color.Transparent
+        Me.UcPersianTextBoxEmailAddress.Location = New System.Drawing.Point(10, 90)
+        Me.UcPersianTextBoxEmailAddress.MaxCharacterReached = CType(50, Short)
+        Me.UcPersianTextBoxEmailAddress.Name = "UcPersianTextBoxEmailAddress"
+        Me.UcPersianTextBoxEmailAddress.Size = New System.Drawing.Size(389, 28)
+        Me.UcPersianTextBoxEmailAddress.TabIndex = 30
+        Me.UcPersianTextBoxEmailAddress.UCBackColor = System.Drawing.Color.White
+        Me.UcPersianTextBoxEmailAddress.UCBorder = True
+        Me.UcPersianTextBoxEmailAddress.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcPersianTextBoxEmailAddress.UCEnable = True
+        Me.UcPersianTextBoxEmailAddress.UCFont = New System.Drawing.Font("IRMehr", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcPersianTextBoxEmailAddress.UCForeColor = System.Drawing.Color.Black
+        Me.UcPersianTextBoxEmailAddress.UCMultiLine = False
+        Me.UcPersianTextBoxEmailAddress.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
+        Me.UcPersianTextBoxEmailAddress.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.UcPersianTextBoxEmailAddress.UCValue = ""
+        '
+        'UcLabelSherkatHamloNaghl6
+        '
+        Me.UcLabelSherkatHamloNaghl6._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabelSherkatHamloNaghl6._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabelSherkatHamloNaghl6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcLabelSherkatHamloNaghl6.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabelSherkatHamloNaghl6.Location = New System.Drawing.Point(405, 86)
+        Me.UcLabelSherkatHamloNaghl6.Name = "UcLabelSherkatHamloNaghl6"
+        Me.UcLabelSherkatHamloNaghl6.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabelSherkatHamloNaghl6.Size = New System.Drawing.Size(76, 33)
+        Me.UcLabelSherkatHamloNaghl6.TabIndex = 31
+        Me.UcLabelSherkatHamloNaghl6.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabelSherkatHamloNaghl6.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabelSherkatHamloNaghl6.UCForeColor = System.Drawing.Color.Black
+        Me.UcLabelSherkatHamloNaghl6.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.UcLabelSherkatHamloNaghl6.UCValue = "ایمیل شرکت"
+        '
         'UCTransportCompanyManipulation
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -551,7 +592,7 @@ Partial Class UCTransportCompanyManipulation
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCTransportCompanyManipulation"
         Me.Padding = New System.Windows.Forms.Padding(5)
-        Me.Size = New System.Drawing.Size(824, 169)
+        Me.Size = New System.Drawing.Size(827, 191)
         Me.PnlMain.ResumeLayout(False)
         Me.PnlOutter.ResumeLayout(False)
         Me.PnlInner.ResumeLayout(False)
@@ -590,4 +631,6 @@ Partial Class UCTransportCompanyManipulation
     Friend WithEvents CButtonDelete As CButtonLib.CButton
     Friend WithEvents CButtonEdit As CButtonLib.CButton
     Friend WithEvents CButtonRegister As CButtonLib.CButton
+    Friend WithEvents UcPersianTextBoxEmailAddress As R2CoreGUI.UCPersianTextBox
+    Friend WithEvents UcLabelSherkatHamloNaghl6 As UCLabelSherkatHamloNaghl
 End Class

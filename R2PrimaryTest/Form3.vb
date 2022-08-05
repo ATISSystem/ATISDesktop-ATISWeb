@@ -1,7 +1,10 @@
 ﻿Imports System.Data.OleDb
 Imports System.Data.SqlClient
 Imports System.Globalization
+Imports System.IO
+Imports System.Net.Mail
 Imports System.Text
+Imports MSCOCore.AnnouncementProcessManagement
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.PayanehWS
@@ -14,6 +17,7 @@ Imports R2Core.DateAndTimeManagement
 Imports R2Core.DateAndTimeManagement.CalendarManagement.PersianCalendar
 Imports R2Core.EntityRelationManagement
 Imports R2Core.ExceptionManagement
+Imports R2Core.FileShareRawGroupsManagement
 Imports R2Core.PermissionManagement
 Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
 Imports R2Core.SecurityAlgorithmsManagement.Captcha
@@ -444,7 +448,17 @@ Public Class Form3
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
         Try
-            R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(0, String.Empty, String.Empty, "123", String.Empty, String.Empty, String.Empty, "Pin123", 0, 1, 3, "09132043148", String.Empty, String.Empty, Nothing, Nothing, String.Empty, Nothing, Nothing, String.Empty, Nothing, String.Empty, 0, 21, Nothing, Nothing, Nothing, Nothing), R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            Dim fs As New System.IO.FileStream("c:\1221TXT_EMAIL_saba.TXT", IO.FileMode.Open, IO.FileAccess.Read)
+            Dim sr As New System.IO.StreamReader(fs)
+            sr.BaseStream.Seek(0, IO.SeekOrigin.Begin)
+            While Not sr.EndOfStream
+                Dim FirstLine = sr.ReadLine
+
+            End While
+
+            'Dim SecondLine = sr.ReadLine
+            'Dim thirdLine = sr.ReadLine
+            ''R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.RegisteringSoftwareUser(New R2CoreStandardSoftwareUserStructure(0, String.Empty, String.Empty, "123", String.Empty, String.Empty, String.Empty, "Pin123", 0, 1, 3, "09132043148", String.Empty, String.Empty, Nothing, Nothing, String.Empty, Nothing, Nothing, String.Empty, Nothing, String.Empty, 0, 21, Nothing, Nothing, Nothing, Nothing), R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
 
             'Dim NSS = R2CoreParkingSystemMClassDrivers.GetNSSDriver(78616)
             'NSS.StrIdNo = "09130843148"
@@ -634,9 +648,12 @@ Public Class Form3
     End Sub
 
     Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
-        Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager()
-        Dim NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(38, True).nEstelamKey, False)
-
+        Try
+            Dim x As New MSCOCoreSendingAnnounceEmailforTransportCompaniesManager
+            x.SendingAnnounceEmailforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
     End Sub
 
     Private Sub Button13_Click_1(sender As Object, e As EventArgs) Handles Button13.Click

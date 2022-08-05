@@ -28,6 +28,8 @@ Partial Class UCViewerNSSLoadPermissionExtended
         Me.PnlInner = New System.Windows.Forms.Panel()
         Me.LabelUserName = New System.Windows.Forms.Label()
         Me.PnlTop = New System.Windows.Forms.Panel()
+        Me.LblnEstelamId = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.PicDoPrintLoadPermission = New System.Windows.Forms.PictureBox()
         Me.UcMinimizeMaximize = New R2CoreGUI.UCMinimizeMaximize()
         Me.Label7 = New System.Windows.Forms.Label()
@@ -44,8 +46,6 @@ Partial Class UCViewerNSSLoadPermissionExtended
         Me.LabelLoadPermissionStatus = New System.Windows.Forms.Label()
         Me.LabelStrDescription = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.LblnEstelamId = New System.Windows.Forms.Label()
         Me.PnlMain.SuspendLayout()
         Me.PnlOutter.SuspendLayout()
         Me.PnlInner.SuspendLayout()
@@ -124,6 +124,30 @@ Partial Class UCViewerNSSLoadPermissionExtended
         Me.PnlTop.Name = "PnlTop"
         Me.PnlTop.Size = New System.Drawing.Size(969, 60)
         Me.PnlTop.TabIndex = 1
+        '
+        'LblnEstelamId
+        '
+        Me.LblnEstelamId.BackColor = System.Drawing.Color.Transparent
+        Me.LblnEstelamId.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.LblnEstelamId.Font = New System.Drawing.Font("IRMehr", 9.75!)
+        Me.LblnEstelamId.ForeColor = System.Drawing.Color.Red
+        Me.LblnEstelamId.Location = New System.Drawing.Point(672, 12)
+        Me.LblnEstelamId.Name = "LblnEstelamId"
+        Me.LblnEstelamId.Size = New System.Drawing.Size(78, 23)
+        Me.LblnEstelamId.TabIndex = 66
+        Me.LblnEstelamId.Text = " "
+        Me.LblnEstelamId.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label6
+        '
+        Me.Label6.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label6.ForeColor = System.Drawing.Color.DarkGray
+        Me.Label6.Location = New System.Drawing.Point(668, -6)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(78, 23)
+        Me.Label6.TabIndex = 65
+        Me.Label6.Text = "کد بار"
+        Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'PicDoPrintLoadPermission
         '
@@ -314,30 +338,6 @@ Partial Class UCViewerNSSLoadPermissionExtended
         Me.Label5.TabIndex = 39
         Me.Label5.Text = "کاربر"
         Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'Label6
-        '
-        Me.Label6.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label6.ForeColor = System.Drawing.Color.DarkGray
-        Me.Label6.Location = New System.Drawing.Point(668, -6)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(78, 23)
-        Me.Label6.TabIndex = 65
-        Me.Label6.Text = "کد بار"
-        Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'LblnEstelamId
-        '
-        Me.LblnEstelamId.BackColor = System.Drawing.Color.Transparent
-        Me.LblnEstelamId.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.LblnEstelamId.Font = New System.Drawing.Font("IRMehr", 9.75!)
-        Me.LblnEstelamId.ForeColor = System.Drawing.Color.Red
-        Me.LblnEstelamId.Location = New System.Drawing.Point(672, 12)
-        Me.LblnEstelamId.Name = "LblnEstelamId"
-        Me.LblnEstelamId.Size = New System.Drawing.Size(78, 23)
-        Me.LblnEstelamId.TabIndex = 66
-        Me.LblnEstelamId.Text = "123456"
-        Me.LblnEstelamId.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'UCViewerNSSLoadPermissionExtended
         '

@@ -41,6 +41,8 @@ Namespace R2PrimaryFileSharingWS
         
         Private WebMethodDeleteFileOperationCompleted As System.Threading.SendOrPostCallback
         
+        Private WebMethodDeleteFileButKeepDeletedOperationCompleted As System.Threading.SendOrPostCallback
+        
         Private useDefaultCredentialsSetExplicitly As Boolean
         
         '''<remarks/>
@@ -93,6 +95,9 @@ Namespace R2PrimaryFileSharingWS
         
         '''<remarks/>
         Public Event WebMethodDeleteFileCompleted As WebMethodDeleteFileCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodDeleteFileButKeepDeletedCompleted As WebMethodDeleteFileButKeepDeletedCompletedEventHandler
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodLogin", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
@@ -228,6 +233,32 @@ Namespace R2PrimaryFileSharingWS
         End Sub
         
         '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodDeleteFileButKeepDeleted", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodDeleteFileButKeepDeleted(ByVal YourRawGroupId As Long, ByVal YourFileName As String, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodDeleteFileButKeepDeleted", New Object() {YourRawGroupId, YourFileName, YourExchangeKey})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodDeleteFileButKeepDeletedAsync(ByVal YourRawGroupId As Long, ByVal YourFileName As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodDeleteFileButKeepDeletedAsync(YourRawGroupId, YourFileName, YourExchangeKey, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodDeleteFileButKeepDeletedAsync(ByVal YourRawGroupId As Long, ByVal YourFileName As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
+            If (Me.WebMethodDeleteFileButKeepDeletedOperationCompleted Is Nothing) Then
+                Me.WebMethodDeleteFileButKeepDeletedOperationCompleted = AddressOf Me.OnWebMethodDeleteFileButKeepDeletedOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodDeleteFileButKeepDeleted", New Object() {YourRawGroupId, YourFileName, YourExchangeKey}, Me.WebMethodDeleteFileButKeepDeletedOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodDeleteFileButKeepDeletedOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodDeleteFileButKeepDeletedCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodDeleteFileButKeepDeletedCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
         Public Shadows Sub CancelAsync(ByVal userState As Object)
             MyBase.CancelAsync(userState)
         End Sub
@@ -334,4 +365,8 @@ Namespace R2PrimaryFileSharingWS
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
     Public Delegate Sub WebMethodDeleteFileCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
+    Public Delegate Sub WebMethodDeleteFileButKeepDeletedCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
 End Namespace

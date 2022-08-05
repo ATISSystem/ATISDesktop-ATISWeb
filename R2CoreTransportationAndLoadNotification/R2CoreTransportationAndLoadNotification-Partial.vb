@@ -2190,7 +2190,7 @@ Namespace LoadCapacitor
                     If YourNSS.nCarNumKol > InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.LoadCapacitorLoadManipulationSetting, 0) Then Throw New LoadCapacitorLoadNumberOverLimitException
                     If YourNSS.nCarNumKol < 1 Then Throw New LoadCapacitorLoadnCarNumKolCanNotBeZeroException
                     'کنترل اکتیو بودن شرکت حمل و نقل
-                    If InstanceTransportCompanies.ISTransportCompanyActive(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(YourNSS.nCompCode, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)) = False Then Throw New TransportCompanyISNotActiveException
+                    If InstanceTransportCompanies.ISTransportCompanyActive(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(YourNSS.nCompCode, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)) = False Then Throw New TransportCompanyISNotActiveException
                     'بررسی بار فردا
                     Dim ComposeSearchString As String = NSSAnnouncementHallSubGroup.AHSGId.ToString + "="
                     Dim AllTommorowConfigforAHId As String() = Split(InstanceConfigurationsofAnnouncementHalls.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.TommorowLoads, NSSAnnouncementHall.AHId), "-")
@@ -2361,7 +2361,7 @@ Namespace LoadCapacitor
                             If (Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationRegistering) And InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.UserCanEditLoadCapacitorLoadInLoadAllocationTiming, YourUserNSS.UserId, 0) Then
                                 'امکان ویرایش بار هنگام تخصیص بار فقط توسط کاربر خاص که مجوز دارد
                             Else
-                                If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then
+                                If InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, NSSCurrentLoadCapacitorLoad.dTimeElam)) Then
                                     Throw New LoadCapacitorLoadEditTimePassedException
                                 End If
                             End If
@@ -6980,12 +6980,13 @@ Namespace TransportCompanies
             _TCTel = String.Empty
             _TCManagerNameFamily = String.Empty
             _TCManagerMobileNumber = String.Empty
+            _EmailAddress = String.Empty
             _ViewFlag = False
             _Active = False
             _Deleted = False
         End Sub
 
-        Public Sub New(ByVal YourTCId As Int64, YourTCTitle As String, YourTCOrganizationCode As String, YourTCCityId As Int64, YourTColor As String, YourTCTel As String, YourTCManagerNameFamily As String, YourTCManagerMobileNumber As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+        Public Sub New(ByVal YourTCId As Int64, YourTCTitle As String, YourTCOrganizationCode As String, YourTCCityId As Int64, YourTColor As String, YourTCTel As String, YourTCManagerNameFamily As String, YourTCManagerMobileNumber As String, YourEmailAddress As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
             MyBase.New(YourTCId, YourTCTitle)
             _TCId = YourTCId
             _TCTitle = YourTCTitle
@@ -6995,6 +6996,7 @@ Namespace TransportCompanies
             _TCTel = YourTCTel
             _TCManagerNameFamily = YourTCManagerNameFamily
             _TCManagerMobileNumber = YourTCManagerMobileNumber
+            _EmailAddress = YourEmailAddress
             _ViewFlag = YourViewFlag
             _Active = YourActive
             _Deleted = YourDeleted
@@ -7016,6 +7018,7 @@ Namespace TransportCompanies
         Public Property TCTel As String
         Public Property TCManagerNameFamily As String
         Public Property TCManagerMobileNumber As String
+        Public Property EmailAddress As String
         Public Property ViewFlag As Boolean
         Public Property Active As Boolean
         Public Property Deleted As Boolean
@@ -7039,7 +7042,7 @@ Namespace TransportCompanies
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * From R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies Where TCId=" & YourTransportCompanyId & "", 3600, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
-                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("TCTel").trim, DS.Tables(0).Rows(0).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(0).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("TCTel").trim, DS.Tables(0).Rows(0).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(0).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(0).Item("EmailAddress").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -7057,7 +7060,7 @@ Namespace TransportCompanies
                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On TCRMoneyWallets.TransportCompanyId=TransportCompanies.TCId 
                         Where MoneyWallets.Active=1 and TCRMoneyWallets.RelationActive=1 and TransportCompanies.Deleted=0 and MoneyWallets.CardId=" & YourNSSMoneyWallet.CardId & "
                         Order By MoneyWallets.CardId Desc,TransportCompanies.TCId Desc", 0, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
-                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("TCTel").trim, DS.Tables(0).Rows(0).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(0).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("TCTel").trim, DS.Tables(0).Rows(0).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(0).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(0).Item("EmailAddress").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As TransportCompanyNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -7116,7 +7119,7 @@ Namespace TransportCompanies
                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationSoftwareUsers as TCRUser On TransportCompanies.TCId=TCRUser.TCId
                             Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On TCRUser.UserId=SoftwareUsers.UserId
                           Where SoftwareUsers.UserId=" & YourNSSUser.UserId & "", 0, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
-                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("TCTel").trim, DS.Tables(0).Rows(0).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(0).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("TCTel").trim, DS.Tables(0).Rows(0).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(0).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(0).Item("EmailAddress").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As TransportCompanyNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -7142,7 +7145,7 @@ Namespace TransportCompanies
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Select Top 1 TCId  from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies with (tablockx) Order By TCId Desc " : CmdSql.ExecuteNonQuery()
                 Dim myTCId As Int64 = CmdSql.ExecuteScalar + 1
-                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies(TCId,TCTitle,TCOrganizationCode,TCCityId,TCColor,TCTel,TCManagerNameFamily,TCManagerMobileNumber,ViewFlag,Active,Deleted) Values(" & myTCId & ",'" & YourNSS.TCTitle & "','" & YourNSS.TCOrganizationCode & "'," & YourNSS.TCCityId & ",'200;200;60;50','" & YourNSS.TCTel & "','" & YourNSS.TCManagerNameFamily & "','" & YourNSS.TCManagerMobileNumber & "'," & IIf(YourNSS.ViewFlag, 1, 0) & "," & IIf(YourNSS.Active, 1, 0) & ",0)"
+                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies(TCId,TCTitle,TCOrganizationCode,TCCityId,TCColor,TCTel,TCManagerNameFamily,TCManagerMobileNumber,EmailAddress,ViewFlag,Active,Deleted) Values(" & myTCId & ",'" & YourNSS.TCTitle & "','" & YourNSS.TCOrganizationCode & "'," & YourNSS.TCCityId & ",'200;200;60;50','" & YourNSS.TCTel & "','" & YourNSS.TCManagerNameFamily & "','" & YourNSS.TCManagerMobileNumber & "','" & YourNSS.EmailAddress & "'," & IIf(YourNSS.ViewFlag, 1, 0) & "," & IIf(YourNSS.Active, 1, 0) & ",0)"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.CommandText = "Insert Into dbtransport.dbo.tbCompany(nCompCode,strCompName,nCompCityCode,Active,ViewFlag,Deleted) Values(" & myTCId & ",'" & YourNSS.TCTitle & "'," & YourNSS.TCCityId & "," & IIf(YourNSS.Active, 1, 0) & "," & IIf(YourNSS.ViewFlag, 1, 0) & ",0)"
                 CmdSql.ExecuteNonQuery()
@@ -7199,7 +7202,7 @@ Namespace TransportCompanies
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies 
-                                      Set TCTitle='" & YourNSS.TCTitle & "',TCOrganizationCode='" & YourNSS.TCOrganizationCode & "',TCCityId=" & YourNSS.TCCityId & ",TCTel='" & YourNSS.TCTel & "',TCManagerNameFamily='" & YourNSS.TCManagerNameFamily & "',TCManagerMobileNumber='" & YourNSS.TCManagerMobileNumber & "',ViewFlag=" & IIf(YourNSS.ViewFlag, 1, 0) & ",Active=" & IIf(YourNSS.Active, 1, 0) & "
+                                      Set TCTitle='" & YourNSS.TCTitle & "',TCOrganizationCode='" & YourNSS.TCOrganizationCode & "',TCCityId=" & YourNSS.TCCityId & ",TCTel='" & YourNSS.TCTel & "',TCManagerNameFamily='" & YourNSS.TCManagerNameFamily & "',TCManagerMobileNumber='" & YourNSS.TCManagerMobileNumber & "',EmailAddress='" & YourNSS.EmailAddress & "',ViewFlag=" & IIf(YourNSS.ViewFlag, 1, 0) & ",Active=" & IIf(YourNSS.Active, 1, 0) & "
                                       Where TCId=" & YourNSS.TCId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.CommandText = "Update dbtransport.dbo.tbCompany 
@@ -7286,7 +7289,7 @@ Namespace TransportCompanies
                 Dim DS As DataSet = Nothing
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * From R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies Where Left(TCTitle," & YourSearchString.Length & ")='" & YourSearchString & "' and Deleted=0 and Active=1 Order By TCTitle", 3600, DS)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(Loopx).Item("TCId"), DS.Tables(0).Rows(Loopx).Item("TCTitle"), DS.Tables(0).Rows(Loopx).Item("TCOrganizationCode"), DS.Tables(0).Rows(Loopx).Item("TCCityId"), DS.Tables(0).Rows(Loopx).Item("TCColor").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(Loopx).Item("TCId"), DS.Tables(0).Rows(Loopx).Item("TCTitle"), DS.Tables(0).Rows(Loopx).Item("TCOrganizationCode"), DS.Tables(0).Rows(Loopx).Item("TCCityId"), DS.Tables(0).Rows(Loopx).Item("TCColor").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(Loopx).Item("EmailAddress").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                 Next
                 Return Lst
             Catch ex As Exception
@@ -7300,7 +7303,7 @@ Namespace TransportCompanies
                 Dim DS As DataSet = Nothing
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * From R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies Where TCTitle Like '%" & YourSearchString & "%' and Deleted=0 and Active=1 Order By TCTitle", 3600, DS)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(Loopx).Item("TCId"), DS.Tables(0).Rows(Loopx).Item("TCTitle"), DS.Tables(0).Rows(Loopx).Item("TCOrganizationCode"), DS.Tables(0).Rows(Loopx).Item("TCCityId"), DS.Tables(0).Rows(Loopx).Item("TCColor").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(Loopx).Item("TCId"), DS.Tables(0).Rows(Loopx).Item("TCTitle"), DS.Tables(0).Rows(Loopx).Item("TCOrganizationCode"), DS.Tables(0).Rows(Loopx).Item("TCCityId"), DS.Tables(0).Rows(Loopx).Item("TCColor").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(Loopx).Item("EmailAddress").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                 Next
                 Return Lst
             Catch ex As Exception
@@ -7320,7 +7323,7 @@ Namespace TransportCompanies
                 Dim DS As DataSet = Nothing
                 R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, SqlString, 1, DS)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(Loopx).Item("TCId"), DS.Tables(0).Rows(Loopx).Item("TCTitle"), DS.Tables(0).Rows(Loopx).Item("TCOrganizationCode"), DS.Tables(0).Rows(Loopx).Item("TCCityId"), DS.Tables(0).Rows(Loopx).Item("TCColor").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(Loopx).Item("TCId"), DS.Tables(0).Rows(Loopx).Item("TCTitle"), DS.Tables(0).Rows(Loopx).Item("TCOrganizationCode"), DS.Tables(0).Rows(Loopx).Item("TCCityId"), DS.Tables(0).Rows(Loopx).Item("TCColor").trim, DS.Tables(0).Rows(Loopx).Item("TCTel").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(Loopx).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(Loopx).Item("EmailAddress").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                 Next
                 Return Lst
             Catch ex As Exception
@@ -7332,7 +7335,7 @@ Namespace TransportCompanies
             Try
                 Dim DS As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * From R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies Where TCOrganizationCode=" & YourTransportCompanyOrganizationId & "", 3600, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
-                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("TCTel").trim, DS.Tables(0).Rows(0).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(0).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("TCTel").trim, DS.Tables(0).Rows(0).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(0).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(0).Item("EmailAddress").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As TransportCompanyNotFoundException
                 Throw ex
             Catch ex As Exception

@@ -66,6 +66,9 @@
     <ApplicationIcon>R2%28Ico%291397102727.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MSCOClassLibrary">
+      <HintPath>..\MSCOClassLibrary\bin\Debug\MSCOClassLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />

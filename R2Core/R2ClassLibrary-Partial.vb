@@ -7,6 +7,8 @@ Imports System.Timers
 Imports System.ComponentModel
 Imports System.Security.Cryptography
 Imports System.Text
+Imports System.IO
+Imports System.Net.Mail
 Imports System.Threading
 Imports RestSharp
 Imports Newtonsoft
@@ -40,6 +42,7 @@ Imports PcPosDll
 Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
 Imports R2Core.MonetarySupply
+Imports R2Core.Email.Exceptions
 
 Namespace MonetarySupply
 
@@ -3689,6 +3692,54 @@ Namespace SMS
         End Class
 
     End Namespace
+
+End Namespace
+
+Namespace Email
+
+    Public Class R2CoreEmailManager
+
+        Public Sub SendEmailWithTXTTypeAttachment(YourReciever As String, YourAttachment As StringBuilder, YourSubject As String, YourBody As String, YourAttachmentFileName As String)
+            Try
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                If Not InstanceConfiguration.GetConfigBoolean(R2CoreConfigurations.EmailSystem, 0) Then Throw New R2CoreEmailSystemIsNotActiveException
+
+                Dim myByteArray = System.Text.Encoding.UTF8.GetBytes(YourAttachment.ToString)
+                Dim ms = New MemoryStream(myByteArray)
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12
+                Dim mail = New MailMessage()
+                Dim SmtpServer = New SmtpClient(InstanceConfiguration.GetConfigString(R2CoreConfigurations.EmailSystem, 1))
+                mail.From = New MailAddress(InstanceConfiguration.GetConfigString(R2CoreConfigurations.EmailSystem, 2))
+                mail.To.Add(YourReciever)
+                mail.Subject = YourSubject
+                mail.Body = YourBody
+                mail.IsBodyHtml = True
+                mail.Attachments.Add(New Attachment(ms, YourAttachmentFileName))
+                SmtpServer.Port = 587
+                SmtpServer.Credentials = New System.Net.NetworkCredential(InstanceConfiguration.GetConfigString(R2CoreConfigurations.EmailSystem, 2), InstanceConfiguration.GetConfigString(R2CoreConfigurations.EmailSystem, 3))
+                SmtpServer.EnableSsl = True
+                SmtpServer.Send(mail)
+            Catch ex As R2CoreEmailSystemIsNotActiveException
+                Throw ex
+            Catch ex As Exception
+                Throw ex
+            End Try
+        End Sub
+
+    End Class
+
+    Namespace Exceptions
+        Public Class R2CoreEmailSystemIsNotActiveException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "سرویس ایمیل غیر فعال است"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
+
 
 End Namespace
 

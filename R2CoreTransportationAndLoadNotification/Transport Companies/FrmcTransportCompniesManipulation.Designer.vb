@@ -85,7 +85,7 @@ Partial Class FrmcTransportCompniesManipulation
         Me.UcTransportCompanyManipulation.Location = New System.Drawing.Point(14, 74)
         Me.UcTransportCompanyManipulation.Name = "UcTransportCompanyManipulation"
         Me.UcTransportCompanyManipulation.Padding = New System.Windows.Forms.Padding(5)
-        Me.UcTransportCompanyManipulation.Size = New System.Drawing.Size(966, 169)
+        Me.UcTransportCompanyManipulation.Size = New System.Drawing.Size(966, 191)
         Me.UcTransportCompanyManipulation.TabIndex = 8
         Me.UcTransportCompanyManipulation.UCNSSCurrent = Nothing
         '
@@ -106,7 +106,7 @@ Partial Class FrmcTransportCompniesManipulation
         Me.UcMoneyWallet.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcMoneyWallet.BackColor = System.Drawing.Color.Transparent
         Me.UcMoneyWallet.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcMoneyWallet.Location = New System.Drawing.Point(399, 249)
+        Me.UcMoneyWallet.Location = New System.Drawing.Point(399, 276)
         Me.UcMoneyWallet.Name = "UcMoneyWallet"
         Me.UcMoneyWallet.Size = New System.Drawing.Size(197, 154)
         Me.UcMoneyWallet.TabIndex = 1

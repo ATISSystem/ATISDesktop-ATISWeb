@@ -104,6 +104,8 @@
     <Content Include="Content\ATISFonts.css" />
     <Content Include="Default.aspx" />
     <Content Include="Downloads.aspx" />
+    <Content Include="FilesManagement\WCUploadFile.ascx" />
+    <Content Include="FilesManagement\WfUploadFile.aspx" />
     <Content Include="fonts\Brush Script MT Italic.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\Yekan.svg" />
@@ -112,6 +114,7 @@
     <Content Include="Images\3520962.jpg" />
     <Content Include="Images\ATISMobilePresentation.mp4" />
     <Content Include="Images\Button-Refresh-icon.png" />
+    <Content Include="Images\Header4.jpg" />
     <Content Include="Images\Monitor.ico" />
     <Content Include="Images\PrinterIcon.ico" />
     <Content Include="Images\ATISDesktop.png" />
@@ -126,6 +129,7 @@
     <Content Include="Images\—Pngtree—abstract blue and white background_322099.png" />
     <Content Include="LoginManagement\WcChangePasswordofCurrentUser.ascx" />
     <Content Include="LoginManagement\WcLogin.ascx" />
+    <Content Include="LoginManagement\WCViewerNSSSoftwareUser.ascx" />
     <Content Include="LoginManagement\WfChangeSoftwareUserPassword.aspx" />
     <Content Include="LoginManagement\WfLogin.aspx" />
     <Content Include="MenuManagement\WcProcess.ascx" />
@@ -325,6 +329,20 @@
     <Compile Include="Downloads.aspx.designer.cs">
       <DependentUpon>Downloads.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FilesManagement\WCUploadFile.ascx.cs">
+      <DependentUpon>WCUploadFile.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FilesManagement\WCUploadFile.ascx.designer.cs">
+      <DependentUpon>WCUploadFile.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FilesManagement\WfUploadFile.aspx.cs">
+      <DependentUpon>WfUploadFile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FilesManagement\WfUploadFile.aspx.designer.cs">
+      <DependentUpon>WfUploadFile.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -342,6 +360,13 @@
     </Compile>
     <Compile Include="LoginManagement\WcLogin.ascx.designer.cs">
       <DependentUpon>WcLogin.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="LoginManagement\WCViewerNSSSoftwareUser.ascx.cs">
+      <DependentUpon>WCViewerNSSSoftwareUser.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoginManagement\WCViewerNSSSoftwareUser.ascx.designer.cs">
+      <DependentUpon>WCViewerNSSSoftwareUser.ascx</DependentUpon>
     </Compile>
     <Compile Include="LoginManagement\WfChangeSoftwareUserPassword.aspx.cs">
       <DependentUpon>WfChangeSoftwareUserPassword.aspx</DependentUpon>
