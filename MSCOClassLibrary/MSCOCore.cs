@@ -48,7 +48,7 @@ namespace MSCOCore
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
                 {
                     if (InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).Active)
-                    { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, MSCOCoreloggings.MSCOLogs, InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).LogTitle, "TransportCompanyCode not found:" + YourTransportCompanyCode, string.Empty, string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                    { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, MSCOCoreloggings.MSCOLogs, InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).LogTitle,ex.Message + YourTransportCompanyCode, string.Empty, string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
                 }
                 catch (R2CoreEmailSystemIsNotActiveException ex)
                 { throw ex; }
@@ -214,7 +214,7 @@ namespace MSCOCore
             {
                 public override string Message
                 {
-                    get { return "شرکت حمل و نقل با پایه اطلاعات فولاد یافت نشد"; }
+                    get { return "شرکت حمل و نقل با پایه اطلاعات فولاد مرتبط با شرکتی در سامانه آتیس یافت نشد"; }
                 }
             }
         }

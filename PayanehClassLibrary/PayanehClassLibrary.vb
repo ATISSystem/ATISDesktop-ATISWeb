@@ -4073,11 +4073,12 @@ Namespace ReportsManagement
                     Next
                     Dim DaLoadPermission As New SqlClient.SqlDataAdapter : Dim DsLoadPermission As New DataSet
                     DaLoadPermission.SelectCommand = New SqlCommand("
-                         Select LoadPermissions.nEstelamId,LoadPermissions.StrExitDate,LoadPermissions.StrExitTime,LoadPermissions.StrDriverName,Cars.strCarNo,Cars.strCarSerialNo,LoadPermissionStatuses.LoadPermissionStatusTitle,Cars.StrBodyNo
+                         Select LoadPermissions.nEstelamId,LoadPermissions.StrExitDate,LoadPermissions.StrExitTime,LoadPermissions.StrDriverName,Cars.strCarNo,Cars.strCarSerialNo,LoadPermissionStatuses.LoadPermissionStatusTitle,Cars.StrBodyNo,LoadAllocations.LANote,LoadPermissions.OtaghdarTurnNumber as SequentialTurnNumber 
                            from DBTransport.dbo.TbEnterExit as LoadPermissions
                              Inner Join dbtransport.dbo.TbCar as Cars On LoadPermissions.strCardno=Cars.nIDCar 
                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadPermissionStatuses as LoadPermissionStatuses On LoadPermissionStatuses.LoadPermissionStatusId=LoadPermissions.LoadPermissionStatus 
-                         Where nEstelamId In (" & nEstelamIds & ")")
+							 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On LoadPermissions.nEstelamID=LoadAllocations.nEstelamId  and LoadPermissions.nEnterExitId=LoadAllocations.TurnId 
+                         Where LoadPermissions.nEstelamId In (" & nEstelamIds & ")")
                     DaLoadPermission.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
                     DaLoadPermission.Fill(DsLoadPermission)
 
@@ -4107,8 +4108,8 @@ Namespace ReportsManagement
                         Dim CompositStringLoadPermissionStatus = String.Empty
                         For LoopPermissions As Int64 = 0 To LoadPermissions.Count() - 1
                             CompositStringDate = CompositStringDate & LoadPermissions(LoopPermissions)(1).trim & vbCrLf
-                            CompositStringTime = CompositStringTime & LoadPermissions(LoopPermissions)(2).trim & vbCrLf
-                            CompositStringLoadPermissionStatus = CompositStringLoadPermissionStatus & LoadPermissions(LoopPermissions)(6).trim + vbCrLf
+                            CompositStringTime = CompositStringTime & LoadPermissions(LoopPermissions)(2).trim + " - " + LoadPermissions(LoopPermissions)(9).trim & vbCrLf
+                            CompositStringLoadPermissionStatus = CompositStringLoadPermissionStatus & LoadPermissions(LoopPermissions)(8).trim + vbCrLf
                             Dim Truck As String = LoadPermissions(LoopPermissions)(4).trim + " - " + LoadPermissions(LoopPermissions)(5).trim
                             Dim SmartCardId = LoadPermissions(LoopPermissions)(7).trim
                             CompositStringDriverName = CompositStringDriverName & LoadPermissions(LoopPermissions)(3).trim & " " & Truck & " " + SmartCardId + vbCrLf
@@ -4481,7 +4482,7 @@ Namespace ReportsManagement
                    Where (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and 
                          AHSGRCars.AHSGId=" & YourNSSAnnouncementHallSubGroup.AHSGId & " and AHSGRCars.RelationActive=1 and ((DATEDIFF(SECOND,AHSGRCars.RelationTimeStamp,getdate())<240) or (AHSGRCars.RelationTimeStamp='2015-01-01 00:00:00.000'))  
                    Order By Turns.strEnterDate,Turns.strEnterTime,AHSGRCars.RelationId Desc")
-                Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
+                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 Da.Fill(Ds)
 

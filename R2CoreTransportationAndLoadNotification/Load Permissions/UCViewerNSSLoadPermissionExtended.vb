@@ -55,6 +55,8 @@ Public Class UCViewerNSSLoadPermissionExtended
             LabelTruckDriver.Text = String.Empty
             LabelLoadPermissionStatus.Text = String.Empty
             LabelStrDescription.Text = String.Empty
+            LabelOtaghdarTurnNumber.Text = String.Empty
+
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -113,6 +115,7 @@ Public Class UCViewerNSSLoadPermissionExtended
             LabelTruckDriver.Text = NSS.TruckDriver
             LabelLoadPermissionStatus.Text = NSS.LoadPermissionStatusTitle
             LabelStrDescription.Text = NSS.StrDescription
+            LabelOtaghdarTurnNumber.Text = NSS.SequentialTurnNumber
         Catch ex As Exception
             MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

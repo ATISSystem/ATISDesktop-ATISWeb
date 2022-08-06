@@ -28,9 +28,17 @@ namespace ATISWeb.FilesManagement
             {
                 var InstanceLogin = new ATISWebMClassLoginManager();
                 var InstancePublicProcedures = new R2CoreInstancePublicProceduresManager();
-                InstancePublicProcedures.SaveFile(R2CoreRawGroups.UploadedFiles, TxtFileName.Text.Trim(), UpLoadFile.FileBytes, InstanceLogin.GetNSSCurrentUser());
+                if (!UpLoadFile.HasFile)
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + "فایل مورد نظر را انتخاب نمایید" + "');", true);
+                    return;
+                }
+                var myFileExit = false;
                 if (InstancePublicProcedures.IsExistFile(R2CoreRawGroups.UploadedFiles, TxtFileName.Text.Trim(), InstanceLogin.GetNSSCurrentUser()))
-                { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "فایل با نام مورد نظر قبلا بارگذاری شده است و مجددا با موفقیت بارگذاری شد"   + "');", true); }
+                { myFileExit = true; }
+                InstancePublicProcedures.SaveFile(R2CoreRawGroups.UploadedFiles, TxtFileName.Text.Trim(), UpLoadFile.FileBytes, InstanceLogin.GetNSSCurrentUser());
+                if (myFileExit)
+                { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "فایل با نام مورد نظر قبلا بارگذاری شده است و مجددا با موفقیت بارگذاری شد" + "');", true); }
                 else
                 { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "فایل با موفقیت بارگذاری شد" + "');", true); }
             }

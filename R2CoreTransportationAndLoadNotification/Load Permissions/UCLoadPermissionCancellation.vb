@@ -60,7 +60,7 @@ Public Class UCLoadPermissionCancellation
         End Try
     End Sub
 
-    Public Sub UCRefreshGeneral()
+    Public Shadows Sub UCRefreshGeneral()
         Try
             UCNSSCurrent = Nothing
             UCRefresh()
@@ -76,6 +76,7 @@ Public Class UCLoadPermissionCancellation
             CheckBoxLoadCapacitorLoad.Checked = True
             UcCar.UCRefreshGeneral()
             UcDriver.UCRefreshGeneral()
+            UcViewerNSSSequentialTurnNumber.UCRefreshGeneral()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -98,7 +99,7 @@ Public Class UCLoadPermissionCancellation
     Private Sub UCLoadPermissionCancellation_UCViewNSSRequested(NSSCurrent As R2CoreTransportationAndLoadNotificationStandardLoadPermissionStructure) Handles Me.UCViewNSSRequested
         Try
             UcViewerNSSLoadPermissionExtended.UCViewNSS(NSSCurrent)
-            Dim NSSLoadAllocation As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(NSSCurrent.nEstelamId, NSSCurrent.TurnId)
+            Dim NSSLoadAllocation = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(NSSCurrent.nEstelamId, NSSCurrent.TurnId)
             UcNumberLoadAllocationId.UCValue = NSSLoadAllocation.LAId
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
@@ -118,6 +119,9 @@ Public Class UCLoadPermissionCancellation
     Private Sub UcButtonLoadPermissionCancelling_UCClickedEvent() Handles UcButtonLoadPermissionCancelling.UCClickedEvent
         Try
             UcCar.UCRefreshGeneral()
+            UcDriver.UCRefreshGeneral()
+            UcViewerNSSSequentialTurnNumber.UCRefreshGeneral()
+
             R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement.LoadPermissionCancelling(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId, CheckBoxTurn.Checked, CheckBoxLoadCapacitorLoad.Checked, UcPersianTextBoxDescription.UCValue.Trim, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
 
             'تخصیص به راننده دیگر
@@ -131,10 +135,13 @@ Public Class UCLoadPermissionCancellation
                 UcCar.UCViewCarInformation(NSSTruck.NSSCar.nIdCar)
                 Dim InstanceTruckDrivers = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
                 UcDriver.UCViewDriverInformation(InstanceTruckDrivers.GetNSSTruckDriverWithTruckId(NSSTruck.NSSCar.nIdCar).NSSDriver.nIdPerson)
+                UcViewerNSSSequentialTurnNumber.UCViewNSS(PrimaryTurn)
             End If
+
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "کنسلی مجوز بارگیری انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             UCViewNSS(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId)
             RaiseEvent UCCancellationCompleteEvent()
+
         Catch ex As Exception When TypeOf ex Is AnnouncementHallSubGroupUnActiveException _
                 OrElse TypeOf ex Is AnnouncementHallSubGroupRelationTruckNotExistException _
                 OrElse TypeOf ex Is AnnouncementHallSubGroupNotFoundException _

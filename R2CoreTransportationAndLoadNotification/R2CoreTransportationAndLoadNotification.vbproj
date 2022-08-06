@@ -587,6 +587,12 @@
     <Compile Include="Turns\UCViewerNSSSequentialTurn.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Turns\UCViewerNSSSequentialTurnNumber.Designer.vb">
+      <DependentUpon>UCViewerNSSSequentialTurnNumber.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Turns\UCViewerNSSSequentialTurnNumber.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Turns\UCViewerNSSTurnDataEntry.Designer.vb">
       <DependentUpon>UCViewerNSSTurnDataEntry.vb</DependentUpon>
     </Compile>
@@ -842,6 +848,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Turns\UCViewerNSSSequentialTurn.resx">
       <DependentUpon>UCViewerNSSSequentialTurn.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Turns\UCViewerNSSSequentialTurnNumber.resx">
+      <DependentUpon>UCViewerNSSSequentialTurnNumber.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Turns\UCViewerNSSTurnDataEntry.resx">
       <DependentUpon>UCViewerNSSTurnDataEntry.vb</DependentUpon>

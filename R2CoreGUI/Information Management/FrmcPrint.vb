@@ -68,15 +68,15 @@ Public Class FrmcPrint
 
     Public Sub ViewChopRdl(ByVal YourReportId As Int64)
         Try
-            Dim NSS As R2StandardReportStructure =R2CoreMClassReportsManagement.GetNSSReport(YourReportId)
+            Dim NSS As R2StandardReportStructure = R2CoreMClassReportsManagement.GetNSSReport(YourReportId)
             ReportViewer.SetDisplayMode(Microsoft.Reporting.WinForms.DisplayMode.PrintLayout)
             ReportViewer.ProcessingMode = Microsoft.Reporting.WinForms.ProcessingMode.Remote
-            ReportViewer.ZoomMode=ZoomMode.PageWidth
-            ReportViewer.ServerReport.ReportPath =NSS.ReportServerPath +NSS.RFullName
+            ReportViewer.ZoomMode = ZoomMode.PageWidth
+            ReportViewer.ServerReport.ReportPath = NSS.ReportServerPath + NSS.RFullName
             ReportViewer.ServerReport.ReportServerUrl = New System.Uri(NSS.ReportServerURL, System.UriKind.Absolute)
             Dim ReportServerCredentialUserName As String = Split(NSS.ReportServerCredential, ";")(0)
-            Dim ReportServerCredentialPassword As String =Split(NSS.ReportServerCredential,";")(1)
-            ReportViewer.ServerReport.ReportServerCredentials.NetworkCredentials = new System.Net.NetworkCredential(ReportServerCredentialUserName, ReportServerCredentialPassword)
+            Dim ReportServerCredentialPassword As String = Split(NSS.ReportServerCredential, ";")(1)
+            ReportViewer.ServerReport.ReportServerCredentials.NetworkCredentials = New System.Net.NetworkCredential(ReportServerCredentialUserName, ReportServerCredentialPassword)
             ReportViewer.RefreshReport()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

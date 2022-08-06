@@ -33,12 +33,13 @@ Partial Class UCLoadPermissionCancellation
         Me.UcButtonLoadPermissionCancelling = New R2CoreGUI.UCButton()
         Me.UcLabel1 = New R2CoreGUI.UCLabel()
         Me.PnlBorder = New System.Windows.Forms.Panel()
+        Me.UcLabel3 = New R2CoreGUI.UCLabel()
+        Me.UcPersianTextBoxDescription = New R2CoreGUI.UCPersianTextBox()
         Me.UcDriver = New R2CoreParkingSystem.UCDriver()
         Me.UcLabel2 = New R2CoreGUI.UCLabel()
         Me.UcCar = New R2CoreParkingSystem.UCCar()
         Me.UcViewerNSSLoadPermissionExtended = New R2CoreTransportationAndLoadNotification.UCViewerNSSLoadPermissionExtended()
-        Me.UcPersianTextBoxDescription = New R2CoreGUI.UCPersianTextBox()
-        Me.UcLabel3 = New R2CoreGUI.UCLabel()
+        Me.UcViewerNSSSequentialTurnNumber = New R2CoreTransportationAndLoadNotification.UCViewerNSSSequentialTurnNumber()
         Me.PnlMain.SuspendLayout()
         Me.PnlInner.SuspendLayout()
         Me.PnlBorder.SuspendLayout()
@@ -52,7 +53,7 @@ Partial Class UCLoadPermissionCancellation
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
         Me.PnlMain.Padding = New System.Windows.Forms.Padding(2)
-        Me.PnlMain.Size = New System.Drawing.Size(902, 344)
+        Me.PnlMain.Size = New System.Drawing.Size(902, 420)
         Me.PnlMain.TabIndex = 0
         '
         'PnlInner
@@ -68,7 +69,7 @@ Partial Class UCLoadPermissionCancellation
         Me.PnlInner.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlInner.Location = New System.Drawing.Point(2, 2)
         Me.PnlInner.Name = "PnlInner"
-        Me.PnlInner.Size = New System.Drawing.Size(898, 340)
+        Me.PnlInner.Size = New System.Drawing.Size(898, 416)
         Me.PnlInner.TabIndex = 16
         '
         'CheckBoxLoadAllocation
@@ -181,6 +182,7 @@ Partial Class UCLoadPermissionCancellation
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlBorder.Controls.Add(Me.UcViewerNSSSequentialTurnNumber)
         Me.PnlBorder.Controls.Add(Me.UcLabel3)
         Me.PnlBorder.Controls.Add(Me.UcPersianTextBoxDescription)
         Me.PnlBorder.Controls.Add(Me.UcDriver)
@@ -189,15 +191,52 @@ Partial Class UCLoadPermissionCancellation
         Me.PnlBorder.Controls.Add(Me.UcViewerNSSLoadPermissionExtended)
         Me.PnlBorder.Location = New System.Drawing.Point(3, 22)
         Me.PnlBorder.Name = "PnlBorder"
-        Me.PnlBorder.Size = New System.Drawing.Size(891, 314)
+        Me.PnlBorder.Size = New System.Drawing.Size(891, 390)
         Me.PnlBorder.TabIndex = 16
+        '
+        'UcLabel3
+        '
+        Me.UcLabel3._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel3._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel3.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabel3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel3.Location = New System.Drawing.Point(426, 24)
+        Me.UcLabel3.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.UcLabel3.Name = "UcLabel3"
+        Me.UcLabel3.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.UcLabel3.Size = New System.Drawing.Size(167, 27)
+        Me.UcLabel3.TabIndex = 19
+        Me.UcLabel3.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabel3.UCFont = New System.Drawing.Font("IRMehr", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel3.UCForeColor = System.Drawing.Color.Red
+        Me.UcLabel3.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.UcLabel3.UCValue = "شرح کنسلی مجوز بارگیری"
+        '
+        'UcPersianTextBoxDescription
+        '
+        Me.UcPersianTextBoxDescription.BackColor = System.Drawing.Color.Transparent
+        Me.UcPersianTextBoxDescription.Location = New System.Drawing.Point(8, 24)
+        Me.UcPersianTextBoxDescription.MaxCharacterReached = CType(50, Short)
+        Me.UcPersianTextBoxDescription.Name = "UcPersianTextBoxDescription"
+        Me.UcPersianTextBoxDescription.Size = New System.Drawing.Size(416, 27)
+        Me.UcPersianTextBoxDescription.TabIndex = 18
+        Me.UcPersianTextBoxDescription.UCBackColor = System.Drawing.Color.White
+        Me.UcPersianTextBoxDescription.UCBorder = True
+        Me.UcPersianTextBoxDescription.UCBorderColor = System.Drawing.Color.Red
+        Me.UcPersianTextBoxDescription.UCEnable = True
+        Me.UcPersianTextBoxDescription.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcPersianTextBoxDescription.UCForeColor = System.Drawing.Color.Black
+        Me.UcPersianTextBoxDescription.UCMultiLine = False
+        Me.UcPersianTextBoxDescription.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
+        Me.UcPersianTextBoxDescription.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.UcPersianTextBoxDescription.UCValue = ""
         '
         'UcDriver
         '
         Me.UcDriver.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcDriver.BackColor = System.Drawing.Color.Transparent
-        Me.UcDriver.Location = New System.Drawing.Point(8, 209)
+        Me.UcDriver.Location = New System.Drawing.Point(8, 285)
         Me.UcDriver.Name = "UcDriver"
         Me.UcDriver.Padding = New System.Windows.Forms.Padding(3)
         Me.UcDriver.Size = New System.Drawing.Size(876, 101)
@@ -211,7 +250,7 @@ Partial Class UCLoadPermissionCancellation
         Me.UcLabel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel2.BackColor = System.Drawing.Color.Transparent
         Me.UcLabel2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabel2.Location = New System.Drawing.Point(745, 95)
+        Me.UcLabel2.Location = New System.Drawing.Point(759, 129)
         Me.UcLabel2.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.UcLabel2.Name = "UcLabel2"
         Me.UcLabel2.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
@@ -228,7 +267,7 @@ Partial Class UCLoadPermissionCancellation
         Me.UcCar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcCar.BackColor = System.Drawing.Color.Transparent
-        Me.UcCar.Location = New System.Drawing.Point(6, 120)
+        Me.UcCar.Location = New System.Drawing.Point(6, 196)
         Me.UcCar.Name = "UcCar"
         Me.UcCar.Padding = New System.Windows.Forms.Padding(3)
         Me.UcCar.Size = New System.Drawing.Size(878, 88)
@@ -240,49 +279,23 @@ Partial Class UCLoadPermissionCancellation
         Me.UcViewerNSSLoadPermissionExtended.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcViewerNSSLoadPermissionExtended.BackColor = System.Drawing.Color.Transparent
-        Me.UcViewerNSSLoadPermissionExtended.Location = New System.Drawing.Point(-2, 11)
+        Me.UcViewerNSSLoadPermissionExtended.Location = New System.Drawing.Point(-2, 48)
         Me.UcViewerNSSLoadPermissionExtended.Name = "UcViewerNSSLoadPermissionExtended"
         Me.UcViewerNSSLoadPermissionExtended.Padding = New System.Windows.Forms.Padding(10)
         Me.UcViewerNSSLoadPermissionExtended.Size = New System.Drawing.Size(894, 89)
         Me.UcViewerNSSLoadPermissionExtended.TabIndex = 0
         Me.UcViewerNSSLoadPermissionExtended.UCNSSCurrent = Nothing
         '
-        'UcPersianTextBoxDescription
+        'UcViewerNSSSequentialTurnNumber
         '
-        Me.UcPersianTextBoxDescription.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxDescription.Location = New System.Drawing.Point(9, 93)
-        Me.UcPersianTextBoxDescription.MaxCharacterReached = CType(50, Short)
-        Me.UcPersianTextBoxDescription.Name = "UcPersianTextBoxDescription"
-        Me.UcPersianTextBoxDescription.Size = New System.Drawing.Size(416, 27)
-        Me.UcPersianTextBoxDescription.TabIndex = 18
-        Me.UcPersianTextBoxDescription.UCBackColor = System.Drawing.Color.White
-        Me.UcPersianTextBoxDescription.UCBorder = True
-        Me.UcPersianTextBoxDescription.UCBorderColor = System.Drawing.Color.Red
-        Me.UcPersianTextBoxDescription.UCEnable = True
-        Me.UcPersianTextBoxDescription.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcPersianTextBoxDescription.UCForeColor = System.Drawing.Color.Black
-        Me.UcPersianTextBoxDescription.UCMultiLine = False
-        Me.UcPersianTextBoxDescription.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
-        Me.UcPersianTextBoxDescription.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcPersianTextBoxDescription.UCValue = ""
-        '
-        'UcLabel3
-        '
-        Me.UcLabel3._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabel3._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabel3.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabel3.Location = New System.Drawing.Point(427, 93)
-        Me.UcLabel3.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.UcLabel3.Name = "UcLabel3"
-        Me.UcLabel3.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.UcLabel3.Size = New System.Drawing.Size(167, 27)
-        Me.UcLabel3.TabIndex = 19
-        Me.UcLabel3.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel3.UCFont = New System.Drawing.Font("IRMehr", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabel3.UCForeColor = System.Drawing.Color.Red
-        Me.UcLabel3.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.UcLabel3.UCValue = "شرح کنسلی مجوز بارگیری"
+        Me.UcViewerNSSSequentialTurnNumber.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcViewerNSSSequentialTurnNumber.BackColor = System.Drawing.Color.Transparent
+        Me.UcViewerNSSSequentialTurnNumber.Location = New System.Drawing.Point(626, 156)
+        Me.UcViewerNSSSequentialTurnNumber.Name = "UcViewerNSSSequentialTurnNumber"
+        Me.UcViewerNSSSequentialTurnNumber.Padding = New System.Windows.Forms.Padding(2)
+        Me.UcViewerNSSSequentialTurnNumber.Size = New System.Drawing.Size(257, 34)
+        Me.UcViewerNSSSequentialTurnNumber.TabIndex = 20
+        Me.UcViewerNSSSequentialTurnNumber.UCNSSCurrent = Nothing
         '
         'UCLoadPermissionCancellation
         '
@@ -291,7 +304,7 @@ Partial Class UCLoadPermissionCancellation
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCLoadPermissionCancellation"
-        Me.Size = New System.Drawing.Size(902, 344)
+        Me.Size = New System.Drawing.Size(902, 420)
         Me.PnlMain.ResumeLayout(False)
         Me.PnlInner.ResumeLayout(False)
         Me.PnlInner.PerformLayout()
@@ -315,4 +328,5 @@ Partial Class UCLoadPermissionCancellation
     Friend WithEvents UcLabel2 As UCLabel
     Friend WithEvents UcLabel3 As UCLabel
     Friend WithEvents UcPersianTextBoxDescription As UCPersianTextBox
+    Friend WithEvents UcViewerNSSSequentialTurnNumber As UCViewerNSSSequentialTurnNumber
 End Class
