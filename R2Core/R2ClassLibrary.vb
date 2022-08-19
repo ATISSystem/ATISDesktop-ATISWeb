@@ -3105,6 +3105,13 @@ Namespace DateAndTimeManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
         End Function
+        Public Function GetCurrentDateShamsiFullWithoutSlashes() As String
+            Try
+                Return GetCurrentDateShamsiFull.Replace("/", "")
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Function
         Public Function GetCurrentDateShamsi() As String
             Try
                 Return Mid(Trim(GetCurrentDateShamsiFull), 3, 20)

@@ -650,7 +650,7 @@ Public Class Form3
     Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
         Try
             Dim x As New MSCOCoreSendingAnnounceEmailforTransportCompaniesManager
-            x.SendingAnnounceEmailforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            x.AnnouncementforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try

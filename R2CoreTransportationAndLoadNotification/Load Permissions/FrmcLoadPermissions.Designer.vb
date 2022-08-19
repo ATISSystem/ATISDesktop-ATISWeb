@@ -112,7 +112,7 @@ Partial Class FrmcLoadPermissions
         Me.UcLoadPermissionCancellation.BackColor = System.Drawing.Color.Transparent
         Me.UcLoadPermissionCancellation.Location = New System.Drawing.Point(7, 15)
         Me.UcLoadPermissionCancellation.Name = "UcLoadPermissionCancellation"
-        Me.UcLoadPermissionCancellation.Size = New System.Drawing.Size(981, 346)
+        Me.UcLoadPermissionCancellation.Size = New System.Drawing.Size(981, 418)
         Me.UcLoadPermissionCancellation.TabIndex = 0
         Me.UcLoadPermissionCancellation.UCBackColor = System.Drawing.Color.SkyBlue
         Me.UcLoadPermissionCancellation.UCBackColorDisable = System.Drawing.Color.Gray

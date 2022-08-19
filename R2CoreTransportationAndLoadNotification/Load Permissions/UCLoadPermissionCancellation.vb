@@ -77,6 +77,7 @@ Public Class UCLoadPermissionCancellation
             UcCar.UCRefreshGeneral()
             UcDriver.UCRefreshGeneral()
             UcViewerNSSSequentialTurnNumber.UCRefreshGeneral()
+            UcPersianTextBoxDescription.UCValue = String.Empty
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -121,6 +122,7 @@ Public Class UCLoadPermissionCancellation
             UcCar.UCRefreshGeneral()
             UcDriver.UCRefreshGeneral()
             UcViewerNSSSequentialTurnNumber.UCRefreshGeneral()
+            If UcPersianTextBoxDescription.UCValue.Trim = String.Empty Then UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "شرح کنسلی مجوز بارگیری را وارد نمایید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
 
             R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement.LoadPermissionCancelling(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId, CheckBoxTurn.Checked, CheckBoxLoadCapacitorLoad.Checked, UcPersianTextBoxDescription.UCValue.Trim, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
 

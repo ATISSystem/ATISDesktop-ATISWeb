@@ -21,6 +21,7 @@ using R2Core.BaseStandardClass;
 using R2Core.LoggingManagement;
 using R2Core.Email.Exceptions;
 using MSCOCore.Logging;
+using R2Core.PublicProc;
 
 namespace MSCOCore
 {
@@ -29,37 +30,70 @@ namespace MSCOCore
         public class MSCOCoreSendingAnnounceEmailforTransportCompaniesManager
         {
             private R2DateTime _DateTime = new R2DateTime();
+            private string MSCCompanay = "MSC";
 
             public MSCOCoreSendingAnnounceEmailforTransportCompaniesManager()
             { }
 
-            private void  SentMail(string  YourTransportCompanyCode ,StringBuilder YourSB, R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser)
+            private void SentEmailforTransportCompanies(string YourTransportCompanyCode, StringBuilder YourSB, R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser)
             {
-                var InstanceTransportCompanies = new MSCOCoreMClassTransportCompaniesManager();
                 var InstanceLogging = new R2CoreInstanceLoggingManager();
+                var InstanceTransportCompanies = new MSCOCoreMClassTransportCompaniesManager();
                 var InstanceEmail = new R2CoreEmailManager();
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
 
                 try
                 {
                     if (InstanceTransportCompanies.IsActiveTransportCompanySentMail(YourTransportCompanyCode))
-                    {InstanceEmail.SendEmailWithTXTTypeAttachment(InstanceTransportCompanies.GetNSSTransportCompany(YourTransportCompanyCode).EmailAddress, YourSB, "اعلام بار", string.Empty, YourTransportCompanyCode + InstanceConfiguration.GetConfigString(MSCOCore.Configurations.MSCOCoreConfigurations.MSCO, 4));                                         }
+                    { InstanceEmail.SendEmailWithTXTTypeAttachment(InstanceTransportCompanies.GetNSSTransportCompany(YourTransportCompanyCode).EmailAddress, YourSB, "اعلام بار", string.Empty, YourTransportCompanyCode + InstanceConfiguration.GetConfigString(MSCOCore.Configurations.MSCOCoreConfigurations.MSCO, 4)); }
+                    System.Threading.Thread.Sleep(150000);
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
                 {
                     if (InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).Active)
-                    { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, MSCOCoreloggings.MSCOLogs, InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).LogTitle,ex.Message + YourTransportCompanyCode, string.Empty, string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                    { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, MSCOCoreloggings.MSCOLogs, InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).LogTitle, ex.Message + YourTransportCompanyCode, string.Empty, string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
                 }
                 catch (R2CoreEmailSystemIsNotActiveException ex)
-                { throw ex; }
+                {
+                    if (InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).Active)
+                    { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, MSCOCoreloggings.MSCOLogs, InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).LogTitle, ex.Message, string.Empty, string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                }
+
                 catch (Exception ex)
-                { throw ex; }
-
-
+                {
+                    if (InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).Active)
+                    { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, MSCOCoreloggings.MSCOLogs, InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).LogTitle, ex.Message.Substring(0, 80) + YourTransportCompanyCode, string.Empty, string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                }
             }
 
-            public void SendingAnnounceEmailforTransportCompanies(R2CoreStandardSoftwareUserStructure  YourNSSSoftwareUser )
+            private void CreateAnnouncementFileforTransportCompanies(string YourTransportCompanyCode, StringBuilder YourSB, R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser)
             {
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
+                try
+                {
+                    var InstanceTransportCompanies = new MSCOCoreMClassTransportCompaniesManager();
+                    var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                    var InstancePublicProcedures = new R2CoreInstancePublicProceduresManager();
+
+                    if (InstanceTransportCompanies.IsActiveTransportCompanyAnnounce(YourTransportCompanyCode))
+                    { InstancePublicProcedures.SaveFile(R2CoreRawGroups.UploadedFiles, MSCCompanay + _DateTime.GetCurrentDateShamsiFullWithoutSlashes() + YourTransportCompanyCode + ".Txt", System.Text.Encoding.UTF8.GetBytes(YourSB.ToString()), YourNSSSoftwareUser); }
+                }
+
+                catch (MSCOCoreTransportCompanyNotFoundException ex)
+                {
+                    if (InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).Active)
+                    { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, MSCOCoreloggings.MSCOLogs, InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).LogTitle, ex.Message + YourTransportCompanyCode, string.Empty, string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                }
+                catch (Exception ex)
+                {
+                    if (InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).Active)
+                    { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, MSCOCoreloggings.MSCOLogs, InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).LogTitle, ex.Message.Substring(0, 80) + YourTransportCompanyCode, string.Empty, string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                }
+            }
+
+            public void AnnouncementforTransportCompanies(R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser)
+            {
+                string TransportCompanyCode = null;
                 try
                 {
                     var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
@@ -86,7 +120,7 @@ namespace MSCOCore
                     var SecondLine = sr.ReadLine();
                     SB.AppendLine(FirstLine); SB.AppendLine(SecondLine);
                     var OtherLine = sr.ReadLine();
-                    var TransportCompanyCode = OtherLine.Substring(0, 7);
+                    TransportCompanyCode = OtherLine.Substring(0, 7);
                     SB.AppendLine(OtherLine);
 
                     while (!(sr.EndOfStream))
@@ -97,7 +131,8 @@ namespace MSCOCore
                             SB.AppendLine(OtherLine);
                             if (sr.EndOfStream)
                             {
-                                SentMail(TransportCompanyCode ,SB,YourNSSSoftwareUser );
+                                SentEmailforTransportCompanies(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                CreateAnnouncementFileforTransportCompanies(TransportCompanyCode, SB, YourNSSSoftwareUser);
                                 break;
                             }
                             continue;
@@ -108,9 +143,8 @@ namespace MSCOCore
                             { SB.AppendLine(OtherLine); continue; }
                             else
                             {
-                                //ایمیل اطلاعات
-                                SentMail(TransportCompanyCode, SB, YourNSSSoftwareUser);
-                                System.Threading.Thread.Sleep(5000);
+                                SentEmailforTransportCompanies(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                CreateAnnouncementFileforTransportCompanies(TransportCompanyCode, SB, YourNSSSoftwareUser);
                                 //شرکت جدید
                                 SB.Clear();
                                 TransportCompanyCode = OtherLine.Substring(0, 7);
@@ -123,7 +157,8 @@ namespace MSCOCore
                             SB.AppendLine(OtherLine);
                             if (sr.EndOfStream)
                             {
-                                SentMail(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                SentEmailforTransportCompanies(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                CreateAnnouncementFileforTransportCompanies(TransportCompanyCode, SB, YourNSSSoftwareUser);
                                 break;
                             }
                             continue;
@@ -142,6 +177,8 @@ namespace MSCOCore
                 { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
             }
 
+            public void LoadsAnnouncementforTransportCompanies()
+            { }
 
         }
 
@@ -193,7 +230,7 @@ namespace MSCOCore
             {
                 try
                 {
-                    System.Data.DataSet DS=null ;
+                    System.Data.DataSet DS = null;
                     var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
                     if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
                          @"Select SendEmail from MSCO.dbo.TblMSCOTransportCompanies Where MSCOId='" + YourMSCOId + "'", 3600, ref DS).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
@@ -205,6 +242,21 @@ namespace MSCOCore
                 { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
             }
 
+            public bool IsActiveTransportCompanyAnnounce(string YourMSCOId)
+            {
+                try
+                {
+                    System.Data.DataSet DS = null;
+                    var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
+                    if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
+                         @"Select Announce from MSCO.dbo.TblMSCOTransportCompanies Where MSCOId='" + YourMSCOId + "'", 3600, ref DS).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
+                    return System.Convert.ToBoolean(DS.Tables[0].Rows[0]["Announce"]);
+                }
+                catch (MSCOCoreTransportCompanyNotFoundException ex)
+                { throw ex; }
+                catch (Exception ex)
+                { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
+            }
 
         }
 
@@ -230,7 +282,7 @@ namespace MSCOCore
 
     namespace Logging
     {
-        public abstract class MSCOCoreloggings : R2CoreLogType 
+        public abstract class MSCOCoreloggings : R2CoreLogType
         { public static readonly Int64 MSCOLogs = 63; }
 
     }

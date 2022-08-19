@@ -1191,7 +1191,7 @@ Namespace TrafficCardsManagement
 #Region "Properting Management"
         Public Property CardId() As String
             Get
-                Return myCardId
+                Return myCardId.Trim
             End Get
             Set(ByVal Value As String)
                 myCardId = Value
@@ -1393,7 +1393,7 @@ Namespace TrafficCardsManagement
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim Ds As DataSet
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblRFIDCards Where Cardno='" & YourCardNo & "' Order By CardId Desc", 1, Ds).GetRecordsCount() = 0 Then
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from R2Primary.dbo.TblRFIDCards Where Cardno='" & YourCardNo & "' Order By ltrim(rtrim(CardId)) Desc", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New TerraficCardNotFoundException
                 Else
                     Return New R2CoreParkingSystemStandardTrafficCardStructure(Ds.Tables(0).Rows(0).Item("CardId"), Ds.Tables(0).Rows(0).Item("CardNo"), Ds.Tables(0).Rows(0).Item("Charge"), Ds.Tables(0).Rows(0).Item("UserIdSabt"), Ds.Tables(0).Rows(0).Item("UserIdEdit"), Ds.Tables(0).Rows(0).Item("PelakType"), Ds.Tables(0).Rows(0).Item("Pelak"), Ds.Tables(0).Rows(0).Item("Serial"), Ds.Tables(0).Rows(0).Item("NoMoney"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("CompanyName"), Ds.Tables(0).Rows(0).Item("NameFamily"), Ds.Tables(0).Rows(0).Item("Mobile"), Ds.Tables(0).Rows(0).Item("Address"), Ds.Tables(0).Rows(0).Item("Tel"), Ds.Tables(0).Rows(0).Item("Tahvilg"), Ds.Tables(0).Rows(0).Item("DateTimeMilladiSabt"), Ds.Tables(0).Rows(0).Item("DateTimeMilladiEdit"), Ds.Tables(0).Rows(0).Item("DateShamsiSabt"), Ds.Tables(0).Rows(0).Item("DateShamsiEdit"), Ds.Tables(0).Rows(0).Item("CardType"), Ds.Tables(0).Rows(0).Item("TempCardType"))

@@ -7091,7 +7091,7 @@ Namespace TransportCompanies
                 End Try
                 Try
                     Dim InstanceTrafficCards = New R2CoreParkingSystemInstanceTrafficCardsManager
-                    Dim NSSMoneyWallet = InstanceTrafficCards.GetNSSTrafficCard(YourMoneyWallet.CardId)
+                    Dim NSSMoneyWallet = InstanceTrafficCards.GetNSSTrafficCard(System.Convert.ToInt64(YourMoneyWallet.CardId))
                     NSSMoneyWallet.Pelak = String.Empty
                     NSSMoneyWallet.Serial = String.Empty
                     NSSMoneyWallet.UserIdEdit = YourNSSUser.UserId

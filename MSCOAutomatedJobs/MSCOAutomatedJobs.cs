@@ -72,7 +72,7 @@ namespace MSCOAutomatedJobs
                 {
                     var InstanceSendingAnnounceEmailforTransportCompanies = new MSCOCoreSendingAnnounceEmailforTransportCompaniesManager();
                     var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-                    InstanceSendingAnnounceEmailforTransportCompanies.SendingAnnounceEmailforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                    InstanceSendingAnnounceEmailforTransportCompanies.AnnouncementforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
                 }
 
                 catch (Exception ex)
