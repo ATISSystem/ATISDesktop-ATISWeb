@@ -1466,12 +1466,15 @@ Namespace Turns
                 CmdSql.CommandText = "Select Top 1 nEnterExitId From dbtransport.dbo.TbEnterExit with (tablockx) Where nEnterExitId=" & YourTurnId & ""
                 CmdSql.ExecuteNonQuery()
                 If YourResuscitationFlag = True Then
+                    If NSSTurn.RegisteringTimeStamp <> "2015-01-01 00:00:00.000" Then Throw New UnableResucitationTemporayTurnException
                     CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & ",bFlag=0,bFlagDriver=0 Where nEnterExitId=" & NSSTurn.nEnterExitId & ""
                 Else
                     CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.CancelledLoadPermissionCancelled & ",bFlag=1,bFlagDriver=1 Where nEnterExitId=" & NSSTurn.nEnterExitId & ""
                 End If
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As UnableResucitationTemporayTurnException
+                Throw ex
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -2406,6 +2409,14 @@ Namespace Turns
     End Namespace
 
     Namespace Exceptions
+        Public Class UnableResucitationTemporayTurnException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "امکان احیاء نوبت موقت وجود ندارد"
+                End Get
+            End Property
+        End Class
 
         Public Class TurnPrintingInfNotFoundException
             Inherits ApplicationException

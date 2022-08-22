@@ -650,7 +650,7 @@ Public Class Form3
     Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
         Try
             Dim x As New MSCOCoreSendingAnnounceEmailforTransportCompaniesManager
-            x.AnnouncementforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            'x.AnnouncementforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
@@ -685,6 +685,39 @@ Public Class Form3
             If CmdSql.Connection.State <> ConnectionState.Closed Then
                 CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
             End If
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
+        Dim CmdSql As New SqlClient.SqlCommand
+        CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+        Try
+            Dim Da As New OleDbDataAdapter : Dim Ds As New DataSet
+            Da.SelectCommand = New OleDbCommand("Select * from TblMSCOTargets Order By Field6,Field4")
+            Da.SelectCommand.Connection = New OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=G:\MSCOTrgets.mdb")
+            Da.Fill(Ds)
+            CmdSql.Connection.Open()
+            CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+            CmdSql.CommandText = "Delete MSCO.dbo.TblMSCOTargets" : CmdSql.ExecuteNonQuery()
+            For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                Dim myMSCOCityId As String = Ds.Tables(0).Rows(Loopx).Item("Field4").trim
+                Dim myMSCOCityName As String = Ds.Tables(0).Rows(Loopx).Item("Field5").trim
+                Dim myMSCOProvinceId As Int64 = Ds.Tables(0).Rows(Loopx).Item("Field6").trim
+                Dim Dax As New SqlClient.SqlDataAdapter : Dim Dsx As New DataSet
+                Dax.SelectCommand = New SqlClient.SqlCommand("Select Top 1 nCityCode,strCityName from Dbtransport.dbo.TbCity Where nProvince=" & myMSCOProvinceId & " and strCityName='" & myMSCOCityName & "' and ViewFlag=1 and Deleted=0 Order By strCityName")
+                Dax.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
+                If Dax.Fill(Dsx) > 0 Then
+                    CmdSql.CommandText = "Insert Into MSCO.dbo.TblMSCOTargets(CityId,CityName,MSCOCityId,MSCOCityName,MSCOProvinceId,RelationActive)  Values(" & Dsx.Tables(0).Rows(0).Item("nCityCode") & ",'" & Dsx.Tables(0).Rows(0).Item("strCityName") & "','" & myMSCOCityId & "','" & myMSCOCityName & "'," & myMSCOProvinceId & ",1)"
+                    CmdSql.ExecuteNonQuery()
+                Else
+                    CmdSql.CommandText = "Insert Into MSCO.dbo.TblMSCOTargets(CityId,CityName,MSCOCityId,MSCOCityName,MSCOProvinceId,RelationActive)  Values(0,'" & myMSCOCityName & "','" & myMSCOCityId & "','" & myMSCOCityName & "'," & myMSCOProvinceId & ",1)"
+                    CmdSql.ExecuteNonQuery()
+                End If
+            Next
+            CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            MessageBox.Show("Ok...")
+        Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
     End Sub

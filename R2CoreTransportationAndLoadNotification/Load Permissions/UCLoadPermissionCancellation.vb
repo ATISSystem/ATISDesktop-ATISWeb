@@ -143,7 +143,8 @@ Public Class UCLoadPermissionCancellation
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "کنسلی مجوز بارگیری انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             UCViewNSS(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId)
             RaiseEvent UCCancellationCompleteEvent()
-
+        Catch ex As UnableResucitationTemporayTurnException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception When TypeOf ex Is AnnouncementHallSubGroupUnActiveException _
                 OrElse TypeOf ex Is AnnouncementHallSubGroupRelationTruckNotExistException _
                 OrElse TypeOf ex Is AnnouncementHallSubGroupNotFoundException _

@@ -53,9 +53,9 @@ Partial Class Form3
         Me.TxtCalendarMonth = New System.Windows.Forms.TextBox()
         Me.TxtCalendarTotalDay = New System.Windows.Forms.TextBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -191,7 +191,7 @@ Partial Class Form3
         '
         'OleDbConnection1
         '
-        Me.OleDbConnection1.ConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\admin\Desktop\Turns.mdb"
+        Me.OleDbConnection1.ConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=G:\MSCOTrgets.mdb"
         '
         'Button10
         '
@@ -373,14 +373,14 @@ Partial Class Form3
         Me.Panel1.Size = New System.Drawing.Size(200, 100)
         Me.Panel1.TabIndex = 40
         '
-        'Label1
+        'Label3
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(24, 42)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(27, 13)
-        Me.Label1.TabIndex = 41
-        Me.Label1.Text = "سال"
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(124, 42)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(66, 13)
+        Me.Label3.TabIndex = 43
+        Me.Label3.Text = "ماه چند روزه"
         '
         'Label2
         '
@@ -391,14 +391,14 @@ Partial Class Form3
         Me.Label2.TabIndex = 42
         Me.Label2.Text = "ماه"
         '
-        'Label3
+        'Label1
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(124, 42)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(66, 13)
-        Me.Label3.TabIndex = 43
-        Me.Label3.Text = "ماه چند روزه"
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(24, 42)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(27, 13)
+        Me.Label1.TabIndex = 41
+        Me.Label1.Text = "سال"
         '
         'Form3
         '

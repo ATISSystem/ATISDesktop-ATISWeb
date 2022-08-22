@@ -3091,6 +3091,20 @@ Namespace DateAndTimeManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
         End Function
+        Public Function GetNextDateShamsi() As DateTime
+            Try
+                Return ConvertToShamsiDateFull(GetCurrentDateTimeMilladi().Today.AddDays(1))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+        Public Function GetNextDateShamsiWithoutSlashes() As String
+            Try
+                Return ConvertToShamsiDateFull(GetCurrentDateTimeMilladi().Today.AddDays(1)).Replace("/", "")
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
         Public Function GetCurrentTime() As String
             Try
                 Return Trim(Mid(GetSqlServerCurrentDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), 12, 8))

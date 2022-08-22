@@ -4470,6 +4470,8 @@ Namespace LoadPermission
                 Else
                     Throw New GetDataException
                 End If
+            Catch ex As UnableResucitationTemporayTurnException
+                Throw ex
             Catch exx As LoadPermissionCancellingNotAllowedBecuaseLoadPermissionStatusException
                 Throw exx
             Catch ex As Exception

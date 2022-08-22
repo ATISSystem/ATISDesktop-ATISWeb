@@ -70,18 +70,23 @@ namespace MSCOAutomatedJobs
                 //ارسال ایمیل شرکت ها 
                 try
                 {
-                    var InstanceSendingAnnounceEmailforTransportCompanies = new MSCOCoreSendingAnnounceEmailforTransportCompaniesManager();
+                    var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
                     var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-                    InstanceSendingAnnounceEmailforTransportCompanies.AnnouncementforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                    InstanceAnnouncementforTransportCompanies.SentEmailforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
                 }
 
                 catch (Exception ex)
                 { EventLog.WriteEntry("MSCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
 
                 //اعلام بار خودکار شرکت ها
-                try { }
+                try
+                {
+                    var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                    var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                    InstanceAnnouncementforTransportCompanies.LoadsAnnouncementforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                }
                 catch (Exception ex)
-                { }
+                { EventLog.WriteEntry("MSCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
             }
             catch (Exception ex)
             { EventLog.WriteEntry("MSCOAutomatedJobs", "_AutomatedJobsTimer_Elapsed:" + ex.Message.ToString(), EventLogEntryType.Error); }
