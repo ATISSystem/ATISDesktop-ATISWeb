@@ -16,6 +16,8 @@ Imports R2Core.EntityRelationManagement.Exceptions
 Imports R2Core.ConfigurationManagement
 Imports R2Core.PermissionManagement
 Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
+Imports R2CoreTransportationAndLoadNotification.TruckDrivers
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 
 Public Class UCDriverTruck
     Inherits UCGeneral
@@ -23,6 +25,7 @@ Public Class UCDriverTruck
     Public Event UCViewDriverTruckInformationCompleted(DriverId As String)
     Public Event UCRefreshedGeneralEvent()
     Private _CurrentNSS As R2StandardDriverTruckStructure = Nothing
+    Private _WS = New PayanehWS.PayanehWebService
 
 
 #Region "General Properties"
@@ -108,10 +111,10 @@ Public Class UCDriverTruck
     Private Sub UCSabtRoutin()
         Try
             'بررسی پارامترها
-            If UcNumberStrSmartCardNo.UCValue.ToString().Length <> 7 Then
-                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "شماره هوشمند نادرست است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-                Exit Sub
-            End If
+            'If UcNumberStrSmartCardNo.UCValue.ToString().Length <> 7 Then
+            '    UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "شماره هوشمند نادرست است", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+            '    Exit Sub
+            'End If
             Dim NSSDriver As R2StandardDriverStructure = UcDriver.UCGetNSS()
             PayanehClassLibraryMClassDriverTrucksManagement.UpdateDriverTruck(New R2StandardDriverTruckStructure(NSSDriver, UcNumberStrSmartCardNo.UCValue))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "مشخصات راننده ناوگان باری ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -153,25 +156,10 @@ Public Class UCDriverTruck
 
     Private Sub UcNumberStrSmartCardNoSearch_UC13Pressed(UserNumber As String) Handles UcNumberStrSmartCardNoSearch.UC13Pressed
         Try
-            Try
-                UcDriver.UCRefreshGeneral()
-                _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbySmartCardNo(UserNumber)
-                UcDriver.UCViewDriverInformation(_CurrentNSS.NSSDriver)
-            Catch ex As DriverTruckInformationNotExistException
-                If MessageBox.Show(Nothing, "اطلاعات راننده در سیستم قبلا ثبت نشده است" + vbCrLf + "اطلاعات مورد نظر را از سرویس اینترنتی دریافت میکنید؟", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly) = DialogResult.Yes Then
-                    Try
-                        _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSTruckDriver(RmtoWebService.GetNSSTruckDriver(UserNumber))
-                        UcDriver.UCViewDriverInformationDirty(_CurrentNSS.NSSDriver)
-                        UcNumberStrSmartCardNo.UCValue = _CurrentNSS.StrSmartCardNo
-                    Catch exx As Exception When TypeOf exx Is InternetIsnotAvailableException OrElse TypeOf exx Is RMTOWebServiceSmartCardInvalidException
-                        UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-                    End Try
-                Else
-                End If
-            End Try
-        Catch ex As InternetIsnotAvailableException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch ex As ConnectionIsNotAvailableException
+            UcDriver.UCRefreshGeneral()
+            _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbySmartCardNo(UserNumber)
+            UcDriver.UCViewDriverInformation(_CurrentNSS.NSSDriver)
+        Catch ex As DriverTruckInformationNotExistException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As GetNSSException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -222,27 +210,20 @@ Public Class UCDriverTruck
 
     Private Sub UcTextBoxDriverNationalCode_UC13PressedEvent(UserNumber As String) Handles UcTextBoxDriverNationalCode.UC13PressedEvent
         Try
-            Try
-                UcDriver.UCRefreshGeneral()
-                _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetDriverTruckfromRMTOAndInsertUpdateLocalDataBaseByNationalCode(UserNumber)
-                UcDriver.UCViewDriverInformation(_CurrentNSS.NSSDriver)
-            Catch ex As DriverTruckInformationNotExistException
-                If MessageBox.Show(Nothing, "اطلاعات راننده در سیستم قبلا ثبت نشده است" + vbCrLf + "اطلاعات مورد نظر را از سرویس اینترنتی دریافت میکنید؟", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly) = DialogResult.Yes Then
-                    Try
-                        _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSTruckDriver(RmtoWebService.GetNSSTruckDriver(UserNumber))
-                        UcDriver.UCViewDriverInformationDirty(_CurrentNSS.NSSDriver)
-                        UcNumberStrSmartCardNo.UCValue = _CurrentNSS.StrSmartCardNo
-                    Catch exx As Exception When TypeOf exx Is InternetIsnotAvailableException OrElse TypeOf exx Is RMTOWebServiceSmartCardInvalidException
-                        UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, exx.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-                    End Try
-                Else
-                End If
-            End Try
-        Catch ex As InternetIsnotAvailableException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch ex As ConnectionIsNotAvailableException
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch ex As GetNSSException
+            Dim InstacneLogin = New R2CoreInstanseSoftwareUsersManager
+            Dim InstanceTruckDrivers = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
+
+            UcDriver.UCRefreshGeneral()
+            Dim TruckDriverId = _WS.WebMethodGetDriverTruckByNationalCodefromRMTO(UserNumber, _WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
+            _CurrentNSS = InstanceTruckDrivers.GetNSSTruckDriver(TruckDriverId)
+            UcDriver.UCViewDriverInformation(_CurrentNSS.NSSDriver)
+        Catch ex As Exception When TypeOf ex Is DriverTruckInformationNotExistException _
+                            OrElse TypeOf ex Is SqlInjectionException _
+                            OrElse TypeOf ex Is RMTOWebServiceSmartCardInvalidException _
+                            OrElse TypeOf ex Is InternetIsnotAvailableException _
+                            OrElse TypeOf ex Is RMTOWebServiceSmartCardInvalidException _
+                            OrElse TypeOf ex Is ConnectionIsNotAvailableException _
+                            OrElse TypeOf ex Is GetNSSException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
