@@ -2293,6 +2293,7 @@ Namespace DriverTrucksManagement
                 Da.SelectCommand = New SqlCommand("Select Top 1 * from dbtransport.dbo.TbPerson as P inner join dbtransport.dbo.TbDriver as D On P.nIDPerson=D.nIDDriver Where D.StrSmartCardNo='" & YournSamrtCardNo & "' Order By P.nIDPerson Desc")
                 Da.SelectCommand.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
                 Ds.Tables.Clear()
+
                 If Da.Fill(Ds) <> 0 Then
                     Dim NSSDriver As R2StandardDriverStructure = New R2StandardDriverStructure
                     NSSDriver.nIdPerson = Ds.Tables(0).Rows(0).Item("nIdPerson")
