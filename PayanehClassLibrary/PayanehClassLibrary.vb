@@ -3983,7 +3983,37 @@ Namespace ReportsManagement
                     Dim mydTimeElam As String = Ds.Tables(0).Rows(Loopx).Item("dTimeElam").trim
                     Dim myCompanyName As String = Ds.Tables(0).Rows(Loopx).Item("StrCompName").trim
                     Dim myStrCarName As String = Ds.Tables(0).Rows(Loopx).Item("StrCarName").trim
-                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblCapacitorLoadsforAnnounceReport (AnnoucementHallName,nEstelamId,StrGoodName,StrCityName,nTonaj,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,StrCarName) values('" & myAnnouncementHallName & "'," & mynEstelamid & ",'" & myStrGoodName & "','" & myStrCityName & "'," & mynTonaj & "," & mynCarNum & ",'" & myCompanyName & "','" & myStrPriceSug & "','" & myStrDescription & "','" & myStrAddress & "','" & myStrBarname & "','" & mydDateElam & "','" & mydTimeElam & "','" & myStrCarName & "')"
+
+                    Dim P As SqlClient.SqlParameter
+                    P = New SqlClient.SqlParameter("@AnnoucementHallName", SqlDbType.NVarChar) : P.Value = myAnnouncementHallName
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@nEstelamId", SqlDbType.Int) : P.Value = mynEstelamid
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@StrGoodName", SqlDbType.NVarChar) : P.Value = myStrGoodName
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@StrCityName", SqlDbType.NVarChar) : P.Value = myStrCityName
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@nTonaj", SqlDbType.Float) : P.Value = mynTonaj
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@nCarNumKol", SqlDbType.Int) : P.Value = mynCarNum
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@StrCompanyName", SqlDbType.NVarChar) : P.Value = myCompanyName
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@StrPriceSug", SqlDbType.NVarChar) : P.Value = myStrPriceSug
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@StrDescription", SqlDbType.NVarChar) : P.Value = myStrDescription
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@StrAddress", SqlDbType.NVarChar) : P.Value = myStrAddress
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@StrBarName", SqlDbType.NVarChar) : P.Value = myStrBarname
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@dDateElam", SqlDbType.NVarChar) : P.Value = mydDateElam
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@dTimeElam", SqlDbType.NVarChar) : P.Value = mydTimeElam
+                    CmdSql.Parameters.Add(P)
+                    P = New SqlClient.SqlParameter("@StrCarName", SqlDbType.NVarChar) : P.Value = myStrCarName
+                    CmdSql.Parameters.Add(P)
+                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblCapacitorLoadsforAnnounceReport (@AnnoucementHallName,@nEstelamId,@StrGoodName,@StrCityName,@nTonaj,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@StrCarName)"
                     CmdSql.ExecuteNonQuery()
                 Next
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -4115,7 +4145,45 @@ Namespace ReportsManagement
                             Dim SmartCardId = LoadPermissions(LoopPermissions)(7).trim
                             CompositStringDriverName = CompositStringDriverName & LoadPermissions(LoopPermissions)(3).trim & " " & Truck & " " + SmartCardId + vbCrLf
                         Next
-                        CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(nEstelamId,StrGoodName,StrCityName,nTonaj,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,AHSGTitle,StrExitDate,StrExitTime,StrDriverName,LoadPermissionStatus,LoadStatusName) values(" & mynEstelamid & ",'" & myStrGoodName & "','" & myStrCityName & "'," & mynTonaj & "," & mynCarNumKol & ",'" & myCompanyName & "','" & myStrPriceSug & "','" & myStrDescription & "','" & myStrAddress & "','" & myStrBarname & "','" & mydDateElam & "','" & mydTimeElam & "','" & myAHSGTitle & "','" & CompositStringDate & "','" & CompositStringTime & "','" & CompositStringDriverName & "','" & CompositStringLoadPermissionStatus & "','" & myLoadStatusName & "')"
+
+                        Dim P As SqlClient.SqlParameter
+                        P = New SqlClient.SqlParameter("@nEstelamId", SqlDbType.Int) : P.Value = mynEstelamid
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@StrGoodName", SqlDbType.VarChar) : P.Value = myStrGoodName
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@StrCityName", SqlDbType.VarChar) : P.Value = myStrCityName
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@nTonaj", SqlDbType.Float) : P.Value = mynTonaj
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@nCarNumKol", SqlDbType.Int) : P.Value = mynCarNumKol
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@StrCompanyName", SqlDbType.VarChar) : P.Value = myCompanyName
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@StrPriceSug", SqlDbType.VarChar) : P.Value = myStrPriceSug
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@StrDescription", SqlDbType.VarChar) : P.Value = myStrDescription
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@StrAddress", SqlDbType.VarChar) : P.Value = myStrAddress
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@StrBarName", SqlDbType.VarChar) : P.Value = myStrBarname
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@dDateElam", SqlDbType.VarChar) : P.Value = mydDateElam
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@dTimeElam", SqlDbType.VarChar) : P.Value = mydTimeElam
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@AHSGTitle", SqlDbType.VarChar) : P.Value = myAHSGTitle
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@StrExitDate", SqlDbType.VarChar) : P.Value = CompositStringDate
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@StrExitTime", SqlDbType.VarChar) : P.Value = CompositStringTime
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@StrDriverName", SqlDbType.VarChar) : P.Value = CompositStringDriverName
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@LoadPermissionStatus", SqlDbType.VarChar) : P.Value = CompositStringLoadPermissionStatus
+                        CmdSql.Parameters.Add(P)
+                        P = New SqlClient.SqlParameter("@LoadStatusName", SqlDbType.VarChar) : P.Value = myLoadStatusName
+                        CmdSql.Parameters.Add(P)
+                        CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(@nEstelamId,@StrGoodName,@StrCityName,@nTonaj,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@AHSGTitle,@StrExitDate,@StrExitTime,@StrDriverName,@LoadPermissionStatus,@LoadStatusName)"
                         CmdSql.ExecuteNonQuery()
                     Next
                 End If
