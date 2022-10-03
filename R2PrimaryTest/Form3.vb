@@ -271,8 +271,10 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            Dim X As New PayanehClassLibraryMClassCarTruckNobatManager
-            X.TurnsCancellation(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            Dim x As New MSCOCoreAnnouncementforTransportCompaniesManager
+            x.LoadsAnnouncementforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            'Dim X As New PayanehClassLibraryMClassCarTruckNobatManager
+            'X.TurnsCancellation(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
 
             'Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
             'Dim InstanceTruck = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
@@ -649,7 +651,7 @@ Public Class Form3
 
     Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
         Try
-            Dim x As New MSCOCoreSendingAnnounceEmailforTransportCompaniesManager
+            Dim x As New MSCOCoreAnnouncementforTransportCompaniesManager
             'x.AnnouncementforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
         Catch ex As Exception
             MessageBox.Show(ex.Message)

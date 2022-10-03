@@ -31,6 +31,8 @@ using R2CoreTransportationAndLoadNotification.LoadTargets;
 using MSCOCore.MSCOTargets.Exceptions;
 using MSCOCore.MSCOTargets;
 using R2CoreTransportationAndLoadNotification;
+using MSCOCore.MSCOProducts.Exceptions;
+using MSCOCore.MSCOLoadTypes.Exceptions;
 
 namespace MSCOCore
 {
@@ -39,6 +41,7 @@ namespace MSCOCore
         public class MSCOCoreAnnouncementforTransportCompaniesManager
         {
             private R2DateTime _DateTime = new R2DateTime();
+            private R2Core.R2PrimaryFileSharingWS.R2PrimaryFileSharingWebService WS = new R2Core.R2PrimaryFileSharingWS.R2PrimaryFileSharingWebService();
 
             public MSCOCoreAnnouncementforTransportCompaniesManager()
             { }
@@ -203,72 +206,70 @@ namespace MSCOCore
                 { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
             }
 
-            private R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure GetNSS(StringBuilder YourSB)
+            private R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure GetNSS(StringBuilder YourSB, R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser)
             {
-                //try
-                //{
-                //    var Lines = YourSB.ToString().Split('\n');
-                //    string myMSCOId, mySituation, myNL, myFirstDate, myFirstTime, mySecondDate, mySecondTime, myTargetId, 
-                //           mynCarNumKol, myLoadingLocation, myMSCOGoodId, mynoEmptyingDays, myLBN, myLTN;
-                //    Int64 myTonaj = 0;
+                try
+                {
+                    var Lines = YourSB.ToString().Split('\n');
+                    string myMSCOId = string.Empty, mySituation = string.Empty, myNL = string.Empty, myFirstDate = string.Empty, myFirstTime = string.Empty, mySecondDate = string.Empty, mySecondTime = string.Empty, myTargetId = string.Empty;
+                    Int64 myTonaj = 0, mynCarNumKol = 1;
+                    string mynoEmptyingDays = string.Empty, myLoadingLocations = string.Empty, myLBN = string.Empty, myLTN = string.Empty, myMSCOGoodId = string.Empty;
+                    Int16 myMultiLoads = 0;
 
-                //    for (int Loopx = 0; Loopx <= Lines.Length - 1; Loopx++)
-                //    {
-                //        if (Lines[Loopx].Substring(18, 1) == "N" || Lines[Loopx].Substring(18, 1) == "L")
-                //        {
-                //            myMSCOId = Lines[0].Substring(0, 7);
-                //            mySituation = Lines[0].Substring(7, 11);
-                //            myNL = YourSB.ToString().Substring(18, 1);
-                //            myFirstDate = Lines[0].Substring(19, 8);
-                //            myFirstTime = Lines[0].Substring(27, 4);
-                //            mySecondDate = Lines[0].Substring(31, 8);
-                //            mySecondTime = Lines[0].Substring(39, 4);
-                //            myTargetId = Lines[0].Substring(43, 5);
-                //            myTonaj = myTonaj+ Lines[0].Substring(90, 5);
-                //            mynCarNumKol = Lines[0].Substring(100, 1);
-                //            myLoadingLocation = Lines[0].Substring(117, 2);
-                //            myMSCOGoodId = Lines[0].Substring(134, 2);
-                //            mynoEmptyingDays = Lines[3].Substring(222, 9);
-                //            myLBN = Lines[0].Substring(269, 3);
-                //            myLTN = Lines[3].Substring(214, 3);
+                    for (int Loopx = 0; Loopx <= Lines.Length - 1; Loopx++)
+                    {
+                        if (Lines[Loopx].Trim() == string.Empty) { continue; }
+                        if (Lines[Loopx].Substring(18, 1) == "N" || Lines[Loopx].Substring(18, 1) == "L")
+                        {
+                            myMultiLoads += 1;
+                            myMSCOId = Lines[Loopx].Substring(0, 7);
+                            mySituation = Lines[Loopx].Substring(7, 11);
+                            myNL = Lines[Loopx].Substring(18, 1);
+                            myFirstDate = Lines[Loopx].Substring(19, 8);
+                            myFirstTime = Lines[Loopx].Substring(27, 4);
+                            mySecondDate = Lines[Loopx].Substring(31, 8);
+                            mySecondTime = Lines[Loopx].Substring(39, 4);
+                            myTargetId = Lines[Loopx].Substring(43, 5);
+                            myTonaj = myTonaj + Convert.ToInt64(Lines[Loopx].Substring(90, 5));
+                            myLoadingLocations = (myLoadingLocations == string.Empty) ? Lines[Loopx].Substring(117, 2).Trim() : myLoadingLocations + "," + Lines[Loopx].Substring(117, 2).Trim();
+                            myMSCOGoodId = (myMSCOGoodId == string.Empty) ? Lines[Loopx].Substring(134, 2).Trim() : myMSCOGoodId + "," + Lines[Loopx].Substring(134, 2).Trim();
+                            myLBN = (myLBN == string.Empty) ? Lines[Loopx].Substring(269, 3).Trim() : myLBN;
+                            continue;
+                        }
+                        mynoEmptyingDays = (mynoEmptyingDays == string.Empty) ? (((Loopx + 1) % 4) == 0 ? Lines[Loopx].Substring(222, 9).Trim() : string.Empty) : mynoEmptyingDays;
+                        myLTN = (myLTN == string.Empty) ? (((Loopx + 1) % 4) == 0 ? Lines[Loopx].Substring(214, 3).Trim() : string.Empty) : myLTN;
+                    }
 
+                    var InstanceMSCOTargets = new MSCOMClassMSCOTargetsManager();
+                    var InstanceTransportCompanies = new MSCOCoreMClassTransportCompaniesManager();
+                    var NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure();
 
-                //        }
-                //    }
+                    NSS.nEstelamId = 0;
+                    NSS.nEstelamKey = string.Empty;
+                    NSS.nCityCode = InstanceMSCOTargets.GetNSSLoadTarget(myTargetId).NSSCity.nCityCode;
+                    NSS.nTonaj = double.Parse((Convert.ToInt64(myTonaj) / (double)1000).ToString());
+                    NSS.nBarCode = 5802000;
+                    NSS.nUserId = YourNSSSoftwareUser.UserId;
+                    NSS.nCarNumKol = mynCarNumKol;
+                    NSS.nCompCode = InstanceTransportCompanies.GetNSSTransportCompany(myMSCOId).TCId;
+                    NSS.IsSpecialLoad = false;
+                    NSS.nTruckType = InstanceMSCOTargets.GetNSSLoadTarget(myTargetId).NSSCity.nProvince == 21 ? 807 : 805;
+                    NSS.StrAddress = "موقعیت بارگیری: " + myLoadingLocations + "\n" + "شماره موقعیت: " + mySituation;
+                    NSS.StrBarName = (myMSCOGoodId == string.Empty) ? string.Empty : ("محصول: " + myMSCOGoodId + "\n" + ((myNL == "L") ? myMultiLoads.ToString() + " باسکول " : string.Empty));
+                    NSS.StrPriceSug = 0;
+                    NSS.StrDescription = "بارگیری از " + myFirstDate + myFirstTime + " تا " + mySecondDate + mySecondTime + "\n";
+                    NSS.StrDescription = NSS.StrDescription + ((mynoEmptyingDays == string.Empty) ? string.Empty : ("روزهای عدم تخلیه: " + mynoEmptyingDays)) + "\n";
+                    NSS.StrDescription = NSS.StrDescription + ((myLBN == string.Empty) ? string.Empty : "لبه دار بارگیری ندارد") + "\n";
+                    NSS.StrDescription = NSS.StrDescription + ((myLTN == string.Empty) ? string.Empty : "لبه دار تخلیه ندارد") + "\n";
 
-
-                //    var InstanceMSCOTargets = new MSCOMClassMSCOTargetsManager();
-                //    var InstanceTransportCompanies = new MSCOCoreMClassTransportCompaniesManager();
-                var NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure();
-                //    NSS.nEstelamId = 0;
-                //    NSS.nEstelamKey = string.Empty;
-                //    NSS.nCityCode = InstanceMSCOTargets.GetNSSLoadTarget(myTargetId).NSSCity.nCityCode;
-                //    NSS.nTonaj = double.Parse((System.Convert.ToInt64(myTonaj) / 1000).ToString());
-                //    NSS.nBarCode = 5802000;
-                //    NSS.nCompCode = InstanceTransportCompanies.GetNSSTransportCompany(myMSCOId).TCId;
-                //    NSS.IsSpecialLoad = false;
-                //    NSS.nTruckType = InstanceMSCOTargets.GetNSSLoadTarget(myTargetId).NSSCity.nProvince == 21 ? 807 : 805;
-                //    NSS.StrAddress = String.Empty;
-                //    NSS.nCarNumKol = System.Convert.ToInt64(mynCarNumKol);
-                //    NSS.StrPriceSug = 0;
-                //    NSS.StrDescription = "بارگیری از " + myFirstDate + myFirstTime + " تا " +
-                //                         mySecondDate + mySecondTime + "\n" +
-                //                         "موقعیت بارگیری " + myLoadingLocation + "\n" +
-                //                         "شماره موقعیت " + mySituation + "\n" +
-                //                         mynoEmptyingDays == string.Empty ? string.Empty : "روزهای عدم تخلیه " + mynoEmptyingDays + "\n" +
-                //                         myLBN == string.Empty ? string.Empty : "لبه دار بارگیری ندارد" + "\n" +
-                //                         myLTN == string.Empty ? string.Empty : "لبه دار تخلیه ندارد" + "\n";
-                return NSS;
-
-
-
-                //}
-                //catch (MSCOCoreTransportCompanyNotFoundException ex)
-                //{ throw ex; }
-                //catch (MSCOCoreMSCOTargetnotfoundException ex)
-                //{ throw ex; }
-                //catch (Exception ex)
-                //{ throw ex; }
+                    return NSS;
+                }
+                catch (MSCOCoreTransportCompanyNotFoundException ex)
+                { throw ex; }
+                catch (MSCOCoreMSCOTargetnotfoundException ex)
+                { throw ex; }
+                catch (Exception ex)
+                { throw ex; }
             }
 
             private bool GetAnnounceFirstStep()
@@ -294,7 +295,7 @@ namespace MSCOCore
                 { throw ex; }
             }
 
-            private void LoadsAnnouncement(StringBuilder YourSB)
+            private void LoadsAnnouncement(StringBuilder YourSB, R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser)
             {
                 try
                 {
@@ -303,25 +304,25 @@ namespace MSCOCore
                     var CurrentShamsiDate = _DateTime.GetCurrentDateShamsiFullWithoutSlashes();
                     var NextShamsiDate = _DateTime.GetNextDateShamsiWithoutSlashes();
                     var myFirstDate = YourSB.ToString().Substring(19, 8);
-                    var myFirstTime = YourSB.ToString().Substring(27, 4);
+                    var myFirstTime = _DateTime.GetDelimetedTime(YourSB.ToString().Substring(27, 4));
 
                     if (myFirstDate == CurrentShamsiDate)
                     {
-                        if (GetAnnounceFirstStep()) { InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadRegistering(GetNSS(YourSB)); return; }
+                        if (GetAnnounceFirstStep()) { InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadRegistering(GetNSS(YourSB, YourNSSSoftwareUser)); return; }
                         else { return; }
                     }
                     else if (myFirstDate == NextShamsiDate)
                     {
                         if (TimeSpan.ParseExact(myFirstTime, @"hh\:mm\:ss", CultureInfo.InvariantCulture) <= TimeSpan.ParseExact(InstanceConfiguration.GetConfigString(Configurations.MSCOCoreConfigurations.MSCO, 9), @"hh\:mm\:ss", CultureInfo.InvariantCulture))
                         {
-                            if (GetAnnounceFirstStep()) { InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadRegistering(GetNSS(YourSB)); return; }
+                            if (GetAnnounceFirstStep()) { InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadRegistering(GetNSS(YourSB, YourNSSSoftwareUser)); return; }
                             else { return; }
                         }
                         else
-                        { if (!GetAnnounceFirstStep()) { InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadRegistering(GetNSS(YourSB)); return; } }
+                        { if (!GetAnnounceFirstStep()) { InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadRegistering(GetNSS(YourSB, YourNSSSoftwareUser)); return; } }
                     }
                     else
-                    { if (!GetAnnounceFirstStep()) { InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadRegistering(GetNSS(YourSB)); return; } }
+                    { if (!GetAnnounceFirstStep()) { InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadRegistering(GetNSS(YourSB, YourNSSSoftwareUser)); return; } }
                 }
                 catch (MSCOCoreLoadsAnnouncementforTransportCompaniesFirstOrSecondStepNotReachedException ex)
                 { throw ex; }
@@ -355,16 +356,15 @@ namespace MSCOCore
                     for (int LoopxTC = 0; LoopxTC <= LstTC.Count - 1; LoopxTC++)
                     {
                         var TransportCompanyCode = LstTC[LoopxTC];
-
+                        var MSCOFileName = string.Empty;
                         try
                         {
                             //کنترل فعال بودن اعلام بار شرکت
                             if (!InstanceTransportCompanies.IsActiveTransportCompanyAnnounce(TransportCompanyCode)) { throw new MSCOCoreAnnounceforTransportCompanyIsNotActiveException(); }
 
                             //کنترل موجود بودن فایل اعلام بار شرکت
-                            var MSCOFileName = InstanceConfiguration.GetConfigString(Configurations.MSCOCoreConfigurations.MSCO, 8) + _DateTime.GetCurrentDateShamsiFullWithoutSlashes() + TransportCompanyCode + (GetAnnounceFirstStep() ? ".Txt" : ".Txt.Del");
-                            var WS = new R2Core.R2PrimaryFileSharingWS.R2PrimaryFileSharingWebService();
-                            if (WS.WebMethodIOFileExist(R2CoreRawGroups.UploadedFiles, MSCOFileName + ".Del", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword)))
+                            MSCOFileName = InstanceConfiguration.GetConfigString(Configurations.MSCOCoreConfigurations.MSCO, 8) + _DateTime.GetCurrentDateShamsiFullWithoutSlashes() + TransportCompanyCode + (GetAnnounceFirstStep() ? ".Txt" : ".Txt.del");
+                            if (WS.WebMethodIOFileExist(R2CoreRawGroups.UploadedFiles, MSCOFileName + ".del", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword)))
                             { continue; }
                             else if (!(WS.WebMethodIOFileExist(R2CoreRawGroups.UploadedFiles, MSCOFileName, WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword))))
                             { throw new MSCOCoreMSCOTCFileNotFoundException(); }
@@ -381,21 +381,23 @@ namespace MSCOCore
                             while (!sr.EndOfStream)
                             {
                                 string ReadedLine = sr.ReadLine();
-                                if (sr.EndOfStream) { LoadsAnnouncement(SB); SB.Clear(); break; }
-                                if (ReadedLine.Substring(18, 1) == "N" || ReadedLine.Substring(18, 1) == "L")
+                                string NLPart = string.Empty;
+                                if (sr.EndOfStream) { LoadsAnnouncement(SB, YourNSSSoftwareUser); SB.Clear(); break; }
+                                try
+                                { NLPart = ReadedLine.Substring(18, 1); }
+                                catch (Exception ex) { SB.AppendLine(ReadedLine); continue; }
+                                if ((NLPart == "N" || NLPart == "L"))
                                 {
                                     if (Sitution == string.Empty)
                                     { Sitution = ReadedLine.Substring(7, 11); SB.AppendLine(ReadedLine); continue; }
                                     else if ((Sitution != string.Empty) && (Sitution == ReadedLine.Substring(7, 11)))
                                     { SB.AppendLine(ReadedLine); continue; }
                                     else if ((Sitution != string.Empty) && (Sitution != ReadedLine.Substring(7, 11)))
-                                    { Sitution = ReadedLine.Substring(7, 11); LoadsAnnouncement(SB); SB.Clear(); SB.Append(ReadedLine); continue; }
+                                    { Sitution = ReadedLine.Substring(7, 11); LoadsAnnouncement(SB, YourNSSSoftwareUser); SB.Clear(); SB.Append(ReadedLine); continue; }
                                 }
                                 else
                                 { SB.AppendLine(ReadedLine); continue; }
                             }
-                            //حذف فایل اعلام بار شرکت با حفظ سابقه
-                            WS.WebMethodDeleteFileButKeepDeleted(R2CoreRawGroups.UploadedFiles, MSCOFileName, WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword));
                         }
                         catch (Exception ex) when
                           (ex is MSCOCoreAnnounceforTransportCompanyIsNotActiveException ||
@@ -404,8 +406,11 @@ namespace MSCOCore
                            ex is Exception)
                         {
                             if (InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).Active)
-                            { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, MSCOCoreloggings.MSCOLogs, InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).LogTitle, ex.Message.Substring(0, 80) + TransportCompanyCode, string.Empty, string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                            { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, MSCOCoreloggings.MSCOLogs, InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).LogTitle, ex.Message + TransportCompanyCode, string.Empty, string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
                         }
+                        //حذف فایل اعلام بار شرکت با حفظ سابقه
+                        if (WS.WebMethodIOFileExist(R2CoreRawGroups.UploadedFiles, MSCOFileName, WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword)))
+                        { WS.WebMethodDeleteFileButKeepDeleted(R2CoreRawGroups.UploadedFiles, MSCOFileName, WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword)); }
                     }
                 }
                 catch (MSCOCoreLoadsAnnouncementforTransportCompaniesFirstOrSecondStepNotReachedException ex)
@@ -581,6 +586,79 @@ namespace MSCOCore
     {
         public abstract class MSCOCoreloggings : R2CoreLogType
         { public static readonly Int64 MSCOLogs = 63; }
+
+    }
+
+    namespace MSCOProducts
+    {
+        public class MSCOCoreMClassProductsManager
+        {
+            public Int64 GetProductId(string YourMSCOProductTitle)
+            {
+                try
+                {
+                    var DS = new System.Data.DataSet();
+                    var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
+                    if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
+                         @"Select Top 1 MSCOProducts.ProductId from MSCO.dbo.TblMSCOProducts as MSCOProducts
+                           Where ltrim(rtrim(MSCOProducts.MSCOProductTitle)) = '" + YourMSCOProductTitle + "'" +
+                           " and MSCOProducts.Active=1 and MSCOProducts.Deleted=0 Order By MSCOProducts.DateTimeMilladi Desc", 3600, ref DS).GetRecordsCount() == 0) { throw new MSCOCoreProductNotFoundException(); };
+                    return System.Convert.ToInt64(DS.Tables[0].Rows[0]["ProductId"]);
+                }
+                catch (MSCOCoreProductNotFoundException ex)
+                { throw ex; }
+                catch (Exception ex)
+                { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
+
+            }
+        }
+
+        namespace Exceptions
+        {
+            public class MSCOCoreProductNotFoundException : ApplicationException
+            {
+                public override string Message
+                {
+                    get { return "محصول با اطلاعات پایه فولاد یافت نشد"; }
+                }
+            }
+        }
+
+    }
+
+    namespace MSCOLoadTypes
+    {
+        public class MSCOCoreMClassLoadTypesManager
+        {
+            public string  GetDescription(string YourMSCOLoadTypeTitle)
+            {
+                try
+                {
+                    var DS = new System.Data.DataSet();
+                    var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
+                    if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
+                         @"Select Top 1 MSCOLoadTypes.Description from MSCO.dbo.TblMSCOLoadTypes as MSCOLoadTypes
+                           Where ltrim(rtrim(MSCOLoadTypes.MSCOLoadTypeTitle)) = '" +YourMSCOLoadTypeTitle + "'" +
+                           " and MSCOLoadTypes.Active=1 and MSCOLoadTypes.Deleted=0 Order By MSCOLoadTypes.DateTimeMilladi Desc", 3600, ref DS).GetRecordsCount() == 0) { throw new MSCOCoreLoadTypeTitleNotFoundException(); };
+                    return System.Convert.ToString(DS.Tables[0].Rows[0]["Description"]);
+                }
+                catch (MSCOCoreLoadTypeTitleNotFoundException ex)
+                { throw ex; }
+                catch (Exception ex)
+                { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
+            }
+        }
+
+        namespace Exceptions
+        {
+            public class MSCOCoreLoadTypeTitleNotFoundException : ApplicationException
+            {
+                public override string Message
+                {
+                    get { return "نوع بار با اطلاعات پایه فولاد یافت نشد"; }
+                }
+            }
+        }
 
     }
 

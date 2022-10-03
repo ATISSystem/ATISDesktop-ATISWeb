@@ -3330,6 +3330,11 @@ Namespace DateAndTimeManagement
             If Mah = "12" Then Return "اسفند  ماه"
         End Function
 
+        Public Function GetDelimetedTime(YourUnDelimetedTime As String) As String
+            Dim InstancePublicProcedures As New R2Core.PublicProc.R2CoreInstancePublicProceduresManager
+            If YourUnDelimetedTime.Length < 8 Then YourUnDelimetedTime = YourUnDelimetedTime + InstancePublicProcedures.RepeatStr("0", 8 - YourUnDelimetedTime.Length)
+            Return Mid(YourUnDelimetedTime, 1, 2) + ":" + Mid(YourUnDelimetedTime, 3, 2) + ":" + Mid(YourUnDelimetedTime, 5, 2)
+        End Function
 
     End Class
     Public Class HafteMahManagement
