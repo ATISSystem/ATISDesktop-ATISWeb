@@ -350,7 +350,7 @@ namespace MSCOCore
 
 
                     //اعلام بار
-                    //لیست شرکت های فعال
+                    //لیست شرکت های فعال 
                     List<string> LstTC = GetTransportCompaniesWhichAnounceActive();
 
                     for (int LoopxTC = 0; LoopxTC <= LstTC.Count - 1; LoopxTC++)
