@@ -24,7 +24,7 @@ Public Class UCDriverTruck
 
     Public Event UCViewDriverTruckInformationCompleted(DriverId As String)
     Public Event UCRefreshedGeneralEvent()
-    Private _CurrentNSS As R2StandardDriverTruckStructure = Nothing
+    Private _CurrentNSS As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure = Nothing
     Private _WS = New PayanehWS.PayanehWebService
 
 
@@ -84,9 +84,10 @@ Public Class UCDriverTruck
 
     Public Sub UCViewDriverInformation(YournIdPerson As String)
         Try
+            Dim InstanceTruckDrivers = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
             UCRefresh()
             UcDriver.UCViewDriverInformation(YournIdPerson)
-            _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(YournIdPerson)
+            _CurrentNSS = InstanceTruckDrivers.GetNSSTruckDriver(YournIdPerson, True)
             UcNumberStrSmartCardNo.UCValue = _CurrentNSS.StrSmartCardNo
             RaiseEvent UCViewDriverTruckInformationCompleted(_CurrentNSS.NSSDriver.nIdPerson)
         Catch exx As GetNSSException
@@ -96,17 +97,17 @@ Public Class UCDriverTruck
         End Try
     End Sub
 
-    Public Sub UCViewDriverInformation(YourNSS As R2StandardDriverTruckStructure)
-        Try
-            UCRefresh()
-            _CurrentNSS = YourNSS
-            UcDriver.UCViewDriverInformation(YourNSS.NSSDriver)
-            UcNumberStrSmartCardNo.UCValue = YourNSS.StrSmartCardNo
-            RaiseEvent UCViewDriverTruckInformationCompleted(YourNSS.NSSDriver.nIdPerson)
-        Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-        End Try
-    End Sub
+    'Public Sub UCViewDriverInformation(YourNSS As R2StandardDriverTruckStructure)
+    '    Try
+    '        UCRefresh()
+    '        _CurrentNSS = YourNSS
+    '        UcDriver.UCViewDriverInformation(YourNSS.NSSDriver)
+    '        UcNumberStrSmartCardNo.UCValue = YourNSS.StrSmartCardNo
+    '        RaiseEvent UCViewDriverTruckInformationCompleted(YourNSS.NSSDriver.nIdPerson)
+    '    Catch ex As Exception
+    '        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+    '    End Try
+    'End Sub
 
     Private Sub UCSabtRoutin()
         Try
@@ -146,7 +147,8 @@ Public Class UCDriverTruck
 
     Private Sub UcDriver_UCViewDriverInformationCompleted(DriverId As String) Handles UcDriver.UCViewDriverInformationCompletedEvent
         Try
-            _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(DriverId)
+            Dim InstanceTruckDrivers = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
+            _CurrentNSS = InstanceTruckDrivers.GetNSSTruckDriver(DriverId, True)
             UcNumberStrSmartCardNo.UCValue = _CurrentNSS.StrSmartCardNo
             RaiseEvent UCViewDriverTruckInformationCompleted(DriverId)
         Catch ex As Exception
@@ -156,8 +158,9 @@ Public Class UCDriverTruck
 
     Private Sub UcNumberStrSmartCardNoSearch_UC13Pressed(UserNumber As String) Handles UcNumberStrSmartCardNoSearch.UC13Pressed
         Try
+            Dim InstanceTruckDrivers = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
             UcDriver.UCRefreshGeneral()
-            _CurrentNSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbySmartCardNo(UserNumber)
+            _CurrentNSS = InstanceTruckDrivers.GetNSSTruckDriver(UserNumber, True)
             UcDriver.UCViewDriverInformation(_CurrentNSS.NSSDriver)
         Catch ex As DriverTruckInformationNotExistException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -215,7 +218,7 @@ Public Class UCDriverTruck
 
             UcDriver.UCRefreshGeneral()
             Dim TruckDriverId = _WS.WebMethodGetDriverTruckByNationalCodefromRMTO(UserNumber, _WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
-            _CurrentNSS = InstanceTruckDrivers.GetNSSTruckDriver(TruckDriverId)
+            _CurrentNSS = InstanceTruckDrivers.GetNSSTruckDriver(TruckDriverId, True)
             UcDriver.UCViewDriverInformation(_CurrentNSS.NSSDriver)
         Catch ex As Exception When TypeOf ex Is DriverTruckInformationNotExistException _
                             OrElse TypeOf ex Is SqlInjectionException _

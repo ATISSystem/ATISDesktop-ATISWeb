@@ -1309,7 +1309,7 @@ Namespace CarTruckNobatManagement
 
                 'احراز راننده ناوگان از رابطه ناوگان راننده
                 Try
-                    NSSDriverTruck = InstanceTruckDrivers.GetNSSTruckDriver(PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(NSSTruck.NSSCar.nIdCar)).NSSDriver.nIdPerson)
+                    NSSDriverTruck = InstanceTruckDrivers.GetNSSTruckDriver(PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(NSSTruck.NSSCar.nIdCar)).NSSDriver.nIdPerson, True)
                 Catch ex As DriverTruckInformationNotExistException
                     Throw ex
                 End Try

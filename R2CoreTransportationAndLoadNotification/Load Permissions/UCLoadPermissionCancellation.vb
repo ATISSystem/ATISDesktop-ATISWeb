@@ -122,8 +122,10 @@ Public Class UCLoadPermissionCancellation
             UcCar.UCRefreshGeneral()
             UcDriver.UCRefreshGeneral()
             UcViewerNSSSequentialTurnNumber.UCRefreshGeneral()
-            If UcPersianTextBoxDescription.UCValue.Trim = String.Empty Then UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "شرح کنسلی مجوز بارگیری را وارد نمایید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-
+            If UcPersianTextBoxDescription.UCValue.Trim = String.Empty Then
+                UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, "شرح کنسلی مجوز بارگیری را وارد نمایید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+                Exit Sub
+            End If
             R2CoreTransportationAndLoadNotificationMClassLoadPermissionManagement.LoadPermissionCancelling(UCNSSCurrent.nEstelamId, UCNSSCurrent.TurnId, CheckBoxTurn.Checked, CheckBoxLoadCapacitorLoad.Checked, UcPersianTextBoxDescription.UCValue.Trim, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
 
             'تخصیص به راننده دیگر

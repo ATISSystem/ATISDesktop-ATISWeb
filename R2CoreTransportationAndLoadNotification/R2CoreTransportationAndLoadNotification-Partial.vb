@@ -11,7 +11,6 @@ Imports System.Text
 Imports System.Windows.Forms
 Imports System.Security.Cryptography
 
-
 Imports R2Core.BaseStandardClass
 Imports R2Core.ComputersManagement
 Imports R2Core.ConfigurationManagement
@@ -694,14 +693,14 @@ Namespace TruckDrivers
             End Try
         End Function
 
-        Public Function GetNSSTruckDriver(YourTruckDriverId As Int64) As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
+        Public Function GetNSSTruckDriver(YourTruckDriverId As Int64, YourImediately As Boolean) As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                           "Select Top 1 * from dbtransport.dbo.TbDriver as Drivers 
                              Inner Join dbtransport.dbo.TbPerson as Persons On Drivers.nIDDriver=Persons.nIDPerson 
-                           Where Drivers.nIDDriver=" & YourTruckDriverId & " Order By Drivers.nIDDriver Desc", 300, DS).GetRecordsCount() = 0 Then Throw New TruckDriverNotFoundException
+                           Where Drivers.nIDDriver=" & YourTruckDriverId & " Order By Drivers.nIDDriver Desc", IIf(YourImediately, 0, 300), DS).GetRecordsCount() = 0 Then Throw New TruckDriverNotFoundException
                 Dim NSS = New R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
                 NSS.NSSDriver = New R2StandardDriverStructure(DS.Tables(0).Rows(0).Item("nIDDriver"), DS.Tables(0).Rows(0).Item("strPersonFullName").trim, DS.Tables(0).Rows(0).Item("strNationalCode").trim, DS.Tables(0).Rows(0).Item("strFatherName").trim, DS.Tables(0).Rows(0).Item("strAddress").trim, DS.Tables(0).Rows(0).Item("strIDNO").trim, DS.Tables(0).Rows(0).Item("strDrivingLicenceNo").trim)
                 NSS.StrSmartCardNo = DS.Tables(0).Rows(0).Item("StrSmartCardNo").trim
@@ -760,7 +759,7 @@ Namespace TruckDrivers
         Public Function GetNSSDefaultTruckDriver() As R2CoreTransportationAndLoadNotificationStandardTruckDriverStructure
             Try
                 Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
-                Return GetNSSTruckDriver(InstanceConfiguration.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 2))
+                Return GetNSSTruckDriver(InstanceConfiguration.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 2), True)
             Catch ex As TruckDriverNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -4246,7 +4245,7 @@ Namespace LoadPermission
                 Dim InstanceAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
                 Dim InstanceLoadCapacitorLoadOtherThanManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadOtherThanManipulationManager
                 Dim NSSTruck = InstanceTurns.GetNSSTruck(YourNSSLoadAllocation.TurnId)
-                Dim NSSTruckDriver = InstanceTruckDriver.GetNSSTruckDriver(InstanceCars.GetnIdPersonFirst(NSSTruck.NSSCar.nIdCar))
+                Dim NSSTruckDriver = InstanceTruckDriver.GetNSSTruckDriver(InstanceCars.GetnIdPersonFirst(NSSTruck.NSSCar.nIdCar), False)
                 Dim NSSTurn = InstanceTurns.GetNSSTurn(YourNSSLoadAllocation.TurnId)
                 Dim InstanceTurnAttendance = New R2CoreTransportationAndLoadNotificationInstanceTurnAttendanceManager
 
@@ -4433,7 +4432,7 @@ Namespace LoadPermission
                              (Loads.LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered & " or Loads.LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.FreeLined & " or Loads.LoadStatus=" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & ") and Loads.nCarNum>=1
                        Order By LoadAllocations.TurnId Asc", 0, DS).GetRecordsCount = 0 Then Throw New PrimaryTurnNotFoundException
                 Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
-                Return InstanceTurns.GetNSSTurn(DS.Tables(0).Rows(0).Item("TurnId"))
+                Return InstanceTurns.GetNSSTurn(Convert.ToInt64(DS.Tables(0).Rows(0).Item("TurnId")))
             Catch ex As PrimaryTurnNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -4658,7 +4657,8 @@ Namespace LoadPermission
                     Dim ComposeSearchString As String = NSSLoadCapacitorLoad.AHSGId.ToString + "="
                     Dim AllAnnouncementHallPrinters As String() = Split(InstanceConfigurationOfAnnouncementHalls.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadPermissionsSetting, NSSLoadCapacitorLoad.AHId, 3), "-")
                     Dim AnnouncementHallSubGroupPrinter As String = Mid(AllAnnouncementHallPrinters.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllAnnouncementHallPrinters.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length)
-                    _PrintDocumentPermission.PrinterSettings.PrinterName = AnnouncementHallSubGroupPrinter.Trim
+                    '_PrintDocumentPermission.PrinterSettings.PrinterName = AnnouncementHallSubGroupPrinter.Trim
+                    _PrintDocumentPermission.PrinterSettings.PrinterName = "Hewlett-Packard HP LaserJet 400 MFP M425dn (redirected 1)"
                     _PrintDocumentPermission.DefaultPageSettings.PaperSize = _PrintDocumentPermission.PrinterSettings.PaperSizes(4)
                     _PrintDocumentPermission.DefaultPageSettings.PaperSource = _PrintDocumentPermission.PrinterSettings.PaperSources(2)
                     _PrintDocumentPermission.Print()

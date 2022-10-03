@@ -882,7 +882,7 @@ Namespace Turns
                   Where (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") 
                         and substring(Turns.OtaghdarTurnNumber,1,1)='" & YourNSSSequentialTurn.SequentialTurnKeyWord & "' 
                   Order By Turns.nEnterExitId", 300, DS).GetRecordsCount = 0 Then Throw New FirstActiveTurnNotFoundException
-                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(DS.Tables(0).Rows(0).Item("nEnterExitId"), DS.Tables(0).Rows(0).Item("StrEnterDate").trim, DS.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(DS.Tables(0).Rows(0).Item("nDriverCode"))), DS.Tables(0).Rows(0).Item("bFlagDriver"), DS.Tables(0).Rows(0).Item("nUserIdEnter"), DS.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, DS.Tables(0).Rows(0).Item("StrCardNo"), DS.Tables(0).Rows(0).Item("TurnStatus"), DS.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
+                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(DS.Tables(0).Rows(0).Item("nEnterExitId"), DS.Tables(0).Rows(0).Item("StrEnterDate").trim, DS.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(DS.Tables(0).Rows(0).Item("nDriverCode")), False), DS.Tables(0).Rows(0).Item("bFlagDriver"), DS.Tables(0).Rows(0).Item("nUserIdEnter"), DS.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, DS.Tables(0).Rows(0).Item("StrCardNo"), DS.Tables(0).Rows(0).Item("TurnStatus"), DS.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
             Catch ex As FirstActiveTurnNotFoundException
                 Throw New FirstActiveTurnNotFoundException
             Catch ex As Exception
@@ -898,7 +898,7 @@ Namespace Turns
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from dbtransport.dbo.TbEnterExit Where StrCardNo=" & YourNSSCar.nIdCar & " and (bFlagDriver=0) Order By nEnterExitId desc", 0, Ds).GetRecordsCount() = 0 Then
                     Throw New LastActiveTurnNotFoundException
                 End If
-                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate"), Ds.Tables(0).Rows(0).Item("StrEnterTime"), InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode"))), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("TurnStatus"), Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
+                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate"), Ds.Tables(0).Rows(0).Item("StrEnterTime"), InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode")), False), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("TurnStatus"), Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
             Catch ex As LastActiveTurnNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -938,7 +938,7 @@ Namespace Turns
                     NSS.EnterDate = Ds.Tables(0).Rows(Loopx).Item("StrEnterDate")
                     NSS.EnterTime = Ds.Tables(0).Rows(Loopx).Item("StrEnterTime")
                     Dim InstanceTruckDriver = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
-                    NSS.NSSTruckDriver = InstanceTruckDriver.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nDriverCode")))
+                    NSS.NSSTruckDriver = InstanceTruckDriver.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nDriverCode")), False)
                     NSS.bFlagDriver = Ds.Tables(0).Rows(Loopx).Item("bFlagDriver")
                     NSS.nUserIdEnter = Ds.Tables(0).Rows(Loopx).Item("nUserIdEnter")
                     NSS.TurnStatus = Ds.Tables(0).Rows(Loopx).Item("TurnStatus")
@@ -981,7 +981,7 @@ Namespace Turns
                     NSS.EnterDate = Ds.Tables(0).Rows(Loopx).Item("StrEnterDate")
                     NSS.EnterTime = Ds.Tables(0).Rows(Loopx).Item("StrEnterTime")
                     Dim InstanceTruckDriver = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
-                    NSS.NSSTruckDriver = InstanceTruckDriver.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nDriverCode")))
+                    NSS.NSSTruckDriver = InstanceTruckDriver.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nDriverCode")), False)
                     NSS.bFlagDriver = Ds.Tables(0).Rows(Loopx).Item("bFlagDriver")
                     NSS.nUserIdEnter = Ds.Tables(0).Rows(Loopx).Item("nUserIdEnter")
                     NSS.TurnStatus = Ds.Tables(0).Rows(Loopx).Item("TurnStatus")
@@ -1026,7 +1026,7 @@ Namespace Turns
                 NSS.EnterDate = Ds.Tables(0).Rows(0).Item("StrEnterDate")
                 NSS.EnterTime = Ds.Tables(0).Rows(0).Item("StrEnterTime")
                 Dim InstanceTruckDrivers = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
-                NSS.NSSTruckDriver = InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode")))
+                NSS.NSSTruckDriver = InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode")), False)
                 NSS.bFlagDriver = Ds.Tables(0).Rows(0).Item("bFlagDriver")
                 NSS.nUserIdEnter = Ds.Tables(0).Rows(0).Item("nUserIdEnter")
                 NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber")
@@ -1063,7 +1063,7 @@ Namespace Turns
                 NSS.EnterDate = Ds.Tables(0).Rows(0).Item("StrEnterDate")
                 NSS.EnterTime = Ds.Tables(0).Rows(0).Item("StrEnterTime")
                 Dim InstanceTruckDriver = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
-                NSS.NSSTruckDriver = InstanceTruckDriver.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode")))
+                NSS.NSSTruckDriver = InstanceTruckDriver.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode")), False)
                 NSS.bFlagDriver = Ds.Tables(0).Rows(0).Item("bFlagDriver")
                 NSS.nUserIdEnter = Ds.Tables(0).Rows(0).Item("nUserIdEnter")
                 NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber")
@@ -1269,7 +1269,7 @@ Namespace Turns
                      "Select Top 1 * from dbtransport.dbo.TbEnterExit Where StrCardNo=" & YourNSSTruck.NSSCar.nIdCar & " and (bFlagDriver=0) Order By nEnterExitId desc", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New TurnNotFoundException
                 End If
-                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate").trim, Ds.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode"))), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("TurnStatus"), Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
+                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate").trim, Ds.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode")), True), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("TurnStatus"), Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
             Catch ex As TurnNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -1289,7 +1289,7 @@ Namespace Turns
                       Where EntityRelations.RelationActive=1 and EntityRelations.ERTypeId=1 and TurnRegisterRequests.TRRId=" & YourNSSTurnRegisteringRequest.TRRId & "", 0, Ds).GetRecordsCount() = 0 Then
                     Throw New TurnNotFoundException
                 End If
-                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate").trim, Ds.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode"))), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("TurnStatus"), Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
+                Return New R2CoreTransportationAndLoadNotificationStandardTurnStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate").trim, Ds.Tables(0).Rows(0).Item("StrEnterTime").trim, InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDriverCode")), False), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("TurnStatus"), Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
             Catch ex As TurnNotFoundException
                 Throw ex
             Catch ex As Exception

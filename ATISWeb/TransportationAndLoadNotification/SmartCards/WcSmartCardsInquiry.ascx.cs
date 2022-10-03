@@ -65,7 +65,7 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
                 var InstacneLogin = new ATISWebMClassLoginManager();
                 var InstanceTruckDrivers = new R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager();
                 NSS = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyNationalCode(TxtTruckDriverNationalCode.Text);
-                _WcNSSTruckDriver = InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(NSS.NSSDriver.nIdPerson));
+                _WcNSSTruckDriver = InstanceTruckDrivers.GetNSSTruckDriver(Convert.ToInt64(NSS.NSSDriver.nIdPerson),true );
             }
             catch (Exception ex) when (ex is DriverTruckInformationNotExistException || ex is SqlInjectionException || ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
             { throw ex; }
@@ -86,7 +86,7 @@ namespace ATISWeb.TransportationAndLoadNotification.SmartCards
                 var InstanceTruckDrivers = new R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager();
                 PayanehWebService WS = new PayanehWebService();
                 var TruckDriverId = WS.WebMethodGetDriverTruckByNationalCodefromRMTO(TxtTruckDriverNationalCode.Text, WS.WebMethodLogin(InstacneLogin.GetNSSCurrentUser().UserShenaseh, InstacneLogin.GetNSSCurrentUser().UserPassword));
-                _WcNSSTruckDriver = InstanceTruckDrivers.GetNSSTruckDriver(TruckDriverId);
+                _WcNSSTruckDriver = InstanceTruckDrivers.GetNSSTruckDriver(TruckDriverId,true );
                 WS = null;
             }
             catch (Exception ex) when (ex is DriverTruckInformationNotExistException || ex is SqlInjectionException || ex is RMTOWebServiceSmartCardInvalidException || ex is InternetIsnotAvailableException || ex is RMTOWebServiceSmartCardInvalidException)
