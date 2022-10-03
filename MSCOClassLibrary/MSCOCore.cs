@@ -359,7 +359,7 @@ namespace MSCOCore
                         var MSCOFileName = string.Empty;
                         try
                         {
-                            //کنترل فعال بودن اعلام بار شرکت
+                            //کنترل فعال بودن اعلام بار شرکت 
                             if (!InstanceTransportCompanies.IsActiveTransportCompanyAnnounce(TransportCompanyCode)) { throw new MSCOCoreAnnounceforTransportCompanyIsNotActiveException(); }
 
                             //کنترل موجود بودن فایل اعلام بار شرکت
