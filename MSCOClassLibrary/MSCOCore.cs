@@ -421,7 +421,7 @@ namespace MSCOCore
                 { throw ex; }
             }
 
-        }  
+        }   
 
         namespace Exceptions
         {
