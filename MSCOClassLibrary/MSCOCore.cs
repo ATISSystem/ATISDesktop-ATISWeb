@@ -654,7 +654,7 @@ namespace MSCOCore
             public class MSCOCoreLoadTypeTitleNotFoundException : ApplicationException
             {
                 public override string Message
-                {
+                {//123
                     get { return "نوع بار با اطلاعات پایه فولاد یافت نشد"; }
                 }
             }
