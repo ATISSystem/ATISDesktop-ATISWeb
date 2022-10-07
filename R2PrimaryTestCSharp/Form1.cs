@@ -1,4 +1,5 @@
-﻿using PayanehClassLibrary.CarTruckNobatManagement;
+﻿using MSCOCore.AnnouncementProcessManagement;
+using PayanehClassLibrary.CarTruckNobatManagement;
 using R2Core.SecurityAlgorithmsManagement.Captcha;
 using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls;
@@ -33,9 +34,8 @@ namespace R2PrimaryTestCSharp
         {
             try
             {
-                var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                List<R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure > _LoadAllocations = new List<R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure>();
-                var Lst = InstanceLoadAllocation.GetLoadPermissionsViaLicensePlate("539ع24", "83");
+                MSCOCoreAnnouncementforTransportCompaniesManager InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                InstanceAnnouncementforTransportCompanies.LoadsAnnouncementforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
 
                 //var InstanceSequentialTrun = new R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager();
                 //PayanehClassLibraryMClassCarTruckNobatManagement.TurnsCancellation("9:943623", InstanceSequentialTrun.GetNSSSequentialTurn(2), "1400");

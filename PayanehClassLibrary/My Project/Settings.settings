@@ -6,7 +6,7 @@
       <Value Profile="(Default)">http://37.255.209.4:2010/TerminalsWebService.asmx</Value>
     </Setting>
     <Setting Name="PayanehClassLibrary_PayanehWS_PayanehWebService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://localhost:2012/PayanehWebService.asmx</Value>
+      <Value Profile="(Default)">http://192.168.1.2:2012/PayanehWebService.asmx</Value>
     </Setting>
   </Settings>
 </SettingsFile>

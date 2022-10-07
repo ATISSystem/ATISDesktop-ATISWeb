@@ -237,8 +237,8 @@ namespace MSCOCore
                             myLBN = (myLBN == string.Empty) ? Lines[Loopx].Substring(269, 3).Trim() : myLBN;
                             continue;
                         }
-                        mynoEmptyingDays = (mynoEmptyingDays == string.Empty) ? (((Loopx + 1) % 4) == 0 ? Lines[Loopx].Substring(222, 9).Trim() : string.Empty) : mynoEmptyingDays;
-                        myLTN = (myLTN == string.Empty) ? (((Loopx + 1) % 4) == 0 ? Lines[Loopx].Substring(214, 3).Trim() : string.Empty) : myLTN;
+                        mynoEmptyingDays = (mynoEmptyingDays == string.Empty) ? (((Loopx + 1) % 3) == 0 ? Lines[Loopx].Substring(221, 9).Trim() : string.Empty) : mynoEmptyingDays;
+                        myLTN = (myLTN == string.Empty) ? (((Loopx + 1) % 3) == 0 ? Lines[Loopx].Substring(214, 3).Trim() : string.Empty) : myLTN;
                     }
 
                     var InstanceMSCOTargets = new MSCOMClassMSCOTargetsManager();
@@ -248,7 +248,10 @@ namespace MSCOCore
 
                     NSS.nEstelamId = 0;
                     NSS.nEstelamKey = string.Empty;
-                    NSS.nCityCode = InstanceMSCOTargets.GetNSSLoadTarget(myTargetId).NSSCity.nCityCode;
+                    try
+                    { NSS.nCityCode = InstanceMSCOTargets.GetNSSLoadTarget(myTargetId).NSSCity.nCityCode; }
+                    catch (Exception ex)
+                    { throw new Exception("مقصدحمل یافت نشد.شماره موقعیت: " + mySituation); }
                     NSS.nTonaj = double.Parse((Convert.ToInt64(myTonaj) / (double)1000).ToString());
                     NSS.nBarCode = InstanceProducts.GetProductId(myMSCOProductId);
                     NSS.nUserId = YourNSSSoftwareUser.UserId;
@@ -257,13 +260,13 @@ namespace MSCOCore
                     NSS.IsSpecialLoad = false;
                     NSS.nTruckType = InstanceMSCOTargets.GetNSSLoadTarget(myTargetId).NSSCity.nProvince == 21 ? 807 : 805;
                     NSS.StrAddress = string.Empty;
-                    NSS.StrBarName = (myMSCOProductId == string.Empty) ? string.Empty : (myMSCOProductId + "محصول: " + "\n" + mySituation + "شماره موقعیت: " + "\n" + myLoadingLocations + "موقعیت بارگیری: " );
+                    NSS.StrBarName = (myMSCOProductId == string.Empty) ? string.Empty : ("موقعیت: "+mySituation +" "+ myLoadingLocations);
                     if (myNL == "L") { NSS.StrBarName += (myNL == "L") ? "\n" + myMultiLoads.ToString() + " باسکول " : string.Empty;}
                     NSS.StrPriceSug = 0;
-                    NSS.StrDescription = "بارگیری از " + myFirstDate + myFirstTime + " تا " + mySecondDate + mySecondTime + "\n";
-                    NSS.StrDescription = NSS.StrDescription + ((mynoEmptyingDays == string.Empty) ? string.Empty : (mynoEmptyingDays+"روزهای عدم تخلیه: "  )) + "\n";
-                    NSS.StrDescription = NSS.StrDescription + ((myLBN == string.Empty) ? string.Empty : "لبه دار بارگیری ندارد") + "\n";
-                    NSS.StrDescription = NSS.StrDescription + ((myLTN == string.Empty) ? string.Empty : "لبه دار تخلیه ندارد") + "\n";
+                    NSS.StrDescription = "بارگیری از " + myFirstDate +" ساعت: "+ myFirstTime + " تا " + mySecondDate + " ساعت: "+ mySecondTime + "\n";
+                    if (mynoEmptyingDays != string.Empty) { NSS.StrDescription = NSS.StrDescription + "روزهای عدم تخلیه: " + mynoEmptyingDays + "\n"; }
+                    if (myLBN != string.Empty) { NSS.StrDescription = NSS.StrDescription + "لبه دار بارگیری ندارد" + "\n"; }
+                    if (myLTN != string.Empty) { NSS.StrDescription = NSS.StrDescription + "لبه دار تخلیه ندارد"; }
                     return NSS;
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
