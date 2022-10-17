@@ -2502,6 +2502,12 @@ Namespace LoadCapacitor
                 Try
                     Dim InstanceAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
                     Dim InstanceConfigurationOfAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager
+                    Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                    Dim InstancePermissions = New R2CoreInstansePermissionsManager
+
+                    'کنترل مجوز حذف بار سیستمی
+                    If YourNSS.nUserId = InstanceSoftwareUsers.GetSystemUserId And
+                       Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.SoftwareUserCanDeleteLoadCapacitorLoadAnnouncedBySystem, YourUserNSS.UserId, 0) Then Throw New SoftwareUserCanNotDeleteLoadCapacitorLoadAnnouncedBySystemException
 
                     Dim NSSAnnouncementHall = InstanceAnnouncementHalls.GetNSSAnnouncementHall(YourNSS.AHId)
                     Dim NSSAnnouncementHallSubGroup = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroupByLoaderTypeId(YourNSS.nTruckType)
@@ -2539,6 +2545,11 @@ Namespace LoadCapacitor
                     Dim InstanceLoadCapacitorAccounting = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorAccountingManager
                     InstanceLoadCapacitorAccounting.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(YourNSS.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Deleting, YourNSS.nCarNumKol, Nothing, Nothing, Nothing, YourUserNSS.UserId))
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Catch ex As SoftwareUserCanNotDeleteLoadCapacitorLoadAnnouncedBySystemException
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then
+                        CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                    End If
+                    Throw ex
                 Catch ex As Exception When TypeOf ex Is LoadCapacitorLoadDeleteTimePassedException
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -3237,6 +3248,15 @@ Namespace LoadCapacitor
             Public Overrides ReadOnly Property Message As String
                 Get
                     Return "امکان ثبت بار برای گروه اعلام بار مورد نظر فعلا مجاز نیست "
+                End Get
+            End Property
+        End Class
+
+        Public Class SoftwareUserCanNotDeleteLoadCapacitorLoadAnnouncedBySystemException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کاربر مجوز حذف بار اعلام شده توسط سیستم را ندارد"
                 End Get
             End Property
         End Class
@@ -4658,7 +4678,7 @@ Namespace LoadPermission
                     Dim AllAnnouncementHallPrinters As String() = Split(InstanceConfigurationOfAnnouncementHalls.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadPermissionsSetting, NSSLoadCapacitorLoad.AHId, 3), "-")
                     Dim AnnouncementHallSubGroupPrinter As String = Mid(AllAnnouncementHallPrinters.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllAnnouncementHallPrinters.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length)
                     '_PrintDocumentPermission.PrinterSettings.PrinterName = AnnouncementHallSubGroupPrinter.Trim
-                    _PrintDocumentPermission.PrinterSettings.PrinterName = "Hewlett-Packard HP LaserJet 400 MFP M425dn (redirected 1)"
+                    _PrintDocumentPermission.PrinterSettings.PrinterName = "HP LaserJet 400 MFP M425 PCL 6 (redirected 2)"
                     _PrintDocumentPermission.DefaultPageSettings.PaperSize = _PrintDocumentPermission.PrinterSettings.PaperSizes(4)
                     _PrintDocumentPermission.DefaultPageSettings.PaperSource = _PrintDocumentPermission.PrinterSettings.PaperSources(2)
                     _PrintDocumentPermission.Print()

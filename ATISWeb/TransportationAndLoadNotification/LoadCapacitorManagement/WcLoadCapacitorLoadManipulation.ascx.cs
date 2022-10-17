@@ -332,6 +332,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
             catch (LoadCapacitorLoadDeleteTimePassedException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+            catch (SoftwareUserCanNotDeleteLoadCapacitorLoadAnnouncedBySystemException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "\\n" + ex.Message + "');", true); }
 

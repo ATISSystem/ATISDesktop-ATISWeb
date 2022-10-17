@@ -3775,6 +3775,8 @@ Namespace PermissionManagement
         Public Shared ReadOnly SoftwareUserCanSendTruckorTruckDriverChangeRequest As Int64 = 19
         Public Shared ReadOnly SoftwareUserCanExcecuteTurnCancellationWithLicensePlate As Int64 = 20
         Public Shared ReadOnly SoftwareUserCanViewAnnouncedLoadsReportOrClearanceLoadsReport As Int64 = 21
+        Public Shared ReadOnly SoftwareUserCanDeleteLoadCapacitorLoadAnnouncedBySystem As Int64 = 23
+
     End Class
 
 End Namespace
