@@ -2505,6 +2505,7 @@ Namespace LoadCapacitor
                     Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
                     Dim InstancePermissions = New R2CoreInstansePermissionsManager
 
+
                     'کنترل مجوز حذف بار سیستمی
                     If YourNSS.nUserId = InstanceSoftwareUsers.GetSystemUserId And
                        Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.SoftwareUserCanDeleteLoadCapacitorLoadAnnouncedBySystem, YourUserNSS.UserId, 0) Then Throw New SoftwareUserCanNotDeleteLoadCapacitorLoadAnnouncedBySystemException
