@@ -34,6 +34,7 @@ using MSCOCore.MSCOLoadTypes.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions;
 using R2CoreTransportationAndLoadNotification.TransportCompanies.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
+using R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions;
 
 namespace MSCOCore
 {
@@ -260,10 +261,10 @@ namespace MSCOCore
                     NSS.IsSpecialLoad = false;
                     NSS.nTruckType = InstanceMSCOTargets.GetNSSLoadTarget(myTargetId).NSSCity.nProvince == 21 ? 807 : 805;
                     NSS.StrAddress = string.Empty;
-                    NSS.StrBarName = (myMSCOProductId == string.Empty) ? string.Empty : ("موقعیت: "+mySituation +" "+ myLoadingLocations);
-                    if (myNL == "L") { NSS.StrBarName += (myNL == "L") ? "\n" + myMultiLoads.ToString() + " باسکول " : string.Empty;}
+                    NSS.StrBarName = (myMSCOProductId == string.Empty) ? string.Empty : ("موقعیت: " + mySituation + " " + myLoadingLocations);
+                    if (myNL == "L") { NSS.StrBarName += (myNL == "L") ? "\n" + myMultiLoads.ToString() + " باسکول " : string.Empty; }
                     NSS.StrPriceSug = 0;
-                    NSS.StrDescription = "بارگیری از " + myFirstDate +" ساعت: "+ myFirstTime + " تا " + mySecondDate + " ساعت: "+ mySecondTime + "\n";
+                    NSS.StrDescription = "بارگیری از " + myFirstDate + " ساعت: " + myFirstTime + " تا " + mySecondDate + " ساعت: " + mySecondTime + "\n";
                     if (mynoEmptyingDays != string.Empty) { NSS.StrDescription = NSS.StrDescription + "روزهای عدم تخلیه: " + mynoEmptyingDays + "\n"; }
                     if (myLBN != string.Empty) { NSS.StrDescription = NSS.StrDescription + "لبه دار بارگیری ندارد" + "\n"; }
                     if (myLTN != string.Empty) { NSS.StrDescription = NSS.StrDescription + "لبه دار تخلیه ندارد"; }
@@ -337,6 +338,7 @@ namespace MSCOCore
                    ex is TimingNotReachedException ||
                    ex is LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException ||
                    ex is MSCOCoreTransportCompanyNotFoundException ||
+                   ex is HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup ||
                    ex is MSCOCoreMSCOTargetnotfoundException)
                 { throw ex; }
                 catch (MSCOCoreLoadsAnnouncementforTransportCompaniesFirstOrSecondStepNotReachedException ex)

@@ -275,7 +275,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
             }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
-            catch (Exception ex) when (ex is LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException || ex is LoadCapacitorLoadNumberOverLimitException || ex is LoadCapacitorLoadnCarNumKolCanNotBeZeroException || ex is TransportCompanyISNotActiveException || ex is LoadCapacitorLoadRegisterTimePassedException || ex is LoadCapacitorLoadEditTimePassedException)
+            catch (Exception ex) when (ex is LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException || ex is LoadCapacitorLoadNumberOverLimitException || ex is LoadCapacitorLoadnCarNumKolCanNotBeZeroException || ex is TransportCompanyISNotActiveException || ex is LoadCapacitorLoadRegisterTimePassedException || ex is LoadCapacitorLoadEditTimePassedException || ex is HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (DataEntryException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
@@ -302,7 +302,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
             catch (Exception ex) when (ex is LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException || ex is LoadCapacitorLoadNumberOverLimitException || ex is LoadCapacitorLoadnCarNumKolCanNotBeZeroException || ex is TransportCompanyISNotActiveException || ex is LoadCapacitorLoadRegisterTimePassedException || ex is LoadCapacitorLoadEditTimePassedException)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
-            catch (Exception ex) when (ex is LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException || ex is LoadCapacitorLoadNotFoundException || ex is LoadCapacitorLoadEditingChangeAHIdNotAllowedException || ex is LoaderTypeRelationAnnouncementHallNotFoundException || ex is LoaderTypeRelationAnnouncementHallSubGroupNotFoundException)
+            catch (Exception ex) when (ex is LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException || ex is LoadCapacitorLoadNotFoundException || ex is LoadCapacitorLoadEditingChangeAHIdNotAllowedException || ex is LoaderTypeRelationAnnouncementHallNotFoundException || ex is LoaderTypeRelationAnnouncementHallSubGroupNotFoundException || ex is HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (DataEntryException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }

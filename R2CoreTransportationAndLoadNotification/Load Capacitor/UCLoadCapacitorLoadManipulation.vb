@@ -16,6 +16,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadTargets
 Imports R2CoreTransportationAndLoadNotification.TransportCompanies
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
+Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions
 
 Public Class UCLoadCapacitorLoadManipulation
     Inherits UCLoadCapacitorLoad
@@ -150,6 +151,8 @@ Public Class UCLoadCapacitorLoadManipulation
             End If
             UCViewNSS(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue, True))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ثبت بار انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As SqlInjectionException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As PleaseSelectSpecialLoadRadioButtonException

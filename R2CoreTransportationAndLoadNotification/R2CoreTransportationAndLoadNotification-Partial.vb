@@ -2178,11 +2178,14 @@ Namespace LoadCapacitor
                     Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
                     Dim InstanceTransportTarrifs = New R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsManager
                     Dim InstanceLoadCapacitorAccounting = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorAccountingManager
-
+                    Dim InstanceLoadTargets = New R2CoreTransportationAndLoadNotificationMclassLoadTargetsManager
                     Dim NSSAnnouncementHall = InstanceAnnouncementHalls.GetAnnouncementHallfromLoadCapacitorLoad(YourNSS)
                     Dim NSSAnnouncementHallSubGroup = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroupByLoaderTypeId(YourNSS.nTruckType)
                     YourNSS.AHId = NSSAnnouncementHall.AHId
                     YourNSS.AHSGId = NSSAnnouncementHallSubGroup.AHSGId
+
+                    'بررسی تطابق استان انتخاب شده با زیرگروه اعلام بار
+                    If Not InstanceAnnouncementHalls.HasRelationBetweenProvinceAndAnnouncementHallSubGroup(InstanceLoadTargets.GetNSSLoadTarget(YourNSS.nCityCode).NSSCity.nProvince, YourNSS.AHSGId) Then Throw New HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup
                     'بررسی اینکه آیا برای زیرگروه مربوطه امکان ثبت بار وجود دارد یا نه
                     If Not ISActiveLoadCapacitorLoadRegistering(YourNSS) Then Throw New LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException
                     'کنترل تعداد بار
@@ -2304,6 +2307,7 @@ Namespace LoadCapacitor
                                     OrElse TypeOf ex Is TransportCompanyISNotActiveException _
                                     OrElse TypeOf ex Is LoadCapacitorLoadRegisterTimePassedException _
                                     OrElse TypeOf ex Is TimingNotReachedException _
+                                    OrElse TypeOf ex Is HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup _
                                     OrElse TypeOf ex Is LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -2329,6 +2333,7 @@ Namespace LoadCapacitor
                     Dim InstanceLoadCapacitorAccounting = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorAccountingManager
                     Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
                     Dim InstancePermissions = New R2CoreInstansePermissionsManager
+                    Dim InstanceLoadTargets = New R2CoreTransportationAndLoadNotificationMclassLoadTargetsManager
 
                     Dim NSSCurrentLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(YourNSS.nEstelamId, True)
                     Dim NSSAnnouncementHall = InstanceAnnouncementHalls.GetAnnouncementHallfromLoadCapacitorLoad(YourNSS)
@@ -2336,6 +2341,9 @@ Namespace LoadCapacitor
                     YourNSS.AHId = NSSAnnouncementHall.AHId
                     YourNSS.AHSGId = NSSAnnouncementHallSubGroup.AHSGId
                     YourNSS.LoadStatus = NSSCurrentLoadCapacitorLoad.LoadStatus
+
+                    'بررسی تطابق استان انتخاب شده با زیرگروه اعلام بار
+                    If Not InstanceAnnouncementHalls.HasRelationBetweenProvinceAndAnnouncementHallSubGroup(InstanceLoadTargets.GetNSSLoadTarget(YourNSS.nCityCode).NSSCity.nProvince, YourNSS.AHSGId) Then Throw New HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup
 
                     'ویرایش گروه اصلی اعلام بار امکان پذیر نیست در صورتی که کاربر اشتباه کرده باشد باید بار را کامل حذف کند یک بار دیگر ثبت نماید
                     If NSSCurrentLoadCapacitorLoad.AHId <> YourNSS.AHId Then Throw New LoadCapacitorLoadEditingChangeAHIdNotAllowedException
@@ -2435,6 +2443,7 @@ Namespace LoadCapacitor
                                     OrElse TypeOf ex Is LoaderTypeRelationAnnouncementHallNotFoundException _
                                     OrElse TypeOf ex Is LoaderTypeRelationAnnouncementHallSubGroupNotFoundException _
                                     OrElse TypeOf ex Is TransportCompanyISNotActiveException _
+                                    OrElse TypeOf ex Is HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup _
                                     OrElse TypeOf ex Is SqlInjectionException
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -3641,6 +3650,22 @@ Namespace AnnouncementHalls
             End Try
         End Function
 
+        Public Function HasRelationBetweenProvinceAndAnnouncementHallSubGroup(YourProvinceId As Int64, YourAHSGId As Int64) As Boolean
+            Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+            Try
+                Dim DS As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "
+                      Select RelationActive from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationProvinces 
+                      Where RelationActive=1 and ProvinceId=" & YourProvinceId & " and AHSGId=" & YourAHSGId & "", 3600, DS).GetRecordsCount() = 0 Then Throw New HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup
+                Return DS.Tables(0).Rows(0).Item("RelationActive")
+            Catch ex As HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup
+                Throw ex
+            Catch exx As LoaderTypeRelationAnnouncementHallNotFoundException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
     End Class
 
@@ -3968,7 +3993,14 @@ Namespace AnnouncementHalls
             End Property
         End Class
 
-
+        Public Class HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "مقصد با زیرگروه اعلام بار مطابقت ندارد"
+                End Get
+            End Property
+        End Class
 
     End Namespace
 
@@ -7477,6 +7509,23 @@ Namespace LoadTargets
 
         Public Property NSSCity As R2CoreParkingSystemMClassCitys.R2StandardCityStructure
         Public Property TargetTravelLength As Int64
+
+    End Class
+
+    Public Class R2CoreTransportationAndLoadNotificationMclassLoadTargetsManager
+        Private _DateTime As R2DateTime = New R2DateTime
+
+        Public Function GetNSSLoadTarget(YournIdTarget As Int64) As R2CoreTransportationAndLoadNotificationStandardLoadTargetStructure
+            Try
+                Dim NSSCity As R2CoreParkingSystemMClassCitys.R2StandardCityStructure = R2CoreParkingSystemMClassCitys.GetNSSCity(YournIdTarget)
+                If NSSCity Is Nothing Then Throw New GetNSSException
+                Return New R2CoreTransportationAndLoadNotificationStandardLoadTargetStructure(NSSCity)
+            Catch ex As GetNSSException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
     End Class
 
