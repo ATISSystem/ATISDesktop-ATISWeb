@@ -52,7 +52,11 @@ Public Class UCFingerPrintCapturerDermalog
         End Set
     End Property
 
-
+    Public ReadOnly Property UCFingerPrintDetected As Boolean
+        Get
+            Return DDevice_OnDetectCompletedFlag
+        End Get
+    End Property
 
 #End Region
 

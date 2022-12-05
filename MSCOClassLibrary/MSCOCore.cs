@@ -77,7 +77,7 @@ namespace MSCOCore
                 {
                     if (InstanceTransportCompanies.IsActiveTransportCompanySentMail(YourTransportCompanyCode))
                     { InstanceEmail.SendEmailWithTXTTypeAttachment(InstanceTransportCompanies.GetNSSTransportCompany(YourTransportCompanyCode).EmailAddress, YourSB, "اعلام بار", string.Empty, YourTransportCompanyCode + InstanceConfiguration.GetConfigString(MSCOCore.Configurations.MSCOCoreConfigurations.MSCO, 4)); }
-                    System.Threading.Thread.Sleep(150000);
+                    System.Threading.Thread.Sleep(60000);
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
                 {

@@ -2214,7 +2214,7 @@ Namespace DatabaseManagement
         Public Sub New()
             MyBase.New()
             Try
-                _Connection = New SqlClient.SqlConnection(DefaultConnectionString.Replace("@", R2CoreMClassConfigurationManagement.GetMainDatabaseName))
+                _Connection = New SqlClient.SqlConnection(DefaultConnectionString.Replace("@IC", R2CoreMClassConfigurationManagement.GetMainDatabaseName))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
@@ -2228,7 +2228,7 @@ Namespace DatabaseManagement
         Public Sub New()
             MyBase.New()
             Try
-                _Connection = New SqlClient.SqlConnection(SubscriptionDBConnectionString.Replace("@", R2CoreMClassConfigurationManagement.GetMainDatabaseName))
+                _Connection = New SqlClient.SqlConnection(SubscriptionDBConnectionString.Replace("@IC", R2CoreMClassConfigurationManagement.GetMainDatabaseName))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
@@ -2242,7 +2242,7 @@ Namespace DatabaseManagement
         Public Sub New()
             MyBase.New()
             Try
-                _Connection = New SqlClient.SqlConnection(DefaultConnectionString.Replace("@", R2CoreMClassConfigurationManagement.GetMainDatabaseName + "Reports"))
+                _Connection = New SqlClient.SqlConnection(DefaultConnectionString.Replace("@IC", R2CoreMClassConfigurationManagement.GetMainDatabaseName + "Reports"))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
@@ -2569,6 +2569,7 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property SystemDisplayTitle As Int64 = 44
         Public Shared ReadOnly Property UCProcessGroup As Int64 = 45
         Public Shared ReadOnly Property UCProcessColor As Int64 = 46
+        Public Shared ReadOnly Property PersonnelAttendanceSystem As Int64 = 47
         Public Shared ReadOnly Property InvalidRFIDCards As Int64 = 49
         Public Shared ReadOnly Property UCUCComputerMessageCollection As Int64 = 50
         Public Shared ReadOnly Property GovernmentVat As Int64 = 60
@@ -2792,8 +2793,8 @@ Namespace ConfigurationManagement
                 myMainDatabaseName = Split(Mid(sr.ReadLine, 31, 100), "$")(0)
                 Dim DSTemp = Split(Mid(sr.ReadLine, 15, 100), "$")(0)
                 Dim PasswordTemp = Split(Mid(sr.ReadLine, 4, 100), "$")(0)
-                myDefaultConnectionString = "Data Source=@DS;Initial Catalog=@;Persist Security Info=True;User ID=sa;Password=@Password".Replace("@DS", DSTemp).Replace("@Password", PasswordTemp)
-                mySubscriptionDBConnectionString = "Data Source=@DS;Initial Catalog=@;Persist Security Info=True;User ID=sa;Password=@Password".Replace("@DS", DSSubscriptionDB).Replace("@Password", PasswordSubscriptionDB)
+                myDefaultConnectionString = "Data Source=@DS;Initial Catalog=@IC;Persist Security Info=True;User ID=sa;Password=@Password".Replace("@DS", DSTemp).Replace("@Password", PasswordTemp)
+                mySubscriptionDBConnectionString = "Data Source=@DS;Initial Catalog=@IC;Persist Security Info=True;User ID=sa;Password=@Password".Replace("@DS", DSSubscriptionDB).Replace("@Password", PasswordSubscriptionDB)
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try

@@ -101,7 +101,7 @@ Namespace DataBaseManagement
         Public Sub New()
             MyBase.New()
             Try
-                _Connection = New SqlClient.SqlConnection(DefaultConnectionString.Replace("@", "Dbtransport"))
+                _Connection = New SqlClient.SqlConnection(DefaultConnectionString.Replace("@IC", "Dbtransport"))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
