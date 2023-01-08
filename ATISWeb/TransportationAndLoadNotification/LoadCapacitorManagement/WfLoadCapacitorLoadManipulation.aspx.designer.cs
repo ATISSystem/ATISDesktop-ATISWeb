@@ -22,13 +22,13 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         protected global::System.Web.UI.ScriptManager ScriptManager131;
         
         /// <summary>
-        /// WcViewerNSSTransportCompanyIntelligently control.
+        /// WCViewerNSSSoftwareUser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::ATISWeb.TransportationAndLoadNotification.TransportCompanies.WcViewerNSSTransportCompanyIntelligently WcViewerNSSTransportCompanyIntelligently;
+        protected global::ATISWeb.LoginManagement.WCViewerNSSSoftwareUser WCViewerNSSSoftwareUser;
         
         /// <summary>
         /// WcLoadCapacitorLoadManipulation control.

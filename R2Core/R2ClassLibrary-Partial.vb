@@ -43,6 +43,7 @@ Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
 Imports R2Core.MonetarySupply
 Imports R2Core.Email.Exceptions
+Imports R2Core.PermissionManagement
 
 Namespace MonetarySupply
 
@@ -143,6 +144,8 @@ Namespace MonetaryCreditSupplySources
         Public Shared ReadOnly Property Cash As Int64 = 1
         Public Shared ReadOnly Property Pos As Int64 = 2
         Public Shared ReadOnly Property ZarrinPalPaymentGate As Int64 = 3
+        Public Shared ReadOnly Property ShepaPaymentGate As Int64 = 4
+
     End Class
 
     Public Class R2CoreStandardMonetaryCreditSupplySourceStructure
@@ -189,7 +192,7 @@ Namespace MonetaryCreditSupplySources
 
         Public Function GetNSSMonetaryCreditSupplySource(YourMCSSId As String) As R2CoreStandardMonetaryCreditSupplySourceStructure
             Try
-                Dim Ds As DataSet
+                Dim Ds As New DataSet
                 Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where MCSSId=" & YourMCSSId & "", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
@@ -262,7 +265,7 @@ Namespace MonetaryCreditSupplySources
     Public MustInherit Class R2CoreMonetaryCreditSupplySourcesManagement
         Public Shared Function GetNSSMonetaryCreditSupplySource(YourMCSSId As String) As R2CoreStandardMonetaryCreditSupplySourceStructure
             Try
-                Dim Ds As DataSet
+                Dim Ds As New DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where MCSSId=" & YourMCSSId & "", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 Else
@@ -317,7 +320,7 @@ Namespace MonetaryCreditSupplySources
         Public Shared Function GetMonetaryCreditSupplySourceInstance(YourNSS As R2CoreStandardMonetaryCreditSupplySourceStructure, YourAmount As Int64) As R2CoreMonetaryCreditSupplySource
             Try
                 Dim AssemblyClassName As String = YourNSS.AssemblyPath
-                Dim Instance As Object = Activator.CreateInstance(Type.GetType(AssemblyClassName), New Object() {YourAmount})
+                Dim Instance As Object = Activator.CreateInstance(Type.GetType("R2Core.MonetaryCreditSupplySources.ZarrinPalPaymentGate.R2CoreZarrinPalPaymentGate,R2Core"), New Object() {YourAmount})
                 Return Instance
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -693,6 +696,70 @@ Namespace MonetaryCreditSupplySources
         End Class
 
     End Namespace
+
+    Namespace ShepaPaymentGate
+
+        Public Class R2CoreShepaPaymentGate
+            Inherits MonetaryCreditSupplySources.R2CoreMonetaryCreditSupplySource
+
+            Public Sub New(YourAmount As Int64)
+                MyBase.New(YourAmount)
+                Try
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+            Public Overrides Sub Initialize()
+            End Sub
+
+            Public Overrides Sub DoCreditSupply()
+                Try
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
+                    Dim Merchant As ShepaMerchant.Merchant = New ShepaMerchant.Merchant
+                    Dim Data = Merchant.requestToken(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ShepaPaymentGate, 0), _Amount.ToString(), InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 3), "", "", "", "0", "", "")
+                    If Data.success Then
+                        _SupplyReport = Data.result.token
+                        _MonetarySupplyType = MonetarySupply.MonetarySupplyType.PaymentRequest
+                        _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
+                    Else
+                        _SupplyReport = Data.error.ToString()
+                        _MonetarySupplyType = MonetarySupply.MonetarySupplyType.PaymentRequest
+                        _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.UnSuccess
+                    End If
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+
+            End Sub
+
+            Public Overrides Sub Dispose()
+            End Sub
+
+            Public Overrides Sub DoVerification(YourAuthority As String)
+                Try
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
+                    Dim Merchant As ShepaMerchant.Merchant = New ShepaMerchant.Merchant
+                    Dim responce = Merchant.verifyPayment(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ShepaPaymentGate, 0), YourAuthority, _Amount.ToString())
+                    If responce.success Then
+                        _SupplyReport = responce.result.refid
+                        _MonetarySupplyType = MonetarySupply.MonetarySupplyType.VerificationRequest
+                        _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
+                    Else
+                        _SupplyReport = responce.error.ToString()
+                        _MonetarySupplyType = MonetarySupply.MonetarySupplyType.VerificationRequest
+                        _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.UnSuccess
+                    End If
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+        End Class
+
+
+    End Namespace
+
 
 End Namespace
 
@@ -2420,9 +2487,11 @@ Namespace WebProcessesManagement
                      Inner Join R2Primary.dbo.TblWebProcessGroups as WebProcessGroup On SoftwareUserWebProcessGroup.E2=WebProcessGroup.PGId 
                      Inner Join R2Primary.dbo.TblEntityRelations as WebProcessGroupWebProcess On WebProcessGroup.PGId=WebProcessGroupWebProcess.E1  
                      Inner Join R2Primary.dbo.TblWebProcesses as WebProcesses On WebProcessGroupWebProcess.E2=WebProcesses.PId 
+                     Inner Join R2Primary.dbo.TblPermissions  as Permission On WebProcesses.PId=Permission.EntityIdSecond 
                    Where SoftwareUser.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUser.UserActive=1 and SoftwareUser.Deleted=0 and SoftwareUserWebProcessGroup.ERTypeId=" & R2CoreEntityRelationTypes.SoftwareUser_WebProcessGroup & "
                          and SoftwareUserWebProcessGroup.RelationActive=1 and  WebProcessGroup.ViewFlag=1 and  WebProcessGroup.Active=1 and WebProcessGroup.Deleted=0 and WebProcessGroupWebProcess.ERTypeId=" & R2CoreEntityRelationTypes.WebProcessGroup_WebProcess & "  
                          and WebProcessGroupWebProcess.RelationActive=1 and WebProcesses.ViewFlag=1 and WebProcesses.Active=1 and WebProcesses.Deleted=0 
+                         and Permission.RelationActive=1 and Permission.EntityIdFirst=" & YourNSSSoftwareUser.UserId & " and PermissionTypeId=" & R2CorePermissionTypes.SoftwareUsersAccessWebProcesses & "
                    Order By WebProcessGroup.PGId,WebProcesses.PId ", 3600, Ds).GetRecordsCount <> 0 Then
                     Dim Lst As New List(Of R2StandardWebProcessStructure)
                     For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
@@ -3235,7 +3304,7 @@ Namespace MoneyWallet
                 Try
                     PayId = PaymentRequestRegistering(YourMCSSId, YourAmount, YourSoftwareUserId)
                     Dim InstanceMCSS As New R2CoreMClassMonetaryCreditSupplySourcesManager
-                    Dim MS = New R2CoreMonetarySupply(InstanceMCSS.GetNSSMonetaryCreditSupplySource(YourMCSSId), YourAmount)
+                    MS = New R2CoreMonetarySupply(InstanceMCSS.GetNSSMonetaryCreditSupplySource(YourMCSSId), YourAmount)
                     MS.StartSupply()
                     Return PayId
                 Catch ex As Exception

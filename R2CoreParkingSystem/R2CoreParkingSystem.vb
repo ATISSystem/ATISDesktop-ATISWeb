@@ -503,7 +503,7 @@ Namespace EnterExitManagement
 
         Public Property CardNoEnter As String
 
-        Public Property UserIdEnter As Byte
+        Public Property UserIdEnter As Int64
 
         Public Property EnterStatus As R2EnterStatus
 
@@ -527,7 +527,7 @@ Namespace EnterExitManagement
 
         Public Property CardNoExit As String
 
-        Public Property UserIdExit As Byte
+        Public Property UserIdExit As Int64
 
         Public Property ExitStatus As R2ExitStatus
 

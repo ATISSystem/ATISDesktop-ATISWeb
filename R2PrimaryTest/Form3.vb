@@ -19,6 +19,7 @@ Imports R2Core.DateAndTimeManagement.CalendarManagement.PersianCalendar
 Imports R2Core.EntityRelationManagement
 Imports R2Core.ExceptionManagement
 Imports R2Core.FileShareRawGroupsManagement
+Imports R2Core.MoneyWallet.PaymentRequests
 Imports R2Core.PermissionManagement
 Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
 Imports R2Core.SecurityAlgorithmsManagement.Captcha
@@ -272,8 +273,10 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            Dim x As New MSCOCoreAnnouncementforTransportCompaniesManager
-            x.LoadsAnnouncementforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            Dim x As New R2CoreInstansePaymentRequestsManager
+            MessageBox.Show(x.PaymentRequest(3, 50000, 21))
+            'Dim x As New MSCOCoreAnnouncementforTransportCompaniesManager
+            'x.LoadsAnnouncementforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
             'Dim X As New PayanehClassLibraryMClassCarTruckNobatManager
             'X.TurnsCancellation(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
 
@@ -295,7 +298,7 @@ Public Class Form3
             'Try
             '    PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
             'Catch ex As Exception
-            '    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+            '    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering: " + ex.Message.ToString, EventLogEntryType.Error)
             'End Try
 
             'Dim x As New PayanehClassLibraryMClassTurnRegisterRequestManager
@@ -703,7 +706,7 @@ Public Class Form3
             CmdSql.Connection.Open()
             CmdSql.Transaction = CmdSql.Connection.BeginTransaction
             CmdSql.CommandText = "Delete MSCO.dbo.TblMSCOTargets" : CmdSql.ExecuteNonQuery()
-            For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+            For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                 Dim myMSCOCityId As String = Ds.Tables(0).Rows(Loopx).Item("Field4").trim
                 Dim myMSCOCityName As String = Ds.Tables(0).Rows(Loopx).Item("Field5").trim
                 Dim myMSCOProvinceId As Int64 = Ds.Tables(0).Rows(Loopx).Item("Field6").trim

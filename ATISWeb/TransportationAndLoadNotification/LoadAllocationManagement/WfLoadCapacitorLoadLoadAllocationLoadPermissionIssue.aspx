@@ -5,7 +5,7 @@
 <%@ Register Src="~/TransportationAndLoadNotification/TransportCompanies/WcViewerNSSTransportCompanyIntelligently.ascx" TagName="WcViewerNSSTransportCompanyIntelligently" TagPrefix="TWebControl" %>
 <%@ Register Src="~/AlertManagement/WcAlertShower.ascx" TagName="WcAlertShower" TagPrefix="TWebControl" %>
 <%@ Register Src="~/TransportationAndLoadNotification/LoadAllocationManagement/WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue.ascx" TagName="WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue" TagPrefix="TWebControl" %>
-
+<%@ Register Src="~/LoginManagement/WCViewerNSSSoftwareUser.ascx" TagName="WCViewerNSSSoftwareUser" TagPrefix="TWebControl" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="container-fluid p-0 mb-1">
-            <TWebControl:WcViewerNSSTransportCompanyIntelligently runat="server" ID="WcViewerNSSTransportCompanyIntelligently" />
+            <TWebControl:WCViewerNSSSoftwareUser runat="server" ID="WCViewerNSSSoftwareUser" />
         </div>
 
         <div class="container-fluid">

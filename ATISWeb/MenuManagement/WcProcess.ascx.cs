@@ -14,9 +14,7 @@ namespace ATISWeb.MenuManagement
     public partial class WcProcess : System.Web.UI.UserControl
     {
         protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
+        {        }
 
         private R2StandardWebProcessStructure _WcCurrentNSS = null;
 

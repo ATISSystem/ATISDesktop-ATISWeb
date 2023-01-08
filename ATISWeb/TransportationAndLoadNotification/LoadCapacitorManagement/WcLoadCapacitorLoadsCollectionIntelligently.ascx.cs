@@ -42,27 +42,26 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
             {
                 var InstanceLogin = new ATISWebMClassLoginManager();
                 var InstanceTransportCompanies = new R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager();
-                var TCId = InstanceTransportCompanies.GetNSSTransportCompnay(InstanceLogin.GetNSSCurrentUser()).TCId;
                 List<R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure> Lst = null;
                 if (WcCurrentListType == LoadCapacitorLoadsListType.NotSedimented)
                 {
                     LblCaption.Text = "لیست بار موجود";
-                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNotSedimentedLoadCapacitorLoads(TCId);
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNotSedimentedLoadCapacitorLoads(InstanceLogin.GetNSSCurrentUser());
                 }
                 else if (WcCurrentListType == LoadCapacitorLoadsListType.Sedimented)
                 {
                     LblCaption.Text = "لیست بار رسوب شده";
-                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetSedimentedLoadCapacitorLoads(TCId);
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetSedimentedLoadCapacitorLoads(InstanceLogin.GetNSSCurrentUser());
                 }
                 else if (WcCurrentListType == LoadCapacitorLoadsListType.TommorowLoad)
                 {
                     LblCaption.Text = "لیست بار فردا";
-                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTommorowLoadCapacitorLoads(TCId);
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTommorowLoadCapacitorLoads(InstanceLogin.GetNSSCurrentUser());
                 }
                 else if (WcCurrentListType == LoadCapacitorLoadsListType.None)
                 {
                     LblCaption.Text = "لیست بار";
-                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetAllLoadCapacitorLoads(TCId);
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetAllLoadCapacitorLoads(InstanceLogin.GetNSSCurrentUser());
                 }
 
                 while (TblLoadCapacitorLoads.Rows.Count > 1) TblLoadCapacitorLoads.Rows.RemoveAt(1);
@@ -70,6 +69,10 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 {
                     TableRow tempRow = new TableRow();
                     TableCell tempCell = null;
+                    tempCell = new TableCell();
+                    tempCell.Text = Lst[Loopx].UserName ; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
+                    tempCell = new TableCell();
+                    tempCell.Text = Lst[Loopx].TransportCompanyTitle ; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].StrAddress; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     tempCell = new TableCell();

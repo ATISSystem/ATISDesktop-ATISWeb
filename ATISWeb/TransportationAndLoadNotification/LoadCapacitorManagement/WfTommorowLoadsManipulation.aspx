@@ -3,6 +3,7 @@
 <%@ Register TagPrefix="TWebControl" TagName="WcViewerNSSTransportCompanyIntelligently" Src="~/TransportationAndLoadNotification/TransportCompanies/WcViewerNSSTransportCompanyIntelligently.ascx" %>
 <%@ Register TagPrefix="TWebControl" TagName="WcLoadCapacitorLoadManipulation" Src="~/TransportationAndLoadNotification/LoadCapacitorManagement/WcLoadCapacitorLoadManipulation.ascx" %>
 <%@ Register TagPrefix="TWebControl" TagName="WcLoadCapacitorLoadsCollectionIntelligently" Src="~/TransportationAndLoadNotification/LoadCapacitorManagement/WcLoadCapacitorLoadsCollectionIntelligently.ascx" %>
+<%@ Register Src="~/LoginManagement/WCViewerNSSSoftwareUser.ascx" TagName="WCViewerNSSSoftwareUser" TagPrefix="TWebControl" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -16,7 +17,7 @@
             </div>
         </div>
         <div class="container-fluid p-0 mb-1">
-            <TWebControl:WcViewerNSSTransportCompanyIntelligently runat="server" ID="WcViewerNSSTransportCompanyIntelligently" />
+            <TWebControl:WCViewerNSSSoftwareUser runat="server" ID="WCViewerNSSSoftwareUser" />
         </div>
         <div class="container-fluid">
             <ul class="nav nav-tabs justify-content-end" role="tablist">

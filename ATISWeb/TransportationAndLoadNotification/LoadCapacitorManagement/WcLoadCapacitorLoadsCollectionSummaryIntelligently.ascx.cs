@@ -44,34 +44,33 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
             {
                 var InstanceLogin = new ATISWebMClassLoginManager();
                 var InstanceTransportCompanies = new R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager();
-                var TCId = InstanceTransportCompanies.GetNSSTransportCompnay(InstanceLogin.GetNSSCurrentUser()).TCId;
                 List<R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure> Lst = null;
                 if (WcCurrentListType == LoadCapacitorLoadsListType.NotSedimented)
                 {
                     LblCaption.Text = "لیست بار موجود";
-                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNotSedimentedLoadCapacitorLoads(TCId);
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNotSedimentedLoadCapacitorLoads(InstanceLogin.GetNSSCurrentUser());
                 }
                 else if (WcCurrentListType == LoadCapacitorLoadsListType.Sedimented)
                 {
                     LblCaption.Text = "لیست بار رسوب شده";
-                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetSedimentedLoadCapacitorLoads(TCId);
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetSedimentedLoadCapacitorLoads(InstanceLogin.GetNSSCurrentUser());
                 }
                 else if (WcCurrentListType == LoadCapacitorLoadsListType.TommorowLoad)
                 {
                     LblCaption.Text = "لیست بار فردا";
-                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTommorowLoadCapacitorLoads(TCId);
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetTommorowLoadCapacitorLoads(InstanceLogin.GetNSSCurrentUser());
                 }
                 else if (WcCurrentListType == LoadCapacitorLoadsListType.None)
                 {
                     LblCaption.Text = "لیست بار";
-                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetAllLoadCapacitorLoads(TCId);
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetAllLoadCapacitorLoads(InstanceLogin.GetNSSCurrentUser());
                 }
 
                 DropDownListLoads.Items.Clear();
                 DropDownListLoads.Items.Add("انتخاب کنید ...");
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
-                    string Item = Lst[Loopx].nEstelamId + " # " + Lst[Loopx].GoodTitle + " " + Lst[Loopx].LoadTargetTitle;
+                    string Item = Lst[Loopx].nEstelamId + " # " + Lst[Loopx].GoodTitle + " " + Lst[Loopx].LoadTargetTitle+ " . " + Lst[Loopx].UserName+ " . " + Lst[Loopx].TransportCompanyTitle ;
                     DropDownListLoads.Items.Add(Item);
                 }
             }

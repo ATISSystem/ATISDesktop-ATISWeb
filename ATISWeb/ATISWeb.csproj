@@ -346,7 +346,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="LoginManagement\ATISWebMClassLoginManagement.cs" />
     <Compile Include="LoginManagement\WcChangePasswordofCurrentUser.ascx.cs">
       <DependentUpon>WcChangePasswordofCurrentUser.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

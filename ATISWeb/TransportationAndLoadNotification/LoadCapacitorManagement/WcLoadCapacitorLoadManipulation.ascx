@@ -51,6 +51,25 @@
             <div class="form-row p-1">
                 <div class="col">
                     <div class="form-group text-center border rounded p-1" style="border-color: gainsboro">
+                        <span class="R2FontBYekanMedium" style="vertical-align: central; color: blue;">شرکت حمل و نقل</span>
+                        <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="True">
+                            <ContentTemplate>
+                                <div class="input-group mb-1">
+                                    <asp:TextBox ID="TxtSearchTC" runat="server" CssClass="form-control R2FontBHomaSmall text-center" placeholder="جستجو" Style="direction: rtl;"></asp:TextBox>
+                                    <div class="input-group-append">
+                                        <button runat="server" id="BtnSearchTC" class="btn btn-group-sm" style="background-color: gray; color: white"><i class="fa fa-search" style=""></i></button>
+                                    </div>
+                                </div>
+                                <asp:DropDownList ID="DropDownListTC" runat="server" CssClass="form-control form-control-sm R2FontBHomaSmall" dir="rtl" AutoPostBack="True"></asp:DropDownList>
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="BtnSearchTC" EventName="ServerClick" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group text-center border rounded p-1" style="border-color: gainsboro">
                         <span class="R2FontBYekanMedium" style="vertical-align: central; color: blue;">بارگیر</span>
                         <asp:UpdatePanel ID="UpdatePanel" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="True">
                             <ContentTemplate>

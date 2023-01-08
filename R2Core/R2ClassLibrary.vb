@@ -2587,6 +2587,7 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property SoftwareUserTypesAccessWebProcesses As Int64 = 80
         Public Shared ReadOnly Property SoftwareUserTypesRelationWebProcessGroups As Int64 = 81
         Public Shared ReadOnly Property EmailSystem As Int64 = 83
+        Public Shared ReadOnly Property ShepaPaymentGate As Int64 = 84
 
     End Class
 

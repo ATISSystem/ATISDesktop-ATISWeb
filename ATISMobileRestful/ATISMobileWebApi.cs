@@ -538,7 +538,8 @@ namespace ATISMobileRestful
 
                 var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
                 var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(YourAuthority);
-                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSPaymentRequest.DateTimeMilladi).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.ZarrinPalPaymentGate, 6))
+                //if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSPaymentRequest.DateTimeMilladi).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.ZarrinPalPaymentGate, 6))
+                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSPaymentRequest.DateTimeMilladi).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.ShepaPaymentGate , 6))
                 { throw new WebApiClientNonceExpiredException(); };
                 if (NSSPaymentRequest.VerificationCount == 0)
                 { throw new WebApiClientNonceExpiredException(); }

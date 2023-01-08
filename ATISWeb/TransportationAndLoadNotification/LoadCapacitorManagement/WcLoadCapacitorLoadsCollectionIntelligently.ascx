@@ -20,6 +20,8 @@
             <div class="table table-responsive-lg border" >
                 <asp:Table ID="TblLoadCapacitorLoads" runat="server" CssClass="table table-striped table-hover table-borderless text-center border-white" HorizontalAlign="Center" CellSpacing="0">
                     <asp:TableHeaderRow runat="server" CssClass="bg-primary" ForeColor="White">
+                        <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">کاربر</asp:TableHeaderCell>
+                        <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">شرکت حمل و نقل</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">آدرس</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">گیرنده</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">توضیحات</asp:TableHeaderCell>

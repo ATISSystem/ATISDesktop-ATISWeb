@@ -31,13 +31,13 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         protected global::ATISWeb.AlertManagement.WcAlertShower WcAlertShower;
         
         /// <summary>
-        /// WcViewerNSSTransportCompanyIntelligently control.
+        /// WCViewerNSSSoftwareUser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::ATISWeb.TransportationAndLoadNotification.TransportCompanies.WcViewerNSSTransportCompanyIntelligently WcViewerNSSTransportCompanyIntelligently;
+        protected global::ATISWeb.LoginManagement.WCViewerNSSSoftwareUser WCViewerNSSSoftwareUser;
         
         /// <summary>
         /// WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue control.

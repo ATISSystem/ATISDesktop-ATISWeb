@@ -8,8 +8,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="container-fluid p-0">
-        <div class="table table-responsive-lg border" >
-            <asp:Table ID="TblProcesses" runat="server"  CellSpacing="0" CellPadding="0" BorderStyle="None" CssClass="table border-white text-center table-borderless bg-white" HorizontalAlign="Center" style="">
+        <div class="table table-responsive-lg border">
+            <asp:Table ID="TblProcesses" runat="server" CellSpacing="0" CellPadding="0" BorderStyle="None" CssClass="table border-white text-center table-borderless bg-white" HorizontalAlign="Center" Style="">
                 <asp:TableHeaderRow runat="server" CssClass="bg-primary border border-danger" ForeColor="White">
                 </asp:TableHeaderRow>
             </asp:Table>

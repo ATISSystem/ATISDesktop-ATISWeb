@@ -3014,6 +3014,7 @@ Namespace SoftwareUserManagement
         Public Shared ReadOnly Property TruckersAssociation As Int64 = 5
         Public Shared ReadOnly Property TransportCompaniesAssociation As Int64 = 6
         Public Shared ReadOnly Property TransportCompany As Int64 = 7
+        Public Shared ReadOnly Property WareHouses As Int64 = 8
     End Class
 
     Public Class R2CoreTransportationAndLoadNotificationInstanceSoftwareUsersManager
@@ -3775,7 +3776,11 @@ Namespace PermissionManagement
         Public Shared ReadOnly SoftwareUserCanSendTruckorTruckDriverChangeRequest As Int64 = 19
         Public Shared ReadOnly SoftwareUserCanExcecuteTurnCancellationWithLicensePlate As Int64 = 20
         Public Shared ReadOnly SoftwareUserCanViewAnnouncedLoadsReportOrClearanceLoadsReport As Int64 = 21
-        Public Shared ReadOnly SoftwareUserCanDeleteLoadCapacitorLoadAnnouncedBySystem As Int64 = 23
+        Public Shared ReadOnly SoftwareUserCanDeleteAnyofLoadCapacitorLoad As Int64 = 23
+        Public Shared ReadOnly SoftwareUserCanViewListofAllTransportCompanies As Int64 = 24
+        Public Shared ReadOnly SoftwareUserCanViewListofAllLoadsofLoadCapacitor As Int64 = 25
+        Public Shared ReadOnly SoftwareUserCanViewListofLoadsofLoadCapacitorofOtherUser As Int64 = 26
+        Public Shared ReadOnly SoftwareUserCanEditAnyofLoadCapacitorLoad As Int64 = 27
 
     End Class
 

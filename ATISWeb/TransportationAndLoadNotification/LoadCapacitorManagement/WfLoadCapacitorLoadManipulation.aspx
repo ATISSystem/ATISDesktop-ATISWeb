@@ -6,8 +6,9 @@
 <%@ Register Src="~/TransportationAndLoadNotification/SmartCards/WcSmartCardsInquiry.ascx" TagName="UCSmartCardsInquiry" TagPrefix="TWebControl" %>
 <%@ Register Src="~/TransportationAndLoadNotification/LoadAllocationManagement/WcLoadCapacitorLoadLoadPermissionsIssued.ascx" TagName="WcLoadCapacitorLoadLoadPermissionsIssued" TagPrefix="TWebControl" %>
 <%@ Register Src="~/TransportationAndLoadNotification/TransportCompanies/WcViewerNSSTransportCompanyIntelligently.ascx" TagName="WcViewerNSSTransportCompanyIntelligently" TagPrefix="TWebControl" %>
+<%@ Register Src="~/LoginManagement/WCViewerNSSSoftwareUser.ascx" TagName="WCViewerNSSSoftwareUser" TagPrefix="TWebControl" %>
 <%@ Register TagPrefix="TWebControl" TagName="WcAlertShower" Src="~/AlertManagement/WcAlertShower.ascx" %>
- 
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -20,13 +21,13 @@
             </div>
         </div>
         <div class="container-fluid p-0 mb-1">
-            <TWebControl:WcViewerNSSTransportCompanyIntelligently runat="server" ID="WcViewerNSSTransportCompanyIntelligently" />
+            <TWebControl:WCViewerNSSSoftwareUser runat="server" ID="WCViewerNSSSoftwareUser" />
         </div>
         <div class="container-fluid">
             <ul class="nav nav-tabs justify-content-end" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadPersmissionsIssued">مجوزهای صادر شده</a>
-                 </li>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoads">لیست بار</a>
                 </li>
