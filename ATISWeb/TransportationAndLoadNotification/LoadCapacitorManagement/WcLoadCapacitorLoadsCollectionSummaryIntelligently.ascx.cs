@@ -70,7 +70,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 DropDownListLoads.Items.Add("انتخاب کنید ...");
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
-                    string Item = Lst[Loopx].nEstelamId + " # " + Lst[Loopx].GoodTitle + " " + Lst[Loopx].LoadTargetTitle+ " . " + Lst[Loopx].UserName+ " . " + Lst[Loopx].TransportCompanyTitle ;
+                    string Item = Lst[Loopx].nEstelamId + " # " + Lst[Loopx].GoodTitle + " " + Lst[Loopx].LoadTargetTitle+ " . " + Lst[Loopx].TransportCompanyTitle+ " . " + Lst[Loopx].UserName ;
                     DropDownListLoads.Items.Add(Item);
                 }
             }

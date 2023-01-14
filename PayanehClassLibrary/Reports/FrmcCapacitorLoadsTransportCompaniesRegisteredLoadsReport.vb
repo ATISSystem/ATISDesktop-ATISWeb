@@ -74,9 +74,9 @@ Public Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
             Dim TargetCityId As Int64
             If ChkLoadTargetCity.Checked Then TargetCityId = UcSearcherLoadTargets.UCGetSelectedNSS.OCode Else TargetCityId = Int64.MinValue
             Dim TransportCompanyId As Int64
-            If RBAllCompany.Checked = True Then TransportCompanyId = UcSearcherTransportCompanies.UCGetSelectedNSS.OCode Else TransportCompanyId = Int64.MinValue
+            If RBAllCompany.Checked = True Then TransportCompanyId = Int64.MinValue Else TransportCompanyId = UcSearcherTransportCompanies.UCGetSelectedNSS.OCode
             Dim SoftwareUserId As Int64
-            If RBAllSoftwareUser.Checked = True Then SoftwareUserId = UcSearcherSoftwareUser.UCGetSelectedNSS.OCode Else SoftwareUserId = Int64.MinValue
+            If RBAllSoftwareUser.Checked = True Then SoftwareUserId = Int64.MinValue Else SoftwareUserId = UcSearcherSoftwareUser.UCGetSelectedNSS.OCode
 
             WS.WebMethodReportingInformationPrividerCapacitorLoadsTransportCompaniesRegisteredLoadsReport(AHId, AHSGId, TransportCompanyId, UcDateTimeHolder.UCGetDateTime1.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime1.DateShamsiFull, UcDateTimeHolder.UCGetDateTime1.Time, UcDateTimeHolder.UCGetDateTime2.DateTimeMilladi, UcDateTimeHolder.UCGetDateTime2.DateShamsiFull, UcDateTimeHolder.UCGetDateTime2.Time, TargetCityId, SoftwareUserId, WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
 

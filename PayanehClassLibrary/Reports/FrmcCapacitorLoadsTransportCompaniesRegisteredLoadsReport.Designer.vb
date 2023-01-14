@@ -80,7 +80,7 @@ Partial Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
         Me.UcSearcherSoftwareUser.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcSearcherSoftwareUser.Size = New System.Drawing.Size(229, 31)
         Me.UcSearcherSoftwareUser.TabIndex = 21
-        Me.UcSearcherSoftwareUser.UCBackColor = System.Drawing.Color.LavenderBlush
+        Me.UcSearcherSoftwareUser.UCBackColor = System.Drawing.Color.Pink
         Me.UcSearcherSoftwareUser.UCFillFirstTime = False
         Me.UcSearcherSoftwareUser.UCFontList = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcSearcherSoftwareUser.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
@@ -120,7 +120,7 @@ Partial Class FrmcCapacitorLoadsTransportCompaniesRegisteredLoadsReport
         Me.UcSearcherTransportCompanies.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcSearcherTransportCompanies.Size = New System.Drawing.Size(231, 31)
         Me.UcSearcherTransportCompanies.TabIndex = 24
-        Me.UcSearcherTransportCompanies.UCBackColor = System.Drawing.Color.Bisque
+        Me.UcSearcherTransportCompanies.UCBackColor = System.Drawing.Color.Red
         Me.UcSearcherTransportCompanies.UCFillFirstTime = False
         Me.UcSearcherTransportCompanies.UCFontList = New System.Drawing.Font("IRMehr", 8.25!)
         Me.UcSearcherTransportCompanies.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))

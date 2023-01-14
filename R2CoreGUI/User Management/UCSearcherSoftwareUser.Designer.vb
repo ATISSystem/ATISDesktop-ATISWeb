@@ -22,8 +22,16 @@ Partial Class UCSearcherSoftwareUser
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        components = New System.ComponentModel.Container()
+        Me.SuspendLayout()
+        '
+        'UCSearcherSoftwareUser
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Name = "UCSearcherSoftwareUser"
+        Me.UCBackColor = System.Drawing.Color.Pink
+        Me.ResumeLayout(False)
+
     End Sub
 
 End Class

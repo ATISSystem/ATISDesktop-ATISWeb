@@ -4036,11 +4036,8 @@ Namespace ReportsManagement
                 CmdSql.ExecuteNonQuery()
 
                 'لیست بار ثبتی
-                Dim UserIdSqlString = String.Empty
-                If YourSoftwareUserId <> Int64.MinValue Then
-                    UserIdSqlString = " and E.nUserID=" & YourSoftwareUserId & ""
-                End If
-                Dim TargetCitySql As String = IIf(YourTargetCityId = Int64.MinValue, String.Empty, " And E.nCityCode = " & YourTargetCityId & "")
+                Dim UserIdSqlString = IIf(YourSoftwareUserId = Int64.MinValue, String.Empty, " and E.nUserID=" & YourSoftwareUserId & "")
+                Dim TargetCitySql = IIf(YourTargetCityId = Int64.MinValue, String.Empty, " And E.nCityCode = " & YourTargetCityId & "")
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 If YourAHId = AnnouncementHalls.None Then 'AHId=None and AHSGId<>None
                     If YourCompanyCode = Int64.MinValue Then
@@ -4155,6 +4152,7 @@ Namespace ReportsManagement
                             CompositStringDriverName = CompositStringDriverName & LoadPermissions(LoopPermissions)(3).trim & " " & Truck & " " + SmartCardId + vbCrLf
                         Next
 
+                        CmdSql.Parameters.Clear()
                         Dim P As SqlClient.SqlParameter
                         P = New SqlClient.SqlParameter("@nEstelamId", SqlDbType.Int) : P.Value = mynEstelamid
                         CmdSql.Parameters.Add(P)
@@ -4194,7 +4192,7 @@ Namespace ReportsManagement
                         CmdSql.Parameters.Add(P)
                         P = New SqlClient.SqlParameter("@UserName", SqlDbType.VarChar) : P.Value = UserName
                         CmdSql.Parameters.Add(P)
-                        CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(@nEstelamId,@StrGoodName,@StrCityName,@nTonaj,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@AHSGTitle,@StrExitDate,@StrExitTime,@StrDriverName,@LoadPermissionStatus,@LoadStatusName,@UserName)"
+                        CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(nEstelamId,StrGoodName,StrCityName,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,AHSGTitle,StrExitDate,StrExitTime,StrDriverName,nTonaj,LoadPermissionStatus,LoadStatusName,UserName) Values(@nEstelamId,@StrGoodName,@StrCityName,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@AHSGTitle,@StrExitDate,@StrExitTime,@StrDriverName,@nTonaj,@LoadPermissionStatus,@LoadStatusName,@UserName)"
                         CmdSql.ExecuteNonQuery()
                     Next
                 End If

@@ -1027,6 +1027,9 @@
     <EmbeddedResource Include="User Management\FrmcUserPasswordEdit.resx">
       <DependentUpon>FrmcUserPasswordEdit.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="User Management\UCSearcherSoftwareUser.resx">
+      <DependentUpon>UCSearcherSoftwareUser.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="User Management\UCSearcherUserTypes.resx">
       <DependentUpon>UCSearcherUserTypes.vb</DependentUpon>
     </EmbeddedResource>

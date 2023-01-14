@@ -32,6 +32,7 @@ Partial Class UCSearcherTransportCompanies
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Name = "UCSearcherTransportCompanies"
+        Me.UCBackColor = System.Drawing.Color.Red
         Me.UCFontList = New System.Drawing.Font("IRMehr", 8.25!)
         Me.UCIcon = CType(resources.GetObject("$this.UCIcon"),System.Drawing.Image)
         Me.UCMaximizeHight = CType(200,Long)
