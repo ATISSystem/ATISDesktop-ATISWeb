@@ -110,6 +110,7 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\Yekan.svg" />
     <Content Include="Global.asax" />
+    <Content Include="HtmlPage1.html" />
     <Content Include="Images\2-2.jpg" />
     <Content Include="Images\3520962.jpg" />
     <Content Include="Images\ATISMobilePresentation.mp4" />

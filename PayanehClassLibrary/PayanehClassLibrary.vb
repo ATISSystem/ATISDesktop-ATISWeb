@@ -4025,7 +4025,7 @@ Namespace ReportsManagement
             End Try
         End Sub
 
-        Public Shared Sub ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(YourAHId As Int64, YourAHSGId As Int64, YourCompanyCode As Int64, YourDateTime1 As R2StandardDateAndTimeStructure, YourDateTime2 As R2StandardDateAndTimeStructure, YourTargetCityId As Int64)
+        Public Shared Sub ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(YourAHId As Int64, YourAHSGId As Int64, YourCompanyCode As Int64, YourDateTime1 As R2StandardDateAndTimeStructure, YourDateTime2 As R2StandardDateAndTimeStructure, YourTargetCityId As Int64, YourSoftwareUserId As Int64)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
             Try
@@ -4036,12 +4036,16 @@ Namespace ReportsManagement
                 CmdSql.ExecuteNonQuery()
 
                 'لیست بار ثبتی
-                Dim TargetCitySql As String = IIf(YourTargetCityId = Int64.MinValue, String.Empty, " and E.nCityCode=" & YourTargetCityId & "")
+                Dim UserIdSqlString = String.Empty
+                If YourSoftwareUserId <> Int64.MinValue Then
+                    UserIdSqlString = " and E.nUserID=" & YourSoftwareUserId & ""
+                End If
+                Dim TargetCitySql As String = IIf(YourTargetCityId = Int64.MinValue, String.Empty, " And E.nCityCode = " & YourTargetCityId & "")
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 If YourAHId = AnnouncementHalls.None Then 'AHId=None and AHSGId<>None
                     If YourCompanyCode = Int64.MinValue Then
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName
+                Select Case E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName
                             from DBTransport.dbo.tbElam as E 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
@@ -4049,12 +4053,13 @@ Namespace ReportsManagement
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AnnouncementHalls On E.AHId=AnnouncementHalls.AHId 
 	                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On E.AHSGId=AnnouncementHallSubGroups.AHSGId               
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On e.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
+							   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On E.nUserID=SoftwareUsers.UserId 
                             Where (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' )" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0
-                                  and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & "
-                            Order By E.dDateElam,E.nCompCode,E.nTruckType,E.dTimeElam")
+                                  and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & "" + UserIdSqlString +
+                            " Order By E.dDateElam,E.nCompCode,E.nTruckType,E.dTimeElam")
                     Else
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName 
+                            Select Case E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName 
                             from DBTransport.dbo.tbElam as E 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
@@ -4062,14 +4067,15 @@ Namespace ReportsManagement
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AnnouncementHalls On E.AHId=AnnouncementHalls.AHId 
 	                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On E.AHSGId=AnnouncementHallSubGroups.AHSGId 
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On e.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
+							   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On E.nUserID=SoftwareUsers.UserId 
                             Where E.nCompCode=" & YourCompanyCode & " and (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' )" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0
-                                  and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & " 
-                            Order By E.dDateElam,E.nTruckType,E.dTimeElam")
+                                  and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & "" + UserIdSqlString +
+                            " Order By E.dDateElam,E.nTruckType,E.dTimeElam")
                     End If
                 Else  'AHId<>None and AHSGId=None
                     If YourCompanyCode = Int64.MinValue Then
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName 
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName 
                             from DBTransport.dbo.tbElam as E 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
@@ -4077,12 +4083,13 @@ Namespace ReportsManagement
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AnnouncementHalls On E.AHId=AnnouncementHalls.AHId 
 	                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On E.AHSGId=AnnouncementHallSubGroups.AHSGId                             
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On e.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
+							   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On E.nUserID=SoftwareUsers.UserId 
                             Where (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' )" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0 
-                                  and AnnouncementHalls.AHId=" & YourAHId & "
-                            Order By E.dDateElam,E.nCompCode,E.dTimeElam")
+                                  and AnnouncementHalls.AHId=" & YourAHId & "" + UserIdSqlString +
+                            " Order By E.dDateElam,E.nCompCode,E.dTimeElam")
                     Else
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName
                             from DBTransport.dbo.tbElam as E 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
@@ -4090,9 +4097,10 @@ Namespace ReportsManagement
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AnnouncementHalls On E.AHId=AnnouncementHalls.AHId 
    	                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On E.AHSGId=AnnouncementHallSubGroups.AHSGId                             
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On e.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
+							   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On E.nUserID=SoftwareUsers.UserId 
                             Where E.nCompCode=" & YourCompanyCode & " and (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' )" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0 
-                                  and AnnouncementHalls.AHId=" & YourAHId & "
-                            Order By e.nEstelamID")
+                                  and AnnouncementHalls.AHId=" & YourAHId & "" + UserIdSqlString +
+                            " Order By e.nEstelamID")
                     End If
                 End If
                 Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
@@ -4129,6 +4137,7 @@ Namespace ReportsManagement
                         Dim myCompanyName As String = Ds.Tables(0).Rows(Loopx).Item("StrCompName").trim
                         Dim myAHSGTitle As String = Ds.Tables(0).Rows(Loopx).Item("AHSGTitle").trim
                         Dim myLoadStatusName = Ds.Tables(0).Rows(Loopx).Item("LoadStatusName").trim
+                        Dim UserName = Ds.Tables(0).Rows(Loopx).Item("UserName").trim
 
                         'اطلاعات مجوزهای صادره
                         Dim LoadPermissions As DataRow()
@@ -4183,7 +4192,9 @@ Namespace ReportsManagement
                         CmdSql.Parameters.Add(P)
                         P = New SqlClient.SqlParameter("@LoadStatusName", SqlDbType.VarChar) : P.Value = myLoadStatusName
                         CmdSql.Parameters.Add(P)
-                        CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(@nEstelamId,@StrGoodName,@StrCityName,@nTonaj,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@AHSGTitle,@StrExitDate,@StrExitTime,@StrDriverName,@LoadPermissionStatus,@LoadStatusName)"
+                        P = New SqlClient.SqlParameter("@UserName", SqlDbType.VarChar) : P.Value = UserName
+                        CmdSql.Parameters.Add(P)
+                        CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(@nEstelamId,@StrGoodName,@StrCityName,@nTonaj,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@AHSGTitle,@StrExitDate,@StrExitTime,@StrDriverName,@LoadPermissionStatus,@LoadStatusName,@UserName)"
                         CmdSql.ExecuteNonQuery()
                     Next
                 End If

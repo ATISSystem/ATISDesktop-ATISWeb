@@ -1,15 +1,16 @@
 ﻿
+
 Imports System.Drawing
 Imports System.Reflection
 
 Imports R2Core.BaseStandardClass
 Imports R2Core.ComputersManagement
+Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
-Imports R2CoreTransportationAndLoadNotification.TransportCompanies
 
-Public Class UCSearcherTransportCompanies
+
+Public Class UCSearcherSoftwareUser
     Inherits UCSearcherAdvance
-
 
 
 #Region "General Properties"
@@ -24,10 +25,6 @@ Public Class UCSearcherTransportCompanies
 
         ' Add any initialization after the InitializeComponent() call.
         Try
-            If R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.ExistComputerInTranportCompanies(R2CoreMClassComputersManagement.GetNSSCurrentComputer().MId) Then
-                'در آینده در این قسمت باید بر اساس ارتباط کامپیوتر با شرکت فقط شرکت مورد نظر قابل رویت باشد و قفل شود
-                Me.Enabled = False
-            End If
             UCMaximizeHight = 200
             UCBackColor = Color.OrangeRed
             'UCRefreshInformation()
@@ -38,7 +35,8 @@ Public Class UCSearcherTransportCompanies
 
     Public Shadows Sub UCRefreshInformation()
         Try
-            UCFillListBox(R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetTransportCompanies_SearchforLeftCharacters(String.Empty).Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList())
+            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            UCFillListBox(InstanceSoftwareUsers.GetSoftwareUsers_SearchforLeftCharacters(String.Empty).Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList())
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -61,7 +59,8 @@ Public Class UCSearcherTransportCompanies
 
     Private Sub UCSearcherTransportCompanies_UCSearchOptional1RequestEvent(SearchString As String) Handles Me.UCSearchOptional1RequestEvent
         Try
-            UCFillListBox(R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetTransportCompanies_SearchforLeftCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList())
+            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            UCFillListBox(InstanceSoftwareUsers.GetSoftwareUsers_SearchforLeftCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList())
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -69,7 +68,8 @@ Public Class UCSearcherTransportCompanies
 
     Private Sub UCSearcherTransportCompanies_UCSearchOptional2RequestEvent(SearchString As String) Handles Me.UCSearchOptional2RequestEvent
         Try
-            UCFillListBox(R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.GetTransportCompanies_SearchIntroCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList())
+            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            UCFillListBox(InstanceSoftwareUsers.GetSoftwareUsers_SearchIntroCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList())
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -85,7 +85,5 @@ Public Class UCSearcherTransportCompanies
 
 #Region "Implemented Members"
 #End Region
-
-
 
 End Class

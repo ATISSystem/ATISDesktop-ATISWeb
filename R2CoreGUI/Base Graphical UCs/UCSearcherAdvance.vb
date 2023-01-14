@@ -19,10 +19,21 @@ Public Class UCSearcherAdvance
     Public Event UC13PressedEvent()
     Public Event UC27PressedEvent()
     Public Event UCIconRefreshRequestClicked()
-    Private _UCFirstTimeFlag As Boolean = True
 
 
 #Region "General Properties"
+
+    Private _UCFillFirstTime As Boolean = False
+    <Browsable(True)>
+    Public Property UCFillFirstTime As Boolean
+        Get
+            Return _UCFillFirstTime
+        End Get
+        Set(value As Boolean)
+            _UCFillFirstTime = value
+            If value = True Then RaiseEvent UCSearchOptional2RequestEvent("")
+        End Set
+    End Property
 
     Private _UCSelectedItem As Object = Nothing
     <Browsable(False)>
@@ -183,16 +194,6 @@ Public Class UCSearcherAdvance
         PictureBoxArrows.Image = Resources.DownArrow.ToBitmap()
     End Sub
 
-    Private Sub UCFillFirstTime()
-        Try
-            If _UCFirstTimeFlag = False Then Exit Sub
-            _UCFirstTimeFlag = False
-            RaiseEvent UCSearchOptional2RequestEvent("")
-        Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-        End Try
-    End Sub
-
     Public Sub UCViewNSS(YourNSS As R2StandardStructure)
         Try
             UCSelectedItem = YourNSS.OCode + " : " + YourNSS.OName
@@ -309,7 +310,6 @@ Public Class UCSearcherAdvance
 
     Private Sub UcPersianTextBox_UCGotFocusEvent() Handles UcPersianTextBox.UCGotFocusEvent
         Try
-            UCFillFirstTime()
             UCMaximizeMinimizeStatus = MaxMin.Max
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
@@ -338,7 +338,6 @@ Public Class UCSearcherAdvance
 
     Private Sub UCSearcher_UCGotFocusedEvent() Handles Me.UCGotFocusedEvent
         Try
-            UCFillFirstTime()
             UCMaximizeMinimizeStatus = MaxMin.Max
             UcPersianTextBox.UCFocus()
         Catch ex As Exception

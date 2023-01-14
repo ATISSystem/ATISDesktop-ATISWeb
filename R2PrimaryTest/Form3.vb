@@ -10,6 +10,7 @@ Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.PayanehWS
 Imports PayanehClassLibrary.ReportsManagement
 Imports PayanehClassLibrary.TurnRegisterRequest
+Imports R2Core.BaseStandardClass
 Imports R2Core.BlackIPs
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DatabaseManagement
@@ -273,8 +274,11 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            Dim x As New R2CoreInstansePaymentRequestsManager
-            MessageBox.Show(x.PaymentRequest(3, 50000, 21))
+            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            InstanceSoftwareUsers.GetSoftwareUsers_SearchforLeftCharacters("شاه").Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList()
+
+            'Dim x As New R2CoreInstansePaymentRequestsManager
+            'MessageBox.Show(x.PaymentRequest(3, 50000, 21))
             'Dim x As New MSCOCoreAnnouncementforTransportCompaniesManager
             'x.LoadsAnnouncementforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
             'Dim X As New PayanehClassLibraryMClassCarTruckNobatManager

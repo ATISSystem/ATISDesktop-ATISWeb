@@ -713,6 +713,12 @@
     <Compile Include="User Management\FrmcUserPasswordEdit.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="User Management\UCSearcherSoftwareUser.Designer.vb">
+      <DependentUpon>UCSearcherSoftwareUser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="User Management\UCSearcherSoftwareUser.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="User Management\UCSearcherUserTypes.Designer.vb">
       <DependentUpon>UCSearcherUserTypes.vb</DependentUpon>
     </Compile>

@@ -151,6 +151,7 @@
             <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
             <s:element minOccurs="1" maxOccurs="1" name="YourTargetCityId" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourSoftwareUserId" type="s:long" />
             <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
           </s:sequence>
         </s:complexType>
