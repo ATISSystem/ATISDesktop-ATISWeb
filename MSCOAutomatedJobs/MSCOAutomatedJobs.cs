@@ -13,7 +13,7 @@ using R2Core.DateAndTimeManagement;
 using R2Core.SoftwareUserManagement;
 using R2Core.LoggingManagement;
 using MSCOCore.Configurations;
-using MSCOCore.AnnouncementProcessManagement;
+using MSCOCore.AnnouncementProcess;
 
 namespace MSCOAutomatedJobs
 {

@@ -53,6 +53,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSCOClassLibrary", "MSCOCla
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MSCOAutomatedJobsSetup", "MSCOAutomatedJobsSetup\MSCOAutomatedJobsSetup.vdproj", "{E32F80CA-F4BF-47C4-8345-06842EEE5293}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESCOClassLibrary", "ESCOClassLibrary\ESCOClassLibrary.csproj", "{DF7D04FF-6D7D-4579-BC0C-75DFF65EDAD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESCOAutomatedJobs", "ESCOAutomatedJobs\ESCOAutomatedJobs.csproj", "{257FCDCC-D311-49F5-866E-C4A017E0B870}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +153,14 @@ Global
 		{51A3327B-82B2-4350-84D3-0F18A498F151}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E32F80CA-F4BF-47C4-8345-06842EEE5293}.Debug|Any CPU.ActiveCfg = Debug
 		{E32F80CA-F4BF-47C4-8345-06842EEE5293}.Release|Any CPU.ActiveCfg = Release
+		{DF7D04FF-6D7D-4579-BC0C-75DFF65EDAD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF7D04FF-6D7D-4579-BC0C-75DFF65EDAD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF7D04FF-6D7D-4579-BC0C-75DFF65EDAD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF7D04FF-6D7D-4579-BC0C-75DFF65EDAD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{257FCDCC-D311-49F5-866E-C4A017E0B870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{257FCDCC-D311-49F5-866E-C4A017E0B870}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{257FCDCC-D311-49F5-866E-C4A017E0B870}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{257FCDCC-D311-49F5-866E-C4A017E0B870}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

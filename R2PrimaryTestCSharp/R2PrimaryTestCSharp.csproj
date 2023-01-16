@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ESCOClassLibrary">
+      <HintPath>..\ESCOClassLibrary\bin\Debug\ESCOClassLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="MSCOClassLibrary">
       <HintPath>..\MSCOClassLibrary\bin\Debug\MSCOClassLibrary.dll</HintPath>
     </Reference>

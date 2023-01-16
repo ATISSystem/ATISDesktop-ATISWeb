@@ -3984,6 +3984,7 @@ Namespace ReportsManagement
                     Dim myCompanyName As String = Ds.Tables(0).Rows(Loopx).Item("StrCompName").trim
                     Dim myStrCarName As String = Ds.Tables(0).Rows(Loopx).Item("StrCarName").trim
 
+                    CmdSql.Parameters.Clear()
                     Dim P As SqlClient.SqlParameter
                     P = New SqlClient.SqlParameter("@AnnoucementHallName", SqlDbType.NVarChar) : P.Value = myAnnouncementHallName
                     CmdSql.Parameters.Add(P)
@@ -4013,7 +4014,7 @@ Namespace ReportsManagement
                     CmdSql.Parameters.Add(P)
                     P = New SqlClient.SqlParameter("@StrCarName", SqlDbType.NVarChar) : P.Value = myStrCarName
                     CmdSql.Parameters.Add(P)
-                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblCapacitorLoadsforAnnounceReport (@AnnoucementHallName,@nEstelamId,@StrGoodName,@StrCityName,@nTonaj,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@StrCarName)"
+                    CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblCapacitorLoadsforAnnounceReport(AnnoucementHallName,nEstelamId,StrGoodName,StrCityName,nTonaj,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,StrCarName) Values(@AnnoucementHallName,@nEstelamId,@StrGoodName,@StrCityName,@nTonaj,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@StrCarName)"
                     CmdSql.ExecuteNonQuery()
                 Next
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -4042,7 +4043,7 @@ Namespace ReportsManagement
                 If YourAHId = AnnouncementHalls.None Then 'AHId=None and AHSGId<>None
                     If YourCompanyCode = Int64.MinValue Then
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                Select Case E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName
                             from DBTransport.dbo.tbElam as E 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
@@ -4056,7 +4057,7 @@ Namespace ReportsManagement
                             " Order By E.dDateElam,E.nCompCode,E.nTruckType,E.dTimeElam")
                     Else
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select Case E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName 
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName 
                             from DBTransport.dbo.tbElam as E 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
@@ -4819,7 +4820,7 @@ Namespace ReportsManagement
         End Sub
 
         Public Shared Sub ReportingInformationProviderAnnouncedLoadsReport(YourDate1 As R2StandardDateAndTimeStructure, YourDate2 As R2StandardDateAndTimeStructure, YourAHId As Int64, YourAHSGId As Int64)
-            'گزارش بار آزاد شده
+            'گزارش بار اعلام شده
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
             Try

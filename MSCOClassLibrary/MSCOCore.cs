@@ -17,7 +17,7 @@ using R2Core.FileShareRawGroupsManagement;
 using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.TransportCompanies;
 using MSCOCore.MSCOTransportCompanies;
-using MSCOCore.AnnouncementProcessManagement.Exceptions;
+using MSCOCore.AnnouncementProcess.Exceptions;
 using R2Core.BaseStandardClass;
 using R2Core.LoggingManagement;
 using R2Core.Email.Exceptions;
@@ -38,7 +38,7 @@ using R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions;
 
 namespace MSCOCore
 {
-    namespace AnnouncementProcessManagement
+    namespace AnnouncementProcess
     {
         public class MSCOCoreAnnouncementforTransportCompaniesManager
         {

@@ -4,7 +4,7 @@ Imports System.Globalization
 Imports System.IO
 Imports System.Net.Mail
 Imports System.Text
-Imports MSCOCore.AnnouncementProcessManagement
+Imports MSCOCore.AnnouncementProcess
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.PayanehWS
