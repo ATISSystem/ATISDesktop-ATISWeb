@@ -26,13 +26,13 @@ Partial Class FrmcLoadCapacitor
     Private Sub InitializeComponent()
         Me.PnlLoadCapacitorLoadManipulation = New System.Windows.Forms.Panel()
         Me.UcLoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotification.UCLoadCapacitorLoadManipulation()
-        Me.UcucLoadCapacitorLoadCollectionAdvance = New R2CoreTransportationAndLoadNotification.UCUCLoadCapacitorLoadCollectionAdvance()
         Me.PnlLoadCapacitor = New BlueActivity.Controls.AlphaGradientPanel()
         Me.ColorWithAlpha1 = New BlueActivity.Controls.ColorWithAlpha()
         Me.ColorWithAlpha2 = New BlueActivity.Controls.ColorWithAlpha()
-        Me.PnlLoadCapacitorLoadManipulation.SuspendLayout
-        Me.PnlLoadCapacitor.SuspendLayout
-        Me.SuspendLayout
+        Me.UcucLoadCapacitorLoadCollectionAdvance = New R2CoreTransportationAndLoadNotification.UCUCLoadCapacitorLoadCollectionAdvance()
+        Me.PnlLoadCapacitorLoadManipulation.SuspendLayout()
+        Me.PnlLoadCapacitor.SuspendLayout()
+        Me.SuspendLayout()
         '
         '_FrmMessageDialog
         '
@@ -40,9 +40,9 @@ Partial Class FrmcLoadCapacitor
         '
         'PnlLoadCapacitorLoadManipulation
         '
-        Me.PnlLoadCapacitorLoadManipulation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlLoadCapacitorLoadManipulation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlLoadCapacitorLoadManipulation.BackColor = System.Drawing.Color.Transparent
         Me.PnlLoadCapacitorLoadManipulation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlLoadCapacitorLoadManipulation.Controls.Add(Me.UcLoadCapacitorLoadManipulation)
@@ -53,49 +53,39 @@ Partial Class FrmcLoadCapacitor
         '
         'UcLoadCapacitorLoadManipulation
         '
-        Me.UcLoadCapacitorLoadManipulation.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLoadCapacitorLoadManipulation.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLoadCapacitorLoadManipulation.BackColor = System.Drawing.Color.Transparent
-        Me.UcLoadCapacitorLoadManipulation.DisableUCSearcherLoadSources = true
+        Me.UcLoadCapacitorLoadManipulation.DisableUCSearcherLoadSources = True
         Me.UcLoadCapacitorLoadManipulation.Location = New System.Drawing.Point(2, -2)
         Me.UcLoadCapacitorLoadManipulation.Name = "UcLoadCapacitorLoadManipulation"
         Me.UcLoadCapacitorLoadManipulation.Padding = New System.Windows.Forms.Padding(5)
-        Me.UcLoadCapacitorLoadManipulation.Size = New System.Drawing.Size(990, 188)
+        Me.UcLoadCapacitorLoadManipulation.Size = New System.Drawing.Size(990, 303)
         Me.UcLoadCapacitorLoadManipulation.TabIndex = 2
         Me.UcLoadCapacitorLoadManipulation.UCNSSCurrent = Nothing
         '
-        'UcucLoadCapacitorLoadCollectionAdvance
-        '
-        Me.UcucLoadCapacitorLoadCollectionAdvance.BackColor = System.Drawing.Color.Transparent
-        Me.UcucLoadCapacitorLoadCollectionAdvance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcucLoadCapacitorLoadCollectionAdvance.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.UcucLoadCapacitorLoadCollectionAdvance.Location = New System.Drawing.Point(0, 0)
-        Me.UcucLoadCapacitorLoadCollectionAdvance.Name = "UcucLoadCapacitorLoadCollectionAdvance"
-        Me.UcucLoadCapacitorLoadCollectionAdvance.Size = New System.Drawing.Size(995, 512)
-        Me.UcucLoadCapacitorLoadCollectionAdvance.TabIndex = 1
-        '
         'PnlLoadCapacitor
         '
-        Me.PnlLoadCapacitor.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlLoadCapacitor.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlLoadCapacitor.BackColor = System.Drawing.Color.Transparent
-        Me.PnlLoadCapacitor.Border = true
+        Me.PnlLoadCapacitor.Border = True
         Me.PnlLoadCapacitor.BorderColor = System.Drawing.SystemColors.ActiveBorder
         Me.PnlLoadCapacitor.Colors.Add(Me.ColorWithAlpha1)
         Me.PnlLoadCapacitor.Colors.Add(Me.ColorWithAlpha2)
         Me.PnlLoadCapacitor.ContentPadding = New System.Windows.Forms.Padding(0)
         Me.PnlLoadCapacitor.Controls.Add(Me.UcucLoadCapacitorLoadCollectionAdvance)
         Me.PnlLoadCapacitor.CornerRadius = 20
-        Me.PnlLoadCapacitor.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
-            Or BlueActivity.Controls.Corner.BottomLeft)  _
-            Or BlueActivity.Controls.Corner.BottomRight),BlueActivity.Controls.Corner)
-        Me.PnlLoadCapacitor.Gradient = true
+        Me.PnlLoadCapacitor.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight) _
+            Or BlueActivity.Controls.Corner.BottomLeft) _
+            Or BlueActivity.Controls.Corner.BottomRight), BlueActivity.Controls.Corner)
+        Me.PnlLoadCapacitor.Gradient = True
         Me.PnlLoadCapacitor.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.PnlLoadCapacitor.GradientOffset = 1!
+        Me.PnlLoadCapacitor.GradientOffset = 1.0!
         Me.PnlLoadCapacitor.GradientSize = New System.Drawing.Size(0, 0)
         Me.PnlLoadCapacitor.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.PnlLoadCapacitor.Grayscale = false
+        Me.PnlLoadCapacitor.Grayscale = False
         Me.PnlLoadCapacitor.Image = Nothing
         Me.PnlLoadCapacitor.ImageAlpha = 75
         Me.PnlLoadCapacitor.ImagePadding = New System.Windows.Forms.Padding(5)
@@ -103,7 +93,7 @@ Partial Class FrmcLoadCapacitor
         Me.PnlLoadCapacitor.ImageSize = New System.Drawing.Size(48, 48)
         Me.PnlLoadCapacitor.Location = New System.Drawing.Point(5, 50)
         Me.PnlLoadCapacitor.Name = "PnlLoadCapacitor"
-        Me.PnlLoadCapacitor.Rounded = true
+        Me.PnlLoadCapacitor.Rounded = True
         Me.PnlLoadCapacitor.Size = New System.Drawing.Size(995, 512)
         Me.PnlLoadCapacitor.TabIndex = 202
         '
@@ -119,9 +109,21 @@ Partial Class FrmcLoadCapacitor
         Me.ColorWithAlpha2.Color = System.Drawing.Color.Transparent
         Me.ColorWithAlpha2.Parent = Me.PnlLoadCapacitor
         '
+        'UcucLoadCapacitorLoadCollectionAdvance
+        '
+        Me.UcucLoadCapacitorLoadCollectionAdvance.BackColor = System.Drawing.Color.Transparent
+        Me.UcucLoadCapacitorLoadCollectionAdvance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.UcucLoadCapacitorLoadCollectionAdvance.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.UcucLoadCapacitorLoadCollectionAdvance.Location = New System.Drawing.Point(0, 0)
+        Me.UcucLoadCapacitorLoadCollectionAdvance.Name = "UcucLoadCapacitorLoadCollectionAdvance"
+        Me.UcucLoadCapacitorLoadCollectionAdvance.Size = New System.Drawing.Size(995, 512)
+        Me.UcucLoadCapacitorLoadCollectionAdvance.TabIndex = 1
+        Me.UcucLoadCapacitorLoadCollectionAdvance.UCTimerInterval = CType(1, Long)
+        Me.UcucLoadCapacitorLoadCollectionAdvance.UCViewnCarNumZero = False
+        '
         'FrmcLoadCapacitor
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
         Me.Controls.Add(Me.PnlLoadCapacitor)
@@ -131,7 +133,7 @@ Partial Class FrmcLoadCapacitor
         Me.Text = "FrmcLoadCapacitor"
         Me.Controls.SetChildIndex(Me.PnlLoadCapacitorLoadManipulation, 0)
         Me.Controls.SetChildIndex(Me.PnlLoadCapacitor, 0)
-        Me.PnlLoadCapacitorLoadManipulation.ResumeLayout(false)
+        Me.PnlLoadCapacitorLoadManipulation.ResumeLayout(False)
         Me.PnlLoadCapacitor.ResumeLayout(false)
         Me.ResumeLayout(false)
 

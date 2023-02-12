@@ -86,6 +86,7 @@ Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement.Exceptions
 Imports R2Core.MoneyWallet.Exceptions
+Imports R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Exceptions
 
 Namespace Rmto
     Public MustInherit Class RmtoWebService
@@ -716,6 +717,239 @@ Namespace TransportTarrifs
                 End Get
             End Property
         End Class
+
+    End Namespace
+
+End Namespace
+
+Namespace TransportTarrifsParameters
+
+    Public MustInherit Class R2CoreTransportationAndLoadNotificationTransportTarrifsParameters
+        Inherits R2CoreConfigurations
+        Public Shared Shadows ReadOnly Property None As Int64 = 0
+        Public Shared ReadOnly Property Two_Baskool As Int64 = 1
+        Public Shared ReadOnly Property Three_Baskool As Int64 = 2
+        Public Shared ReadOnly Property Four_Baskool As Int64 = 3
+        Public Shared ReadOnly Property LastNight As Int64 = 4
+        Public Shared ReadOnly Property Two_LoadingLocation As Int64 = 5
+        Public Shared ReadOnly Property Three_LoadingLocation As Int64 = 6
+        Public Shared ReadOnly Property Four_LoadingLocation As Int64 = 7
+        Public Shared ReadOnly Property Project As Int64 = 9
+    End Class
+
+    Public Class R2CoreTransportationAndLoadNotificationStandardTransportTarrifsParametersStructure
+
+        Public Sub New()
+            MyBase.New()
+            _TPTPId = Int64.MinValue
+            _TPTPName = String.Empty
+            _TPTPTitle = String.Empty
+            _TPTPColor = String.Empty
+            _Core = String.Empty
+            _UserId = Int64.MinValue
+            _DateTimeMilladi = DateTime.Now
+            _DateShamsi = String.Empty
+            _Time = String.Empty
+            _ViewFlag = Boolean.FalseString
+            _Active = Boolean.FalseString
+            _Deleted = Boolean.FalseString
+        End Sub
+
+        Public Sub New(YourTPTPId As Int64, YourTPTPName As String, YourTPTPTitle As String, YourTPTPColor As String, YourCore As String, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
+            _TPTPId = YourTPTPId
+            _TPTPName = YourTPTPName
+            _TPTPTitle = YourTPTPTitle
+            _TPTPColor = YourTPTPColor
+            _Core = YourCore
+            _UserId = YourUserId
+            _DateTimeMilladi = YourDateTimeMilladi
+            _DateShamsi = YourDateShamsi
+            _Time = YourTime
+            _ViewFlag = YourViewFlag
+            _Active = YourActive
+            _Deleted = YourDeleted
+        End Sub
+
+        Public Property TPTPId As Int64
+        Public Property TPTPName As String
+        Public Property TPTPTitle As String
+        Public Property TPTPColor As String
+        Public Property Core As String
+        Public Property UserId As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property Time As String
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+    End Class
+
+    Public Class R2CoreTransportationAndLoadNotificationStandardTransportTarrifsParametersDetailsStructure
+
+        Public Sub New()
+            MyBase.New()
+            _TPTPDId = Int64.MinValue
+            _AHSGId = Int64.MinValue
+            _TPTPId = Int64.MinValue
+            _Mblgh = Int64.MaxValue
+            _DateTimeMilladi = DateTime.Now
+            _DateShamsi = String.Empty
+            _Time = String.Empty
+            _RelationActive = Boolean.FalseString
+            _Checked = Boolean.FalseString
+            _TPTPTitle = String.Empty
+        End Sub
+
+        Public Sub New(YourTPTPDId As Int64, YourAHSGId As Int64, YourTPTPId As Int64, YourMblgh As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourRelationActive As Boolean, YourChecked As Boolean, YourTPTPTitle As String)
+            _TPTPDId = YourTPTPDId
+            _AHSGId = YourAHSGId
+            _TPTPId = YourTPTPId
+            _Mblgh = YourMblgh
+            _DateTimeMilladi = YourDateTimeMilladi
+            _DateShamsi = YourDateShamsi
+            _Time = YourTime
+            _RelationActive = YourRelationActive
+            _Checked = YourChecked
+            _TPTPTitle = YourTPTPTitle
+        End Sub
+
+        Public Property TPTPDId As Int64
+        Public Property AHSGId As Int64
+        Public Property TPTPId As Int64
+        Public Property Mblgh As Int64
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property Time As String
+        Public Property RelationActive As Boolean
+        Public Property Checked As Boolean
+        Public Property TPTPTitle As String
+    End Class
+
+    Public Class R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager
+
+        Public Function GetNSSTransportTarrifsParameterDetail(YourTTPDId As Int64) As R2CoreTransportationAndLoadNotificationStandardTransportTarrifsParametersDetailsStructure
+            Try
+                Dim DS As DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                      "Select Top 1 TransportPriceTarrifsParameters.TPTPTitle,Details.* from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifsParametersDetails as Details
+                         Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On Details.AHSGId=AnnouncementHallSubGroups.AHSGId 
+                         Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifsParameters as TransportPriceTarrifsParameters On Details.TPTPId=TransportPriceTarrifsParameters.TPTPId 
+                       Where Details.TPTPDId=" & YourTTPDId & "", 3600, DS).GetRecordsCount = 0 Then
+                    Throw New TransportPriceTarrifParameterDetailNotFoundException
+                End If
+                Return New R2CoreTransportationAndLoadNotificationStandardTransportTarrifsParametersDetailsStructure(DS.Tables(0).Rows(0).Item("TPTPDId"), DS.Tables(0).Rows(0).Item("AHSGId"), DS.Tables(0).Rows(0).Item("TPTPId"), DS.Tables(0).Rows(0).Item("Mblgh"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("RelationActive"), False, DS.Tables(0).Rows(0).Item("TPTPTitle").trim)
+            Catch ex As TransportPriceTarrifParameterDetailNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetListofTransportTarrifsParams(YourTPTParams As String) As List(Of R2CoreTransportationAndLoadNotificationStandardTransportTarrifsParametersDetailsStructure)
+            ' Standard String : TPTPDId1:0;TPTPDId2:1;.....
+            Try
+                Dim Params As String() = YourTPTParams.Split(";")
+                Dim Lst = New List(Of R2CoreTransportationAndLoadNotificationStandardTransportTarrifsParametersDetailsStructure)
+                If Params(0).Trim = String.Empty Then Return Lst
+                For Loopx As Int64 = 0 To Params.Length - 1
+                    Dim TPTParamDetailId As Int64 = Params(Loopx).Split(":")(0).Trim
+                    Dim Checked As Boolean = IIf(Params(Loopx).Split(":")(1).Trim = "1", True, False)
+                    Dim NSS = GetNSSTransportTarrifsParameterDetail(TPTParamDetailId)
+                    NSS.Checked = Checked
+                    Lst.Add(NSS)
+                Next
+                Return Lst
+            Catch ex As TransportPriceTarrifParameterDetailNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetListofTransportTarrifsParams(YourNSSAHSG As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardTransportTarrifsParametersDetailsStructure)
+            Try
+                Dim DS As DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                      "Select TransportPriceTarrifsParameters.TPTPTitle,Details.*,0 as Checked from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifsParametersDetails as Details
+                          Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On Details.AHSGId=AnnouncementHallSubGroups.AHSGId 
+                          Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifsParameters as TransportPriceTarrifsParameters On Details.TPTPId=TransportPriceTarrifsParameters.TPTPId 
+                       Where AnnouncementHallSubGroups.AHSGId=" & YourNSSAHSG.AHSGId & " AND AnnouncementHallSubGroups.Active=1 AND Details.RelationActive=1 AND TransportPriceTarrifsParameters.Active=1 AND TransportPriceTarrifsParameters.Deleted=0
+                       Order By TransportPriceTarrifsParameters.TPTPId ", 3600, DS).GetRecordsCount = 0 Then
+                    Throw New TransportPriceTarrifParameterDetailsforAHSGNotFoundException
+                End If
+                Dim Lst = New List(Of R2CoreTransportationAndLoadNotificationStandardTransportTarrifsParametersDetailsStructure)
+                For Loopx As Int64 = 0 To DS.Tables(0).Rows().Count - 1
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardTransportTarrifsParametersDetailsStructure(DS.Tables(0).Rows(Loopx).Item("TPTPDId"), DS.Tables(0).Rows(Loopx).Item("AHSGId"), DS.Tables(0).Rows(Loopx).Item("TPTPId"), DS.Tables(0).Rows(Loopx).Item("Mblgh"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi"), DS.Tables(0).Rows(Loopx).Item("Time"), DS.Tables(0).Rows(Loopx).Item("RelationActive"), DS.Tables(0).Rows(Loopx).Item("Checked"), DS.Tables(0).Rows(Loopx).Item("TPTPTitle")))
+                Next
+                Return Lst
+            Catch ex As TransportPriceTarrifParameterDetailsforAHSGNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetTotalofTransportTarrifsParameters(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure) As Int64
+            Try
+                Dim Total As Int64 = 0
+                Dim Params = YourNSS.TPTParams.Split(";")
+                For Loopx As Int64 = 0 To Params.Length - 1
+                    Dim TPTPDId As Int64 = Params(Loopx).Split(":")(0)
+                    Dim Checked As Boolean = Params(Loopx).Split(":")(1)
+                    Dim NSS = GetNSSTransportTarrifsParameterDetail(TPTPDId)
+                    If Checked Then
+                        Total = Total + NSS.Mblgh
+                    End If
+                Next
+                Return Total
+            Catch ex As TransportPriceTarrifParameterDetailNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetTransportTarrifsComposit(YourTPTParams As String) As String
+            ' Standard String : TPTPDId1:0;TPTPDId2:1;.....
+            Try
+                Dim Params As String() = YourTPTParams.Split(";")
+                Dim SB = New StringBuilder
+                For Loopx As Int64 = 0 To Params.Length - 1
+                    Dim TPTParamDetailId As Int64 = Params(Loopx).Split(":")(0).Trim
+                    Dim Checked As Boolean = IIf(Params(Loopx).Split(":")(1).Trim = "1", True, False)
+                    Dim NSS = GetNSSTransportTarrifsParameterDetail(TPTParamDetailId)
+                    If Checked Then SB.AppendLine(NSS.TPTPTitle + " : " + NSS.Mblgh.ToString)
+                Next
+                Return SB.ToString
+            Catch ex As TransportPriceTarrifParameterDetailNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+    End Class
+
+    Namespace Exceptions
+        Public Class TransportPriceTarrifParameterDetailNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "پارامتر موثر در تعرفه حمل با شاخص مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+        Public Class TransportPriceTarrifParameterDetailsforAHSGNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "پارامتر موثر در تعرفه حمل مرتبط  با زیرگروه اعلام بار با شاخص مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
 
     End Namespace
 
@@ -2809,16 +3043,27 @@ Namespace Goods
             MyBase.New()
             _GoodId = Int64.MinValue
             _GoodName = String.Empty
+            _ViewFlag = Boolean.FalseString
+            _Active = Boolean.FalseString
+            _Deleted = Boolean.FalseString
         End Sub
 
-        Public Sub New(ByVal YourGoodId As Int64, ByVal YourGoodName As String)
+        Public Sub New(ByVal YourGoodId As Int64, ByVal YourGoodName As String, YourViewFlag As Boolean, YourActive As Boolean, YourDeleted As Boolean)
             MyBase.New(YourGoodId, YourGoodName)
             _GoodId = YourGoodId
             _GoodName = YourGoodName
+            _ViewFlag = YourViewFlag
+            _Active = YourActive
+            _Deleted = YourDeleted
         End Sub
 
         Public Property GoodId As Int64
         Public Property GoodName() As String
+        Public Property ViewFlag As Boolean
+        Public Property Active As Boolean
+        Public Property Deleted As Boolean
+
+
     End Class
 
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassGoodsManagement
@@ -2826,7 +3071,7 @@ Namespace Goods
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 * from dbtransport.dbo.TbProducts Where StrGoodCode=" & YourGoodId & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New GoodNotFoundException
-                Dim NSS As R2CoreTransportationAndLoadNotificationStandardGoodStructure = New R2CoreTransportationAndLoadNotificationStandardGoodStructure(Ds.Tables(0).Rows(0).Item("StrGoodCode"), Ds.Tables(0).Rows(0).Item("StrGoodName").TRIM)
+                Dim NSS As R2CoreTransportationAndLoadNotificationStandardGoodStructure = New R2CoreTransportationAndLoadNotificationStandardGoodStructure(Ds.Tables(0).Rows(0).Item("StrGoodCode"), Ds.Tables(0).Rows(0).Item("StrGoodName").TRIM, Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("Deleted"))
                 Return NSS
             Catch exx As GoodNotFoundException
                 Throw exx
@@ -2841,9 +3086,9 @@ Namespace Goods
                 InstanceSQLInjectionPrevention.GeneralAuthorization(YourSearchString)
                 Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardGoodStructure)
                 Dim DS As DataSet = Nothing
-                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select StrGoodCode,StrGoodName From DBTransport.dbo.TbProducts Where StrGoodName Like '%" & YourSearchString.Replace("ی", "ي").Replace("ک", "ك") & "%' Order By StrGoodName", 3600, DS)
+                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select StrGoodCode,StrGoodName,ViewFlag,Active,Deleted From DBTransport.dbo.TbProducts Where StrGoodName Like '%" & YourSearchString.Replace("ی", "ي").Replace("ک", "ك") & "%' and ViewFlag=1 Order By StrGoodName", 3600, DS)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardGoodStructure(DS.Tables(0).Rows(Loopx).Item("StrGoodCode"), DS.Tables(0).Rows(Loopx).Item("StrGoodName")))
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardGoodStructure(DS.Tables(0).Rows(Loopx).Item("StrGoodCode"), DS.Tables(0).Rows(Loopx).Item("StrGoodName"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted")))
                 Next
                 Return Lst
             Catch ex As SqlInjectionException
@@ -2859,9 +3104,9 @@ Namespace Goods
                 InstanceSQLInjectionPrevention.GeneralAuthorization(YourSearchString)
                 Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardGoodStructure)
                 Dim DS As DataSet = Nothing
-                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select StrGoodCode,StrGoodName From DBTransport.dbo.TbProducts Where Left(StrGoodName," & YourSearchString.Length & ")='" & YourSearchString.Replace("ی", "ي").Replace("ک", "ك") & "' Order By StrGoodName", 3600, DS)
+                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select StrGoodCode,StrGoodName,ViewFlag,Active,Deleted  From DBTransport.dbo.TbProducts Where Left(StrGoodName," & YourSearchString.Length & ")='" & YourSearchString.Replace("ی", "ي").Replace("ک", "ك") & "' Order By StrGoodName", 3600, DS)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardGoodStructure(DS.Tables(0).Rows(Loopx).Item("StrGoodCode"), DS.Tables(0).Rows(Loopx).Item("StrGoodName")))
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardGoodStructure(DS.Tables(0).Rows(Loopx).Item("StrGoodCode"), DS.Tables(0).Rows(Loopx).Item("StrGoodName"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted")))
                 Next
                 Return Lst
             Catch ex As SqlInjectionException

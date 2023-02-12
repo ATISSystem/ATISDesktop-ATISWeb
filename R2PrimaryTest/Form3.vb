@@ -274,8 +274,9 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
-            InstanceSoftwareUsers.GetSoftwareUsers_SearchforLeftCharacters("شاه").Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList()
+            MessageBox.Show("123;123".Split(";")(0))
+            'Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            'InstanceSoftwareUsers.GetSoftwareUsers_SearchforLeftCharacters("شاه").Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList()
 
             'Dim x As New R2CoreInstansePaymentRequestsManager
             'MessageBox.Show(x.PaymentRequest(3, 50000, 21))

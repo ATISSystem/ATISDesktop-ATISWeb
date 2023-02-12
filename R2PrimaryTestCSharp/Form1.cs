@@ -2,6 +2,7 @@
 
 using MSCOCore.AnnouncementProcess;
 using PayanehClassLibrary.CarTruckNobatManagement;
+using R2Core.LoggingManagement;
 using R2Core.SecurityAlgorithmsManagement.Captcha;
 using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
@@ -36,9 +38,37 @@ namespace R2PrimaryTestCSharp
         {
             try
             {
-                var X = new ESCOCore.SendSMS.ESCOCoreSendSMSManager();
-                var Instance = new R2Core.SoftwareUserManagement.R2CoreInstanseSoftwareUsersManager();
-                X.SendSMSofAnnouncedLoads(Instance.GetNSSSystemUser());
+                try
+                {
+                    var InstanceLogging = new R2CoreInstanceLoggingManager();
+                    //ارسال ایمیل شرکت ها 
+                    try
+                    {
+                        var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                        var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                        InstanceAnnouncementforTransportCompanies.SentEmailforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                    }
+
+                    catch (Exception ex)
+                    { EventLog.WriteEntry("MSCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+
+                    //اعلام بار خودکار شرکت ها
+                    try
+                    {
+                        var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                        var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                        InstanceAnnouncementforTransportCompanies.LoadsAnnouncementforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                    }
+                    catch (Exception ex)
+                    { EventLog.WriteEntry("MSCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+                }
+                catch (Exception ex)
+                { EventLog.WriteEntry("MSCOAutomatedJobs", "_AutomatedJobsTimer_Elapsed:" + ex.Message.ToString(), EventLogEntryType.Error); }
+
+
+                //var X = new ESCOCore.SendSMS.ESCOCoreSendSMSManager();
+                //var Instance = new R2Core.SoftwareUserManagement.R2CoreInstanseSoftwareUsersManager();
+                //X.SendSMSofAnnouncedLoads(Instance.GetNSSSystemUser());
                 //MSCOCoreAnnouncementforTransportCompaniesManager InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
                 //InstanceAnnouncementforTransportCompanies.LoadsAnnouncementforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
 

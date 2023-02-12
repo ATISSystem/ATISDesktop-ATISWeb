@@ -35,6 +35,7 @@ using R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions;
 using R2CoreTransportationAndLoadNotification.TransportCompanies.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions;
+using R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Exceptions;
 
 namespace MSCOCore
 {
@@ -77,7 +78,7 @@ namespace MSCOCore
                 {
                     if (InstanceTransportCompanies.IsActiveTransportCompanySentMail(YourTransportCompanyCode))
                     { InstanceEmail.SendEmailWithTXTTypeAttachment(InstanceTransportCompanies.GetNSSTransportCompany(YourTransportCompanyCode).EmailAddress, YourSB, "اعلام بار", string.Empty, YourTransportCompanyCode + InstanceConfiguration.GetConfigString(MSCOCore.Configurations.MSCOCoreConfigurations.MSCO, 4)); }
-                    System.Threading.Thread.Sleep(60000);
+                    System.Threading.Thread.Sleep(10000);
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
                 {
@@ -152,6 +153,9 @@ namespace MSCOCore
                     SB.AppendLine(FirstLine); SB.AppendLine(SecondLine);
                     var OtherLine = sr.ReadLine();
                     TransportCompanyCode = OtherLine.Substring(0, 7);
+
+                    InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreLogType.CameraError, "تست فولاد", "نقطه 1", string.Empty, string.Empty, string.Empty, string.Empty, InstanceSoftwareUsers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null));
+
                     SB.AppendLine(OtherLine);
 
                     while (!(sr.EndOfStream))
@@ -168,6 +172,9 @@ namespace MSCOCore
                             }
                             continue;
                         }
+
+                        InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreLogType.CameraError, "تست فولاد", "نقطه 2", "TransportCompanyCode:"+ TransportCompanyCode, string.Empty, string.Empty, string.Empty, InstanceSoftwareUsers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null));
+
                         if (OtherLine.Substring(18, 1) == "N" || OtherLine.Substring(18, 1) == "L")
                         {
                             if (OtherLine.Substring(0, 7) == TransportCompanyCode)
@@ -268,6 +275,7 @@ namespace MSCOCore
                     if (mynoEmptyingDays != string.Empty) { NSS.StrDescription = NSS.StrDescription + "روزهای عدم تخلیه: " + mynoEmptyingDays + "\n"; }
                     if (myLBN != string.Empty) { NSS.StrDescription = NSS.StrDescription + "لبه دار بارگیری ندارد" + "\n"; }
                     if (myLTN != string.Empty) { NSS.StrDescription = NSS.StrDescription + "لبه دار تخلیه ندارد"; }
+                    NSS.TPTParams = string.Empty;
                     return NSS;
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
@@ -339,7 +347,8 @@ namespace MSCOCore
                    ex is LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException ||
                    ex is MSCOCoreTransportCompanyNotFoundException ||
                    ex is HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup ||
-                   ex is MSCOCoreMSCOTargetnotfoundException)
+                   ex is MSCOCoreMSCOTargetnotfoundException ||
+                   ex is TransportPriceTarrifParameterDetailNotFoundException)
                 { throw ex; }
                 catch (MSCOCoreLoadsAnnouncementforTransportCompaniesFirstOrSecondStepNotReachedException ex)
                 { throw ex; }

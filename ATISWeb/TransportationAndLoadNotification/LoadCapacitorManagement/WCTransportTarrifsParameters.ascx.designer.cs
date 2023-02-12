@@ -7,36 +7,36 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ATISWeb.ATISStartManagement {
+namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
     
     
-    public partial class WfATISStart {
+    public partial class WCTransportTarrifsParameters {
         
         /// <summary>
-        /// DownloadATISMobile_ control.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton DownloadATISMobile_;
+        protected global::System.Web.UI.WebControls.Label Label2;
         
         /// <summary>
-        /// DownloadATISMobile control.
+        /// TxtLoaderType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton DownloadATISMobile;
+        protected global::System.Web.UI.WebControls.TextBox TxtLoaderType;
         
         /// <summary>
-        /// ImgEnamad control.
+        /// ChkboxlistTPTParams control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImgEnamad;
+        protected global::System.Web.UI.WebControls.CheckBoxList ChkboxlistTPTParams;
     }
 }

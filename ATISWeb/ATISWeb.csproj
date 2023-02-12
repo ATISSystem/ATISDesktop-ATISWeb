@@ -115,6 +115,7 @@
     <Content Include="Images\3520962.jpg" />
     <Content Include="Images\ATISMobilePresentation.mp4" />
     <Content Include="Images\Button-Refresh-icon.png" />
+    <Content Include="Images\enamad_icon_text_color_blue_275.png" />
     <Content Include="Images\Header4.jpg" />
     <Content Include="Images\Monitor.ico" />
     <Content Include="Images\PrinterIcon.ico" />
@@ -194,6 +195,7 @@
     <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TransportationAndLoadNotification\LoadCapacitorManagement\WCTransportTarrifsParameters.ascx" />
     <Content Include="TransportationAndLoadNotification\LoadCapacitorMonitoringManagement\WfLoadCapacitorMonitoringMuted.aspx" />
     <Content Include="WfSiteUnderConstructionAlert.aspx" />
     <Content Include="libman.json" />
@@ -453,6 +455,13 @@
     </Compile>
     <Compile Include="TransportationAndLoadNotification\LoadCapacitorManagement\WcLoadCapacitorLoadsCollectionSummaryIntelligently.ascx.designer.cs">
       <DependentUpon>WcLoadCapacitorLoadsCollectionSummaryIntelligently.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TransportationAndLoadNotification\LoadCapacitorManagement\WCTransportTarrifsParameters.ascx.cs">
+      <DependentUpon>WCTransportTarrifsParameters.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TransportationAndLoadNotification\LoadCapacitorManagement\WCTransportTarrifsParameters.ascx.designer.cs">
+      <DependentUpon>WCTransportTarrifsParameters.ascx</DependentUpon>
     </Compile>
     <Compile Include="TransportationAndLoadNotification\LoadCapacitorManagement\WcViewerNSSLoadCapacitorLoad.ascx.cs">
       <DependentUpon>WcViewerNSSLoadCapacitorLoad.ascx</DependentUpon>

@@ -81,19 +81,19 @@ Public Class PayanehAmirKabirAutomatedJobs
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 
+            'صدور خودکار نوبت ها
+            Try
+                PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
             'فراخوانی سرویس رسوب بار در سالن اعلام بار
             Try
                 Dim InstanceLoadSedimentation = New R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManager
                 InstanceLoadSedimentation.SedimentingProcess()
             Catch ex As Exception
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "SedimentingProcess:" + ex.Message.ToString, EventLogEntryType.Error)
-            End Try
-
-            'صدور خودکار نوبت ها
-            Try
-                PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
-            Catch ex As Exception
-                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 
             'ابطال گروهی نوبت ها

@@ -24,6 +24,7 @@ using R2Core.SecurityAlgorithmsManagement.Hashing;
 using R2Core.DateAndTimeManagement;
 using R2Core.PermissionManagement;
 using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
+using R2CoreTransportationAndLoadNotification.TransportTarrifsParameters;
 
 namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
 {
@@ -46,6 +47,7 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                 var ProvinceId = Content.Split(';')[4];
                 var ListType = Content.Split(';')[5];
                 var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
+                var InstanceTransportTarrifsParameters = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager();
                 Int64 ListTypeConv = Convert.ToInt64(ListType) == (long)LoadCapacitorLoadsListType.NotSedimented ? Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.AllOfLoadsWithoutSedimentedLoads) : Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.SedimentedLoads);
                 var Lst = InstanceLoadCapacitorLoad.GetLoadCapacitorLoadsfromSubscriptionDB(Convert.ToInt64(AHId), Convert.ToInt64(AHSGId), ListTypeConv, false, true, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.TargetProvince, Int64.MinValue, Convert.ToInt64(ProvinceId));
                 List<Models.LoadCapacitorLoad> _Loads = new List<Models.LoadCapacitorLoad>();
@@ -53,8 +55,12 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                 {
                     var Item = new Models.LoadCapacitorLoad();
                     Item.LoadnEstelamId = "کد مرجع : " + Lst[Loopx].nEstelamId;
-                    Item.LoadCapacitorLoadTitleTargetCityTotalAmount = Lst[Loopx].GoodTitle.Trim() + " - " + Lst[Loopx].LoadTargetTitle.Trim() + " تعداد : " + Lst[Loopx].nCarNum.ToString().Trim()+"  تناژ بار : "+ Lst[Loopx].nTonaj.ToString().Trim();
-                    Item.TransportCompanyTarrifPrice = Lst[Loopx].TransportCompanyTitle.Trim() + " تلفن: " + Lst[Loopx].TransportCompanyTel.Trim() + "\n نرخ پایه : " + R2CoreMClassPublicProcedures.R2MakeCamaYourDigit(Convert.ToUInt64(Lst[Loopx].StrPriceSug));
+                    Item.LoadCapacitorLoadTitleTargetCityTotalAmount = Lst[Loopx].GoodTitle.Trim() + " - " + Lst[Loopx].LoadTargetTitle.Trim() + " تعداد : " + Lst[Loopx].nCarNum.ToString().Trim() + "  تناژ بار : " + Lst[Loopx].nTonaj.ToString().Trim();
+                    var TPTParams = InstanceTransportTarrifsParameters.GetTransportTarrifsComposit(Lst[Loopx].TPTParams);
+                    if (TPTParams == string.Empty)
+                    { Item.TransportCompanyTarrifPrice = Lst[Loopx].TransportCompanyTitle.Trim() + " تلفن: " + Lst[Loopx].TransportCompanyTel.Trim() + "\n نرخ پایه : " + R2CoreMClassPublicProcedures.R2MakeCamaYourDigit(Convert.ToUInt64(Lst[Loopx].StrPriceSug)); }
+                    else
+                    { Item.TransportCompanyTarrifPrice = Lst[Loopx].TransportCompanyTitle.Trim() + " تلفن: " + Lst[Loopx].TransportCompanyTel.Trim() + "\n نرخ پایه : " + R2CoreMClassPublicProcedures.R2MakeCamaYourDigit(Convert.ToUInt64(Lst[Loopx].StrPriceSug)) + "\n شرایط بار - پارامترهای موثر در نرخ پایه : "+ "\n" + TPTParams; }
                     Item.Description = Lst[Loopx].StrDescription.Trim() + " " + Lst[Loopx].StrBarName.Trim() + " " + Lst[Loopx].StrAddress.Trim();
                     _Loads.Add(Item);
                 }

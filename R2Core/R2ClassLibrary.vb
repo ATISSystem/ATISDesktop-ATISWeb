@@ -120,7 +120,7 @@ Namespace NetworkInternetManagement
 
         Public Shared Function IsInternetAvailable() As Boolean
             Try
-                If My.Computer.Network.Ping("www.google.com") Then
+                If My.Computer.Network.Ping("8.8.8.8") Then
                     Return True
                 Else
                     Return False

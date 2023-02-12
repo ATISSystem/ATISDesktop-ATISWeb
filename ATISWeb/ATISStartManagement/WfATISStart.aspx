@@ -38,6 +38,11 @@
                 </div>
             </div>
         </div>
+        <div class="text-center">
+            <a target="_blank" href="https://trustseal.enamad.ir/?id=170692&amp;Code=m03n28G7P8jpbaXBm7tS">
+                <img src="https://Trustseal.eNamad.ir/logo.aspx?id=170692&amp;Code=m03n28G7P8jpbaXBm7tS" alt="" style="cursor: pointer" id="m03n28G7P8jpbaXBm7tS">123</a>
+            <asp:ImageButton runat="server" ID="ImgEnamad" src="/Images/enamad_icon_text_color_blue_275.png" class="rounded" alt="..." Style="height: 15rem;" />
+        </div>
     </div>
 
     <div class="container-fluid " style="min-height: 500px;"></div>

@@ -342,6 +342,12 @@
     <Compile Include="Load Capacitor\Accounting\UCLoadCapacitorLoadAccounting.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Load Capacitor\UCTransportTarrifsParameters.Designer.vb">
+      <DependentUpon>UCTransportTarrifsParameters.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Load Capacitor\UCTransportTarrifsParameters.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Load Capacitor\UCViewerCurrentLoadsStatistics.Designer.vb">
       <DependentUpon>UCViewerCurrentLoadsStatistics.vb</DependentUpon>
     </Compile>
@@ -734,6 +740,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Load Capacitor\Accounting\UCUCLoadCapacitorAccountingCollection.resx">
       <DependentUpon>UCUCLoadCapacitorAccountingCollection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Load Capacitor\UCTransportTarrifsParameters.resx">
+      <DependentUpon>UCTransportTarrifsParameters.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Load Capacitor\UCViewerCurrentLoadsStatistics.resx">
       <DependentUpon>UCViewerCurrentLoadsStatistics.vb</DependentUpon>

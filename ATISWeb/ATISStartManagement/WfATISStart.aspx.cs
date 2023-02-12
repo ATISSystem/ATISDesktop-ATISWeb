@@ -15,7 +15,11 @@ namespace ATISWeb.ATISStartManagement
         {
             DownloadATISMobile.Click += DownloadATISMobile_Click;
             DownloadATISMobile_.Click += DownloadATISMobile_Click;
+            ImgEnamad.Click += ImgEnamad_Click;
         }
+
+        private void ImgEnamad_Click(object sender, ImageClickEventArgs e)
+        {            Response.Redirect("~/HtmlPage1.html");        }
 
         private void DownloadATISMobile_Click(object sender, EventArgs e)
         {

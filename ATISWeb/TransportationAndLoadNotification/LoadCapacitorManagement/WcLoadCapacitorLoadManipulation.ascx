@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="WcLoadCapacitorLoadManipulation.ascx.cs" Inherits="ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement.WcLoadCapacitorLoadManipulation" %>
 <%@ Register TagPrefix="TWebControl" TagName="WcAlertShower" Src="~/AlertManagement/WcAlertShower.ascx" %>
 <%@ Register TagPrefix="TWebControl" TagName="WcLoadCapacitorLoadsCollectionSummaryIntelligently" Src="~/TransportationAndLoadNotification/LoadCapacitorManagement/WcLoadCapacitorLoadsCollectionSummaryIntelligently.ascx" %>
+<%@ Register TagPrefix="TWebControl" TagName="WCTransportTarrifsParameters" Src="~/TransportationAndLoadNotification/LoadCapacitorManagement/WCTransportTarrifsParameters.ascx" %>
 
 <TWebControl:WcAlertShower runat="server" ID="WcAlertShower" />
 
@@ -128,6 +129,7 @@
                 </div>
             </div>
         </div>
+
         <asp:UpdatePanel ID="UpdatePanelDetails" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="False">
             <ContentTemplate>
                 <div class="container-fluid p-1">
@@ -179,6 +181,18 @@
                 <asp:AsyncPostBackTrigger ControlID="BtnNewLoad" EventName="Click" />
             </Triggers>
         </asp:UpdatePanel>
+
+        <asp:UpdatePanel ID="UpdatePanelWCTransportTarrifsParameters" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+            <ContentTemplate>
+                <div class="container-fluid p-0 mb-2" style="">
+                    <TWebControl:WCTransportTarrifsParameters runat="server" ID="WCTransportTarrifsParameters1"></TWebControl:WCTransportTarrifsParameters>
+                </div>
+            </ContentTemplate>
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="DropDownListLoaderType" EventName="SelectedIndexChanged" />
+            </Triggers>
+        </asp:UpdatePanel>
+
     </div>
 </div>
 
