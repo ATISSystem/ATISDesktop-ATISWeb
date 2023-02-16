@@ -274,7 +274,8 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            MessageBox.Show("123;123".Split(";")(0))
+            PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(2, 7, Int64.MinValue, New R2StandardDateAndTimeStructure(Nothing, "1401/11/26", Nothing), New R2StandardDateAndTimeStructure(Nothing, "1401/11/26", Nothing), Int64.MinValue, 21)
+            'MessageBox.Show("123;123".Split(";")(0))
             'Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
             'InstanceSoftwareUsers.GetSoftwareUsers_SearchforLeftCharacters("شاه").Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList()
 

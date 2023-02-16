@@ -35,10 +35,10 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 TxtLoaderType.Text = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroup(YourNSS.AHSGId).AHSGTitle;
                 var InstanceTransportTarrifsParameters = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager();
                 var Lst = InstanceTransportTarrifsParameters.GetListofTransportTarrifsParams(YourNSS.TPTParams);
-                if (Lst.Count == 0) { this.Visible = false; } else { this.Visible = true; }
+                //if (Lst.Count == 0) { this.Visible = false; } else { this.Visible = true; }
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
-                    ListItem Li = new ListItem(Lst[Loopx].TPTPTitle + " - " + Lst[Loopx].Mblgh.ToString(), Lst[Loopx].TPTPDId.ToString());
+                    ListItem Li = new ListItem(Lst[Loopx].TPTPTitle + " - " + (Lst[Loopx].Mblgh == 0 ? "توافقی" : Lst[Loopx].Mblgh.ToString()), Lst[Loopx].TPTPDId.ToString());
                     Li.Selected = Lst[Loopx].Checked;
                     Li.Attributes.Add("class", "btn-check");
                     ChkboxlistTPTParams.Items.Add(Li);
@@ -56,17 +56,17 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 ChkboxlistTPTParams.Items.Clear();
                 var InstanceTransportTarrifsParameters = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager();
                 var Lst = InstanceTransportTarrifsParameters.GetListofTransportTarrifsParams(YourNSS);
-                this.Visible = true;
+                //this.Visible = true;
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
-                    ListItem Li = new ListItem(Lst[Loopx].TPTPTitle + " - " + Lst[Loopx].Mblgh.ToString(), Lst[Loopx].TPTPDId.ToString());
+                    ListItem Li = new ListItem(Lst[Loopx].TPTPTitle + " - " + (Lst[Loopx].Mblgh == 0 ? "توافقی" : Lst[Loopx].Mblgh.ToString()), Lst[Loopx].TPTPDId.ToString());
                     Li.Selected = Lst[Loopx].Checked;
                     Li.Attributes.Add("class", "btn-check");
                     ChkboxlistTPTParams.Items.Add(Li);
                 }
             }
             catch (TransportPriceTarrifParameterDetailsforAHSGNotFoundException ex)
-            { this.Visible = false; return; }
+            { /*this.Visible = false; return;*/ }
             catch (Exception ex)
             { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
 

@@ -152,17 +152,21 @@ namespace MSCOCore
                     var SecondLine = sr.ReadLine();
                     SB.AppendLine(FirstLine); SB.AppendLine(SecondLine);
                     var OtherLine = sr.ReadLine();
+
+                    InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreLogType.CameraError, "تست فولاد", "نقطه 5", OtherLine, string.Empty, string.Empty, string.Empty, InstanceSoftwareUsers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null));
+
                     TransportCompanyCode = OtherLine.Substring(0, 7);
-
-                    InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreLogType.CameraError, "تست فولاد", "نقطه 1", string.Empty, string.Empty, string.Empty, string.Empty, InstanceSoftwareUsers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null));
-
                     SB.AppendLine(OtherLine);
+
+                    InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreLogType.CameraError, "تست فولاد", "نقطه 1", FirstLine, SecondLine, TransportCompanyCode, OtherLine, InstanceSoftwareUsers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null));
 
                     while (!(sr.EndOfStream))
                     {
                         OtherLine = sr.ReadLine();
                         if (OtherLine == String.Empty)
                         {
+                            InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreLogType.CameraError, "تست فولاد", "نقطه 3", "TransportCompanyCode:" + TransportCompanyCode, OtherLine, string.Empty, string.Empty, InstanceSoftwareUsers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null));
+
                             SB.AppendLine(OtherLine);
                             if (sr.EndOfStream)
                             {
@@ -181,6 +185,8 @@ namespace MSCOCore
                             { SB.AppendLine(OtherLine); continue; }
                             else
                             {
+                                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreLogType.CameraError, "تست فولاد", "نقطه 4", "TransportCompanyCode:" + TransportCompanyCode, OtherLine, string.Empty, string.Empty, InstanceSoftwareUsers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null));
+
                                 SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
                                 CreateAnnouncementFileforTransportCompanies(TransportCompanyCode, SB, YourNSSSoftwareUser);
                                 //شرکت جدید

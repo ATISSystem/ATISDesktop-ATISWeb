@@ -214,7 +214,11 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 TxtLoadReciever.Text = string.Empty;
                 TxtAddress.Text = string.Empty;
                 TxtDescription.Text = string.Empty;
-                WCTransportTarrifsParameters1.WcRefreshInformation();
+                var InstanceAnnouncementHalls = new R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager();
+                if (TxtSearchLoaderType.Text.Split('#')[0].Trim() == String.Empty)
+                { WCTransportTarrifsParameters1.WcRefreshInformation(); }
+                else
+                { WCTransportTarrifsParameters1.WcViewInformation(InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroupByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]))); }
             }
             catch (Exception ex)
             { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }

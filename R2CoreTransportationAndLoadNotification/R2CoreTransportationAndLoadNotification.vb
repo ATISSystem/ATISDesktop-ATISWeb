@@ -895,6 +895,7 @@ Namespace TransportTarrifsParameters
             Try
                 Dim Total As Int64 = 0
                 Dim Params = YourNSS.TPTParams.Split(";")
+                If Params(0) = String.Empty Then Return 0
                 For Loopx As Int64 = 0 To Params.Length - 1
                     Dim TPTPDId As Int64 = Params(Loopx).Split(":")(0)
                     Dim Checked As Boolean = Params(Loopx).Split(":")(1)
@@ -915,12 +916,13 @@ Namespace TransportTarrifsParameters
             ' Standard String : TPTPDId1:0;TPTPDId2:1;.....
             Try
                 Dim Params As String() = YourTPTParams.Split(";")
+                If Params(0).Trim = String.Empty Then Return String.Empty
                 Dim SB = New StringBuilder
                 For Loopx As Int64 = 0 To Params.Length - 1
                     Dim TPTParamDetailId As Int64 = Params(Loopx).Split(":")(0).Trim
                     Dim Checked As Boolean = IIf(Params(Loopx).Split(":")(1).Trim = "1", True, False)
                     Dim NSS = GetNSSTransportTarrifsParameterDetail(TPTParamDetailId)
-                    If Checked Then SB.AppendLine(NSS.TPTPTitle + " : " + NSS.Mblgh.ToString)
+                    If Checked Then SB.AppendLine(NSS.TPTPTitle + " : " + IIf(NSS.Mblgh = 0, "توافقی", NSS.Mblgh.ToString))
                 Next
                 Return SB.ToString
             Catch ex As TransportPriceTarrifParameterDetailNotFoundException

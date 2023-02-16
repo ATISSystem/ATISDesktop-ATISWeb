@@ -190,6 +190,7 @@
             </ContentTemplate>
             <Triggers>
                 <asp:AsyncPostBackTrigger ControlID="DropDownListLoaderType" EventName="SelectedIndexChanged" />
+                <asp:AsyncPostBackTrigger ControlID="BtnNewLoad" EventName="Click" />
             </Triggers>
         </asp:UpdatePanel>
 
