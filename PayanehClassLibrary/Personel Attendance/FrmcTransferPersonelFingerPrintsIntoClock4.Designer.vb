@@ -35,7 +35,7 @@ Partial Class FrmcTransferPersonelFingerPrintsIntoClock4
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(247, 150)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1000)
         '
         'PnlTransferPersonelFingerPrintsIntoClock4
         '
@@ -55,6 +55,8 @@ Partial Class FrmcTransferPersonelFingerPrintsIntoClock4
         '
         'UcLabel2
         '
+        Me.UcLabel2._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel2._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel2.BackColor = System.Drawing.Color.Transparent
         Me.UcLabel2.Location = New System.Drawing.Point(406, 30)
         Me.UcLabel2.Name = "UcLabel2"
@@ -62,23 +64,26 @@ Partial Class FrmcTransferPersonelFingerPrintsIntoClock4
         Me.UcLabel2.Size = New System.Drawing.Size(178, 32)
         Me.UcLabel2.TabIndex = 4
         Me.UcLabel2.UCBackColor = System.Drawing.Color.White
-        Me.UcLabel2.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabel2.UCFont = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabel2.UCForeColor = System.Drawing.Color.DarkRed
         Me.UcLabel2.UCTextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.UcLabel2.UCValue = "سال مورد نظر را وارد نمایید :"
         '
         'UcPersianTextBoxSal
         '
+        Me.UcPersianTextBoxSal.BackColor = System.Drawing.Color.Transparent
         Me.UcPersianTextBoxSal.Location = New System.Drawing.Point(304, 32)
-        Me.UcPersianTextBoxSal.MaxCharacterReached = CType(50,Short)
+        Me.UcPersianTextBoxSal.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxSal.Name = "UcPersianTextBoxSal"
         Me.UcPersianTextBoxSal.Size = New System.Drawing.Size(99, 30)
         Me.UcPersianTextBoxSal.TabIndex = 3
         Me.UcPersianTextBoxSal.UCBackColor = System.Drawing.Color.White
-        Me.UcPersianTextBoxSal.UCBorder = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcPersianTextBoxSal.UCEnable = true
-        Me.UcPersianTextBoxSal.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcPersianTextBoxSal.UCBorder = True
+        Me.UcPersianTextBoxSal.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcPersianTextBoxSal.UCEnable = True
+        Me.UcPersianTextBoxSal.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcPersianTextBoxSal.UCForeColor = System.Drawing.Color.Black
+        Me.UcPersianTextBoxSal.UCMultiLine = False
         Me.UcPersianTextBoxSal.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
         Me.UcPersianTextBoxSal.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.UcPersianTextBoxSal.UCValue = ""
@@ -93,13 +98,15 @@ Partial Class FrmcTransferPersonelFingerPrintsIntoClock4
         Me.UcButton.TabIndex = 2
         Me.UcButton.UCBackColor = System.Drawing.Color.OrangeRed
         Me.UcButton.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButton.UCEnable = true
-        Me.UcButton.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButton.UCEnable = True
+        Me.UcButton.UCFont = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButton.UCForeColor = System.Drawing.Color.White
         Me.UcButton.UCValue = "انتقال"
         '
         'UcLabel1
         '
+        Me.UcLabel1._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
         Me.UcLabel1.Location = New System.Drawing.Point(365, 59)
         Me.UcLabel1.Name = "UcLabel1"

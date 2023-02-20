@@ -4,6 +4,7 @@ Imports System.Reflection
 Imports System.Windows.Forms
 
 Imports PayanehClassLibrary.ConfigurationManagement
+Imports PayanehClassLibrary.HumanManagement.Personnel
 Imports PayanehClassLibrary.ProcessesManagement
 Imports R2Core.ComputersManagement
 Imports R2Core.ConfigurationManagement
@@ -55,14 +56,17 @@ Public Class FrmcTransferPersonelFingerPrintsIntoClock4
 #Region "Event Handlers"
     Private Sub UcButton_UCClickedEvent() Handles UcButton.UCClickedEvent
         Try
+            Dim FD As New SaveFileDialog
+            If FD.ShowDialog = DialogResult.Cancel Then Exit Sub
             Cursor.Current = Cursors.WaitCursor
-            HumanManagement.Personnel.PayanehClassLibraryMClassPersonnelAttendanceManagement.TransferPersonelFingerPrintsIntoClock4(UcPersianTextBoxSal.UCValue.Trim, UcPersianMonths.UCGetSelectedMonthCode)
+            PayanehClassLibraryMClassPersonnelAttendanceManagement.TransferPersonelFingerPrints(UcPersianTextBoxSal.UCValue.Trim, UcPersianMonths.UCGetSelectedMonthCode, FD.FileName)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "انتقال اطلاعات تردد پرسنل از سیستم اثرانگشت انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
         Cursor.Current = Cursors.Default
     End Sub
+
 
 
 #End Region

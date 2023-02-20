@@ -1935,7 +1935,8 @@ Namespace EntityRelationManagement
         Public Shared ReadOnly MobileProcessGroup_MobileProcess As Int64 = 4
         Public Shared ReadOnly WebProcessGroup_WebProcess As Int64 = 5
         Public Shared ReadOnly SoftwareUser_WebProcessGroup As Int64 = 6
-
+        Public Shared ReadOnly OwnerShips_Personnels As Int64 = 7
+        Public Shared ReadOnly OwnerShips_Computers As Int64 = 8
     End Class
 
     Public Class R2StandardEntityRelationTypeStructure

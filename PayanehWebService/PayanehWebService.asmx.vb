@@ -25,6 +25,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadManipulation
 Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
+Imports PayanehClassLibrary.HumanManagement.Personnel
 
 
 ' To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
@@ -52,10 +53,10 @@ Public Class PayanehWebService
     End Function
 
     <WebMethod()>
-    Public Function WebMethodGetDSPersonnelFingerPrints(YourSalFull As String, YourMonthCodeFull As String, YourExchangeKey As Int64) As DataSet
+    Public Function WebMethodGetDSPersonnelFingerPrints(YourSalFull As String, YourMonthCodeFull As String, YourComputerId As Int64, YourExchangeKey As Int64) As DataSet
         Try
             _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)
-            Return PayanehClassLibrary.HumanManagement.Personnel.PayanehClassLibraryMClassPersonnelAttendanceManagement.GetDSPersonelFingerPrints(YourSalFull, YourMonthCodeFull)
+            Return PayanehClassLibraryMClassPersonnelAttendanceManagement.GetDSPersonelFingerPrints(YourSalFull, YourMonthCodeFull, YourComputerId)
         Catch ex As ExchangeKeyTimeRangePassedException
             Throw ex
         Catch ex As ExchangeKeyNotExistException
@@ -66,10 +67,10 @@ Public Class PayanehWebService
     End Function
 
     <WebMethod()>
-    Public Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport(YourDateTimeMilladi1 As DateTime, YourDateShamsiFull1 As String, YourTime1 As String, YourDateTimeMilladi2 As DateTime, YourDateShamsiFull2 As String, YourTime2 As String, YourAHId As Int64 ,YourAHSGId As Int64, YourExchangeKey As Int64)
+    Public Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport(YourDateTimeMilladi1 As DateTime, YourDateShamsiFull1 As String, YourTime1 As String, YourDateTimeMilladi2 As DateTime, YourDateShamsiFull2 As String, YourTime2 As String, YourAHId As Int64, YourAHSGId As Int64, YourExchangeKey As Int64)
         Try
             _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)
-            PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderLoadPermissionIssuedOrderByPriorityReport(New R2StandardDateAndTimeStructure(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1), New R2StandardDateAndTimeStructure(YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2),YourAHId,YourAHSGId)
+            PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderLoadPermissionIssuedOrderByPriorityReport(New R2StandardDateAndTimeStructure(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1), New R2StandardDateAndTimeStructure(YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2), YourAHId, YourAHSGId)
         Catch ex As ExchangeKeyTimeRangePassedException
             Throw ex
         Catch ex As ExchangeKeyNotExistException

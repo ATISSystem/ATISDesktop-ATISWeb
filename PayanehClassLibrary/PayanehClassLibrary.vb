@@ -4202,7 +4202,7 @@ Namespace ReportsManagement
                         CmdSql.Parameters.Add(P)
                         P = New SqlClient.SqlParameter("@TPTParams", SqlDbType.VarChar) : P.Value = TPTParams
                         CmdSql.Parameters.Add(P)
-                        CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(nEstelamId,StrGoodName,StrCityName,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,AHSGTitle,StrExitDate,StrExitTime,StrDriverName,nTonaj,LoadPermissionStatus,LoadStatusName,UserName) Values(@nEstelamId,@StrGoodName,@StrCityName,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@AHSGTitle,@StrExitDate,@StrExitTime,@StrDriverName,@nTonaj,@LoadPermissionStatus,@LoadStatusName,@UserName,@TPTParams)"
+                        CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(nEstelamId,StrGoodName,StrCityName,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,AHSGTitle,StrExitDate,StrExitTime,StrDriverName,nTonaj,LoadPermissionStatus,LoadStatusName,UserName,TPTParams) Values(@nEstelamId,@StrGoodName,@StrCityName,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@AHSGTitle,@StrExitDate,@StrExitTime,@StrDriverName,@nTonaj,@LoadPermissionStatus,@LoadStatusName,@UserName,@TPTParams)"
                         CmdSql.ExecuteNonQuery()
                     Next
                 End If
@@ -5251,53 +5251,78 @@ Namespace HumanManagement
     Namespace Personnel
         Public Class PayanehClassLibraryMClassPersonnelAttendanceManagement
 
-            Public Shared Function GetDSPersonelFingerPrints(YourSalFull As String, YourMonthCode As String) As DataSet
-                Dim CmdSqlAttendance As New SqlClient.SqlCommand
-                CmdSqlAttendance.Connection = (New R2PrimarySqlConnection).GetConnection()
+            Public Shared Function GetDSPersonelFingerPrints(YourSalFull As String, YourMonthCode As String, YourComputerId As Int64) As DataSet
                 Try
                     Dim myMahString As String = YourSalFull.Trim + "/" + YourMonthCode
                     Dim DS As New DataSet
-                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select I.PIdOther,A.DateShamsi,A.Time from R2Primary.dbo.TblPersonelAttendance as A inner join R2Primary.dbo.TblPersonelInf as I on a.PId=i.PId where (Substring(A.DateShamsi,1,7)='" & myMahString & "') AND (Flag=1)", 1, DS).GetRecordsCount = 0 Then 'Flag=1 So Data Not Readed Last And Must Read 
+                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                          "Select  I.PIdOther,A.DateShamsi,A.Time from R2Primary.dbo.TblPersonelAttendance as A 
+                             Inner Join R2Primary.dbo.TblPersonelInf as I on A.PId=I.PId 
+                             Inner Join R2Primary.dbo.TblEntityRelations as ER1 On I.PId=ER1.E2 
+                             Inner Join R2Primary.dbo.TblOwnerShips as OS On ER1.E1=OS.OSId 
+                             Inner Join R2Primary.dbo.TblEntityRelations as ER2 On OS.OSId=ER2.E1
+                             Inner Join R2Primary.dbo.TblComputers as Coms On ER2.E2=Coms.MId 
+                           Where (Substring(A.DateShamsi,1,7)='" & myMahString & "')  and ER1.ERTypeId=" & R2CoreEntityRelationTypes.OwnerShips_Personnels & " and ER2.ERTypeId=" & R2CoreEntityRelationTypes.OwnerShips_Computers & " and Coms.MId=" & YourComputerId & "", 0, DS).GetRecordsCount = 0 Then
                         Throw New Exception("در محدوده زمانی مورد نظر اطلاعاتی یافت نشد")
                     Else
-                        'غیر فعال کردن رکوردهای خوانده شده
-                        CmdSqlAttendance.Connection.Open()
-                        CmdSqlAttendance.CommandText = "Update R2Primary.dbo.TblPersonelAttendance  Set Flag=0 where Substring(DateShamsi,1,7)='" & myMahString & "'"
-                        CmdSqlAttendance.ExecuteNonQuery()
-                        CmdSqlAttendance.Connection.Close()
                         Return DS
                     End If
                 Catch ex As Exception
-                    If CmdSqlAttendance.Connection.State <> ConnectionState.Closed Then CmdSqlAttendance.Connection.Close()
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
             End Function
 
-            Public Shared Sub TransferPersonelFingerPrintsIntoClock4(YourSalFull As String, YourMonthCodeFull As String)
-                Dim myClockTableName As String = "C" + YourSalFull.Trim + YourMonthCodeFull
-                Dim CmdSqlClock4 As New OleDb.OleDbCommand
+            Public Shared Sub TransferPersonelFingerPrints(YourSalFull As String, YourMonthCodeFull As String, YourFilePath As String)
+                Dim CmdSql As New OleDb.OleDbCommand
+                CmdSql.Connection = New OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source='" & YourFilePath & "'")
                 Try
-                    Dim DS As DataSet = GetDSPersonelFingerPrints(YourSalFull, YourMonthCodeFull)
-
+                    Dim DS = GetDSPersonelFingerPrints(YourSalFull, YourMonthCodeFull, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId)
                     'شروع تراکنش ثبت
-                    CmdSqlClock4.Connection = New OleDb.OleDbConnection(R2CoreMClassConfigurationOfComputersManagement.GetConfigString(PayanehClassLibraryConfigurations.Clock4, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0).Replace("*", ";"))
-                    CmdSqlClock4.Connection.Open()
-                    CmdSqlClock4.Transaction = CmdSqlClock4.Connection.BeginTransaction
+                    CmdSql.Connection.Open()
+                    CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                    CmdSql.CommandText = "Delete from TblEntryExit"
+                    CmdSql.ExecuteNonQuery()
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                        Dim myPIdOther As String = DS.Tables(0).Rows(Loopx).Item("PIdOther").trim
-                        Dim myDateShamsi As String = DS.Tables(0).Rows(Loopx).Item("DateShamsi").trim
-                        Dim myTimeInteger As Int64 = Mid(DS.Tables(0).Rows(Loopx).Item("Time").trim, 1, 2) * 60 + Mid(DS.Tables(0).Rows(Loopx).Item("Time").trim, 4, 2)
-                        CmdSqlClock4.CommandText = "Insert Into " & myClockTableName & " Values('" & myPIdOther & "','" & myDateShamsi & "'," & myTimeInteger & ",1,0,'" & myDateShamsi & "'," & myTimeInteger & ",1,0,0,'Admin')"
-                        CmdSqlClock4.ExecuteNonQuery()
+                        Dim PIdOther As String = DS.Tables(0).Rows(Loopx).Item("PIdOther").trim
+                        Dim DateShamsi As String = DS.Tables(0).Rows(Loopx).Item("DateShamsi").trim
+                        Dim Time As Int64 = Mid(DS.Tables(0).Rows(Loopx).Item("Time").trim, 1, 2) * 60 + Mid(DS.Tables(0).Rows(Loopx).Item("Time").trim, 4, 2)
+                        CmdSql.CommandText = "Insert Into TblEntryExit Values('" & PIdOther & "','" & DateShamsi & "'," & Time & ")"
+                        CmdSql.ExecuteNonQuery()
                     Next
-                    CmdSqlClock4.Transaction.Commit() : CmdSqlClock4.Connection.Close()
+                    CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Catch ex As Exception
-                    If CmdSqlClock4.Connection.State <> ConnectionState.Closed Then
-                        CmdSqlClock4.Transaction.Rollback() : CmdSqlClock4.Connection.Close()
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then
+                        CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                     End If
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
             End Sub
+
+            'Public Shared Sub TransferPersonelFingerPrints(YourSalFull As String, YourMonthCodeFull As String)
+            '    Dim myClockTableName As String = "C" + YourSalFull.Trim + YourMonthCodeFull
+            '    Dim CmdSqlClock4 As New OleDb.OleDbCommand
+            '    Try
+            '        Dim DS As DataSet = GetDSPersonelFingerPrints(YourSalFull, YourMonthCodeFull)
+
+            '        'شروع تراکنش ثبت
+            '        CmdSqlClock4.Connection = New OleDb.OleDbConnection(R2CoreMClassConfigurationOfComputersManagement.GetConfigString(PayanehClassLibraryConfigurations.Clock4, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 0).Replace("*", ";"))
+            '        CmdSqlClock4.Connection.Open()
+            '        CmdSqlClock4.Transaction = CmdSqlClock4.Connection.BeginTransaction
+            '        For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+            '            Dim myPIdOther As String = DS.Tables(0).Rows(Loopx).Item("PIdOther").trim
+            '            Dim myDateShamsi As String = DS.Tables(0).Rows(Loopx).Item("DateShamsi").trim
+            '            Dim myTimeInteger As Int64 = Mid(DS.Tables(0).Rows(Loopx).Item("Time").trim, 1, 2) * 60 + Mid(DS.Tables(0).Rows(Loopx).Item("Time").trim, 4, 2)
+            '            CmdSqlClock4.CommandText = "Insert Into " & myClockTableName & " Values('" & myPIdOther & "','" & myDateShamsi & "'," & myTimeInteger & ",1,0,'" & myDateShamsi & "'," & myTimeInteger & ",1,0,0,'Admin')"
+            '            CmdSqlClock4.ExecuteNonQuery()
+            '        Next
+            '        CmdSqlClock4.Transaction.Commit() : CmdSqlClock4.Connection.Close()
+            '    Catch ex As Exception
+            '        If CmdSqlClock4.Connection.State <> ConnectionState.Closed Then
+            '            CmdSqlClock4.Transaction.Rollback() : CmdSqlClock4.Connection.Close()
+            '        End If
+            '        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            '    End Try
+            'End Sub
 
 
         End Class
