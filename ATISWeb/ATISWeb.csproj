@@ -195,6 +195,7 @@
     <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TransportationAndLoadNotification\BillOfLading\WCEntryBillOfLadingNumber.ascx" />
     <Content Include="TransportationAndLoadNotification\LoadCapacitorManagement\WCTransportTarrifsParameters.ascx" />
     <Content Include="TransportationAndLoadNotification\LoadCapacitorMonitoringManagement\WfLoadCapacitorMonitoringMuted.aspx" />
     <Content Include="WfSiteUnderConstructionAlert.aspx" />
@@ -414,6 +415,13 @@
       <DependentUpon>WCPasswordStrengthViewer.ascx</DependentUpon>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="TransportationAndLoadNotification\BillOfLading\WCEntryBillOfLadingNumber.ascx.cs">
+      <DependentUpon>WCEntryBillOfLadingNumber.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TransportationAndLoadNotification\BillOfLading\WCEntryBillOfLadingNumber.ascx.designer.cs">
+      <DependentUpon>WCEntryBillOfLadingNumber.ascx</DependentUpon>
+    </Compile>
     <Compile Include="TransportationAndLoadNotification\LoadAllocationManagement\WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue.ascx.cs">
       <DependentUpon>WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

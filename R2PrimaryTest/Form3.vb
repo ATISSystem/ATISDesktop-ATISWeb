@@ -274,7 +274,25 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(2, 7, Int64.MinValue, New R2StandardDateAndTimeStructure(Nothing, "1401/11/26", Nothing), New R2StandardDateAndTimeStructure(Nothing, "1401/11/26", Nothing), Int64.MinValue, 21)
+            'صدور خودکار مجوزهای سالن های اعلام بار
+            Try
+                Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                InstanceLoadAllocation.LoadAllocationsLoadPermissionRegistering(InstanceSoftwareUsers.GetNSSSystemUser())
+                InstanceSoftwareUsers = Nothing
+                InstanceLoadAllocation = Nothing
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
+            'صدور خودکار نوبت ها
+            Try
+                PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+            Catch ex As Exception
+                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
+            'PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(2, 7, Int64.MinValue, New R2StandardDateAndTimeStructure(Nothing, "1401/11/26", Nothing), New R2StandardDateAndTimeStructure(Nothing, "1401/11/26", Nothing), Int64.MinValue, 21)
             'MessageBox.Show("123;123".Split(";")(0))
             'Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
             'InstanceSoftwareUsers.GetSoftwareUsers_SearchforLeftCharacters("شاه").Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList()

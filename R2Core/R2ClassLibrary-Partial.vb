@@ -254,6 +254,7 @@ Namespace MonetaryCreditSupplySources
             Try
                 Dim AssemblyClassName As String = YourNSS.AssemblyPath
                 Dim Instance As Object = Activator.CreateInstance(Type.GetType(AssemblyClassName), New Object() {YourAmount})
+                'Dim Instance As Object = Activator.CreateInstance(Type.GetType("R2Core.MonetaryCreditSupplySources.ZarrinPalPaymentGate.R2CoreZarrinPalPaymentGate,R2Core"), New Object() {YourAmount})
                 Return Instance
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

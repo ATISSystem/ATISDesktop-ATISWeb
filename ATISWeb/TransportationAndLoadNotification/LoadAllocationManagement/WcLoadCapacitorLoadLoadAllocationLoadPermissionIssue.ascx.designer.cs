@@ -58,6 +58,15 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         protected global::ATISWeb.TransportationAndLoadNotification.SmartCards.WcSmartCardsInquiry WcSmartCardsInquiry;
         
         /// <summary>
+        /// WcEntryBillOfLadingNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement.WCEntryBillOfLadingNumber WcEntryBillOfLadingNumber;
+        
+        /// <summary>
         /// PnlTurnStatus control.
         /// </summary>
         /// <remarks>

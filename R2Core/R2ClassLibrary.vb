@@ -3072,6 +3072,13 @@ Namespace DateAndTimeManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
         End Function
+        Public Function GetCurrentTickofTime() As TimeSpan
+            Try
+                Return Date.ParseExact(GetCurrentDateTimeMilladiFormated, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).TimeOfDay
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Function
         Public Function GetMilladiDateTimeFromDateShamsiFull(ByVal YourShamsiDateFull As String, YourTime As String) As Date
             Try
                 Return PC.ToDateTime(Mid(YourShamsiDateFull, 1, 4), Mid(YourShamsiDateFull, 6, 2), Mid(YourShamsiDateFull, 9, 2), Mid(YourTime, 1, 2), Mid(YourTime, 4, 2), Mid(YourTime, 7, 2), 0)

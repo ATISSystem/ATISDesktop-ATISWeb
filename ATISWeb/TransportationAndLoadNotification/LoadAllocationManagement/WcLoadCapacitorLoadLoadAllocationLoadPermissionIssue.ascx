@@ -2,6 +2,7 @@
 <%@ Register TagPrefix="TWebControl" TagName="WcViewerNSSLoadCapacitorLoad" Src="~/TransportationAndLoadNotification/LoadCapacitorManagement/WcViewerNSSLoadCapacitorLoad.ascx" %>
 <%@ Register TagPrefix="TWebControl" TagName="WcSmartCardsInquiry" Src="~/TransportationAndLoadNotification/SmartCards/WcSmartCardsInquiry.ascx" %>
 <%@ Register TagPrefix="TWebControl" TagName="WcLoadCapacitorLoadsCollectionSummaryIntelligently" Src="~/TransportationAndLoadNotification/LoadCapacitorManagement/WcLoadCapacitorLoadsCollectionSummaryIntelligently.ascx" %>
+<%@ Register TagPrefix="TWebControl" TagName="WcEntryBillOfLadingNumber" Src="~/TransportationAndLoadNotification/BillOfLading/WCEntryBillOfLadingNumber.ascx" %>
 
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -37,6 +38,7 @@
     </asp:UpdatePanel>
 
     <TWebControl:WcSmartCardsInquiry runat="server" ID="WcSmartCardsInquiry" />
+    <TWebControl:WcEntryBillOfLadingNumber runat="server" ID="WcEntryBillOfLadingNumber" />
 
     <br />
     <br />

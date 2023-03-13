@@ -80,7 +80,6 @@ Imports R2CoreTransportationAndLoadNotification.AnnouncementTiming
 Imports PayanehClassLibrary.TurnRegisterRequest
 Imports R2CoreTransportationAndLoadNotification.TransportCompanies
 Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement
-Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement.Exceptions
 Imports R2Core.PermissionManagement
 Imports R2CoreTransportationAndLoadNotification.PermissionManagement
 Imports R2CoreTransportationAndLoadNotification.RequesterManagement
@@ -147,6 +146,7 @@ Namespace CarTruckNobatManagement
         Private _NSSDriverTruck As R2StandardDriverTruckStructure
         Private _bFlagDriver As Boolean
         Private _NUserIdEnter As Int64
+        Private _BillOfLadingNumber As String
         Private _OtaghdarTurnNumber As String
         Private _StrCardNo As Int64
         Private _RegisteringTimeStamp As DateTime
@@ -154,16 +154,17 @@ Namespace CarTruckNobatManagement
 
         Public Sub New()
             MyBase.New()
-            _nEnterExitId = 0 : _EnterDate = "" : _EnterTime = "" : _NSSDriverTruck = Nothing : _bFlagDriver = True : _NUserIdEnter = 0 : _OtaghdarTurnNumber = "" : _StrCardNo = 0 : _RegisteringTimeStamp = Now
+            _nEnterExitId = 0 : _EnterDate = "" : _EnterTime = "" : _NSSDriverTruck = Nothing : _bFlagDriver = True : _NUserIdEnter = 0 : _BillOfLadingNumber = String.Empty : _OtaghdarTurnNumber = "" : _StrCardNo = 0 : _RegisteringTimeStamp = Now
         End Sub
 
-        Public Sub New(ByVal YournEnterExitId As Int64, ByVal YourEnterDate As String, YourEnterTime As String, YourNSSDriverTruck As R2StandardDriverTruckStructure, YourbFlagDriver As Boolean, YournUserIdEnter As Int64, YourOtaghdarTurnNumber As String, YourStrCardNo As Int64, YourRegisteringTimeStamp As DateTime)
+        Public Sub New(ByVal YournEnterExitId As Int64, ByVal YourEnterDate As String, YourEnterTime As String, YourNSSDriverTruck As R2StandardDriverTruckStructure, YourbFlagDriver As Boolean, YournUserIdEnter As Int64, YourBillOfLadingNumber As String, YourOtaghdarTurnNumber As String, YourStrCardNo As Int64, YourRegisteringTimeStamp As DateTime)
             _nEnterExitId = YournEnterExitId
             _EnterDate = YourEnterDate
             _EnterTime = YourEnterTime
             _NSSDriverTruck = YourNSSDriverTruck
             _bFlagDriver = YourbFlagDriver
             _NUserIdEnter = YournUserIdEnter
+            _BillOfLadingNumber = YourBillOfLadingNumber
             _OtaghdarTurnNumber = YourOtaghdarTurnNumber
             _StrCardNo = YourStrCardNo
             _RegisteringTimeStamp = YourRegisteringTimeStamp
@@ -215,6 +216,14 @@ Namespace CarTruckNobatManagement
             End Get
             Set(ByVal Value As Int64)
                 _NUserIdEnter = Value
+            End Set
+        End Property
+        Public Property BillOfLadingNumber() As String
+            Get
+                Return _BillOfLadingNumber
+            End Get
+            Set(ByVal Value As String)
+                _BillOfLadingNumber = Value
             End Set
         End Property
         Public Property OtaghdarTurnNumber() As String
@@ -613,6 +622,7 @@ Namespace CarTruckNobatManagement
                 NSS.NSSDriverTruck = InstanceDriverTrucks.GetNSSDriverTruckbyDriverId(Ds.Tables(0).Rows(0).Item("nDriverCode"))
                 NSS.bFlagDriver = Ds.Tables(0).Rows(0).Item("bFlagDriver")
                 NSS.nUserIdEnter = Ds.Tables(0).Rows(0).Item("nUserIdEnter")
+                NSS.BillOfLadingNumber = Ds.Tables(0).Rows(0).Item("BillOfLadingNumber")
                 NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber")
                 NSS.StrCardNo = Ds.Tables(0).Rows(0).Item("StrCardNo")
                 NSS.RegisteringTimeStamp = Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp")
@@ -656,7 +666,7 @@ Namespace CarTruckNobatManagement
                 Dim TurnRegisteringTimeStamp = InstanceTurns.GetTurnRegisteringTimeStampWithTurnType(YourTurnType)
 
                 'ثبت نوبت ناوگان باری
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTRR.Description & "',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',1,1," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatuses.CancelledSystem & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladiFormated & "')"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,BillOfLadingNumber,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTRR.Description & "',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',1,1," & NSSDriverTruck.NSSDriver.nIdPerson & ",'','" & SequentialTurnId_ & "'," & TurnStatuses.CancelledSystem & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladiFormated & "')"
                 CmdSql.ExecuteNonQuery()
 
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -847,6 +857,7 @@ Namespace CarTruckNobatManagement
                 NSS.NSSDriverTruck = PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(Ds.Tables(0).Rows(0).Item("nDriverCode"))
                 NSS.bFlagDriver = Ds.Tables(0).Rows(0).Item("bFlagDriver")
                 NSS.nUserIdEnter = Ds.Tables(0).Rows(0).Item("nUserIdEnter")
+                NSS.BillOfLadingNumber = Ds.Tables(0).Rows(0).Item("BillOfLadingNumber")
                 NSS.OtaghdarTurnNumber = Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber")
                 NSS.StrCardNo = Ds.Tables(0).Rows(0).Item("StrCardNo")
                 NSS.RegisteringTimeStamp = Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp")
@@ -886,7 +897,7 @@ Namespace CarTruckNobatManagement
                 Dim TurnRegisteringTimeStamp = InstanceTurns.GetTurnRegisteringTimeStampWithTurnType(YourTurnType)
 
                 'ثبت نوبت ناوگان باری
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTRR.Description & "',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',1,1," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatuses.CancelledSystem & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladiFormated & "')"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,BillOfLadingNumber,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTRR.Description & "',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',1,1," & NSSDriverTruck.NSSDriver.nIdPerson & ",'','" & SequentialTurnId_ & "'," & TurnStatuses.CancelledSystem & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladiFormated & "')"
                 CmdSql.ExecuteNonQuery()
 
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -1108,7 +1119,7 @@ Namespace CarTruckNobatManagement
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select Top 1 * from dbtransport.dbo.TbEnterExit Where StrCardNo=" & YourNSSCar.nIdCar & " and (bFlagDriver=0) Order By nEnterExitId desc", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNobatException("ناوگان نوبت ندارد")
                 End If
-                Return New R2StandardCarTruckNobatStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate"), Ds.Tables(0).Rows(0).Item("StrEnterTime"), PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(Ds.Tables(0).Rows(0).Item("nDriverCode")), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
+                Return New R2StandardCarTruckNobatStructure(Ds.Tables(0).Rows(0).Item("nEnterExitId"), Ds.Tables(0).Rows(0).Item("StrEnterDate"), Ds.Tables(0).Rows(0).Item("StrEnterTime"), PayanehClassLibraryMClassDriverTrucksManagement.GetNSSDriverTruckbyDriverId(Ds.Tables(0).Rows(0).Item("nDriverCode")), Ds.Tables(0).Rows(0).Item("bFlagDriver"), Ds.Tables(0).Rows(0).Item("nUserIdEnter"), Ds.Tables(0).Rows(0).Item("BillOfLadingNumber").trim, Ds.Tables(0).Rows(0).Item("OtaghdarTurnNumber").trim, Ds.Tables(0).Rows(0).Item("StrCardNo"), Ds.Tables(0).Rows(0).Item("RegisteringTimeStamp"))
             Catch exx As GetNobatException
                 Throw exx
             Catch ex As Exception
@@ -1433,7 +1444,7 @@ Namespace CarTruckNobatManagement
                 SequentialTurnId_ = NSSSequentialTurn.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - SequentialTurnId.ToString().Trim().Length) + SequentialTurnId.ToString().Trim()
                 Dim TurnRegisteringTimeStamp = InstanceTurns.GetTurnRegisteringTimeStampWithTurnType(TurnType)
                 'ثبت نوبت ناوگان باری
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,nGhabzId,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTurnRegisteringRequest.Description & "',0," & NSSSoftwareUser.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',0,0," & NSSDriverTruck.NSSDriver.nIdPerson & ",0,'" & SequentialTurnId_ & "'," & TurnStatuses.Registered & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladiFormated & "')"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,BillOfLadingNumber,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTurnRegisteringRequest.Description & "',0," & NSSSoftwareUser.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',0,0," & NSSDriverTruck.NSSDriver.nIdPerson & ",'','" & SequentialTurnId_ & "'," & TurnStatuses.Registered & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladiFormated & "')"
                 CmdSql.ExecuteNonQuery()
 
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -6091,15 +6102,17 @@ Namespace TruckersAssociationControllingMoneyWallet
                 Dim InstanceConfigurations = New R2CoreInstanceConfigurationManager
                 Dim InstancePersianCallendar = New R2CoreInstanceDateAndTimePersianCalendarManager
                 'کنترل زمان اجرای فرآیند بر اساس کانفیگ
-                Dim TimeOfDay = _DateTime.GetTimeOfDate(Now)
-                If TimeOfDay >= "00:00:00" And TimeOfDay <= "00:05:00" Then
+                Dim TimeOfDay = _DateTime.GetCurrentTickofTime
+                Dim StTime = TimeSpan.Parse("00:00:00")
+                Dim EndTime = TimeSpan.Parse("00:05:00")
+                Dim ConfigTime = TimeSpan.Parse(InstanceConfigurations.GetConfigString(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 6))
+                If TimeOfDay >= StTime And TimeOfDay <= EndTime Then
                     _ControllingMoneyWalletAccountingExcecutedFlag = False
                     Return
-                ElseIf TimeOfDay < InstanceConfigurations.GetConfigString(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 6) Then
+                ElseIf TimeOfDay <= ConfigTime Then
                     Return
                 Else
-                End If
-                'این فرآیند در روز فقط باید یکبار اجرا گردد و نه بیشتر
+                End If                'این فرآیند در روز فقط باید یکبار اجرا گردد و نه بیشتر
                 'خط کد زیر یعنی فرآیند امروز قبلا در بازه معین اجرا یکبار اجرا شده است
                 If _ControllingMoneyWalletAccountingExcecutedFlag Then Return
                 'طبق کانفیگ سیستم کلا اکانتینگ فعال باشد یا نه

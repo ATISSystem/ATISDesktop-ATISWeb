@@ -30,6 +30,7 @@ Public Class FrmcTransferEntryExit
                 CmdSqlClock4.ExecuteNonQuery()
             Next
             CmdSqlClock4.Transaction.Commit() : CmdSqlClock4.Connection.Close()
+            MessageBox.Show("انتقال با موفقیت انجام شد")
         Catch ex As Exception
             If CmdSqlClock4.Connection.State <> ConnectionState.Closed Then
                 CmdSqlClock4.Transaction.Rollback() : CmdSqlClock4.Connection.Close()
