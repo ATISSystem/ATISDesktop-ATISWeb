@@ -43,10 +43,10 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             ATISMobileWebApi WebAPi = new ATISMobileWebApi();
             try
             {
-                TimeSpan now = DateTime.Now.TimeOfDay;
-                if ((new TimeSpan(12, 45, 0) <= now && now <= new TimeSpan(13, 00, 0)) || 
-                    (new TimeSpan(15, 30, 0) <= now && now <= new TimeSpan(15, 35, 0)))
-                { throw new TimingNotReachedException(); }
+                //TimeSpan now = DateTime.Now.TimeOfDay;
+                //if ((new TimeSpan(12, 45, 0) <= now && now <= new TimeSpan(13, 00, 0)) || 
+                //    (new TimeSpan(15, 30, 0) <= now && now <= new TimeSpan(15, 35, 0)))
+                //{ throw new TimingNotReachedException(); }
 
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientLoadAllocationRegisteringRequest);

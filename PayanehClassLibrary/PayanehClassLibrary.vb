@@ -1183,7 +1183,7 @@ Namespace CarTruckNobatManagement
                 Next
 
                 'بدست آوردن لیست نوبت هایی که مجوز برایشان  صادر شده و باید نوبت برایشان صادر شود
-                Dim Query = "Select Turns.strBarnameNo,Turns.nEnterExitId,Turns.strCardno,Loads.AHId,Loads.AHSGId from dbtransport.dbo.tbEnterExit as Turns
+                Dim Query = "Select Turns.strBarnameNo,Turns.nEnterExitId,Turns.strCardno,Loads.AHId,Loads.AHSGId,Loads.LoadStatus from dbtransport.dbo.tbEnterExit as Turns
                                        Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID=Loads.nEstelamID 
                                  Where  Turns.strCardno not in (Select strCardno from dbtransport.dbo.tbEnterExit Where (TurnStatus=1 or TurnStatus=7 or TurnStatus=8 or TurnStatus=9 or TurnStatus=10) and strEnterDate='" & _DateTime.GetCurrentDateShamsiFull & "') and 
                                         Turns.TurnStatus = 6 And Turns.strExitDate ='" & _DateTime.GetCurrentDateShamsiFull & "' and (2=3" + SubQuery + ")" + " Order By Turns.nEnterExitId Asc"
@@ -1199,12 +1199,15 @@ Namespace CarTruckNobatManagement
                         Dim AHSGId As Int64 = DsTurns.Tables(0).Rows(LoopTurns).Item("AHSGId")
                         Dim nIdCar As Int64 = DsTurns.Tables(0).Rows(LoopTurns).Item("strCardno")
                         Dim nEnterExitId As Int64 = DsTurns.Tables(0).Rows(LoopTurns).Item("nEnterExitId")
+                        Dim LoadStatus As Int64 = DsTurns.Tables(0).Rows(LoopTurns).Item("LoadStatus")
                         Try
-                            If InstanceTiming.IsTimingActive(AHId, AHSGId) Then
-                                If Convert.ToInt32(DsTurns.Tables(0).Rows(LoopTurns).Item("strBarnameNo")) <> R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany Then
+                            If LoadStatus <> R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented Then
+                                If InstanceTiming.IsTimingActive(AHId, AHSGId) Then
+                                    'If Convert.ToInt32(DsTurns.Tables(0).Rows(LoopTurns).Item("strBarnameNo")) <> R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany Then
                                     If InstanceTiming.GetTiming(AHId, AHSGId, CurrentTime) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InAutomaticTurnRegistering Then
                                         Continue For
                                     End If
+                                    'End If
                                 End If
                             End If
                             'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
