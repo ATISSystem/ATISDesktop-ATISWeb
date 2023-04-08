@@ -32,6 +32,7 @@ Imports R2CoreGUI
 Imports R2CoreParkingSystem.BlackList
 Imports R2CoreParkingSystem.Drivers
 Imports R2CoreParkingSystem.EntityRelations
+Imports R2CoreParkingSystem.FileShareRawGroupsManagement
 Imports R2CoreParkingSystem.SoftwareUsersManagement
 Imports R2CoreTransportationAndLoadNotification
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
@@ -747,6 +748,32 @@ Public Class Form3
             Next
             CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             MessageBox.Show("Ok...")
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub Button15_Click(sender As Object, e As EventArgs) Handles Button15.Click
+        Try
+            Dim WS = New R2Core.R2PrimaryFileSharingWS.R2PrimaryFileSharingWebService
+            Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+
+            Dim Da As New SqlClient.SqlDataAdapter : Dim DS As New DataSet
+            Da.SelectCommand = New SqlCommand("Select EntryExits.EnterExitId from R2PrimaryParkingSystem.dbo.TblEntryExit as EntryExits
+                                                 Where DateShamsiEnter>='1398/01/01' and DateShamsiEnter<='1401/09/30' and FlagA=1")
+            Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
+            Da.Fill(DS)
+
+            For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                Dim Exchangekey = WS.WebMethodLogin(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserShenaseh, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserPassword)
+                Dim FileName = DS.Tables(0).Rows(Loopx).Item("EnterExitId").ToString + InstanceConfiguration.GetConfigString(R2Core.ConfigurationManagement.R2CoreConfigurations.JPGBitmap, 2)
+
+                If WS.WebMethodIOFileExist(R2CoreParkingSystemRawGroups.CarImages, FileName, Exchangekey) Then
+                    Dim BA = WS.WebMethodGetFile(R2CoreParkingSystemRawGroups.CarImages, FileName, Exchangekey)
+                    WS.WebMethodSaveFile(R2CoreParkingSystemRawGroups.CarImagesBackup, FileName, BA, Exchangekey)
+                    WS.WebMethodDeleteFile(R2CoreParkingSystemRawGroups.CarImages, FileName, Exchangekey)
+                End If
+            Next
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try

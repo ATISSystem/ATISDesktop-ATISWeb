@@ -11,6 +11,8 @@ Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
 Imports R2CoreTransportationAndLoadNotification.ProcessesManagement
 Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.Exceptions
+Imports R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions
+
 
 Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
     Inherits FrmcGeneral
@@ -94,7 +96,8 @@ Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
          OrElse TypeOf ex Is LoadAllocationRegisteringFailedBecauseTurnIsNotReadyException _
          OrElse TypeOf ex Is LoadCapacitorLoadLoaderTypeViaSequentialTurnOfTurnNotAllowedException _
          OrElse TypeOf ex Is LoadAllocationNotAllowedBecuaseAHSGLoadAllocationIsUnactiveException _
-         OrElse TypeOf ex Is LoadAllocationsNotFoundException
+         OrElse TypeOf ex Is LoadAllocationsNotFoundException _
+         OrElse TypeOf ex Is TruckTotalLoadPermissionReachedException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

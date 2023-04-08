@@ -151,6 +151,8 @@
     <Content Include="fonts\Yekan.woff" />
     <Content Include="DomainSite.Master" />
     <Content Include="fonts\IranNastaliq.ttf" />
+    <Content Include="MoneyWalletManagement\WCMoneyWallet.ascx" />
+    <Content Include="MoneyWalletManagement\WCMoneyWalletCurrentCharge.ascx" />
     <Content Include="ReportsManagement\WfReportViewer.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -399,6 +401,20 @@
     <Compile Include="MenuManagement\WfMainMenu.aspx.designer.cs">
       <DependentUpon>WfMainMenu.aspx</DependentUpon>
     </Compile>
+    <Compile Include="MoneyWalletManagement\WCMoneyWallet.ascx.cs">
+      <DependentUpon>WCMoneyWallet.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MoneyWalletManagement\WCMoneyWallet.ascx.designer.cs">
+      <DependentUpon>WCMoneyWallet.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWalletManagement\WCMoneyWalletCurrentCharge.ascx.cs">
+      <DependentUpon>WCMoneyWalletCurrentCharge.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MoneyWalletManagement\WCMoneyWalletCurrentCharge.ascx.designer.cs">
+      <DependentUpon>WCMoneyWalletCurrentCharge.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportsManagement\WfReportViewer.aspx.cs">
       <DependentUpon>WfReportViewer.aspx</DependentUpon>
@@ -567,7 +583,9 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="MoneyWalletManagement\MoneyWalletChargingManagement\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

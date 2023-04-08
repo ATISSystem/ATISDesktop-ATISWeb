@@ -220,6 +220,8 @@ Namespace PublicProc
                 Else
                     Throw New ArgumentException
                 End If
+            Catch ex As ArgumentException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
@@ -3145,6 +3147,13 @@ Namespace DateAndTimeManagement
         Public Function GetCurrentTime() As String
             Try
                 Return Trim(Mid(GetSqlServerCurrentDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), 12, 8))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Function
+        Public Function GetCurrentDateTime() As R2StandardDateAndTimeStructure
+            Try
+                Return New R2StandardDateAndTimeStructure(GetCurrentDateTimeMilladiFormated, GetCurrentDateShamsiFull, GetCurrentTime)
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try

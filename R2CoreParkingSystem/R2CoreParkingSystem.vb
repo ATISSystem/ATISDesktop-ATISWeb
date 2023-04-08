@@ -4258,6 +4258,7 @@ Namespace FileShareRawGroupsManagement
 
         Public Shared ReadOnly DriverImages As Int64 = 2
         Public Shared ReadOnly CarImages As Int64 = 3
+        Public Shared ReadOnly CarImagesBackup As Int64 = 7
 
     End Class
 

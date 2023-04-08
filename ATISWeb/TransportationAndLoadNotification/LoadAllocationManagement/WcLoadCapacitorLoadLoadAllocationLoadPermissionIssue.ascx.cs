@@ -32,6 +32,7 @@ using PayanehClassLibrary.CarTruckNobatManagement.Exceptions;
 using R2Core.MoneyWallet.Exceptions;
 using R2CoreTransportationAndLoadNotification.BillOfLading;
 using R2CoreTransportationAndLoadNotification.BillOfLading.Exceptions;
+using R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -163,7 +164,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                                        ex is RequesterNotAllowTurnIssueBySeqTException ||
                                        ex is RequesterNotAllowTurnIssueByLastLoadPermissionedException ||
                                        ex is BillOfLadingBillOfLadingNumberDosnotEntryException ||
-                                       ex is LoadCapacitorLoadNotFoundException)
+                                       ex is LoadCapacitorLoadNotFoundException ||
+                                       ex is TruckTotalLoadPermissionReachedException)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message.Replace("\r\n", " ") + "');", true); }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }

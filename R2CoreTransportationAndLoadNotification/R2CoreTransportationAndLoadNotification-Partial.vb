@@ -2502,7 +2502,7 @@ Namespace LoadCapacitor
                         If YourUserNSS.UserId = NSSCurrentLoadCapacitorLoad.nUserId Then
                             CmdSql.CommandText = "Update dbtransport.dbo.TbElam Set nCompCode=@nCompCode,nBarSource=@nBarSource,AHId=@AHId,AHSGId=@AHSGId,StrBarName=@StrBarName,nCityCode=@nCityCode,nTonaj=@nTonaj,nBarCode=@nBarCode,nTruckType=@nTruckType,nCarNum=@nCarNum,StrAddress=@StrAddress,nCarNumKol=@nCarNumKol,StrPriceSug=@StrPriceSug,StrDescription=@StrDescription,TPTParams=@TPTParams Where nEstelamId=" & YourNSS.nEstelamId & ""
                         Else
-                            CmdSql.CommandText = "Update dbtransport.dbo.TbElam Set AHId=@AHId,AHSGId=@AHSGId,nCityCode=@nCityCode,nTruckType=@nTruckType,StrPriceSug=@StrPriceSug Where nEstelamId=" & YourNSS.nEstelamId & ""
+                            CmdSql.CommandText = "Update dbtransport.dbo.TbElam Set AHId=@AHId,AHSGId=@AHSGId,nCityCode=@nCityCode,nTruckType=@nTruckType,StrPriceSug=@StrPriceSug,StrAddress=@StrAddress Where nEstelamId=" & YourNSS.nEstelamId & ""
                         End If
                     End If
                     CmdSql.ExecuteNonQuery()
@@ -4328,14 +4328,14 @@ Namespace LoadPermission
     Public Class R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager
         Private _DateTime As New R2DateTime
 
-        Private Function GetTotalLoadPermissions(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourCurrentDateTime As R2StandardDateAndTimeStructure) As Int64
+        Public Function GetTotalLoadPermissions(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure) As Int64
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet
                 Return InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
                       "Select LoadAllocations.LAId from dbtransport.dbo.tbEnterExit as Turns
                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId 
-                       Where LoadAllocations.DateShamsi='" & YourCurrentDateTime.DateShamsiFull & "' and LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & " and Turns.strCardno=" & YourNSSTruck.NSSCar.nIdCar & "", 0, DS).GetRecordsCount
+                       Where LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "' and LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & " and Turns.strCardno=" & YourNSSTruck.NSSCar.nIdCar & "", 0, DS).GetRecordsCount
             Catch ex As Exception
                 Throw ex
             End Try
@@ -4416,9 +4416,6 @@ Namespace LoadPermission
 
                 'کنترل وضعیت بار در مخزن بار
                 If Not IntanceLoadCapacitorLoad.IsLoadCapacitorLoadReadeyforLoadPermissionRegistering(YourNSSLoadCapacitorLoad) Then Throw New LoadPermisionRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException
-
-                'کنترل تعداد مجوز بارگیری آزاد شده
-                If GetTotalLoadPermissions(NSSTruck, YourCurrentDateTime) = InstanceConfiguration.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 5) Then Throw New TruckTotalLoadPermissionReachedException
 
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
@@ -4814,7 +4811,7 @@ Namespace LoadPermission
                     Dim AllAnnouncementHallPrinters As String() = Split(InstanceConfigurationOfAnnouncementHalls.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadPermissionsSetting, NSSLoadCapacitorLoad.AHId, 3), "-")
                     Dim AnnouncementHallSubGroupPrinter As String = Mid(AllAnnouncementHallPrinters.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllAnnouncementHallPrinters.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length)
                     '_PrintDocumentPermission.PrinterSettings.PrinterName = AnnouncementHallSubGroupPrinter.Trim
-                    _PrintDocumentPermission.PrinterSettings.PrinterName = "HP LaserJet 400 MFP M425 PCL 6 (redirected 2)"
+                    _PrintDocumentPermission.PrinterSettings.PrinterName = "HP LaserJet Professional P1102 (redirected 2)"
                     _PrintDocumentPermission.DefaultPageSettings.PaperSize = _PrintDocumentPermission.PrinterSettings.PaperSizes(4)
                     _PrintDocumentPermission.DefaultPageSettings.PaperSource = _PrintDocumentPermission.PrinterSettings.PaperSources(2)
                     _PrintDocumentPermission.Print()
@@ -5600,9 +5597,11 @@ Namespace LoadAllocation
                 Dim InstanceTruck = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
                 Dim InstancePermissions = New R2CoreInstansePermissionsManager
                 Dim InstanceConfigurationOfAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
                 Dim InstanceTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                 Dim InstanceLoadCapacitorLoadOtherThanManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadOtherThanManipulationManager
                 Dim InstanceBlackList = New R2CoreParkingSystemInstanceBlackListManager
+                Dim InstanceLoadPermission = New R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager
 
                 Dim NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(YournEstelamId, YourImmediately)
                 Dim NSSAnnouncementHallSubGroup = InstanceAnnouncementHall.GetNSSAnnouncementHallSubGroup(NSSLoadCapacitorLoad.AHSGId)
@@ -5664,6 +5663,9 @@ Namespace LoadAllocation
                 'کنترل تکراری نبودن تخصیص بار - تخصیص فعال
                 If ExistRegisteredLoadAllocation(YournEstelamId, YourNSSTurn.nEnterExitId) Then Throw New RegisteredLoadAllocationIsRepetitiousException
 
+                'کنترل تعداد مجوز بارگیری آزاد شده
+                If InstanceLoadPermission.GetTotalLoadPermissions(NSSTruck) = InstanceConfiguration.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 5) Then Throw New TruckTotalLoadPermissionReachedException
+
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
                 Dim LAIdNew As Int64 = 0
@@ -5707,7 +5709,8 @@ Namespace LoadAllocation
                 OrElse TypeOf ex Is TurnNotFoundException _
                 OrElse TypeOf ex Is TruckNotFoundException _
                 OrElse TypeOf ex Is TurnHandlingNotAllowedBecuaseTurnStatusException _
-                OrElse TypeOf ex Is UnableAllocatingTommorowLoadException
+                OrElse TypeOf ex Is UnableAllocatingTommorowLoadException _
+                OrElse TypeOf ex Is TruckTotalLoadPermissionReachedException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                 End If
@@ -6071,10 +6074,10 @@ Namespace LoadAllocation
                                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On Elam.AHSGId =AHSGs.AHSGId  
                                   Where LoadAllocation.DateShamsi ='" & _DateTime.GetCurrentDateShamsiFull() & "' and LoadAllocation.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.Registered & "" + ComposeQueryAHId + ComposeQueryAHSGId + " and Elam.LoadStatus<>" & R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented & " Order By TurnId Asc, LoadAllocation.Priority Asc) as DataBox2", 0, DS)
                 Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure)
-                    For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                        Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure(DS.Tables(0).Rows(Loopx).Item("LAId"), DS.Tables(0).Rows(Loopx).Item("nEstelamId"), DS.Tables(0).Rows(Loopx).Item("TurnId"), DS.Tables(0).Rows(Loopx).Item("LAStatusId"), DS.Tables(0).Rows(Loopx).Item("LANote").trim, DS.Tables(0).Rows(Loopx).Item("Priority"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi"), DS.Tables(0).Rows(Loopx).Item("Time"), DS.Tables(0).Rows(Loopx).Item("UserId")))
-                    Next
-                    Return Lst
+                For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure(DS.Tables(0).Rows(Loopx).Item("LAId"), DS.Tables(0).Rows(Loopx).Item("nEstelamId"), DS.Tables(0).Rows(Loopx).Item("TurnId"), DS.Tables(0).Rows(Loopx).Item("LAStatusId"), DS.Tables(0).Rows(Loopx).Item("LANote").trim, DS.Tables(0).Rows(Loopx).Item("Priority"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi"), DS.Tables(0).Rows(Loopx).Item("Time"), DS.Tables(0).Rows(Loopx).Item("UserId")))
+                Next
+                Return Lst
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -6098,11 +6101,13 @@ Namespace LoadAllocation
                     InstanceLoadPermission.LoadPermissionRegistering(YourNSSLoadAllocation, YourNSSLoadCapacitorLoad, YourCurrentDateTime, YourUserNSS)
                     Try
                         CmdSql.Connection.Open()
-                        CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
-                                              Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & ",LANote='مجوز صادر شده' Where LAId=" & YourNSSLoadAllocation.LAId & ""
                         'CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
-                        '                      Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & ",LANote='مجوز صادر شده',DateTimeMilladi='" & YourCurrentDateTime.DateTimeMilladiFormated & "',DateShamsi='" & YourCurrentDateTime.DateShamsiFull & "',Time='" & YourCurrentDateTime.Time & "' 
-                        '                      Where LAId=" & YourNSSLoadAllocation.LAId & ""
+                        '                      Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & ",LANote='مجوز صادر شده' Where LAId=" & YourNSSLoadAllocation.LAId & ""
+                        'CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
+                        '                      Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & ",LANote='مجوز صادر شده',Time='" & YourCurrentDateTime.Time & "' Where LAId=" & YourNSSLoadAllocation.LAId & ""
+                        CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
+                                              Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & ",LANote='مجوز صادر شده',DateTimeMilladi='" & YourCurrentDateTime.DateTimeMilladiFormated & "',DateShamsi='" & YourCurrentDateTime.DateShamsiFull & "',Time='" & YourCurrentDateTime.Time & "' 
+                                              Where LAId=" & YourNSSLoadAllocation.LAId & ""
                         CmdSql.ExecuteNonQuery()
                         CmdSql.Connection.Close()
                     Catch ex As Exception
@@ -6112,12 +6117,14 @@ Namespace LoadAllocation
                     'مارک تخصیص به حالت فی لد Falied
                     Try
                         CmdSql.Connection.Open()
-                        CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
-                                                  Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed & ",LANote='" & ex.Message & "'  Where LAId=" & YourNSSLoadAllocation.LAId & ""
                         'CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
-                        '                          Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed & ",LANote='" & ex.Message & "',
-                        '                              DateTimeMilladi='" & YourCurrentDateTime.DateTimeMilladiFormated & "',DateShamsi='" & YourCurrentDateTime.DateShamsiFull & "',Time='" & YourCurrentDateTime.Time & "' 
-                        '                  Where LAId=" & YourNSSLoadAllocation.LAId & ""
+                        '                          Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed & ",LANote='" & ex.Message & "'  Where LAId=" & YourNSSLoadAllocation.LAId & ""
+                        'CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
+                        '                      Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & ",LANote='مجوز صادر شده',Time='" & YourCurrentDateTime.Time & "' Where LAId=" & YourNSSLoadAllocation.LAId & ""
+                        CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations 
+                                                  Set LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed & ",LANote='" & ex.Message & "',
+                                                      DateTimeMilladi='" & YourCurrentDateTime.DateTimeMilladiFormated & "',DateShamsi='" & YourCurrentDateTime.DateShamsiFull & "',Time='" & YourCurrentDateTime.Time & "' 
+                                          Where LAId=" & YourNSSLoadAllocation.LAId & ""
                         CmdSql.ExecuteNonQuery()
                         CmdSql.Connection.Close()
                     Catch exy As Exception
@@ -6141,7 +6148,8 @@ Namespace LoadAllocation
                                        OrElse TypeOf ex Is GetDataException _
                                        OrElse TypeOf ex Is AnnouncementHallSubGroupNotFoundException _
                                        OrElse TypeOf ex Is AnnouncementHallSubGroupRelationTruckNotExistException _
-                                       OrElse TypeOf ex Is TimingNotReachedException
+                                       OrElse TypeOf ex Is TimingNotReachedException _
+                                       OrElse TypeOf ex Is TruckTotalLoadPermissionReachedException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw ex
             Catch ex As Exception
@@ -6202,7 +6210,8 @@ Namespace LoadAllocation
                                           OrElse TypeOf ex Is GetNSSException _
                                           OrElse TypeOf ex Is GetDataException _
                                           OrElse TypeOf ex Is AnnouncementHallSubGroupNotFoundException _
-                                          OrElse TypeOf ex Is AnnouncementHallSubGroupRelationTruckNotExistException
+                                          OrElse TypeOf ex Is AnnouncementHallSubGroupRelationTruckNotExistException _
+                                          OrElse TypeOf ex Is TruckTotalLoadPermissionReachedException
                         Try
                             If NSSLoadAllocation.LAStatusId <> R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionFailed Then
                                 If InstanceConfigurationOfAnnouncementHalls.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadPermissionsSetting, NSSLoadCapacitorLoad.AHId, 2) Then

@@ -406,6 +406,7 @@ Public Class FrmcEnterExit
                 _TimerClearLastReadedTeraficCard.Enabled = True
                 _TimerClearLastReadedTeraficCard.Start()
             End If
+            PleaseReserveTurn()
             DoProccess(CardNo, True)
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
                             OrElse TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
@@ -437,18 +438,15 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is GetNSSException _
                             OrElse TypeOf ex Is GetDataException _
                             OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
-            PleaseReserveTurn()
             InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreParkingSystemLogType.EntryExit, "ثبت تردد خودرو", _NSSTrafficCard.CardNo, myLP.GetLPString, myEnterExitRequest.ToString, String.Empty, ex.Message, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, True)
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException OrElse TypeOf ex Is CarIsNotPresentInParkingException OrElse TypeOf ex Is SequentialTurnIsNotActiveException OrElse TypeOf ex Is TurnPrintingInfNotFoundException OrElse TypeOf ex Is GetNobatExceptionCarTruckIsTankTreiler OrElse TypeOf ex Is CarTruckTravelLengthNotOverYetException OrElse TypeOf ex Is GetNobatExceptionCarTruckHasNobat OrElse TypeOf ex Is GetNobatException OrElse TypeOf ex Is GetNSSException OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException
-            PleaseReserveTurn()
             InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreParkingSystemLogType.EntryExit, "ثبت تردد خودرو", _NSSTrafficCard.CardNo, myLP.GetLPString, myEnterExitRequest.ToString, String.Empty, ex.Message, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Warning, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, True)
         Catch ex As Exception When TypeOf ex Is GetNobatExceptionCarTruckHasNobat
             InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreParkingSystemLogType.EntryExit, "ثبت تردد خودرو", _NSSTrafficCard.CardNo, myLP.GetLPString, myEnterExitRequest.ToString, String.Empty, ex.Message, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.Information, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Nothing, True)
         Catch ex As Exception
-            PleaseReserveTurn()
             InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreParkingSystemLogType.EntryExit, "ثبت تردد خودرو", _NSSTrafficCard.CardNo, myLP.GetLPString, myEnterExitRequest.ToString, String.Empty, ex.Message, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing))
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "ثبت تردد در فرآیند اصلی با خطا مواجه شد", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me, False)
         End Try

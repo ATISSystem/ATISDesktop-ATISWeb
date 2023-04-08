@@ -8,6 +8,7 @@ Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
+Imports R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Turns
 
 Public Class UCLoadAllocationManipulation
@@ -116,6 +117,8 @@ Public Class UCLoadAllocationManipulation
         Catch ex As RequesterHasNotPermissionforLoadAllocationRegisteringException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadAllocationNotAllowedBecuaseAHSGLoadAllocationIsUnactiveException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As TruckTotalLoadPermissionReachedException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

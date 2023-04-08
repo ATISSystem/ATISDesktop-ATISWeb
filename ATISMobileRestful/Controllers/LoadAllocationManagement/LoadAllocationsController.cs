@@ -30,6 +30,7 @@ using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
 using R2Core.SecurityAlgorithmsManagement.Hashing;
 using R2Core.PermissionManagement;
 using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
+using R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions;
 
 namespace ATISMobileRestful.Controllers.LoadAllocationManagement
 {
@@ -92,6 +93,8 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             catch (UserLast5DigitNotMatchingException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserIdNotExistException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (TruckTotalLoadPermissionReachedException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
