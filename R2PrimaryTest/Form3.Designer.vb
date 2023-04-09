@@ -147,16 +147,16 @@ Partial Class Form3
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(255, 97)
+        Me.Button4.Location = New System.Drawing.Point(174, 97)
         Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(75, 23)
+        Me.Button4.Size = New System.Drawing.Size(237, 23)
         Me.Button4.TabIndex = 8
-        Me.Button4.Text = "Button4"
+        Me.Button4.Text = "صدور خودکار مجوزهای اعلام بار"
         Me.Button4.UseVisualStyleBackColor = True
         '
         'Button5
         '
-        Me.Button5.Location = New System.Drawing.Point(174, 97)
+        Me.Button5.Location = New System.Drawing.Point(255, 126)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(75, 23)
         Me.Button5.TabIndex = 9
@@ -183,7 +183,7 @@ Partial Class Form3
         '
         'Button8
         '
-        Me.Button8.Location = New System.Drawing.Point(336, 97)
+        Me.Button8.Location = New System.Drawing.Point(336, 126)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(75, 23)
         Me.Button8.TabIndex = 12

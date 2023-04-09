@@ -1799,6 +1799,23 @@ Namespace SoftwareUserManagement
             End Try
         End Function
 
+        Public Function GetNSSVirtualChargingSoftwareUser() As R2CoreStandardSoftwareUserStructure
+            Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
+            Dim InstanceSoftwareUser As New R2CoreInstanseSoftwareUsersManager
+            Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+            Try
+                Dim Ds As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                         "Select Top 1 SoftwareUsers.UserId from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                          Where SoftwareUsers.UserId=" & InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 13) & " and SoftwareUsers.Deleted=0", 3600, Ds).GetRecordsCount = 0 Then Throw New UserIdNotExistException
+                Return InstanceSoftwareUser.GetNSSUser(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("UserId")))
+            Catch ex As UserIdNotExistException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
     End Class
 
     Public Class R2CoreMClassSoftwareUsersManagement
@@ -4516,7 +4533,7 @@ Namespace RFIDCardsManagement
                     Throw New Exception("کارت مورد نظر قبلا ثبت شده است")
                 End If
                 Dim Ds As DataSet = New DataSet() : Dim Da As New SqlDataAdapter
-                Da.SelectCommand = New SqlCommand("select Top 1 CardId from R2Primary.dbo.TblRfidCards order by Cardid Desc")
+                Da.SelectCommand = New SqlCommand("select Top 1 CardId from R2Primary.dbo.TblRfidCards order by Cast(Cardid as int) Desc")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Ds.Tables.Clear()
                 Dim myCardID As String

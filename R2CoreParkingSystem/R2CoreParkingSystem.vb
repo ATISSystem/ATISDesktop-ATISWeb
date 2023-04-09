@@ -58,6 +58,7 @@ Imports R2Core.MoneyWallet.MoneyWallet
 Imports R2Core.MoneyWallet.Exceptions
 Imports R2Core.SMS
 Imports R2Core.SMS.Exceptions
+Imports R2Core.SoftwareUserManagement.Exceptions
 
 Namespace Logging
 
@@ -1947,10 +1948,10 @@ Namespace AccountingManagement
 
     Public Class R2CoreParkingSystemInstanceAccountingManager
         Public Function GetAccountingCollection(YourTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourTotalNumberofAccounts As Int64) As List(Of R2StandardEnterExitAccountingExtendedStructure)
-            Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
             Try
                 Dim Lst = New List(Of R2StandardEnterExitAccountingExtendedStructure)
                 Dim Ds As DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
                      "Select Top " & YourTotalNumberofAccounts & " Accounting.EEAccountingProcessType,Accountings.AColor,Accountings.AName,Accounting.TimeA,Accounting.DateShamsiA,Accounting.CurrentChargeA,Accounting.MblghA,Accounting.ReminderChargeA,Computers.MName,SoftwareUsers.UserName,Accounting.DateMilladiA,Accounting.maabarcode,Accounting.userida from R2Primary.dbo.TblAccounting as Accounting
                          Inner Join  R2Primary.dbo.TblAccountingCodingTypes as Accountings On Accounting.EEAccountingProcessType=Accountings.ACode
@@ -2424,6 +2425,24 @@ Namespace MoneyWalletChargeManagement
             End Try
         End Sub
 
+        Public Function GetMoneyWalletChargeCollection(ByVal YourNSSTrafficCard As R2CoreParkingSystemStandardTrafficCardStructure, YourTotalNumberofRecordsRequested As Int64) As List(Of R2StandardMoneyWalletChargeExtendedStructure)
+            Try
+                Dim Ds As New DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                          "Select Top " & YourTotalNumberofRecordsRequested & " SoftWare.UserName,Charge.* from R2Primary.dbo.TblMoneyWalletCharges AS Charge 
+                               Inner Join R2Primary.dbo.TblSoftwareUsers as SoftWare On Charge.UserId=SoftWare.UserId
+                             Where Charge.CardId='" & YourNSSTrafficCard.CardId & "' Order by DateTimeMilladi Desc", 0, Ds)
+                Dim Lst = New List(Of R2StandardMoneyWalletChargeExtendedStructure)
+                For loopx As Int16 = 0 To Ds.Tables(0).Rows.Count - 1
+                    Lst.Add(New R2StandardMoneyWalletChargeExtendedStructure(New R2StandardMoneyWalletChargeStructure(YourNSSTrafficCard, Ds.Tables(0).Rows(loopx).Item("mblgh"), Ds.Tables(0).Rows(loopx).Item("userid"), Ds.Tables(0).Rows(0).Item("Mobile").trim, Ds.Tables(0).Rows(loopx).Item("DateTimeMilladi"), Ds.Tables(0).Rows(loopx).Item("DateShamsi").trim, Ds.Tables(0).Rows(loopx).Item("Tash"), Ds.Tables(0).Rows(loopx).Item("Radifx"), Ds.Tables(0).Rows(loopx).Item("TimeCharge").trim), Ds.Tables(0).Rows(loopx).Item("UserName").trim))
+                Next
+                Return Lst
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
     End Class
 
     Public Class R2CoreParkingSystemMClassMoneyWalletChargeManagement
@@ -2492,6 +2511,94 @@ Namespace MoneyWalletChargeManagement
                 End Get
             End Property
         End Class
+
+    End Namespace
+
+    Namespace MoneyWalletChargingAmountsManagement
+        Public Class R2CoreParkingSystemMoneyWalletChargingAmountStructure
+
+            Public Sub New()
+                MyBase.New()
+                _MWCAId = Int64.MinValue
+                _MWCAName = String.Empty
+                _MWCATitle = String.Empty
+                _MWCARial = Int64.MinValue
+                _UserId = Int64.MinValue
+                _DateTimeMilladi = Now
+                _DateShamsi = String.Empty
+                _Time = String.Empty
+                _Active = Boolean.FalseString
+                _ViewFlag = Boolean.FalseString
+                _Deleted = Boolean.FalseString
+            End Sub
+
+            Public Sub New(YourMWCAId As Int64, YourMWCAName As String, YourMWCATitle As String, YourMWCARial As Int64, YourUserId As Int64, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
+                _MWCAId = YourMWCAId
+                _MWCAName = YourMWCAName
+                _MWCATitle = YourMWCATitle
+                _MWCARial = YourMWCARial
+                _UserId = YourUserId
+                _DateTimeMilladi = YourDateTimeMilladi
+                _DateShamsi = YourDateShamsi
+                _Time = YourTime
+                _Active = YourActive
+                _ViewFlag = YourViewFlag
+                _Deleted = YourDeleted
+            End Sub
+
+            Public Property MWCAId As Int64
+            Public Property MWCAName As String
+            Public Property MWCATitle As String
+            Public Property MWCARial As Int64
+            Public Property UserId As Int64
+            Public Property DateTimeMilladi As DateTime
+            Public Property DateShamsi As String
+            Public Property Time As String
+            Public Property Active As Boolean
+            Public Property ViewFlag As Boolean
+            Public Property Deleted As Boolean
+
+
+        End Class
+
+        Public Class R2CoreParkingSystemMoneyWalletChargingAmountsManager
+
+            Public Function GetActiveAmounts(YourRequesterId As Int64) As List(Of R2CoreParkingSystemMoneyWalletChargingAmountStructure)
+                Try
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    Dim DS As DataSet
+                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                        "Select MoneyWalletChargingAmounts.* from R2Primary.dbo.TblMoneyWalletChargingAmounts as MoneyWalletChargingAmounts 
+                            Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On MoneyWalletChargingAmounts.MWCAId=EntityRelations.E2 
+                         Where EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.Requester_MWCA & " and EntityRelations.RelationActive=1 
+                               and MoneyWalletChargingAmounts.Active=1 and MoneyWalletChargingAmounts.Deleted=0 
+                               and EntityRelations.E1=" & RequesterManagement.R2CoreParkingSystemRequesters.WCMoneyWalletCharging & " Order By MoneyWalletChargingAmounts.MWCARial", 3600, DS)
+                    Dim Lst = New List(Of R2CoreParkingSystemMoneyWalletChargingAmountStructure)
+                    For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                        Lst.Add(New R2CoreParkingSystemMoneyWalletChargingAmountStructure(DS.Tables(0).Rows(Loopx).Item("MWCAId"), DS.Tables(0).Rows(Loopx).Item("MWCAName").trim, DS.Tables(0).Rows(Loopx).Item("MWCATitle").trim, DS.Tables(0).Rows(Loopx).Item("MWCARial"), DS.Tables(0).Rows(Loopx).Item("UserId"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi").trim, DS.Tables(0).Rows(Loopx).Item("Time").trim, DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
+                    Next
+                    Return Lst
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function GetNSSAmount(YourMWCAId As Int64) As R2CoreParkingSystemMoneyWalletChargingAmountStructure
+                Try
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    Dim DS As DataSet
+                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                        "Select Top 1 MoneyWalletChargingAmounts.* from R2Primary.dbo.TblMoneyWalletChargingAmounts as MoneyWalletChargingAmounts 
+                         Where MoneyWalletChargingAmounts.MWCAId=" & YourMWCAId & " and MoneyWalletChargingAmounts.Deleted=0", 3600, DS)
+                    Return New R2CoreParkingSystemMoneyWalletChargingAmountStructure(DS.Tables(0).Rows(0).Item("MWCAId"), DS.Tables(0).Rows(0).Item("MWCAName").trim, DS.Tables(0).Rows(0).Item("MWCATitle").trim, DS.Tables(0).Rows(0).Item("MWCARial"), DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi").trim, DS.Tables(0).Rows(0).Item("Time").trim, DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+        End Class
+
+
 
     End Namespace
 
@@ -4706,6 +4813,7 @@ Namespace SoftwareUsersManagement
 
     End Class
 
+
     Namespace Exceptions
         Public Class SoftwareUserRelatedThisDriverNotFoundException
             Inherits ApplicationException
@@ -4725,6 +4833,7 @@ Namespace EntityRelations
     Public MustInherit Class R2CoreParkingSystemEntityRelationTypes
         Inherits R2CoreEntityRelationTypes
         Public Shared ReadOnly SoftwareUser_Driver As Int64 = 2
+        Public Shared ReadOnly Requester_MWCA As Int64 = 9
     End Class
 
 End Namespace
@@ -4733,6 +4842,9 @@ Namespace RequesterManagement
 
     Public MustInherit Class R2CoreParkingSystemRequesters
         Inherits R2CoreRequesters
+        Public Shared ReadOnly WCMoneyWalletCharging As Int64 = 14
+
+
 
     End Class
 

@@ -20,6 +20,7 @@ Imports R2Core.DateAndTimeManagement.CalendarManagement.PersianCalendar
 Imports R2Core.EntityRelationManagement
 Imports R2Core.ExceptionManagement
 Imports R2Core.FileShareRawGroupsManagement
+Imports R2Core.MonetaryCreditSupplySources
 Imports R2Core.MoneyWallet.PaymentRequests
 Imports R2Core.PermissionManagement
 Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
@@ -507,7 +508,12 @@ Public Class Form3
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
-
+        Try
+            Dim InstancePaymentRequests = New R2Core.MoneyWallet.PaymentRequests.R2CoreInstansePaymentRequestsManager
+            InstancePaymentRequests.PaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, 10000, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
     End Sub
 
     Private Sub Form3_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -764,6 +770,7 @@ Public Class Form3
             Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
             Da.Fill(DS)
 
+            Dim Counter As Int64 = 0
             For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                 Dim Exchangekey = WS.WebMethodLogin(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserShenaseh, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser.UserPassword)
                 Dim FileName = DS.Tables(0).Rows(Loopx).Item("EnterExitId").ToString + InstanceConfiguration.GetConfigString(R2Core.ConfigurationManagement.R2CoreConfigurations.JPGBitmap, 2)
@@ -772,6 +779,7 @@ Public Class Form3
                     Dim BA = WS.WebMethodGetFile(R2CoreParkingSystemRawGroups.CarImages, FileName, Exchangekey)
                     WS.WebMethodSaveFile(R2CoreParkingSystemRawGroups.CarImagesBackup, FileName, BA, Exchangekey)
                     WS.WebMethodDeleteFile(R2CoreParkingSystemRawGroups.CarImages, FileName, Exchangekey)
+                    Counter += 1
                 End If
             Next
         Catch ex As Exception

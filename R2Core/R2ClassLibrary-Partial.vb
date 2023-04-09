@@ -322,7 +322,7 @@ Namespace MonetaryCreditSupplySources
             Try
                 Dim AssemblyClassName As String = YourNSS.AssemblyPath
                 Dim Instance As Object = Activator.CreateInstance(Type.GetType(AssemblyClassName), New Object() {YourAmount})
-                'Dim Instance As Object = Activator.CreateInstance(Type.GetType("R2Core.MonetaryCreditSupplySources.ZarrinPalPaymentGate.R2CoreZarrinPalPaymentGate,R2Core"), New Object() {YourAmount})
+                'Dim Instance As Object = Activator.CreateInstance(Type.GetType("R2Core.MonetaryCreditSupplySources.ShepaPaymentGate.R2CoreShepaPaymentGate,R2Core"), New Object() {YourAmount})
                 Return Instance
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -719,7 +719,7 @@ Namespace MonetaryCreditSupplySources
                 Try
                     Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
                     Dim Merchant As ShepaMerchant.Merchant = New ShepaMerchant.Merchant
-                    Dim Data = Merchant.requestToken(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ShepaPaymentGate, 0), _Amount.ToString(), InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 3), "", "", "", "0", "", "")
+                    Dim Data = Merchant.requestToken(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ShepaPaymentGate, 0), _Amount.ToString(), InstanceConfiguration.GetConfigString(R2CoreConfigurations.ShepaPaymentGate, 3), "", "", "", "0", "", "")
                     If Data.success Then
                         _SupplyReport = Data.result.token
                         _MonetarySupplyType = MonetarySupply.MonetarySupplyType.PaymentRequest

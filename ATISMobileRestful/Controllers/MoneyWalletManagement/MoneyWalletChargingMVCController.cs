@@ -20,6 +20,7 @@ using R2CoreTransportationAndLoadNotification.Logging;
 using R2CoreTransportationAndLoadNotification.TerraficCardsManagement;
 using R2Core.MonetaryCreditSupplySources;
 using R2Core.MoneyWallet.PaymentRequests;
+using R2CoreParkingSystem.SoftwareUsersManagement;
 
 namespace ATISMobileRestful.Controllers.MoneyWalletManagement
 {
@@ -35,13 +36,14 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClientPaymentVerification(Request, Request.QueryString["Authority"]);
+                WebAPi.AuthenticateClientPaymentVerificationZarrinPal(Request, Request.QueryString["Authority"]);
 
                 var InstanceTrafficCards = new R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
                 var InstanceMoneyWallets = new R2CoreParkingSystemInstanceMoneyWalletManager();
                 var InstanceMoneyWalletCharge = new R2CoreParkingSystemInstanceMoneyWalletChargeManager();
                 var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
 
+                ViewBag.Title = "سامانه آتیس";
                 if (Request.QueryString["Status"] != "" && Request.QueryString["Status"] != null && Request.QueryString["Authority"] != "" && Request.QueryString["Authority"] != null)
                 {
                     if (Request.QueryString["Status"].ToString().Equals("OK"))
@@ -60,7 +62,10 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                             var NSSTrafficCard = InstanceTrafficCards.GetNSSTerafficCard(NSSSoftwareUser);
                             Int64 CurrentCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
                             InstanceMoneyWallets.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.AddMoney, NSSPaymentRequest.Amount, R2CoreParkingSystemAccountings.ChargeType, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
-                            InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSSystemUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime()));
+                            if (NSSSoftwareUser.UserTypeId == R2CoreParkingSystemSoftwareUserTypes.Driver)
+                            { InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSSystemUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime())); }
+                            else
+                            { InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSVirtualChargingSoftwareUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime())); }
                             Int64 LastCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
                             ViewBag.IsSuccess = true; ViewBag.RefId = NSSPaymentRequest.RefId;
                             ViewBag.Message1 = NSSTrafficCard.CardNo + "  شاخص کیف پول ";
@@ -83,13 +88,13 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
         }
 
         //public ActionResult PaymentVerification()
-        //{ 
+        //{
         //    //درگاه پرداخت شپا
         //    ATISMobileWebApi WebAPi = new ATISMobileWebApi();
         //    try
         //    {
         //        //تایید اعتبار کلاینت
-        //        WebAPi.AuthenticateClientPaymentVerification(Request, Request.QueryString["token"]);
+        //        WebAPi.AuthenticateClientPaymentVerificationShepa(Request, Request.QueryString["token"]);
 
         //        var InstanceTrafficCards = new R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
         //        var InstanceMoneyWallets = new R2CoreParkingSystemInstanceMoneyWalletManager();
@@ -112,7 +117,10 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
         //                var NSSTrafficCard = InstanceTrafficCards.GetNSSTerafficCard(NSSSoftwareUser);
         //                Int64 CurrentCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
         //                InstanceMoneyWallets.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.AddMoney, NSSPaymentRequest.Amount, R2CoreParkingSystemAccountings.ChargeType, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
-        //                InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSSystemUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime()));
+        //                if (NSSSoftwareUser.UserTypeId == R2CoreParkingSystemSoftwareUserTypes.Driver)
+        //                { InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSSystemUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime())); }
+        //                else
+        //                { InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSVirtualChargingSoftwareUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime())); }
         //                Int64 LastCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
         //                ViewBag.IsSuccess = true; ViewBag.RefId = NSSPaymentRequest.RefId;
         //                ViewBag.Message1 = NSSTrafficCard.CardNo + "  شاخص کیف پول ";
