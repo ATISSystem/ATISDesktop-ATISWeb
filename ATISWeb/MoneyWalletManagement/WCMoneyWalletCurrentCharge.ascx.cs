@@ -59,6 +59,7 @@ namespace ATISWeb.MoneyWalletManagement
         {
             try
             {
+                BtnRenew.ServerClick += BtnRenew_ServerClick;
                 this.WCCurrentNSSChangedEvent += WCMoneyWalletCurrentCharge_WCCurrentNSSChangedEvent;
                 var InstanceTerraficCards = new R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
                 var InstanceLogin = new ATISWebMClassLoginManager();
@@ -66,6 +67,17 @@ namespace ATISWeb.MoneyWalletManagement
                 WCCurrentNSS = InstanceTerraficCards.GetNSSTerafficCard(NSSSoftwareUser);
             }
             catch (SoftwareUserMoneyWalletNotFoundException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+            catch (Exception ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }
+        }
+
+        private void BtnRenew_ServerClick(object sender, EventArgs e)
+        {
+            try { WCViewInformation(); }
+            catch (ArgumentException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+            catch (MoneyWalletNotExistException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }

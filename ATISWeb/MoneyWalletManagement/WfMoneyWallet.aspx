@@ -15,7 +15,7 @@
     <div class="container-fluid">
         <div class="container-fluid  text-right">
             <div class="d-flex flex-column">
-                <span class="" style="font-family: BHoma; font-size: 40px">کیف پول و شارژ</span>
+                <span class="" style="font-family: BHoma; font-size: 40px">کیف پول</span>
             </div>
         </div>
         <div class="container-fluid p-0 mb-1">

@@ -1953,7 +1953,7 @@ Namespace AccountingManagement
                 Dim Ds As DataSet
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
-                     "Select Top " & YourTotalNumberofAccounts & " Accounting.EEAccountingProcessType,Accountings.AColor,Accountings.AName,Accounting.TimeA,Accounting.DateShamsiA,Accounting.CurrentChargeA,Accounting.MblghA,Accounting.ReminderChargeA,Computers.MName,SoftwareUsers.UserName,Accounting.DateMilladiA,Accounting.maabarcode,Accounting.userida from R2Primary.dbo.TblAccounting as Accounting
+                     "Select Top " & YourTotalNumberofAccounts & " Accounting.EEAccountingProcessType,Accountings.AColor,Accountings.AName,Accounting.TimeA,Accounting.DateShamsiA,Accounting.CurrentChargeA,Accounting.MblghA,Accounting.ReminderChargeA,Computers.MDisplayTitle,SoftwareUsers.UserName,Accounting.DateMilladiA,Accounting.maabarcode,Accounting.userida from R2Primary.dbo.TblAccounting as Accounting
                          Inner Join  R2Primary.dbo.TblAccountingCodingTypes as Accountings On Accounting.EEAccountingProcessType=Accountings.ACode
                          Inner Join R2Primary.dbo.TblComputers as Computers On Accounting.MaabarCode=Computers.MId
                          Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On Accounting.UserIdA=SoftwareUsers.UserId
@@ -1969,7 +1969,7 @@ Namespace AccountingManagement
                     Dim myUserIdA As Int64 = Ds.Tables(0).Rows(Loopx).Item("userida")
                     Dim myCurrentChargeA As Int64 = Ds.Tables(0).Rows(Loopx).Item("currentchargea")
                     Dim myReminderChargeA As Int64 = Ds.Tables(0).Rows(Loopx).Item("reminderchargea")
-                    Lst.Add(New R2StandardEnterExitAccountingExtendedStructure(New R2StandardEnterExitAccountingStructure(YourTrafficCard, myEEAProcessType, myDateShamsiA, myTimeA, myDateTimeMilladiA, myNSSCar, myMaabarCode, myMblghA, myUserIdA, myCurrentChargeA, myReminderChargeA), Ds.Tables(0).Rows(Loopx).Item("AColor").trim, Ds.Tables(0).Rows(Loopx).Item("AName").trim, Ds.Tables(0).Rows(Loopx).Item("MName").trim, Ds.Tables(0).Rows(Loopx).Item("UserName").trim))
+                    Lst.Add(New R2StandardEnterExitAccountingExtendedStructure(New R2StandardEnterExitAccountingStructure(YourTrafficCard, myEEAProcessType, myDateShamsiA, myTimeA, myDateTimeMilladiA, myNSSCar, myMaabarCode, myMblghA, myUserIdA, myCurrentChargeA, myReminderChargeA), Ds.Tables(0).Rows(Loopx).Item("AColor").trim, Ds.Tables(0).Rows(Loopx).Item("AName").trim, Ds.Tables(0).Rows(Loopx).Item("MDisplayTitle").trim, Ds.Tables(0).Rows(Loopx).Item("UserName").trim))
                 Next
                 Return Lst
             Catch ex As Exception

@@ -19,7 +19,7 @@
         <ContentTemplate>
             <div class="table table-responsive-lg border">
                 <asp:Table ID="TblMoneyWalletAccounting" runat="server" CssClass="table table-striped table-hover table-borderless text-center border-white" HorizontalAlign="Center" CellSpacing="0">
-                    <asp:TableHeaderRow runat="server" CssClass="bg-primary" ForeColor="White">
+                    <asp:TableHeaderRow runat="server" CssClass="" Style="background-color:yellow" ForeColor="Black">
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">کاربر</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">درگاه</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">باقیمانده</asp:TableHeaderCell>

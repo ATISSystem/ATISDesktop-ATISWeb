@@ -5,6 +5,7 @@ using System.Web.UI;
 using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2CoreTransportationAndLoadNotification.TransportCompanies;
+using R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 {
@@ -43,6 +44,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 WcLoadCapacitorLoadLoadPermissionsIssued.WcViewInformation(WcLoadCapacitorLoadManipulation.WcGetNSS(false).nEstelamId);
                 WcLoadCapacitorLoadsCollectionIntelligently.WcViewInformation();
             }
+            catch (TransportPriceTarrifParameterDetailsNotAdjustedException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name +"." + ex.Message + "');", true);  }
         }

@@ -523,7 +523,7 @@ namespace ATISMobileRestful
             { throw ex; }
         }
 
-        public void AuthenticateClientPaymentVerificationShepa(System.Web.HttpRequestBase YourRequest, string YourAuthority)
+        public void AuthenticateClientPaymentVerification(System.Web.HttpRequestBase YourRequest, string YourAuthority)
         {
             try
             {
@@ -538,7 +538,7 @@ namespace ATISMobileRestful
 
                 var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
                 var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(YourAuthority);
-                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSPaymentRequest.DateTimeMilladi).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.ShepaPaymentGate , 6))
+                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSPaymentRequest.DateTimeMilladi).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.ShepaPaymentGate, 6))
                 { throw new WebApiClientNonceExpiredException(); };
                 if (NSSPaymentRequest.VerificationCount == 0)
                 { throw new WebApiClientNonceExpiredException(); }
@@ -549,31 +549,31 @@ namespace ATISMobileRestful
             { throw ex; }
         }
 
-        public void AuthenticateClientPaymentVerificationZarrinPal(System.Web.HttpRequestBase YourRequest, string YourAuthority)
-        {
-            try
-            {
-                var InstanceLogging = new R2CoreInstanceLoggingManager();
-                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
-                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
-                var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
-                var IP = YourRequest.UserHostAddress;
-                if (InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest).Active)
-                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest).LogTitle, IP, YourAuthority, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null)); }
-                InstanceBlackIP.AuthorizationIP(IP);
+        //public void AuthenticateClientPaymentVerificationZarrinPal(System.Web.HttpRequestBase YourRequest, string YourAuthority)
+        //{
+        //    try
+        //    {
+        //        var InstanceLogging = new R2CoreInstanceLoggingManager();
+        //        var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+        //        var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+        //        var InstanceBlackIP = new R2CoreInstanceBlackIPsManager();
+        //        var IP = YourRequest.UserHostAddress;
+        //        if (InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest).Active)
+        //        { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientMoneyWalletPaymentSucceededRequest).LogTitle, IP, YourAuthority, string.Empty, string.Empty, string.Empty, InstanceSoftwareusers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null)); }
+        //        InstanceBlackIP.AuthorizationIP(IP);
 
-                var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
-                var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(YourAuthority);
-                if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSPaymentRequest.DateTimeMilladi).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.ZarrinPalPaymentGate, 6))
-                { throw new WebApiClientNonceExpiredException(); };
-                if (NSSPaymentRequest.VerificationCount == 0)
-                { throw new WebApiClientNonceExpiredException(); }
-                else
-                { InstancePaymentRequests.DecreaseVerificationCount(NSSPaymentRequest.PayId); }
-            }
-            catch (Exception ex)
-            { throw ex; }
-        }
+        //        var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
+        //        var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(YourAuthority);
+        //        if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSPaymentRequest.DateTimeMilladi).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.ZarrinPalPaymentGate, 6))
+        //        { throw new WebApiClientNonceExpiredException(); };
+        //        if (NSSPaymentRequest.VerificationCount == 0)
+        //        { throw new WebApiClientNonceExpiredException(); }
+        //        else
+        //        { InstancePaymentRequests.DecreaseVerificationCount(NSSPaymentRequest.PayId); }
+        //    }
+        //    catch (Exception ex)
+        //    { throw ex; }
+        //}
 
         public HttpResponseMessage CreateErrorContentMessage(Exception YourException)
         {
@@ -811,6 +811,17 @@ namespace ATISMobileRestful
             { get { return (new R2CoreMClassPredefinedMessagesManager()).GetNSS(R2CorePredefinedMessages.MobileNumberNotFoundException).MsgContent; } }
         }
 
+        public class WebApiClientPaymentVerificationException : ApplicationException
+        {
+            R2CoreInstanceConfigurationManager InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+
+            private string _Message = string.Empty;
+            public WebApiClientPaymentVerificationException(string YourMessage)
+            { _Message = YourMessage; }
+
+            public override string Message
+            { get { return InstanceConfiguration.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 3) + " PaymentVerificationError:" + _Message; } }
+        }
 
     }
 }

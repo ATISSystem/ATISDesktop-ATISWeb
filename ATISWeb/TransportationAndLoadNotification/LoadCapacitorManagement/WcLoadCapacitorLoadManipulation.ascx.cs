@@ -80,6 +80,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 { NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, string.Empty, TxtLoadReciever.Text, Convert.ToInt64(TxtSearchTargetCity.Text.Split('#')[0]), TonajValue, Convert.ToInt64(TxtSearchLoad.Text.Split('#')[0]), Convert.ToInt64(TxtSearchTC.Text.Split('#')[0]), false, Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]), TxtAddress.Text, InstanceLogin.GetNSSCurrentUser().UserId, Convert.ToInt64(TxtnCarNumKol.Text), Convert.ToInt64(TxtTarrif.Text.Replace(",", "")), TxtDescription.Text, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), Convert.ToInt64(TxtnCarNumKol.Text), R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, 21310000, InstanceAnnouncementHalls.GetNSSAnnouncementHallByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0])).AHId, InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroupByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0])).AHSGId, WCTransportTarrifsParameters1.WCGetTPTParams()); }
                 return NSS;
             }
+            catch (TransportPriceTarrifParameterDetailsNotAdjustedException ex)
+            { throw ex; }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); return null; }
             catch (DataEntryException ex)
@@ -356,6 +358,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 WcInformationChangedEvent?.Invoke(this, new EventArgs());
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "بار با موفقیت به ثبت رسید" + "');", true);
             }
+            catch (TransportPriceTarrifParameterDetailsNotAdjustedException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
             catch (Exception ex) when (ex is LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException || ex is LoadCapacitorLoadNumberOverLimitException || ex is LoadCapacitorLoadnCarNumKolCanNotBeZeroException || ex is TransportCompanyISNotActiveException || ex is LoadCapacitorLoadRegisterTimePassedException || ex is LoadCapacitorLoadEditTimePassedException || ex is HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup || ex is TransportPriceTarrifParameterDetailNotFoundException)
@@ -379,6 +383,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 WcInformationChangedEvent?.Invoke(this, new EventArgs());
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "ویرایش بار با موفقیت انجام شد" + "');", true);
             }
+            catch (TransportPriceTarrifParameterDetailsNotAdjustedException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (SqlInjectionException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (PleaseReloginException ex)
@@ -411,6 +417,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                     Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "بار با موفقیت حذف شد" + "');", true);
                 }
             }
+            catch (TransportPriceTarrifParameterDetailsNotAdjustedException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
             catch (LoadCapacitorLoadDeleteTimePassedException ex)
@@ -439,6 +447,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                     Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "بار با موفقیت کنسل شد" + "');", true);
                 }
             }
+            catch (TransportPriceTarrifParameterDetailsNotAdjustedException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }
             catch (LoadCapacitorLoadCancelTimeNotReachedException ex)

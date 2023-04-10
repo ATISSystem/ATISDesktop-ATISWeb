@@ -217,10 +217,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://localhost:10919/PayanehWebService.asmx">
+    <WebReferenceUrl Include="http://localhost:2012/PayanehWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\PayanehWS\</RelPath>
-      <UpdateFromURL>http://localhost:10919/PayanehWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://localhost:2012/PayanehWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

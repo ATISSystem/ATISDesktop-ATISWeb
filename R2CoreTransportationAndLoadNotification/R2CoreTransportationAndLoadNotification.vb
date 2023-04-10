@@ -874,7 +874,7 @@ Namespace TransportTarrifsParameters
                 Dim DS As DataSet
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                      "Select TransportPriceTarrifsParameters.TPTPTitle,Details.*,0 as Checked from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifsParametersDetails as Details
+                      "Select TransportPriceTarrifsParameters.TPTPTitle,Details.*,1 as Checked from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifsParametersDetails as Details
                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On Details.AHSGId=AnnouncementHallSubGroups.AHSGId 
                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifsParameters as TransportPriceTarrifsParameters On Details.TPTPId=TransportPriceTarrifsParameters.TPTPId 
                        Where AnnouncementHallSubGroups.AHSGId=" & YourNSSAHSG.AHSGId & " AND AnnouncementHallSubGroups.Active=1 AND Details.RelationActive=1 AND TransportPriceTarrifsParameters.Active=1 AND TransportPriceTarrifsParameters.Deleted=0
@@ -954,6 +954,14 @@ Namespace TransportTarrifsParameters
             End Property
         End Class
 
+        Public Class TransportPriceTarrifParameterDetailsNotAdjustedException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "پارامترهای موثر در تعرفه حمل به درستی انتخاب و تنظیم نشده اند"
+                End Get
+            End Property
+        End Class
 
     End Namespace
 

@@ -20,7 +20,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 
         #region "General Properties"
 
-
+        private R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure WCNSSAnnouncementHallSubGroup = null;
 
         #endregion
 
@@ -33,6 +33,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 ChkboxlistTPTParams.Items.Clear();
                 var InstanceAnnouncementHalls = new R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager();
                 TxtLoaderType.Text = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroup(YourNSS.AHSGId).AHSGTitle;
+                WCNSSAnnouncementHallSubGroup = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroup(YourNSS.AHSGId);
                 var InstanceTransportTarrifsParameters = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager();
                 var Lst = InstanceTransportTarrifsParameters.GetListofTransportTarrifsParams(YourNSS.TPTParams);
                 //if (Lst.Count == 0) { this.Visible = false; } else { this.Visible = true; }
@@ -52,6 +53,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         {
             try
             {
+                WCNSSAnnouncementHallSubGroup = YourNSS;
                 TxtLoaderType.Text = YourNSS.AHSGTitle;
                 ChkboxlistTPTParams.Items.Clear();
                 var InstanceTransportTarrifsParameters = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager();
@@ -74,11 +76,25 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 
         public String WCGetTPTParams()
         {
-            string TPTParamsDetails = string.Empty;
-            foreach (ListItem Li in ChkboxlistTPTParams.Items)
-            { TPTParamsDetails += Li.Value + ":" + ((Li.Selected) ? "1" : "0") + ";"; }
-            if (TPTParamsDetails == string.Empty) { return string.Empty; }
-            return TPTParamsDetails.Substring(0, TPTParamsDetails.Length - 1);
+            try
+            {
+                var InstanceTransportTarrifsParameters = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager();
+                string TPTParamsDetails = string.Empty;
+                foreach (ListItem Li in ChkboxlistTPTParams.Items)
+                { TPTParamsDetails += Li.Value + ":" + ((Li.Selected) ? "1" : "0") + ";"; }
+                if (TPTParamsDetails == string.Empty)
+                {
+                    if (InstanceTransportTarrifsParameters.GetListofTransportTarrifsParams(WCNSSAnnouncementHallSubGroup).Count == 0)
+                    { return string.Empty; }
+                    else
+                    { throw new TransportPriceTarrifParameterDetailsNotAdjustedException(); }
+                }
+                return TPTParamsDetails.Substring(0, TPTParamsDetails.Length - 1);
+            }
+            catch(TransportPriceTarrifParameterDetailsNotAdjustedException ex)
+            { throw ex; }
+            catch (Exception ex)
+            { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
         }
 
         public void WcRefreshInformation()

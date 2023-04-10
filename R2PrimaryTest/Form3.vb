@@ -4,7 +4,6 @@ Imports System.Globalization
 Imports System.IO
 Imports System.Net.Mail
 Imports System.Text
-Imports MSCOCore.AnnouncementProcess
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.PayanehWS
@@ -14,6 +13,7 @@ Imports R2Core.BaseStandardClass
 Imports R2Core.BlackIPs
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DatabaseManagement
+Imports MSCOCore.AnnouncementProcess
 
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.DateAndTimeManagement.CalendarManagement.PersianCalendar
@@ -50,6 +50,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadPermission.LoadPermissionPri
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
 Imports R2CoreTransportationAndLoadNotification.RequesterManagement
 Imports R2CoreTransportationAndLoadNotification.Rmto
+Imports R2CoreTransportationAndLoadNotification.TerraficCardsManagement
 Imports R2CoreTransportationAndLoadNotification.TransportTarrifs
 Imports R2CoreTransportationAndLoadNotification.Trucks
 Imports R2CoreTransportationAndLoadNotification.Turns
@@ -509,8 +510,10 @@ Public Class Form3
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
         Try
-            Dim InstancePaymentRequests = New R2Core.MoneyWallet.PaymentRequests.R2CoreInstansePaymentRequestsManager
-            InstancePaymentRequests.PaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, 10000, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId)
+            Dim x As New R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager
+            x.GetNSSTerafficCard(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(7209))
+            'Dim InstancePaymentRequests = New R2Core.MoneyWallet.PaymentRequests.R2CoreInstansePaymentRequestsManager
+            'InstancePaymentRequests.PaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, 10000, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId)
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
