@@ -20,8 +20,6 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 
         #region "General Properties"
 
-        private R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure WCNSSAnnouncementHallSubGroup = null;
-
         #endregion
 
         #region "Subroutins And Functions"
@@ -33,10 +31,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 ChkboxlistTPTParams.Items.Clear();
                 var InstanceAnnouncementHalls = new R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager();
                 TxtLoaderType.Text = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroup(YourNSS.AHSGId).AHSGTitle;
-                WCNSSAnnouncementHallSubGroup = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroup(YourNSS.AHSGId);
                 var InstanceTransportTarrifsParameters = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager();
                 var Lst = InstanceTransportTarrifsParameters.GetListofTransportTarrifsParams(YourNSS.TPTParams);
-                //if (Lst.Count == 0) { this.Visible = false; } else { this.Visible = true; }
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
                     ListItem Li = new ListItem(Lst[Loopx].TPTPTitle + " - " + (Lst[Loopx].Mblgh == 0 ? "توافقی" : Lst[Loopx].Mblgh.ToString()), Lst[Loopx].TPTPDId.ToString());
@@ -53,7 +49,6 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         {
             try
             {
-                WCNSSAnnouncementHallSubGroup = YourNSS;
                 TxtLoaderType.Text = YourNSS.AHSGTitle;
                 ChkboxlistTPTParams.Items.Clear();
                 var InstanceTransportTarrifsParameters = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager();
@@ -74,7 +69,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 
         }
 
-        public String WCGetTPTParams()
+        public String WCGetTPTParams(R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure YourNSSAnnouncementHallSubGroup)
         {
             try
             {
@@ -84,8 +79,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 { TPTParamsDetails += Li.Value + ":" + ((Li.Selected) ? "1" : "0") + ";"; }
                 if (TPTParamsDetails == string.Empty)
                 {
-                    if (InstanceTransportTarrifsParameters.GetListofTransportTarrifsParams(WCNSSAnnouncementHallSubGroup).Count == 0)
-                    { return string.Empty; }
+                    if (!InstanceTransportTarrifsParameters.HaveAnyTransportTarrifsParams(YourNSSAnnouncementHallSubGroup))
+                        return string.Empty;
                     else
                     { throw new TransportPriceTarrifParameterDetailsNotAdjustedException(); }
                 }
