@@ -44,7 +44,8 @@
                 <asp:Button runat="server" ID="BtnLoadRegistering" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-success" Text="ثبت بار" />
                 <asp:Button runat="server" ID="BtnLoadEditing" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-light" Style="color: black" Text="ویرایش بار" />
                 <asp:Button runat="server" ID="BtnLoadDeleting" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-danger" Text="حذف بار" />
-                <asp:Button runat="server" ID="BtnLoadCancelling" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-secondary" Text="کنسلی بار" Enabled="False" />
+                <asp:Button runat="server" ID="BtnLoadCancelling" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-secondary" Text="کنسلی بار" Enabled="True" />
+                <asp:Button runat="server" ID="BtnReRegistering" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-primary" Text="اعلام مجدد بار" Enabled="True" />
                 <asp:Button runat="server" ID="BtnNewLoad" CssClass="btn btn-info mr-2 R2FontBYekanSmall bg-warning" Style="color: black" Text="بار جدید" />
             </div>
         </div>

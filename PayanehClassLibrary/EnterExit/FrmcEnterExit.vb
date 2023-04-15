@@ -49,6 +49,7 @@ Imports R2CoreParkingSystem.TrafficCardsManagement.ExceptionManagement
 Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
 Imports R2CoreParkingSystem.Logging
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
+Imports PayanehClassLibrary.TurnRegisterRequest.Exceptions
 
 Public Class FrmcEnterExit
     Inherits FrmcGeneral
@@ -371,12 +372,14 @@ Public Class FrmcEnterExit
         End Try
     End Sub
 
-    Private Sub PleaseReserveTurn()
+    Public Sub PleaseReserveTurn()
         Try
             Dim InstanceComputers = New R2CoreMClassComputersManager
             Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
             Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
             InstanceTurnRegisterRequest.ReserveTurnRegisterRequest(InstanceComputers.GetNSSCurrentComputer().MId, TurnType.Permanent, InstanceSoftwareUsers.GetNSSSystemUser)
+        Catch ex As UserCanNotRequestReserveTurnRegisteringException
+        Catch ex As ComputerCanNotRequestReserveTurnRegisteringException
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

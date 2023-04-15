@@ -46,7 +46,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 if (WcCurrentListType == LoadCapacitorLoadsListType.NotSedimented)
                 {
                     LblCaption.Text = "لیست بار موجود";
-                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNotSedimentedLoadCapacitorLoads(InstanceLogin.GetNSSCurrentUser());
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetExistenceNonZeroLoads(InstanceLogin.GetNSSCurrentUser());
                 }
                 else if (WcCurrentListType == LoadCapacitorLoadsListType.Sedimented)
                 {

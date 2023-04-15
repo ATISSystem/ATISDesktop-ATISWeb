@@ -55,6 +55,7 @@ Imports R2CoreTransportationAndLoadNotification.TransportTarrifs
 Imports R2CoreTransportationAndLoadNotification.Trucks
 Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.TurnRegisterRequest
+Imports R2Core.ComputersManagement
 
 Public Class Form3
     Private _DateTime As R2DateTime = New R2DateTime
@@ -510,8 +511,18 @@ Public Class Form3
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
         Try
-            Dim x As New R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager
-            x.GetNSSTerafficCard(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(7209))
+            Dim InstanceComputers = New R2CoreMClassComputersManager
+            Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
+            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            InstanceTurnRegisterRequest.ReserveTurnRegisterRequest(InstanceComputers.GetNSSCurrentComputer().MId, TurnType.Permanent, InstanceSoftwareUsers.GetNSSSystemUser)
+            'Dim x As New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
+            'x.LoadCapacitorLoadReRegistering(436936, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+            'Dim x As New R2DateTime
+
+            'MessageBox.Show(x.GetYesterdayShamsiDate())
+
+            'Dim x As New R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager
+            'x.GetNSSTerafficCard(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(7209))
             'Dim InstancePaymentRequests = New R2Core.MoneyWallet.PaymentRequests.R2CoreInstansePaymentRequestsManager
             'InstancePaymentRequests.PaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, 10000, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId)
         Catch ex As Exception
