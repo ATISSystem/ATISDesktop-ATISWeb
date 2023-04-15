@@ -81,6 +81,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 else
                 { NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, string.Empty, TxtLoadReciever.Text, Convert.ToInt64(TxtSearchTargetCity.Text.Split('#')[0]), TonajValue, Convert.ToInt64(TxtSearchLoad.Text.Split('#')[0]), Convert.ToInt64(TxtSearchTC.Text.Split('#')[0]), false, Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]), TxtAddress.Text, InstanceLogin.GetNSSCurrentUser().UserId, Convert.ToInt64(TxtnCarNumKol.Text), Convert.ToInt64(TxtTarrif.Text.Replace(",", "")), TxtDescription.Text, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), Convert.ToInt64(TxtnCarNumKol.Text), R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, 21310000, NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, WCTransportTarrifsParameters1.WCGetTPTParams(NSSAnnouncementHallSubGroup),false); }
                 return NSS;
+
             }
             catch (TransportPriceTarrifParameterDetailsNotAdjustedException ex)
             { throw ex; }
