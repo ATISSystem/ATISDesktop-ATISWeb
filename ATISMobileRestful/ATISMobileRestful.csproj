@@ -176,6 +176,7 @@
     <Compile Include="Controllers\ATISMobileWebApiManagement\ATISMobileWebApiController.cs" />
     <Compile Include="Controllers\DataBaseManagement\DataBaseController.cs" />
     <Compile Include="Controllers\DefaulttController.cs" />
+    <Compile Include="Controllers\DriverSelfDeclaration\DriverSelfDeclarationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoadAllocationManagement\LoadAllocationsController.cs" />
     <Compile Include="Controllers\LoadCapacitorManagement\LoadCapacitorController.cs" />

@@ -416,7 +416,7 @@ namespace ATISMobileRestful
                 var Hash = Content.Split(';')[1];
                 var Param = Content.Split(';')[2];
                 if (InstanceLogging.GetNSSLogType(YourLogId).Active)
-                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, YourLogId, InstanceLogging.GetNSSLogType(YourLogId).LogTitle, IP, MobileNumber, Hash, "Param=" + Param, string.Empty, InstanceSoftwareusers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, YourLogId, InstanceLogging.GetNSSLogType(YourLogId).LogTitle, IP, MobileNumber, Hash, string.Empty, string.Empty, InstanceSoftwareusers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null)); }
                 InstanceBlackIP.AuthorizationIP(IP);
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserChangeableData(new R2CoreSoftwareUserMobile(MobileNumber));
                 if (_DateTime.GetCurrentDateTimeMilladi().Subtract(NSSSoftwareuser.NonceTimeStamp).TotalSeconds > InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 8))
@@ -669,6 +669,8 @@ namespace ATISMobileRestful
             public static Int64 WebApiClientGetLoadPermissionsViaLicensePlate = 59;
             public static Int64 WebApiClientTurnCancellation = 60;
             public static Int64 WebApiClientRequestAnnouncedLoadsReportClearanceLoadsReport = 62;
+            public static Int64 WebApiClientGetDriverSelfDeclarations = 64;
+            public static Int64 WebApiClientSetDriverSelfDeclarations = 65;
         }
 
     }

@@ -98,5 +98,14 @@ namespace ATISMobileRestful.Models
     public class AnnouncedLoadsReportClearanceLoadsReport
     { public string ReportItemHeader { get; set; } public string ReportItemDetails { get; set; } }
 
+    public class DriverSelfDeclaration
+    {
+        public Int64 DSDId { get; set; }
+        public String DSDName { get; set; }
+        public String DSDTitle { get; set; }
+        public String DefaultValue { get; set; }
+        public String DSDValue { get; set; }
+    }
+
 
 }

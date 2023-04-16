@@ -3176,9 +3176,13 @@ Namespace DateAndTimeManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
         End Function
+        Public Function GetCurrentTime(YourDateTime As DateTime)
+            Return Mid(YourDateTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), 12, 20)
+        End Function
         Public Function GetCurrentDateTime() As R2StandardDateAndTimeStructure
             Try
-                Return New R2StandardDateAndTimeStructure(GetCurrentDateTimeMilladiFormated, GetCurrentDateShamsiFull, GetCurrentTime)
+                Dim D = GetCurrentDateTimeMilladi()
+                Return New R2StandardDateAndTimeStructure(D, ConvertToShamsiDateFull(D), GetCurrentTime(D))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
@@ -3357,7 +3361,6 @@ Namespace DateAndTimeManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
         End Function
-
         Public Function ChekTimeSyntax(ByVal zaman As String) As Boolean
             Try
                 Dim mytime As String = Trim(zaman)
@@ -3384,7 +3387,6 @@ Namespace DateAndTimeManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
         End Function
-
         Public Function GetPersianMonthName(ByVal YourDateShamsi As String) As String
             Dim Mah As String = Mid(YourDateShamsi, 6, 2)
             If Mah = "01" Then Return "فروردین ماه"
@@ -3400,13 +3402,11 @@ Namespace DateAndTimeManagement
             If Mah = "11" Then Return "بهمن  ماه"
             If Mah = "12" Then Return "اسفند  ماه"
         End Function
-
         Public Function GetDelimetedTime(YourUnDelimetedTime As String) As String
             Dim InstancePublicProcedures As New R2Core.PublicProc.R2CoreInstancePublicProceduresManager
             If YourUnDelimetedTime.Length < 8 Then YourUnDelimetedTime = YourUnDelimetedTime + InstancePublicProcedures.RepeatStr("0", 8 - YourUnDelimetedTime.Length)
             Return Mid(YourUnDelimetedTime, 1, 2) + ":" + Mid(YourUnDelimetedTime, 3, 2) + ":" + Mid(YourUnDelimetedTime, 5, 2)
         End Function
-
     End Class
     Public Class HafteMahManagement
         'روتين پر کردن کمبو هفته 

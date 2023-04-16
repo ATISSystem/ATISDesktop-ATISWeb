@@ -111,7 +111,8 @@ Public Class FrmcEnterExit
 
     Private Sub DoProccess(YourCardNo As String, YourChekforTerraficCardRelation As Boolean)
         Try
-            Dim myCurrentDateTime = New R2StandardDateAndTimeStructure(_DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime)
+            Dim NowDateTime = _DateTime.GetCurrentDateTimeMilladi
+            Dim myCurrentDateTime = New R2StandardDateAndTimeStructure(NowDateTime, _DateTime.ConvertToShamsiDateFull(NowDateTime), _DateTime.GetCurrentTime(NowDateTime))
             'بروز رساني صفحه تردد
             NewEnterExitRefresh()
             _NSSTrafficCard = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(YourCardNo)
@@ -466,7 +467,7 @@ Public Class FrmcEnterExit
 
     Private Sub UcMoneyWalletCharge_UCMoneyWalletChargedEvent(Mblgh As Long) Handles UcMoneyWalletCharge.UCMoneyWalletChargedEvent
         Try
-            Threading.Thread.Sleep(4000)
+            Threading.Thread.Sleep(1000)
             UcMoneyWallet.UCViewMoneyWalletOnlyCharge(_NSSTrafficCard)
             UcMoneyWalletCharge.SendToBack()
             FrmcEnterExit__RFIDCardReadedEvent(_NSSTrafficCard.CardNo)

@@ -16,6 +16,7 @@ using static ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement.
 using ATISWeb.TransportationAndLoadNotification.LoadPermissionManagement.LoadPermissionPrinting;
 using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadPermission.LoadPermissionPrinting;
+using R2CoreTransportationAndLoadNotification.Trucks;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -107,8 +108,11 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
         {
             try
             {
-                var InstanceLoadPermissionPrinting = new R2CoreTransportationAndLoadNotificationInstanceLoadPermissionPrintingManager();
                 Int64 LAId = Int64.Parse(GridViewLoadCapacitorLoadLoadPermissionsIssued.SelectedRow.Cells[0].Text);
+                var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
+                var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
+                WCDriverSelfDeclarationViewer.WcViewInformation(InstanceTrucks.GetNSSTruck(InstanceLoadAllocation.GetNSSLoadAllocation(LAId )));
+                var InstanceLoadPermissionPrinting = new R2CoreTransportationAndLoadNotificationInstanceLoadPermissionPrintingManager();
                 PPDS = InstanceLoadPermissionPrinting.GetLoadPermissionPrintingInf(LAId);
             }
             catch (Exception ex)

@@ -511,10 +511,12 @@ Public Class Form3
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
         Try
-            Dim InstanceComputers = New R2CoreMClassComputersManager
-            Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
-            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
-            InstanceTurnRegisterRequest.ReserveTurnRegisterRequest(InstanceComputers.GetNSSCurrentComputer().MId, TurnType.Permanent, InstanceSoftwareUsers.GetNSSSystemUser)
+            Dim d = _DateTime.GetCurrentDateTime()
+            MessageBox.Show(_DateTime.GetCurrentDateTimeMilladi().ToString("hh:mm:ss"))
+            'Dim InstanceComputers = New R2CoreMClassComputersManager
+            'Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
+            'Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            'InstanceTurnRegisterRequest.ReserveTurnRegisterRequest(InstanceComputers.GetNSSCurrentComputer().MId, TurnType.Permanent, InstanceSoftwareUsers.GetNSSSystemUser)
             'Dim x As New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
             'x.LoadCapacitorLoadReRegistering(436936, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             'Dim x As New R2DateTime

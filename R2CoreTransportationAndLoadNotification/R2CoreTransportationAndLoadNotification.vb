@@ -385,6 +385,7 @@ Namespace ConfigurationsManagement
         Public Shared ReadOnly Property AnnouncementHallsAutomaticProcessesTiming As Int64 = 68
         Public Shared ReadOnly Property AnnouncementHallsLoadAllocationSetting As Int64 = 69
         Public Shared ReadOnly Property TommorowLoads As Int64 = 71
+        Public Shared ReadOnly Property DriverSelfDeclarationSetting As Int64 = 86
     End Class
 
     Public Class R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager

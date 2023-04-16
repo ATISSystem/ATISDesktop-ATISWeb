@@ -1,5 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="WcLoadCapacitorLoadLoadPermissionsIssued.ascx.cs" Inherits="ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement.WcLoadCapacitorLoadLoadPermissionsIssued" %>
+
 <%@ Register TagPrefix="TWebControl" TagName="WcLoadCapacitorLoadsCollectionSummaryIntelligently" Src="~/TransportationAndLoadNotification/LoadCapacitorManagement/WcLoadCapacitorLoadsCollectionSummaryIntelligently.ascx" %>
+<%@ Register TagPrefix="TWebControl" TagName="WCDriverSelfDeclarationViewer" Src="~/TransportationAndLoadNotification/DriverSelfDeclaration/WCDriverSelfDeclarationViewer.ascx" %>
 
 <div class="container-fluid p-1 border border-primary rounded">
     <div class="container-fluid bg-primary mb-2" style="height: 50px">
@@ -76,6 +78,10 @@
                     <SortedDescendingHeaderStyle BackColor="#383838" />
                 </asp:GridView>
             </div>
+            <div class="container-fluid p-0 mb-2" style="">
+                <TWebControl:WCDriverSelfDeclarationViewer runat="server" ID="WCDriverSelfDeclarationViewer"></TWebControl:WCDriverSelfDeclarationViewer>
+            </div>
+
             <div class="container-fluid p-1">
                 <asp:Button runat="server" ID="BtnPrint" Visible="true" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-success" Text="چاپ مجوز" OnClientClick="return PrintLoadPermission();" />
             </div>

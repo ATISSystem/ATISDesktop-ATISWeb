@@ -72,6 +72,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadSedimentation
 Imports R2Core.PermissionManagement.Exceptions
 Imports R2CoreTransportationAndLoadNotification.TransportTarrifsParameters
 Imports R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Exceptions
+Imports R2CoreTransportationAndLoadNotification.DriverSelfDeclaration.Exceptions
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -165,6 +166,28 @@ Namespace Trucks
                          "Select Trucks.* from dbtransport.dbo.tbEnterExit as Turns 
                              Inner Join dbtransport.dbo.TbCar as Trucks On Turns.strCardno=Trucks.nIDCar 
                           Where Turns.nEnterExitId=" & YourNSSTurn.nEnterExitId & "", 300, DS).GetRecordsCount() = 0 Then Throw New TruckNotFoundException
+                End If
+                Dim NSS = New R2CoreTransportationAndLoadNotificationStandardTruckStructure
+                NSS.NSSCar = New R2StandardCarStructure(DS.Tables(0).Rows(0).Item("nIdCar"), DS.Tables(0).Rows(0).Item("snCarType"), DS.Tables(0).Rows(0).Item("StrCarNo").trim, DS.Tables(0).Rows(0).Item("StrCarSerialNo").trim, DS.Tables(0).Rows(0).Item("nIdCity"))
+                NSS.SmartCardNo = DS.Tables(0).Rows(0).Item("StrBodyNo")
+                Return NSS
+            Catch exx As TruckNotFoundException
+                Throw exx
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSTruck(YourNSSLoadAllocation As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure) As R2CoreTransportationAndLoadNotificationStandardTruckStructure
+            Try
+                Dim DS As New DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                         "Select Cars.* from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations
+                            Inner Join dbtransport.dbo.tbEnterExit as Turns On LoadAllocations.TurnId=Turns.nEnterExitId
+                            Inner Join dbtransport.dbo.TbCar as Cars On Turns.strCardno=Cars.nIDCar
+                          Where LoadAllocations.LAId=" & YourNSSLoadAllocation.LAId & "", 3600, DS).GetRecordsCount() = 0 Then
+                    Throw New TruckNotFoundException
                 End If
                 Dim NSS = New R2CoreTransportationAndLoadNotificationStandardTruckStructure
                 NSS.NSSCar = New R2StandardCarStructure(DS.Tables(0).Rows(0).Item("nIdCar"), DS.Tables(0).Rows(0).Item("snCarType"), DS.Tables(0).Rows(0).Item("StrCarNo").trim, DS.Tables(0).Rows(0).Item("StrCarSerialNo").trim, DS.Tables(0).Rows(0).Item("nIdCity"))
@@ -2365,9 +2388,7 @@ Namespace LoadCapacitor
                     CmdSql.Parameters.Add(P)
                     P = New SqlClient.SqlParameter("@TPTParams", SqlDbType.VarChar) : P.Value = YourNSS.TPTParams
                     CmdSql.Parameters.Add(P)
-                    P = New SqlClient.SqlParameter("@bflagCarNum", SqlDbType.Bit) : P.Value = False
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.CommandText = "Insert Into dbtransport.dbo.TbElam Values(@nEstelamKey,@StrBarName,@nCityCode,@nTonaj,@nBarCode,@bFlag,@nCompCode,@bFlagbarType,@nTruckType,@nCarNum,@StrAddress,@nUserId,@dDateElam,@dTimeElam,@bflagCarNum,@strIssueNo,@strIssueOwner,@nTonajKol,@nCarNumKol,@nBarSource,@StrPriceSug,@StrDescription,@dDateExit,@dTimeExit,@LoadStatus,@AHId,@AHSGId,@TPTParams,@bflagCarNum)"
+                    CmdSql.CommandText = "Insert Into dbtransport.dbo.TbElam Values(@nEstelamKey,@StrBarName,@nCityCode,@nTonaj,@nBarCode,@bFlag,@nCompCode,@bFlagbarType,@nTruckType,@nCarNum,@StrAddress,@nUserId,@dDateElam,@dTimeElam,@bflagCarNum,@strIssueNo,@strIssueOwner,@nTonajKol,@nCarNumKol,@nBarSource,@StrPriceSug,@StrDescription,@dDateExit,@dTimeExit,@LoadStatus,@AHId,@AHSGId,@TPTParams)"
                     CmdSql.ExecuteNonQuery()
                     'ثبت اکانت
                     If TommorowLoadRegisteringFlag Then
@@ -2512,7 +2533,7 @@ Namespace LoadCapacitor
                     If Not ISActiveLoadCapacitorLoadRegistering(YourNSS) Then Throw New LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException
 
                     'باری که مجددا اعلام بار شده است قابل ویرایش نیست
-                    If NSSCurrentLoadCapacitorLoad.ReRegistered Then Throw New EditOrDeleteReRegisteredLoadNotAllowedException
+                    'If NSSCurrentLoadCapacitorLoad.ReRegistered Then Throw New EditOrDeleteReRegisteredLoadNotAllowedException
 
                     'بررسی بار فردا
                     Dim ComposeSearchString As String = NSSAnnouncementHallSubGroup.AHSGId.ToString + "="
@@ -8073,7 +8094,7 @@ Namespace BlackIPs
 
     End Class
 
-    Public Class R2CoreInstanceBlackIPsManager
+    Public Class R2CoreTransportationAndLoadNotificationInstanceBlackIPsManager
         Private _DateTime As New R2DateTime
 
 
@@ -8102,5 +8123,271 @@ Namespace PredefinedMessagesManagement
     Public MustInherit Class R2CoreTransportationAndLoadNotificationPredefinedMessages
         Public Shared ReadOnly LoadAllocationIdNotPairWithDriver As Int64 = 4
     End Class
+
+End Namespace
+
+Namespace DriverSelfDeclaration
+
+    Public Class R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationParameterStructure
+        Inherits R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            _DSDId = Int64.MinValue
+            _DSDName = String.Empty
+            _DSDTitle = String.Empty
+            _DefaultValue = String.Empty
+            _DateTimeMilladi = Now
+            _DateShamsi = String.Empty
+            _Time = String.Empty
+            _UserId = Int64.MinValue
+            _Active = Boolean.FalseString
+            _ViewFlag = Boolean.FalseString
+            _Deleted = Boolean.FalseString
+        End Sub
+
+        Public Sub New(YourDSDId As Int64, YourDSDName As String, YourDSDTitle As String, YourDefaultValue As String, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourUserId As Int64, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourDSDId, YourDSDName)
+            _DSDId = YourDSDId
+            _DSDName = YourDSDName
+            _DSDTitle = YourDSDTitle
+            _DefaultValue = YourDefaultValue
+            _DateTimeMilladi = YourDateTimeMilladi
+            _DateShamsi = YourDateShamsi
+            _Time = YourTime
+            _UserId = YourUserId
+            _Active = YourActive
+            _ViewFlag = YourViewFlag
+            _Deleted = YourDeleted
+        End Sub
+
+        Public Property DSDId As Int64
+        Public Property DSDName As String
+        Public Property DSDTitle As String
+        Public Property DefaultValue As String
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property Time As String
+        Public Property UserId As Int64
+        Public Property Active As Boolean
+        Public Property ViewFlag As Boolean
+        Public Property Deleted As Boolean
+
+    End Class
+
+    Public Class R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationExtendedStructure
+        Inherits R2StandardStructure
+
+        Public Sub New()
+            MyBase.New()
+            _DSDId = Int64.MinValue
+            _DSDName = String.Empty
+            _DSDTitle = String.Empty
+            _DefaultValue = String.Empty
+            _DSDValue = String.Empty
+        End Sub
+
+        Public Sub New(ByVal YourDSDId As Int64, YourDSDName As String, YourDSDTitle As String, YourDefaultValue As String, YourDSDValue As String)
+            MyBase.New(YourDSDId, YourDSDName)
+            _DSDId = YourDSDId
+            _DSDName = YourDSDName
+            _DSDTitle = YourDSDTitle
+            _DefaultValue = YourDefaultValue
+            _DSDValue = YourDSDValue
+        End Sub
+
+        Public Property DSDId As Int64
+        Public Property DSDName As String
+        Public Property DSDTitle As String
+        Public Property DefaultValue As String
+        Public Property DSDValue As String
+    End Class
+
+    Public Class R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager
+
+        Private _DateTime As New R2DateTime
+        Public Sub ControlforExpiredDSDs(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure)
+            Try
+                Dim D = _DateTime.GetCurrentDateTime
+
+                'بررسی منقضی شدن اعتبار مشخصات خوداظهاری
+                Dim DS As DataSet
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                          "Select Top 1 DateTimeMilladi from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarations 
+                           Where nIdCar = " & YourNSSTruck.NSSCar.nIdCar & " Order By DateTimeMilladi desc", 3600, DS).GetRecordsCount = 0 Then
+                Else
+                    Dim Diff = DateDiff(DateInterval.Day, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), D.DateTimeMilladi)
+                    If Diff > InstanceConfiguration.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DriverSelfDeclarationSetting, 1) Then
+                        Throw New DSDsDayLimitExpiredException
+                    End If
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub ControlforDSDChangingDayLimit(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure)
+            Try
+                Dim D = _DateTime.GetCurrentDateTime
+
+                'کنترل زمان انتظار برای تغییر مشخصات خوداظهاری  
+                Dim DS As DataSet
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                          "Select Top 1 DateTimeMilladi from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarations 
+                           Where nIdCar = " & YourNSSTruck.NSSCar.nIdCar & " Order By DateTimeMilladi desc", 3600, DS).GetRecordsCount = 0 Then
+                Else
+                    Dim Diff = DateDiff(DateInterval.Day, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), D.DateTimeMilladi)
+                    If Diff < InstanceConfiguration.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DriverSelfDeclarationSetting, 0) Then Throw New DayLimitforDSDDataEntryException(InstanceConfiguration.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DriverSelfDeclarationSetting, 0) - Diff)
+                End If
+            Catch ex As DayLimitforDSDDataEntryException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+
+        End Sub
+
+        Public Function GetNSSDriverSelfDeclaration(YourDSDId As Int64) As R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationParameterStructure
+            Try
+                Dim DS As DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select * from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters Where DSDId=" & YourDSDId & "", 3600, DS).GetRecordsCount = 0 Then Throw New DriverSelfDeclarationParameterNotFoundException
+                Return New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationParameterStructure(DS.Tables(0).Rows(0).Item("DSDId"), DS.Tables(0).Rows(0).Item("DSDName").trim, DS.Tables(0).Rows(0).Item("DSDTitle").trim, DS.Tables(0).Rows(0).Item("DefaultValue").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
+            Catch ex As DriverSelfDeclarationParameterNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetDeclarations(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure) As List(Of R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationExtendedStructure)
+            Try
+                Dim DS As DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                          "Select DataBox.DSDId,DataBox.DSDName,DataBox.DSDTitle,DataBox.DefaultValue,ISNULL(DataBox.DSDValue,'') as DSDValue from 
+                             (Select DSDParams.DSDId,DSDParams.DSDName,DSDParams.DSDTitle,DSDParams.DefaultValue,DataBox.DSDValue from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters as DSDParams
+                                left outer  Join 
+                                  (Select * from R2PrimaryTransportationAndLoadNotification.DBO.TblDriverSelfDeclarations as DSDs Where DSDs.nIdCar=" & YourNSSTruck.NSSCar.nIdCar & " and DSDs.RelationActive=1) as DataBox On DSDParams.DSDId=DataBox.DSDId 
+                                   Where DSDParams.Active=1) as DataBox Order By DataBox.DSDId", 3600, DS)
+                Dim Lst = New List(Of R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationExtendedStructure)
+                For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationExtendedStructure(DS.Tables(0).Rows(Loopx).Item("DSDId"), DS.Tables(0).Rows(Loopx).Item("DSDName"), DS.Tables(0).Rows(Loopx).Item("DSDTitle"), DS.Tables(0).Rows(Loopx).Item("DefaultValue"), DS.Tables(0).Rows(Loopx).Item("DSDValue")))
+                Next
+                Return Lst
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Sub SetDeclarations(YourDSDs As String, YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                Dim D = _DateTime.GetCurrentDateTime
+
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourDSDs)
+
+                'بررسی محدودیت زمان برای تغییرات
+                ControlforDSDChangingDayLimit(YourNSSTruck)
+
+                'ثبت مشخصات
+                Dim DSDArray = YourDSDs.Split("|")
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarations Set RelationActive=0 Where nIdCar=" & YourNSSTruck.NSSCar.nIdCar & " and RelationActive=1"
+                CmdSql.ExecuteNonQuery()
+                For Loopx As Int16 = 0 To DSDArray.Length - 1
+                    Dim DSDId = DSDArray(Loopx).Split(":")(0)
+                    Dim DSDValue = DSDArray(Loopx).Split(":")(1)
+                    If DSDValue.Trim = String.Empty Then Throw New DriverSelfDeclarationsEmtpyNotAllowdException
+                    Dim NSSDSD = GetNSSDriverSelfDeclaration(DSDId)
+                    CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarations(nIdCar,DSDId,DSDValue,DateTimeMilladi,DateShamsi,Time,UserId,RelationActive)
+                                            Values(" & YourNSSTruck.NSSCar.nIdCar & "," & NSSDSD.DSDId & ",'" & DSDValue & "','" & D.DateTimeMilladiFormated & "','" & D.DateShamsiFull & "','" & D.Time & "'," & YourNSSSoftwareUser.UserId & ",1)"
+                    CmdSql.ExecuteNonQuery()
+                Next
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As DayLimitforDSDDataEntryException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw ex
+            Catch ex As DriverSelfDeclarationsEmtpyNotAllowdException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw ex
+            Catch ex As SqlInjectionException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw ex
+            Catch ex As DriverSelfDeclarationParameterNotFoundException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+    End Class
+
+    Namespace Exceptions
+        Public Class DriverSelfDeclarationParameterNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "پارامتر خوداظهاری راننده با شاخص مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+        Public Class DriverSelfDeclarationsEmtpyNotAllowdException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "اطلاعات را تکمیل کرده و سپس ارسال نمایید"
+                End Get
+            End Property
+        End Class
+
+        Public Class DayLimitforDSDDataEntryException
+            Inherits ApplicationException
+
+            Private _DayLimit = Int16.MaxValue
+
+            Public Sub New(YourDayLimit As Int16)
+                _DayLimit = YourDayLimit
+            End Sub
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "امکان ارسال مشخصات خود اظهاری تا " + _DayLimit.ToString + " روز دیگر وجود ندارد"
+                End Get
+            End Property
+        End Class
+
+        Public Class DSDsDayLimitExpiredException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "مدت زمان اعتبار مشخصات خود اظهاری ناوگان منقضی شده است"
+                End Get
+            End Property
+        End Class
+
+
+    End Namespace
 
 End Namespace
