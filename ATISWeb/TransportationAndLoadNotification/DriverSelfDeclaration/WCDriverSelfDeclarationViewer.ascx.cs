@@ -37,7 +37,7 @@ namespace ATISWeb.TransportationAndLoadNotification.DriverSelfDeclaration
                     TableRow tempRow = new TableRow();
                     TableCell tempCell = null;
                     tempCell = new TableCell();
-                    tempCell.Text = Lst[Loopx].DSDTitle + " - " + Lst[Loopx].DSDValue; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
+                    tempCell.Text = Lst[Loopx].DSDTitle + " - " + (Lst[Loopx].DSDValue == String.Empty ? "اظهار نشده" : Lst[Loopx].DSDValue); tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     TblDSDs.Rows.Add(tempRow);
                 }
                 TableFooterRow tempFooterRow = new TableFooterRow();

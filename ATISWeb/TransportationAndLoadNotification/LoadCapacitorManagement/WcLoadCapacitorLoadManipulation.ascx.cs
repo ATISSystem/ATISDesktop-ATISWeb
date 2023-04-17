@@ -109,7 +109,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 TxtnTonaj.Text = YourNSS.nTonaj.ToString();
                 TxtTarrif.Text = R2CoreMClassPublicProcedures.ParseSignDigitToSignString(YourNSS.StrPriceSug);
                 TxtDescription.Text = YourNSS.StrDescription;
-                WCUpdateWCTransportTarrifsParameters();
+                WCUpdateWCTransportTarrifsParametersByLoad(YourNSS);
                 WcViewInformationCompleted?.Invoke(this, new EventArgs());
             }
             catch (Exception ex)
@@ -229,7 +229,15 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
             { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
         }
 
-        private void WCUpdateWCTransportTarrifsParameters()
+        private void WCUpdateWCTransportTarrifsParametersByLoad(R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure YourNSS)
+        {
+            try
+            { WCTransportTarrifsParameters1.WcViewInformation(YourNSS); }
+            catch (Exception ex)
+            { throw ex; }
+        }
+
+        private void WCUpdateWCTransportTarrifsParametersByAHSGId()
         {
             try
             {
@@ -240,7 +248,6 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
             catch (Exception ex)
             { throw ex; }
         }
-
         #endregion
 
         #region "Events"
@@ -532,7 +539,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 if (DropDownListLoaderType.SelectedIndex > 0)
                 {
                     TxtSearchLoaderType.Text = DropDownListLoaderType.SelectedValue.Trim();
-                    WCUpdateWCTransportTarrifsParameters();
+                    WCUpdateWCTransportTarrifsParametersByAHSGId();
                 }
             }
             catch (Exception ex)

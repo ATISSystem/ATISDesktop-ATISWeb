@@ -7,7 +7,7 @@
     <div class="table table-responsive-lg border">
         <asp:Table ID="TblDSDs" runat="server" CssClass="table table-striped table-hover table-borderless text-center border-white" HorizontalAlign="Center" CellSpacing="0">
             <asp:TableHeaderRow runat="server" CssClass="bg-primary" ForeColor="White">
-                <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">مشخصه اظهار شده</asp:TableHeaderCell>
+                <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">مشخصه خوداظهاری</asp:TableHeaderCell>
             </asp:TableHeaderRow>
         </asp:Table>
     </div>

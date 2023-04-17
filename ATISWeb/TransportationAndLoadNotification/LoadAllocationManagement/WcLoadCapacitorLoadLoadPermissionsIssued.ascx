@@ -78,10 +78,11 @@
                     <SortedDescendingHeaderStyle BackColor="#383838" />
                 </asp:GridView>
             </div>
+            <br />
             <div class="container-fluid p-0 mb-2" style="">
                 <TWebControl:WCDriverSelfDeclarationViewer runat="server" ID="WCDriverSelfDeclarationViewer"></TWebControl:WCDriverSelfDeclarationViewer>
             </div>
-
+            <br />
             <div class="container-fluid p-1">
                 <asp:Button runat="server" ID="BtnPrint" Visible="true" CssClass="btn btn-info mr-3 R2FontBYekanSmall bg-success" Text="چاپ مجوز" OnClientClick="return PrintLoadPermission();" />
             </div>

@@ -47,7 +47,7 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 try
                 {//شپا
                     if (Request.QueryString["token"] != "" && Request.QueryString["token"] != null)
-                    { MonetarySupplySource = R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate; Authority = Request.QueryString["token"]; }
+                    { MonetarySupplySource = R2CoreMonetaryCreditSupplySources.ShepaPaymentGate; Authority = Request.QueryString["token"]; }
                 }
                 catch (Exception ex) { }
                 if (MonetarySupplySource == R2CoreMonetaryCreditSupplySources.None)
