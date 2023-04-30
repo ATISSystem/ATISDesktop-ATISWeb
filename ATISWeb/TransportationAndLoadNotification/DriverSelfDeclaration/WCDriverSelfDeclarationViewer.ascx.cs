@@ -29,7 +29,7 @@ namespace ATISWeb.TransportationAndLoadNotification.DriverSelfDeclaration
             try
             {
                 var InstanceDriverSelfDeclaration = new R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager();
-                var Lst = InstanceDriverSelfDeclaration.GetDeclarations(YourNSS);
+                var Lst = InstanceDriverSelfDeclaration.GetDeclarations(YourNSS,false );
 
                 while (TblDSDs.Rows.Count > 1) TblDSDs.Rows.RemoveAt(1);
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)

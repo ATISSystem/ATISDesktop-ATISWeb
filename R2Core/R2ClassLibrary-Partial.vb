@@ -14,6 +14,9 @@ Imports RestSharp
 Imports Newtonsoft
 Imports Newtonsoft.Json
 
+
+
+
 Imports R2Core.ComputersManagement
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DatabaseManagement
@@ -3778,19 +3781,19 @@ Namespace Email
 
                 Dim myByteArray = System.Text.Encoding.UTF8.GetBytes(YourAttachment.ToString)
                 Dim ms = New MemoryStream(myByteArray)
-                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12
+                Dim Credentials = New System.Net.NetworkCredential(InstanceConfiguration.GetConfigString(R2CoreConfigurations.EmailSystem, 2), InstanceConfiguration.GetConfigString(R2CoreConfigurations.EmailSystem, 3))
+                Dim SmtpClient = New SmtpClient()
+                SmtpClient.Host = InstanceConfiguration.GetConfigString(R2CoreConfigurations.EmailSystem, 1)
+                SmtpClient.Port = 587
+                SmtpClient.EnableSsl = True
+                SmtpClient.Credentials = credentials
                 Dim mail = New MailMessage()
-                Dim SmtpServer = New SmtpClient(InstanceConfiguration.GetConfigString(R2CoreConfigurations.EmailSystem, 1))
                 mail.From = New MailAddress(InstanceConfiguration.GetConfigString(R2CoreConfigurations.EmailSystem, 2))
                 mail.To.Add(YourReciever)
+                mail.Attachments.Add(New Attachment(ms, YourAttachmentFileName))
                 mail.Subject = YourSubject
                 mail.Body = YourBody
-                mail.IsBodyHtml = True
-                mail.Attachments.Add(New Attachment(ms, YourAttachmentFileName))
-                SmtpServer.Port = 587
-                SmtpServer.Credentials = New System.Net.NetworkCredential(InstanceConfiguration.GetConfigString(R2CoreConfigurations.EmailSystem, 2), InstanceConfiguration.GetConfigString(R2CoreConfigurations.EmailSystem, 3))
-                SmtpServer.EnableSsl = True
-                SmtpServer.Send(mail)
+                SmtpClient.Send(mail)
             Catch ex As R2CoreEmailSystemIsNotActiveException
                 Throw ex
             Catch ex As Exception

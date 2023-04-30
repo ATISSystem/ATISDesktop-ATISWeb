@@ -67,16 +67,15 @@ namespace MSCOAutomatedJobs
                 var InstanceLogging = new R2CoreInstanceLoggingManager();
                 _AutomatedJobsTimer.Enabled = false;
                 _AutomatedJobsTimer.Stop();
-                //ارسال ایمیل شرکت ها 
+                //ایجاد فایل های اعلام بار شرکت ها 
                 try
                 {
                     var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
                     var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-                    InstanceAnnouncementforTransportCompanies.SentEmailforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                    InstanceAnnouncementforTransportCompanies.CreateAnnouncementFileforTransportCompanies (InstanceSoftwareUsers.GetNSSSystemUser());
                 }
-
                 catch (Exception ex)
-                { EventLog.WriteEntry("MSCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+                { EventLog.WriteEntry("MSCOAutomatedJobs.CreateAnnouncementFile", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
 
                 //اعلام بار خودکار شرکت ها
                 try
@@ -86,7 +85,18 @@ namespace MSCOAutomatedJobs
                     InstanceAnnouncementforTransportCompanies.LoadsAnnouncementforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
                 }
                 catch (Exception ex)
-                { EventLog.WriteEntry("MSCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+                { EventLog.WriteEntry("MSCOAutomatedJobs.LoadsAnnouncement", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+
+                //ارسال ایمیل شرکت ها
+                try
+                {
+                    var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                    var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                    InstanceAnnouncementforTransportCompanies.SentEmailforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                }
+                catch (Exception ex)
+                { EventLog.WriteEntry("MSCOAutomatedJobs.SendEmail", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+
             }
             catch (Exception ex)
             { EventLog.WriteEntry("MSCOAutomatedJobs", "_AutomatedJobsTimer_Elapsed:" + ex.Message.ToString(), EventLogEntryType.Error); }

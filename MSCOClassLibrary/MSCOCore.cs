@@ -98,7 +98,7 @@ namespace MSCOCore
                 }
             }
 
-            private void CreateAnnouncementFileforTransportCompanies(string YourTransportCompanyCode, StringBuilder YourSB, R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser)
+            private void CreateAnnouncementFileforTransportCompany(string YourTransportCompanyCode, StringBuilder YourSB, R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser)
             {
                 var InstanceLogging = new R2CoreInstanceLoggingManager();
                 try
@@ -123,7 +123,7 @@ namespace MSCOCore
                 }
             }
 
-            public void SentEmailforTransportCompanies(R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser)
+            public void CreateAnnouncementFileforTransportCompanies(R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser)
             {
                 string TransportCompanyCode = null;
                 try
@@ -153,31 +153,22 @@ namespace MSCOCore
                     SB.AppendLine(FirstLine); SB.AppendLine(SecondLine);
                     var OtherLine = sr.ReadLine();
 
-                    InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreLogType.CameraError, "تست فولاد", "نقطه 5", OtherLine, string.Empty, string.Empty, string.Empty, InstanceSoftwareUsers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null));
-
                     TransportCompanyCode = OtherLine.Substring(0, 7);
                     SB.AppendLine(OtherLine);
-
-                    InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreLogType.CameraError, "تست فولاد", "نقطه 1", FirstLine, SecondLine, TransportCompanyCode, OtherLine, InstanceSoftwareUsers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null));
 
                     while (!(sr.EndOfStream))
                     {
                         OtherLine = sr.ReadLine();
                         if (OtherLine == String.Empty)
                         {
-                            InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreLogType.CameraError, "تست فولاد", "نقطه 3", "TransportCompanyCode:" + TransportCompanyCode, OtherLine, string.Empty, string.Empty, InstanceSoftwareUsers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null));
-
                             SB.AppendLine(OtherLine);
                             if (sr.EndOfStream)
                             {
-                                SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
-                                CreateAnnouncementFileforTransportCompanies(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                CreateAnnouncementFileforTransportCompany(TransportCompanyCode, SB, YourNSSSoftwareUser);
                                 break;
                             }
                             continue;
                         }
-
-                        InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreLogType.CameraError, "تست فولاد", "نقطه 2", "TransportCompanyCode:"+ TransportCompanyCode, string.Empty, string.Empty, string.Empty, InstanceSoftwareUsers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null));
 
                         if (OtherLine.Substring(18, 1) == "N" || OtherLine.Substring(18, 1) == "L")
                         {
@@ -185,10 +176,7 @@ namespace MSCOCore
                             { SB.AppendLine(OtherLine); continue; }
                             else
                             {
-                                InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, R2CoreLogType.CameraError, "تست فولاد", "نقطه 4", "TransportCompanyCode:" + TransportCompanyCode, OtherLine, string.Empty, string.Empty, InstanceSoftwareUsers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null));
-
-                                SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
-                                CreateAnnouncementFileforTransportCompanies(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                CreateAnnouncementFileforTransportCompany(TransportCompanyCode, SB, YourNSSSoftwareUser);
                                 //شرکت جدید
                                 SB.Clear();
                                 TransportCompanyCode = OtherLine.Substring(0, 7);
@@ -201,15 +189,12 @@ namespace MSCOCore
                             SB.AppendLine(OtherLine);
                             if (sr.EndOfStream)
                             {
-                                SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
-                                CreateAnnouncementFileforTransportCompanies(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                CreateAnnouncementFileforTransportCompany(TransportCompanyCode, SB, YourNSSSoftwareUser);
                                 break;
                             }
                             continue;
                         }
                     }
-                    //حذف فایل اعلام بار با حفظ سابقه
-                    WS.WebMethodDeleteFileButKeepDeleted(R2CoreRawGroups.UploadedFiles, "msc" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".txt", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword));
                 }
                 catch (MSCOCoreFilefromMSCORefrenceNotFoundException ex)
                 { throw ex; }
@@ -459,6 +444,91 @@ namespace MSCOCore
                 { throw ex; }
                 catch (Exception ex)
                 { throw ex; }
+            }
+
+            public void SentEmailforTransportCompanies(R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser)
+            {
+                string TransportCompanyCode = null;
+                try
+                {
+                    var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                    var InstanceEmail = new R2CoreEmailManager();
+                    var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                    var InstanceTransportCompanies = new MSCOCoreMClassTransportCompaniesManager();
+                    var InstanceLogging = new R2CoreInstanceLoggingManager();
+
+                    //کنترل فعال بودن سرویس
+                    if (!InstanceConfiguration.GetConfigBoolean(Configurations.MSCOCoreConfigurations.MSCO, 0)) { throw new MSCOCoreAnnouncementforTransportCompaniesIsnotActiveException(); }
+                    //کنترل زمان اجرای فرآیند
+                    var TimeofDay = _DateTime.GetCurrentTime();
+                    if (TimeSpan.ParseExact(TimeofDay, @"hh\:mm\:ss", CultureInfo.InvariantCulture) < TimeSpan.ParseExact(InstanceConfiguration.GetConfigString(Configurations.MSCOCoreConfigurations.MSCO, 2), @"hh\:mm\:ss", CultureInfo.InvariantCulture)) { return; }
+                    //کنترل موجود بودن فایل ارسالی فولاد
+                    var WS = new R2Core.R2PrimaryFileSharingWS.R2PrimaryFileSharingWebService();
+                    if (WS.WebMethodIOFileExist(R2CoreRawGroups.UploadedFiles, "msc" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".txt.del", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword))) { return; }
+                    if (!(WS.WebMethodIOFileExist(R2CoreRawGroups.UploadedFiles, "msc" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".txt", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword)))) { throw new MSCOCoreFilefromMSCORefrenceNotFoundException(); }
+
+                    var SB = new StringBuilder();
+                    var ms = new System.IO.MemoryStream(WS.WebMethodGetFile(R2CoreRawGroups.UploadedFiles, "msc" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".txt", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword)));
+                    var sr = new System.IO.StreamReader(ms);
+                    sr.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+                    var FirstLine = sr.ReadLine();
+                    var SecondLine = sr.ReadLine();
+                    SB.AppendLine(FirstLine); SB.AppendLine(SecondLine);
+                    var OtherLine = sr.ReadLine();
+
+                    TransportCompanyCode = OtherLine.Substring(0, 7);
+                    SB.AppendLine(OtherLine);
+
+                    while (!(sr.EndOfStream))
+                    {
+                        OtherLine = sr.ReadLine();
+                        if (OtherLine == String.Empty)
+                        {
+                            SB.AppendLine(OtherLine);
+                            if (sr.EndOfStream)
+                            {
+                                SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                break;
+                            }
+                            continue;
+                        }
+
+                        if (OtherLine.Substring(18, 1) == "N" || OtherLine.Substring(18, 1) == "L")
+                        {
+                            if (OtherLine.Substring(0, 7) == TransportCompanyCode)
+                            { SB.AppendLine(OtherLine); continue; }
+                            else
+                            {
+                                SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                //شرکت جدید
+                                SB.Clear();
+                                TransportCompanyCode = OtherLine.Substring(0, 7);
+                                SB.AppendLine(FirstLine); SB.AppendLine(SecondLine); SB.AppendLine(OtherLine);
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            SB.AppendLine(OtherLine);
+                            if (sr.EndOfStream)
+                            {
+                                SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                break;
+                            }
+                            continue;
+                        }
+                    }
+                    //حذف فایل اعلام بار با حفظ سابقه
+                    WS.WebMethodDeleteFileButKeepDeleted(R2CoreRawGroups.UploadedFiles, "msc" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".txt", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword));
+                }
+                catch (MSCOCoreFilefromMSCORefrenceNotFoundException ex)
+                { throw ex; }
+                catch (MSCOCoreAnnouncementforTransportCompaniesIsnotActiveException ex)
+                { throw ex; }
+                catch (MSCOCoreTransportCompanyNotFoundException ex)
+                { throw ex; }
+                catch (Exception ex)
+                { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
             }
 
         }

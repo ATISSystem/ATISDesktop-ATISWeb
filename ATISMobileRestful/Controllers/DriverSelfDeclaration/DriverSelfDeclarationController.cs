@@ -37,7 +37,7 @@ namespace ATISMobileRestful.Controllers.DriverSelfDeclaration
                 var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
                 var InstanceDriverSelfDeclaration = new R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager();
                 var NSSTruck = InstanceTrucks.GetNSSTruck(NSSSoftwareuser);
-                var Lst = InstanceDriverSelfDeclaration.GetDeclarations(NSSTruck);
+                var Lst = InstanceDriverSelfDeclaration.GetDeclarations(NSSTruck,false );
                 List<Models.DriverSelfDeclaration> _DSDs = new List<Models.DriverSelfDeclaration>();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
@@ -80,7 +80,10 @@ namespace ATISMobileRestful.Controllers.DriverSelfDeclaration
                 var NSSTruck = InstanceTrucks.GetNSSTruck(NSSSoftwareuser);
                 var DSDs = Content.Split(';')[2];
                 var InstanceDriverSelfDeclaration = new R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager();
+                //ثبت مشخصات
                 InstanceDriverSelfDeclaration.SetDeclarations(DSDs, NSSTruck, NSSSoftwareuser);
+                //بروز رسانی مشخصات در اپلیکیشن
+                InstanceDriverSelfDeclaration.GetDeclarations(NSSTruck,true );
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
@@ -105,5 +108,43 @@ namespace ATISMobileRestful.Controllers.DriverSelfDeclaration
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
+
+        [HttpPost]
+        public HttpResponseMessage GetValid()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientGetDriverSelfDeclarations);
+
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
+                var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
+                var InstanceDriverSelfDeclaration = new R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager();
+                var NSSTruck = InstanceTrucks.GetNSSTruck(NSSSoftwareuser);
+                var Lst = InstanceDriverSelfDeclaration.GetDeclarations(NSSTruck, false);
+                List<Models.DriverSelfDeclaration> _DSDs = new List<Models.DriverSelfDeclaration>();
+                for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
+                {
+                    var Item = new Models.DriverSelfDeclaration();
+                    Item.DSDId = Lst[Loopx].DSDId;
+                    Item.DSDName = Lst[Loopx].DSDName;
+                    Item.DSDTitle = Lst[Loopx].DSDTitle;
+                    Item.DefaultValue = "مثال : " + Lst[Loopx].DefaultValue;
+                    Item.DSDValue = Lst[Loopx].DSDValue;
+                    _DSDs.Add(Item);
+                }
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(_DSDs), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (GetNSSException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (TruckNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+        }
+
     }
 }

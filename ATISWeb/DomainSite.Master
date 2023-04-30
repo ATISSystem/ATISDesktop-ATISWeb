@@ -39,13 +39,13 @@
                             <a class="btn R2FontBYekanMedium border-0 ml-2" style="background-color: rgba(0, 0, 0, 0.2) ;color:yellow " href="/MoneyWalletManagement/WfMoneyWallet.aspx">کیف پول</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color: rgb(8, 150, 8);" id="JoinSocialNetwork" href="https://chat.whatsapp.com/GTnQbuOPtMwKNk4ET89hMx" runat="server">عضویت در گروه مجازی آتیس وب</a>
+                            <a class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color: rgb(242, 140, 40);" id="JoinSocialNetwork" href="https://eitaa.com/joinchat/1654653304Cb5bae1acc3" runat="server">عضویت در گروه مجازی آتیس وب</a>
                         </li>
                         <li class="nav-item">
                             <a class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color: rgba(0, 0, 0, 0.2);" href="/MenuManagement/WfMainMenu.aspx">منوی اصلی</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color: darkorange;" href="/ATISStartManagement/WfATISStart.aspx">صفحه اصلی</a>
+                            <a class="btn text-white R2FontBYekanMedium border-0 ml-2" style="background-color:red ;" href="/ATISStartManagement/WfATISStart.aspx">صفحه اصلی</a>
                         </li>
                     </ul>
                 </div>
