@@ -4585,16 +4585,17 @@ Namespace LoadPermission
                     InstanceTurnAttendance.IsAmountOfTurnPresentsEnough(InstanceAnnouncementHalls.GetNSSAnnouncementHall(YourNSSLoadCapacitorLoad.AHId), YourNSSLoadAllocation.TurnId)
                 End If
 
+                'کنترل وضعیت بار در مخزن بار
+                If Not IntanceLoadCapacitorLoad.IsLoadCapacitorLoadReadeyforLoadPermissionRegistering(YourNSSLoadCapacitorLoad) Then Throw New LoadPermisionRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException
+
                 'کنترل وضعیت نوبت
+                If Not InstanceTurns.IsTurnReadeyforLoadPermissionRegistering(NSSTurn) Then Throw New LoadPermisionRegisteringFailedBecauseTurnIsNotReadyException
+
+                'کنترل تعداد مجوز صادر شده
                 Dim Da As New SqlClient.SqlDataAdapter : Dim DSAllocate As DataSet = Nothing
                 Da.SelectCommand = New SqlClient.SqlCommand("Select LAId from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations Where TurnId=" & NSSTurn.nEnterExitId & " and LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & "")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
                 If Da.Fill(DSAllocate) <> 0 Then Throw New ExeededNumberofLoadPermisionsWithOneTurnException
-
-                If Not InstanceTurns.IsTurnReadeyforLoadPermissionRegistering(NSSTurn) Then Throw New LoadPermisionRegisteringFailedBecauseTurnIsNotReadyException
-
-                'کنترل وضعیت بار در مخزن بار
-                If Not IntanceLoadCapacitorLoad.IsLoadCapacitorLoadReadeyforLoadPermissionRegistering(YourNSSLoadCapacitorLoad) Then Throw New LoadPermisionRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException
 
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
