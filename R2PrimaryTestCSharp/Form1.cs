@@ -6,9 +6,11 @@ using R2Core.LoggingManagement;
 using R2Core.SecurityAlgorithmsManagement.Captcha;
 using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls;
+using R2CoreTransportationAndLoadNotification.DriverSelfDeclaration;
 using R2CoreTransportationAndLoadNotification.LoadAllocation;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2CoreTransportationAndLoadNotification.LoadPermission;
+using R2CoreTransportationAndLoadNotification.Trucks;
 using R2CoreTransportationAndLoadNotification.Turns.SequentialTurns;
 using System;
 using System.Collections.Generic;
@@ -38,32 +40,40 @@ namespace R2PrimaryTestCSharp
         {
             try
             {
-                try
-                {
-                    var InstanceLogging = new R2CoreInstanceLoggingManager();
-                    //ارسال ایمیل شرکت ها 
-                    try
-                    {
-                        var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
-                        var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-                        InstanceAnnouncementforTransportCompanies.SentEmailforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
-                    }
+                var InstanceSoftwareUsers = new R2Core.SoftwareUserManagement.R2CoreInstanseSoftwareUsersManager();
+                
+                var NSSSoftwareuser = InstanceSoftwareUsers.GetNSSUser(21);
+                var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
+                var InstanceDriverSelfDeclaration = new R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager();
+                var NSSTruck = InstanceTrucks.GetNSSTruck(NSSSoftwareuser);
+                var Lst = InstanceDriverSelfDeclaration.GetDeclarations(NSSTruck, false);
+                var x = 2;
+                //try
+                //{
+                //    var InstanceLogging = new R2CoreInstanceLoggingManager();
+                //    //ارسال ایمیل شرکت ها 
+                //    try
+                //    {
+                //        var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                //        var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                //        InstanceAnnouncementforTransportCompanies.SentEmailforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                //    }
 
-                    catch (Exception ex)
-                    { EventLog.WriteEntry("MSCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+                //    catch (Exception ex)
+                //    { EventLog.WriteEntry("MSCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
 
-                    //اعلام بار خودکار شرکت ها
-                    try
-                    {
-                        var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-                        var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
-                        InstanceAnnouncementforTransportCompanies.LoadsAnnouncementforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
-                    }
-                    catch (Exception ex)
-                    { EventLog.WriteEntry("MSCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
-                }
-                catch (Exception ex)
-                { EventLog.WriteEntry("MSCOAutomatedJobs", "_AutomatedJobsTimer_Elapsed:" + ex.Message.ToString(), EventLogEntryType.Error); }
+                //    //اعلام بار خودکار شرکت ها
+                //    try
+                //    {
+                //        var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                //        var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                //        InstanceAnnouncementforTransportCompanies.LoadsAnnouncementforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                //    }
+                //    catch (Exception ex)
+                //    { EventLog.WriteEntry("MSCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+                //}
+                //catch (Exception ex)
+                //{ EventLog.WriteEntry("MSCOAutomatedJobs", "_AutomatedJobsTimer_Elapsed:" + ex.Message.ToString(), EventLogEntryType.Error); }
 
 
                 //var X = new ESCOCore.SendSMS.ESCOCoreSendSMSManager();

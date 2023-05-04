@@ -36,6 +36,7 @@ using R2CoreTransportationAndLoadNotification.TransportCompanies.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions;
 using R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Exceptions;
+using R2Core.SMS;
 
 namespace MSCOCore
 {
@@ -520,6 +521,9 @@ namespace MSCOCore
                     }
                     //حذف فایل اعلام بار با حفظ سابقه
                     WS.WebMethodDeleteFileButKeepDeleted(R2CoreRawGroups.UploadedFiles, "msc" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".txt", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword));
+                    /*ارسال اس ام اس اتمام موفقیت آمیز فرآیند اعلام بار فولاد*/
+                    R2CoreSMSSendRecive SMSSender = new R2CoreSMSSendRecive();
+                    SMSSender.SendSms(new R2CoreStandardSMSStructure(Int64.MinValue, InstanceConfiguration.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 1), "اتمام اعلام بار فولاد", 1, _DateTime.GetCurrentDateTimeMilladi(), true, null, null));
                 }
                 catch (MSCOCoreFilefromMSCORefrenceNotFoundException ex)
                 { throw ex; }

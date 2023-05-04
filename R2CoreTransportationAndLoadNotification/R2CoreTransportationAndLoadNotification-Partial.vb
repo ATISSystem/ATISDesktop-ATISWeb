@@ -73,6 +73,8 @@ Imports R2Core.PermissionManagement.Exceptions
 Imports R2CoreTransportationAndLoadNotification.TransportTarrifsParameters
 Imports R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Exceptions
 Imports R2CoreTransportationAndLoadNotification.DriverSelfDeclaration.Exceptions
+Imports R2Core.R2PrimaryFileSharingWS
+Imports R2CoreTransportationAndLoadNotification.FileShareRawGroupsManagement
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -8154,6 +8156,7 @@ Namespace DriverSelfDeclaration
             _DSDName = String.Empty
             _DSDTitle = String.Empty
             _DefaultValue = String.Empty
+            _HasAttachement = Boolean.FalseString
             _DateTimeMilladi = Now
             _DateShamsi = String.Empty
             _Time = String.Empty
@@ -8163,12 +8166,13 @@ Namespace DriverSelfDeclaration
             _Deleted = Boolean.FalseString
         End Sub
 
-        Public Sub New(YourDSDId As Int64, YourDSDName As String, YourDSDTitle As String, YourDefaultValue As String, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourUserId As Int64, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
+        Public Sub New(YourDSDId As Int64, YourDSDName As String, YourDSDTitle As String, YourDefaultValue As String, YourHasAttachement As Boolean, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourUserId As Int64, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
             MyBase.New(YourDSDId, YourDSDName)
             _DSDId = YourDSDId
             _DSDName = YourDSDName
             _DSDTitle = YourDSDTitle
             _DefaultValue = YourDefaultValue
+            _HasAttachement = YourHasAttachement
             _DateTimeMilladi = YourDateTimeMilladi
             _DateShamsi = YourDateShamsi
             _Time = YourTime
@@ -8182,6 +8186,7 @@ Namespace DriverSelfDeclaration
         Public Property DSDName As String
         Public Property DSDTitle As String
         Public Property DefaultValue As String
+        Public Property HasAttachement As Boolean
         Public Property DateTimeMilladi As DateTime
         Public Property DateShamsi As String
         Public Property Time As String
@@ -8202,15 +8207,17 @@ Namespace DriverSelfDeclaration
             _DSDTitle = String.Empty
             _DefaultValue = String.Empty
             _DSDValue = String.Empty
+            _HasAttachement = Boolean.FalseString
         End Sub
 
-        Public Sub New(ByVal YourDSDId As Int64, YourDSDName As String, YourDSDTitle As String, YourDefaultValue As String, YourDSDValue As String)
+        Public Sub New(ByVal YourDSDId As Int64, YourDSDName As String, YourDSDTitle As String, YourDefaultValue As String, YourDSDValue As String, YourHasAttachement As Boolean)
             MyBase.New(YourDSDId, YourDSDName)
             _DSDId = YourDSDId
             _DSDName = YourDSDName
             _DSDTitle = YourDSDTitle
             _DefaultValue = YourDefaultValue
             _DSDValue = YourDSDValue
+            _HasAttachement = YourHasAttachement
         End Sub
 
         Public Property DSDId As Int64
@@ -8218,11 +8225,22 @@ Namespace DriverSelfDeclaration
         Public Property DSDTitle As String
         Public Property DefaultValue As String
         Public Property DSDValue As String
+        Public Property HasAttachement As Boolean
     End Class
 
     Public Class R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager
-
+        Private _R2PrimaryFSWS As R2PrimaryFileSharingWebService = New R2PrimaryFileSharingWebService()
         Private _DateTime As New R2DateTime
+
+        Private Function GetDSDIdFull(YourDSDId As Int64) As String
+            Try
+                Dim InstancePublicProcedures = New R2Core.PublicProc.R2CoreInstancePublicProceduresManager
+                Return InstancePublicProcedures.RepeatStr("0", 2 - YourDSDId.ToString().Length) + YourDSDId.ToString()
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Sub ControlforExpiredDSDs(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure)
             Try
                 Dim D = _DateTime.GetCurrentDateTime
@@ -8273,7 +8291,7 @@ Namespace DriverSelfDeclaration
                 Dim DS As DataSet
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select * from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters Where DSDId=" & YourDSDId & "", 3600, DS).GetRecordsCount = 0 Then Throw New DriverSelfDeclarationParameterNotFoundException
-                Return New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationParameterStructure(DS.Tables(0).Rows(0).Item("DSDId"), DS.Tables(0).Rows(0).Item("DSDName").trim, DS.Tables(0).Rows(0).Item("DSDTitle").trim, DS.Tables(0).Rows(0).Item("DefaultValue").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationParameterStructure(DS.Tables(0).Rows(0).Item("DSDId"), DS.Tables(0).Rows(0).Item("DSDName").trim, DS.Tables(0).Rows(0).Item("DSDTitle").trim, DS.Tables(0).Rows(0).Item("DefaultValue").trim, DS.Tables(0).Rows(0).Item("HasAttachement"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As DriverSelfDeclarationParameterNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -8287,22 +8305,22 @@ Namespace DriverSelfDeclaration
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 If YourImmediately Then
                     InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                          "Select DataBox.DSDId,DataBox.DSDName,DataBox.DSDTitle,DataBox.DefaultValue,ISNULL(DataBox.DSDValue,'') as DSDValue from 
-                             (Select DSDParams.DSDId,DSDParams.DSDName,DSDParams.DSDTitle,DSDParams.DefaultValue,DataBox.DSDValue from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters as DSDParams
+                          "Select DataBox.DSDId,DataBox.DSDName,DataBox.DSDTitle,DataBox.DefaultValue,DataBox.HasAttachement,ISNULL(DataBox.DSDValue,'') as DSDValue from 
+                             (Select DSDParams.DSDId,DSDParams.DSDName,DSDParams.DSDTitle,DSDParams.DefaultValue,DSDParams.HasAttachement,DataBox.DSDValue from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters as DSDParams
                                 left outer  Join 
                                   (Select * from R2PrimaryTransportationAndLoadNotification.DBO.TblDriverSelfDeclarations as DSDs Where DSDs.nIdCar=" & YourNSSTruck.NSSCar.nIdCar & " and DSDs.RelationActive=1) as DataBox On DSDParams.DSDId=DataBox.DSDId 
                                    Where DSDParams.Active=1) as DataBox Order By DataBox.DSDId", 0, DS)
                 Else
                     InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                          "Select DataBox.DSDId,DataBox.DSDName,DataBox.DSDTitle,DataBox.DefaultValue,ISNULL(DataBox.DSDValue,'') as DSDValue from 
-                             (Select DSDParams.DSDId,DSDParams.DSDName,DSDParams.DSDTitle,DSDParams.DefaultValue,DataBox.DSDValue from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters as DSDParams
+                          "Select DataBox.DSDId,DataBox.DSDName,DataBox.DSDTitle,DataBox.DefaultValue,DataBox.HasAttachement,ISNULL(DataBox.DSDValue,'') as DSDValue from 
+                             (Select DSDParams.DSDId,DSDParams.DSDName,DSDParams.DSDTitle,DSDParams.DefaultValue,DSDParams.HasAttachement,DataBox.DSDValue from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters as DSDParams
                                 left outer  Join 
                                   (Select * from R2PrimaryTransportationAndLoadNotification.DBO.TblDriverSelfDeclarations as DSDs Where DSDs.nIdCar=" & YourNSSTruck.NSSCar.nIdCar & " and DSDs.RelationActive=1) as DataBox On DSDParams.DSDId=DataBox.DSDId 
                                    Where DSDParams.Active=1) as DataBox Order By DataBox.DSDId", 3600, DS)
                 End If
                 Dim Lst = New List(Of R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationExtendedStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                    Lst.Add(New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationExtendedStructure(DS.Tables(0).Rows(Loopx).Item("DSDId"), DS.Tables(0).Rows(Loopx).Item("DSDName"), DS.Tables(0).Rows(Loopx).Item("DSDTitle"), DS.Tables(0).Rows(Loopx).Item("DefaultValue"), DS.Tables(0).Rows(Loopx).Item("DSDValue")))
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationExtendedStructure(DS.Tables(0).Rows(Loopx).Item("DSDId"), DS.Tables(0).Rows(Loopx).Item("DSDName"), DS.Tables(0).Rows(Loopx).Item("DSDTitle"), DS.Tables(0).Rows(Loopx).Item("DefaultValue"), DS.Tables(0).Rows(Loopx).Item("DSDValue"), DS.Tables(0).Rows(Loopx).Item("HasAttachement")))
                 Next
                 Return Lst
             Catch ex As Exception
@@ -8366,6 +8384,34 @@ Namespace DriverSelfDeclaration
             End Try
         End Sub
 
+        Public Function GetAllowedLoadingCapacity(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure) As String
+            Try
+                Dim DS As DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                      "Select R2PrimaryTransportationAndLoadNotification.dbo.GetAllowedLoadingCapacity(" & YourNSSTruck.NSSCar.nIdCar & ") as Allowed", 3600, DS).GetRecordsCount = 0 Then
+                    Throw New DSDBaseInfNotFoundException
+                End If
+                If DBNull.Value.Equals(DS.Tables(0).Rows(0).Item("Allowed")) Then Throw New DSDBaseInfNotFoundException
+                Return DS.Tables(0).Rows(0).Item("Allowed")
+            Catch ex As DSDBaseInfNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Sub SaveDSDImage(YourDSDId As Int64, YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourBase64StringImage As String)
+            Try
+                Dim InstanceConfiguration = New R2Core.ConfigurationManagement.R2CoreInstanceConfigurationManager
+                If YourBase64StringImage.Length > InstanceConfiguration.GetConfigInt64(R2Core.ConfigurationManagement.R2CoreConfigurations.JPGBitmap, 4) Then Throw New UploadedImageSizeExeededException
+                _R2PrimaryFSWS.WebMethodSaveFile(R2CoreTransportationAndLoadNotificationRawGroups.DriverSelfDeclarations, New R2CoreFile(GetDSDIdFull(YourDSDId) + YourNSSTruck.NSSCar.nIdCar.ToString() + R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.JPGBitmap, 2)).FileName, Convert.FromBase64String(YourBase64StringImage), _R2PrimaryFSWS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword))
+            Catch ex As UploadedImageSizeExeededException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
     End Class
 
     Namespace Exceptions
@@ -8413,6 +8459,25 @@ Namespace DriverSelfDeclaration
             End Property
         End Class
 
+        Public Class DSDsNotFoundException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "اطلاعات خوداظهاری ناوگان یافت نشد"
+                End Get
+            End Property
+        End Class
+
+        Public Class DSDBaseInfNotFoundException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "اطلاعات پایه در فرآیند خوداظهاری مبنی بر مشخصات وارد شده یافت نشد"
+                End Get
+            End Property
+        End Class
 
     End Namespace
 

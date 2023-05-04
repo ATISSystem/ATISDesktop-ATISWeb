@@ -105,6 +105,7 @@ namespace ATISMobileRestful.Models
         public String DSDTitle { get; set; }
         public String DefaultValue { get; set; }
         public String DSDValue { get; set; }
+        public bool  HasAttachement { get; set; }
     }
 
 

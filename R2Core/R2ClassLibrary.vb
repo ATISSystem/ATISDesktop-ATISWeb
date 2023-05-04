@@ -4080,6 +4080,14 @@ Namespace ExceptionManagement
         End Property
     End Class
 
+    Public Class UploadedImageSizeExeededException
+        Inherits ApplicationException
+        Public Overrides ReadOnly Property Message As String
+            Get
+                Return "اندازه تصویر ارسال شده بیش از حد مجاز است"
+            End Get
+        End Property
+    End Class
 
 
 End Namespace

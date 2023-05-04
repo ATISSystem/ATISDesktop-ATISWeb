@@ -363,6 +363,7 @@ Namespace FileShareRawGroupsManagement
 
         Public Shared ReadOnly TurnRegisterRequestAttachements As Int64 = 5
 
+        Public Shared ReadOnly DriverSelfDeclarations As Int64 = 8
 
     End Class
 
