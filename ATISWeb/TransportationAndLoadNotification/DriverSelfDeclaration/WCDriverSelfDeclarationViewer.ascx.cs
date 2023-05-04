@@ -39,6 +39,7 @@ namespace ATISWeb.TransportationAndLoadNotification.DriverSelfDeclaration
                     tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].DSDTitle + " - " + (Lst[Loopx].DSDValue == String.Empty ? "اظهار نشده" : Lst[Loopx].DSDValue); tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     TblDSDs.Rows.Add(tempRow);
+
                 }
                 TableFooterRow tempFooterRow = new TableFooterRow();
                 tempFooterRow.BackColor = Color.LightBlue;
