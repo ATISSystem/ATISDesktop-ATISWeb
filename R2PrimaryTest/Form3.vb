@@ -57,6 +57,7 @@ Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.TurnRegisterRequest
 Imports R2Core.ComputersManagement
 Imports R2Core.Email
+Imports R2CoreTransportationAndLoadNotification.DriverSelfDeclaration
 
 Public Class Form3
     Private _DateTime As R2DateTime = New R2DateTime
@@ -512,10 +513,13 @@ Public Class Form3
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
         Try
-            Dim x As New R2CoreEmailManager
-            Dim sb As New StringBuilder
-            sb.Append(";sdlfl;sf")
-            x.SendEmailWithTXTTypeAttachment("shsuccessbarname@gmail.com", sb, "123", "321", "111.txt")
+            Dim x As New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager
+            Dim y As New R2CoreTransportationAndLoadNotification.Trucks.R2CoreTransportationAndLoadNotificationInstanceTrucksManager
+            x.GetDeclarations(y.GetNSSTruck(85179), True)
+            'Dim x As New R2CoreEmailManager
+            'Dim sb As New StringBuilder
+            'sb.Append(";sdlfl;sf")
+            'x.SendEmailWithTXTTypeAttachment("shsuccessbarname@gmail.com", sb, "123", "321", "111.txt")
             'Dim d = _DateTime.GetCurrentDateTime()
             'MessageBox.Show(_DateTime.GetCurrentDateTimeMilladi().ToString("hh:mm:ss"))
             'Dim InstanceComputers = New R2CoreMClassComputersManager

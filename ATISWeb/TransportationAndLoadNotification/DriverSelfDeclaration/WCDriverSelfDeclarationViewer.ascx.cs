@@ -45,7 +45,13 @@ namespace ATISWeb.TransportationAndLoadNotification.DriverSelfDeclaration
                 tempFooterRow.BackColor = Color.LightBlue;
                 tempFooterRow.BorderColor = Color.LightBlue;
                 TblDSDs.Rows.Add(tempFooterRow);
-                LblAllowedLoadingCapacity.Text = "ظرفیت مجاز بارگیری : " + InstanceDriverSelfDeclaration.GetAllowedLoadingCapacity(YourNSS)+"  تن ";
+                try
+                {
+                    var Allowed = InstanceDriverSelfDeclaration.GetAllowedLoadingCapacity(YourNSS) + "  تن ";
+                    LblAllowedLoadingCapacity.Text = "ظرفیت مجاز بارگیری : " + Allowed;
+                }
+                catch (Exception ex)
+                { LblAllowedLoadingCapacity.Text = "ظرفیت مجاز بارگیری : نامعلوم"; }
             }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }

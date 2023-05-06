@@ -47,6 +47,9 @@ namespace ATISMobileRestful.Controllers.DriverSelfDeclaration
                     Item.DSDTitle = Lst[Loopx].DSDTitle;
                     Item.DefaultValue = "مثال : " + Lst[Loopx].DefaultValue;
                     Item.DSDValue = Lst[Loopx].DSDValue;
+                    Item.PersianKeyboard = Lst[Loopx].PersianKeyboard;
+                    Item.IsNumeric = Lst[Loopx].IsNumeric;
+                    Item.DecimalPoint = Lst[Loopx].DecimalPoint;
                     Item.HasAttachement = Lst[Loopx].HasAttachement;
                     _DSDs.Add(Item);
                 }

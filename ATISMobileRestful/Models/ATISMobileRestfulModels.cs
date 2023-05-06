@@ -105,7 +105,10 @@ namespace ATISMobileRestful.Models
         public String DSDTitle { get; set; }
         public String DefaultValue { get; set; }
         public String DSDValue { get; set; }
-        public bool  HasAttachement { get; set; }
+        public bool PersianKeyboard { get; set; }
+        public bool IsNumeric { get; set; }
+        public bool DecimalPoint { get; set; }
+        public bool HasAttachement { get; set; }
     }
 
 

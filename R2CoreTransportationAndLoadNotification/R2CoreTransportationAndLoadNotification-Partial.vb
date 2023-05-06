@@ -2682,7 +2682,7 @@ Namespace LoadCapacitor
                     'کنترل زمان کنسلی بار
                     If Not InstanceAnnouncementHalls.IsAnnouncemenetHallAnnounceTimePassed(NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, New R2StandardDateAndTimeStructure(Nothing, Nothing, YourNSS.dTimeElam)) Then Throw New LoadCapacitorLoadCancelTimeNotReachedException
                     'کنترل مجوز دسترسی کاربر
-                    If Not InstancePermisions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.SoftwareUserCanCancellingLoadsViaLoadStatus, YourNSS.nUserId, YourNSS.LoadStatus) Then Throw New SoftwareUserCanNotCancellingLoadCapacitorLoadException
+                    If Not InstancePermisions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.SoftwareUserCanCancellingLoadsViaLoadStatus, YourUserNSS.UserId, YourNSS.LoadStatus) Then Throw New SoftwareUserCanNotCancellingLoadCapacitorLoadException
                     'کنسلی بار
                     CmdSql.Connection.Open()
                     CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
@@ -8157,6 +8157,9 @@ Namespace DriverSelfDeclaration
             _DSDName = String.Empty
             _DSDTitle = String.Empty
             _DefaultValue = String.Empty
+            _PersianKeyboard = Boolean.FalseString
+            _IsNumeric = Boolean.FalseString
+            _DecimalPoint = Boolean.FalseString
             _HasAttachement = Boolean.FalseString
             _DateTimeMilladi = Now
             _DateShamsi = String.Empty
@@ -8167,12 +8170,15 @@ Namespace DriverSelfDeclaration
             _Deleted = Boolean.FalseString
         End Sub
 
-        Public Sub New(YourDSDId As Int64, YourDSDName As String, YourDSDTitle As String, YourDefaultValue As String, YourHasAttachement As Boolean, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourUserId As Int64, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
+        Public Sub New(YourDSDId As Int64, YourDSDName As String, YourDSDTitle As String, YourDefaultValue As String, YourPersianKeyboard As Boolean, YourIsNumeric As Boolean, YourDecimalPoint As Boolean, YourHasAttachement As Boolean, YourDateTimeMilladi As DateTime, YourDateShamsi As String, YourTime As String, YourUserId As Int64, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
             MyBase.New(YourDSDId, YourDSDName)
             _DSDId = YourDSDId
             _DSDName = YourDSDName
             _DSDTitle = YourDSDTitle
             _DefaultValue = YourDefaultValue
+            _PersianKeyboard = YourPersianKeyboard
+            _IsNumeric = YourIsNumeric
+            _DecimalPoint = YourDecimalPoint
             _HasAttachement = YourHasAttachement
             _DateTimeMilladi = YourDateTimeMilladi
             _DateShamsi = YourDateShamsi
@@ -8187,6 +8193,9 @@ Namespace DriverSelfDeclaration
         Public Property DSDName As String
         Public Property DSDTitle As String
         Public Property DefaultValue As String
+        Public Property PersianKeyboard As Boolean
+        Public Property IsNumeric As Boolean
+        Public Property DecimalPoint As Boolean
         Public Property HasAttachement As Boolean
         Public Property DateTimeMilladi As DateTime
         Public Property DateShamsi As String
@@ -8208,16 +8217,22 @@ Namespace DriverSelfDeclaration
             _DSDTitle = String.Empty
             _DefaultValue = String.Empty
             _DSDValue = String.Empty
+            _PersianKeyboard = Boolean.FalseString
+            _IsNumeric = Boolean.FalseString
+            _DecimalPoint = Boolean.FalseString
             _HasAttachement = Boolean.FalseString
         End Sub
 
-        Public Sub New(ByVal YourDSDId As Int64, YourDSDName As String, YourDSDTitle As String, YourDefaultValue As String, YourDSDValue As String, YourHasAttachement As Boolean)
+        Public Sub New(ByVal YourDSDId As Int64, YourDSDName As String, YourDSDTitle As String, YourDefaultValue As String, YourDSDValue As String, YourPersianKeyboard As Boolean, YourIsNumeric As Boolean, YourDecimalPoint As Boolean, YourHasAttachement As Boolean)
             MyBase.New(YourDSDId, YourDSDName)
             _DSDId = YourDSDId
             _DSDName = YourDSDName
             _DSDTitle = YourDSDTitle
             _DefaultValue = YourDefaultValue
             _DSDValue = YourDSDValue
+            _PersianKeyboard = YourPersianKeyboard
+            _IsNumeric = YourIsNumeric
+            _DecimalPoint = YourDecimalPoint
             _HasAttachement = YourHasAttachement
         End Sub
 
@@ -8226,6 +8241,9 @@ Namespace DriverSelfDeclaration
         Public Property DSDTitle As String
         Public Property DefaultValue As String
         Public Property DSDValue As String
+        Public Property PersianKeyboard As Boolean
+        Public Property IsNumeric As Boolean
+        Public Property DecimalPoint As Boolean
         Public Property HasAttachement As Boolean
     End Class
 
@@ -8287,12 +8305,12 @@ Namespace DriverSelfDeclaration
 
         End Sub
 
-        Public Function GetNSSDriverSelfDeclaration(YourDSDId As Int64) As R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationParameterStructure
+        Public Function GetNSSDriverSelfDeclarationParameter(YourDSDId As Int64) As R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationParameterStructure
             Try
                 Dim DS As DataSet
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select * from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters Where DSDId=" & YourDSDId & "", 3600, DS).GetRecordsCount = 0 Then Throw New DriverSelfDeclarationParameterNotFoundException
-                Return New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationParameterStructure(DS.Tables(0).Rows(0).Item("DSDId"), DS.Tables(0).Rows(0).Item("DSDName").trim, DS.Tables(0).Rows(0).Item("DSDTitle").trim, DS.Tables(0).Rows(0).Item("DefaultValue").trim, DS.Tables(0).Rows(0).Item("HasAttachement"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
+                Return New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationParameterStructure(DS.Tables(0).Rows(0).Item("DSDId"), DS.Tables(0).Rows(0).Item("DSDName").trim, DS.Tables(0).Rows(0).Item("DSDTitle").trim, DS.Tables(0).Rows(0).Item("DefaultValue").trim, DS.Tables(0).Rows(0).Item("PersianKeyboard"), DS.Tables(0).Rows(0).Item("IsNumeric"), DS.Tables(0).Rows(0).Item("DecimalPoint"), DS.Tables(0).Rows(0).Item("HasAttachement"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As DriverSelfDeclarationParameterNotFoundException
                 Throw ex
             Catch ex As Exception
@@ -8306,22 +8324,22 @@ Namespace DriverSelfDeclaration
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 If YourImmediately Then
                     InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                          "Select DataBox.DSDId,DataBox.DSDName,DataBox.DSDTitle,DataBox.DefaultValue,DataBox.HasAttachement,ISNULL(DataBox.DSDValue,'') as DSDValue from 
-                             (Select DSDParams.DSDId,DSDParams.DSDName,DSDParams.DSDTitle,DSDParams.DefaultValue,DSDParams.HasAttachement,DataBox.DSDValue from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters as DSDParams
+                          "Select DataBox.DSDId,DataBox.DSDName,DataBox.DSDTitle,DataBox.DefaultValue,DataBox.PersianKeyboard,DataBox.IsNumeric,DataBox.DecimalPoint,DataBox.HasAttachement,ISNULL(DataBox.DSDValue,'') as DSDValue from 
+                             (Select DSDParams.DSDId,DSDParams.DSDName,DSDParams.DSDTitle,DSDParams.DefaultValue,DSDParams.PersianKeyboard,DSDParams.IsNumeric,DSDParams.DecimalPoint,DSDParams.HasAttachement,DataBox.DSDValue from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters as DSDParams
                                 left outer  Join 
                                   (Select * from R2PrimaryTransportationAndLoadNotification.DBO.TblDriverSelfDeclarations as DSDs Where DSDs.nIdCar=" & YourNSSTruck.NSSCar.nIdCar & " and DSDs.RelationActive=1) as DataBox On DSDParams.DSDId=DataBox.DSDId 
                                    Where DSDParams.Active=1) as DataBox Order By DataBox.DSDId", 0, DS)
                 Else
                     InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                          "Select DataBox.DSDId,DataBox.DSDName,DataBox.DSDTitle,DataBox.DefaultValue,DataBox.HasAttachement,ISNULL(DataBox.DSDValue,'') as DSDValue from 
-                             (Select DSDParams.DSDId,DSDParams.DSDName,DSDParams.DSDTitle,DSDParams.DefaultValue,DSDParams.HasAttachement,DataBox.DSDValue from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters as DSDParams
+                          "Select DataBox.DSDId,DataBox.DSDName,DataBox.DSDTitle,DataBox.DefaultValue,DataBox.PersianKeyboard,DataBox.IsNumeric,DataBox.DecimalPoint,DataBox.HasAttachement,ISNULL(DataBox.DSDValue,'') as DSDValue from 
+                             (Select DSDParams.DSDId,DSDParams.DSDName,DSDParams.DSDTitle,DSDParams.DefaultValue,DSDParams.PersianKeyboard,DSDParams.IsNumeric,DSDParams.DecimalPoint,DSDParams.HasAttachement,DataBox.DSDValue from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters as DSDParams
                                 left outer  Join 
                                   (Select * from R2PrimaryTransportationAndLoadNotification.DBO.TblDriverSelfDeclarations as DSDs Where DSDs.nIdCar=" & YourNSSTruck.NSSCar.nIdCar & " and DSDs.RelationActive=1) as DataBox On DSDParams.DSDId=DataBox.DSDId 
                                    Where DSDParams.Active=1) as DataBox Order By DataBox.DSDId", 3600, DS)
                 End If
                 Dim Lst = New List(Of R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationExtendedStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                    Lst.Add(New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationExtendedStructure(DS.Tables(0).Rows(Loopx).Item("DSDId"), DS.Tables(0).Rows(Loopx).Item("DSDName"), DS.Tables(0).Rows(Loopx).Item("DSDTitle"), DS.Tables(0).Rows(Loopx).Item("DefaultValue"), DS.Tables(0).Rows(Loopx).Item("DSDValue"), DS.Tables(0).Rows(Loopx).Item("HasAttachement")))
+                    Lst.Add(New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationExtendedStructure(DS.Tables(0).Rows(Loopx).Item("DSDId"), DS.Tables(0).Rows(Loopx).Item("DSDName"), DS.Tables(0).Rows(Loopx).Item("DSDTitle"), DS.Tables(0).Rows(Loopx).Item("DefaultValue"), DS.Tables(0).Rows(Loopx).Item("DSDValue"), DS.Tables(0).Rows(Loopx).Item("PersianKeyboard"), DS.Tables(0).Rows(Loopx).Item("IsNumeric"), DS.Tables(0).Rows(Loopx).Item("DecimalPoint"), DS.Tables(0).Rows(Loopx).Item("HasAttachement")))
                 Next
                 Return Lst
             Catch ex As Exception
@@ -8351,7 +8369,7 @@ Namespace DriverSelfDeclaration
                     Dim DSDId = DSDArray(Loopx).Split(":")(0)
                     Dim DSDValue = DSDArray(Loopx).Split(":")(1)
                     If DSDValue.Trim = String.Empty Then Throw New DriverSelfDeclarationsEmtpyNotAllowdException
-                    Dim NSSDSD = GetNSSDriverSelfDeclaration(DSDId)
+                    Dim NSSDSD = GetNSSDriverSelfDeclarationParameter(DSDId)
                     CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarations(nIdCar,DSDId,DSDValue,DateTimeMilladi,DateShamsi,Time,UserId,RelationActive)
                                             Values(" & YourNSSTruck.NSSCar.nIdCar & "," & NSSDSD.DSDId & ",'" & DSDValue & "','" & D.DateTimeMilladiFormated & "','" & D.DateShamsiFull & "','" & D.Time & "'," & YourNSSSoftwareUser.UserId & ",1)"
                     CmdSql.ExecuteNonQuery()
@@ -8413,6 +8431,7 @@ Namespace DriverSelfDeclaration
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
+
     End Class
 
     Namespace Exceptions

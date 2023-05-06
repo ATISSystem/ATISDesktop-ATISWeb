@@ -3,6 +3,8 @@
 <div class="container-fluid p-1 border border-primary d-flex flex-column">
     <div class="container-fluid text-right bg-primary mb-1" style="height: 40px">
         <asp:Label runat="server" ID="Label2" CssClass="R2FontBHomaLarge text-white">مشخصات خوداظهاری ناوگان باری که توسط راننده ارسال شده است</asp:Label>
+    </div>
+    <div class="container-fluid text-right bg-primary mb-1" style="height: 40px">
         <asp:Label runat="server" ID="LblAllowedLoadingCapacity" CssClass="R2FontBHomaLarge text-white">ظرفیت مجاز بارگیری</asp:Label>
     </div>
     <div class="table table-responsive-lg border">
