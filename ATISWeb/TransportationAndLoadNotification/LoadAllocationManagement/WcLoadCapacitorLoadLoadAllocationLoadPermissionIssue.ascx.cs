@@ -165,7 +165,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                                        ex is RequesterNotAllowTurnIssueByLastLoadPermissionedException ||
                                        ex is BillOfLadingBillOfLadingNumberDosnotEntryException ||
                                        ex is LoadCapacitorLoadNotFoundException ||
-                                       ex is TruckTotalLoadPermissionReachedException)
+                                       ex is TruckTotalLoadPermissionReachedException ||
+                                       ex is LastLoadPermissionIssuedforThisTurnException)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message.Replace("\r\n", " ") + "');", true); }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }

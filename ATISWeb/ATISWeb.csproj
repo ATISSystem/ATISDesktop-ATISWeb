@@ -92,6 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AlertManagement\WcAlertShower.ascx" />
+    <Content Include="ATISStartManagement\WfAboutATIS.aspx" />
+    <Content Include="ATISStartManagement\WfATISCall.aspx" />
+    <Content Include="ATISStartManagement\WfATISLaws.aspx" />
     <Content Include="ATISStartManagement\WfATISStart.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -310,6 +313,27 @@
     </Compile>
     <Compile Include="ATISSite.Master.designer.cs">
       <DependentUpon>ATISSite.Master</DependentUpon>
+    </Compile>
+    <Compile Include="ATISStartManagement\WfAboutATIS.aspx.cs">
+      <DependentUpon>WfAboutATIS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ATISStartManagement\WfAboutATIS.aspx.designer.cs">
+      <DependentUpon>WfAboutATIS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ATISStartManagement\WfATISCall.aspx.cs">
+      <DependentUpon>WfATISCall.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ATISStartManagement\WfATISCall.aspx.designer.cs">
+      <DependentUpon>WfATISCall.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ATISStartManagement\WfATISLaws.aspx.cs">
+      <DependentUpon>WfATISLaws.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ATISStartManagement\WfATISLaws.aspx.designer.cs">
+      <DependentUpon>WfATISLaws.aspx</DependentUpon>
     </Compile>
     <Compile Include="ATISStartManagement\WfATISStart.aspx.cs">
       <DependentUpon>WfATISStart.aspx</DependentUpon>

@@ -10,24 +10,24 @@
 namespace ATISWeb.ATISStartManagement {
     
     
-    public partial class WfATISStart {
+    public partial class WfAboutATIS {
         
         /// <summary>
-        /// DownloadATISMobile_ control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton DownloadATISMobile_;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// DownloadATISMobile control.
+        /// WcAlertShower control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton DownloadATISMobile;
+        protected global::ATISWeb.AlertManagement.WcAlertShower WcAlertShower;
     }
 }

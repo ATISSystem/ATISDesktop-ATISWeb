@@ -112,6 +112,8 @@ Public Class UCLoadAllocationManipulation
             UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(LAId))
             RaiseEvent UCLoadAllocationRegisteredEvent(UCNSSCurrent)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخصیص بارانجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As LastLoadPermissionIssuedforThisTurnException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadAllocationRegisteringReachedEndTimeException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As RequesterHasNotPermissionforLoadAllocationRegisteringException

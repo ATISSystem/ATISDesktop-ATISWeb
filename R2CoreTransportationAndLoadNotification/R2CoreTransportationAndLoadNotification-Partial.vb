@@ -5833,6 +5833,12 @@ Namespace LoadAllocation
                     'Else
                     '    'کنترل تایمینگ بار در مخزن بار
                     '    If Not InstanceLoadCapacitorLoad.IsLoadCapacitorLoadTimingReadeyforLoadAllocationRegistering(NSSLoadCapacitorLoad, NSSAnnouncementHall, NSSAnnouncementHallSubGroup) Then Throw New LoadAllocationRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException
+                Else
+                    'کنترل و جلوگیری از تخصیص بار اگر برای نوبت مجوز صادر شده
+                    Dim Da As New SqlClient.SqlDataAdapter : Dim DSAllocate As New DataSet
+                    Da.SelectCommand = New SqlClient.SqlCommand("Select LAId from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations Where TurnId=" & YourNSSTurn.nEnterExitId & " and LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & "")
+                    Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
+                    If Da.Fill(DSAllocate) <> 0 Then Throw New LastLoadPermissionIssuedforThisTurnException
                 End If
 
                 'کنترل وضعیت بار در مخزن بار
@@ -5900,7 +5906,8 @@ Namespace LoadAllocation
                 OrElse TypeOf ex Is TruckNotFoundException _
                 OrElse TypeOf ex Is TurnHandlingNotAllowedBecuaseTurnStatusException _
                 OrElse TypeOf ex Is UnableAllocatingTommorowLoadException _
-                OrElse TypeOf ex Is TruckTotalLoadPermissionReachedException
+                OrElse TypeOf ex Is TruckTotalLoadPermissionReachedException _
+                OrElse TypeOf ex Is LastLoadPermissionIssuedforThisTurnException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                 End If
@@ -7213,6 +7220,16 @@ Namespace LoadAllocation
                 Get
                     'عدم مطابقت شماره تخصیص ارسالی با حساب کاربر مرتبط با راننده
                     Return (New R2CoreMClassPredefinedMessagesManager).GetNSS(R2CoreTransportationAndLoadNotificationPredefinedMessages.LoadAllocationIdNotPairWithDriver).MsgContent
+                End Get
+            End Property
+        End Class
+
+        Public Class LastLoadPermissionIssuedforThisTurnException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "قبلا برای این نوبت مجوز بارگیری صادر شده است"
                 End Get
             End Property
         End Class
