@@ -4339,6 +4339,7 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcTerraficCardsIdentityReport As Int64 = 59
         Public Shared ReadOnly FrmcBlackListReport As Int64 = 60
         Public Shared ReadOnly FrmcCarEntryExitLogViewer As Int64 = 69
+        Public Shared ReadOnly FrmcMoneyWalletChargeByTruck As Int64 = 71
 
 
     End Class

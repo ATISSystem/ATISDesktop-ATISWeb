@@ -57,6 +57,7 @@ Partial Class Form3
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Button15 = New System.Windows.Forms.Button()
+        Me.UcAccounting1 = New R2CoreParkingSystem.UCAccounting()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -413,11 +414,23 @@ Partial Class Form3
         Me.Button15.Text = "بکاپ گیری و انتقال تصاویر تردد خودرو به انباره - افزایش سرعت در گیت ها"
         Me.Button15.UseVisualStyleBackColor = False
         '
+        'UcAccounting1
+        '
+        Me.UcAccounting1.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcAccounting1.BackColor = System.Drawing.Color.Transparent
+        Me.UcAccounting1.Location = New System.Drawing.Point(58, 114)
+        Me.UcAccounting1.Name = "UcAccounting1"
+        Me.UcAccounting1.Padding = New System.Windows.Forms.Padding(10)
+        Me.UcAccounting1.Size = New System.Drawing.Size(809, 67)
+        Me.UcAccounting1.TabIndex = 42
+        Me.UcAccounting1.UCCurrentNSS = Nothing
+        '
         'Form3
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1078, 450)
+        Me.ClientSize = New System.Drawing.Size(925, 450)
+        Me.Controls.Add(Me.UcAccounting1)
         Me.Controls.Add(Me.Button15)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Button13)
@@ -490,4 +503,5 @@ Partial Class Form3
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents Button15 As Button
+    Friend WithEvents UcAccounting1 As R2CoreParkingSystem.UCAccounting
 End Class
