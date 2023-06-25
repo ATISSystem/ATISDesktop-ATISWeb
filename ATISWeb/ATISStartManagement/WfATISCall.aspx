@@ -31,10 +31,11 @@
                     <div class="card-body">
                         <h6 class="card-title text-center R2FontBHomaLarge">سامانه آتیس</h6>
                         <h6 class="card-title text-center R2FontBHomaLarge" style="font-size: 10px">روش های تماس با مدیریت و کارشناسان سامانه آتیس</h6>
-                        <h6 class="card-title text-center R2FontBHomaLarge" style="font-size: 25px">مدیریت سامانه : 03133863080</h6>
-                        <h6 class="card-title text-center R2FontBHomaLarge" style="font-size: 25px">شکایات : 03133863080</h6>
+                        <h6 class="card-title text-center R2FontBHomaLarge" style="font-size: 25px">مدیریت سامانه : 03134721839</h6>
+                        <h6 class="card-title text-center R2FontBHomaLarge" style="font-size: 25px">دفتر شکایات : 03134721839</h6>
                         <h6 class="card-title text-center R2FontBHomaLarge">کارشناس فنی : 03133870111</h6>
                         <h6 class="card-title text-center text-success R2FontBHomaLarge">پشتیبانی : 03133863070 و 03133869114</h6>
+                        <h6 class="card-title text-center text-success R2FontBHomaLarge">استان: اصفهان، شهرستان : اصفهان، بخش : مرکزی، شهر: اصفهان، محله: پوریای ولی، کوچه سادات، بن بست بعثت، پلاک: 35.0، طبقه: همکف</h6>
                     </div>
                     <br />
                 </div>

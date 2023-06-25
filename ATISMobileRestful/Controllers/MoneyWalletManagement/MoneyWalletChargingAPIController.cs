@@ -45,7 +45,7 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
                 var Amount = Convert.ToInt32(Content.Split(';')[2]) * 10;
-                if (Amount > 1000000)
+                if (Amount > 3000000)
                 { throw new ChargingAmountInvalidException(); }
 
                 var WS = new R2Core.R2PrimaryWS.R2PrimaryWebService();

@@ -25,6 +25,8 @@ using R2CoreTransportationAndLoadNotification.RequesterManagement;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls;
 using PayanehClassLibrary.CarTruckNobatManagement;
 using R2CoreTransportationAndLoadNotification.Turns.SequentialTurns;
+using R2CoreTransportationAndLoadNotification.Trucks;
+using R2CoreParkingSystem.Cars;
 
 namespace ATISMobileRestful.Controllers.TurnManagement
 {
@@ -72,6 +74,45 @@ namespace ATISMobileRestful.Controllers.TurnManagement
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
+
+        [HttpPost]
+        public HttpResponseMessage GetTurnsOfTruck()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNonceWith2Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientTurnsRequest);
+                var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var LPPelak = Content.Split(';')[2];
+                var LPSerial = Content.Split(';')[3];
+                var NSSTruck = InstanceTrucks.GetNSSTruckWithLicensePlate(new R2CoreTransportationAndLoadNotificationStandardTruckStructure(new R2StandardCarStructure(null, null, LPPelak, LPSerial, null), null));
+                var InstanceTurns = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
+                var Lst = InstanceTurns.GetTurns(NSSTruck);
+                List<Models.Turns> _Turns = new List<Models.Turns>();
+                for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
+                {
+                    var Item = new Models.Turns();
+                    Item.TurnId = Lst[Loopx].nEnterExitId.ToString();
+                    var OtaghdarTurnNumber = Lst[Loopx].OtaghdarTurnNumber.Trim().Split('-')[0];
+                    Item.OtaghdarTurnNumber = "شماره نوبت : " + OtaghdarTurnNumber;
+                    Item.TurnDateTime = "زمان: " + Lst[Loopx].EnterDate.Trim() + " - " + Lst[Loopx].EnterTime.Trim();
+                    Item.TurnStatusTitle = "وضعیت نوبت: " + Lst[Loopx].TurnStatusTitle.Trim();
+                    Item.LPPString = "ناوگان: " + Lst[Loopx].LicensePlatePString.Trim();
+                    Item.TruckDriver = "راننده: " + Lst[Loopx].TruckDriver.Trim();
+                    _Turns.Add(Item);
+                }
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(_Turns), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (UserNotExistByApiKeyException ex)
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+        }
+
 
         [HttpPost]
         public HttpResponseMessage RealTimeTurnRegisterRequest()

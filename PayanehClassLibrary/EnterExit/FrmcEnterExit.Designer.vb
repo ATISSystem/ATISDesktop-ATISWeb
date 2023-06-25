@@ -331,7 +331,7 @@ Partial Class FrmcEnterExit
         Me.UcMoneyWalletChargePnlMoneyWalletCharge.Size = New System.Drawing.Size(975, 340)
         Me.UcMoneyWalletChargePnlMoneyWalletCharge.TabIndex = 2
         Me.UcMoneyWalletChargePnlMoneyWalletCharge.UCConfigurationIndex = CType(1, Long)
-        Me.UcMoneyWalletChargePnlMoneyWalletCharge.UCLocalPrintFlagforUCPrintBillan = True
+        Me.UcMoneyWalletChargePnlMoneyWalletCharge.UCLocalPrintFlagforUCPrintBillan = False
         '
         'FrmcEnterExit
         '

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="آتیس | صفحه اصلی" Language="C#" MasterPageFile="~/ATISSite.Master" AutoEventWireup="true" CodeBehind="WfATISStart.aspx.cs" Inherits="ATISWeb.ATISStartManagement.WfATISStart" %>
+﻿<%@ Page Title="آتیس - صفحه اصلی" Language="C#" MasterPageFile="~/ATISSite.Master" AutoEventWireup="true" CodeBehind="WfATISStart.aspx.cs" Inherits="ATISWeb.ATISStartManagement.WfATISStart" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -38,15 +38,30 @@
                 </div>
             </div>
         </div>
+        <br />
+        <br />
         <div class="text-center">
-            <a target="_blank" href="https://trustseal.enamad.ir/?id=170692&amp;Code=m03n28G7P8jpbaXBm7tS">
-                <img src="https://Trustseal.eNamad.ir/logo.aspx?id=170692&amp;Code=m03n28G7P8jpbaXBm7tS" alt="" style="cursor: pointer" id="m03n28G7P8jpbaXBm7tS"></a>
-<%--            <asp:ImageButton runat="server" ID="ImgEnamad" src="/Images/enamad_icon_text_color_blue_275.png" class="rounded" alt="..." Style="height: 15rem;" />--%>
+            <div class="d-flex flex-row justify-content-around">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-3">
+                    <div class="card rounded bg-dark p-1" style="width: 15rem; height: 18rem;">
+                        <a target="_blank" href="https://trustseal.enamad.ir/?id=342217&amp;Code=CAI3SyuVJ7eQj9Kg3GQO">
+                            <img src="https://Trustseal.eNamad.ir/logo.aspx?id=342217&amp;Code=CAI3SyuVJ7eQj9Kg3GQO" alt="" style="cursor: pointer" id="CAI3SyuVJ7eQj9Kg3GQO"></a>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card rounded bg-dark p-1" style="width: 15rem; height: 18rem;">
+                        <a href="https://logo.saramad.ir/verify.aspx?CodeShamad=1-1-877566-63-0-1" target="_blank">
+                            <img src="/Images/Samandehi.jpg"></a>
+                    </div>
+                </div>
+                <div class="col-lg-3"></div>
+            </div>
         </div>
     </div>
 
     <div class="container-fluid " style="min-height: 500px;">
-      <h2 class="text-center R2FontBHomaMedium text-white"> کلیه حقوق سایت متعلق است به اداره کل راهداری و حمل و نقل جاده ای استان اصفهان</h2>
+        <%--<h2 class="text-center R2FontBHomaMedium text-white">کلیه حقوق سایت متعلق است به اداره کل راهداری و حمل و نقل جاده ای استان اصفهان</h2>--%>
     </div>
 
 </asp:Content>
