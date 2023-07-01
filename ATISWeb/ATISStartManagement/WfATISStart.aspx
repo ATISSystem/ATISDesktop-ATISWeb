@@ -5,7 +5,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="jumbotron w-25 bg-transparent mx-auto mt-0">
-        <asp:LinkButton runat="server" ID="DownloadATISMobile_" class="btn btn-primary R2FontBYekanMedium mb-2">دانلود آتیس موبایل</asp:LinkButton>
+        <asp:linkbutton runat="server" id="DownloadATISMobile_" class="btn btn-primary R2FontBYekanMedium mb-2">دانلود آتیس موبایل</asp:linkbutton>
     </div>
 
     <div class="container-fluid p-0 mb-5">
@@ -15,7 +15,7 @@
                     <img src="/Images/ATISMobile.jpg" class="card-img-top" alt="..." style="height: 15rem;">
                     <div class="card-body text-right mt-1" style="background-image: linear-gradient(to bottom left, grey , black )">
                         <h5 class="card-title text-right R2FontBHomaMedium text-white">آتیس موبایل</h5>
-                        <asp:LinkButton runat="server" ID="DownloadATISMobile" class="btn btn-dark R2FontBYekanMedium mb-2">دانلود آتیس موبایل</asp:LinkButton>
+                        <asp:linkbutton runat="server" id="DownloadATISMobile" class="btn btn-dark R2FontBYekanMedium mb-2">دانلود آتیس موبایل</asp:linkbutton>
                     </div>
                 </div>
             </div>
@@ -42,7 +42,11 @@
         <br />
         <div class="text-center">
             <div class="d-flex flex-row justify-content-around">
-                <div class="col-lg-3"></div>
+                <div class="col-lg-3">
+                    <div class="card rounded bg-dark p-1" style="width: 15rem; height: 18rem;">
+                        <img id='rgvjwlaosizpesgtapfufukz' style='cursor: pointer' onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=349056&p=xlaoaodspfvlobpddshwgvka", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")' alt='logo-samandehi' src='https://logo.samandehi.ir/logo.aspx?id=349056&p=qftishwlbsiylymaujynwlbq' />
+                    </div>
+                </div>
                 <div class="col-lg-3">
                     <div class="card rounded bg-dark p-1" style="width: 15rem; height: 18rem;">
                         <a target="_blank" href="https://trustseal.enamad.ir/?id=342217&amp;Code=CAI3SyuVJ7eQj9Kg3GQO">

@@ -26,7 +26,10 @@
         <div class="container-fluid">
             <ul class="nav nav-tabs justify-content-end" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadPersmissionsIssued">مجوزهای صادر شده</a>
+                    <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadPersmissionsIssued">مجوزهای صادر شده اخیر</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadPersmissionsIssuedforToday">مجوزهای صادر شده امروز</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoads">لیست بار</a>
@@ -44,10 +47,15 @@
                     <br />
                     <TWebControl:WcLoadCapacitorLoadsCollectionIntelligently runat="server" ID="WcLoadCapacitorLoadsCollectionIntelligently" />
                 </div>
+                <div id="LoadCapacitorLoadLoadPersmissionsIssuedforToday" class="container-fluid tab-pane fade ">
+                    <br />
+                    <TWebControl:WcLoadCapacitorLoadLoadPermissionsIssued runat="server" ID="WcLoadCapacitorLoadLoadPermissionsIssuedforToday" />
+                </div>
                 <div id="LoadCapacitorLoadLoadPersmissionsIssued" class="container-fluid tab-pane fade ">
                     <br />
                     <TWebControl:WcLoadCapacitorLoadLoadPermissionsIssued runat="server" ID="WcLoadCapacitorLoadLoadPermissionsIssued" />
                 </div>
+
             </div>
         </div>
     </div>

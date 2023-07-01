@@ -65,6 +65,11 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                     LblCaption.Text = "لیست بار";
                     Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetAllLoadCapacitorLoads(InstanceLogin.GetNSSCurrentUser());
                 }
+                else if (WcCurrentListType == LoadCapacitorLoadsListType.Last100ButNotTommorowLoad )
+                {
+                    LblCaption.Text = "لیست 100 بار اعلام شده اخیر";
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetLast100LoadCapacitorLoads(InstanceLogin.GetNSSCurrentUser());
+                }
 
                 DropDownListLoads.Items.Clear();
                 DropDownListLoads.Items.Add("انتخاب کنید ...");

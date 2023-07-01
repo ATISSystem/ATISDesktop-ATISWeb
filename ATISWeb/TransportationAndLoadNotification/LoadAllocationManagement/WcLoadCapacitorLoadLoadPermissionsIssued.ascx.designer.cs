@@ -49,15 +49,6 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         protected global::System.Web.UI.WebControls.GridView GridViewLoadCapacitorLoadLoadPermissionsIssued;
         
         /// <summary>
-        /// WCDriverSelfDeclarationViewer control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::ATISWeb.TransportationAndLoadNotification.DriverSelfDeclaration.WCDriverSelfDeclarationViewer WCDriverSelfDeclarationViewer;
-        
-        /// <summary>
         /// BtnPrint control.
         /// </summary>
         /// <remarks>
@@ -74,5 +65,14 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel PnlPrintLoadPermission;
+        
+        /// <summary>
+        /// WCDriverSelfDeclarationViewer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::ATISWeb.TransportationAndLoadNotification.DriverSelfDeclaration.WCDriverSelfDeclarationViewer WCDriverSelfDeclarationViewer;
     }
 }
