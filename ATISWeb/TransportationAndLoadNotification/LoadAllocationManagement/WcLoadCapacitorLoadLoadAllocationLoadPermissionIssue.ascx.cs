@@ -113,7 +113,10 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 }
                 catch (TurnNotFoundException ex)
                 {
-                    NSSTurn = InstanceTurns.GetNSSTurn(InstanceCarTruckNobat.GetTurnofKiosk(NSSTruck, NSSTruckDriver, NSSTransportCompany, NSSLoadCapacitorLoad, InstanceLogin.GetNSSCurrentUser()));
+                    if (NSSLoadCapacitorLoad.LoadStatus == R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented)
+                    { NSSTurn = InstanceTurns.GetNSSTurn(InstanceCarTruckNobat.GetTurnofKiosk(NSSTruck, NSSTruckDriver, NSSTransportCompany, NSSLoadCapacitorLoad, InstanceLogin.GetNSSCurrentUser(),true )); }
+                    else
+                    { NSSTurn = InstanceTurns.GetNSSTurn(InstanceCarTruckNobat.GetTurnofKiosk(NSSTruck, NSSTruckDriver, NSSTransportCompany, NSSLoadCapacitorLoad, InstanceLogin.GetNSSCurrentUser(),false )); }
                     TempTurnReport = "ناوگان نوبت ندارد.نوبت به صورت خودکار در سامانه صادر شد ";
                     PnlTurnStatus.BackColor = System.Drawing.Color.Red;
                 }

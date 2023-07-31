@@ -8,6 +8,7 @@ Imports PayanehClassLibrary.TruckersAssociationControllingMoneyWallet
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
+Imports R2Core.SMS
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadOtherThanManipulation

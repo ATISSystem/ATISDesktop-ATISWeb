@@ -75,6 +75,7 @@ Imports R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Excep
 Imports R2CoreTransportationAndLoadNotification.DriverSelfDeclaration.Exceptions
 Imports R2Core.R2PrimaryFileSharingWS
 Imports R2CoreTransportationAndLoadNotification.FileShareRawGroupsManagement
+Imports R2Core.SMS
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -1118,7 +1119,7 @@ Namespace LoadCapacitor
             NotSedimented = 1
             Sedimented = 2
             TommorowLoad = 3
-            Last100ButNotTommorowLoad = 4
+            LastButNotTommorowLoad = 4
         End Enum
 
         Public Enum R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions
@@ -1692,7 +1693,7 @@ Namespace LoadCapacitor
                     Dim AHString = " and AHs.AHId=" & YourAHId & "" + IIf(YourAHSGId = Int64.MinValue, String.Empty, " and AHSGs.AHSGId=" & YourAHSGId & "")
                     Dim DS As DataSet = New DataSet()
                     If YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.NotSedimented Then
-                        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                          "Select Provinces.ProvinceId, Provinces.ProvinceName,Sum(LoadCapacitor.nCarNum) as NumberOfLoads
                                   from DBTransport.dbo.tbElam as LoadCapacitor
 	                                 Inner join DBTransport.dbo.tbCity as Cities On LoadCapacitor.nCityCode=Cities.nCityCode  
@@ -1700,9 +1701,9 @@ Namespace LoadCapacitor
 		                             Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On LoadCapacitor.AHId=AHs.AHId 
 	                                 Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On LoadCapacitor.AHSGId=AHSGs.AHSGId 
                                   Where ltrim(rtrim(LoadCapacitor.dDateElam))='" & _DateTime.GetCurrentDateShamsiFull & "' and LoadCapacitor.bFlag=0 and  (LoadCapacitor.LoadStatus=1 or LoadCapacitor.LoadStatus=2) and LoadCapacitor.nCarNum>0 and
-                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 1, DS)
+                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 120, DS)
                     ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.Sedimented Then
-                        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                          "Select Provinces.ProvinceId, Provinces.ProvinceName,Sum(LoadCapacitor.nCarNum) as NumberOfLoads 
                                   from DBTransport.dbo.tbElam as LoadCapacitor
 	                                 Inner join DBTransport.dbo.tbCity as Cities On LoadCapacitor.nCityCode=Cities.nCityCode  
@@ -1710,9 +1711,9 @@ Namespace LoadCapacitor
 		                             Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On LoadCapacitor.AHId=AHs.AHId 
 	                                 Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On LoadCapacitor.AHSGId=AHSGs.AHSGId 
                                   Where ltrim(rtrim(LoadCapacitor.dDateElam))='" & _DateTime.GetCurrentDateShamsiFull & "' and LoadCapacitor.bFlag=1 and  (LoadCapacitor.LoadStatus=5) and LoadCapacitor.nCarNum>0 and
-                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 1, DS)
+                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 120, DS)
                     ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.TommorowLoad Then
-                        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                          "Select Provinces.ProvinceId, Provinces.ProvinceName,Sum(LoadCapacitor.nCarNum) as NumberOfLoads 
                                   from DBTransport.dbo.tbElam as LoadCapacitor
 	                                 Inner join DBTransport.dbo.tbCity as Cities On LoadCapacitor.nCityCode=Cities.nCityCode  
@@ -1720,9 +1721,9 @@ Namespace LoadCapacitor
 		                             Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On LoadCapacitor.AHId=AHs.AHId 
 	                                 Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On LoadCapacitor.AHSGId=AHSGs.AHSGId 
                                   Where  LoadCapacitor.bFlag=0 and  (LoadCapacitor.LoadStatus=6) and LoadCapacitor.nCarNum>0 and
-                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 1, DS)
+                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 120, DS)
                     ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.None Then
-                    ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.Last100ButNotTommorowLoad Then
+                    ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.LastButNotTommorowLoad Then
                     End If
                     Dim Lst = New List(Of R2CoreTransportationAndLoadNotificationStandardNumberOfLoadsOfProvinceStructure)
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
@@ -1997,7 +1998,7 @@ Namespace LoadCapacitor
                 End Try
             End Function
 
-            Public Shared Function GetLast100LoadCapacitorLoads(YourNSSRequesterSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
+            Public Shared Function GetLastLoadCapacitorLoads(YourNSSRequesterSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
                 Try
                     Dim SqlString = String.Empty
                     Dim InstancePermissions = New R2CoreInstansePermissionsManager
@@ -2014,7 +2015,7 @@ Namespace LoadCapacitor
 
                     Dim DS As DataSet
                     R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                      "Select Top 100 Elam.nEstelamID,Elam.nEstelamKey,Elam.strBarName,Elam.nCityCode,Elam.nTonaj,Elam.nBarcode,Elam.nCompCode,Elam.bFlagbarType,Elam.nTruckType,Elam.strAddress,
+                      "Select Top 200 Elam.nEstelamID,Elam.nEstelamKey,Elam.strBarName,Elam.nCityCode,Elam.nTonaj,Elam.nBarcode,Elam.nCompCode,Elam.bFlagbarType,Elam.nTruckType,Elam.strAddress,
                               Elam.nUserID,Elam.nCarNumKol,Elam.strPriceSug,Elam.strDescription,Elam.dDateElam,Elam.dTimeElam,Elam.nCarNum,
 	                          Elam.LoadStatus,Elam.nBarSource,Elam.AHId,Elam.AHSGId,Elam.TPTParams,Elam.bflagCarNum as ReRegistered,TransportCompanies.TCTitle,TransportCompanies.TCTel,
 	                          Product.strGoodName,City.strCityName,LoaderType.LoaderTypeTitle,LoadStatuses.LoadStatusName,ltrim(rtrim(SoftwareUsers.UserName)) as UserName
@@ -2035,7 +2036,6 @@ Namespace LoadCapacitor
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
             End Function
-
 
             Public Shared Function GetTommorowLoadCapacitorLoads(YourNSSRequesterSoftwareUser As R2CoreStandardSoftwareUserStructure) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
                 Try

@@ -129,7 +129,7 @@ Public Class FrmcTurnRegisterRequest
             LoadNotificationLoadPermissionManagement.DoControlforTruckPresentInParkingAndLastLoadPermission(_NSSTruck)
             Dim TurnId As Int64 = Int64.MinValue
             Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
-            Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(_NSSTruck, False, True, TurnId, PayanehClassLibraryRequesters.FrmcTurnRegisterRequest, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(_NSSTruck, False, True, TurnId, PayanehClassLibraryRequesters.FrmcTurnRegisterRequest, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, False)
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + TurnRegisterRequestId.ToString & vbCrLf & "شماره نوبت :" + TurnId.ToString, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             RaiseEvent _SodorNobatSuccessEvent()
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _

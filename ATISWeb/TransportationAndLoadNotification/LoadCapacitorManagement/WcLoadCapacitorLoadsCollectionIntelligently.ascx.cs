@@ -65,8 +65,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 }
                 else if (WcCurrentListType == LoadCapacitorLoadsListType.Last100ButNotTommorowLoad )
                 {
-                    LblCaption.Text = "لیست 100 بار اعلام شده اخیر";
-                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetLast100LoadCapacitorLoads (InstanceLogin.GetNSSCurrentUser());
+                    LblCaption.Text = "لیست بار اعلام شده اخیر";
+                    Lst = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetLastLoadCapacitorLoads (InstanceLogin.GetNSSCurrentUser());
                 }
 
 

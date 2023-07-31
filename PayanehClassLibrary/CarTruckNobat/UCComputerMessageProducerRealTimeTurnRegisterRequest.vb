@@ -44,7 +44,7 @@ Public Class UCComputerMessageProducerRealTimeTurnRegisterRequest
             'کنترل حضور ناوگان در پارکینگ - درصورتی که طبق کانفیگ باید حضورداشته باشد ولی حضور نداشته باشد آنگاه اکسپشن پرتاب می گردد
             LoadNotificationLoadPermissionManagement.DoControlforTruckPresentInParkingAndLastLoadPermission(NSSTruckTemp)
             Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
-            InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(NSSTruckTemp, True, True, Nothing, PayanehClassLibraryRequesters.UCComputerMessageProducerRealTimeTurnRegisterRequest, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(NSSTruckTemp, True, True, Nothing, PayanehClassLibraryRequesters.UCComputerMessageProducerRealTimeTurnRegisterRequest, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, False)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                                 OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                                 OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
