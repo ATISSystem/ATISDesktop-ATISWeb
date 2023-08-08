@@ -168,7 +168,8 @@ Public Class UCLoadPermissionCancellation
                 OrElse TypeOf ex Is UnableAllocatingTommorowLoadException _
                 OrElse TypeOf ex Is LoadPermissionCancellingNotAllowedBecuaseLoadPermissionStatusException _
                 OrElse TypeOf ex Is TruckTotalLoadPermissionReachedException _
-                OrElse TypeOf ex Is LastLoadPermissionIssuedforThisTurnException
+                OrElse TypeOf ex Is LastLoadPermissionIssuedforThisTurnException _
+                OrElse TypeOf ex Is RequesterCanNotAllocateSedimentedLoadInTimeRangeException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As PrimaryTurnNotFoundException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)

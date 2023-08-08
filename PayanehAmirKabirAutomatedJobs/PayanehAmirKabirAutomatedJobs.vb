@@ -79,6 +79,12 @@ Public Class PayanehAmirKabirAutomatedJobs
                 InstanceSoftwareUsers = Nothing
                 InstanceLoadAllocation = Nothing
             Catch ex As Exception
+                Try
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                    Dim SMSSender = New R2CoreSMSSendRecive
+                    SMSSender.SendSms(New R2CoreStandardSMSStructure(Int64.MinValue, InstanceConfiguration.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 1), "بروز خطای اساسی در آزادسازی بار", 1, _DateTime.GetCurrentDateTimeMilladi(), True, Nothing, Nothing))
+                Catch exSMS As Exception
+                End Try
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 

@@ -5995,7 +5995,6 @@ Namespace LoadNotification.LoadPermission
 
         Public Shared Sub DoControlforTruckPresentInParkingAndLastLoadPermission(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure)
             Try
-                Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure
                 Dim InstanceLoadPermission = New R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager
                 'بررسی شرط حضور ناوگان باری در پارکینگ هنگام صدور نوبت با توجه به پیکربندی برای هر زیرگروه اعلام بار
                 Dim NSSLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure = Nothing

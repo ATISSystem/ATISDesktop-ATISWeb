@@ -4132,6 +4132,7 @@ Namespace PermissionManagement
         Public Shared ReadOnly SoftwareUserCanViewListofLoadsofLoadCapacitorofOtherUser As Int64 = 26
         Public Shared ReadOnly SoftwareUserCanEditAnyofLoadCapacitorLoad As Int64 = 27
         Public Shared ReadOnly SoftwareUserCanCancellingLoadsViaLoadStatus As Int64 = 28
+        Public Shared ReadOnly RequesterCanAllocateSedimentedLoadInTimeRange As Int64 = 29
     End Class
 
 End Namespace

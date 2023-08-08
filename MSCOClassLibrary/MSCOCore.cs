@@ -268,6 +268,8 @@ namespace MSCOCore
                     if (myLBN != string.Empty) { NSS.StrDescription = NSS.StrDescription + "لبه دار بارگیری ندارد" + "\n"; }
                     if (myLTN != string.Empty) { NSS.StrDescription = NSS.StrDescription + "لبه دار تخلیه ندارد"; }
                     NSS.TPTParams = string.Empty;
+                    NSS.LoadingPlaceId = 1001;
+                    NSS.DischargingPlaceId = 1000;
                     return NSS;
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)

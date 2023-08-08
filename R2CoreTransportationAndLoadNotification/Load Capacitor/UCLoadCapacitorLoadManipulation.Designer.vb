@@ -70,6 +70,10 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelNoeBargir1 = New R2CoreTransportationAndLoadNotification.UCLabelNoeBargir()
         Me.UcLabel4 = New R2CoreGUI.UCLabel()
         Me.UcucLoadCapacitorAccountingCollection = New R2CoreTransportationAndLoadNotification.UCUCLoadCapacitorAccountingCollection()
+        Me.UcSearcherLoadingPlaces = New R2CoreTransportationAndLoadNotification.UCSearcherLoadingAndDischargingPlaces()
+        Me.UcLabel5 = New R2CoreGUI.UCLabel()
+        Me.UcLabel6 = New R2CoreGUI.UCLabel()
+        Me.UcSearcherDischargingPlaces = New R2CoreTransportationAndLoadNotification.UCSearcherLoadingAndDischargingPlaces()
         Me.PnlMain.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -83,7 +87,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(5, 5)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(1037, 294)
+        Me.PnlMain.Size = New System.Drawing.Size(1093, 289)
         Me.PnlMain.TabIndex = 0
         '
         'Panel1
@@ -95,7 +99,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Padding = New System.Windows.Forms.Padding(2)
-        Me.Panel1.Size = New System.Drawing.Size(1037, 294)
+        Me.Panel1.Size = New System.Drawing.Size(1093, 289)
         Me.Panel1.TabIndex = 0
         '
         'Panel2
@@ -122,14 +126,14 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel2.Location = New System.Drawing.Point(2, 2)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(1031, 288)
+        Me.Panel2.Size = New System.Drawing.Size(1087, 283)
         Me.Panel2.TabIndex = 0
         '
         'UcButtonLoadCapacitorLoadSedimentation
         '
         Me.UcButtonLoadCapacitorLoadSedimentation.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.UcButtonLoadCapacitorLoadSedimentation.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonLoadCapacitorLoadSedimentation.Location = New System.Drawing.Point(422, 254)
+        Me.UcButtonLoadCapacitorLoadSedimentation.Location = New System.Drawing.Point(422, 249)
         Me.UcButtonLoadCapacitorLoadSedimentation.Name = "UcButtonLoadCapacitorLoadSedimentation"
         Me.UcButtonLoadCapacitorLoadSedimentation.Padding = New System.Windows.Forms.Padding(1)
         Me.UcButtonLoadCapacitorLoadSedimentation.Size = New System.Drawing.Size(83, 30)
@@ -145,7 +149,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcPersianTextBoxLoadPermissionStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxLoadPermissionStatus.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxLoadPermissionStatus.Location = New System.Drawing.Point(515, 10)
+        Me.UcPersianTextBoxLoadPermissionStatus.Location = New System.Drawing.Point(571, 10)
         Me.UcPersianTextBoxLoadPermissionStatus.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxLoadPermissionStatus.Name = "UcPersianTextBoxLoadPermissionStatus"
         Me.UcPersianTextBoxLoadPermissionStatus.Size = New System.Drawing.Size(85, 25)
@@ -165,7 +169,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcPersianTextBoxLoadCapacitorLoadDateTimeComposite.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxLoadCapacitorLoadDateTimeComposite.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxLoadCapacitorLoadDateTimeComposite.Location = New System.Drawing.Point(665, 10)
+        Me.UcPersianTextBoxLoadCapacitorLoadDateTimeComposite.Location = New System.Drawing.Point(721, 10)
         Me.UcPersianTextBoxLoadCapacitorLoadDateTimeComposite.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxLoadCapacitorLoadDateTimeComposite.Name = "UcPersianTextBoxLoadCapacitorLoadDateTimeComposite"
         Me.UcPersianTextBoxLoadCapacitorLoadDateTimeComposite.Size = New System.Drawing.Size(129, 25)
@@ -185,7 +189,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcButtonLoadCapacitorAccounting.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.UcButtonLoadCapacitorAccounting.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonLoadCapacitorAccounting.Location = New System.Drawing.Point(315, 254)
+        Me.UcButtonLoadCapacitorAccounting.Location = New System.Drawing.Point(315, 249)
         Me.UcButtonLoadCapacitorAccounting.Name = "UcButtonLoadCapacitorAccounting"
         Me.UcButtonLoadCapacitorAccounting.Padding = New System.Windows.Forms.Padding(1)
         Me.UcButtonLoadCapacitorAccounting.Size = New System.Drawing.Size(107, 30)
@@ -216,7 +220,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcButtonLoadPermissions.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.UcButtonLoadPermissions.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonLoadPermissions.Location = New System.Drawing.Point(11, 254)
+        Me.UcButtonLoadPermissions.Location = New System.Drawing.Point(11, 249)
         Me.UcButtonLoadPermissions.Name = "UcButtonLoadPermissions"
         Me.UcButtonLoadPermissions.Padding = New System.Windows.Forms.Padding(1)
         Me.UcButtonLoadPermissions.Size = New System.Drawing.Size(138, 30)
@@ -232,7 +236,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcNumbernCarNum.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcNumbernCarNum.Font = New System.Drawing.Font("Alborz Titr", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumbernCarNum.Location = New System.Drawing.Point(421, 15)
+        Me.UcNumbernCarNum.Location = New System.Drawing.Point(477, 15)
         Me.UcNumbernCarNum.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumbernCarNum.Name = "UcNumbernCarNum"
         Me.UcNumbernCarNum.Size = New System.Drawing.Size(39, 19)
@@ -256,7 +260,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("B Homa", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label5.ForeColor = System.Drawing.Color.SteelBlue
-        Me.Label5.Location = New System.Drawing.Point(464, 11)
+        Me.Label5.Location = New System.Drawing.Point(520, 11)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(45, 20)
         Me.Label5.TabIndex = 11
@@ -268,7 +272,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.SteelBlue
-        Me.Label4.Location = New System.Drawing.Point(605, 9)
+        Me.Label4.Location = New System.Drawing.Point(661, 9)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(59, 23)
         Me.Label4.TabIndex = 10
@@ -278,7 +282,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcButtonLoadCapacitorLoadFreeLining.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.UcButtonLoadCapacitorLoadFreeLining.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonLoadCapacitorLoadFreeLining.Location = New System.Drawing.Point(148, 254)
+        Me.UcButtonLoadCapacitorLoadFreeLining.Location = New System.Drawing.Point(148, 249)
         Me.UcButtonLoadCapacitorLoadFreeLining.Name = "UcButtonLoadCapacitorLoadFreeLining"
         Me.UcButtonLoadCapacitorLoadFreeLining.Padding = New System.Windows.Forms.Padding(1)
         Me.UcButtonLoadCapacitorLoadFreeLining.Size = New System.Drawing.Size(89, 30)
@@ -294,7 +298,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcButtonLoadCapacitorLoadCancelling.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.UcButtonLoadCapacitorLoadCancelling.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonLoadCapacitorLoadCancelling.Location = New System.Drawing.Point(236, 254)
+        Me.UcButtonLoadCapacitorLoadCancelling.Location = New System.Drawing.Point(236, 249)
         Me.UcButtonLoadCapacitorLoadCancelling.Name = "UcButtonLoadCapacitorLoadCancelling"
         Me.UcButtonLoadCapacitorLoadCancelling.Padding = New System.Windows.Forms.Padding(1)
         Me.UcButtonLoadCapacitorLoadCancelling.Size = New System.Drawing.Size(79, 30)
@@ -342,7 +346,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("B Homa", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.SteelBlue
-        Me.Label3.Location = New System.Drawing.Point(798, 11)
+        Me.Label3.Location = New System.Drawing.Point(854, 11)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(50, 22)
         Me.Label3.TabIndex = 4
@@ -352,7 +356,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcNumbernEstelamId.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcNumbernEstelamId.Font = New System.Drawing.Font("Alborz Titr", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumbernEstelamId.Location = New System.Drawing.Point(853, 15)
+        Me.UcNumbernEstelamId.Location = New System.Drawing.Point(909, 15)
         Me.UcNumbernEstelamId.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumbernEstelamId.Name = "UcNumbernEstelamId"
         Me.UcNumbernEstelamId.Size = New System.Drawing.Size(65, 19)
@@ -376,7 +380,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("B Homa", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.SteelBlue
-        Me.Label2.Location = New System.Drawing.Point(923, 11)
+        Me.Label2.Location = New System.Drawing.Point(979, 11)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(60, 22)
         Me.Label2.TabIndex = 2
@@ -388,7 +392,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.SteelBlue
-        Me.Label1.Location = New System.Drawing.Point(991, 7)
+        Me.Label1.Location = New System.Drawing.Point(1047, 7)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(26, 29)
         Me.Label1.TabIndex = 1
@@ -400,32 +404,36 @@ Partial Class UCLoadCapacitorLoadManipulation
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlHolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PnlHolder.Controls.Add(Me.UcTransportTarrifsParameters)
+        Me.PnlHolder.Controls.Add(Me.UcSearcherLoadSources)
+        Me.PnlHolder.Controls.Add(Me.UcSearcherLoadingPlaces)
         Me.PnlHolder.Controls.Add(Me.UcNumericFloatTonaj)
+        Me.PnlHolder.Controls.Add(Me.UcNumberTransportPrice)
+        Me.PnlHolder.Controls.Add(Me.UcNumbernCarNumKol)
+        Me.PnlHolder.Controls.Add(Me.UcLabelnCarNumKol)
+        Me.PnlHolder.Controls.Add(Me.UcLabelTransportPrice)
+        Me.PnlHolder.Controls.Add(Me.UcLabel4)
+        Me.PnlHolder.Controls.Add(Me.UcSearcherDischargingPlaces)
+        Me.PnlHolder.Controls.Add(Me.UcLabel6)
+        Me.PnlHolder.Controls.Add(Me.UcLabel5)
         Me.PnlHolder.Controls.Add(Me.UcSearcherLoaderTypes)
         Me.PnlHolder.Controls.Add(Me.UcSearcherTransportCompanies)
-        Me.PnlHolder.Controls.Add(Me.UcSearcherLoadSources)
         Me.PnlHolder.Controls.Add(Me.UcSearcherLoadTargets)
         Me.PnlHolder.Controls.Add(Me.UcSearcherGoods)
         Me.PnlHolder.Controls.Add(Me.UcPersianTextBoxStrDescription)
         Me.PnlHolder.Controls.Add(Me.UcPersianTextBoxAddress)
         Me.PnlHolder.Controls.Add(Me.UcPersianTextBoxStrBarname)
-        Me.PnlHolder.Controls.Add(Me.UcNumberTransportPrice)
-        Me.PnlHolder.Controls.Add(Me.UcNumbernCarNumKol)
-        Me.PnlHolder.Controls.Add(Me.UcLabelnCarNumKol)
         Me.PnlHolder.Controls.Add(Me.UcLabelSherkatHamloNaghl1)
         Me.PnlHolder.Controls.Add(Me.UcLabelMaghsadeBar1)
-        Me.PnlHolder.Controls.Add(Me.UcLabelTransportPrice)
         Me.PnlHolder.Controls.Add(Me.UcLabelMabdaeBar1)
         Me.PnlHolder.Controls.Add(Me.UcLabel3)
         Me.PnlHolder.Controls.Add(Me.UcLabel2)
         Me.PnlHolder.Controls.Add(Me.UcLabelNoeBar1)
         Me.PnlHolder.Controls.Add(Me.UcLabel1)
         Me.PnlHolder.Controls.Add(Me.UcLabelNoeBargir1)
-        Me.PnlHolder.Controls.Add(Me.UcLabel4)
+        Me.PnlHolder.Controls.Add(Me.UcTransportTarrifsParameters)
         Me.PnlHolder.Location = New System.Drawing.Point(3, 24)
         Me.PnlHolder.Name = "PnlHolder"
-        Me.PnlHolder.Size = New System.Drawing.Size(1025, 246)
+        Me.PnlHolder.Size = New System.Drawing.Size(1081, 241)
         Me.PnlHolder.TabIndex = 0
         '
         'UcTransportTarrifsParameters
@@ -433,18 +441,18 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcTransportTarrifsParameters.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTransportTarrifsParameters.BackColor = System.Drawing.Color.Transparent
-        Me.UcTransportTarrifsParameters.Location = New System.Drawing.Point(-4, 115)
+        Me.UcTransportTarrifsParameters.Location = New System.Drawing.Point(-4, 147)
         Me.UcTransportTarrifsParameters.Name = "UcTransportTarrifsParameters"
         Me.UcTransportTarrifsParameters.Padding = New System.Windows.Forms.Padding(10)
         Me.UcTransportTarrifsParameters.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcTransportTarrifsParameters.Size = New System.Drawing.Size(1028, 121)
+        Me.UcTransportTarrifsParameters.Size = New System.Drawing.Size(1084, 89)
         Me.UcTransportTarrifsParameters.TabIndex = 22
         '
         'UcNumericFloatTonaj
         '
         Me.UcNumericFloatTonaj.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcNumericFloatTonaj.BackColor = System.Drawing.Color.Transparent
-        Me.UcNumericFloatTonaj.Location = New System.Drawing.Point(465, 53)
+        Me.UcNumericFloatTonaj.Location = New System.Drawing.Point(690, 84)
         Me.UcNumericFloatTonaj.Name = "UcNumericFloatTonaj"
         Me.UcNumericFloatTonaj.Size = New System.Drawing.Size(61, 24)
         Me.UcNumericFloatTonaj.TabIndex = 21
@@ -488,7 +496,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcSearcherTransportCompanies.Location = New System.Drawing.Point(767, 14)
         Me.UcSearcherTransportCompanies.Name = "UcSearcherTransportCompanies"
         Me.UcSearcherTransportCompanies.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcSearcherTransportCompanies.Size = New System.Drawing.Size(159, 31)
+        Me.UcSearcherTransportCompanies.Size = New System.Drawing.Size(215, 31)
         Me.UcSearcherTransportCompanies.TabIndex = 1
         Me.UcSearcherTransportCompanies.UCBackColor = System.Drawing.Color.White
         Me.UcSearcherTransportCompanies.UCFillFirstTime = False
@@ -506,10 +514,10 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcSearcherLoadSources.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcSearcherLoadSources.BackColor = System.Drawing.Color.Transparent
         Me.UcSearcherLoadSources.Enabled = False
-        Me.UcSearcherLoadSources.Location = New System.Drawing.Point(811, 48)
+        Me.UcSearcherLoadSources.Location = New System.Drawing.Point(823, 48)
         Me.UcSearcherLoadSources.Name = "UcSearcherLoadSources"
         Me.UcSearcherLoadSources.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcSearcherLoadSources.Size = New System.Drawing.Size(115, 31)
+        Me.UcSearcherLoadSources.Size = New System.Drawing.Size(159, 31)
         Me.UcSearcherLoadSources.TabIndex = 5
         Me.UcSearcherLoadSources.UCBackColor = System.Drawing.Color.White
         Me.UcSearcherLoadSources.UCFillFirstTime = False
@@ -563,7 +571,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         'UcPersianTextBoxStrDescription
         '
         Me.UcPersianTextBoxStrDescription.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxStrDescription.Location = New System.Drawing.Point(7, 84)
+        Me.UcPersianTextBoxStrDescription.Location = New System.Drawing.Point(7, 113)
         Me.UcPersianTextBoxStrDescription.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxStrDescription.Name = "UcPersianTextBoxStrDescription"
         Me.UcPersianTextBoxStrDescription.Size = New System.Drawing.Size(541, 28)
@@ -584,10 +592,10 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcPersianTextBoxAddress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxAddress.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxAddress.Location = New System.Drawing.Point(609, 84)
+        Me.UcPersianTextBoxAddress.Location = New System.Drawing.Point(609, 113)
         Me.UcPersianTextBoxAddress.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxAddress.Name = "UcPersianTextBoxAddress"
-        Me.UcPersianTextBoxAddress.Size = New System.Drawing.Size(317, 28)
+        Me.UcPersianTextBoxAddress.Size = New System.Drawing.Size(373, 28)
         Me.UcPersianTextBoxAddress.TabIndex = 17
         Me.UcPersianTextBoxAddress.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBoxAddress.UCBorder = True
@@ -605,10 +613,10 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcPersianTextBoxStrBarname.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxStrBarname.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxStrBarname.Location = New System.Drawing.Point(7, 50)
+        Me.UcPersianTextBoxStrBarname.Location = New System.Drawing.Point(7, 82)
         Me.UcPersianTextBoxStrBarname.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxStrBarname.Name = "UcPersianTextBoxStrBarname"
-        Me.UcPersianTextBoxStrBarname.Size = New System.Drawing.Size(411, 28)
+        Me.UcPersianTextBoxStrBarname.Size = New System.Drawing.Size(420, 28)
         Me.UcPersianTextBoxStrBarname.TabIndex = 15
         Me.UcPersianTextBoxStrBarname.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBoxStrBarname.UCBorder = True
@@ -625,7 +633,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcNumberTransportPrice.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcNumberTransportPrice.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumberTransportPrice.Location = New System.Drawing.Point(566, 53)
+        Me.UcNumberTransportPrice.Location = New System.Drawing.Point(791, 84)
         Me.UcNumberTransportPrice.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumberTransportPrice.Name = "UcNumberTransportPrice"
         Me.UcNumberTransportPrice.Size = New System.Drawing.Size(80, 25)
@@ -647,7 +655,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcNumbernCarNumKol.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcNumbernCarNumKol.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumbernCarNumKol.Location = New System.Drawing.Point(705, 52)
+        Me.UcNumbernCarNumKol.Location = New System.Drawing.Point(930, 83)
         Me.UcNumbernCarNumKol.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.UcNumbernCarNumKol.Name = "UcNumbernCarNumKol"
         Me.UcNumbernCarNumKol.Size = New System.Drawing.Size(52, 25)
@@ -671,7 +679,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelnCarNumKol._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelnCarNumKol.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelnCarNumKol.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelnCarNumKol.Location = New System.Drawing.Point(756, 47)
+        Me.UcLabelnCarNumKol.Location = New System.Drawing.Point(981, 78)
         Me.UcLabelnCarNumKol.Name = "UcLabelnCarNumKol"
         Me.UcLabelnCarNumKol.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelnCarNumKol.Size = New System.Drawing.Size(54, 32)
@@ -688,7 +696,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelSherkatHamloNaghl1._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelSherkatHamloNaghl1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelSherkatHamloNaghl1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelSherkatHamloNaghl1.Location = New System.Drawing.Point(927, 14)
+        Me.UcLabelSherkatHamloNaghl1.Location = New System.Drawing.Point(985, 14)
         Me.UcLabelSherkatHamloNaghl1.Name = "UcLabelSherkatHamloNaghl1"
         Me.UcLabelSherkatHamloNaghl1.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelSherkatHamloNaghl1.Size = New System.Drawing.Size(97, 33)
@@ -721,7 +729,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelTransportPrice._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelTransportPrice.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelTransportPrice.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelTransportPrice.Location = New System.Drawing.Point(647, 46)
+        Me.UcLabelTransportPrice.Location = New System.Drawing.Point(872, 77)
         Me.UcLabelTransportPrice.Name = "UcLabelTransportPrice"
         Me.UcLabelTransportPrice.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelTransportPrice.Size = New System.Drawing.Size(53, 32)
@@ -738,7 +746,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelMabdaeBar1._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelMabdaeBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelMabdaeBar1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelMabdaeBar1.Location = New System.Drawing.Point(927, 46)
+        Me.UcLabelMabdaeBar1.Location = New System.Drawing.Point(985, 46)
         Me.UcLabelMabdaeBar1.Name = "UcLabelMabdaeBar1"
         Me.UcLabelMabdaeBar1.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabelMabdaeBar1.Size = New System.Drawing.Size(61, 32)
@@ -754,7 +762,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabel3._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabel3._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel3.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel3.Location = New System.Drawing.Point(547, 81)
+        Me.UcLabel3.Location = New System.Drawing.Point(547, 110)
         Me.UcLabel3.Name = "UcLabel3"
         Me.UcLabel3.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabel3.Size = New System.Drawing.Size(56, 32)
@@ -771,7 +779,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabel2._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel2.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel2.Location = New System.Drawing.Point(926, 81)
+        Me.UcLabel2.Location = New System.Drawing.Point(982, 110)
         Me.UcLabel2.Name = "UcLabel2"
         Me.UcLabel2.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabel2.Size = New System.Drawing.Size(39, 32)
@@ -804,7 +812,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel1.Location = New System.Drawing.Point(417, 48)
+        Me.UcLabel1.Location = New System.Drawing.Point(431, 80)
         Me.UcLabel1.Name = "UcLabel1"
         Me.UcLabel1.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabel1.Size = New System.Drawing.Size(47, 32)
@@ -837,7 +845,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabel4._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel4.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel4.Location = New System.Drawing.Point(525, 48)
+        Me.UcLabel4.Location = New System.Drawing.Point(750, 79)
         Me.UcLabel4.Name = "UcLabel4"
         Me.UcLabel4.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabel4.Size = New System.Drawing.Size(51, 32)
@@ -855,9 +863,79 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcucLoadCapacitorAccountingCollection.Dock = System.Windows.Forms.DockStyle.Fill
         Me.UcucLoadCapacitorAccountingCollection.Location = New System.Drawing.Point(0, 0)
         Me.UcucLoadCapacitorAccountingCollection.Name = "UcucLoadCapacitorAccountingCollection"
-        Me.UcucLoadCapacitorAccountingCollection.Size = New System.Drawing.Size(1037, 294)
+        Me.UcucLoadCapacitorAccountingCollection.Size = New System.Drawing.Size(1093, 289)
         Me.UcucLoadCapacitorAccountingCollection.TabIndex = 1
         Me.UcucLoadCapacitorAccountingCollection.UCViewUCPictureExit = True
+        '
+        'UcSearcherLoadingPlaces
+        '
+        Me.UcSearcherLoadingPlaces.BackColor = System.Drawing.Color.Transparent
+        Me.UcSearcherLoadingPlaces.Location = New System.Drawing.Point(297, 48)
+        Me.UcSearcherLoadingPlaces.Name = "UcSearcherLoadingPlaces"
+        Me.UcSearcherLoadingPlaces.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcSearcherLoadingPlaces.Size = New System.Drawing.Size(185, 31)
+        Me.UcSearcherLoadingPlaces.TabIndex = 23
+        Me.UcSearcherLoadingPlaces.UCBackColor = System.Drawing.Color.White
+        Me.UcSearcherLoadingPlaces.UCFillFirstTime = False
+        Me.UcSearcherLoadingPlaces.UCFontList = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherLoadingPlaces.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherLoadingPlaces.UCForeColor = System.Drawing.Color.Black
+        Me.UcSearcherLoadingPlaces.UCIcon = Nothing
+        Me.UcSearcherLoadingPlaces.UCMaximizeHight = CType(120, Long)
+        Me.UcSearcherLoadingPlaces.UCMinimizeHight = CType(31, Long)
+        Me.UcSearcherLoadingPlaces.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.Simple
+        Me.UcSearcherLoadingPlaces.UCShowDomainIcon = False
+        '
+        'UcLabel5
+        '
+        Me.UcLabel5._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel5._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel5.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabel5.Location = New System.Drawing.Point(476, 48)
+        Me.UcLabel5.Name = "UcLabel5"
+        Me.UcLabel5.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel5.Size = New System.Drawing.Size(74, 32)
+        Me.UcLabel5.TabIndex = 24
+        Me.UcLabel5.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabel5.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel5.UCForeColor = System.Drawing.Color.Black
+        Me.UcLabel5.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcLabel5.UCValue = "محل بارگیری"
+        '
+        'UcLabel6
+        '
+        Me.UcLabel6._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel6._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel6.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabel6.Location = New System.Drawing.Point(236, 48)
+        Me.UcLabel6.Name = "UcLabel6"
+        Me.UcLabel6.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel6.Size = New System.Drawing.Size(71, 32)
+        Me.UcLabel6.TabIndex = 25
+        Me.UcLabel6.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabel6.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel6.UCForeColor = System.Drawing.Color.Black
+        Me.UcLabel6.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcLabel6.UCValue = "محل تخلیه"
+        '
+        'UcSearcherDischargingPlaces
+        '
+        Me.UcSearcherDischargingPlaces.BackColor = System.Drawing.Color.Transparent
+        Me.UcSearcherDischargingPlaces.Location = New System.Drawing.Point(56, 48)
+        Me.UcSearcherDischargingPlaces.Name = "UcSearcherDischargingPlaces"
+        Me.UcSearcherDischargingPlaces.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcSearcherDischargingPlaces.Size = New System.Drawing.Size(189, 31)
+        Me.UcSearcherDischargingPlaces.TabIndex = 26
+        Me.UcSearcherDischargingPlaces.UCBackColor = System.Drawing.Color.White
+        Me.UcSearcherDischargingPlaces.UCFillFirstTime = False
+        Me.UcSearcherDischargingPlaces.UCFontList = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherDischargingPlaces.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherDischargingPlaces.UCForeColor = System.Drawing.Color.Black
+        Me.UcSearcherDischargingPlaces.UCIcon = Nothing
+        Me.UcSearcherDischargingPlaces.UCMaximizeHight = CType(120, Long)
+        Me.UcSearcherDischargingPlaces.UCMinimizeHight = CType(31, Long)
+        Me.UcSearcherDischargingPlaces.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.Simple
+        Me.UcSearcherDischargingPlaces.UCShowDomainIcon = False
         '
         'UCLoadCapacitorLoadManipulation
         '
@@ -867,7 +945,7 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCLoadCapacitorLoadManipulation"
         Me.Padding = New System.Windows.Forms.Padding(5)
-        Me.Size = New System.Drawing.Size(1047, 304)
+        Me.Size = New System.Drawing.Size(1103, 299)
         Me.PnlMain.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
@@ -922,4 +1000,8 @@ Partial Class UCLoadCapacitorLoadManipulation
     Friend WithEvents UcLabel4 As R2CoreGUI.UCLabel
     Friend WithEvents UcNumericFloatTonaj As R2CoreGUI.UCNumericFloat
     Friend WithEvents UcTransportTarrifsParameters As UCTransportTarrifsParameters
+    Friend WithEvents UcSearcherLoadingPlaces As UCSearcherLoadingAndDischargingPlaces
+    Friend WithEvents UcSearcherDischargingPlaces As UCSearcherLoadingAndDischargingPlaces
+    Friend WithEvents UcLabel6 As R2CoreGUI.UCLabel
+    Friend WithEvents UcLabel5 As R2CoreGUI.UCLabel
 End Class

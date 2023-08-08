@@ -98,6 +98,8 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TruckTotalLoadPermissionReachedException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (RequesterCanNotAllocateSedimentedLoadInTimeRangeException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
