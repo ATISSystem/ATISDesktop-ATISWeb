@@ -26,6 +26,31 @@ Public Class UCTransportCompanyManipulation
 
 
 #Region "General Properties"
+
+    Private _UCViewButtons As Boolean = True
+    Public Property UCViewButtons() As Boolean
+        Get
+            Return _UCViewButtons
+        End Get
+        Set(value As Boolean)
+            _UCViewButtons = value
+            If value = True Then
+                CButtonDelete.Visible = True
+                CButtonEdit.Visible = True
+                CButtonNew.Visible = True
+                CButtonRegister.Visible = True
+                CButtonSendSMSUserPassword.Visible = True
+                CButtonViewUserPassword.Visible = True
+            Else
+                CButtonDelete.Visible = False
+                CButtonEdit.Visible = False
+                CButtonNew.Visible = False
+                CButtonRegister.Visible = False
+                CButtonSendSMSUserPassword.Visible = False
+                CButtonViewUserPassword.Visible = False
+            End If
+        End Set
+    End Property
 #End Region
 
 #Region "Subroutins And Functions"

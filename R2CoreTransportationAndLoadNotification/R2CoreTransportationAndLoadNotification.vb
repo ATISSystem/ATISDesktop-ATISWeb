@@ -3185,6 +3185,7 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcTruckDriverLoadAllocationsPriorityApplied As Int64 = 63
         Public Shared ReadOnly FrmcLoadCapacitorMonitoring As Int64 = 64
         Public Shared ReadOnly FrmcTransportCompniesManipulation As Int64 = 68
+        Public Shared ReadOnly FrmcMoneyWalletChargeByTransportCompany As Int64 = 72
 
     End Class
 

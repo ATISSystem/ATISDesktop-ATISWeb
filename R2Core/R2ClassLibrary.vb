@@ -3225,9 +3225,9 @@ Namespace DateAndTimeManagement
                 MM(10) = 31
                 MM(11) = 30
                 MM(12) = 31
-                D = Microsoft.VisualBasic.DateAndTime.Day(MilladiDate)
-                M = Month(MilladiDate)
-                y = Year(MilladiDate)
+                D = MilladiDate.Day
+                M = MilladiDate.Month
+                y = MilladiDate.Year
                 yy = y - 1980
                 yy = yy - Int(yy / 4) * 4
                 If yy = 0 Then

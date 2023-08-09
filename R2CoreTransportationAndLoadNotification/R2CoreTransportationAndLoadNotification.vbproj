@@ -516,6 +516,12 @@
     <Compile Include="LoadingAndDischargingPlaces\UCSearcherLoadingAndDischargingPlaces.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="MoneyWalletCharge\FrmcMoneyWalletChargeByTransportCompany.Designer.vb">
+      <DependentUpon>FrmcMoneyWalletChargeByTransportCompany.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyWalletCharge\FrmcMoneyWalletChargeByTransportCompany.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="R2CoreTransportationAndLoadNotification-Partial.vb" />
     <Compile Include="R2CoreTransportationAndLoadNotification.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -818,6 +824,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Loader Types\UCSearcherLoaderTypes.resx">
       <DependentUpon>UCSearcherLoaderTypes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MoneyWalletCharge\FrmcMoneyWalletChargeByTransportCompany.resx">
+      <DependentUpon>FrmcMoneyWalletChargeByTransportCompany.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

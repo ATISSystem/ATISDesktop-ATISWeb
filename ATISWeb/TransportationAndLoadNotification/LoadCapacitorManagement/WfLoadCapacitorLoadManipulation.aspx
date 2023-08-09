@@ -29,9 +29,6 @@
                     <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadPersmissionsIssued">مجوزهای صادر شده اخیر</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoadLoadPersmissionsIssuedforToday">مجوزهای صادر شده امروز</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link R2FontBYekanMedium" data-toggle="tab" href="#LoadCapacitorLoads">لیست بار</a>
                 </li>
                 <li class="nav-item">
@@ -46,10 +43,6 @@
                 <div id="LoadCapacitorLoads" class="container-fluid tab-pane fade">
                     <br />
                     <TWebControl:WcLoadCapacitorLoadsCollectionIntelligently runat="server" ID="WcLoadCapacitorLoadsCollectionIntelligently" />
-                </div>
-                <div id="LoadCapacitorLoadLoadPersmissionsIssuedforToday" class="container-fluid tab-pane fade ">
-                    <br />
-                    <TWebControl:WcLoadCapacitorLoadLoadPermissionsIssued runat="server" ID="WcLoadCapacitorLoadLoadPermissionsIssuedforToday" />
                 </div>
                 <div id="LoadCapacitorLoadLoadPersmissionsIssued" class="container-fluid tab-pane fade ">
                     <br />

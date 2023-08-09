@@ -49,15 +49,6 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         protected global::ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement.WcLoadCapacitorLoadsCollectionIntelligently WcLoadCapacitorLoadsCollectionIntelligently;
         
         /// <summary>
-        /// WcLoadCapacitorLoadLoadPermissionsIssuedforToday control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement.WcLoadCapacitorLoadLoadPermissionsIssued WcLoadCapacitorLoadLoadPermissionsIssuedforToday;
-        
-        /// <summary>
         /// WcLoadCapacitorLoadLoadPermissionsIssued control.
         /// </summary>
         /// <remarks>

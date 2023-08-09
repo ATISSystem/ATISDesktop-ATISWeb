@@ -28,7 +28,6 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
             try
             {
                 WcLoadCapacitorLoadManipulation.WcCurrentListTypeIssued = LoadCapacitorLoadsListType.NotSedimented;
-                WcLoadCapacitorLoadLoadPermissionsIssuedforToday.WcCurrentListTypeIssued = LoadCapacitorLoadsListType.None;
                 WcLoadCapacitorLoadLoadPermissionsIssued.WcCurrentListTypeIssued = LoadCapacitorLoadsListType.LastButNotTommorowLoad;
                 WcLoadCapacitorLoadManipulation.WcInformationChangedEvent += WcLoadCapacitorLoadManipulation_WcInformationChangedEvent;
                 WcLoadCapacitorLoadsCollectionIntelligently.WcCurrentListType = WcLoadCapacitorLoadsCollectionIntelligently.WcCurrentListType = LoadCapacitorLoadsListType.None ;

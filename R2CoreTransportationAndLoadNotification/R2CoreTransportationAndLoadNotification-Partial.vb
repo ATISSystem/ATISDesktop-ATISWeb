@@ -78,6 +78,7 @@ Imports R2CoreTransportationAndLoadNotification.FileShareRawGroupsManagement
 Imports R2Core.SMS
 Imports R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation.Exceptions
+Imports R2CoreParkingSystem.MoneyWalletManagement
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -4690,7 +4691,8 @@ Namespace LoadPermission
                 If Not InstanceTurns.IsTurnReadeyforLoadPermissionRegistering(NSSTurn) Then Throw New LoadPermisionRegisteringFailedBecauseTurnIsNotReadyException
 
                 'کنترل تعداد مجوز صادر شده
-                Dim Da As New SqlClient.SqlDataAdapter : Dim DSAllocate As DataSet = Nothing
+                Dim Da As New SqlClient.SqlDataAdapter
+                Dim DSAllocate As New DataSet
                 Da.SelectCommand = New SqlClient.SqlCommand("Select LAId from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations Where TurnId=" & NSSTurn.nEnterExitId & " and LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & "")
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
                 If Da.Fill(DSAllocate) <> 0 Then Throw New ExeededNumberofLoadPermisionsWithOneTurnException
@@ -7625,6 +7627,24 @@ Namespace TransportCompanies
                         Order By MoneyWallets.CardId Desc,TransportCompanies.TCId Desc", 0, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
                 Return New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(DS.Tables(0).Rows(0).Item("TCId"), DS.Tables(0).Rows(0).Item("TCTitle"), DS.Tables(0).Rows(0).Item("TCOrganizationCode"), DS.Tables(0).Rows(0).Item("TCCityId"), DS.Tables(0).Rows(0).Item("TCColor").trim, DS.Tables(0).Rows(0).Item("TCTel").trim, DS.Tables(0).Rows(0).Item("TCManagerNameFamily").trim, DS.Tables(0).Rows(0).Item("TCManagerMobileNumber").trim, DS.Tables(0).Rows(0).Item("EmailAddress").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As TransportCompanyNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSMoneyWalletforTransportCompany(YourNSSTransportCompany As R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure) As R2CoreParkingSystemStandardTrafficCardStructure
+            Try
+                Dim InstanceTrafficCards = New R2CoreParkingSystemInstanceTrafficCardsManager
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim DS As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                       "Select Top 1 MoneyWallets.CardId from R2Primary.dbo.TblRFIDCards as MoneyWallets 
+                          Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationMoneyWallets as TCRMoneyWallets On MoneyWallets.CardId=TCRMoneyWallets.CardId 
+                          Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On TCRMoneyWallets.TransportCompanyId=TransportCompanies.TCId 
+                        Where MoneyWallets.Active=1 and TCRMoneyWallets.RelationActive=1 and TransportCompanies.Deleted=0 and TransportCompanies.TCId=" & YourNSSTransportCompany.TCId & "", 3600, DS).GetRecordsCount() = 0 Then Throw New MoneyWalletNotExistException
+                Return InstanceTrafficCards.GetNSSTrafficCard(Convert.ToInt64(DS.Tables(0).Rows(0).Item("CardId")))
+            Catch ex As MoneyWalletNotExistException
                 Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
