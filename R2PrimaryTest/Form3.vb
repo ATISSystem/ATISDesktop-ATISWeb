@@ -58,6 +58,8 @@ Imports R2CoreTransportationAndLoadNotification.Turns.TurnRegisterRequest
 Imports R2Core.ComputersManagement
 Imports R2Core.Email
 Imports R2CoreTransportationAndLoadNotification.DriverSelfDeclaration
+Imports R2CoreTransportationAndLoadNotification.CalendarManagement.SpecializedPersianCalendar
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
 
 Public Class Form3
     Private _DateTime As R2DateTime = New R2DateTime
@@ -593,8 +595,17 @@ Public Class Form3
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
         Try
-            Dim Instance = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
-            Instance.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            Dim InstanceSiteIsBusy = New R2Core.SiteIsBusy.R2CoreSiteIsBusyManager
+            MessageBox.Show(InstanceSiteIsBusy.GetSiteIsBusy())
+
+            'Dim InstanceLoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
+            'Dim InstanceSpecializedPersianCalendar As New R2CoreTransportationAndLoadNotificationSpecializedPersianCalendarManager
+            'If InstanceSpecializedPersianCalendar.IsTomorrowIsHolidayforLoadAnnounce Then If Not InstanceLoadCapacitorLoadManipulation.IsActiveLoadCapacitorLoadRegisteringInHoliDay(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 7, 0, 0, 0, 0)) Then Throw New LoadCapacitorLoadRegisteringInHolidayNotAllowedException("برون شهری آهن آلات ذوبی")
+
+            'If InstanceSpecializedPersianCalendar.IsTodayIsHolidayforLoadAnnounce Then If Not InstanceLoadCapacitorLoadManipulation.IsActiveLoadCapacitorLoadRegisteringInHoliDay(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 7, 0, 0, 0, 0)) Then Throw New LoadCapacitorLoadRegisteringInHolidayNotAllowedException("برون شهری آهن آلات ذوبی")
+
+            'Dim Instance = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+            'Instance.LoadAllocationsLoadPermissionRegistering(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
 
             'MessageBox.Show(R2CoreMclassDateAndTimeManagement.GetPersianDaysDiffDate(_DateTime.GetCurrentDateShamsiFull(), "1399/12/07"))
             'R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManagement.SedimentingProcess()

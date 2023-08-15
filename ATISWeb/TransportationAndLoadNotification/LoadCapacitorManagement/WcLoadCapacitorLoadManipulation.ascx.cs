@@ -467,6 +467,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 WcInformationChangedEvent?.Invoke(this, new EventArgs());
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "بار با موفقیت به ثبت رسید" + "');", true);
             }
+            catch (LoadCapacitorLoadRegisteringInHolidayNotAllowedException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (TransportPriceTarrifParameterDetailsNotAdjustedException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (PleaseReloginException ex)

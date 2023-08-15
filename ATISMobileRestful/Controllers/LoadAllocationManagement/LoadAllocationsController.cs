@@ -31,6 +31,7 @@ using R2Core.SecurityAlgorithmsManagement.Hashing;
 using R2Core.PermissionManagement;
 using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
 using R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions;
+using R2Core.SiteIsBusy.Exceptions;
 
 namespace ATISMobileRestful.Controllers.LoadAllocationManagement
 {
@@ -99,6 +100,8 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             catch (TruckTotalLoadPermissionReachedException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (RequesterCanNotAllocateSedimentedLoadInTimeRangeException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (LoadAllocationTimeNotReachedException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
@@ -172,6 +175,9 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientLoadAllocationsRequest);
 
+                var InstanceSiteIsBusy = new R2Core.SiteIsBusy.R2CoreSiteIsBusyManager();
+                InstanceSiteIsBusy.SiteIsBusy();
+
                 var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
                 List<Models.LoadAllocationsforTruckDriver> _LoadAllocations = new List<Models.LoadAllocationsforTruckDriver>();
@@ -198,6 +204,8 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(_LoadAllocations), Encoding.UTF8, "application/json");
                 return response;
             }
+            catch (R2CoreSiteIsBusyException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByApiKeyException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationNotFoundException ex)

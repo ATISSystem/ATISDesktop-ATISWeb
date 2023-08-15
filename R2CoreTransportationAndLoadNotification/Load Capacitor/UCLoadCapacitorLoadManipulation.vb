@@ -18,6 +18,8 @@ Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions
 Imports R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Exceptions
+Imports R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces
+Imports R2Core.ExceptionManagement
 
 Public Class UCLoadCapacitorLoadManipulation
     Inherits UCLoadCapacitorLoad
@@ -114,6 +116,8 @@ Public Class UCLoadCapacitorLoadManipulation
             UcSearcherGoods.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassGoodsManagement.GetNSSGood(UCNSSCurrent.nBarCode))
             UcSearcherLoadTargets.UCViewNSS(R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetNSSLoadTarget(UCNSSCurrent.nCityCode))
             UcSearcherLoadSources.UCViewNSS(R2CoreTransportationAndLoadNotificationMclassLoadSourcesManagement.GetNSSLoadSource(UCNSSCurrent.nBarSource))
+            UcSearcherLoadingPlaces.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManagement.GetNSSLoadingAndDischargingPlace(UCNSSCurrent.LoadingPlaceId))
+            UcSearcherDischargingPlaces.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManagement.GetNSSLoadingAndDischargingPlace(UCNSSCurrent.DischargingPlaceId))
             UcNumbernCarNumKol.UCValue = UCNSSCurrent.nCarNumKol
             UcNumericFloatTonaj.UCValue = UCNSSCurrent.nTonaj
             UcNumberTransportPrice.UCValue = UCNSSCurrent.StrPriceSug
@@ -153,6 +157,8 @@ Public Class UCLoadCapacitorLoadManipulation
             End If
             UCViewNSS(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue, True))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ثبت بار انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As LoadCapacitorLoadRegisteringInHolidayNotAllowedException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As EditOrDeleteReRegisteredLoadNotAllowedException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup
@@ -164,6 +170,8 @@ Public Class UCLoadCapacitorLoadManipulation
         Catch ex As LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As TransportPriceTarrifParameterDetailNotFoundException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As DataEntryException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

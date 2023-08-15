@@ -342,7 +342,8 @@ namespace MSCOCore
                    ex is MSCOCoreTransportCompanyNotFoundException ||
                    ex is HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup ||
                    ex is MSCOCoreMSCOTargetnotfoundException ||
-                   ex is TransportPriceTarrifParameterDetailNotFoundException)
+                   ex is TransportPriceTarrifParameterDetailNotFoundException ||
+                   ex is LoadCapacitorLoadRegisteringInHolidayNotAllowedException)
                 { throw ex; }
                 catch (MSCOCoreLoadsAnnouncementforTransportCompaniesFirstOrSecondStepNotReachedException ex)
                 { throw ex; }
@@ -431,6 +432,7 @@ namespace MSCOCore
                            ex is MSCOCoreTransportCompanyNotFoundException ||
                            ex is MSCOCoreMSCOTCFileNotFoundException ||
                            ex is MSCOCoreMSCOTargetnotfoundException ||
+                           ex is LoadCapacitorLoadRegisteringInHolidayNotAllowedException ||
                            ex is Exception)
                         {
                             if (InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).Active)

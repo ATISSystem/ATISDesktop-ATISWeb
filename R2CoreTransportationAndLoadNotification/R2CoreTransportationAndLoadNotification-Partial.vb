@@ -77,8 +77,11 @@ Imports R2Core.R2PrimaryFileSharingWS
 Imports R2CoreTransportationAndLoadNotification.FileShareRawGroupsManagement
 Imports R2Core.SMS
 Imports R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces.Exceptions
+Imports R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces
 Imports R2CoreTransportationAndLoadNotification.LoadSedimentation.Exceptions
 Imports R2CoreParkingSystem.MoneyWalletManagement
+Imports R2CoreTransportationAndLoadNotification.CalendarManagement.SpecializedPersianCalendar
+Imports R2Core.SiteIsBusy
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -2278,6 +2281,8 @@ Namespace LoadCapacitor
                              Inner Join dbtransport.dbo.tbCity as City On Elam.nCityCode=City.nCityCode 
                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderType On Elam.nTruckType=LoaderType.LoaderTypeId 
                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadStatuses On Elam.LoadStatus=LoadStatuses.LoadStatusId
+                           	 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On Elam.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+							 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On Elam.LoadingPlaceId=DischargingPlaces.LADPlaceId 
                        Where (Elam.LoadStatus=6) Order By Elam.dTimeElam Desc", 1, DS)
                     Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
@@ -2357,6 +2362,7 @@ Namespace LoadCapacitor
                 Dim CmdSql As New SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
+                    Dim InstanceSpecializedPersianCalendar = New R2CoreTransportationAndLoadNotificationSpecializedPersianCalendarManager
                     Dim InstanceAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
                     Dim InstanceConfigurationsofAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager
                     Dim InstanceConfigurations = New R2CoreInstanceConfigurationManager
@@ -2390,7 +2396,9 @@ Namespace LoadCapacitor
                     Dim TommorowLoadRegisteringFlag As Boolean = False
                     If IsTommorowLoadRegisteringActive And (CurrentTimeforRegistering >= TommorowLoadRegisteringFirstTime And CurrentTimeforRegistering <= TommorowLoadRegisteringEndTime) Then
                         TommorowLoadRegisteringFlag = True
+                        If InstanceSpecializedPersianCalendar.IsTomorrowIsHolidayforLoadAnnounce Then If Not IsActiveLoadCapacitorLoadRegisteringInHoliDay(YourNSS) Then Throw New LoadCapacitorLoadRegisteringInHolidayNotAllowedException(NSSAnnouncementHallSubGroup.AHSGTitle)
                     Else
+                        If InstanceSpecializedPersianCalendar.IsTodayIsHolidayforLoadAnnounce Then If Not IsActiveLoadCapacitorLoadRegisteringInHoliDay(YourNSS) Then Throw New LoadCapacitorLoadRegisteringInHolidayNotAllowedException(NSSAnnouncementHallSubGroup.AHSGTitle)
                         Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
                         If InstanceAnnouncementTiming.IsTimingActive(YourNSS.AHId, YourNSS.AHSGId) Then
                             Dim Timing = InstanceAnnouncementTiming.GetTiming(YourNSS.AHId, YourNSS.AHSGId, _DateTime.GetCurrentTime)
@@ -2502,7 +2510,8 @@ Namespace LoadCapacitor
                                     OrElse TypeOf ex Is TimingNotReachedException _
                                     OrElse TypeOf ex Is HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup _
                                     OrElse TypeOf ex Is LoadCapacitorLoadRegisteringNotAllowedforThisAnnouncementHallSubGroupException _
-                                    OrElse TypeOf ex Is TransportPriceTarrifParameterDetailNotFoundException
+                                    OrElse TypeOf ex Is TransportPriceTarrifParameterDetailNotFoundException _
+                                    OrElse TypeOf ex Is LoadCapacitorLoadRegisteringInHolidayNotAllowedException
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                     End If
@@ -2667,6 +2676,9 @@ Namespace LoadCapacitor
                     'کنترل وضعیت بار
                     If YourNSS.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented Or YourNSS.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled Or YourNSS.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted Then Throw New LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException
 
+                    'کنترل محل تخلیه بار 
+                    If YourNSS.DischargingPlaceId = LoadingAndDischargingPlaces.LoadingAndDischargingPlaces.None Then Throw New DataEntryException
+
                     'SqlInjection
                     Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
                     InstanceSQLInjectionPrevention.GeneralAuthorization(YourNSS.StrAddress)
@@ -2742,7 +2754,8 @@ Namespace LoadCapacitor
                                     OrElse TypeOf ex Is HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup _
                                     OrElse TypeOf ex Is SqlInjectionException _
                                     OrElse TypeOf ex Is TransportPriceTarrifParameterDetailNotFoundException _
-                                    OrElse TypeOf ex Is EditOrDeleteReRegisteredLoadNotAllowedException
+                                    OrElse TypeOf ex Is EditOrDeleteReRegisteredLoadNotAllowedException _
+                                    OrElse TypeOf ex Is DataEntryException
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
                     End If
@@ -2761,6 +2774,18 @@ Namespace LoadCapacitor
                     Dim ComposeSearchString As String = YourNSSLoadCapacitorLoad.AHSGId.ToString + "="
                     Dim ALLAHSGsLoadCapacitorLoadManipulationSetting As String() = Split(InstanceConfigurationOfAnnouncementHalls.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.LoadCapacitorLoadManipulationSetting, YourNSSLoadCapacitorLoad.AHId), ";")
                     Dim AHSGLoadCapacitorLoadRegisteringActiveStatus As Boolean = Split(Mid(ALLAHSGsLoadCapacitorLoadManipulationSetting.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, ALLAHSGsLoadCapacitorLoadManipulationSetting.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), "-")(0)
+                    Return AHSGLoadCapacitorLoadRegisteringActiveStatus
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
+            Public Function IsActiveLoadCapacitorLoadRegisteringInHoliDay(YourNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure) As Boolean
+                Try
+                    Dim InstanceConfigurationOfAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager
+                    Dim ComposeSearchString As String = YourNSSLoadCapacitorLoad.AHSGId.ToString + "="
+                    Dim ALLAHSGsLoadCapacitorLoadManipulationSetting As String() = Split(InstanceConfigurationOfAnnouncementHalls.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.LoadCapacitorLoadManipulationSetting, YourNSSLoadCapacitorLoad.AHId), ";")
+                    Dim AHSGLoadCapacitorLoadRegisteringActiveStatus As Boolean = Split(Mid(ALLAHSGsLoadCapacitorLoadManipulationSetting.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, ALLAHSGsLoadCapacitorLoadManipulationSetting.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), "-")(2)
                     Return AHSGLoadCapacitorLoadRegisteringActiveStatus
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -3424,6 +3449,22 @@ Namespace LoadCapacitor
     End Namespace
 
     Namespace Exceptions
+
+        Public Class LoadCapacitorLoadRegisteringInHolidayNotAllowedException
+            Inherits ApplicationException
+
+            Private _Message As String = String.Empty
+            Public Sub New(YourMessage As String)
+                _Message = YourMessage
+            End Sub
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "اعلام بار " + _Message + " در روز تعطیل امکان پذیر نیست"
+                End Get
+            End Property
+        End Class
+
         Public Class PleaseSelectSpecialLoadRadioButtonException
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
@@ -5654,7 +5695,7 @@ Namespace LoadAllocation
     Public Class R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
         Private _DateTime As New R2DateTime
         Private InstanceLogging As New R2CoreInstanceLoggingManager
-
+        Private InstanceSiteIsBusy = New R2CoreSiteIsBusyManager
 
         Public Function GetLoadAllocationsforTruckDriver(Optional YourSoftwareUserId As Int64 = Int64.MinValue, Optional YourTurnId As Int64 = Int64.MinValue) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure)
             Try
@@ -5924,7 +5965,7 @@ Namespace LoadAllocation
                     'آیا زمان تخصیص بار برای زیرگروه مورد نظر فرارسیده است
                     If InstanceTiming.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
                         If InstanceTiming.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId, _DateTime.GetCurrentTime) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadAllocationRegistering Then
-                            Throw New TimingNotReachedException
+                            Throw New LoadAllocationTimeNotReachedException
                         End If
                     Else
                         'کنترل تایمینگ بار در مخزن بار
@@ -6019,7 +6060,8 @@ Namespace LoadAllocation
                 OrElse TypeOf ex Is UnableAllocatingTommorowLoadException _
                 OrElse TypeOf ex Is TruckTotalLoadPermissionReachedException _
                 OrElse TypeOf ex Is LastLoadPermissionIssuedforThisTurnException _
-                OrElse TypeOf ex Is RequesterCanNotAllocateSedimentedLoadInTimeRangeException
+                OrElse TypeOf ex Is RequesterCanNotAllocateSedimentedLoadInTimeRangeException _
+                OrElse TypeOf ex Is LoadAllocationTimeNotReachedException
 
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -6481,6 +6523,10 @@ Namespace LoadAllocation
 
                 'جلوگیری از خواندن تخصیص هایی که هنوز در بانک آفلاین(ریپلیکیشن) تغییر نکرده اند 
                 Threading.Thread.Sleep(60000)
+
+                'فعال کردن سایت ایز بیزی
+                InstanceSiteIsBusy.ActivateSiteIsBusy()
+
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure) = GetLoadAllocationsforLoadPermissionRegistering()
                 Dim CurrentDateTime = New R2StandardDateAndTimeStructure(_DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime)
                 For Loopx As Int64 = 0 To Lst.Count - 1
@@ -6539,8 +6585,15 @@ Namespace LoadAllocation
                     End Try
                 Next
                 Lst = Nothing
+
+                'غیر فعال کردن سایت ایز بیزی
+                InstanceSiteIsBusy.DeActivateSiteIsBusy()
+
                 Return FailedResultLst
             Catch ex As Exception
+                'غیر فعال کردن سایت ایز بیزی
+                InstanceSiteIsBusy.DeActivateSiteIsBusy()
+
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
@@ -7129,6 +7182,14 @@ Namespace LoadAllocation
     End Namespace
 
     Namespace Exceptions
+        Public Class LoadAllocationTimeNotReachedException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "زمان انتخاب بار آغاز نشده است"
+                End Get
+            End Property
+        End Class
 
         Public Class LoadAllocationRegisteringReachedEndTimeException
             Inherits ApplicationException
@@ -8701,6 +8762,10 @@ Namespace DriverSelfDeclaration
 End Namespace
 
 Namespace LoadingAndDischargingPlaces
+
+    Public MustInherit Class LoadingAndDischargingPlaces
+        Public Shared ReadOnly Property None = 1000
+    End Class
 
     Public Class R2CoreTransportationAndLoadNotificationStandardLoadingAndDischargingPlacesStructure
         Inherits R2StandardStructure

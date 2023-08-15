@@ -4153,6 +4153,72 @@ Namespace EntityManagement
 
 End Namespace
 
+Namespace CalendarManagement
+    Namespace SpecializedPersianCalendar
+        Public Class R2CoreTransportationAndLoadNotificationSpecializedPersianCalendarManager
+
+            Private _DateTime As New R2DateTime
+
+            Public Function GetFirstDateShamsiInRangeWithoutHoliday(YourTopBaseDateShamsi As String, YourTotalDay As Int64) As String
+                Try
+                    If Not _DateTime.ChekDateShamsiFullSyntax(YourTopBaseDateShamsi) Then Throw New ShamsiDateSyntaxNotValidException
+                    Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
+                    Dim Ds As DataSet = Nothing
+                    Dim Count = R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                            "Select Top 1 * from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
+                             Where DateShamsi<
+                                   (Select Top 1 * from 
+                                       (Select Top " & YourTotalDay & " DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
+                                        Where PCType=0 and DateShamsi<='" & YourTopBaseDateShamsi & "' Order By DateShamsi desc) as DataBox
+                                    Order By DateShamsi)
+                             Order By DateShamsi Desc", 3600, Ds).GetRecordsCount()
+                    If Count <> YourTotalDay Then Throw New FirstDateShamsiInRangeWithoutHolidayException
+                    Return Ds.Tables(0).Rows(Count - 1).Item("DateShamsi")
+                Catch ex As ShamsiDateSyntaxNotValidException
+                    Throw ex
+                Catch ex As FirstDateShamsiInRangeWithoutHolidayException
+                    Throw ex
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
+                End Try
+            End Function
+
+            Public Function IsTodayIsHolidayforLoadAnnounce() As Boolean
+                Try
+                    Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
+                    Dim Ds As DataSet = Nothing
+                    R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                            "Select Top 1 LoadAnnounce from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
+                               Where DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "' 
+                               Order By HId Desc", 3600, Ds)
+                    Return Ds.Tables(0).Rows(0).Item("LoadAnnounce")
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
+                End Try
+            End Function
+
+            Public Function IsTomorrowIsHolidayforLoadAnnounce() As Boolean
+                Try
+                    Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
+                    Dim Ds As DataSet = Nothing
+                    R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                            "Select Top 1 LoadAnnounce from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
+                               Where DateShamsi='" & _DateTime.GetNextDateShamsi & "' 
+                               Order By HId Desc", 3600, Ds)
+                    Return Ds.Tables(0).Rows(0).Item("LoadAnnounce")
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
+                End Try
+            End Function
+
+        End Class
+
+
+    End Namespace
+
+End Namespace
+
+
 
 
 

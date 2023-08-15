@@ -2636,6 +2636,7 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property SoftwareUserTypesRelationWebProcessGroups As Int64 = 81
         Public Shared ReadOnly Property EmailSystem As Int64 = 83
         Public Shared ReadOnly Property ShepaPaymentGate As Int64 = 84
+        Public Shared ReadOnly Property SiteIsBusy As Int64 = 87
 
     End Class
 
@@ -2731,6 +2732,18 @@ Namespace ConfigurationManagement
             End Try
         End Function
 
+        Public Function GetConfig(YourCId As Int64, YourIndex As Int64, YourDisposeCounter As Int64) As Object
+            Try
+                Dim Ds As New DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 CValue from R2Primary.dbo.TblConfigurations Where CId=" & YourCId & "", YourDisposeCounter, Ds).GetRecordsCount = 0 Then
+                    Throw New GetDataException
+                End If
+                Return Split(Ds.Tables(0).Rows(0).Item("CValue"), ";")(YourIndex)
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
     End Class
 
     Public MustInherit Class R2CoreMClassConfigurationManagement
@@ -2742,6 +2755,19 @@ Namespace ConfigurationManagement
                 Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
                 If Da.Fill(Ds) = 0 Then Throw New GetDataException
                 Return Ds.Tables(0).Rows(0).Item("CValue").trim
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function GetConfigRealTime(YourCId As Int64, YourIndex As Int64) As Object
+            Try
+                Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
+                Da.SelectCommand = New SqlCommand("Select Top 1 CValue from R2Primary.dbo.TblConfigurations Where CId=" & YourCId & "")
+                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
+                Ds.Tables.Clear()
+                If Da.Fill(Ds) = 0 Then Throw New GetDataException
+                Return Split(Ds.Tables(0).Rows(0).Item("CValue"), ";")(YourIndex)
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -2766,19 +2792,6 @@ Namespace ConfigurationManagement
                     Throw New GetDataException
                 End If
                 Return Ds.Tables(0).Rows(0).Item("CValue")
-            Catch ex As Exception
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Function
-
-        Public Shared Function GetConfigRealTime(YourCId As Int64, YourIndex As Int64) As Object
-            Try
-                Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
-                Da.SelectCommand = New SqlCommand("Select Top 1 CValue from R2Primary.dbo.TblConfigurations Where CId=" & YourCId & "")
-                Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection()
-                Ds.Tables.Clear()
-                If Da.Fill(Ds) = 0 Then Throw New GetDataException
-                Return Split(Ds.Tables(0).Rows(0).Item("CValue"), ";")(YourIndex)
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -3155,7 +3168,7 @@ Namespace DateAndTimeManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
         End Function
-        Public Function GetNextDateShamsi() As DateTime
+        Public Function GetNextDateShamsi() As String
             Try
                 Return ConvertToShamsiDateFull(GetCurrentDateTimeMilladi().Today.AddDays(1))
             Catch ex As Exception
@@ -3522,29 +3535,6 @@ Namespace DateAndTimeManagement
                     End Try
                 End Function
 
-                Public Function GetFirstDateShamsiInRangeWithoutHoliday(YourTopBaseDateShamsi As String, YourTotalDay As Int64) As String
-                    Try
-                        If Not _DateTime.ChekDateShamsiFullSyntax(YourTopBaseDateShamsi) Then Throw New ShamsiDateSyntaxNotValidException
-                        Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
-                        Dim Ds As DataSet = Nothing
-                        Dim Count = R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                                "Select Top 1 * from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
-                                 Where DateShamsi<
-                                       (Select Top 1 * from 
-                                           (Select Top " & YourTotalDay & " DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
-                                            Where PCType=0 and DateShamsi<='" & YourTopBaseDateShamsi & "' Order By DateShamsi desc) as DataBox
-                                        Order By DateShamsi)
-                                 Order By DateShamsi Desc", 3600, Ds).GetRecordsCount()
-                        If Count <> YourTotalDay Then Throw New FirstDateShamsiInRangeWithoutHolidayException
-                        Return Ds.Tables(0).Rows(Count - 1).Item("DateShamsi")
-                    Catch ex As ShamsiDateSyntaxNotValidException
-                        Throw ex
-                    Catch ex As FirstDateShamsiInRangeWithoutHolidayException
-                        Throw ex
-                    Catch ex As Exception
-                        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
-                    End Try
-                End Function
 
             End Class
 

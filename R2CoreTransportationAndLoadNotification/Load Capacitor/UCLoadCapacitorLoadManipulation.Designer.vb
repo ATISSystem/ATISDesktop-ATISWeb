@@ -46,34 +46,34 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PnlHolder = New System.Windows.Forms.Panel()
-        Me.UcTransportTarrifsParameters = New R2CoreTransportationAndLoadNotification.UCTransportTarrifsParameters()
+        Me.UcSearcherLoadSources = New R2CoreTransportationAndLoadNotification.UCSearcherLoadSources()
+        Me.UcSearcherLoadingPlaces = New R2CoreTransportationAndLoadNotification.UCSearcherLoadingAndDischargingPlaces()
         Me.UcNumericFloatTonaj = New R2CoreGUI.UCNumericFloat()
+        Me.UcNumberTransportPrice = New R2CoreGUI.UCNumber()
+        Me.UcNumbernCarNumKol = New R2CoreGUI.UCNumber()
+        Me.UcLabelnCarNumKol = New R2CoreGUI.UCLabel()
+        Me.UcLabelTransportPrice = New R2CoreGUI.UCLabel()
+        Me.UcLabel4 = New R2CoreGUI.UCLabel()
+        Me.UcSearcherDischargingPlaces = New R2CoreTransportationAndLoadNotification.UCSearcherLoadingAndDischargingPlaces()
+        Me.UcLabel6 = New R2CoreGUI.UCLabel()
+        Me.UcLabel5 = New R2CoreGUI.UCLabel()
         Me.UcSearcherLoaderTypes = New R2CoreTransportationAndLoadNotification.UCSearcherLoaderTypes()
         Me.UcSearcherTransportCompanies = New R2CoreTransportationAndLoadNotification.UCSearcherTransportCompanies()
-        Me.UcSearcherLoadSources = New R2CoreTransportationAndLoadNotification.UCSearcherLoadSources()
         Me.UcSearcherLoadTargets = New R2CoreTransportationAndLoadNotification.UCSearcherLoadTargets()
         Me.UcSearcherGoods = New R2CoreTransportationAndLoadNotification.UCSearcherGoods()
         Me.UcPersianTextBoxStrDescription = New R2CoreGUI.UCPersianTextBox()
         Me.UcPersianTextBoxAddress = New R2CoreGUI.UCPersianTextBox()
         Me.UcPersianTextBoxStrBarname = New R2CoreGUI.UCPersianTextBox()
-        Me.UcNumberTransportPrice = New R2CoreGUI.UCNumber()
-        Me.UcNumbernCarNumKol = New R2CoreGUI.UCNumber()
-        Me.UcLabelnCarNumKol = New R2CoreGUI.UCLabel()
         Me.UcLabelSherkatHamloNaghl1 = New R2CoreTransportationAndLoadNotification.UCLabelSherkatHamloNaghl()
         Me.UcLabelMaghsadeBar1 = New R2CoreTransportationAndLoadNotification.UCLabelMaghsadeBar()
-        Me.UcLabelTransportPrice = New R2CoreGUI.UCLabel()
         Me.UcLabelMabdaeBar1 = New R2CoreTransportationAndLoadNotification.UCLabelMabdaeBar()
         Me.UcLabel3 = New R2CoreGUI.UCLabel()
         Me.UcLabel2 = New R2CoreGUI.UCLabel()
         Me.UcLabelNoeBar1 = New R2CoreTransportationAndLoadNotification.UCLabelNoeBar()
         Me.UcLabel1 = New R2CoreGUI.UCLabel()
         Me.UcLabelNoeBargir1 = New R2CoreTransportationAndLoadNotification.UCLabelNoeBargir()
-        Me.UcLabel4 = New R2CoreGUI.UCLabel()
+        Me.UcTransportTarrifsParameters = New R2CoreTransportationAndLoadNotification.UCTransportTarrifsParameters()
         Me.UcucLoadCapacitorAccountingCollection = New R2CoreTransportationAndLoadNotification.UCUCLoadCapacitorAccountingCollection()
-        Me.UcSearcherLoadingPlaces = New R2CoreTransportationAndLoadNotification.UCSearcherLoadingAndDischargingPlaces()
-        Me.UcLabel5 = New R2CoreGUI.UCLabel()
-        Me.UcLabel6 = New R2CoreGUI.UCLabel()
-        Me.UcSearcherDischargingPlaces = New R2CoreTransportationAndLoadNotification.UCSearcherLoadingAndDischargingPlaces()
         Me.PnlMain.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -436,17 +436,45 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.PnlHolder.Size = New System.Drawing.Size(1081, 241)
         Me.PnlHolder.TabIndex = 0
         '
-        'UcTransportTarrifsParameters
+        'UcSearcherLoadSources
         '
-        Me.UcTransportTarrifsParameters.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcTransportTarrifsParameters.BackColor = System.Drawing.Color.Transparent
-        Me.UcTransportTarrifsParameters.Location = New System.Drawing.Point(-4, 147)
-        Me.UcTransportTarrifsParameters.Name = "UcTransportTarrifsParameters"
-        Me.UcTransportTarrifsParameters.Padding = New System.Windows.Forms.Padding(10)
-        Me.UcTransportTarrifsParameters.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcTransportTarrifsParameters.Size = New System.Drawing.Size(1084, 89)
-        Me.UcTransportTarrifsParameters.TabIndex = 22
+        Me.UcSearcherLoadSources.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcSearcherLoadSources.BackColor = System.Drawing.Color.Transparent
+        Me.UcSearcherLoadSources.Enabled = False
+        Me.UcSearcherLoadSources.Location = New System.Drawing.Point(823, 48)
+        Me.UcSearcherLoadSources.Name = "UcSearcherLoadSources"
+        Me.UcSearcherLoadSources.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcSearcherLoadSources.Size = New System.Drawing.Size(159, 31)
+        Me.UcSearcherLoadSources.TabIndex = 5
+        Me.UcSearcherLoadSources.UCBackColor = System.Drawing.Color.White
+        Me.UcSearcherLoadSources.UCFillFirstTime = False
+        Me.UcSearcherLoadSources.UCFontList = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherLoadSources.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherLoadSources.UCForeColor = System.Drawing.Color.Black
+        Me.UcSearcherLoadSources.UCIcon = Nothing
+        Me.UcSearcherLoadSources.UCMaximizeHight = CType(120, Long)
+        Me.UcSearcherLoadSources.UCMinimizeHight = CType(31, Long)
+        Me.UcSearcherLoadSources.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.DropDown
+        Me.UcSearcherLoadSources.UCShowDomainIcon = False
+        '
+        'UcSearcherLoadingPlaces
+        '
+        Me.UcSearcherLoadingPlaces.BackColor = System.Drawing.Color.Transparent
+        Me.UcSearcherLoadingPlaces.Location = New System.Drawing.Point(297, 48)
+        Me.UcSearcherLoadingPlaces.Name = "UcSearcherLoadingPlaces"
+        Me.UcSearcherLoadingPlaces.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcSearcherLoadingPlaces.Size = New System.Drawing.Size(185, 31)
+        Me.UcSearcherLoadingPlaces.TabIndex = 23
+        Me.UcSearcherLoadingPlaces.UCBackColor = System.Drawing.Color.White
+        Me.UcSearcherLoadingPlaces.UCFillFirstTime = False
+        Me.UcSearcherLoadingPlaces.UCFontList = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherLoadingPlaces.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherLoadingPlaces.UCForeColor = System.Drawing.Color.Black
+        Me.UcSearcherLoadingPlaces.UCIcon = Nothing
+        Me.UcSearcherLoadingPlaces.UCMaximizeHight = CType(120, Long)
+        Me.UcSearcherLoadingPlaces.UCMinimizeHight = CType(31, Long)
+        Me.UcSearcherLoadingPlaces.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.DropDown
+        Me.UcSearcherLoadingPlaces.UCShowDomainIcon = False
         '
         'UcNumericFloatTonaj
         '
@@ -468,6 +496,152 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcNumericFloatTonaj.UCForeColor = System.Drawing.Color.Black
         Me.UcNumericFloatTonaj.UCMultiLine = False
         Me.UcNumericFloatTonaj.UCValue = 0R
+        '
+        'UcNumberTransportPrice
+        '
+        Me.UcNumberTransportPrice.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumberTransportPrice.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumberTransportPrice.Location = New System.Drawing.Point(791, 84)
+        Me.UcNumberTransportPrice.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        Me.UcNumberTransportPrice.Name = "UcNumberTransportPrice"
+        Me.UcNumberTransportPrice.Size = New System.Drawing.Size(80, 25)
+        Me.UcNumberTransportPrice.TabIndex = 13
+        Me.UcNumberTransportPrice.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumberTransportPrice.UCAllowedMinNumber = CType(-922337203685477580, Long)
+        Me.UcNumberTransportPrice.UCBackColor = System.Drawing.Color.White
+        Me.UcNumberTransportPrice.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcNumberTransportPrice.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumberTransportPrice.UCBorder = True
+        Me.UcNumberTransportPrice.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcNumberTransportPrice.UCEnable = True
+        Me.UcNumberTransportPrice.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumberTransportPrice.UCForeColor = System.Drawing.Color.Black
+        Me.UcNumberTransportPrice.UCMultiLine = False
+        Me.UcNumberTransportPrice.UCValue = CType(0, Long)
+        '
+        'UcNumbernCarNumKol
+        '
+        Me.UcNumbernCarNumKol.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcNumbernCarNumKol.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumbernCarNumKol.Location = New System.Drawing.Point(930, 83)
+        Me.UcNumbernCarNumKol.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
+        Me.UcNumbernCarNumKol.Name = "UcNumbernCarNumKol"
+        Me.UcNumbernCarNumKol.Size = New System.Drawing.Size(52, 25)
+        Me.UcNumbernCarNumKol.TabIndex = 11
+        Me.UcNumbernCarNumKol.UCAllowedMaxNumber = CType(9223372036854775807, Long)
+        Me.UcNumbernCarNumKol.UCAllowedMinNumber = CType(-922337203685477580, Long)
+        Me.UcNumbernCarNumKol.UCBackColor = System.Drawing.Color.White
+        Me.UcNumbernCarNumKol.UCBackColorDisable = System.Drawing.Color.Gainsboro
+        Me.UcNumbernCarNumKol.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
+        Me.UcNumbernCarNumKol.UCBorder = True
+        Me.UcNumbernCarNumKol.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcNumbernCarNumKol.UCEnable = True
+        Me.UcNumbernCarNumKol.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcNumbernCarNumKol.UCForeColor = System.Drawing.Color.Black
+        Me.UcNumbernCarNumKol.UCMultiLine = False
+        Me.UcNumbernCarNumKol.UCValue = CType(0, Long)
+        '
+        'UcLabelnCarNumKol
+        '
+        Me.UcLabelnCarNumKol._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabelnCarNumKol._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabelnCarNumKol.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcLabelnCarNumKol.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabelnCarNumKol.Location = New System.Drawing.Point(981, 78)
+        Me.UcLabelnCarNumKol.Name = "UcLabelnCarNumKol"
+        Me.UcLabelnCarNumKol.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabelnCarNumKol.Size = New System.Drawing.Size(54, 32)
+        Me.UcLabelnCarNumKol.TabIndex = 10
+        Me.UcLabelnCarNumKol.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabelnCarNumKol.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabelnCarNumKol.UCForeColor = System.Drawing.Color.Black
+        Me.UcLabelnCarNumKol.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcLabelnCarNumKol.UCValue = "تعداد کل"
+        '
+        'UcLabelTransportPrice
+        '
+        Me.UcLabelTransportPrice._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabelTransportPrice._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabelTransportPrice.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcLabelTransportPrice.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabelTransportPrice.Location = New System.Drawing.Point(872, 77)
+        Me.UcLabelTransportPrice.Name = "UcLabelTransportPrice"
+        Me.UcLabelTransportPrice.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabelTransportPrice.Size = New System.Drawing.Size(53, 32)
+        Me.UcLabelTransportPrice.TabIndex = 12
+        Me.UcLabelTransportPrice.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabelTransportPrice.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabelTransportPrice.UCForeColor = System.Drawing.Color.Black
+        Me.UcLabelTransportPrice.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcLabelTransportPrice.UCValue = "نرخ حمل"
+        '
+        'UcLabel4
+        '
+        Me.UcLabel4._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel4._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcLabel4.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabel4.Location = New System.Drawing.Point(750, 79)
+        Me.UcLabel4.Name = "UcLabel4"
+        Me.UcLabel4.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel4.Size = New System.Drawing.Size(51, 32)
+        Me.UcLabel4.TabIndex = 20
+        Me.UcLabel4.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabel4.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel4.UCForeColor = System.Drawing.Color.Black
+        Me.UcLabel4.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.UcLabel4.UCValue = "تناژ بار"
+        '
+        'UcSearcherDischargingPlaces
+        '
+        Me.UcSearcherDischargingPlaces.BackColor = System.Drawing.Color.Transparent
+        Me.UcSearcherDischargingPlaces.Location = New System.Drawing.Point(56, 48)
+        Me.UcSearcherDischargingPlaces.Name = "UcSearcherDischargingPlaces"
+        Me.UcSearcherDischargingPlaces.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcSearcherDischargingPlaces.Size = New System.Drawing.Size(189, 31)
+        Me.UcSearcherDischargingPlaces.TabIndex = 26
+        Me.UcSearcherDischargingPlaces.UCBackColor = System.Drawing.Color.White
+        Me.UcSearcherDischargingPlaces.UCFillFirstTime = False
+        Me.UcSearcherDischargingPlaces.UCFontList = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherDischargingPlaces.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcSearcherDischargingPlaces.UCForeColor = System.Drawing.Color.Black
+        Me.UcSearcherDischargingPlaces.UCIcon = Nothing
+        Me.UcSearcherDischargingPlaces.UCMaximizeHight = CType(120, Long)
+        Me.UcSearcherDischargingPlaces.UCMinimizeHight = CType(31, Long)
+        Me.UcSearcherDischargingPlaces.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.DropDown
+        Me.UcSearcherDischargingPlaces.UCShowDomainIcon = False
+        '
+        'UcLabel6
+        '
+        Me.UcLabel6._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel6._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel6.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabel6.Location = New System.Drawing.Point(236, 48)
+        Me.UcLabel6.Name = "UcLabel6"
+        Me.UcLabel6.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel6.Size = New System.Drawing.Size(71, 32)
+        Me.UcLabel6.TabIndex = 25
+        Me.UcLabel6.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabel6.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel6.UCForeColor = System.Drawing.Color.Black
+        Me.UcLabel6.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcLabel6.UCValue = "محل تخلیه"
+        '
+        'UcLabel5
+        '
+        Me.UcLabel5._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel5._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel5.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabel5.Location = New System.Drawing.Point(476, 48)
+        Me.UcLabel5.Name = "UcLabel5"
+        Me.UcLabel5.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel5.Size = New System.Drawing.Size(74, 32)
+        Me.UcLabel5.TabIndex = 24
+        Me.UcLabel5.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabel5.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel5.UCForeColor = System.Drawing.Color.Black
+        Me.UcLabel5.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcLabel5.UCValue = "محل بارگیری"
         '
         'UcSearcherLoaderTypes
         '
@@ -508,27 +682,6 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcSearcherTransportCompanies.UCMinimizeHight = CType(31, Long)
         Me.UcSearcherTransportCompanies.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.DropDown
         Me.UcSearcherTransportCompanies.UCShowDomainIcon = False
-        '
-        'UcSearcherLoadSources
-        '
-        Me.UcSearcherLoadSources.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcSearcherLoadSources.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherLoadSources.Enabled = False
-        Me.UcSearcherLoadSources.Location = New System.Drawing.Point(823, 48)
-        Me.UcSearcherLoadSources.Name = "UcSearcherLoadSources"
-        Me.UcSearcherLoadSources.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcSearcherLoadSources.Size = New System.Drawing.Size(159, 31)
-        Me.UcSearcherLoadSources.TabIndex = 5
-        Me.UcSearcherLoadSources.UCBackColor = System.Drawing.Color.White
-        Me.UcSearcherLoadSources.UCFillFirstTime = False
-        Me.UcSearcherLoadSources.UCFontList = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcSearcherLoadSources.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcSearcherLoadSources.UCForeColor = System.Drawing.Color.Black
-        Me.UcSearcherLoadSources.UCIcon = Nothing
-        Me.UcSearcherLoadSources.UCMaximizeHight = CType(120, Long)
-        Me.UcSearcherLoadSources.UCMinimizeHight = CType(31, Long)
-        Me.UcSearcherLoadSources.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.DropDown
-        Me.UcSearcherLoadSources.UCShowDomainIcon = False
         '
         'UcSearcherLoadTargets
         '
@@ -629,67 +782,6 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcPersianTextBoxStrBarname.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.UcPersianTextBoxStrBarname.UCValue = ""
         '
-        'UcNumberTransportPrice
-        '
-        Me.UcNumberTransportPrice.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcNumberTransportPrice.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumberTransportPrice.Location = New System.Drawing.Point(791, 84)
-        Me.UcNumberTransportPrice.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.UcNumberTransportPrice.Name = "UcNumberTransportPrice"
-        Me.UcNumberTransportPrice.Size = New System.Drawing.Size(80, 25)
-        Me.UcNumberTransportPrice.TabIndex = 13
-        Me.UcNumberTransportPrice.UCAllowedMaxNumber = CType(9223372036854775807, Long)
-        Me.UcNumberTransportPrice.UCAllowedMinNumber = CType(-922337203685477580, Long)
-        Me.UcNumberTransportPrice.UCBackColor = System.Drawing.Color.White
-        Me.UcNumberTransportPrice.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumberTransportPrice.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
-        Me.UcNumberTransportPrice.UCBorder = True
-        Me.UcNumberTransportPrice.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumberTransportPrice.UCEnable = True
-        Me.UcNumberTransportPrice.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumberTransportPrice.UCForeColor = System.Drawing.Color.Black
-        Me.UcNumberTransportPrice.UCMultiLine = False
-        Me.UcNumberTransportPrice.UCValue = CType(0, Long)
-        '
-        'UcNumbernCarNumKol
-        '
-        Me.UcNumbernCarNumKol.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcNumbernCarNumKol.Font = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumbernCarNumKol.Location = New System.Drawing.Point(930, 83)
-        Me.UcNumbernCarNumKol.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.UcNumbernCarNumKol.Name = "UcNumbernCarNumKol"
-        Me.UcNumbernCarNumKol.Size = New System.Drawing.Size(52, 25)
-        Me.UcNumbernCarNumKol.TabIndex = 11
-        Me.UcNumbernCarNumKol.UCAllowedMaxNumber = CType(9223372036854775807, Long)
-        Me.UcNumbernCarNumKol.UCAllowedMinNumber = CType(-922337203685477580, Long)
-        Me.UcNumbernCarNumKol.UCBackColor = System.Drawing.Color.White
-        Me.UcNumbernCarNumKol.UCBackColorDisable = System.Drawing.Color.Gainsboro
-        Me.UcNumbernCarNumKol.UCBackColorInvalidEntryException = System.Drawing.Color.Gold
-        Me.UcNumbernCarNumKol.UCBorder = True
-        Me.UcNumbernCarNumKol.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcNumbernCarNumKol.UCEnable = True
-        Me.UcNumbernCarNumKol.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
-        Me.UcNumbernCarNumKol.UCForeColor = System.Drawing.Color.Black
-        Me.UcNumbernCarNumKol.UCMultiLine = False
-        Me.UcNumbernCarNumKol.UCValue = CType(0, Long)
-        '
-        'UcLabelnCarNumKol
-        '
-        Me.UcLabelnCarNumKol._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabelnCarNumKol._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabelnCarNumKol.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcLabelnCarNumKol.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelnCarNumKol.Location = New System.Drawing.Point(981, 78)
-        Me.UcLabelnCarNumKol.Name = "UcLabelnCarNumKol"
-        Me.UcLabelnCarNumKol.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelnCarNumKol.Size = New System.Drawing.Size(54, 32)
-        Me.UcLabelnCarNumKol.TabIndex = 10
-        Me.UcLabelnCarNumKol.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelnCarNumKol.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabelnCarNumKol.UCForeColor = System.Drawing.Color.Black
-        Me.UcLabelnCarNumKol.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.UcLabelnCarNumKol.UCValue = "تعداد کل"
-        '
         'UcLabelSherkatHamloNaghl1
         '
         Me.UcLabelSherkatHamloNaghl1._UCBackColorPopup = System.Drawing.Color.Transparent
@@ -722,23 +814,6 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelMaghsadeBar1.UCForeColor = System.Drawing.Color.Black
         Me.UcLabelMaghsadeBar1.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelMaghsadeBar1.UCValue = "مقصد بار"
-        '
-        'UcLabelTransportPrice
-        '
-        Me.UcLabelTransportPrice._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabelTransportPrice._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabelTransportPrice.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcLabelTransportPrice.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelTransportPrice.Location = New System.Drawing.Point(872, 77)
-        Me.UcLabelTransportPrice.Name = "UcLabelTransportPrice"
-        Me.UcLabelTransportPrice.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelTransportPrice.Size = New System.Drawing.Size(53, 32)
-        Me.UcLabelTransportPrice.TabIndex = 12
-        Me.UcLabelTransportPrice.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelTransportPrice.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabelTransportPrice.UCForeColor = System.Drawing.Color.Black
-        Me.UcLabelTransportPrice.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.UcLabelTransportPrice.UCValue = "نرخ حمل"
         '
         'UcLabelMabdaeBar1
         '
@@ -839,22 +914,17 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcLabelNoeBargir1.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelNoeBargir1.UCValue = "نوع بارگیر"
         '
-        'UcLabel4
+        'UcTransportTarrifsParameters
         '
-        Me.UcLabel4._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabel4._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabel4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcLabel4.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel4.Location = New System.Drawing.Point(750, 79)
-        Me.UcLabel4.Name = "UcLabel4"
-        Me.UcLabel4.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabel4.Size = New System.Drawing.Size(51, 32)
-        Me.UcLabel4.TabIndex = 20
-        Me.UcLabel4.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel4.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabel4.UCForeColor = System.Drawing.Color.Black
-        Me.UcLabel4.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.UcLabel4.UCValue = "تناژ بار"
+        Me.UcTransportTarrifsParameters.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcTransportTarrifsParameters.BackColor = System.Drawing.Color.Transparent
+        Me.UcTransportTarrifsParameters.Location = New System.Drawing.Point(-4, 147)
+        Me.UcTransportTarrifsParameters.Name = "UcTransportTarrifsParameters"
+        Me.UcTransportTarrifsParameters.Padding = New System.Windows.Forms.Padding(10)
+        Me.UcTransportTarrifsParameters.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcTransportTarrifsParameters.Size = New System.Drawing.Size(1084, 89)
+        Me.UcTransportTarrifsParameters.TabIndex = 22
         '
         'UcucLoadCapacitorAccountingCollection
         '
@@ -866,76 +936,6 @@ Partial Class UCLoadCapacitorLoadManipulation
         Me.UcucLoadCapacitorAccountingCollection.Size = New System.Drawing.Size(1093, 289)
         Me.UcucLoadCapacitorAccountingCollection.TabIndex = 1
         Me.UcucLoadCapacitorAccountingCollection.UCViewUCPictureExit = True
-        '
-        'UcSearcherLoadingPlaces
-        '
-        Me.UcSearcherLoadingPlaces.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherLoadingPlaces.Location = New System.Drawing.Point(297, 48)
-        Me.UcSearcherLoadingPlaces.Name = "UcSearcherLoadingPlaces"
-        Me.UcSearcherLoadingPlaces.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcSearcherLoadingPlaces.Size = New System.Drawing.Size(185, 31)
-        Me.UcSearcherLoadingPlaces.TabIndex = 23
-        Me.UcSearcherLoadingPlaces.UCBackColor = System.Drawing.Color.White
-        Me.UcSearcherLoadingPlaces.UCFillFirstTime = False
-        Me.UcSearcherLoadingPlaces.UCFontList = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcSearcherLoadingPlaces.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcSearcherLoadingPlaces.UCForeColor = System.Drawing.Color.Black
-        Me.UcSearcherLoadingPlaces.UCIcon = Nothing
-        Me.UcSearcherLoadingPlaces.UCMaximizeHight = CType(120, Long)
-        Me.UcSearcherLoadingPlaces.UCMinimizeHight = CType(31, Long)
-        Me.UcSearcherLoadingPlaces.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.Simple
-        Me.UcSearcherLoadingPlaces.UCShowDomainIcon = False
-        '
-        'UcLabel5
-        '
-        Me.UcLabel5._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabel5._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabel5.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel5.Location = New System.Drawing.Point(476, 48)
-        Me.UcLabel5.Name = "UcLabel5"
-        Me.UcLabel5.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabel5.Size = New System.Drawing.Size(74, 32)
-        Me.UcLabel5.TabIndex = 24
-        Me.UcLabel5.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel5.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabel5.UCForeColor = System.Drawing.Color.Black
-        Me.UcLabel5.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.UcLabel5.UCValue = "محل بارگیری"
-        '
-        'UcLabel6
-        '
-        Me.UcLabel6._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabel6._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabel6.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel6.Location = New System.Drawing.Point(236, 48)
-        Me.UcLabel6.Name = "UcLabel6"
-        Me.UcLabel6.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabel6.Size = New System.Drawing.Size(71, 32)
-        Me.UcLabel6.TabIndex = 25
-        Me.UcLabel6.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel6.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabel6.UCForeColor = System.Drawing.Color.Black
-        Me.UcLabel6.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.UcLabel6.UCValue = "محل تخلیه"
-        '
-        'UcSearcherDischargingPlaces
-        '
-        Me.UcSearcherDischargingPlaces.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherDischargingPlaces.Location = New System.Drawing.Point(56, 48)
-        Me.UcSearcherDischargingPlaces.Name = "UcSearcherDischargingPlaces"
-        Me.UcSearcherDischargingPlaces.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcSearcherDischargingPlaces.Size = New System.Drawing.Size(189, 31)
-        Me.UcSearcherDischargingPlaces.TabIndex = 26
-        Me.UcSearcherDischargingPlaces.UCBackColor = System.Drawing.Color.White
-        Me.UcSearcherDischargingPlaces.UCFillFirstTime = False
-        Me.UcSearcherDischargingPlaces.UCFontList = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcSearcherDischargingPlaces.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcSearcherDischargingPlaces.UCForeColor = System.Drawing.Color.Black
-        Me.UcSearcherDischargingPlaces.UCIcon = Nothing
-        Me.UcSearcherDischargingPlaces.UCMaximizeHight = CType(120, Long)
-        Me.UcSearcherDischargingPlaces.UCMinimizeHight = CType(31, Long)
-        Me.UcSearcherDischargingPlaces.UCMode = R2CoreGUI.UCSearcherAdvance.UCModeType.Simple
-        Me.UcSearcherDischargingPlaces.UCShowDomainIcon = False
         '
         'UCLoadCapacitorLoadManipulation
         '
