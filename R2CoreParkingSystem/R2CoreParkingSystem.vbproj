@@ -430,16 +430,40 @@
     <Compile Include="Reports\RFIDCards\UCTerraficCardsIdentity.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SMS Management\UCActivateSMSOwner.Designer.vb">
-      <DependentUpon>UCActivateSMSOwner.vb</DependentUpon>
+    <Compile Include="SMS\FrmcMassSMSMessaging.Designer.vb">
+      <DependentUpon>FrmcMassSMSMessaging.vb</DependentUpon>
     </Compile>
-    <Compile Include="SMS Management\UCActivateSMSOwner.vb">
+    <Compile Include="SMS\FrmcMassSMSMessaging.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SMS\FrmcSMSControllingMoneyWallet.Designer.vb">
+      <DependentUpon>FrmcSMSControllingMoneyWallet.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SMS\FrmcSMSControllingMoneyWallet.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SMS\UCActivateUnActivateSMSOwner.Designer.vb">
+      <DependentUpon>UCActivateUnActivateSMSOwner.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SMS\UCActivateUnActivateSMSOwner.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SMS Management\UCUnActivateSMSOwner.Designer.vb">
-      <DependentUpon>UCUnActivateSMSOwner.vb</DependentUpon>
+    <Compile Include="SMS\UCEntrySMSData.Designer.vb">
+      <DependentUpon>UCEntrySMSData.vb</DependentUpon>
     </Compile>
-    <Compile Include="SMS Management\UCUnActivateSMSOwner.vb">
+    <Compile Include="SMS\UCEntrySMSData.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SMS\UCMassSMSMessaging.Designer.vb">
+      <DependentUpon>UCMassSMSMessaging.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SMS\UCMassSMSMessaging.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SMS\UCSearcherSMSTypes.Designer.vb">
+      <DependentUpon>UCSearcherSMSTypes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SMS\UCSearcherSMSTypes.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="TrafficCard\FrmcTempExitTerafficCard.Designer.vb">
@@ -730,11 +754,20 @@
     <EmbeddedResource Include="Reports\RFIDCards\UCTerraficCardsIdentity.resx">
       <DependentUpon>UCTerraficCardsIdentity.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SMS Management\UCActivateSMSOwner.resx">
-      <DependentUpon>UCActivateSMSOwner.vb</DependentUpon>
+    <EmbeddedResource Include="SMS\FrmcMassSMSMessaging.resx">
+      <DependentUpon>FrmcMassSMSMessaging.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SMS Management\UCUnActivateSMSOwner.resx">
-      <DependentUpon>UCUnActivateSMSOwner.vb</DependentUpon>
+    <EmbeddedResource Include="SMS\FrmcSMSControllingMoneyWallet.resx">
+      <DependentUpon>FrmcSMSControllingMoneyWallet.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SMS\UCActivateUnActivateSMSOwner.resx">
+      <DependentUpon>UCActivateUnActivateSMSOwner.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SMS\UCEntrySMSData.resx">
+      <DependentUpon>UCEntrySMSData.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SMS\UCMassSMSMessaging.resx">
+      <DependentUpon>UCMassSMSMessaging.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TrafficCard\FrmcTempExitTerafficCard.resx">
       <DependentUpon>FrmcTempExitTerafficCard.vb</DependentUpon>

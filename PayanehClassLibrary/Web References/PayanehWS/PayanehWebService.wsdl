@@ -22,6 +22,7 @@
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="YourSalFull" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="YourMonthCodeFull" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourComputerId" type="s:long" />
             <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
           </s:sequence>
         </s:complexType>
@@ -289,7 +290,7 @@
       <s:element name="WebMethodReportingInformationPrividerAnnounceLoadsReportReportResponse">
         <s:complexType />
       </s:element>
-      <s:element name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
+      <s:element name="WebMethodReportingInformationPrividerSaleOfCommissionSMSReport">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
@@ -302,7 +303,7 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportResponse">
+      <s:element name="WebMethodReportingInformationPrividerSaleOfCommissionSMSReportResponse">
         <s:complexType />
       </s:element>
       <s:element name="WebMethodCarTruckHasTurn">
@@ -476,11 +477,11 @@
   <wsdl:message name="WebMethodReportingInformationPrividerAnnounceLoadsReportReportSoapOut">
     <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerAnnounceLoadsReportReportResponse" />
   </wsdl:message>
-  <wsdl:message name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapIn">
-    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport" />
+  <wsdl:message name="WebMethodReportingInformationPrividerSaleOfCommissionSMSReportSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSaleOfCommissionSMSReport" />
   </wsdl:message>
-  <wsdl:message name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapOut">
-    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportResponse" />
+  <wsdl:message name="WebMethodReportingInformationPrividerSaleOfCommissionSMSReportSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSaleOfCommissionSMSReportResponse" />
   </wsdl:message>
   <wsdl:message name="WebMethodCarTruckHasTurnSoapIn">
     <wsdl:part name="parameters" element="tns:WebMethodCarTruckHasTurn" />
@@ -579,9 +580,9 @@
       <wsdl:input message="tns:WebMethodReportingInformationPrividerAnnounceLoadsReportReportSoapIn" />
       <wsdl:output message="tns:WebMethodReportingInformationPrividerAnnounceLoadsReportReportSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
-      <wsdl:input message="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapIn" />
-      <wsdl:output message="tns:WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportSoapOut" />
+    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfCommissionSMSReport">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerSaleOfCommissionSMSReportSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerSaleOfCommissionSMSReportSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="WebMethodCarTruckHasTurn">
       <wsdl:input message="tns:WebMethodCarTruckHasTurnSoapIn" />
@@ -764,8 +765,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
-      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport" style="document" />
+    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfCommissionSMSReport">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerSaleOfCommissionSMSReport" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -974,8 +975,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport">
-      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport" style="document" />
+    <wsdl:operation name="WebMethodReportingInformationPrividerSaleOfCommissionSMSReport">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerSaleOfCommissionSMSReport" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

@@ -1,5 +1,6 @@
 ﻿
 Imports System.Reflection
+
 Imports PayanehClassLibrary.ProcessesManagement
 Imports PayanehClassLibrary.TruckersAssociationControllingMoneyWallet
 Imports R2Core.DesktopProcessesManagement
@@ -63,8 +64,6 @@ Public Class FrmcTruckersAssociationControllingMoneyWallet
 #Region "Event Handlers"
 
     Private Sub FrmcTruckersAssociationControllingMoneyWallet__MenuRunCompletedEvent(UC As UCMenu) Handles Me._MenuRunCompletedEvent
-
-
     End Sub
 
     Private Sub FrmcTruckersAssociationControllingMoneyWallet__MenuRunRequestedEvent(UC As UCMenu) Handles Me._MenuRunRequestedEvent

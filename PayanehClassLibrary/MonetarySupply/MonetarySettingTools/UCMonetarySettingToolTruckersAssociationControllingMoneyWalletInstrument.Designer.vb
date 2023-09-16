@@ -55,7 +55,7 @@ Partial Class UCMonetarySettingToolTruckersAssociationControllingMoneyWalletInst
         Me.UcLabel1.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabel1.UCForeColor = System.Drawing.Color.Red
         Me.UcLabel1.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.UcLabel1.UCValue = "فرآیند شارژ کیف پول گنترلی کامیونداران - محاسبه هزینه"
+        Me.UcLabel1.UCValue = "فرآیند شارژ کیف پول کنترلی کامیونداران - محاسبه هزینه"
         '
         'UCMonetarySettingToolTruckersAssociationControllingMoneyWalletInstrument
         '

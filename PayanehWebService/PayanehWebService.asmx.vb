@@ -291,10 +291,10 @@ Public Class PayanehWebService
     End Sub
 
     <WebMethod()>
-    Public Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport(YourDateTimeMilladi1 As DateTime, YourDateShamsiFull1 As String, YourTime1 As String, YourDateTimeMilladi2 As DateTime, YourDateShamsiFull2 As String, YourTime2 As String, YourExchangeKey As Int64)
+    Public Sub WebMethodReportingInformationPrividerSaleOfCommissionSMSReport(YourDateTimeMilladi1 As DateTime, YourDateShamsiFull1 As String, YourTime1 As String, YourDateTimeMilladi2 As DateTime, YourDateShamsiFull2 As String, YourTime2 As String, YourExchangeKey As Int64)
         Try
             _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)
-            PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderSaleOfSoftwareUserActivationSMSReport(New R2StandardDateAndTimeStructure(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1), New R2StandardDateAndTimeStructure(YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2))
+            PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderSaleOfCommissionSMSReport(New R2StandardDateAndTimeStructure(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1), New R2StandardDateAndTimeStructure(YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2))
         Catch ex As ExchangeKeyTimeRangePassedException
             Throw ex
         Catch ex As ExchangeKeyNotExistException

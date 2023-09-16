@@ -89,6 +89,7 @@ Imports R2Core.MoneyWallet.Exceptions
 Imports R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Exceptions
 Imports R2CoreParkingSystem.SoftwareUsersManagement
 Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement
+Imports R2CoreParkingSystem.SMS.SMSTypes
 
 Namespace Rmto
     Public MustInherit Class RmtoWebService
@@ -387,6 +388,7 @@ Namespace ConfigurationsManagement
         Public Shared ReadOnly Property AnnouncementHallsLoadAllocationSetting As Int64 = 69
         Public Shared ReadOnly Property TommorowLoads As Int64 = 71
         Public Shared ReadOnly Property DriverSelfDeclarationSetting As Int64 = 86
+        Public Shared ReadOnly Property VirtualTurnsSetting = 88
     End Class
 
     Public Class R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager
@@ -2681,6 +2683,26 @@ Namespace Turns
 
     End Namespace
 
+    Namespace VirtualTurns
+        Public Class R2CoreTransportationAndLoadNotificationVirtualTurnsManager
+            Private _DateTime As New R2DateTime
+
+            Public Function IsVirtualTurnsActive() As Boolean
+                Try
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                    If InstanceConfiguration.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.VirtualTurnsSetting, 0) Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+        End Class
+
+    End Namespace
+
     Namespace Exceptions
         Public Class UnableResucitationTemporayTurnException
             Inherits ApplicationException
@@ -4218,7 +4240,18 @@ Namespace CalendarManagement
 
 End Namespace
 
+Namespace SMS
 
+    Namespace SMSTypes
+        Public MustInherit Class R2CoreTransportationAndLoadNotificationSMSTypes
+            Inherits R2CoreParkingSystemSMSTypes
+
+            Public Shared ReadOnly Property LoadAllocationsLoadPermissionRegisteringFailed = 4
+
+        End Class
+
+    End Namespace
+End Namespace
 
 
 

@@ -107,12 +107,12 @@
                     <br />
                     <div style="width: 100%; text-align: right;">
                         <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>بدین وسیله یک دستگاه <%=PPDS.CarType%></span>&nbsp;&nbsp;</div>
-                        <div style="display: inline-block; float: right; font-family: B Homa; font-size: smaller;"><span>به شماره پلاک <%=PPDS.TruckLP%> - <%=PPDS.TruckLPSerial%></span></div>
+                        <div style="display: inline-block; float: right; font-family: B Homa; font-size: smaller;"><span>به شماره پلاک <%=PPDS.TruckLP%> - <%=PPDS.TruckLPSerial%> هوشمند <%=PPDS.TruckSmartCardNo%></span></div>
                     </div>
                     <br />
                     <br />
                     <div style="width: 100%; text-align: center; font-family: 'B Homa'; font-size: smaller;">
-                        <div><span>به رانندگی آقای <%=PPDS.TruckDriver%> دارای گواهینامه به شماره <%=PPDS.TruckDriverDrivingLicenseNo%></span>&nbsp;&nbsp;</div>
+                        <div><span>به رانندگی آقای <%=PPDS.TruckDriver%> دارای کد ملی به شماره <%=PPDS.TruckDriverNationalCode%> شماره موبایل <%=PPDS.TruckDriverMobileNo%></span>&nbsp;&nbsp;</div>
                     </div>
 
                     <div style="width: 100%; text-align: right;">
@@ -165,12 +165,12 @@
                     <br />
                     <div style="width: 100%; text-align: right;">
                         <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>بدین وسیله یک دستگاه <%=PPDS.CarType%></span>&nbsp;&nbsp;</div>
-                        <div style="display: inline-block; float: right; font-family: B Homa; font-size: smaller;"><span>به شماره پلاک <%=PPDS.TruckLP%> - <%=PPDS.TruckLPSerial%></span></div>
+                        <div style="display: inline-block; float: right; font-family: B Homa; font-size: smaller;"><span>به شماره پلاک <%=PPDS.TruckLP%> - <%=PPDS.TruckLPSerial%> هوشمند <%=PPDS.TruckSmartCardNo%></span></div>
                     </div>
                     <br />
                     <br />
                     <div style="width: 100%; text-align: center; font-family: 'B Homa'; font-size: smaller;">
-                        <div><span>به رانندگی آقای <%=PPDS.TruckDriver%> دارای گواهینامه به شماره <%=PPDS.TruckDriverDrivingLicenseNo%></span>&nbsp;&nbsp;</div>
+                        <div><span>به رانندگی آقای <%=PPDS.TruckDriver%> دارای کد ملی به شماره <%=PPDS.TruckDriverNationalCode%> شماره موبایل <%=PPDS.TruckDriverMobileNo%></span>&nbsp;&nbsp;</div>
                     </div>
 
                     <div style="width: 100%; text-align: right;">

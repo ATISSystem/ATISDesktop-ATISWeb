@@ -189,6 +189,7 @@
     <Compile Include="Controllers\ProvinceManagement\ProvincesController.cs" />
     <Compile Include="Controllers\PublicMessageManagement\PublicMessagesController.cs" />
     <Compile Include="Controllers\ReportManagement\ReportsController.cs" />
+    <Compile Include="Controllers\SMSManagement\SMSController.cs" />
     <Compile Include="Controllers\SoftwareUserManagement\SoftwareUsersController.cs" />
     <Compile Include="Controllers\TruckDriverManagement\TruckDriversController.cs" />
     <Compile Include="Controllers\TruckManagement\TrucksController.cs" />

@@ -50,6 +50,8 @@ Imports PayanehClassLibrary.DriverTrucksManagement.Exceptions
 Imports R2CoreParkingSystem.Logging
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
 Imports PayanehClassLibrary.TurnRegisterRequest.Exceptions
+Imports R2CoreParkingSystem.SMS.SMSControllingMoneyWallet
+Imports R2CoreParkingSystem.SMS.SMSControllingMoneyWallet.Exceptions
 
 Public Class FrmcEnterExit
     Inherits FrmcGeneral
@@ -129,6 +131,11 @@ Public Class FrmcEnterExit
             'کیف پول کنترلی کامیونداران
             If myEnterExitRequest = R2EnterExitRequestType.ExitRequest Then
                 TruckersAssociationControllingMoneyWalletManagement.DoControlforControllingMoneyWallet()
+            End If
+
+            'کیف پول کنترلی اس ام اس
+            If myEnterExitRequest = R2EnterExitRequestType.ExitRequest Then
+                R2CoreParkingSystemMClassSMSControllingMoneyWalletManagement.DoControlforControllingMoneyWallet()
             End If
 
             'نمایش موجودی کیف پول مرتبط با کارت تردد و در صورت رایگان بودن نام شرکت مرتبط
@@ -349,6 +356,7 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is GetDataException _
                             OrElse TypeOf ex Is TruckRelatedSequentialTurnNotFoundException _
                             OrElse TypeOf ex Is TruckersAssociationControllingMoneyWalletCriticalAmountReachedException _
+                            OrElse TypeOf ex Is SMSControllingMoneyWalletCriticalAmountReachedException _
                             OrElse TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                             OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                             OrElse TypeOf ex Is TruckNotFoundException _
@@ -420,6 +428,7 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is TruckDriverNotFoundException _
                             OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
                             OrElse TypeOf ex Is TruckersAssociationControllingMoneyWalletCriticalAmountReachedException _
+                            OrElse TypeOf ex Is SMSControllingMoneyWalletCriticalAmountReachedException _
                             OrElse TypeOf ex Is RelatedTerraficCardNotFoundException _
                             OrElse TypeOf ex Is TerraficCardNotFoundException _
                             OrElse TypeOf ex Is DriverTruckInformationNotExistException _
@@ -568,6 +577,7 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is TruckDriverNotFoundException _
                             OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
                             OrElse TypeOf ex Is TruckersAssociationControllingMoneyWalletCriticalAmountReachedException _
+                            OrElse TypeOf ex Is SMSControllingMoneyWalletCriticalAmountReachedException _
                             OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
                             OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
                             OrElse TypeOf ex Is CarIsNotPresentInParkingException _
@@ -616,6 +626,7 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is TruckDriverNotFoundException _
                             OrElse TypeOf ex Is TurnRegisterRequestNotFoundException _
                             OrElse TypeOf ex Is TruckersAssociationControllingMoneyWalletCriticalAmountReachedException _
+                            OrElse TypeOf ex Is SMSControllingMoneyWalletCriticalAmountReachedException _
                             OrElse TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
                             OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
                             OrElse TypeOf ex Is CarIsNotPresentInParkingException _

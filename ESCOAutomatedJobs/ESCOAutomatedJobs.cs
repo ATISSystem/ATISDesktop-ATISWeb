@@ -14,6 +14,8 @@ using R2Core.DateAndTimeManagement;
 using R2Core.SoftwareUserManagement;
 using ESCOCore.Configurations;
 using R2Core.LoggingManagement;
+using ESCOCore.SMS;
+using ESCOCore.Exceptions;
 
 namespace ESCOAutomatedJobs
 {
@@ -21,6 +23,7 @@ namespace ESCOAutomatedJobs
     {
         private System.Timers.Timer _AutomatedJobsTimer = new System.Timers.Timer();
         private R2DateTime _DateTime;
+        private Boolean _FailStatus = true;
 
 
         public ESCOAutomatedJobs()
@@ -37,12 +40,12 @@ namespace ESCOAutomatedJobs
                 { }
                 else
                 { EventLog.CreateEventSource("ESCOAutomatedJobs", "ESCOAutomatedJobs"); }
-                EventLog.WriteEntry("ESCOAutomatedJobs", "ESCOAutomatedJobs Start ...", EventLogEntryType.SuccessAudit);
-                _DateTime = new R2DateTime();
-                R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
-                _AutomatedJobsTimer.Interval = R2CoreMClassConfigurationManagement.GetConfigInt64(ESCOCoreConfigurations.ESCO, 4) * 1000 * 60;
+
+                _AutomatedJobsTimer.Interval = 1000;
                 _AutomatedJobsTimer.Enabled = true;
                 _AutomatedJobsTimer.Start();
+
+                EventLog.WriteEntry("ESCOAutomatedJobs", "ESCOAutomatedJobs Start ...", EventLogEntryType.SuccessAudit);
             }
             catch (Exception ex)
             { EventLog.WriteEntry("ESCOAutomatedJobs", "OnStart()." + ex.Message.ToString(), EventLogEntryType.Error); }
@@ -70,13 +73,36 @@ namespace ESCOAutomatedJobs
                 var InstanceLogging = new R2CoreInstanceLoggingManager();
                 _AutomatedJobsTimer.Enabled = false;
                 _AutomatedJobsTimer.Stop();
+
+                //خواندن اینتروال سرویس از بانک
+                while (_FailStatus)
+                {
+                    try
+                    {
+                        var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                        _DateTime = new R2DateTime();
+                        R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
+                        _AutomatedJobsTimer.Interval = Convert.ToInt64(InstanceConfiguration.GetConfig(ESCOCoreConfigurations.ESCO, 4, 0)) * 1000 * 60;
+                        _FailStatus = false;
+                        EventLog.WriteEntry("ESCOAutomatedJobs", "ESCOAutomatedJobs.Interval=" + _AutomatedJobsTimer.Interval.ToString(), EventLogEntryType.SuccessAudit);
+                    }
+                    catch (Exception ex)
+                    {
+                        _FailStatus = true;
+                        EventLog.WriteEntry("ESCOAutomatedJobs", "ESCOAutomatedJobs.Interval Setting Failed", EventLogEntryType.SuccessAudit);
+                        System.Threading.Thread.Sleep(15000);
+                    }
+                }
+
                 //ارسال اس ام اس بار اعلام شده 
                 try
                 {
-                    var InstanceSendSMS = new ESCOCore.SendSMS.ESCOCoreSendSMSManager();
                     var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-                    InstanceSendSMS.SendSMSofAnnouncedLoads(InstanceSoftwareUsers.GetNSSSystemUser());
+                    var InstanceSendSMSManager = new ESCOCoreSendSMSManager();
+                    InstanceSendSMSManager.SendSMSofAnnouncedLoads(InstanceSoftwareUsers.GetNSSSystemUser());
                 }
+                catch (ESCOCoreSendSMSFailedException ex)
+                { EventLog.WriteEntry("ESCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
                 catch (Exception ex)
                 { EventLog.WriteEntry("ESCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
             }

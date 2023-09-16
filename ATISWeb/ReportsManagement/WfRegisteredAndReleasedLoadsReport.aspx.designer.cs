@@ -10,33 +10,33 @@
 namespace ATISWeb.ReportsManagement {
     
     
-    public partial class WfReportViewer {
+    public partial class WfRegisteredAndReleasedLoadsReport {
         
         /// <summary>
-        /// form1 control.
+        /// ScriptManager1311 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.ScriptManager ScriptManager1311;
         
         /// <summary>
-        /// scriptManagerReport control.
+        /// WCViewerNSSSoftwareUser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager scriptManagerReport;
+        protected global::ATISWeb.LoginManagement.WCViewerNSSSoftwareUser WCViewerNSSSoftwareUser;
         
         /// <summary>
-        /// rvSiteMapping control.
+        /// WCRegisteredAndReleasedLoadsReport control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Microsoft.Reporting.WebForms.ReportViewer rvSiteMapping;
+        protected global::ATISWeb.ReportsManagement.WCRegisteredAndReleasedLoadsReport WCRegisteredAndReleasedLoadsReport;
     }
 }

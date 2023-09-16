@@ -413,10 +413,10 @@
     <Compile Include="Reports\FrmcLoadPermissionsIssuedOrderByPriorityReport.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Reports\FrmcSaleOfSoftwareUserActivationSMSReport.Designer.vb">
-      <DependentUpon>FrmcSaleOfSoftwareUserActivationSMSReport.vb</DependentUpon>
+    <Compile Include="Reports\FrmcSaleOfCommissionSMSReport.Designer.vb">
+      <DependentUpon>FrmcSaleOfCommissionSMSReport.vb</DependentUpon>
     </Compile>
-    <Compile Include="Reports\FrmcSaleOfSoftwareUserActivationSMSReport.vb">
+    <Compile Include="Reports\FrmcSaleOfCommissionSMSReport.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Reports\FrmcSedimentedLoadsReport.Designer.vb">
@@ -509,10 +509,10 @@
     <Compile Include="Reports\UCLoadPermissionIssuedOrderByPriority.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Reports\UCSaleOfSoftwareUserActivationSMSReport.Designer.vb">
-      <DependentUpon>UCSaleOfSoftwareUserActivationSMSReport.vb</DependentUpon>
+    <Compile Include="Reports\UCSaleOfCommissionSMSReport.Designer.vb">
+      <DependentUpon>UCSaleOfCommissionSMSReport.vb</DependentUpon>
     </Compile>
-    <Compile Include="Reports\UCSaleOfSoftwareUserActivationSMSReport.vb">
+    <Compile Include="Reports\UCSaleOfCommissionSMSReport.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Reports\UCSedimentedLoadsReport.Designer.vb">
@@ -777,8 +777,8 @@
     <EmbeddedResource Include="Reports\FrmcLoadPermissionsIssuedOrderByPriorityReport.resx">
       <DependentUpon>FrmcLoadPermissionsIssuedOrderByPriorityReport.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\FrmcSaleOfSoftwareUserActivationSMSReport.resx">
-      <DependentUpon>FrmcSaleOfSoftwareUserActivationSMSReport.vb</DependentUpon>
+    <EmbeddedResource Include="Reports\FrmcSaleOfCommissionSMSReport.resx">
+      <DependentUpon>FrmcSaleOfCommissionSMSReport.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\FrmcSedimentedLoadsReport.resx">
       <DependentUpon>FrmcSedimentedLoadsReport.vb</DependentUpon>
@@ -825,8 +825,8 @@
     <EmbeddedResource Include="Reports\UCLoadPermissionIssuedOrderByPriority.resx">
       <DependentUpon>UCLoadPermissionIssuedOrderByPriority.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\UCSaleOfSoftwareUserActivationSMSReport.resx">
-      <DependentUpon>UCSaleOfSoftwareUserActivationSMSReport.vb</DependentUpon>
+    <EmbeddedResource Include="Reports\UCSaleOfCommissionSMSReport.resx">
+      <DependentUpon>UCSaleOfCommissionSMSReport.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UCSedimentedLoadsReport.resx">
       <DependentUpon>UCSedimentedLoadsReport.vb</DependentUpon>

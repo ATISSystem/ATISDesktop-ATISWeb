@@ -54,5 +54,11 @@
     <Compile Include="MSCOCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PayanehClassLibrary\PayanehClassLibrary.vbproj">
+      <Project>{8bcfe2ef-2c83-4137-baaf-87e380d41971}</Project>
+      <Name>PayanehClassLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

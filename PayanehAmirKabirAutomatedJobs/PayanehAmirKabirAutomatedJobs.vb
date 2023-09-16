@@ -20,7 +20,7 @@ Public Class PayanehAmirKabirAutomatedJobs
 
     Private WithEvents _AutomatedJobsTimer As System.Timers.Timer = New System.Timers.Timer
     Private _DateTime As R2DateTime
-
+    Private _FailStatus As Boolean = True
 
     Protected Overrides Sub OnStart(ByVal args() As String)
         ' Add code here to start your service. This method should set things
@@ -30,14 +30,12 @@ Public Class PayanehAmirKabirAutomatedJobs
             Else
                 EventLog.CreateEventSource("PayanehAmirKabirAutomatedJobs", "PayanehAmirKabirAutomatedJobs")
             End If
-            EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "PayanehAmirKabirAutomatedJobs Start ...", EventLogEntryType.SuccessAudit)
 
-            _DateTime = New R2DateTime()
-            R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
-
-            _AutomatedJobsTimer.Interval = R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.PayanehAmirKabirAutomatedJobsSetting, 0) * 1000
+            _AutomatedJobsTimer.Interval = 1000
             _AutomatedJobsTimer.Enabled = True
             _AutomatedJobsTimer.Start()
+
+            EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "PayanehAmirKabirAutomatedJobs Start ...", EventLogEntryType.SuccessAudit)
 
         Catch ex As Exception
             EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "OnStart()." + ex.Message.ToString, EventLogEntryType.Error)
@@ -64,6 +62,22 @@ Public Class PayanehAmirKabirAutomatedJobs
             _AutomatedJobsTimer.Enabled = False
             _AutomatedJobsTimer.Stop()
 
+            'خواندن اینتروال سرویس از بانک
+            Do While _FailStatus
+                Try
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                    _DateTime = New R2DateTime()
+                    R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+                    _AutomatedJobsTimer.Interval = InstanceConfiguration.GetConfig(PayanehClassLibraryConfigurations.PayanehAmirKabirAutomatedJobsSetting, 0, 0) * 1000
+                    _FailStatus = False
+                    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "PayanehAmirKabirAutomatedJobs.Interval=" + _AutomatedJobsTimer.Interval.ToString, EventLogEntryType.SuccessAudit)
+                Catch ex As Exception
+                    _FailStatus = True
+                    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "PayanehAmirKabirAutomatedJobs.Interval Setting Failed", EventLogEntryType.SuccessAudit)
+                    System.Threading.Thread.Sleep(15000)
+                End Try
+            Loop
+
             'انتقال بار با وضعیت فردا به بار با وضعیت امروز
             Try
                 R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
@@ -72,18 +86,17 @@ Public Class PayanehAmirKabirAutomatedJobs
             End Try
 
             'صدور خودکار مجوزهای سالن های اعلام بار
+            Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
             Try
-                Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
                 Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
                 InstanceLoadAllocation.LoadAllocationsLoadPermissionRegistering(InstanceSoftwareUsers.GetNSSSystemUser())
                 InstanceSoftwareUsers = Nothing
                 InstanceLoadAllocation = Nothing
             Catch ex As Exception
                 Try
-                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
-                    Dim SMSSender = New R2CoreSMSSendRecive
-                    SMSSender.SendSms(New R2CoreStandardSMSStructure(Int64.MinValue, InstanceConfiguration.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 1), "بروز خطای اساسی در آزادسازی بار", 1, _DateTime.GetCurrentDateTimeMilladi(), True, Nothing, Nothing))
+                    InstanceLoadAllocation.SendLoadAllocationsLoadPermissionRegisteringFailedSMS()
                 Catch exSMS As Exception
+                    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering.FailedSMS:" + ex.Message.ToString, EventLogEntryType.Error)
                 End Try
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try

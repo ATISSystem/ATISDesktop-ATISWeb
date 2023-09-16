@@ -2,7 +2,7 @@
 Imports R2CoreGUI
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class FrmcSaleOfSoftwareUserActivationSMSReport
+Partial Class FrmcSaleOfCommissionSMSReport
     Inherits FrmcGeneral
 
 
@@ -27,7 +27,7 @@ Partial Class FrmcSaleOfSoftwareUserActivationSMSReport
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.PnlSaleOfSoftwareUserActivationSMSReport = New System.Windows.Forms.Panel()
-        Me.UcSaleOfSoftwareUserActivationSMSReport = New PayanehClassLibrary.UCSaleOfSoftwareUserActivationSMSReport()
+        Me.UcSaleOfSoftwareUserActivationSMSReport = New PayanehClassLibrary.UCSaleOfCommissionSMSReport()
         Me.PnlSaleOfSoftwareUserActivationSMSReport.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -75,5 +75,5 @@ Partial Class FrmcSaleOfSoftwareUserActivationSMSReport
     End Sub
 
     Friend WithEvents PnlSaleOfSoftwareUserActivationSMSReport As Windows.Forms.Panel
-    Friend WithEvents UcSaleOfSoftwareUserActivationSMSReport As UCSaleOfSoftwareUserActivationSMSReport
+    Friend WithEvents UcSaleOfSoftwareUserActivationSMSReport As UCSaleOfCommissionSMSReport
 End Class

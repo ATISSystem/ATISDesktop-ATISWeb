@@ -96,6 +96,13 @@ Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
 Imports PayanehClassLibrary.CarTrucksManagement.Exceptions
 Imports R2Core.MoneyWallet.Exceptions
 Imports R2CoreTransportationAndLoadNotification.TransportTarrifsParameters
+Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement
+Imports R2CoreParkingSystem.SMS.SMSTypes
+Imports R2CoreTransportationAndLoadNotification.SMS.SMSTypes
+Imports R2Core.SMS.Exceptions
+Imports R2Core.SMS.SMSHandling
+Imports PayanehClassLibrary.SMS.SMSTypes
+Imports R2Core.SoftwareUserManagement.Exceptions
 
 Namespace Logging
 
@@ -274,11 +281,10 @@ Namespace CarTruckNobatManagement
     Public Class PayanehClassLibraryMClassCarTruckNobatManager
         Private _DateTime As New DateAndTimeManagement.R2DateTime
 
-        Private Sub TurnsCancellation(YourNSSSequentialTurn As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+        Private Sub TurnsCancellation(YourNSSSequentialTurn As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourTimeOfDay As R2StandardDateAndTimeStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
-                Dim TimeOfDay = New R2StandardDateAndTimeStructure(_DateTime.GetCurrentDateTimeMilladiFormated, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime)
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim InstanceConfigurations = New R2CoreInstanceConfigurationManager
                 Dim DSTurns As DataSet = Nothing
@@ -290,12 +296,12 @@ Namespace CarTruckNobatManagement
                                                     Union
                                                     Select Distinct nIDCar from dbtransport.dbo.TbCar as Cars 
                                                       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP as IndigenousTrucksWithUNNativeLP On Cars.strCarNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Pelak Collate Arabic_CI_AI_WS and Cars.strCarSerialNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Serial Collate Arabic_CI_AI_WS 
-							                        Where IndigenousTrucksWithUNNativeLP.EnghezaDate>='" & TimeOfDay.DateShamsiFull & "' or IndigenousTrucksWithUNNativeLP.EnghezaDate='') and
+							                        Where IndigenousTrucksWithUNNativeLP.EnghezaDate>='" & YourTimeOfDay.DateShamsiFull & "' or IndigenousTrucksWithUNNativeLP.EnghezaDate='') and
 	                            Turns.strEnterDate Collate Arabic_CI_AI_WS<=(Select Top 1 DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
                                                                              Where DateShamsi<
                                                                                 (Select Top 1 DateShamsi from 
                                                                                   (Select Top " & InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 5) & " DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
-                                                                                   Where PCType=0 and DateShamsi<='" & TimeOfDay.DateShamsiFull & "' Order By DateShamsi desc) as DataBox
+                                                                                   Where PCType=0 and DateShamsi<='" & YourTimeOfDay.DateShamsiFull & "' Order By DateShamsi desc) as DataBox
                                                                                  Order By DateShamsi)
                                                                              Order By DateShamsi Desc)
    	                           )
@@ -304,12 +310,12 @@ Namespace CarTruckNobatManagement
                                                         Union
                                                         Select Distinct nIDCar from dbtransport.dbo.TbCar as Cars 
                                                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP as IndigenousTrucksWithUNNativeLP On Cars.strCarNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Pelak Collate Arabic_CI_AI_WS and Cars.strCarSerialNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Serial Collate Arabic_CI_AI_WS
- 						                                Where IndigenousTrucksWithUNNativeLP.EnghezaDate>='" & TimeOfDay.DateShamsiFull & "' or IndigenousTrucksWithUNNativeLP.EnghezaDate='') and
+ 						                                Where IndigenousTrucksWithUNNativeLP.EnghezaDate>='" & YourTimeOfDay.DateShamsiFull & "' or IndigenousTrucksWithUNNativeLP.EnghezaDate='') and
 	                            Turns.strEnterDate Collate Arabic_CI_AI_WS<=(Select Top 1 DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
                                                                              Where DateShamsi<
                                                                                 (Select Top 1 DateShamsi from 
                                                                                   (Select Top " & InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 6) & " DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
-                                                                                   Where PCType=0 and DateShamsi<='" & TimeOfDay.DateShamsiFull & "' Order By DateShamsi desc) as DataBox
+                                                                                   Where PCType=0 and DateShamsi<='" & YourTimeOfDay.DateShamsiFull & "' Order By DateShamsi desc) as DataBox
                                                                                  Order By DateShamsi)
                                                                              Order By DateShamsi Desc)
  	                           )
@@ -320,7 +326,7 @@ Namespace CarTruckNobatManagement
                     CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                     CmdSql.CommandText =
                      "Update dbtransport.dbo.TbEnterExit
-                      Set TurnStatus=" & TurnStatuses.CancelledUnderScore & ",bFlag=1,bFlagDriver=1,strElamDate='" & TimeOfDay.DateShamsiFull & "',strElamTime='" & TimeOfDay.Time & "',nUserIdExit=" & YourNSSSoftwareUser.UserId & " 
+                      Set TurnStatus=" & TurnStatuses.CancelledUnderScore & ",bFlag=1,bFlagDriver=1,strElamDate='" & YourTimeOfDay.DateShamsiFull & "',strElamTime='" & YourTimeOfDay.Time & "',nUserIdExit=" & YourNSSSoftwareUser.UserId & " 
                       Where nEnterExitId In   
                        (Select nEnterExitId from dbtransport.dbo.tbEnterExit as Turns
                         Where (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and
@@ -329,12 +335,12 @@ Namespace CarTruckNobatManagement
                                                     Union
                                                     Select Distinct nIDCar from dbtransport.dbo.TbCar as Cars 
                                                       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP as IndigenousTrucksWithUNNativeLP On Cars.strCarNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Pelak Collate Arabic_CI_AI_WS and Cars.strCarSerialNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Serial Collate Arabic_CI_AI_WS 
-							                        Where IndigenousTrucksWithUNNativeLP.EnghezaDate>='" & TimeOfDay.DateShamsiFull & "' or IndigenousTrucksWithUNNativeLP.EnghezaDate='') and
+							                        Where IndigenousTrucksWithUNNativeLP.EnghezaDate>='" & YourTimeOfDay.DateShamsiFull & "' or IndigenousTrucksWithUNNativeLP.EnghezaDate='') and
 	                            Turns.strEnterDate Collate Arabic_CI_AI_WS<=(Select Top 1 DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
                                                                              Where DateShamsi<
                                                                                 (Select Top 1 DateShamsi from 
                                                                                   (Select Top " & InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 5) & " DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
-                                                                                   Where PCType=0 and DateShamsi<='" & TimeOfDay.DateShamsiFull & "' Order By DateShamsi desc) as DataBox
+                                                                                   Where PCType=0 and DateShamsi<='" & YourTimeOfDay.DateShamsiFull & "' Order By DateShamsi desc) as DataBox
                                                                                  Order By DateShamsi)
                                                                              Order By DateShamsi Desc)
    	                           )
@@ -343,12 +349,12 @@ Namespace CarTruckNobatManagement
                                                         Union
                                                         Select Distinct nIDCar from dbtransport.dbo.TbCar as Cars 
                                                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP as IndigenousTrucksWithUNNativeLP On Cars.strCarNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Pelak Collate Arabic_CI_AI_WS and Cars.strCarSerialNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Serial Collate Arabic_CI_AI_WS
- 						                                Where IndigenousTrucksWithUNNativeLP.EnghezaDate>='" & TimeOfDay.DateShamsiFull & "' or IndigenousTrucksWithUNNativeLP.EnghezaDate='') and
+ 						                                Where IndigenousTrucksWithUNNativeLP.EnghezaDate>='" & YourTimeOfDay.DateShamsiFull & "' or IndigenousTrucksWithUNNativeLP.EnghezaDate='') and
 	                            Turns.strEnterDate Collate Arabic_CI_AI_WS<=(Select Top 1 DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
                                                                              Where DateShamsi<
                                                                                 (Select Top 1 DateShamsi from 
                                                                                   (Select Top " & InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 6) & " DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
-                                                                                   Where PCType=0 and DateShamsi<='" & TimeOfDay.DateShamsiFull & "' Order By DateShamsi desc) as DataBox
+                                                                                   Where PCType=0 and DateShamsi<='" & YourTimeOfDay.DateShamsiFull & "' Order By DateShamsi desc) as DataBox
                                                                                  Order By DateShamsi)
                                                                              Order By DateShamsi Desc)
  	                           )
@@ -388,7 +394,7 @@ Namespace CarTruckNobatManagement
                 Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
                 Dim InstanceSequentialTurns = New R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager
                 Dim InstanceConfigurations = New R2CoreInstanceConfigurationManager
-                Dim TimeofDay = _DateTime.GetCurrentTime
+                Dim TimeOfDay = _DateTime.GetCurrentDateTime()
                 'طبق کانفیگ سیستم کلا ابطال نوبت ها فعال باشد یا نه
                 If Not InstanceConfigurations.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 0) Then Return
                 'کنترل این که ممکن است هنوز آزاد سازی بار تمام نشده باشد لذا ابطال نوبت ها نباید انجام گیرد حتی اگر زمان ابطال نوبت ها فرارسیده باشد
@@ -402,12 +408,36 @@ Namespace CarTruckNobatManagement
                     Dim ConfigSeqTTurnsCancellationActiveFlag As Boolean = Split(Mid(AllSeqTConfig.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllSeqTConfig.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), "|")(0)
                     Dim ConfigSeqTTurnsCancellationStartSendingTime As String = Split(Mid(AllSeqTConfig.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0), ComposeSearchString.Length + 1, AllSeqTConfig.Where(Function(x) Mid(x, 1, ComposeSearchString.Length) = ComposeSearchString)(0).Length), "|")(1)
                     If Not ConfigSeqTTurnsCancellationActiveFlag Then Continue For
-                    If TimeofDay < ConfigSeqTTurnsCancellationStartSendingTime Then Continue For
-                    TurnsCancellation(LstSeqTs(Loopx), YourNSSSoftwareUser)
+                    If TimeOfDay.Time < ConfigSeqTTurnsCancellationStartSendingTime Then Continue For
+                    TurnsCancellation(LstSeqTs(Loopx), YourNSSSoftwareUser, TimeOfDay)
                 Next
             Catch ex As PermissionException
                 Throw ex
             Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub TurnCancellation(YourNSSSoftwareUserMobile As R2CoreSoftwareUserMobile, YourNSSUser As R2CoreStandardSoftwareUserStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
+            Try
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
+                Dim Truck = InstanceTrucks.GetNSSTruck(InstanceSoftwareUsers.GetNSSUserUnChangeable(YourNSSSoftwareUserMobile))
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.CancelledUser & ",bFlag=1,bFlagDriver=1,nUserIdExit=" & YourNSSUser.UserId & " 
+                                          Where StrCardNo=" & Truck.NSSCar.nIdCar & " and (TurnStatus=" & TurnStatuses.Registered & " or TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or TurnStatus=" & TurnStatuses.ResuscitationUser & ")"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+
+                'ارسال ابطالی به آنلاین نوبت
+                TWSClassTDBClientManagement.DelNobat(Truck.NSSCar.StrCarNo, Truck.NSSCar.StrCarSerialNo)
+            Catch ex As UserNotExistByMobileNumberException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
@@ -3628,7 +3658,7 @@ Namespace ReportsManagement
         Public Shared ReadOnly LoadPermissionsIssuedOrderByPriorityReport As Int64 = 28
         Public Shared ReadOnly ClearanceLoadsReport As Int64 = 31
         Public Shared ReadOnly AnnouncedLoadsReport As Int64 = 32
-        Public Shared ReadOnly SaleOfSoftwareUserActivationSMSReport As Int64 = 33
+        Public Shared ReadOnly SaleOfCommissionSMSReport As Int64 = 33
     End Class
 
     Public Class PayanehClassLibraryMClassReportsManagement
@@ -4047,10 +4077,185 @@ Namespace ReportsManagement
             End Try
         End Sub
 
+        Public Structure PayanehClassLibraryStructRegisteredAndReleasedLoads
+            Public nEstelamid As String
+            Public StrGoodName As String
+            Public StrCityName As String
+            Public nTonaj As Double
+            Public nCarNumKol As Int64
+            Public StrPriceSug As String
+            Public StrDescription As String
+            Public StrAddress As String
+            Public StrBarname As String
+            Public dDateElam As String
+            Public dTimeElam As String
+            Public CompanyName As String
+            Public AHSGTitle As String
+            Public LoadStatusName As String
+            Public UserName As String
+            Public TPTParams As String
+            Public LoadingPlace As String
+            Public DischargingPlace As String
+            Public CompositStringDriverName As String
+            Public CompositStringDate As String
+            Public CompositStringTime As String
+            Public CompositStringLoadPermissionStatus As String
+        End Structure
+
+        Public Shared Function PayanehClassLibraryRegisteredAndReleasedLoads(YourAHId As Int64, YourAHSGId As Int64, YourCompanyCode As Int64, YourDateTime1 As R2StandardDateAndTimeStructure, YourDateTime2 As R2StandardDateAndTimeStructure, YourTargetCityId As Int64, YourSoftwareUserId As Int64) As List(Of PayanehClassLibraryStructRegisteredAndReleasedLoads)
+            Try
+                Dim Date1 As Date = _DateTime.GetMilladiDateTimeFromDateShamsiFullFormated(YourDateTime1.DateShamsiFull, YourDateTime1.Time)
+                Dim Date2 As Date = _DateTime.GetMilladiDateTimeFromDateShamsiFullFormated(YourDateTime2.DateShamsiFull, YourDateTime2.Time)
+                If DateDiff(DateInterval.Day, Date1, Date2) > 7 Then Throw New Exception("بازه هفته رعایت نشده است")
+
+                Dim Concat1 As String = YourDateTime1.GetConcatString
+                Dim Concat2 As String = YourDateTime2.GetConcatString
+
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(Concat1)
+                InstanceSQLInjectionPrevention.GeneralAuthorization(Concat2)
+
+                Dim Lst = New List(Of PayanehClassLibraryStructRegisteredAndReleasedLoads)
+                'لیست بار ثبتی
+                Dim UserIdSqlString = IIf(YourSoftwareUserId = Int64.MinValue, String.Empty, " and E.nUserID=" & YourSoftwareUserId & "")
+                Dim TargetCitySql = IIf(YourTargetCityId = Int64.MinValue, String.Empty, " And E.nCityCode = " & YourTargetCityId & "")
+                Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
+                If YourAHId = AnnouncementHalls.None Then 'AHId=None and AHSGId<>None
+                    If YourCompanyCode = Int64.MinValue Then
+                        Da.SelectCommand = New SqlClient.SqlCommand("
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,E.TPTParams,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName,LoadingPlaces.LADPlaceTitle as LoadingPlaceTitle,DischargingPlaces.LADPlaceTitle as DischargingPlaceTitle
+                            from DBTransport.dbo.tbElam as E 
+                               inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
+                               inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
+                               inner join DBTransport.dbo.tbCompany as CO On e.nCompCode=CO.nCompCode 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AnnouncementHalls On E.AHId=AnnouncementHalls.AHId 
+	                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On E.AHSGId=AnnouncementHallSubGroups.AHSGId               
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On e.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
+							   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On E.nUserID=SoftwareUsers.UserId 
+	   						   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On E.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+							   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On E.DischargingPlaceId=DischargingPlaces.LADPlaceId 
+                            Where (((Replace(E.dDateElam ,'/','')+Replace(E.dTimeElam ,':',''))>='" & Concat1 & "') And ((Replace(E.dDateElam,'/','')+Replace(E.dTimeElam,'/',''))<='" & Concat2 & "'))" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0 " + UserIdSqlString +
+                            "  Order By E.dDateElam,E.nCompCode,E.nTruckType,E.dTimeElam")
+                    Else
+                        Da.SelectCommand = New SqlClient.SqlCommand("
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,E.TPTParams,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName ,LoadingPlaces.LADPlaceTitle as LoadingPlaceTitle,DischargingPlaces.LADPlaceTitle as DischargingPlaceTitle
+                            from DBTransport.dbo.tbElam as E 
+                               inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
+                               inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
+                               inner join DBTransport.dbo.tbCompany as CO On e.nCompCode=CO.nCompCode 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AnnouncementHalls On E.AHId=AnnouncementHalls.AHId 
+	                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On E.AHSGId=AnnouncementHallSubGroups.AHSGId 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On e.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
+							   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On E.nUserID=SoftwareUsers.UserId 
+	   						   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On E.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+							   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On E.DischargingPlaceId=DischargingPlaces.LADPlaceId 
+                            Where E.nCompCode=" & YourCompanyCode & " and (((Replace(E.dDateElam ,'/','')+Replace(E.dTimeElam ,':',''))>='" & Concat1 & "') And ((Replace(E.dDateElam,'/','')+Replace(E.dTimeElam,'/',''))<='" & Concat2 & "'))" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0 " + UserIdSqlString +
+                            " Order By E.dDateElam,E.nTruckType,E.dTimeElam")
+                    End If
+                Else  'AHId<>None and AHSGId=None
+                    If YourCompanyCode = Int64.MinValue Then
+                        Da.SelectCommand = New SqlClient.SqlCommand("
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,E.TPTParams,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName ,LoadingPlaces.LADPlaceTitle as LoadingPlaceTitle,DischargingPlaces.LADPlaceTitle as DischargingPlaceTitle
+                            from DBTransport.dbo.tbElam as E 
+                               inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
+                               inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
+                               inner join DBTransport.dbo.tbCompany as CO On e.nCompCode=CO.nCompCode 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AnnouncementHalls On E.AHId=AnnouncementHalls.AHId 
+	                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On E.AHSGId=AnnouncementHallSubGroups.AHSGId                             
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On e.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
+							   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On E.nUserID=SoftwareUsers.UserId 
+	   						   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On E.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+							   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On E.DischargingPlaceId=DischargingPlaces.LADPlaceId 
+                            Where (((Replace(E.dDateElam ,'/','')+Replace(E.dTimeElam ,':',''))>='" & Concat1 & "') And ((Replace(E.dDateElam,'/','')+Replace(E.dTimeElam,'/',''))<='" & Concat2 & "'))" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0 " + UserIdSqlString +
+                            " Order By E.dDateElam,E.nCompCode,E.dTimeElam")
+                    Else
+                        Da.SelectCommand = New SqlClient.SqlCommand("
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,E.TPTParams,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName,LoadingPlaces.LADPlaceTitle as LoadingPlaceTitle,DischargingPlaces.LADPlaceTitle as DischargingPlaceTitle
+                            from DBTransport.dbo.tbElam as E 
+                               inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
+                               inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
+                               inner join DBTransport.dbo.tbCompany as CO On e.nCompCode=CO.nCompCode 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AnnouncementHalls On E.AHId=AnnouncementHalls.AHId 
+   	                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On E.AHSGId=AnnouncementHallSubGroups.AHSGId                             
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On e.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
+							   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On E.nUserID=SoftwareUsers.UserId 
+	   						   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On E.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+							   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On E.DischargingPlaceId=DischargingPlaces.LADPlaceId 
+                            Where E.nCompCode=" & YourCompanyCode & " and (((Replace(E.dDateElam ,'/','')+Replace(E.dTimeElam ,':',''))>='" & Concat1 & "') And ((Replace(E.dDateElam,'/','')+Replace(E.dTimeElam,'/',''))<='" & Concat2 & "'))" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0 " + UserIdSqlString +
+                            " Order By e.nEstelamID")
+                    End If
+                End If
+                Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
+                If Da.Fill(Ds) <> 0 Then
+                    'لیست کلیه مجوزهای صادرشده برای کلیه بارهای فوق
+                    Dim nEstelamIds = "'" + Ds.Tables(0).Rows(0).Item("nEstelamId").ToString + "'"
+                    For Each nEstelamId As DataRow In Ds.Tables(0).Rows
+                        nEstelamIds += ",'" + nEstelamId.Item("nEstelamId").ToString + "'"
+                    Next
+                    Dim DaLoadPermission As New SqlClient.SqlDataAdapter : Dim DsLoadPermission As New DataSet
+                    DaLoadPermission.SelectCommand = New SqlCommand("
+                         Select LoadPermissions.nEstelamId,LoadPermissions.StrExitDate,LoadPermissions.StrExitTime,LoadPermissions.StrDriverName,Cars.strCarNo,Cars.strCarSerialNo,LoadPermissionStatuses.LoadPermissionStatusTitle,Cars.StrBodyNo,LoadAllocations.LANote,LoadPermissions.OtaghdarTurnNumber as SequentialTurnNumber 
+                           from DBTransport.dbo.TbEnterExit as LoadPermissions
+                             Inner Join dbtransport.dbo.TbCar as Cars On LoadPermissions.strCardno=Cars.nIDCar 
+                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadPermissionStatuses as LoadPermissionStatuses On LoadPermissionStatuses.LoadPermissionStatusId=LoadPermissions.LoadPermissionStatus 
+							 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On LoadPermissions.nEstelamID=LoadAllocations.nEstelamId  and LoadPermissions.nEnterExitId=LoadAllocations.TurnId 
+                         Where LoadPermissions.nEstelamId In (" & nEstelamIds & ")")
+                    DaLoadPermission.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
+                    DaLoadPermission.Fill(DsLoadPermission)
+
+                    Dim InstanceTransportTarrifsParameters = New R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager
+                    For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+                        'اطلاعات بار
+                        Dim mynEstelamid As String = Ds.Tables(0).Rows(Loopx).Item("nEstelamId")
+                        Dim myStrGoodName As String = Ds.Tables(0).Rows(Loopx).Item("strGoodName").trim
+                        Dim myStrCityName As String = Ds.Tables(0).Rows(Loopx).Item("strCityName").trim
+                        Dim mynTonaj As Double = Ds.Tables(0).Rows(Loopx).Item("nTonaj")
+                        Dim mynCarNumKol As Int64 = Ds.Tables(0).Rows(Loopx).Item("nCarNumKol")
+                        Dim myStrPriceSug As String = Ds.Tables(0).Rows(Loopx).Item("strPriceSug").trim
+                        Dim myStrDescription As String = Ds.Tables(0).Rows(Loopx).Item("strDescription").trim
+                        Dim myStrAddress As String = Ds.Tables(0).Rows(Loopx).Item("strAddress").trim
+                        Dim myStrBarname As String = Ds.Tables(0).Rows(Loopx).Item("strBarName").trim
+                        Dim mydDateElam As String = Ds.Tables(0).Rows(Loopx).Item("dDateElam").trim
+                        Dim mydTimeElam As String = Ds.Tables(0).Rows(Loopx).Item("dTimeElam").trim
+                        Dim myCompanyName As String = Ds.Tables(0).Rows(Loopx).Item("StrCompName").trim
+                        Dim myAHSGTitle As String = Ds.Tables(0).Rows(Loopx).Item("AHSGTitle").trim
+                        Dim myLoadStatusName = Ds.Tables(0).Rows(Loopx).Item("LoadStatusName").trim
+                        Dim UserName = Ds.Tables(0).Rows(Loopx).Item("UserName").trim
+                        Dim TPTParams = InstanceTransportTarrifsParameters.GetTransportTarrifsComposit(Ds.Tables(0).Rows(Loopx).Item("TPTParams"))
+                        Dim myLoadingPlace = Ds.Tables(0).Rows(Loopx).Item("LoadingPlaceTitle").trim
+                        Dim myDischargingPlace = Ds.Tables(0).Rows(Loopx).Item("DischargingPlaceTitle").trim
+
+                        'اطلاعات مجوزهای صادره
+                        Dim LoadPermissions As DataRow()
+                        LoadPermissions = DsLoadPermission.Tables(0).Select("nEstelamId=" + mynEstelamid)
+                        Dim CompositStringDriverName As String = String.Empty
+                        Dim CompositStringDate = String.Empty
+                        Dim CompositStringTime = String.Empty
+                        Dim CompositStringLoadPermissionStatus = String.Empty
+                        For LoopPermissions As Int64 = 0 To LoadPermissions.Count() - 1
+                            CompositStringDate = CompositStringDate & LoadPermissions(LoopPermissions)(1).trim & vbCrLf
+                            CompositStringTime = CompositStringTime & LoadPermissions(LoopPermissions)(2).trim + " - " + LoadPermissions(LoopPermissions)(9).trim & vbCrLf
+                            CompositStringLoadPermissionStatus = CompositStringLoadPermissionStatus & LoadPermissions(LoopPermissions)(8).trim + vbCrLf
+                            Dim Truck As String = LoadPermissions(LoopPermissions)(4).trim + " - " + LoadPermissions(LoopPermissions)(5).trim
+                            Dim SmartCardId = LoadPermissions(LoopPermissions)(7).trim
+                            CompositStringDriverName = CompositStringDriverName & LoadPermissions(LoopPermissions)(3).trim & " " & Truck & " " + SmartCardId + vbCrLf
+                        Next
+                        Lst.Add(New PayanehClassLibraryStructRegisteredAndReleasedLoads() With {.nEstelamid = mynEstelamid, .StrGoodName = myStrGoodName, .StrCityName = myStrCityName, .nTonaj = mynTonaj, .nCarNumKol = mynCarNumKol, .CompanyName = myCompanyName, .StrPriceSug = myStrPriceSug, .StrDescription = myStrDescription, .StrAddress = myStrAddress, .StrBarname = myStrBarname, .dDateElam = mydDateElam, .dTimeElam = mydTimeElam, .AHSGTitle = myAHSGTitle, .CompositStringDate = CompositStringDate, .CompositStringTime = CompositStringTime, .CompositStringDriverName = CompositStringDriverName, .CompositStringLoadPermissionStatus = CompositStringLoadPermissionStatus, .LoadStatusName = myLoadStatusName, .UserName = UserName, .TPTParams = TPTParams, .LoadingPlace = myLoadingPlace, .DischargingPlace = myDischargingPlace})
+                    Next
+                End If
+                Return Lst
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Shared Sub ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(YourAHId As Int64, YourAHSGId As Int64, YourCompanyCode As Int64, YourDateTime1 As R2StandardDateAndTimeStructure, YourDateTime2 As R2StandardDateAndTimeStructure, YourTargetCityId As Int64, YourSoftwareUserId As Int64)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
             Try
+                Dim Concat1 As String = YourDateTime1.GetConcatString
+                Dim Concat2 As String = YourDateTime2.GetConcatString
+
                 'شروع تراکنش ثبت اطلاعات گزارش
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
@@ -4073,7 +4278,7 @@ Namespace ReportsManagement
 	                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On E.AHSGId=AnnouncementHallSubGroups.AHSGId               
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On e.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
 							   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On E.nUserID=SoftwareUsers.UserId 
-                            Where (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' )" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0
+                            Where (((Replace(E.dDateElam ,'/','')+Replace(E.dTimeElam ,':',''))>='" & Concat1 & "') And ((Replace(E.dDateElam,'/','')+Replace(E.dTimeElam,'/',''))<='" & Concat2 & "'))" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0
                                   and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & "" + UserIdSqlString +
                             " Order By E.dDateElam,E.nCompCode,E.nTruckType,E.dTimeElam")
                     Else
@@ -4087,7 +4292,7 @@ Namespace ReportsManagement
 	                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On E.AHSGId=AnnouncementHallSubGroups.AHSGId 
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On e.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
 							   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On E.nUserID=SoftwareUsers.UserId 
-                            Where E.nCompCode=" & YourCompanyCode & " and (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' )" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0
+                            Where E.nCompCode=" & YourCompanyCode & " and (((Replace(E.dDateElam ,'/','')+Replace(E.dTimeElam ,':',''))>='" & Concat1 & "') And ((Replace(E.dDateElam,'/','')+Replace(E.dTimeElam,'/',''))<='" & Concat2 & "'))" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0
                                   and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & "" + UserIdSqlString +
                             " Order By E.dDateElam,E.nTruckType,E.dTimeElam")
                     End If
@@ -4103,7 +4308,7 @@ Namespace ReportsManagement
 	                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On E.AHSGId=AnnouncementHallSubGroups.AHSGId                             
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On e.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
 							   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On E.nUserID=SoftwareUsers.UserId 
-                            Where (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' )" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0 
+                            Where (((Replace(E.dDateElam ,'/','')+Replace(E.dTimeElam ,':',''))>='" & Concat1 & "') And ((Replace(E.dDateElam,'/','')+Replace(E.dTimeElam,'/',''))<='" & Concat2 & "'))" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0 
                                   and AnnouncementHalls.AHId=" & YourAHId & "" + UserIdSqlString +
                             " Order By E.dDateElam,E.nCompCode,E.dTimeElam")
                     Else
@@ -4117,7 +4322,7 @@ Namespace ReportsManagement
    	                           Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On E.AHSGId=AnnouncementHallSubGroups.AHSGId                             
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On e.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
 							   Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On E.nUserID=SoftwareUsers.UserId 
-                            Where E.nCompCode=" & YourCompanyCode & " and (E.dDateElam>='" & YourDateTime1.DateShamsiFull & "' and E.dDateElam<='" & YourDateTime2.DateShamsiFull & "' )" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0 
+                            Where E.nCompCode=" & YourCompanyCode & " and (((Replace(E.dDateElam ,'/','')+Replace(E.dTimeElam ,':',''))>='" & Concat1 & "') And ((Replace(E.dDateElam,'/','')+Replace(E.dTimeElam,'/',''))<='" & Concat2 & "'))" + TargetCitySql + " and AnnouncementHalls.ViewFlag=1 and AnnouncementHalls.Deleted=0 and AnnouncementHallSubGroups.ViewFlag=1 and AnnouncementHallSubGroups.Deleted=0 
                                   and AnnouncementHalls.AHId=" & YourAHId & "" + UserIdSqlString +
                             " Order By e.nEstelamID")
                     End If
@@ -4877,19 +5082,19 @@ Namespace ReportsManagement
             End Try
         End Sub
 
-        Public Shared Sub ReportingInformationProviderSaleOfSoftwareUserActivationSMSReport(YourDateTime1 As R2StandardDateAndTimeStructure, YourDateTime2 As R2StandardDateAndTimeStructure)
+        Public Shared Sub ReportingInformationProviderSaleOfCommissionSMSReport(YourDateTime1 As R2StandardDateAndTimeStructure, YourDateTime2 As R2StandardDateAndTimeStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
             Try
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
-                CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblSaleOfSoftwareUserActivationSMSReport"
+                CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblSaleOfCommissionSMSReport"
                 CmdSql.ExecuteNonQuery()
-                CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblSaleOfSoftwareUserActivationSMSReport
-                                         Select '" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentTime & "','" & YourDateTime1.Time & "','" & YourDateTime1.DateShamsiFull & "','" & YourDateTime2.Time & "','" & YourDateTime2.DateShamsiFull & "',Sum(MblghA),Count(*)
-                                         from R2Primary.dbo.TblAccounting 
-                                         Where DateMilladiA Between '" & _DateTime.GetMilladiDateTimeFromDateShamsiFullFormated(YourDateTime1.DateShamsiFull, YourDateTime1.Time) & "' and '" & _DateTime.GetMilladiDateTimeFromDateShamsiFullFormated(YourDateTime2.DateShamsiFull, YourDateTime2.Time) & "'
-                                         And (EEAccountingProcessType=" & R2CoreParkingSystemAccountings.RegisteringSoftwareUserSMSCost & ")"
+                CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblSaleOfCommissionSMSReport
+                                      Select '" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentTime & "','" & YourDateTime1.Time & "','" & YourDateTime1.DateShamsiFull & "','" & YourDateTime2.Time & "','" & YourDateTime2.DateShamsiFull & "',Sum(SMSOwnerTypes.Price)-Sum(SMSOwnerTypes.PriceMinusCommission),Count(*)
+                                      From R2PrimarySMSSystem.dbo.TblSMSOwners as SMSOwners
+                                          Inner Join R2PrimarySMSSystem.dbo.TblSMSOwnerTypes as SMSOwnerTypes On SMSOwners.SMSOTypeId=SMSOwnerTypes.SMSOTypeId 
+                                      Where SMSOwners.DateTimeMilladi Between '" & _DateTime.GetMilladiDateTimeFromDateShamsiFullFormated(YourDateTime1.DateShamsiFull, YourDateTime1.Time) & "' and '" & _DateTime.GetMilladiDateTimeFromDateShamsiFullFormated(YourDateTime2.DateShamsiFull, YourDateTime2.Time) & "'"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             Catch ex As Exception
@@ -6106,7 +6311,8 @@ Namespace TruckersAssociationControllingMoneyWallet
                 Dim InstanceConfigurations = New R2CoreInstanceConfigurationManager
                 Dim InstancePersianCallendar = New R2CoreInstanceDateAndTimePersianCalendarManager
                 'کنترل زمان اجرای فرآیند بر اساس کانفیگ
-                Dim TimeOfDay = _DateTime.GetCurrentTickofTime
+                Dim myCurrentDateTime = _DateTime.GetCurrentDateTime
+                Dim TimeOfDay = _DateTime.GetTickofTime(myCurrentDateTime)
                 Dim StTime = TimeSpan.Parse("00:00:00")
                 Dim EndTime = TimeSpan.Parse("00:05:00")
                 Dim ConfigTime = TimeSpan.Parse(InstanceConfigurations.GetConfigString(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 6))
@@ -6116,7 +6322,8 @@ Namespace TruckersAssociationControllingMoneyWallet
                 ElseIf TimeOfDay <= ConfigTime Then
                     Return
                 Else
-                End If                'این فرآیند در روز فقط باید یکبار اجرا گردد و نه بیشتر
+                End If
+                'این فرآیند در روز فقط باید یکبار اجرا گردد و نه بیشتر
                 'خط کد زیر یعنی فرآیند امروز قبلا در بازه معین اجرا یکبار اجرا شده است
                 If _ControllingMoneyWalletAccountingExcecutedFlag Then Return
                 'طبق کانفیگ سیستم کلا اکانتینگ فعال باشد یا نه
@@ -6125,7 +6332,7 @@ Namespace TruckersAssociationControllingMoneyWallet
                 'آخرین اکانت ثبت شده
                 Dim NSSLastAccounting = R2CoreParkingSystemMClassAccountingManagement.GetNSSLastAccounting(R2CoreParkingSystemAccountings.TruckersAssociationControllingMoneyWallet)
                 'امروز یک مرتبه اکانت ثبت شده پس نیازی به ثبت مجدد نیست
-                If NSSLastAccounting.DateShamsiA = _DateTime.GetCurrentDateShamsiFull Then Return
+                If NSSLastAccounting.DateShamsiA = myCurrentDateTime.DateShamsiFull Then Return
                 Dim Amount As Int64 = PayanehClassLibraryMClassReportsManagement.GetAmountforTruckersAssociationControllingMoneyWallet()
                 'کسر هزینه شرکت خودگردان
                 If R2CoreMClassConfigurationManagement.GetConfigBoolean(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 2) Then
@@ -6135,11 +6342,46 @@ Namespace TruckersAssociationControllingMoneyWallet
                 'ثبت اکانت
                 Dim NSSControllingMoneyWallet = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreMClassConfigurationManagement.GetConfigString(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 4))
                 R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSControllingMoneyWallet, BagPayType.MinusMoney, Amount, R2CoreParkingSystemAccountings.TruckersAssociationControllingMoneyWallet, YourNSSUser)
+
                 _ControllingMoneyWalletAccountingExcecutedFlag = True
+
+                'ارسال اس ام اس موجودی کیف پول
+                SendSMSTruckersAssociationControllingMoneyWallet()
+
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
+
+        Private Shared Sub SendSMSTruckersAssociationControllingMoneyWallet()
+            Try
+                Dim InstanceMoneyWallet = New R2CoreParkingSystemInstanceMoneyWalletManager
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
+                'کنترل فعال بودن سرویس اس ام اس
+                If Not InstanceConfiguration.GetConfigBoolean(R2CoreConfigurations.SmsSystemSetting, 0) Then Throw New SmsSystemIsDisabledException
+                'لیست مقاصد و کاربران
+                Dim TargetUsers = InstanceConfiguration.GetConfigString(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 7).Split("-")
+                Dim LstSoftwareUsers = New List(Of R2CoreStandardSoftwareUserStructure)
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                For LoopxUsers As Int64 = 0 To TargetUsers.Count - 1
+                    LstSoftwareUsers.Add(InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64(TargetUsers(LoopxUsers))))
+                Next
+                'موجودی کیف پول
+                Dim myData = New SMSCreationData
+                Dim NSSControllingMoneyWallet = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreMClassConfigurationManagement.GetConfigString(PayanehClassLibraryConfigurations.TruckersAssociationControllingMoneyWallet, 4))
+                myData.Data1 = InstanceMoneyWallet.GetMoneyWalletCharge(NSSControllingMoneyWallet)
+                'ارسال اس ام اس
+                Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                Dim SMSResult = InstanceSMSHandling.SendSMS(LstSoftwareUsers, PayanehClassLibrarySMSTypes.TruckersAssociationControllingMoneyWallet, InstanceSMSHandling.RepeatSMSCreationData(myData, LstSoftwareUsers.Count))
+                Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
+                If Not SMSResultAnalyze = String.Empty Then Throw New TruckersAssociationControllingMoneyWalletSendSMSFailedException(SMSResultAnalyze)
+            Catch ex As TruckersAssociationControllingMoneyWalletSendSMSFailedException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
 
         Public Shared Sub DoControlforControllingMoneyWallet()
             Try
@@ -6165,6 +6407,21 @@ Namespace TruckersAssociationControllingMoneyWallet
             Public Overrides ReadOnly Property Message As String
                 Get
                     Return "کیف پول کنترلی کامیونداران نیاز به شارژ دارد"
+                End Get
+            End Property
+        End Class
+
+        Public Class TruckersAssociationControllingMoneyWalletSendSMSFailedException
+            Inherits ApplicationException
+
+            Private _Message As String
+            Public Sub New(YourMessage As String)
+                _Message = vbCrLf + YourMessage
+            End Sub
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "ارسال اس ام اس کیف پول کنترلی کامیونداران با مشکل مواجه شد" + _Message
                 End Get
             End Property
         End Class
@@ -6207,288 +6464,31 @@ Namespace TransportTarrifsParameters
 
 End Namespace
 
+Namespace SoftwareUsers
 
+    Public MustInherit Class PayanehClassLibrarySoftwareUserTypes
+        Inherits R2CoreTransportationAndLoadNotificationSoftwareUserTypes
 
+        Public Shared ReadOnly Property SelfGoverCO As Int64 = 10
+        Public Shared ReadOnly Property TransportationDeputy As Int64 = 12
+        Public Shared ReadOnly Property TerminalManager As Int64 = 13
 
 
+    End Class
 
+End Namespace
 
+Namespace SMS
 
+    Namespace SMSTypes
+        Public MustInherit Class PayanehClassLibrarySMSTypes
+            Inherits R2CoreTransportationAndLoadNotificationSMSTypes
 
+            Public Shared ReadOnly Property TruckersAssociationControllingMoneyWallet = 6
 
 
 
+        End Class
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    End Namespace
+End Namespace

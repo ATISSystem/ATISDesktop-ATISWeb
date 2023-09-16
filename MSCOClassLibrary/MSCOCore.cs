@@ -36,7 +36,11 @@ using R2CoreTransportationAndLoadNotification.TransportCompanies.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
 using R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions;
 using R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Exceptions;
+
 using R2Core.SMS;
+using PayanehClassLibrary.SoftwareUsers;
+using PayanehClassLibrary.SMS.SMSTypes;
+using R2Core.SMS.SMSHandling;
 
 namespace MSCOCore
 {
@@ -526,14 +530,37 @@ namespace MSCOCore
                     //حذف فایل اعلام بار با حفظ سابقه
                     WS.WebMethodDeleteFileButKeepDeleted(R2CoreRawGroups.UploadedFiles, "msc" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".txt", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword));
                     /*ارسال اس ام اس اتمام موفقیت آمیز فرآیند اعلام بار فولاد*/
-                    R2CoreSMSSendRecive SMSSender = new R2CoreSMSSendRecive();
-                    SMSSender.SendSms(new R2CoreStandardSMSStructure(Int64.MinValue, InstanceConfiguration.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 1), "اتمام اعلام بار فولاد", 1, _DateTime.GetCurrentDateTimeMilladi(), true, null, null));
+                    SendSMSMSCOSuccess();
                 }
+                catch (MSCOCoreSendSMSFailedException ex)
+                { throw ex; }
                 catch (MSCOCoreFilefromMSCORefrenceNotFoundException ex)
                 { throw ex; }
                 catch (MSCOCoreAnnouncementforTransportCompaniesIsnotActiveException ex)
                 { throw ex; }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
+                { throw ex; }
+                catch (Exception ex)
+                { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
+            }
+
+            public void SendSMSMSCOSuccess()
+            {
+                try
+                {
+                    var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                    var TargetUsers = InstanceConfiguration.GetConfigString(MSCOCore.Configurations.MSCOCoreConfigurations.MSCO, 10).Split('-');
+                    var LstUsers = new List<R2CoreStandardSoftwareUserStructure>();
+                    var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                    for (int LoopxUsers = 0; LoopxUsers <= TargetUsers.Length - 1; LoopxUsers++)
+                    { LstUsers.Add(InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64(TargetUsers[LoopxUsers]))); }
+                    var MSCOData = new SMSCreationData() { Data1 = string.Empty };
+                    var InstanceSMSHandling = new R2CoreSMSHandlingManager();
+                    var SMSResult = InstanceSMSHandling.SendSMS(LstUsers, MSCOCore.SMS.SMSTypes.MSCOCoreSMSTypes.MSCOSuccess, InstanceSMSHandling.RepeatSMSCreationData(MSCOData, LstUsers.Count));
+                    var SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult);
+                    if (!(SMSResultAnalyze == String.Empty)) { throw new MSCOCoreSendSMSFailedException(SMSResultAnalyze); }
+                }
+                catch (MSCOCoreSendSMSFailedException ex)
                 { throw ex; }
                 catch (Exception ex)
                 { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
@@ -580,6 +607,18 @@ namespace MSCOCore
                 public override string Message
                 {
                     get { return "اعلام بار خودکار شرکت غیرفعال است"; }
+                }
+            }
+
+            public class MSCOCoreSendSMSFailedException : ApplicationException
+            {
+                private string _Message;
+                public MSCOCoreSendSMSFailedException(string YourMessage)
+                { _Message = "\r\n" + YourMessage; }
+
+                public override string Message
+                {
+                    get { return "ارسال اس ام اس با مشکل مواجه شد" + _Message; }
                 }
             }
 
@@ -779,5 +818,33 @@ namespace MSCOCore
         }
 
     }
+
+    namespace SoftwareUsers
+    {
+        public abstract class MSCOCoreSoftwareUserTypes : PayanehClassLibrarySoftwareUserTypes
+        {
+            public static readonly Int64 MSCO = 11;
+        }
+    }
+
+    namespace SMS
+    {
+        namespace SMSTypes
+        {
+            public abstract class MSCOCoreSMSTypes : PayanehClassLibrarySMSTypes
+            {
+                public static readonly Int64 MSCOSuccess = 5;
+            }
+
+
+        }
+    }
+
+
+
+
+
+
+
 
 }

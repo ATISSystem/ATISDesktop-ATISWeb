@@ -82,6 +82,8 @@ Imports R2CoreTransportationAndLoadNotification.LoadSedimentation.Exceptions
 Imports R2CoreParkingSystem.MoneyWalletManagement
 Imports R2CoreTransportationAndLoadNotification.CalendarManagement.SpecializedPersianCalendar
 Imports R2Core.SiteIsBusy
+Imports R2Core.SMS.SMSHandling
+Imports R2CoreTransportationAndLoadNotification.SMS.SMSTypes
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -4657,10 +4659,11 @@ Namespace LoadPermission
 
         Public Function ReportingInformationProviderLoadPermissionsIssuedOrderByPriorityReport(YourAHSGId As Int64) As List(Of KeyValuePair(Of String, String))
             'گزارش مجوزهای صادر شده برای نوبت ها به ترتیب زمان صدور مجوز و اولویت انتخابی
+            Dim InstanceTransportTarrifsParameters = New R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager
             Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
             Try
                 Dim SqlString = "Select Top 2000 LoadAllocations.DateShamsi as ActionDateShamsi,LoadAllocations.Time as ActionTime,Turns.OtaghdarTurnNumber,ltrim(rtrim(Replace(Persons.strPersonFullName ,';',' '))) as PersonFullName,Trucks.strCarNo+'-'+Trucks.strCarSerialNo as Truck,LoadAllocations.LAId,LoadAllocations.Priority,Loads.nEstelamID,Loads.nTonaj,
-                                               Products.strGoodName,LoadTargets.strCityName,Turns.strExitDate+'-'+strExitTime as LoadPermissionDateTime,TransportCompanies.TCTitle,AnnouncementHallSubGroups.AHSGTitle,Loads.strDescription,Loads.strAddress,Loads.strBarName  
+                                               Products.strGoodName,LoadTargets.strCityName,LoadingPlaces.LADPlaceTitle as LoadingPlace,DischargingPlaces.LADPlaceTitle as DischargingPlace,Loads.TPTParams,Turns.strExitDate+'-'+strExitTime as LoadPermissionDateTime,TransportCompanies.TCTitle,AnnouncementHallSubGroups.AHSGTitle,Loads.strDescription,Loads.strAddress,Loads.strBarName  
                                  from dbtransport.dbo.tbEnterExit as Turns
                                   Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID=Loads.nEstelamID
                                   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On Loads.AHSGId=AnnouncementHallSubGroups.AHSGId 
@@ -4672,6 +4675,8 @@ Namespace LoadPermission
                                   Inner Join dbtransport.dbo.TbCar as Trucks On Turns.strCardno=Trucks.nIDCar
                                   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId
                                   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocationStatuses as LoadAllocationStatuses On LoadAllocations.LAStatusId=LoadAllocationStatuses.LoadAllocationStatusId
+     							  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On Loads.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+	  						      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On Loads.DischargingPlaceId=DischargingPlaces.LADPlaceId 
                                  Where LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull() & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and  LoadAllocations.LAStatusId=2 and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & " 
                                  Order By LoadAllocations.TurnId,LoadAllocations.Priority"
                 Dim Ds As DataSet
@@ -4681,13 +4686,17 @@ Namespace LoadPermission
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                     Dim ValueHeader = IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("PersonFullName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("PersonFullName").ToString().Trim()) + "  نوبت : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber").ToString().Trim()) + vbCrLf
                     StringB.Clear()
-                    StringB.Append("زمان صدور :" + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("ActionTime"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("ActionTime").ToString().Trim()) + "-" + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("ActionDateShamsi"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("ActionDateShamsi").ToString().Trim()) + vbCrLf)
+                    StringB.Append("زمان صدور مجوز :" + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("ActionTime"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("ActionTime").ToString().Trim()) + "-" + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("ActionDateShamsi"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("ActionDateShamsi").ToString().Trim()) + vbCrLf)
                     StringB.Append(IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strGoodName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strGoodName").ToString().Trim()) + " " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strCityName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strCityName").ToString().Trim()) + vbCrLf)
                     StringB.Append("شرکت حمل و نقل : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("TCTitle"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("TCTitle").ToString().Trim()) + vbCrLf)
                     StringB.Append("کدبار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("nEstelamID"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("nEstelamID").ToString().Trim()) + " تخصیص: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("LAId"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("LAId").ToString().Trim()) + " اولویت : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("Priority"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("Priority").ToString().Trim()) + vbCrLf)
                     StringB.Append("توضیحات بار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strDescription"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strDescription").ToString().Trim()) + " " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strAddress"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strAddress").ToString().Trim()) + " " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strBarName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strBarName").ToString().Trim()) + vbCrLf)
                     StringB.Append("تناژ بار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("nTonaj"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("nTonaj").ToString().Trim()) + vbCrLf)
-                    StringB.Append("پلاک ناوگان: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("Truck"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("Truck").ToString().Trim()))
+                    StringB.Append("پلاک ناوگان: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("Truck"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("Truck").ToString().Trim()) + vbCrLf)
+                    StringB.Append("محل بارگیری: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("LoadingPlace"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("LoadingPlace").ToString().Trim()) + vbCrLf)
+                    StringB.Append("محل تخلیه: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("DischargingPlace"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("DischargingPlace").ToString().Trim()) + vbCrLf)
+                    Dim TPTParamsTemp = InstanceTransportTarrifsParameters.GetTransportTarrifsComposit(Ds.Tables(0).Rows(Loopx).Item("TPTParams").ToString().Trim())
+                    If TPTParamsTemp <> String.Empty Then StringB.Append("پارامترهای موثر: " + TPTParamsTemp)
                     Lst.Add(New KeyValuePair(Of String, String)(ValueHeader, StringB.ToString()))
                 Next
                 Return Lst
@@ -5055,8 +5064,11 @@ Namespace LoadPermission
             Dim LoaderType As String
             Dim TruckLP As String
             Dim TruckLPSerial As String
+            Dim TruckSmartCardNo As String
             Dim TruckDriver As String
+            Dim TruckDriverNationalCode As String
             Dim TruckDriverDrivingLicenseNo As String
+            Dim TruckDriverMobileNo As String
             Dim GoodName As String
             Dim TargetCity As String
             Dim SourceCity As String
@@ -5071,15 +5083,16 @@ Namespace LoadPermission
             Private WithEvents _PrintDocumentPermission As PrintDocument = New PrintDocument()
             Private _PPDS As R2CoreTransportationAndLoadNotificationLoadPermissionPrintingInf
 
-            Public Function GetLoadPermissionPrintingInf(YourLoadAllocationId As Int64) As R2CoreTransportationAndLoadNotificationLoadPermissionPrintingInf
+            Public Function GetLoadPermissionPrintingInf(YourLoadAllocationId As Int64, YourNSSUser As R2CoreStandardSoftwareUserStructure) As R2CoreTransportationAndLoadNotificationLoadPermissionPrintingInf
                 Try
                     Dim InstanceSqlDataBox = New R2CoreInstanseSqlDataBOXManager
                     Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                    Dim InstanceTransportTarrifsParameters = New R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager
                     Dim DS As DataSet
                     InstanceSqlDataBox.GetDataBOX(New R2PrimarySqlConnection,
                           "Select LoadAllocation.LAId,LoadAllocation.nEstelamId,Substring(EnterExit.OtaghdarTurnNumber,7,20) as TurnId,EnterExit.strExitDate,EnterExit.strExitTime
-                                  ,TransportCompany.TCTitle,LoaderType.LoaderTypeTitle,CarType.strCarName as CarType,Car.strCarNo as Truck,Car.strCarSerialNo as TruckSerial,Person.strPersonFullName
-	                              ,Driver.strDrivingLicenceNo,Product.strGoodName,CityTarget.strCityName as TargetCity,CitySource.strCityName as SourceCity,Elam.nTonaj,Elam.strPriceSug,Elam.strDescription,Elam.StrAddress,Elam.strBarName,SoftwareUser.UserName,CityTarget.nDistance/25 as TravelLength
+                                  ,TransportCompany.TCTitle,LoaderType.LoaderTypeTitle,CarType.strCarName as CarType,Car.strCarNo as Truck,Car.strCarSerialNo as TruckSerial,Car.strBodyNo,Person.strPersonFullName,Person.strNationalCode
+	                              ,Driver.strDrivingLicenceNo,Person.strIDNO as MobileNo,Product.strGoodName,CityTarget.strCityName as TargetCity,CitySource.strCityName as SourceCity,Elam.nTonaj,Elam.strPriceSug,Elam.strDescription,Elam.StrAddress,Elam.strBarName,Elam.TPTParams,SoftwareUser.UserName,CityTarget.nDistance/25 as TravelLength
                            from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocation
                                 Inner Join dbtransport.dbo.tbEnterExit as EnterExit On LoadAllocation.TurnId=EnterExit.nEnterExitId
                                 Inner Join dbtransport.dbo.tbElam as Elam On LoadAllocation.nEstelamId=Elam.nEstelamID
@@ -5105,14 +5118,19 @@ Namespace LoadPermission
                     LoadPermissionPrintingInf.LoaderType = DS.Tables(0).Rows(0).Item("LoaderTypeTitle").trim
                     LoadPermissionPrintingInf.TruckLP = DS.Tables(0).Rows(0).Item("Truck").trim
                     LoadPermissionPrintingInf.TruckLPSerial = DS.Tables(0).Rows(0).Item("TruckSerial").trim
+                    LoadPermissionPrintingInf.TruckSmartCardNo = DS.Tables(0).Rows(0).Item("strBodyNo").trim
                     LoadPermissionPrintingInf.TruckDriver = DS.Tables(0).Rows(0).Item("strPersonFullName").trim
+                    LoadPermissionPrintingInf.TruckDriverNationalCode = DS.Tables(0).Rows(0).Item("strNationalCode").trim
                     LoadPermissionPrintingInf.TruckDriverDrivingLicenseNo = DS.Tables(0).Rows(0).Item("strDrivingLicenceNo").trim
+                    LoadPermissionPrintingInf.TruckDriverMobileNo = DS.Tables(0).Rows(0).Item("MobileNo").trim
                     LoadPermissionPrintingInf.GoodName = DS.Tables(0).Rows(0).Item("strGoodName").trim
                     LoadPermissionPrintingInf.TargetCity = DS.Tables(0).Rows(0).Item("TargetCity").trim
                     LoadPermissionPrintingInf.SourceCity = DS.Tables(0).Rows(0).Item("SourceCity").trim
                     LoadPermissionPrintingInf.TransportPrice = DS.Tables(0).Rows(0).Item("strPriceSug").trim
                     LoadPermissionPrintingInf.LoadCapacitorLoadDescription = DS.Tables(0).Rows(0).Item("strDescription").trim & " " & DS.Tables(0).Rows(0).Item("StrAddress").trim & " " & DS.Tables(0).Rows(0).Item("StrBarName").trim
-                    LoadPermissionPrintingInf.UserName = DS.Tables(0).Rows(0).Item("UserName").trim
+                    Dim TPTParamsTemp = InstanceTransportTarrifsParameters.GetTransportTarrifsComposit(DS.Tables(0).Rows(0).Item("TPTParams").trim)
+                    If TPTParamsTemp <> String.Empty Then LoadPermissionPrintingInf.LoadCapacitorLoadDescription += "" & vbCrLf & " پارامترهای موثر در حمل بار : " + TPTParamsTemp
+                    LoadPermissionPrintingInf.UserName = YourNSSUser.UserName.Trim
                     LoadPermissionPrintingInf.OtherNote = Convert.ToString(DS.Tables(0).Rows(0).Item("TravelLength")) + "مدت سفر:"
                     LoadPermissionPrintingInf.Tonaj = Convert.ToString(DS.Tables(0).Rows(0).Item("nTonaj"))
                     Return LoadPermissionPrintingInf
@@ -5121,11 +5139,11 @@ Namespace LoadPermission
                 End Try
             End Function
 
-            Public Sub PrintLoadPermission(YourLoadAllocationId As Int64)
+            Public Sub PrintLoadPermission(YourLoadAllocationId As Int64, YourNSSUser As R2CoreStandardSoftwareUserStructure)
                 Try
                     Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
                     Dim InstanceConfigurationOfAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager
-                    _PPDS = GetLoadPermissionPrintingInf(YourLoadAllocationId)
+                    _PPDS = GetLoadPermissionPrintingInf(YourLoadAllocationId, YourNSSUser)
                     'چاپ مجوز
                     Dim NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(_PPDS.nEstelamId, True)
                     Dim ComposeSearchString As String = NSSLoadCapacitorLoad.AHSGId.ToString + "="
@@ -5580,6 +5598,9 @@ Namespace LoadAllocation
             LoadCapacitorLoadStatusTitle = String.Empty
             LoadCapacitorLoadAHTitle = String.Empty
             LoadCapacitorLoadAHSGTitle = String.Empty
+            TPTParams = String.Empty
+            LoadingPlace = String.Empty
+            DischargingPlace = String.Empty
             TransportCompanyTitle = String.Empty
             TransportCompanyTel = String.Empty
             TurnnEnterExitId = String.Empty
@@ -5606,7 +5627,7 @@ Namespace LoadAllocation
             LoadAllocationPriority = String.Empty
         End Sub
 
-        Public Sub New(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedStructure, YourLoadCapacitorLoadnEstelamId As String, YourLoadCapacitorLoadTargetTitle As String, YourLoadCapacitorLoadTargetTravelength As String, YourLoadCapacitorLoadGoodTitle As String, YourLoadCapacitorLoadnCarNumKol As String, YourLoadCapacitorLoadnTonaj As String, YourLoadCapacitorLoadStrPriceSug As String, YourLoadCapacitorLoadStrDescription As String, YourLoadCapacitorLoadStrBarName As String, YourLoadCapacitorLoadLoaderTypeTitle As String, YourLoadCapacitorLoadStrAddress As String, YourLoadCapacitorLoaddDateElam As String, YourLoadCapacitorLoaddTimeElam As String, YourLoadCapacitorLoadStatusTitle As String, YourLoadCapacitorLoadAHTitle As String, YourLoadCapacitorLoadAHSGTitle As String, YourTransportCompanyTitle As String, YourTransportCompanyTel As String, YourTurnnEnterExitId As String, YourTurnOtaghdarTurnNumber As String, YourTurnEnterDate As String, YourTurnEnterTime As String, YourTurnStrDesc As String, YourTurnStatusTitle As String, YourTruckDriver As String, YourTruckDriverSmartCardNo As String, YourTruckDriverMobileNumber As String, YourTruckLPString As String, YourTruckSmartCardNo As String, YourLoadPermissionDate As String, YourLoadPermissionTime As String, YourLoadPermissionRegisteringLocation As String, YourLoadPermissionStatusTitle As String, YourLoadAllocationId As String, YourLoadAllocationStatusTitle As String, YourLoadAllocationNote As String, YourLoadAllocationDateShamsi As String, YourLoadAllocationTime As String, YourLoadAllocationStatusColor As Color, YourLoadAllocationPriority As String)
+        Public Sub New(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedStructure, YourLoadCapacitorLoadnEstelamId As String, YourLoadCapacitorLoadTargetTitle As String, YourLoadCapacitorLoadTargetTravelength As String, YourLoadCapacitorLoadGoodTitle As String, YourLoadCapacitorLoadnCarNumKol As String, YourLoadCapacitorLoadnTonaj As String, YourLoadCapacitorLoadStrPriceSug As String, YourLoadCapacitorLoadStrDescription As String, YourLoadCapacitorLoadStrBarName As String, YourLoadCapacitorLoadLoaderTypeTitle As String, YourLoadCapacitorLoadStrAddress As String, YourLoadCapacitorLoaddDateElam As String, YourLoadCapacitorLoaddTimeElam As String, YourLoadCapacitorLoadStatusTitle As String, YourLoadCapacitorLoadAHTitle As String, YourLoadCapacitorLoadAHSGTitle As String, YourTPTParams As String, YourLoadingPlace As String, YourDischargingPlace As String, YourTransportCompanyTitle As String, YourTransportCompanyTel As String, YourTurnnEnterExitId As String, YourTurnOtaghdarTurnNumber As String, YourTurnEnterDate As String, YourTurnEnterTime As String, YourTurnStrDesc As String, YourTurnStatusTitle As String, YourTruckDriver As String, YourTruckDriverSmartCardNo As String, YourTruckDriverMobileNumber As String, YourTruckLPString As String, YourTruckSmartCardNo As String, YourLoadPermissionDate As String, YourLoadPermissionTime As String, YourLoadPermissionRegisteringLocation As String, YourLoadPermissionStatusTitle As String, YourLoadAllocationId As String, YourLoadAllocationStatusTitle As String, YourLoadAllocationNote As String, YourLoadAllocationDateShamsi As String, YourLoadAllocationTime As String, YourLoadAllocationStatusColor As Color, YourLoadAllocationPriority As String)
             MyBase.New(New R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure(YourNSS.LAId, YourNSS.nEstelamId, YourNSS.TurnId, YourNSS.LAStatusId, YourNSS.LANote, YourNSS.Priority, YourNSS.DateTimeMilladi, YourNSS.DateShamsi, YourNSS.Time, YourNSS.UserId), YourTransportCompanyTitle, YourLoadCapacitorLoadGoodTitle, YourLoadCapacitorLoadTargetTitle, YourTruckLPString, YourTruckDriver, YourLoadAllocationStatusTitle, YourLoadCapacitorLoadStrDescription, YourLoadAllocationStatusColor)
             LoadCapacitorLoadnEstelamId = YourLoadCapacitorLoadnEstelamId
             LoadCapacitorLoadTargetTitle = YourLoadCapacitorLoadTargetTitle
@@ -5624,6 +5645,9 @@ Namespace LoadAllocation
             LoadCapacitorLoadStatusTitle = YourLoadCapacitorLoadStatusTitle
             LoadCapacitorLoadAHTitle = YourLoadCapacitorLoadAHTitle
             LoadCapacitorLoadAHSGTitle = YourLoadCapacitorLoadAHSGTitle
+            TPTParams = YourTPTParams
+            LoadingPlace = YourLoadingPlace
+            DischargingPlace = YourDischargingPlace
             TransportCompanyTitle = YourTransportCompanyTitle
             TransportCompanyTel = YourTransportCompanyTel
             TurnnEnterExitId = YourTurnnEnterExitId
@@ -5666,6 +5690,9 @@ Namespace LoadAllocation
         Public Property LoadCapacitorLoadStatusTitle As String
         Public Property LoadCapacitorLoadAHTitle() As String
         Public Property LoadCapacitorLoadAHSGTitle() As String
+        Public Property TPTParams As String
+        Public Property LoadingPlace As String
+        Public Property DischargingPlace As String
         Public Property TransportCompanyTitle As String
         Public Property TransportCompanyTel As String
         Public Property TurnnEnterExitId As String
@@ -5699,6 +5726,7 @@ Namespace LoadAllocation
 
         Public Function GetLoadAllocationsforTruckDriver(Optional YourSoftwareUserId As Int64 = Int64.MinValue, Optional YourTurnId As Int64 = Int64.MinValue) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedforTruckDriverStructure)
             Try
+                Dim InstanceTransportTarrifsParameters = New R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet
                 InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
@@ -5714,7 +5742,7 @@ Namespace LoadAllocation
           and (Turns.TurnStatus=" & TurnStatuses.UsedLoadPermissionRegistered & " or Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ")	
           and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
     Order By CarAndPersons.nIDCarAndPerson Desc,Turns.nEnterExitId Desc
-    Select LoadCapacitor.nEstelamID as LoadCapacitorLoadnEstelamId,Targets.strCityName as LoadCapacitorLoadTargetTitle,Products.strGoodName as  LoadCapacitorLoadGoodTitle,LoadCapacitor.nCarNumKol as LoadCapacitorLoadnCarNumKol,LoadCapacitor.nTonaj as LoadCapacitorLoadnTonaj,LoadCapacitor.strPriceSug as LoadCapacitorLoadStrPriceSug,LoadCapacitor.strDescription as LoadCapacitorLoadStrDescription,LoaderTypes.LoaderTypeTitle as LoadCapacitorLoadLoaderTypeTitle,
+    Select LoadCapacitor.TPTParams,LoadingPlaces.LADPlaceTitle as LoadingPlace,DischargingPlaces.LADPlaceTitle as DischargingPlace,LoadCapacitor.nEstelamID as LoadCapacitorLoadnEstelamId,Targets.strCityName as LoadCapacitorLoadTargetTitle,Products.strGoodName as  LoadCapacitorLoadGoodTitle,LoadCapacitor.nCarNumKol as LoadCapacitorLoadnCarNumKol,LoadCapacitor.nTonaj as LoadCapacitorLoadnTonaj,LoadCapacitor.strPriceSug as LoadCapacitorLoadStrPriceSug,LoadCapacitor.strDescription as LoadCapacitorLoadStrDescription,LoaderTypes.LoaderTypeTitle as LoadCapacitorLoadLoaderTypeTitle,
 	       LoadCapacitor.strAddress as LoadCapacitorLoadStrAddress,LoadCapacitor.strBarName as LoadCapacitorLoadstrBarName,LoadCapacitor.dTimeElam as LoadCapacitorLoaddTimeElam,LoadCapacitor.dDateElam  as  LoadCapacitorLoaddDateElam,LoadCapacitorLoadStatuses.LoadStatusName as LoadCapacitorLoadStatusTitle,AHs.AHTitle as LoadCapacitorLoadAHTitle,AHSGs.AHSGTitle as LoadCapacitorLoadAHSGTitle,TransportCompanies.TCTitle as  TransportCompanyTitle,TransportCompanies.TCTel as  TransportCompanyTel,Turns.nEnterExitId as  TurnnEnterExitId,
 	       Turns.OtaghdarTurnNumber as TurnOtaghdarTurnNumber,Turns.strEnterDate as TurnEnterDate,Turns.strEnterTime as TurnEnterTime,Turns.strDesc as TurnStrDesc,TurnStatuses.TurnStatusTitle as TurnStatusTitle,Persons.strPersonFullName as TruckDriver,Drivers.strSmartcardNo  as TruckDriverSmartCardNo,Persons.strIDNO as TruckDriverMobileNumber,Cars.strCarNo+'-'+Cars.strCarSerialNo as TruckLPString,Cars.strBodyNo as TruckSmartCardNo,Turns.strExitDate as LoadPermissionDate,
            Turns.strExitTime as LoadPermissionTime,LoadPermissionStatuses.LoadPermissionStatusTitle as LoadPermissionStatusTitle,Turns.strBarnameNo as LoadPermissionRegisteringLocation,LoadAllocations.LAId as  LoadAllocationId,LoadAllocationStatuses.LoadAllocationStatusTitle as  LoadAllocationStatusTitle,LoadAllocations.LANote as LoadAllocationNote,LoadAllocations.DateShamsi as LoadAllocationDateShamsi,LoadAllocations.Time as LoadAllocationTime,
@@ -5724,6 +5752,8 @@ Namespace LoadAllocation
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocationStatuses as LoadAllocationStatuses On LoadAllocations.LAStatusId=LoadAllocationStatuses.LoadAllocationStatusId 
        Inner Join dbtransport.dbo.tbElam as LoadCapacitor On LoadAllocations.nEstelamId=LoadCapacitor.nEstelamID 
+       Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On LoadCapacitor.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+	   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On LoadCapacitor.DischargingPlaceId=DischargingPlaces.LADPlaceId 
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On LoadCapacitor.AHId=AHs.AHId 
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs on LoadCapacitor.AHSGId=AHSGs.AHSGId 
        Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadCapacitorLoadStatuses as LoadCapacitorLoadStatuses On LoadCapacitor.LoadStatus=LoadCapacitorLoadStatuses.LoadStatusId 
@@ -5776,6 +5806,9 @@ Namespace LoadAllocation
                     NSS.LoadCapacitorLoadStatusTitle = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadStatusTitle"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadStatusTitle"))
                     NSS.LoadCapacitorLoadAHTitle = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadAHTitle"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadAHTitle"))
                     NSS.LoadCapacitorLoadAHSGTitle = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadAHSGTitle"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("LoadCapacitorLoadAHSGTitle"))
+                    NSS.TPTParams = InstanceTransportTarrifsParameters.GetTransportTarrifsComposit(DS.Tables(0).Rows(Loopx).Item("TPTParams"))
+                    NSS.LoadingPlace = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("LoadingPlace"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("LoadingPlace"))
+                    NSS.DischargingPlace = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("DischargingPlace"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("DischargingPlace"))
                     NSS.TransportCompanyTitle = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("TransportCompanyTitle"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("TransportCompanyTitle"))
                     NSS.TransportCompanyTel = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("TransportCompanyTel"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("TransportCompanyTel"))
                     NSS.TurnnEnterExitId = IIf(Object.Equals(DS.Tables(0).Rows(Loopx).Item("TurnnEnterExitId"), DBNull.Value), String.Empty, DS.Tables(0).Rows(Loopx).Item("TurnnEnterExitId"))
@@ -6524,10 +6557,12 @@ Namespace LoadAllocation
                 'جلوگیری از خواندن تخصیص هایی که هنوز در بانک آفلاین(ریپلیکیشن) تغییر نکرده اند 
                 Threading.Thread.Sleep(60000)
 
-                'فعال کردن سایت ایز بیزی
-                InstanceSiteIsBusy.ActivateSiteIsBusy()
-
                 Dim Lst As List(Of R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure) = GetLoadAllocationsforLoadPermissionRegistering()
+                If Lst.Count > 10 Then
+                    'فعال کردن ایز بیزی
+                    InstanceSiteIsBusy.ActivateSiteIsBusy()
+                End If
+
                 Dim CurrentDateTime = New R2StandardDateAndTimeStructure(_DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime)
                 For Loopx As Int64 = 0 To Lst.Count - 1
                     Dim NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(Lst(Loopx).nEstelamId, True)
@@ -6548,7 +6583,7 @@ Namespace LoadAllocation
                     Try
                         LoadAllocationLoadPermissionRegistering(NSSLoadAllocation, NSSLoadCapacitorLoad, CurrentDateTime, YourUserNSS)
                         If InstanceConfigurationOfAnnouncementHalls.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadPermissionsSetting, NSSLoadCapacitorLoad.AHId, 2) Then
-                            InstanceLoadPermissionPrinting.PrintLoadPermission(Lst(Loopx).LAId)
+                            InstanceLoadPermissionPrinting.PrintLoadPermission(Lst(Loopx).LAId, YourUserNSS)
                             Threading.Thread.Sleep(InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsLoadAllocationsLoadPermissionRegisteringSetting, 0))
                         End If
                     Catch ex As Exception When TypeOf ex Is TurnHandlingNotAllowedBecuaseTurnStatusException _
@@ -6584,19 +6619,40 @@ Namespace LoadAllocation
                         End Try
                     End Try
                 Next
-                Lst = Nothing
 
-                'غیر فعال کردن سایت ایز بیزی
-                InstanceSiteIsBusy.DeActivateSiteIsBusy()
+                'غیر فعال کردن ایز بیزی
+                If Lst.Count > 10 Then
+                    InstanceSiteIsBusy.DeActivateSiteIsBusy()
+                End If
+
+                Lst = Nothing
 
                 Return FailedResultLst
             Catch ex As Exception
-                'غیر فعال کردن سایت ایز بیزی
+                'غیر فعال کردن ایز بیزی
                 InstanceSiteIsBusy.DeActivateSiteIsBusy()
 
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
+
+        Public Sub SendLoadAllocationsLoadPermissionRegisteringFailedSMS()
+            Try
+                Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                Dim LstUser = New List(Of R2CoreStandardSoftwareUserStructure) From {InstanceSoftwareUsers.GetNSSUserUnChangeable(New R2CoreSoftwareUserMobile(InstanceConfiguration.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 1)))}
+                Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = String.Empty}}
+                Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, R2CoreTransportationAndLoadNotificationSMSTypes.LoadAllocationsLoadPermissionRegisteringFailed, LstCreationData)
+                Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
+                If Not SMSResultAnalyze = String.Empty Then Throw New SendSMSLoadAllocationsLoadPermissionRegisteringFailedFailedException(SMSResultAnalyze)
+            Catch ex As SendSMSLoadAllocationsLoadPermissionRegisteringFailedFailedException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+
+        End Sub
 
         Public Function GetNSSLoadAllocation(YournEstelamId As Int64, YourTurnId As Int64) As R2CoreTransportationAndLoadNotificationStandardLoadAllocationExtendedStructure
             Try
@@ -7413,6 +7469,21 @@ Namespace LoadAllocation
             Public Overrides ReadOnly Property Message As String
                 Get
                     Return "قبلا برای این نوبت مجوز بارگیری صادر شده است"
+                End Get
+            End Property
+        End Class
+
+        Public Class SendSMSLoadAllocationsLoadPermissionRegisteringFailedFailedException
+            Inherits ApplicationException
+
+            Private _Message As String
+            Public Sub New(YourMessage As String)
+                _Message = vbCrLf + YourMessage
+            End Sub
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "ارسال اس ام اس اعلان خرابی سرویس آزادسازی بار با خطا مواجه شد" + _Message
                 End Get
             End Property
         End Class
@@ -8581,12 +8652,14 @@ Namespace DriverSelfDeclaration
                 Dim DS As DataSet
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 If YourImmediately Then
-                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                          "Select DataBox.DSDId,DataBox.DSDName,DataBox.DSDTitle,DataBox.DefaultValue,DataBox.PersianKeyboard,DataBox.IsNumeric,DataBox.DecimalPoint,DataBox.HasAttachement,ISNULL(DataBox.DSDValue,'') as DSDValue from 
-                             (Select DSDParams.DSDId,DSDParams.DSDName,DSDParams.DSDTitle,DSDParams.DefaultValue,DSDParams.PersianKeyboard,DSDParams.IsNumeric,DSDParams.DecimalPoint,DSDParams.HasAttachement,DataBox.DSDValue from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters as DSDParams
-                                left outer  Join 
-                                  (Select * from R2PrimaryTransportationAndLoadNotification.DBO.TblDriverSelfDeclarations as DSDs Where DSDs.nIdCar=" & YourNSSTruck.NSSCar.nIdCar & " and DSDs.RelationActive=1) as DataBox On DSDParams.DSDId=DataBox.DSDId 
-                                   Where DSDParams.Active=1) as DataBox Order By DataBox.DSDId", 0, DS)
+                    Dim Da As New SqlClient.SqlDataAdapter
+                    Da.SelectCommand = New SqlClient.SqlCommand("Select DataBox.DSDId,DataBox.DSDName,DataBox.DSDTitle,DataBox.DefaultValue,DataBox.PersianKeyboard,DataBox.IsNumeric,DataBox.DecimalPoint,DataBox.HasAttachement,ISNULL(DataBox.DSDValue,'') as DSDValue from 
+                                                                    (Select DSDParams.DSDId,DSDParams.DSDName,DSDParams.DSDTitle,DSDParams.DefaultValue,DSDParams.PersianKeyboard,DSDParams.IsNumeric,DSDParams.DecimalPoint,DSDParams.HasAttachement,DataBox.DSDValue from R2PrimaryTransportationAndLoadNotification.dbo.TblDriverSelfDeclarationParameters as DSDParams
+                                                                      left outer  Join 
+                                                                    (Select * from R2PrimaryTransportationAndLoadNotification.DBO.TblDriverSelfDeclarations as DSDs Where DSDs.nIdCar=" & YourNSSTruck.NSSCar.nIdCar & " and DSDs.RelationActive=1) as DataBox On DSDParams.DSDId=DataBox.DSDId 
+                                                                      Where DSDParams.Active=1) as DataBox Order By DataBox.DSDId")
+                    Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection
+                    Da.Fill(DS)
                 Else
                     InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                           "Select DataBox.DSDId,DataBox.DSDName,DataBox.DSDTitle,DataBox.DefaultValue,DataBox.PersianKeyboard,DataBox.IsNumeric,DataBox.DecimalPoint,DataBox.HasAttachement,ISNULL(DataBox.DSDValue,'') as DSDValue from 

@@ -28,14 +28,15 @@ Partial Class UCDriver
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim CBlendItems7 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems1 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems2 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems3 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems4 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems5 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
+        Dim CBlendItems6 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.CButtonDelete = New CButtonLib.CButton()
+        Me.UcActivateUnActivateSMSOwner = New R2CoreParkingSystem.UCActivateUnActivateSMSOwner()
         Me.CButtonNew = New CButtonLib.CButton()
         Me.CButtonSabt = New CButtonLib.CButton()
         Me.UcTextBoxDriverNationalCode = New R2CoreGUI.UCTextBox()
@@ -45,8 +46,6 @@ Partial Class UCDriver
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.UcUnActivateSMSOwner = New R2CoreParkingSystem.UCUnActivateSMSOwner()
-        Me.UcActivateSMSOwner = New R2CoreParkingSystem.UCActivateSMSOwner()
         Me.CButtonSendSmsUserShenasehPassword = New CButtonLib.CButton()
         Me.CButtonSoftwareUserVerificationCodeInjection = New CButtonLib.CButton()
         Me.CButtonViewPrintUserShenasehPassword = New CButtonLib.CButton()
@@ -69,9 +68,8 @@ Partial Class UCDriver
         'PnlMain
         '
         Me.PnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PnlMain.Controls.Add(Me.UcUnActivateSMSOwner)
         Me.PnlMain.Controls.Add(Me.CButtonDelete)
-        Me.PnlMain.Controls.Add(Me.UcActivateSMSOwner)
+        Me.PnlMain.Controls.Add(Me.UcActivateUnActivateSMSOwner)
         Me.PnlMain.Controls.Add(Me.CButtonNew)
         Me.PnlMain.Controls.Add(Me.CButtonSabt)
         Me.PnlMain.Controls.Add(Me.UcTextBoxDriverNationalCode)
@@ -89,9 +87,9 @@ Partial Class UCDriver
         '
         'CButtonDelete
         '
-        CBlendItems7.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems7.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonDelete.ColorFillBlend = CBlendItems7
+        CBlendItems1.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems1.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonDelete.ColorFillBlend = CBlendItems1
         Me.CButtonDelete.Corners.LowerRight = 10
         Me.CButtonDelete.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonDelete.DesignerSelected = False
@@ -103,11 +101,20 @@ Partial Class UCDriver
         Me.CButtonDelete.TabIndex = 28
         Me.CButtonDelete.Text = "حذف"
         '
+        'UcActivateUnActivateSMSOwner
+        '
+        Me.UcActivateUnActivateSMSOwner.BackColor = System.Drawing.Color.Transparent
+        Me.UcActivateUnActivateSMSOwner.Location = New System.Drawing.Point(176, 5)
+        Me.UcActivateUnActivateSMSOwner.Name = "UcActivateUnActivateSMSOwner"
+        Me.UcActivateUnActivateSMSOwner.Size = New System.Drawing.Size(178, 23)
+        Me.UcActivateUnActivateSMSOwner.TabIndex = 24
+        Me.UcActivateUnActivateSMSOwner.UCNSSCurrent = Nothing
+        '
         'CButtonNew
         '
-        CBlendItems1.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems1.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonNew.ColorFillBlend = CBlendItems1
+        CBlendItems2.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems2.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonNew.ColorFillBlend = CBlendItems2
         Me.CButtonNew.Corners.LowerRight = 10
         Me.CButtonNew.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonNew.DesignerSelected = False
@@ -121,9 +128,9 @@ Partial Class UCDriver
         '
         'CButtonSabt
         '
-        CBlendItems2.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems2.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonSabt.ColorFillBlend = CBlendItems2
+        CBlendItems3.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems3.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonSabt.ColorFillBlend = CBlendItems3
         Me.CButtonSabt.Corners.LowerRight = 10
         Me.CButtonSabt.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonSabt.DesignerSelected = False
@@ -265,30 +272,12 @@ Partial Class UCDriver
         Me.Panel1.Size = New System.Drawing.Size(967, 73)
         Me.Panel1.TabIndex = 0
         '
-        'UcUnActivateSMSOwner
-        '
-        Me.UcUnActivateSMSOwner.BackColor = System.Drawing.Color.Transparent
-        Me.UcUnActivateSMSOwner.Location = New System.Drawing.Point(336, 4)
-        Me.UcUnActivateSMSOwner.Name = "UcUnActivateSMSOwner"
-        Me.UcUnActivateSMSOwner.Size = New System.Drawing.Size(179, 27)
-        Me.UcUnActivateSMSOwner.TabIndex = 25
-        Me.UcUnActivateSMSOwner.UCNSSCurrent = Nothing
-        '
-        'UcActivateSMSOwner
-        '
-        Me.UcActivateSMSOwner.BackColor = System.Drawing.Color.Transparent
-        Me.UcActivateSMSOwner.Location = New System.Drawing.Point(176, 4)
-        Me.UcActivateSMSOwner.Name = "UcActivateSMSOwner"
-        Me.UcActivateSMSOwner.Size = New System.Drawing.Size(159, 27)
-        Me.UcActivateSMSOwner.TabIndex = 24
-        Me.UcActivateSMSOwner.UCNSSCurrent = Nothing
-        '
         'CButtonSendSmsUserShenasehPassword
         '
         Me.CButtonSendSmsUserShenasehPassword.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems3.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems3.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonSendSmsUserShenasehPassword.ColorFillBlend = CBlendItems3
+        CBlendItems4.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems4.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonSendSmsUserShenasehPassword.ColorFillBlend = CBlendItems4
         Me.CButtonSendSmsUserShenasehPassword.Corners.LowerRight = 10
         Me.CButtonSendSmsUserShenasehPassword.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonSendSmsUserShenasehPassword.DesignerSelected = False
@@ -303,9 +292,9 @@ Partial Class UCDriver
         'CButtonSoftwareUserVerificationCodeInjection
         '
         Me.CButtonSoftwareUserVerificationCodeInjection.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems4.iColor = New System.Drawing.Color() {System.Drawing.Color.DeepPink, System.Drawing.Color.Purple, System.Drawing.Color.Black}
-        CBlendItems4.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonSoftwareUserVerificationCodeInjection.ColorFillBlend = CBlendItems4
+        CBlendItems5.iColor = New System.Drawing.Color() {System.Drawing.Color.DeepPink, System.Drawing.Color.Purple, System.Drawing.Color.Black}
+        CBlendItems5.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonSoftwareUserVerificationCodeInjection.ColorFillBlend = CBlendItems5
         Me.CButtonSoftwareUserVerificationCodeInjection.ColorFillSolid = System.Drawing.SystemColors.ActiveCaption
         Me.CButtonSoftwareUserVerificationCodeInjection.Corners.LowerRight = 10
         Me.CButtonSoftwareUserVerificationCodeInjection.Cursor = System.Windows.Forms.Cursors.Hand
@@ -321,9 +310,9 @@ Partial Class UCDriver
         'CButtonViewPrintUserShenasehPassword
         '
         Me.CButtonViewPrintUserShenasehPassword.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems5.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems5.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonViewPrintUserShenasehPassword.ColorFillBlend = CBlendItems5
+        CBlendItems6.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems6.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonViewPrintUserShenasehPassword.ColorFillBlend = CBlendItems6
         Me.CButtonViewPrintUserShenasehPassword.Corners.LowerRight = 10
         Me.CButtonViewPrintUserShenasehPassword.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonViewPrintUserShenasehPassword.DesignerSelected = False
@@ -578,8 +567,7 @@ End Sub
     Friend WithEvents CButtonSoftwareUserVerificationCodeInjection As CButtonLib.CButton
     Friend WithEvents CButtonSendSmsUserShenasehPassword As CButtonLib.CButton
     Friend WithEvents UcTextBoxDriverNationalCode As UCTextBox
-    Friend WithEvents UcUnActivateSMSOwner As UCUnActivateSMSOwner
-    Friend WithEvents UcActivateSMSOwner As UCActivateSMSOwner
+    Friend WithEvents UcActivateUnActivateSMSOwner As UCActivateUnActivateSMSOwner
     Friend WithEvents CButtonSabt As CButtonLib.CButton
     Friend WithEvents CButtonDelete As CButtonLib.CButton
     Friend WithEvents CButtonNew As CButtonLib.CButton

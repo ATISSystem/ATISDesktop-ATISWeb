@@ -2,7 +2,7 @@
 Imports R2CoreGUI
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class UCSaleOfSoftwareUserActivationSMSReport
+Partial Class UCSaleOfCommissionSMSReport
     Inherits UCGeneral
 
     'UserControl overrides dispose to clean up the component list.

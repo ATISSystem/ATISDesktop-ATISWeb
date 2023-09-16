@@ -27,6 +27,7 @@ using PayanehClassLibrary.CarTruckNobatManagement;
 using R2CoreTransportationAndLoadNotification.Turns.SequentialTurns;
 using R2CoreTransportationAndLoadNotification.Trucks;
 using R2CoreParkingSystem.Cars;
+using R2CoreTransportationAndLoadNotification.Turns.VirtualTurns;
 
 namespace ATISMobileRestful.Controllers.TurnManagement
 {
@@ -113,7 +114,6 @@ namespace ATISMobileRestful.Controllers.TurnManagement
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
-
         [HttpPost]
         public HttpResponseMessage RealTimeTurnRegisterRequest()
         {
@@ -133,7 +133,7 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                 var LPSerial = Content.Split(';')[3];
 
                 var InstanceTurnRegisterRequest = new PayanehClassLibraryMClassTurnRegisterRequestManager();
-                InstanceTurnRegisterRequest.RealTimeTurnRegisterRequestWithLicensePlate(LPPelak, LPSerial, NSSSoftwareuser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullTurnControllerRealTimeTurnRegisterRequest,TurnType.Permanent);
+                InstanceTurnRegisterRequest.RealTimeTurnRegisterRequestWithLicensePlate(LPPelak, LPSerial, NSSSoftwareuser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullTurnControllerRealTimeTurnRegisterRequest, TurnType.Permanent);
 
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
@@ -156,7 +156,7 @@ namespace ATISMobileRestful.Controllers.TurnManagement
             try
             {
                 //تایید اعتبار کلاینت
-                WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith2Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientTurnCancellation );
+                WebAPi.AuthenticateClientApikeyNoncePersonalNonceWith2Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientTurnCancellation);
 
                 var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
@@ -182,6 +182,40 @@ namespace ATISMobileRestful.Controllers.TurnManagement
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
 
+        }
+
+        [HttpPost]
+        public HttpResponseMessage TurnCancellationRequest()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNoncePersonalNonce(Request, ATISMobileWebApiLogTypes.WebApiClientTurnCancellation);
+
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
+
+                var InstanceCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
+                InstanceCarTruckNobat.TurnCancellation(new R2CoreSoftwareUserMobile(MobileNumber), NSSSoftwareuser);
+
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                return response;
+            }
+            catch (UserNotExistByMobileNumberException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserNotExistByApiKeyException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserLast5DigitNotMatchingException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserIdNotExistException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
         [HttpPost]
@@ -255,6 +289,37 @@ namespace ATISMobileRestful.Controllers.TurnManagement
             { return WebAPi.CreateErrorContentMessage(ex); }
 
         }
+
+        [HttpPost]
+        public HttpResponseMessage TurnIssueRequest()
+        { throw new Exception(); }
+
+        [HttpPost]
+        public HttpResponseMessage IsVirtualTurnsActive()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientIsVirtualTurnsActive);
+
+                var InstanceVirtualTurns = new R2CoreTransportationAndLoadNotificationVirtualTurnsManager();
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(InstanceVirtualTurns.IsVirtualTurnsActive()), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (UserNotExistByApiKeyException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserLast5DigitNotMatchingException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserIdNotExistException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+
+        }
+
+
 
 
 

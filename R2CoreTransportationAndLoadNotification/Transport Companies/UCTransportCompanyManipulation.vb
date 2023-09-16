@@ -20,6 +20,7 @@ Imports R2CoreParkingSystem.AccountingManagement
 Imports R2Core.PermissionManagement
 Imports R2Core.SMS
 Imports R2Core.MoneyWallet.Exceptions
+Imports R2Core.SoftwareUserManagement.Exceptions
 
 Public Class UCTransportCompanyManipulation
     Inherits UCTransportCompany
@@ -174,20 +175,11 @@ Public Class UCTransportCompanyManipulation
             If UCNSSCurrent Is Nothing Then Throw New GetNSSException
             CButtonSendSMSUserPassword.Enabled = False
             Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCNSSCurrent.TCId)
-            'کسر هزینه از بابت اس ام اس
-            Dim InstanceTerraficCards = New R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager
-            Dim InstanceMoneyWallets = New R2CoreParkingSystemInstanceMoneyWalletManager
-            Dim NSSTrafficCard = InstanceTerraficCards.GetNSSTerafficCard(UCNSSCurrent)
-            If (InstanceConfiguration.GetConfigBoolean(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 10)) Then
-                If Not NSSTrafficCard.NoMoney Then
-                    Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
-                    InstanceMoneyWallets.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 11), R2CoreParkingSystemAccountings.SoftwareUserShenasehPasswordSMSCost, InstanceSoftwareUsers.GetNSSSystemUser())
-                End If
-            End If
-            Dim SMSSender As New R2CoreSMSSendRecive
-            Dim SMSMessage = "سامانه آتیس وب" + vbCrLf + "ATISMobile.ir" + vbCrLf + "شناسه کاربر:" + NSSSoftwareUser.UserShenaseh + vbCrLf + "رمز عبور کاربر:" + NSSSoftwareUser.UserPassword
-            SMSSender.SendSms(New R2CoreStandardSMSStructure(Nothing, NSSSoftwareUser.MobileNumber, SMSMessage, 1, Nothing, True, Nothing, Nothing))
+            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            InstanceSoftwareUsers.SendUserSecurity(NSSSoftwareUser)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "شناسه و رمز عبور کاربر ارسال شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As SendSMSSoftwareUserSecurityFailedException
+            Throw ex
         Catch ex As UserNotAllowedRunThisProccessException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As SoftwareUserMoneyWalletNotFoundException
@@ -267,6 +259,11 @@ Public Class UCTransportCompanyManipulation
             UcPersianTextBoxManagerMobileNumber.UCValue = NSSCurrent.TCManagerMobileNumber.Trim
             ChkActive.Checked = NSSCurrent.Active
             UcPersianTextBoxEmailAddress.UCValue = NSSCurrent.EmailAddress.Trim
+
+            Dim InstanceSoftwareUser = New R2CoreTransportationAndLoadNotificationInstanceSoftwareUsersManager
+            Dim NSSSoftwareUser = InstanceSoftwareUser.GetNSSSoftwareUser(UCNSSCurrent.TCId)
+            UcActivateUnActivateSMSOwner.UCNSSCurrent = NSSSoftwareUser
+
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

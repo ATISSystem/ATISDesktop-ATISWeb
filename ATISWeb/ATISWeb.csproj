@@ -161,7 +161,8 @@
     <Content Include="MoneyWalletManagement\WCMoneyWalletChargeRecordsCollectionInteligently.ascx" />
     <Content Include="MoneyWalletManagement\WCMoneyWalletCurrentCharge.ascx" />
     <Content Include="MoneyWalletManagement\WfMoneyWallet.aspx" />
-    <Content Include="ReportsManagement\WfReportViewer.aspx" />
+    <Content Include="ReportsManagement\WCRegisteredAndReleasedLoadsReport.ascx" />
+    <Content Include="ReportsManagement\WfRegisteredAndReleasedLoadsReport.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -474,12 +475,19 @@
       <DependentUpon>WfMoneyWallet.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReportsManagement\WfReportViewer.aspx.cs">
-      <DependentUpon>WfReportViewer.aspx</DependentUpon>
+    <Compile Include="ReportsManagement\WCRegisteredAndReleasedLoadsReport.ascx.cs">
+      <DependentUpon>WCRegisteredAndReleasedLoadsReport.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ReportsManagement\WfReportViewer.aspx.designer.cs">
-      <DependentUpon>WfReportViewer.aspx</DependentUpon>
+    <Compile Include="ReportsManagement\WCRegisteredAndReleasedLoadsReport.ascx.designer.cs">
+      <DependentUpon>WCRegisteredAndReleasedLoadsReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ReportsManagement\WfRegisteredAndReleasedLoadsReport.aspx.cs">
+      <DependentUpon>WfRegisteredAndReleasedLoadsReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReportsManagement\WfRegisteredAndReleasedLoadsReport.aspx.designer.cs">
+      <DependentUpon>WfRegisteredAndReleasedLoadsReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="SecurityAlgorithmsManagement\WCPasswordStrengthViewer.ascx.cs">
       <DependentUpon>WCPasswordStrengthViewer.ascx</DependentUpon>

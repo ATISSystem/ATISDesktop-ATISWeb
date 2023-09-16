@@ -188,9 +188,12 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                     var Item = new Models.LoadAllocationsforTruckDriver();
                     SB.Clear();
                     SB.Append("شرکت حمل و نقل: " + Lst[Loopx].TransportCompanyTitle.Trim() + " " + Lst[Loopx].TransportCompanyTel.Trim() + "\r\n");
-                    SB.Append("کد مرجع: " + Lst[Loopx].LoadCapacitorLoadnEstelamId + "\r\n");
+                    SB.Append("کد بار: " + Lst[Loopx].LoadCapacitorLoadnEstelamId + "\r\n");
                     SB.Append(Lst[Loopx].LoadCapacitorLoadGoodTitle.Trim() + " " + Lst[Loopx].LoadCapacitorLoadTargetTitle.Trim() + " تعدادبار: " + Lst[Loopx].LoadCapacitorLoadnCarNumKol.Trim() + " تناژ بار: " + Lst[Loopx].LoadCapacitorLoadnTonaj.Trim() + "\r\n");
                     SB.Append("تعرفه: " + Lst[Loopx].LoadCapacitorLoadStrPriceSug.Trim() + "\r\n");
+                    SB.Append("پارامترهای موثر: " + Lst[Loopx].TPTParams.Trim() + "\r\n");
+                    SB.Append("محل بارگیری: " + Lst[Loopx].LoadingPlace.Trim() + "\r\n");
+                    SB.Append("محل تخلیه: " + Lst[Loopx].DischargingPlace.Trim() + "\r\n");
                     SB.Append("توضیحات بار: " + Lst[Loopx].LoadCapacitorLoadStrDescription.Trim() + " " + Lst[Loopx].LoadCapacitorLoadStrBarName.Trim() + " " + Lst[Loopx].LoadCapacitorLoadStrAddress.Trim() + "\r\n");
                     SB.Append("وضعیت تخصیص بار: " + Lst[Loopx].LoadAllocationStatusTitle.Trim() + "\r\n");
                     SB.Append("توضیحات تخصیص: " + Lst[Loopx].LoadAllocationNote.Trim() + "\r\n");

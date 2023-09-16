@@ -47,13 +47,11 @@ namespace ATISWeb.FilesManagement
                 { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "فایل با نام مورد نظر قبلا بارگذاری شده است و مجددا با موفقیت بارگذاری شد" + "');", true); }
                 else
                 { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "فایل با موفقیت بارگذاری شد" + "');", true); }
-                /*ارسال اس ام اس آپلود فایل به موبایل جنرال*/
-                R2CoreSMSSendRecive SMSSender = new R2CoreSMSSendRecive();
-                SMSSender.SendSms(new R2CoreStandardSMSStructure(Int64.MinValue, InstanceConfiguration.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 1), "آپلود فایل", 1, _DateTime.GetCurrentDateTimeMilladi(), true, null, null));
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "\\n " + ex.Message + "');", true); }
 
         }
+
     }
 }

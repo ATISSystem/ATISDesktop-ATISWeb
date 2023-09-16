@@ -48,16 +48,12 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var MobileNumber = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var NSSSoftwareUser = InstanceSoftwareusers.RegisteringMobileNumber(MobileNumber);
-                //کسر هزینه فعال سازی - از بابت اس ام اس
-                var InstanceTerraficCards = new R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
-                var InstanceMoneyWallets = new R2CoreParkingSystemInstanceMoneyWalletManager();
-                var NSSTrafficCard = InstanceTerraficCards.GetNSSTerafficCard(NSSSoftwareUser);
-                if (InstanceConfiguration.GetConfigBoolean(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 10))
-                { if (!NSSTrafficCard.NoMoney) { InstanceMoneyWallets.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 11), R2CoreParkingSystemAccountings.RegisteringSoftwareUserSMSCost, InstanceSoftwareusers.GetNSSSystemUser()); } }
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(string.Empty), Encoding.UTF8, "application/json");
                 return response;
             }
+            catch (SendSMSApplicationActivationCodeFailedException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (SoftwareUserMoneyWalletNotFoundException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (MobileNumberIsInvalidException ex)

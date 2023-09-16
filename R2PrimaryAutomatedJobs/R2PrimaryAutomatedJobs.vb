@@ -1,18 +1,23 @@
 ﻿
 
 Imports System.Timers
+
 Imports R2Core.BlackIPs
 Imports R2Core.ConfigurationManagement
 Imports R2Core.DateAndTimeManagement
 Imports R2Core.LoggingManagement
 Imports R2Core.SMS
-Imports R2Core.SMSSendAndRecieved
+Imports R2Core.SMS.SMSHandling
+Imports R2Core.SMS.SMSOwners
+Imports R2Core.SMS.SMSSendRecive
 Imports R2Core.SoftwareUserManagement
+Imports R2CoreParkingSystem.SMS.SMSControllingMoneyWallet
 
 Public Class R2PrimaryAutomatedJobs
 
     Private WithEvents _AutomatedJobsTimer As System.Timers.Timer = New System.Timers.Timer
     Private _DateTime = New R2DateTime
+    Private _FailStatus As Boolean = True
 
 
     Protected Overrides Sub OnStart(ByVal args() As String)
@@ -24,14 +29,12 @@ Public Class R2PrimaryAutomatedJobs
             Else
                 EventLog.CreateEventSource("R2PrimaryAutomatedJobs", "R2PrimaryAutomatedJobs")
             End If
-            EventLog.WriteEntry("R2PrimaryAutomatedJobs", "R2PrimaryAutomatedJobs Start ...", EventLogEntryType.SuccessAudit)
 
-            _DateTime = New R2DateTime()
-            R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
-
-            _AutomatedJobsTimer.Interval = R2CoreMClassConfigurationManagement.GetConfigInt64(R2CoreConfigurations.R2PrimaryAutomatedJobsSetting, 0) * 1000
+            _AutomatedJobsTimer.Interval = 1000
             _AutomatedJobsTimer.Enabled = True
             _AutomatedJobsTimer.Start()
+
+            EventLog.WriteEntry("R2PrimaryAutomatedJobs", "R2PrimaryAutomatedJobs Start ...", EventLogEntryType.SuccessAudit)
 
         Catch ex As Exception
             EventLog.WriteEntry("R2PrimaryAutomatedJobs", "OnStart()." + ex.Message.ToString, EventLogEntryType.Error)
@@ -58,11 +61,52 @@ Public Class R2PrimaryAutomatedJobs
             _AutomatedJobsTimer.Enabled = False
             _AutomatedJobsTimer.Stop()
 
-            'ارسال اس ام اس های اکتیو سازی کاربران موبایل آتیس موبایل
+            'خواندن اینتروال سرویس از بانک
+            Do While _FailStatus
+                Try
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                    _DateTime = New R2DateTime()
+                    R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+                    _AutomatedJobsTimer.Interval = InstanceConfiguration.GetConfig(R2CoreConfigurations.R2PrimaryAutomatedJobsSetting, 0, 0) * 1000
+                    _FailStatus = False
+                    EventLog.WriteEntry("R2PrimaryAutomatedJobs", "R2PrimaryAutomatedJobs.Interval=" + _AutomatedJobsTimer.Interval.ToString, EventLogEntryType.SuccessAudit)
+                Catch ex As Exception
+                    _FailStatus = True
+                    EventLog.WriteEntry("R2PrimaryAutomatedJobs", "R2PrimaryAutomatedJobs.Interval Setting Failed", EventLogEntryType.SuccessAudit)
+                    System.Threading.Thread.Sleep(15000)
+                End Try
+            Loop
+
+            'غیرفعال سازی اس ام اس هایی که اعتبار زمانی ندارند
             Try
-                R2CoreSMSMClassSMSDomainManagement.SMSDomainSendRecieved()
+                Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                InstanceSMSHandling.SMSGarbage()
             Catch ex As Exception
-                EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSDomainSendRecieved:" + ex.Message.ToString, EventLogEntryType.Error)
+                EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSHandling.SMSGarbage:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
+            'فرآیند ارسال اس ام اس ها
+            Try
+                Dim InstanceSMSSending = New R2CoreSMSSendingManager
+                InstanceSMSSending.Sending(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            Catch ex As Exception
+                EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSSending.Sending:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
+            'فرآیند دریافت اس ام اس ها
+            Try
+                Dim InstanceSMSReciving = New R2CoreSMSRecivingManager
+                InstanceSMSReciving.Reciving()
+            Catch ex As Exception
+                EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSReciving.Reciving:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
+            'فرآیند هندلینگ اس ام اس های دریافت شده
+            Try
+                Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                InstanceSMSHandling.RecivedSMSHandling(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            Catch ex As Exception
+                EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSHandling.RecivedSMSHandling:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 
             'بررسی آی پی های سیاه و قرار دادن آن ها در لیست سیاه آی پی ها
@@ -72,6 +116,23 @@ Public Class R2PrimaryAutomatedJobs
             Catch ex As Exception
                 EventLog.WriteEntry("R2PrimaryAutomatedJobs", "BlackIPs.DoStrategyControl:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
+
+            'ثبت اکانتینگ کیف پول کنترلی اس ام اس
+            Try
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                R2CoreParkingSystemMClassSMSControllingMoneyWalletManagement.ControllingMoneyWalletAccounting(InstanceSoftwareUsers.GetNSSSystemUser())
+            Catch ex As Exception
+                EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSControllingMoneyWallet.ControllingMoneyWalletAccounting:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
+            'ارسال اس ام اس پلیز شارژ
+            Try
+                Dim InstanceSMSOwners = New R2CoreMClassSMSOwnersManager
+                InstanceSMSOwners.SendSMSOwnersPleaseCharge()
+            Catch ex As Exception
+                EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSOwners.SendSMSOwnersPleaseCharge:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
 
 
         Catch ex As Exception

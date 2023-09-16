@@ -68,7 +68,7 @@ Namespace PayanehWS
         
         Private WebMethodReportingInformationPrividerAnnounceLoadsReportReportOperationCompleted As System.Threading.SendOrPostCallback
         
-        Private WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted As System.Threading.SendOrPostCallback
+        Private WebMethodReportingInformationPrividerSaleOfCommissionSMSReportOperationCompleted As System.Threading.SendOrPostCallback
         
         Private WebMethodCarTruckHasTurnOperationCompleted As System.Threading.SendOrPostCallback
         
@@ -171,7 +171,7 @@ Namespace PayanehWS
         Public Event WebMethodReportingInformationPrividerAnnounceLoadsReportReportCompleted As WebMethodReportingInformationPrividerAnnounceLoadsReportReportCompletedEventHandler
         
         '''<remarks/>
-        Public Event WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompleted As WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompletedEventHandler
+        Public Event WebMethodReportingInformationPrividerSaleOfCommissionSMSReportCompleted As WebMethodReportingInformationPrividerSaleOfCommissionSMSReportCompletedEventHandler
         
         '''<remarks/>
         Public Event WebMethodCarTruckHasTurnCompleted As WebMethodCarTruckHasTurnCompletedEventHandler
@@ -214,22 +214,22 @@ Namespace PayanehWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodGetDSPersonnelFingerPrints", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Function WebMethodGetDSPersonnelFingerPrints(ByVal YourSalFull As String, ByVal YourMonthCodeFull As String, ByVal YourExchangeKey As Long) As System.Data.DataSet
-            Dim results() As Object = Me.Invoke("WebMethodGetDSPersonnelFingerPrints", New Object() {YourSalFull, YourMonthCodeFull, YourExchangeKey})
+        Public Function WebMethodGetDSPersonnelFingerPrints(ByVal YourSalFull As String, ByVal YourMonthCodeFull As String, ByVal YourComputerId As Long, ByVal YourExchangeKey As Long) As System.Data.DataSet
+            Dim results() As Object = Me.Invoke("WebMethodGetDSPersonnelFingerPrints", New Object() {YourSalFull, YourMonthCodeFull, YourComputerId, YourExchangeKey})
             Return CType(results(0),System.Data.DataSet)
         End Function
         
         '''<remarks/>
-        Public Overloads Sub WebMethodGetDSPersonnelFingerPrintsAsync(ByVal YourSalFull As String, ByVal YourMonthCodeFull As String, ByVal YourExchangeKey As Long)
-            Me.WebMethodGetDSPersonnelFingerPrintsAsync(YourSalFull, YourMonthCodeFull, YourExchangeKey, Nothing)
+        Public Overloads Sub WebMethodGetDSPersonnelFingerPrintsAsync(ByVal YourSalFull As String, ByVal YourMonthCodeFull As String, ByVal YourComputerId As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodGetDSPersonnelFingerPrintsAsync(YourSalFull, YourMonthCodeFull, YourComputerId, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodGetDSPersonnelFingerPrintsAsync(ByVal YourSalFull As String, ByVal YourMonthCodeFull As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
+        Public Overloads Sub WebMethodGetDSPersonnelFingerPrintsAsync(ByVal YourSalFull As String, ByVal YourMonthCodeFull As String, ByVal YourComputerId As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
             If (Me.WebMethodGetDSPersonnelFingerPrintsOperationCompleted Is Nothing) Then
                 Me.WebMethodGetDSPersonnelFingerPrintsOperationCompleted = AddressOf Me.OnWebMethodGetDSPersonnelFingerPrintsOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodGetDSPersonnelFingerPrints", New Object() {YourSalFull, YourMonthCodeFull, YourExchangeKey}, Me.WebMethodGetDSPersonnelFingerPrintsOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodGetDSPersonnelFingerPrints", New Object() {YourSalFull, YourMonthCodeFull, YourComputerId, YourExchangeKey}, Me.WebMethodGetDSPersonnelFingerPrintsOperationCompleted, userState)
         End Sub
         
         Private Sub OnWebMethodGetDSPersonnelFingerPrintsOperationCompleted(ByVal arg As Object)
@@ -678,29 +678,29 @@ Namespace PayanehWS
         End Sub
         
         '''<remarks/>
-        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerSaleOfSoftwareUserActivat"& _ 
-            "ionSMSReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
-            Me.Invoke("WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey})
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerSaleOfCommissionSMSReport"& _ 
+            "", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationPrividerSaleOfCommissionSMSReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerSaleOfCommissionSMSReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
-            Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerSaleOfCommissionSMSReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerSaleOfCommissionSMSReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
-            If (Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted Is Nothing) Then
-                Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted
+        Public Overloads Sub WebMethodReportingInformationPrividerSaleOfCommissionSMSReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourExchangeKey As Long, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationPrividerSaleOfCommissionSMSReportOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationPrividerSaleOfCommissionSMSReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerSaleOfCommissionSMSReportOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey}, Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerSaleOfCommissionSMSReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourExchangeKey}, Me.WebMethodReportingInformationPrividerSaleOfCommissionSMSReportOperationCompleted, userState)
         End Sub
         
-        Private Sub OnWebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportOperationCompleted(ByVal arg As Object)
-            If (Not (Me.WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompletedEvent) Is Nothing) Then
+        Private Sub OnWebMethodReportingInformationPrividerSaleOfCommissionSMSReportOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationPrividerSaleOfCommissionSMSReportCompletedEvent) Is Nothing) Then
                 Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
-                RaiseEvent WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+                RaiseEvent WebMethodReportingInformationPrividerSaleOfCommissionSMSReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
             End If
         End Sub
         
@@ -951,7 +951,7 @@ Namespace PayanehWS
     
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _
-    Public Delegate Sub WebMethodReportingInformationPrividerSaleOfSoftwareUserActivationSMSReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    Public Delegate Sub WebMethodReportingInformationPrividerSaleOfCommissionSMSReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")>  _

@@ -25,6 +25,7 @@ using ATISMobileRestful.Exceptions;
 using R2Core.DateAndTimeManagement;
 using R2Core.PermissionManagement;
 using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
+using R2CoreTransportationAndLoadNotification.Turns;
 
 namespace ATISMobileRestful.Controllers.ProvinceManagement
 {
@@ -41,7 +42,6 @@ namespace ATISMobileRestful.Controllers.ProvinceManagement
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClientApikeyNonceWith3Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientProvincesRequest);
 
-                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var AHId = Content.Split(';')[2];
                 var AHSGId = Content.Split(';')[3];

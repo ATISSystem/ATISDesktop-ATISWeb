@@ -17,6 +17,7 @@ using ATISWeb.TransportationAndLoadNotification.LoadPermissionManagement.LoadPer
 using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadPermission.LoadPermissionPrinting;
 using R2CoreTransportationAndLoadNotification.Trucks;
+using ATISWeb.LoginManagement;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -111,9 +112,10 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 Int64 LAId = Int64.Parse(GridViewLoadCapacitorLoadLoadPermissionsIssued.SelectedRow.Cells[0].Text);
                 var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
+                var InstanceLogin = new ATISWebMClassLoginManager();
                 WCDriverSelfDeclarationViewer.WcViewInformation(InstanceTrucks.GetNSSTruck(InstanceLoadAllocation.GetNSSLoadAllocation(LAId )));
                 var InstanceLoadPermissionPrinting = new R2CoreTransportationAndLoadNotificationInstanceLoadPermissionPrintingManager();
-                PPDS = InstanceLoadPermissionPrinting.GetLoadPermissionPrintingInf(LAId);
+                PPDS = InstanceLoadPermissionPrinting.GetLoadPermissionPrintingInf(LAId, InstanceLogin.GetNSSCurrentUser());
             }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message + "');", true); }

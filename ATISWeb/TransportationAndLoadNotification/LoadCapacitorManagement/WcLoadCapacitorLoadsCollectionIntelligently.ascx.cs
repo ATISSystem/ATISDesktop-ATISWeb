@@ -11,6 +11,7 @@ using R2Core.PublicProc;
 using R2Core.SoftwareUserManagement;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2CoreTransportationAndLoadNotification.TransportCompanies;
+using R2CoreTransportationAndLoadNotification.TransportTarrifsParameters;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 {
@@ -42,6 +43,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
             {
                 var InstanceLogin = new ATISWebMClassLoginManager();
                 var InstanceTransportCompanies = new R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager();
+                var InstanceTransportTarrifsParameters = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager();
                 List<R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure> Lst = null;
                 if (WcCurrentListType == LoadCapacitorLoadsListType.NotSedimented)
                 {
@@ -78,11 +80,17 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                     tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].UserName ; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     tempCell = new TableCell();
+                    tempCell.Text = Lst[Loopx].DischargingPlaceTitle; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
+                    tempCell = new TableCell();
+                    tempCell.Text = Lst[Loopx].LoadingPlaceTitle; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
+                    tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].TransportCompanyTitle ; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].StrAddress; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].StrBarName; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
+                    tempCell = new TableCell();
+                    tempCell.Text = InstanceTransportTarrifsParameters.GetTransportTarrifsComposit(Lst[Loopx].TPTParams); tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].StrDescription; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     tempCell = new TableCell();

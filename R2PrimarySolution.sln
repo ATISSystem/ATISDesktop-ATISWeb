@@ -25,19 +25,11 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "R2CoreTransportationAndLoad
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PayanehAmirKabirAutomatedJobs", "PayanehAmirKabirAutomatedJobs\PayanehAmirKabirAutomatedJobs.vbproj", "{8B1AEA93-85A7-43D1-BE12-967B0DBB9347}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ATISSetup", "ATISSetup\ATISSetup.vdproj", "{F36D057B-5E9F-4FBB-9713-37EC4C01E23C}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ATISDesktop", "ATISDesktop\ATISDesktop.vbproj", "{84380CEE-1679-4D30-A4A7-1D5132754BC0}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PayanehAmirKabirAutomatedJobsSetup", "PayanehAmirKabirAutomatedJobsSetup\PayanehAmirKabirAutomatedJobsSetup.vdproj", "{CD4D089B-F7A1-40BD-861F-CAC85601D27B}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "R2PrimaryAttendanceSetup", "R2PrimaryAttendanceSetup\R2PrimaryAttendanceSetup.vdproj", "{092901B2-3C90-4BEB-90B3-D1E4034432ED}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PayanehWebService", "PayanehWebService\PayanehWebService.vbproj", "{D8550DFA-71AE-4EDF-A612-ABEE34889750}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "R2PrimaryAutomatedJobs", "R2PrimaryAutomatedJobs\R2PrimaryAutomatedJobs.vbproj", "{07D2413C-4F43-4F79-B1DE-1A70E7DEBA2A}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "R2PrimaryAutomatedJobsSetup", "R2PrimaryAutomatedJobsSetup\R2PrimaryAutomatedJobsSetup.vdproj", "{6AA0D65D-6B33-4A9B-A07F-8B94647ECA1A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATISWeb", "ATISWeb\ATISWeb.csproj", "{193848F6-E6C2-4F65-A16A-0820DDC61FD6}"
 EndProject
@@ -50,8 +42,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSCOAutomatedJobs", "MSCOAutomatedJobs\MSCOAutomatedJobs.csproj", "{DA73986B-5F76-4EEB-B9E6-52EF24BDA368}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSCOClassLibrary", "MSCOClassLibrary\MSCOClassLibrary.csproj", "{51A3327B-82B2-4350-84D3-0F18A498F151}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MSCOAutomatedJobsSetup", "MSCOAutomatedJobsSetup\MSCOAutomatedJobsSetup.vdproj", "{E32F80CA-F4BF-47C4-8345-06842EEE5293}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESCOClassLibrary", "ESCOClassLibrary\ESCOClassLibrary.csproj", "{DF7D04FF-6D7D-4579-BC0C-75DFF65EDAD9}"
 EndProject
@@ -107,16 +97,10 @@ Global
 		{8B1AEA93-85A7-43D1-BE12-967B0DBB9347}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B1AEA93-85A7-43D1-BE12-967B0DBB9347}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B1AEA93-85A7-43D1-BE12-967B0DBB9347}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F36D057B-5E9F-4FBB-9713-37EC4C01E23C}.Debug|Any CPU.ActiveCfg = Debug
-		{F36D057B-5E9F-4FBB-9713-37EC4C01E23C}.Release|Any CPU.ActiveCfg = Release
 		{84380CEE-1679-4D30-A4A7-1D5132754BC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84380CEE-1679-4D30-A4A7-1D5132754BC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84380CEE-1679-4D30-A4A7-1D5132754BC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84380CEE-1679-4D30-A4A7-1D5132754BC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CD4D089B-F7A1-40BD-861F-CAC85601D27B}.Debug|Any CPU.ActiveCfg = Debug
-		{CD4D089B-F7A1-40BD-861F-CAC85601D27B}.Release|Any CPU.ActiveCfg = Release
-		{092901B2-3C90-4BEB-90B3-D1E4034432ED}.Debug|Any CPU.ActiveCfg = Debug
-		{092901B2-3C90-4BEB-90B3-D1E4034432ED}.Release|Any CPU.ActiveCfg = Release
 		{D8550DFA-71AE-4EDF-A612-ABEE34889750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D8550DFA-71AE-4EDF-A612-ABEE34889750}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8550DFA-71AE-4EDF-A612-ABEE34889750}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -125,8 +109,6 @@ Global
 		{07D2413C-4F43-4F79-B1DE-1A70E7DEBA2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07D2413C-4F43-4F79-B1DE-1A70E7DEBA2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07D2413C-4F43-4F79-B1DE-1A70E7DEBA2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6AA0D65D-6B33-4A9B-A07F-8B94647ECA1A}.Debug|Any CPU.ActiveCfg = Debug
-		{6AA0D65D-6B33-4A9B-A07F-8B94647ECA1A}.Release|Any CPU.ActiveCfg = Release
 		{193848F6-E6C2-4F65-A16A-0820DDC61FD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{193848F6-E6C2-4F65-A16A-0820DDC61FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{193848F6-E6C2-4F65-A16A-0820DDC61FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -151,8 +133,6 @@ Global
 		{51A3327B-82B2-4350-84D3-0F18A498F151}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51A3327B-82B2-4350-84D3-0F18A498F151}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51A3327B-82B2-4350-84D3-0F18A498F151}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E32F80CA-F4BF-47C4-8345-06842EEE5293}.Debug|Any CPU.ActiveCfg = Debug
-		{E32F80CA-F4BF-47C4-8345-06842EEE5293}.Release|Any CPU.ActiveCfg = Release
 		{DF7D04FF-6D7D-4579-BC0C-75DFF65EDAD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF7D04FF-6D7D-4579-BC0C-75DFF65EDAD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF7D04FF-6D7D-4579-BC0C-75DFF65EDAD9}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -40,6 +40,8 @@ Imports R2Core.SecurityAlgorithmsManagement.SQLInjectionPrevention
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2Core.RFIDCardsManagement.Exceptions
 Imports R2Core.SMS
+Imports R2Core.SMS.SMSHandling
+Imports R2Core.SMS.SMSTypes
 
 Public Class R2Enums
 
@@ -1239,7 +1241,7 @@ Namespace SoftwareUserManagement
 
     Public MustInherit Class R2CoreSoftwareUserTypes
         Public Shared ReadOnly Property None As Int64 = 0
-        Public Shared ReadOnly Property General As Int64 = 1
+        Public Shared ReadOnly Property DesktopUser As Int64 = 1
         Public Shared ReadOnly Property SysAdmin As Int64 = 2
 
     End Class
@@ -1392,7 +1394,7 @@ Namespace SoftwareUserManagement
     End Class
 
     Public Class R2CoreSoftwareUserMobile
-        Public Sub New(YourMobileNumber)
+        Public Sub New(YourMobileNumber As String)
             SoftwareUserMobileNumber = YourMobileNumber
         End Sub
 
@@ -1525,13 +1527,16 @@ Namespace SoftwareUserManagement
                                           Where UserId=" & Ds.Tables(0).Rows(0).Item("UserId") & ""
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Connection.Close()
-                    Dim SMSSender As New R2CoreSMSSendRecive
-                    SMSSender.SendSms(New R2CoreStandardSMSStructure(Nothing, Ds.Tables(0).Rows(0).Item("MobileNumber"), VerificationCode, 1, Nothing, 1, Nothing, Nothing))
-                    Return InstanceSoftwareUser.GetNSSUser(Ds.Tables(0).Rows(0).Item("UserId"))
+                    SMSSendApplicationActivationCode(InstanceSoftwareUser.GetNSSUser(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("UserId"))), VerificationCode)
+                    Return InstanceSoftwareUser.GetNSSUser(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("UserId")))
                 Else
                     Throw New MobileNumberNotFoundException
                 End If
+            Catch ex As SendSMSApplicationActivationCodeFailedException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw ex
             Catch ex As MobileNumberNotFoundException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw ex
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
@@ -1817,6 +1822,36 @@ Namespace SoftwareUserManagement
             End Try
         End Function
 
+        Public Sub SendUserSecurity(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+            Try
+                Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                Dim LstUser = New List(Of R2CoreStandardSoftwareUserStructure) From {YourNSSSoftwareUser}
+                Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = YourNSSSoftwareUser.UserShenaseh, .Data2 = YourNSSSoftwareUser.UserPassword}}
+                Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, R2CoreSMSTypes.SoftwareUserSecurity, LstCreationData)
+                Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
+                If Not SMSResultAnalyze = String.Empty Then Throw New SendSMSSoftwareUserSecurityFailedException(SMSResultAnalyze)
+            Catch ex As SendSMSSoftwareUserSecurityFailedException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub SMSSendApplicationActivationCode(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourVerificationCode As String)
+            Try
+                Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                Dim LstUser = New List(Of R2CoreStandardSoftwareUserStructure) From {YourNSSSoftwareUser}
+                Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = YourVerificationCode}}
+                Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, R2CoreSMSTypes.ApplicationActivationCode, LstCreationData)
+                Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
+                If Not SMSResultAnalyze = String.Empty Then Throw New SendSMSApplicationActivationCodeFailedException(SMSResultAnalyze)
+            Catch ex As SendSMSApplicationActivationCodeFailedException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
     End Class
 
     Public Class R2CoreMClassSoftwareUsersManagement
@@ -2031,7 +2066,6 @@ Namespace SoftwareUserManagement
             End Property
         End Class
 
-
         Public Class SoftwareUserMobileNumberNotFoundException
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
@@ -2133,6 +2167,35 @@ Namespace SoftwareUserManagement
             End Property
         End Class
 
+        Public Class SendSMSSoftwareUserSecurityFailedException
+            Inherits ApplicationException
+
+            Private _Message As String
+            Public Sub New(YourMessage As String)
+                _Message = vbCrLf + YourMessage
+            End Sub
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "ارسال اس ام اس مشخصات کاربر با خطا مواجه شد" + _Message
+                End Get
+            End Property
+        End Class
+
+        Public Class SendSMSApplicationActivationCodeFailedException
+            Inherits ApplicationException
+
+            Private _Message As String
+            Public Sub New(YourMessage As String)
+                _Message = vbCrLf + YourMessage
+            End Sub
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "ارسال اس ام اس کدفعال سازی اپلیکیشن با خطا مواجه شد" + _Message
+                End Get
+            End Property
+        End Class
     End Namespace
 
 End Namespace
@@ -3105,6 +3168,14 @@ Namespace DateAndTimeManagement
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
         End Function
+        Public Function GetTickofTime(YourDateTime As R2StandardDateAndTimeStructure) As TimeSpan
+            Try
+                Return Date.ParseExact(YourDateTime.DateTimeMilladiFormated, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).TimeOfDay
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
+            End Try
+        End Function
+
         Public Function GetCurrentTickofTime() As TimeSpan
             Try
                 Return Date.ParseExact(GetCurrentDateTimeMilladiFormated, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture).TimeOfDay
@@ -3617,6 +3688,7 @@ Namespace LoggingManagement
         Public Shared ReadOnly Property Update As Int64 = 9
         Public Shared ReadOnly Property CameraError As Int64 = 10
         Public Shared ReadOnly Property TimeStamp As Int64 = 11
+        Public Shared ReadOnly Property SendSMSResult As Int64 = 67
     End Class
 
     Public Class R2CoreStandardLogTypeStructure
@@ -3741,7 +3813,8 @@ Namespace LoggingManagement
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New DatabaseManagement.R2PrimarySqlConnection).GetConnection()
             Try
-                CmdSql.CommandText = "insert into R2PrimaryLogging.dbo.TblLogging(logtype,sharh,Optional1,Optional2,Optional3,Optional4,Optional5,userid,dateshamsi,datetimemilladi) values(" & YourLog.LogType & ",'" & YourLog.Sharh & "','" & YourLog.Optional1 & "','" & YourLog.Optional2 & "','" & YourLog.Optional3 & "','" & YourLog.Optional4 & "','" & YourLog.Optional5 & "'," & YourLog.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "')"
+                Dim myCDT = _DateTime.GetCurrentDateTime
+                CmdSql.CommandText = "insert into R2PrimaryLogging.dbo.TblLogging(logtype,sharh,Optional1,Optional2,Optional3,Optional4,Optional5,userid,dateshamsi,datetimemilladi) values(" & YourLog.LogType & ",'" & YourLog.Sharh & "','" & YourLog.Optional1 & "','" & YourLog.Optional2 & "','" & YourLog.Optional3 & "','" & YourLog.Optional4 & "','" & YourLog.Optional5 & "'," & YourLog.UserId & ",'" & myCDT.DateShamsiFull & "','" & myCDT.DateTimeMilladiFormated & "')"
                 CmdSql.Connection.Open()
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
@@ -3824,6 +3897,7 @@ Namespace DesktopProcessesManagement
         Public Shared ReadOnly FrmcPersonnelAttendance As Int64 = 36
         Public Shared ReadOnly FrmcPersonnelEnterExitReport As Int64 = 37
         Public Shared ReadOnly FrmcPersonnelEnterExits As Int64 = 38
+        Public Shared ReadOnly FrmcSMSControllingMoneyWallet As Int64 = 73
     End Class
 
     Public Class R2StandardDesktopProcessStructure

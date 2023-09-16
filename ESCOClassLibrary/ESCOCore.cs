@@ -15,11 +15,25 @@ using R2Core.DateAndTimeManagement;
 using R2Core.DatabaseManagement;
 using R2Core.SoftwareUserManagement;
 using R2Core.SMS;
+using PayanehClassLibrary.SoftwareUsers;
+using R2Core.SMS.SMSHandling;
+using PayanehClassLibrary.SMS.SMSTypes;
+using ESCOCore.SMS.SMSTypes;
 
 namespace ESCOCore
 {
-    namespace SendSMS
+    namespace SMS
     {
+
+
+        namespace SMSTypes
+        {
+            public abstract class ESCOCoreSMSTypes : PayanehClassLibrarySMSTypes
+            {
+                public static readonly Int64 ESCOAnnoucedLoads = 1;
+            }
+        }
+
         public class ESCOCoreSendSMSStructure
         {
             public ESCOCoreSendSMSStructure()
@@ -81,10 +95,10 @@ namespace ESCOCore
 
                     //if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(), "Select Loads.nBarCode,Products.strGoodName, Count(*) as Jam from dbtransport.dbo.tbEnterExit as Turns Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID = Loads.nEstelamID Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode = Products.strGoodCode Where Turns.strExitDate = '" + TodayShamsiDate + "' and Turns.LoadPermissionStatus = 1 and (" + AHSGIdsSqlString + ") Group By Loads.nBarCode, Products.strGoodName", 300, ref DS).GetRecordsCount() == 0)
                     if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(), "Select Loads.nBarCode,Products.strGoodName, sum(Loads.nCarNumKol) as Jam from dbtransport.dbo.tbElam AS Loads Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode = Products.strGoodCode Where Loads.dDateElam = '" + TodayShamsiDate + "' and (LoadStatus <> 3 and LoadStatus <> 4 and LoadStatus <> 6) and (" + AHSGIdsSqlString + ") Group By Loads.nBarCode, Products.strGoodName", 300, ref DS).GetRecordsCount() == 0)
-                    { return string.Empty  ; }
+                    { return string.Empty; }
 
                     StringBuilder SB = new StringBuilder();
-                    SB.AppendLine(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle,4));
+                    //SB.AppendLine(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ApplicationDomainDisplayTitle, 4));
                     SB.AppendLine(TodayShamsiDate);
                     for (int loopx = 0; loopx <= DS.Tables[0].Rows.Count - 1; loopx++)
                     { SB.AppendLine(DS.Tables[0].Rows[loopx]["strGoodName"].ToString() + " - " + DS.Tables[0].Rows[loopx]["Jam"].ToString()); }
@@ -129,7 +143,7 @@ namespace ESCOCore
                     if (WasSendedSMSToday())
                     { return; }
 
-                    var Msg =GetAnnouncedLoadsReport();
+                    var Msg = GetAnnouncedLoadsReport();
                     //درج رکورد
                     SqlCmd.CommandText = "Insert Into ESCO.dbo.TblMessages(Msg1,Msg2,DateTimeMilladi,ShamsiDate,Time,UserId,SentStatus) Values('" + Msg + "','','" + _DateTime.GetCurrentDateTimeMilladiFormated() + "','" + _DateTime.GetCurrentDateShamsiFull() + "','" + _DateTime.GetCurrentTime() + "'," + YourNSSSoftwareUser.UserId + ",1)";
                     SqlCmd.Connection.Open();
@@ -137,22 +151,28 @@ namespace ESCOCore
                     SqlCmd.Connection.Close();
 
                     //ارسال اس ام اس
-                    if (!(Msg ==string.Empty))
+                    if (!(Msg == string.Empty))
                     {
-                        var TargetMobileNumbers = InstanceConfiguration.GetConfigString(ESCOCoreConfigurations.ESCO, 3).Split('-');
-                        R2CoreSMSSendRecive SMSSender = new R2CoreSMSSendRecive();
-                        for (int Loopx = 0; Loopx <= TargetMobileNumbers.Length - 1; Loopx++)
-                        { SMSSender.SendSms(new R2CoreStandardSMSStructure(Int64.MinValue, TargetMobileNumbers[Loopx], Msg, 6, _DateTime.GetCurrentDateTimeMilladi(), true, null, null)); }
+                        var TargetUsers = InstanceConfiguration.GetConfigString(ESCOCoreConfigurations.ESCO, 3).Split('-');
+                        var LstUsers = new List<R2CoreStandardSoftwareUserStructure>();
+                        var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                        for (int LoopxUsers = 0; LoopxUsers <= TargetUsers.Length - 1; LoopxUsers++)
+                        { LstUsers.Add(InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64( TargetUsers[LoopxUsers]))); }
+                        var ESCOData = new SMSCreationData();
+                        ESCOData.Data1 = Msg;
+                        var InstanceSMSHandling = new R2CoreSMSHandlingManager();
+                        var SMSResult = InstanceSMSHandling.SendSMS(LstUsers, ESCOCoreSMSTypes.ESCOAnnoucedLoads, InstanceSMSHandling.RepeatSMSCreationData(ESCOData, LstUsers.Count));
+                        var SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult);
+                        if (!(SMSResultAnalyze == String.Empty))
+                        { throw new ESCOCoreSendSMSFailedException(SMSResultAnalyze); }
                     }
-
                 }
+                catch (ESCOCoreSendSMSFailedException ex)
+                { if (SqlCmd.Connection.State != ConnectionState.Closed) { SqlCmd.Connection.Close(); } throw ex; }
                 catch (ESCOCoreSendSMSISNotActiveException ex)
                 { /*No Activity Needed*/}
                 catch (Exception ex)
-                {
-                    if (SqlCmd.Connection.State != ConnectionState.Closed) { SqlCmd.Connection.Close(); }
-                    throw ex;
-                }
+                { if (SqlCmd.Connection.State != ConnectionState.Closed) { SqlCmd.Connection.Close(); } throw ex; }
             }
 
         }
@@ -166,6 +186,14 @@ namespace ESCOCore
 
     }
 
+    namespace SoftwareUsers
+    {
+        public abstract class ESCOCoreSoftwareUserTypes : PayanehClassLibrarySoftwareUserTypes
+        {
+            public static readonly Int64 ESCO = 9;
+        }
+    }
+
     namespace Exceptions
     {
         public class ESCOCoreSendSMSISNotActiveException : ApplicationException
@@ -176,8 +204,20 @@ namespace ESCOCore
             }
         }
 
-    }
+        public class ESCOCoreSendSMSFailedException : ApplicationException
+        {
+            private string _Message;
+            public ESCOCoreSendSMSFailedException(string YourMessage)
+            { _Message = "\r\n" + YourMessage; }
 
+            public override string Message
+            {
+                get { return "ارسال اس ام اس با مشکل مواجه شد" + _Message; }
+            }
+        }
+
+    }
 }
+
 
 

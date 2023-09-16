@@ -60,6 +60,9 @@ Imports R2Core.Email
 Imports R2CoreTransportationAndLoadNotification.DriverSelfDeclaration
 Imports R2CoreTransportationAndLoadNotification.CalendarManagement.SpecializedPersianCalendar
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
+Imports R2CoreParkingSystem.SMS.SMSControllingMoneyWallet
+Imports PayanehClassLibrary.TruckersAssociationControllingMoneyWallet
+Imports R2Core.SMS.SMSOwners
 
 Public Class Form3
     Private _DateTime As R2DateTime = New R2DateTime
@@ -594,9 +597,58 @@ Public Class Form3
     End Sub
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
+
+
         Try
-            Dim InstanceSiteIsBusy = New R2Core.SiteIsBusy.R2CoreSiteIsBusyManager
-            MessageBox.Show(InstanceSiteIsBusy.GetSiteIsBusy())
+
+            Try
+                Dim InstanceSMSOwners = New R2CoreMClassSMSOwnersManager
+                InstanceSMSOwners.SendSMSOwnersPleaseCharge()
+            Catch ex As Exception
+                EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSOwners.SendSMSOwnersPleaseCharge:" + ex.Message.ToString, EventLogEntryType.Error)
+            End Try
+
+            'ثبت اکانتینگ کیف پول کنترلی اس ام اس
+            'Try
+            '    Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            '    R2CoreParkingSystemMClassSMSControllingMoneyWalletManagement.ControllingMoneyWalletAccounting(InstanceSoftwareUsers.GetNSSSystemUser())
+            'Catch ex As Exception
+            '    EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSControllingMoneyWallet.ControllingMoneyWalletAccounting:" + ex.Message.ToString, EventLogEntryType.Error)
+            'End Try
+
+            'Try
+            '    Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            '    Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
+            '    InstanceCarTruckNobat.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser())
+            'Catch ex As Exception
+            '    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TurnsCancellation:" + ex.Message.ToString, EventLogEntryType.Error)
+            'End Try
+
+            'Dim x As New R2Core.SMS.SMSSendRecive.R2CoreSMSRecivingManager
+            'x.Reciving()
+
+            'Dim Lst = New List(Of R2Core.SoftwareUserManagement.R2CoreStandardSoftwareUserStructure) From {R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(21)}
+            'Dim smsresult = x.SendSMS(Lst, R2Core.SMS.SMSTypes.R2CoreSMSTypes.PleaseCharge, New List(Of SMSHandling.SMSCreationData) From {New SMSHandling.SMSCreationData()})
+            'MessageBox.Show(x.GetSMSResultAnalyze(smsresult))
+            'Dim x = New R2CoreParkingSystem.SMS.SMSOwners.R2CoreParkingSystemMClassSMSOwnersManager
+            'x.ActivateSMSOwner(R2Core.SoftwareUserManagement., R2CoreMClassSoftwareUsersManagement.GetNSSUser(21))
+            'PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderSaleOfCommissionSMSReport(New R2StandardDateAndTimeStructure("2023-01-01 00:00:00", "1402/01/01", "00:00:00"), New R2StandardDateAndTimeStructure("2023-01-01 00:00:00", "1402/06/31", "00:00:00"))
+
+            'R2CoreParkingSystemMClassSMSControllingMoneyWalletManagement.ControllingMoneyWalletAccounting(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+
+            'Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+            'InstanceLoadAllocation.SendLoadAllocationsLoadPermissionRegisteringFailedSMS()
+            'X.SendSMSMSCOSuccess()
+            'X.SendSMSofAnnouncedLoads(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+            'Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            'Dim x As New R2Core.SMS.SMSOwners.R2CoreMClassSMSOwnersManager
+            'x.SendSMSOwnersPleaseCharge()
+            'Dim X1 = New List(Of R2CoreStandardSoftwareUserStructure) From {R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(21)}
+            'Dim X2 = New List(Of SMSHandling.SMSCreationData) From {New SMSHandling.SMSCreationData() With {.Data1 = 123}}
+            'InstanceSoftwareUsers.SMSSendApplicationActivationCode(InstanceSoftwareUsers.GetNSSUser(21), "333")
+            'x.SendSMS(X1, 3, X2)
+            'Dim InstanceSiteIsBusy = New R2Core.SiteIsBusy.R2CoreSiteIsBusyManager
+            'MessageBox.Show(InstanceSiteIsBusy.GetSiteIsBusy())
 
             'Dim InstanceLoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
             'Dim InstanceSpecializedPersianCalendar As New R2CoreTransportationAndLoadNotificationSpecializedPersianCalendarManager
@@ -706,7 +758,6 @@ Public Class Form3
 
     Private Sub Button19_Click(sender As Object, e As EventArgs) Handles Button19.Click
         Try
-            R2Core.SMS.R2CoreSMSMClassSMSDomainManagement.SMSDomainSendRecieved()
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
@@ -722,7 +773,9 @@ Public Class Form3
 
     Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
         Try
-            Dim x As New MSCOCoreAnnouncementforTransportCompaniesManager
+            Dim x As New PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManager
+            x.TurnsCancellation(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            'Dim x As New MSCOCoreAnnouncementforTransportCompaniesManager
             'x.AnnouncementforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -732,7 +785,6 @@ Public Class Form3
     Private Sub Button13_Click_1(sender As Object, e As EventArgs) Handles Button13.Click
         Try
             Dim x As New R2CoreTransportationAndLoadNotificationInstanceLoadPermissionPrintingManager
-            x.PrintLoadPermission(TextBoxConcat1.Text.Trim)
 
         Catch ex As Exception
             MessageBox.Show(ex.Message)

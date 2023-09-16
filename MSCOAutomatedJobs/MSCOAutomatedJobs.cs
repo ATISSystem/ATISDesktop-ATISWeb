@@ -21,6 +21,7 @@ namespace MSCOAutomatedJobs
     {
         private System.Timers.Timer _AutomatedJobsTimer = new System.Timers.Timer();
         private R2DateTime _DateTime;
+        private Boolean _FailStatus = true;
 
         public MSCOAutomatedJobs()
         {
@@ -36,12 +37,12 @@ namespace MSCOAutomatedJobs
                 { }
                 else
                 { EventLog.CreateEventSource("MSCOAutomatedJobs", "MSCOAutomatedJobs"); }
-                EventLog.WriteEntry("MSCOAutomatedJobs", "MSCOAutomatedJobs Start ...", EventLogEntryType.SuccessAudit);
-                _DateTime = new R2DateTime();
-                R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
-                _AutomatedJobsTimer.Interval = R2CoreMClassConfigurationManagement.GetConfigInt64(MSCOCoreConfigurations.MSCO, 1) * 1000 * 60;
+
+                _AutomatedJobsTimer.Interval = 1000;
                 _AutomatedJobsTimer.Enabled = true;
                 _AutomatedJobsTimer.Start();
+
+                EventLog.WriteEntry("MSCOAutomatedJobs", "MSCOAutomatedJobs Start ...", EventLogEntryType.SuccessAudit);
             }
             catch (Exception ex)
             { EventLog.WriteEntry("MSCOAutomatedJobs", "OnStart()." + ex.Message.ToString(), EventLogEntryType.Error); }
@@ -67,6 +68,27 @@ namespace MSCOAutomatedJobs
                 var InstanceLogging = new R2CoreInstanceLoggingManager();
                 _AutomatedJobsTimer.Enabled = false;
                 _AutomatedJobsTimer.Stop();
+
+                //خواندن اینتروال سرویس از بانک
+                while (_FailStatus)
+                {
+                    try
+                    {
+                        var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                        _DateTime = new R2DateTime();
+                        R2CoreMClassSoftwareUsersManagement.AuthenticationUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
+                        _AutomatedJobsTimer.Interval = Convert.ToInt64(InstanceConfiguration.GetConfig(MSCOCoreConfigurations.MSCO, 1, 0)) * 1000 * 60;
+                        _FailStatus = false;
+                        EventLog.WriteEntry("MSCOAutomatedJobs", "MSCOAutomatedJobs.Interval=" + _AutomatedJobsTimer.Interval.ToString(), EventLogEntryType.SuccessAudit);
+                    }
+                    catch (Exception ex)
+                    {
+                        _FailStatus = true;
+                        EventLog.WriteEntry("MSCOAutomatedJobs", "MSCOAutomatedJobs.Interval Setting Failed", EventLogEntryType.SuccessAudit);
+                        System.Threading.Thread.Sleep(15000);
+                    }
+                }
+
                 //ایجاد فایل های اعلام بار شرکت ها 
                 try
                 {

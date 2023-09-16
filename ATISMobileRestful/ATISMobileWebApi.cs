@@ -710,7 +710,7 @@ namespace ATISMobileRestful
             public static Int64 WebApiClientGetDriverSelfDeclarations = 64;
             public static Int64 WebApiClientSetDriverSelfDeclarations = 65;
             public static Int64 WebApiClientSaveDSDImage = 66;
-            
+            public static Int64 WebApiClientIsVirtualTurnsActive = 68;
         }
 
     }

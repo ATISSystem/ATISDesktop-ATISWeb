@@ -23,16 +23,17 @@ Partial Class UCTransportCompanyManipulation
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim CBlendItems7 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems1 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems2 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems3 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems4 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems5 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
-        Dim CBlendItems6 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UCTransportCompanyManipulation))
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PnlOutter = New System.Windows.Forms.Panel()
         Me.PnlInner = New System.Windows.Forms.Panel()
+        Me.UcActivateUnActivateSMSOwner = New R2CoreParkingSystem.UCActivateUnActivateSMSOwner()
         Me.CButtonViewUserPassword = New CButtonLib.CButton()
         Me.CButtonSendSMSUserPassword = New CButtonLib.CButton()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -44,6 +45,8 @@ Partial Class UCTransportCompanyManipulation
         Me.UcNumberTCId = New R2CoreGUI.UCNumber()
         Me.UcSearcherTransportCompanies = New R2CoreTransportationAndLoadNotification.UCSearcherTransportCompanies()
         Me.Panel1 = New UI.Glass.Panel()
+        Me.UcPersianTextBoxEmailAddress = New R2CoreGUI.UCPersianTextBox()
+        Me.UcLabelSherkatHamloNaghl6 = New R2CoreTransportationAndLoadNotification.UCLabelSherkatHamloNaghl()
         Me.UcLabelSherkatHamloNaghl1 = New R2CoreTransportationAndLoadNotification.UCLabelSherkatHamloNaghl()
         Me.UcPersianTextBoxTCOrganizationCode = New R2CoreGUI.UCPersianTextBox()
         Me.UcLabelSherkatHamloNaghl2 = New R2CoreTransportationAndLoadNotification.UCLabelSherkatHamloNaghl()
@@ -58,8 +61,6 @@ Partial Class UCTransportCompanyManipulation
         Me.UcPersianTextBoxManagerMobileNumber = New R2CoreGUI.UCPersianTextBox()
         Me.UcSearcherCities = New R2CoreTransportationAndLoadNotification.UCSearcherLoadTargets()
         Me.UcLabelSherkatHamloNaghl5 = New R2CoreTransportationAndLoadNotification.UCLabelSherkatHamloNaghl()
-        Me.UcPersianTextBoxEmailAddress = New R2CoreGUI.UCPersianTextBox()
-        Me.UcLabelSherkatHamloNaghl6 = New R2CoreTransportationAndLoadNotification.UCLabelSherkatHamloNaghl()
         Me.PnlMain.SuspendLayout()
         Me.PnlOutter.SuspendLayout()
         Me.PnlInner.SuspendLayout()
@@ -90,6 +91,7 @@ Partial Class UCTransportCompanyManipulation
         'PnlInner
         '
         Me.PnlInner.BackColor = System.Drawing.Color.White
+        Me.PnlInner.Controls.Add(Me.UcActivateUnActivateSMSOwner)
         Me.PnlInner.Controls.Add(Me.CButtonViewUserPassword)
         Me.PnlInner.Controls.Add(Me.CButtonSendSMSUserPassword)
         Me.PnlInner.Controls.Add(Me.Label2)
@@ -107,18 +109,28 @@ Partial Class UCTransportCompanyManipulation
         Me.PnlInner.Size = New System.Drawing.Size(811, 175)
         Me.PnlInner.TabIndex = 0
         '
+        'UcActivateUnActivateSMSOwner
+        '
+        Me.UcActivateUnActivateSMSOwner.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.UcActivateUnActivateSMSOwner.BackColor = System.Drawing.Color.Transparent
+        Me.UcActivateUnActivateSMSOwner.Location = New System.Drawing.Point(21, 145)
+        Me.UcActivateUnActivateSMSOwner.Name = "UcActivateUnActivateSMSOwner"
+        Me.UcActivateUnActivateSMSOwner.Size = New System.Drawing.Size(178, 22)
+        Me.UcActivateUnActivateSMSOwner.TabIndex = 32
+        Me.UcActivateUnActivateSMSOwner.UCNSSCurrent = Nothing
+        '
         'CButtonViewUserPassword
         '
         Me.CButtonViewUserPassword.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems1.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems1.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonViewUserPassword.ColorFillBlend = CBlendItems1
+        CBlendItems7.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems7.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonViewUserPassword.ColorFillBlend = CBlendItems7
         Me.CButtonViewUserPassword.Corners.LowerRight = 10
         Me.CButtonViewUserPassword.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonViewUserPassword.DesignerSelected = False
         Me.CButtonViewUserPassword.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButtonViewUserPassword.ImageIndex = 0
-        Me.CButtonViewUserPassword.Location = New System.Drawing.Point(216, 145)
+        Me.CButtonViewUserPassword.Location = New System.Drawing.Point(405, 145)
         Me.CButtonViewUserPassword.Name = "CButtonViewUserPassword"
         Me.CButtonViewUserPassword.Size = New System.Drawing.Size(153, 22)
         Me.CButtonViewUserPassword.TabIndex = 30
@@ -127,15 +139,15 @@ Partial Class UCTransportCompanyManipulation
         'CButtonSendSMSUserPassword
         '
         Me.CButtonSendSMSUserPassword.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems2.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems2.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonSendSMSUserPassword.ColorFillBlend = CBlendItems2
+        CBlendItems1.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems1.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonSendSMSUserPassword.ColorFillBlend = CBlendItems1
         Me.CButtonSendSMSUserPassword.Corners.LowerRight = 10
         Me.CButtonSendSMSUserPassword.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonSendSMSUserPassword.DesignerSelected = False
         Me.CButtonSendSMSUserPassword.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButtonSendSMSUserPassword.ImageIndex = 0
-        Me.CButtonSendSMSUserPassword.Location = New System.Drawing.Point(18, 145)
+        Me.CButtonSendSMSUserPassword.Location = New System.Drawing.Point(207, 145)
         Me.CButtonSendSMSUserPassword.Name = "CButtonSendSMSUserPassword"
         Me.CButtonSendSMSUserPassword.Size = New System.Drawing.Size(193, 22)
         Me.CButtonSendSMSUserPassword.TabIndex = 26
@@ -167,9 +179,9 @@ Partial Class UCTransportCompanyManipulation
         '
         'CButtonNew
         '
-        CBlendItems3.iColor = New System.Drawing.Color() {System.Drawing.Color.DarkGray, System.Drawing.Color.Black, System.Drawing.Color.DimGray}
-        CBlendItems3.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonNew.ColorFillBlend = CBlendItems3
+        CBlendItems2.iColor = New System.Drawing.Color() {System.Drawing.Color.DarkGray, System.Drawing.Color.Black, System.Drawing.Color.DimGray}
+        CBlendItems2.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonNew.ColorFillBlend = CBlendItems2
         Me.CButtonNew.Corners.LowerRight = 10
         Me.CButtonNew.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonNew.DesignerSelected = False
@@ -183,9 +195,9 @@ Partial Class UCTransportCompanyManipulation
         '
         'CButtonDelete
         '
-        CBlendItems4.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems4.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonDelete.ColorFillBlend = CBlendItems4
+        CBlendItems3.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems3.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonDelete.ColorFillBlend = CBlendItems3
         Me.CButtonDelete.Corners.LowerRight = 10
         Me.CButtonDelete.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonDelete.DesignerSelected = False
@@ -199,9 +211,9 @@ Partial Class UCTransportCompanyManipulation
         '
         'CButtonEdit
         '
-        CBlendItems5.iColor = New System.Drawing.Color() {System.Drawing.Color.DarkSlateBlue, System.Drawing.Color.DarkBlue, System.Drawing.Color.MediumBlue}
-        CBlendItems5.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonEdit.ColorFillBlend = CBlendItems5
+        CBlendItems4.iColor = New System.Drawing.Color() {System.Drawing.Color.DarkSlateBlue, System.Drawing.Color.DarkBlue, System.Drawing.Color.MediumBlue}
+        CBlendItems4.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonEdit.ColorFillBlend = CBlendItems4
         Me.CButtonEdit.Corners.LowerRight = 10
         Me.CButtonEdit.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonEdit.DesignerSelected = False
@@ -215,9 +227,9 @@ Partial Class UCTransportCompanyManipulation
         '
         'CButtonRegister
         '
-        CBlendItems6.iColor = New System.Drawing.Color() {System.Drawing.Color.ForestGreen, System.Drawing.Color.DarkGreen, System.Drawing.Color.Olive}
-        CBlendItems6.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonRegister.ColorFillBlend = CBlendItems6
+        CBlendItems5.iColor = New System.Drawing.Color() {System.Drawing.Color.ForestGreen, System.Drawing.Color.DarkGreen, System.Drawing.Color.Olive}
+        CBlendItems5.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonRegister.ColorFillBlend = CBlendItems5
         Me.CButtonRegister.Corners.LowerRight = 10
         Me.CButtonRegister.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonRegister.DesignerSelected = False
@@ -262,6 +274,7 @@ Partial Class UCTransportCompanyManipulation
         Me.UcSearcherTransportCompanies.Size = New System.Drawing.Size(203, 31)
         Me.UcSearcherTransportCompanies.TabIndex = 3
         Me.UcSearcherTransportCompanies.UCBackColor = System.Drawing.Color.White
+        Me.UcSearcherTransportCompanies.UCFillFirstTime = False
         Me.UcSearcherTransportCompanies.UCFontList = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcSearcherTransportCompanies.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcSearcherTransportCompanies.UCForeColor = System.Drawing.Color.Black
@@ -301,6 +314,43 @@ Partial Class UCTransportCompanyManipulation
         Me.Panel1.Radius = 5.0!
         Me.Panel1.Size = New System.Drawing.Size(805, 138)
         Me.Panel1.TabIndex = 31
+        '
+        'UcPersianTextBoxEmailAddress
+        '
+        Me.UcPersianTextBoxEmailAddress.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBoxEmailAddress.BackColor = System.Drawing.Color.Transparent
+        Me.UcPersianTextBoxEmailAddress.Location = New System.Drawing.Point(10, 90)
+        Me.UcPersianTextBoxEmailAddress.MaxCharacterReached = CType(50, Short)
+        Me.UcPersianTextBoxEmailAddress.Name = "UcPersianTextBoxEmailAddress"
+        Me.UcPersianTextBoxEmailAddress.Size = New System.Drawing.Size(389, 28)
+        Me.UcPersianTextBoxEmailAddress.TabIndex = 30
+        Me.UcPersianTextBoxEmailAddress.UCBackColor = System.Drawing.Color.White
+        Me.UcPersianTextBoxEmailAddress.UCBorder = True
+        Me.UcPersianTextBoxEmailAddress.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcPersianTextBoxEmailAddress.UCEnable = True
+        Me.UcPersianTextBoxEmailAddress.UCFont = New System.Drawing.Font("IRMehr", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcPersianTextBoxEmailAddress.UCForeColor = System.Drawing.Color.Black
+        Me.UcPersianTextBoxEmailAddress.UCMultiLine = False
+        Me.UcPersianTextBoxEmailAddress.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
+        Me.UcPersianTextBoxEmailAddress.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.UcPersianTextBoxEmailAddress.UCValue = ""
+        '
+        'UcLabelSherkatHamloNaghl6
+        '
+        Me.UcLabelSherkatHamloNaghl6._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabelSherkatHamloNaghl6._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabelSherkatHamloNaghl6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcLabelSherkatHamloNaghl6.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabelSherkatHamloNaghl6.Location = New System.Drawing.Point(405, 86)
+        Me.UcLabelSherkatHamloNaghl6.Name = "UcLabelSherkatHamloNaghl6"
+        Me.UcLabelSherkatHamloNaghl6.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabelSherkatHamloNaghl6.Size = New System.Drawing.Size(76, 33)
+        Me.UcLabelSherkatHamloNaghl6.TabIndex = 31
+        Me.UcLabelSherkatHamloNaghl6.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabelSherkatHamloNaghl6.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabelSherkatHamloNaghl6.UCForeColor = System.Drawing.Color.Black
+        Me.UcLabelSherkatHamloNaghl6.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.UcLabelSherkatHamloNaghl6.UCValue = "ایمیل شرکت"
         '
         'UcLabelSherkatHamloNaghl1
         '
@@ -521,6 +571,7 @@ Partial Class UCTransportCompanyManipulation
         Me.UcSearcherCities.Size = New System.Drawing.Size(237, 31)
         Me.UcSearcherCities.TabIndex = 21
         Me.UcSearcherCities.UCBackColor = System.Drawing.Color.White
+        Me.UcSearcherCities.UCFillFirstTime = False
         Me.UcSearcherCities.UCFontList = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcSearcherCities.UCFontSearch = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcSearcherCities.UCForeColor = System.Drawing.Color.Black
@@ -546,43 +597,6 @@ Partial Class UCTransportCompanyManipulation
         Me.UcLabelSherkatHamloNaghl5.UCForeColor = System.Drawing.Color.Black
         Me.UcLabelSherkatHamloNaghl5.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.UcLabelSherkatHamloNaghl5.UCValue = "شماره موبایل مدیر عامل"
-        '
-        'UcPersianTextBoxEmailAddress
-        '
-        Me.UcPersianTextBoxEmailAddress.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcPersianTextBoxEmailAddress.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxEmailAddress.Location = New System.Drawing.Point(10, 90)
-        Me.UcPersianTextBoxEmailAddress.MaxCharacterReached = CType(50, Short)
-        Me.UcPersianTextBoxEmailAddress.Name = "UcPersianTextBoxEmailAddress"
-        Me.UcPersianTextBoxEmailAddress.Size = New System.Drawing.Size(389, 28)
-        Me.UcPersianTextBoxEmailAddress.TabIndex = 30
-        Me.UcPersianTextBoxEmailAddress.UCBackColor = System.Drawing.Color.White
-        Me.UcPersianTextBoxEmailAddress.UCBorder = True
-        Me.UcPersianTextBoxEmailAddress.UCBorderColor = System.Drawing.Color.DarkGray
-        Me.UcPersianTextBoxEmailAddress.UCEnable = True
-        Me.UcPersianTextBoxEmailAddress.UCFont = New System.Drawing.Font("IRMehr", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcPersianTextBoxEmailAddress.UCForeColor = System.Drawing.Color.Black
-        Me.UcPersianTextBoxEmailAddress.UCMultiLine = False
-        Me.UcPersianTextBoxEmailAddress.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
-        Me.UcPersianTextBoxEmailAddress.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.UcPersianTextBoxEmailAddress.UCValue = ""
-        '
-        'UcLabelSherkatHamloNaghl6
-        '
-        Me.UcLabelSherkatHamloNaghl6._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabelSherkatHamloNaghl6._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabelSherkatHamloNaghl6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcLabelSherkatHamloNaghl6.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelSherkatHamloNaghl6.Location = New System.Drawing.Point(405, 86)
-        Me.UcLabelSherkatHamloNaghl6.Name = "UcLabelSherkatHamloNaghl6"
-        Me.UcLabelSherkatHamloNaghl6.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelSherkatHamloNaghl6.Size = New System.Drawing.Size(76, 33)
-        Me.UcLabelSherkatHamloNaghl6.TabIndex = 31
-        Me.UcLabelSherkatHamloNaghl6.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabelSherkatHamloNaghl6.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabelSherkatHamloNaghl6.UCForeColor = System.Drawing.Color.Black
-        Me.UcLabelSherkatHamloNaghl6.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.UcLabelSherkatHamloNaghl6.UCValue = "ایمیل شرکت"
         '
         'UCTransportCompanyManipulation
         '
@@ -633,4 +647,5 @@ Partial Class UCTransportCompanyManipulation
     Friend WithEvents CButtonRegister As CButtonLib.CButton
     Friend WithEvents UcPersianTextBoxEmailAddress As R2CoreGUI.UCPersianTextBox
     Friend WithEvents UcLabelSherkatHamloNaghl6 As UCLabelSherkatHamloNaghl
+    Friend WithEvents UcActivateUnActivateSMSOwner As R2CoreParkingSystem.UCActivateUnActivateSMSOwner
 End Class

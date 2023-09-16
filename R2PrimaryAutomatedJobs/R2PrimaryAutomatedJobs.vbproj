@@ -126,5 +126,11 @@
     </None>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\R2CoreParkingSystem\R2CoreParkingSystem.vbproj">
+      <Project>{68ee9753-9b39-4d0b-bfe5-0f941a5f183c}</Project>
+      <Name>R2CoreParkingSystem</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
