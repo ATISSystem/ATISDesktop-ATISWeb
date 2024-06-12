@@ -52,7 +52,7 @@ namespace ATISWeb.ReportsManagement
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + "123" + "');", true);
                 WCChangeBtnViewReportVisablity();
                 var InstanceTransportTarrifsParameters = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager();
-                var Lst = PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.PayanehClassLibraryRegisteredAndReleasedLoads(0, 0, Int64.MinValue, new R2StandardDateAndTimeStructure(DateTime.Now, TxtDateShamsi1.Text, "00:00:00"), new R2StandardDateAndTimeStructure(DateTime.Now, TxtDateShamsi2.Text, "00:00:00"), Int64.MinValue, Int64.MinValue);
+                var Lst = PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.PayanehClassLibraryRegisteredAndReleasedLoads(0, 0, Int64.MinValue, new R2StandardDateAndTimeStructure(DateTime.Now, TxtDateShamsi1.Text, "00:00:00"), new R2StandardDateAndTimeStructure(DateTime.Now, TxtDateShamsi2.Text, "23:59:59"), Int64.MinValue, Int64.MinValue);
                 if (Lst.Count == 0)
                 { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','گزارید');", true); WCChangeBtnViewReportVisablity(); ; return; }
                 while (TblViewReport.Rows.Count > 1) TblViewReport.Rows.RemoveAt(1);

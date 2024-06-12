@@ -83,12 +83,14 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                         var NSSTrafficCard = InstanceTrafficCards.GetNSSTerafficCard(NSSSoftwareUser);
                         Int64 CurrentCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
                         InstanceMoneyWallets.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.AddMoney, NSSPaymentRequest.Amount, R2CoreParkingSystemAccountings.ChargeType, NSSSoftwareUser);
-                        if (NSSSoftwareUser.UserTypeId == R2CoreParkingSystemSoftwareUserTypes.Driver)
-                        { InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSSystemUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime())); }
-                        else if(NSSSoftwareUser.UserTypeId == R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TransportCompany )
-                        { InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSVirtualChargingSoftwareUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime())); }
+
+
+                        if ((NSSPaymentRequest.Amount > 500000))
+                        { InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSSelfGoverningChargingSoftwareUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime())); }
                         else
-                        { throw new WebApiClientPaymentVerificationException("PaymentVerificationLocation3"); }
+                        { InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSSystemUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime())); }
+
+
                         Int64 LastCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
                         ViewBag.IsSuccess = true; ViewBag.RefId = NSSPaymentRequest.RefId;
                         ViewBag.Message1 = NSSTrafficCard.CardNo + "  شاخص کیف پول ";

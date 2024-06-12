@@ -95,6 +95,8 @@ Partial Class UCUCEnterExitCollection
         '
         'UcLabelTop
         '
+        Me.UcLabelTop._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabelTop._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelTop.BackColor = System.Drawing.Color.DodgerBlue
         Me.UcLabelTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.UcLabelTop.Location = New System.Drawing.Point(0, 0)

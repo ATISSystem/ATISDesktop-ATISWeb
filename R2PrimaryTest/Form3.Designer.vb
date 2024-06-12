@@ -209,7 +209,7 @@ Partial Class Form3
         Me.Button11.Name = "Button11"
         Me.Button11.Size = New System.Drawing.Size(133, 31)
         Me.Button11.TabIndex = 15
-        Me.Button11.Text = "SmartCard test"
+        Me.Button11.Text = "تست ابطال گروهی نوبت ها"
         Me.Button11.UseVisualStyleBackColor = True
         '
         'Button12
@@ -218,7 +218,7 @@ Partial Class Form3
         Me.Button12.Name = "Button12"
         Me.Button12.Size = New System.Drawing.Size(133, 31)
         Me.Button12.TabIndex = 16
-        Me.Button12.Text = "SmartCard test"
+        Me.Button12.Text = "خوداظهاری"
         Me.Button12.UseVisualStyleBackColor = True
         '
         'Button16

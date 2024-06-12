@@ -5,6 +5,7 @@ Imports System.Windows.Forms
 
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions
+Imports R2CoreTransportationAndLoadNotification.DriverSelfDeclaration.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
@@ -170,7 +171,8 @@ Public Class UCLoadPermissionCancellation
                 OrElse TypeOf ex Is TruckTotalLoadPermissionReachedException _
                 OrElse TypeOf ex Is LastLoadPermissionIssuedforThisTurnException _
                 OrElse TypeOf ex Is RequesterCanNotAllocateSedimentedLoadInTimeRangeException _
-                OrElse TypeOf ex Is LoadAllocationTimeNotReachedException
+                OrElse TypeOf ex Is LoadAllocationTimeNotReachedException _
+                OrElse TypeOf ex Is DSDsNotFoundException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)
         Catch ex As PrimaryTurnNotFoundException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me, False)

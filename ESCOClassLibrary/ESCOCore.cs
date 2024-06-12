@@ -161,7 +161,7 @@ namespace ESCOCore
                         var ESCOData = new SMSCreationData();
                         ESCOData.Data1 = Msg;
                         var InstanceSMSHandling = new R2CoreSMSHandlingManager();
-                        var SMSResult = InstanceSMSHandling.SendSMS(LstUsers, ESCOCoreSMSTypes.ESCOAnnoucedLoads, InstanceSMSHandling.RepeatSMSCreationData(ESCOData, LstUsers.Count));
+                        var SMSResult = InstanceSMSHandling.SendSMS(LstUsers, ESCOCoreSMSTypes.ESCOAnnoucedLoads, InstanceSMSHandling.RepeatSMSCreationData(ESCOData, LstUsers.Count), false);
                         var SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult);
                         if (!(SMSResultAnalyze == String.Empty))
                         { throw new ESCOCoreSendSMSFailedException(SMSResultAnalyze); }

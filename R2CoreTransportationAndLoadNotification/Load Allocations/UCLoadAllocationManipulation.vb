@@ -5,6 +5,7 @@ Imports System.Reflection
 
 Imports R2Core.DateAndTimeManagement
 Imports R2CoreGUI
+Imports R2CoreTransportationAndLoadNotification.DriverSelfDeclaration.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
@@ -112,6 +113,8 @@ Public Class UCLoadAllocationManipulation
             UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(LAId))
             RaiseEvent UCLoadAllocationRegisteredEvent(UCNSSCurrent)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تخصیص بارانجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As DSDsNotFoundException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LastLoadPermissionIssuedforThisTurnException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadAllocationRegisteringReachedEndTimeException

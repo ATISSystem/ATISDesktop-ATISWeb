@@ -105,6 +105,7 @@ Public Class R2PrimaryAutomatedJobs
             Try
                 Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
                 InstanceSMSHandling.RecivedSMSHandling(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+                Threading.Thread.Sleep(10000)
             Catch ex As Exception
                 EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSHandling.RecivedSMSHandling:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try

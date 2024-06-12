@@ -26,6 +26,14 @@ using System.Windows.Forms;
 
 using ZibalGateway;
 using Newtonsoft.Json;
+using ESCOCore.Exceptions;
+using ESCOCore.SMS;
+using R2Core.SecurityAlgorithmsManagement.AESAlgorithms;
+using R2Core.ConfigurationManagement;
+using R2Core.DateAndTimeManagement;
+using R2CoreParkingSystem.MoneyWalletChargeManagement;
+using R2CoreTransportationAndLoadNotification.TerraficCardsManagement;
+using R2Core.MoneyWallet.PaymentRequests;
 
 namespace R2PrimaryTestCSharp
 {
@@ -43,14 +51,45 @@ namespace R2PrimaryTestCSharp
         {
             try
             {
-                var InstanceSoftwareUsers = new R2Core.SoftwareUserManagement.R2CoreInstanseSoftwareUsersManager();
-                
-                var NSSSoftwareuser = InstanceSoftwareUsers.GetNSSUser(21);
-                var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
-                var InstanceDriverSelfDeclaration = new R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager();
-                var NSSTruck = InstanceTrucks.GetNSSTruck(NSSSoftwareuser);
-                var Lst = InstanceDriverSelfDeclaration.GetDeclarations(NSSTruck, false);
-                var x = 2;
+                try
+                {
+                    var _R2DateTime = new R2DateTime();
+                    var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
+                    var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(164477);
+                    var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                    var NSSSoftwareUser = InstanceSoftwareUsers.GetNSSUser(NSSPaymentRequest.SoftwareUserId);
+                    var InstanceTrafficCards = new R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
+                    var InstanceMoneyWalletCharge = new R2CoreParkingSystemInstanceMoneyWalletChargeManager();
+                    var NSSTrafficCard = InstanceTrafficCards.GetNSSTerafficCard(NSSSoftwareUser);
+
+                    InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, 157, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + 100, 0, _R2DateTime.GetCurrentTime()));
+
+                    //var InstanceAES = new AESAlgorithmsManager();
+                    //var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                    //var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                    //var InstanceSoftwareUser = new R2CoreInstanseSoftwareUsersManager();
+                    //var AMUStatus = InstanceAES.Encrypt("b94248ec3c7ef10669adbe67ee194a03ac47f74e88186fd6fbdd129880c1", InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                    //+ ";" + InstanceAES.Encrypt(NSSSoftwareuser.ApiKey, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+
+                    //var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                    //var InstanceSoftwareUser = new R2CoreInstanseSoftwareUsersManager();
+
+                    //var NSSSoftwareuser = InstanceSoftwareUser.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile("09138361912"));
+                    //InstanceSoftwareusers.LoginSoftwareUser(NSSSoftwareuser.MobileNumber);
+                }
+                catch (ESCOCoreSendSMSFailedException ex)
+                { EventLog.WriteEntry("ESCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+                catch (Exception ex)
+                { EventLog.WriteEntry("ESCOAutomatedJobs", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+
+                //var InstanceSoftwareUsers = new R2Core.SoftwareUserManagement.R2CoreInstanseSoftwareUsersManager();
+
+                //var NSSSoftwareuser = InstanceSoftwareUsers.GetNSSUser(21);
+                //var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
+                //var InstanceDriverSelfDeclaration = new R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager();
+                //var NSSTruck = InstanceTrucks.GetNSSTruck(NSSSoftwareuser);
+                //var Lst = InstanceDriverSelfDeclaration.GetDeclarations(NSSTruck, false);
+                //var x = 2;
                 //try
                 //{
                 //    var InstanceLogging = new R2CoreInstanceLoggingManager();
@@ -157,6 +196,8 @@ namespace R2PrimaryTestCSharp
             //}
 
         }
+
+
     }
 
 

@@ -43,6 +43,7 @@ Public Class UCDriver
                 CButtonViewPrintUserShenasehPassword.Visible = True
                 CButtonSoftwareUserVerificationCodeInjection.Visible = True
                 CButtonSendSmsUserShenasehPassword.Visible = True
+                CButtonATISMobileAppDownloadLink.Visible = True
                 UcActivateUnActivateSMSOwner.Visible = True
             Else
                 CButtonDelete.Visible = False
@@ -51,6 +52,7 @@ Public Class UCDriver
                 CButtonViewPrintUserShenasehPassword.Visible = False
                 CButtonSoftwareUserVerificationCodeInjection.Visible = False
                 CButtonSendSmsUserShenasehPassword.Visible = False
+                CButtonATISMobileAppDownloadLink.Visible = False
                 UcActivateUnActivateSMSOwner.Visible = False
             End If
         End Set
@@ -77,6 +79,7 @@ Public Class UCDriver
         CButtonViewPrintUserShenasehPassword.Enabled = True
         CButtonSoftwareUserVerificationCodeInjection.Enabled = True
         CButtonSendSmsUserShenasehPassword.Enabled = True
+        CButtonATISMobileAppDownloadLink.Enabled = True
         RaiseEvent UCRefreshedEvent()
     End Sub
 
@@ -376,6 +379,25 @@ Public Class UCDriver
             InstanceR2CoreSoftwareUser.SoftwareUserVerificationCodeInjection(NSSSoftwareUser)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "تزریق کد فعال سازی با موفقیت انجام شد" + vbCrLf + "InjectedVerificationCode=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 12), "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             CButtonSoftwareUserVerificationCodeInjection.Enabled = False
+        Catch ex As UserNotAllowedRunThisProccessException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As GetNSSException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, "اطلاعات مورد نیاز را به صورت کامل وارد کنید", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub CButtonATISMobileAppDownloadLink_Click(sender As Object, e As EventArgs) Handles CButtonATISMobileAppDownloadLink.Click
+        Try
+            CButtonATISMobileAppDownloadLink.Enabled = False
+            Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+            Dim NSSSoftwareUser = (New R2CoreParkingSystemInstanceSoftwareUsersManager).GetNSSSoftwareUser(UCGetNSS.nIdPerson)
+            Dim InstanceSoftwareUser = New R2CoreInstanseSoftwareUsersManager
+            InstanceSoftwareUser.SendATISMobileAppDownloadLink(NSSSoftwareUser)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "اطلاعات با موفقیت ارسال شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As SendSMSATISMobileAppDownloadLinkFailedException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As UserNotAllowedRunThisProccessException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As GetNSSException

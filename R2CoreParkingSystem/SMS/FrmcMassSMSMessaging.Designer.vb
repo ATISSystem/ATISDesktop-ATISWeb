@@ -6,7 +6,7 @@ Partial Class FrmcMassSMSMessaging
     Inherits FrmcGeneral
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -23,10 +23,10 @@ Partial Class FrmcMassSMSMessaging
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.PnlSendSMS = New System.Windows.Forms.Panel()
-        Me.UcMassSMSMessaging = New R2CoreParkingSystem.UCMassSMSMessaging()
+        Me.UcMassSMSMessaging1 = New R2CoreParkingSystem.UCMassSMSMessaging()
         Me.PnlSendSMS.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -41,21 +41,23 @@ Partial Class FrmcMassSMSMessaging
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlSendSMS.BackColor = System.Drawing.Color.Transparent
         Me.PnlSendSMS.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PnlSendSMS.Controls.Add(Me.UcMassSMSMessaging)
+        Me.PnlSendSMS.Controls.Add(Me.UcMassSMSMessaging1)
         Me.PnlSendSMS.Location = New System.Drawing.Point(5, 50)
         Me.PnlSendSMS.Name = "PnlSendSMS"
         Me.PnlSendSMS.Size = New System.Drawing.Size(995, 512)
         Me.PnlSendSMS.TabIndex = 49
         '
-        'UcMassSMSMessaging
+        'UcMassSMSMessaging1
         '
-        Me.UcMassSMSMessaging.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcMassSMSMessaging.BackColor = System.Drawing.Color.White
-        Me.UcMassSMSMessaging.Location = New System.Drawing.Point(189, -8)
-        Me.UcMassSMSMessaging.Name = "UcMassSMSMessaging"
-        Me.UcMassSMSMessaging.Size = New System.Drawing.Size(615, 504)
-        Me.UcMassSMSMessaging.TabIndex = 0
-        Me.UcMassSMSMessaging.UCViewTitle = False
+        Me.UcMassSMSMessaging1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcMassSMSMessaging1.BackColor = System.Drawing.Color.White
+        Me.UcMassSMSMessaging1.Location = New System.Drawing.Point(151, 3)
+        Me.UcMassSMSMessaging1.Name = "UcMassSMSMessaging1"
+        Me.UcMassSMSMessaging1.Size = New System.Drawing.Size(661, 504)
+        Me.UcMassSMSMessaging1.TabIndex = 0
+        Me.UcMassSMSMessaging1.UCViewTitle = True
         '
         'FrmcMassSMSMessaging
         '
@@ -73,5 +75,5 @@ Partial Class FrmcMassSMSMessaging
     End Sub
 
     Friend WithEvents PnlSendSMS As Windows.Forms.Panel
-    Friend WithEvents UcMassSMSMessaging As UCMassSMSMessaging
+    Friend WithEvents UcMassSMSMessaging1 As UCMassSMSMessaging
 End Class

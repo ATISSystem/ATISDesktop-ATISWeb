@@ -157,6 +157,8 @@ Public Class UCLoadCapacitorLoadManipulation
             End If
             UCViewNSS(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue, True))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ثبت بار انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As LoadCapacitorLoadTonajNotAllowedException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadCapacitorLoadRegisteringInHolidayNotAllowedException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As EditOrDeleteReRegisteredLoadNotAllowedException

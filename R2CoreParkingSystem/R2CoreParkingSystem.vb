@@ -67,6 +67,9 @@ Imports R2Core.SMS.SMSOwners.Exceptions
 Imports R2Core.SMS.SMSHandling
 Imports R2CoreParkingSystem.SMS.SMSOwners
 Imports R2Core.SMS.SMSOwners.R2CoreMClassSMSOwnersManager
+Imports R2CoreParkingSystem.BlackList.Exceptions
+Imports R2CoreParkingSystem.SMS.SMSTypes
+Imports R2Core.SMS.SMSHandling.Exceptions
 
 Namespace Logging
 
@@ -1075,6 +1078,48 @@ Namespace EnterExitManagement
             End Try
         End Function
 
+        Public Shared Sub EntryExitAllownSMSControlling(YourPelak As String, YourSerial As String)
+            Try
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                If Not InstanceConfiguration.GetConfigBoolean(R2CoreParkingSystemConfigurations.EntryExitAllownSMS, 0) Then Exit Sub
+
+                Dim DS As DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                  "Select * from R2PrimaryParkingSystem.dbo.TblEntryExitAllownSMS Where Pelak='" & YourPelak & "' and Serial='" & YourSerial & "' and AllownSMSActive =1", 3600, DS).GetRecordsCount <> 0 Then
+                    SendSMSEntryExitAllownSMSControlling(YourPelak + " - " + YourSerial)
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Private Shared Sub SendSMSEntryExitAllownSMSControlling(YourCompositLP As String)
+            Try
+                Dim InstanceMoneyWallet = New R2CoreParkingSystemInstanceMoneyWalletManager
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
+                'کنترل فعال بودن سرویس اس ام اس
+                If Not InstanceConfiguration.GetConfigBoolean(R2CoreConfigurations.SmsSystemSetting, 0) Then Throw New SmsSystemIsDisabledException
+                'لیست کاربران
+                Dim TargetUsers = InstanceConfiguration.GetConfigString(R2CoreParkingSystemConfigurations.EntryExitAllownSMS, 1).Split("-")
+                Dim LstSoftwareUsers = New List(Of R2CoreStandardSoftwareUserStructure)
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                For LoopxUsers As Int64 = 0 To TargetUsers.Count - 1
+                    LstSoftwareUsers.Add(InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64(TargetUsers(LoopxUsers))))
+                Next
+                'اطلاعات ارسالی
+                Dim myData = New SMSCreationData
+                myData.Data1 = YourCompositLP
+                'ارسال اس ام اس
+                Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                Dim SMSResult = InstanceSMSHandling.SendSMS(LstSoftwareUsers, R2CoreParkingSystemSMSTypes.EntryExitAllownSMS, InstanceSMSHandling.RepeatSMSCreationData(myData, LstSoftwareUsers.Count), True)
+                Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
+                If Not SMSResultAnalyze = String.Empty Then Throw New Exception
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
 
     End Class
 
@@ -1761,6 +1806,7 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property LPRIsActive As Int64 = 40
         Public Shared ReadOnly Property TarrifsMeselanius As Int64 = 41
         Public Shared ReadOnly Property FrmcEnterExitSetting As Int64 = 48
+        Public Shared ReadOnly Property EntryExitAllownSMS As Int64 = 90
 
 
 
@@ -3406,6 +3452,10 @@ Namespace BlackList
     Public Class R2CoreParkingSystemInstanceBlackListManager
         Private _DateTime As New R2DateTime
 
+        Public Sub New()
+
+        End Sub
+
         Public Enum R2CoreParkingSystemBlackListType
             None = 0
             AllBlackLists = 1
@@ -3453,6 +3503,51 @@ Namespace BlackList
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
+
+        Public Sub AddBlackList(YourNSSCar As R2StandardCarStructure, YourMblgh As Int64, YourDescription As String, YourSoftwareUser As R2CoreStandardSoftwareUserStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
+            Try
+                If YourDescription = String.Empty Then Throw New BlackListDescriptionNotFoundException
+
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbBlackList(nTruckNo,nPlakPlac,nPlakSerial,StrDesc,FlagA,nAmount,StrDate,nUser) Values('" & YourNSSCar.StrCarNo & "'," & YourNSSCar.nIdCity & ",'" & YourNSSCar.StrCarSerialNo & "','" & YourDescription & "',0," & YourMblgh & ",'" & _DateTime.GetCurrentDateShamsiFull() & "'," & YourSoftwareUser.UserId & ")"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+
+                'ارسال اس ام اس
+                Dim InstanceSoftwareUsers = New R2CoreParkingSystemInstanceSoftwareUsersManager
+                SendingSMSAddtoBlackList(InstanceSoftwareUsers.GetNSSSoftwareUser(YourNSSCar))
+            Catch ex As SoftwareUserRelatedThisCarNotFoundException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw ex
+            Catch ex As SMSResultException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw ex
+            Catch ex As BlackListDescriptionNotFoundException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Private Sub SendingSMSAddtoBlackList(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+            Try
+                Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                Dim LstUser = New List(Of R2CoreStandardSoftwareUserStructure) From {YourNSSSoftwareUser}
+                Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = _DateTime.GetCurrentDateShamsiFull + " " + _DateTime.GetCurrentTime}}
+                Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, R2CoreParkingSystemSMSTypes.BlackListRecordAddedAllown, LstCreationData, True)
+                Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
+                If Not SMSResultAnalyze = String.Empty Then Throw New SMSResultException(SMSResultAnalyze)
+            Catch ex As SMSResultException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
 
     End Class
 
@@ -3516,6 +3611,18 @@ Namespace BlackList
         End Sub
 
     End Class
+
+    Namespace Exceptions
+        Public Class BlackListDescriptionNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "شرح لیست سیاه را وارد نمایید"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
 
 End Namespace
 
@@ -4803,6 +4910,31 @@ Namespace SoftwareUsersManagement
             End Try
         End Function
 
+        Public Function GetNSSSoftwareUser(YourNSSTruck As R2StandardCarStructure) As R2CoreStandardSoftwareUserStructure
+            Try
+                Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceSoftwareUser As New R2CoreInstanseSoftwareUsersManager
+
+                Dim Ds As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                         "Select Top 1 SoftwareUsers.UserId From R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+    	                     Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1
+                             Inner Join dbtransport.dbo.TbDriver as Drivers On EntityRelations.E2=Drivers.nIDDriver 
+                             Inner Join dbtransport.dbo.TbPerson as Persons On Drivers.nIDDriver=Persons.nIDPerson 
+                             Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Drivers.nIDDriver=CarAndPersons.nIDPerson
+                             Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
+                          Where SoftwareUsers.UserActive = 1 And SoftwareUsers.Deleted = 0 And EntityRelations.ERTypeId = 2 And EntityRelations.RelationActive = 1 And Cars.ViewFlag = 1 And CarAndPersons.snRelation = 2 
+                             And ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) Or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000'))  
+						   	 And Cars.nIDCar=" & YourNSSTruck.nIdCar & "", 300, Ds).GetRecordsCount = 0 Then
+                    Throw New SoftwareUserRelatedThisCarNotFoundException
+                End If
+                Return InstanceSoftwareUser.GetNSSUser(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("UserId")))
+            Catch ex As SoftwareUserRelatedThisCarNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
     End Class
 
@@ -4833,6 +4965,15 @@ Namespace SoftwareUsersManagement
             Public Overrides ReadOnly Property Message As String
                 Get
                     Return "مشخصات کاربری مرتبط  با راننده مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+        Public Class SoftwareUserRelatedThisCarNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "مشخصات کاربری مرتبط  با خودرو مورد نظر یافت نشد"
                 End Get
             End Property
         End Class
@@ -4903,6 +5044,8 @@ Namespace SMS
     Namespace SMSTypes
         Public MustInherit Class R2CoreParkingSystemSMSTypes
             Inherits R2CoreSMSTypes
+            Public Shared ReadOnly Property BlackListRecordAddedAllown = 11
+            Public Shared ReadOnly Property EntryExitAllownSMS = 13
 
         End Class
 
@@ -5022,13 +5165,16 @@ Namespace SMS
                     For LoopxUsers As Int64 = 0 To TargetUsers.Count - 1
                         LstSoftwareUsers.Add(InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64(TargetUsers(LoopxUsers))))
                     Next
+
                     'موجودی کیف پول
                     Dim myData = New SMSCreationData
                     Dim NSSControllingMoneyWallet = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 8))
                     myData.Data1 = InstanceMoneyWallet.GetMoneyWalletCharge(NSSControllingMoneyWallet)
+
                     'ارسال اس ام اس
+                    If InstanceMoneyWallet.GetMoneyWalletCharge(NSSControllingMoneyWallet) = 0 Then Return
                     Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
-                    Dim SMSResult = InstanceSMSHandling.SendSMS(LstSoftwareUsers, R2CoreSMSTypes.SMSControllingMoneyWallet, InstanceSMSHandling.RepeatSMSCreationData(myData, LstSoftwareUsers.Count))
+                    Dim SMSResult = InstanceSMSHandling.SendSMS(LstSoftwareUsers, R2CoreSMSTypes.SMSControllingMoneyWallet, InstanceSMSHandling.RepeatSMSCreationData(myData, LstSoftwareUsers.Count), True)
                     Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
                     If Not SMSResultAnalyze = String.Empty Then Throw New SendSMSControllingMoneyWalletFailedException(SMSResultAnalyze)
                 Catch ex As SendSMSControllingMoneyWalletFailedException
@@ -5061,7 +5207,7 @@ Namespace SMS
                                   "Select Sum(SMSOwnerTypes.PriceMinusCommission) as Amount from R2PrimarySMSSystem.dbo.TblSMSOwners As SMSOwners
                                         Inner Join R2PrimarySMSSystem.dbo.TblSMSOwnerTypes as SMSOwnerTypes On SMSOwners.SMSOTypeId=SMSOwnerTypes.SMSOTypeId 
                                    Where SMSOwners.DateTimeMilladi Between '" & _DateTime.GetMilladiDateTimeFromDateShamsiFullFormated(NSSLast.DateShamsiA, NSSLast.TimeA) & "' and '" & _DateTime.GetCurrentDateTimeMilladiFormated() & "'
-                                          And SMSOwners.IsSendingActive=1 and SMSOwnerTypes.Active=1 and SMSOwnerTypes.Deleted=0 and SMSOwners.Active=1 and SMSOwners.Deleted=0", 0, Ds).GetRecordsCount = 0 Then
+                                         And SMSOwnerTypes.Active=1 and SMSOwnerTypes.Deleted=0 and SMSOwners.Active=1 and SMSOwners.Deleted=0", 0, Ds).GetRecordsCount = 0 Then
                         Return 0
                     Else
                         Return IIf(Ds.Tables(0).Rows(0).Item("Amount").Equals(System.DBNull.Value), 0, Ds.Tables(0).Rows(0).Item("Amount"))
@@ -5149,7 +5295,7 @@ Namespace SMS
 
                     'فرآیند فعال سازی مالک اس ام اس
                     Try
-                        NSSSMSOwner = InstanceSMSOwners.GetNSSSMSOwner(YourNSSSoftwareUser, False)
+                        NSSSMSOwner = InstanceSMSOwners.GetNSSSMSOwner(YourNSSSoftwareUser, True)
                     Catch ex As SMSOwnerForSoftwareUserDoNotRegisteredException
                         SMSOwnerAccounting(YourNSSSoftwareUser, YourNSSUser)
                         InstanceSMSOwners.RegisteringSMSOwner(New R2CoreStandardSMSOwnerStructure(YourNSSSoftwareUser.UserId, NSSSMSOwnerType.SMSOTypeId, NSSSMSOwnerType.PriceMinusCommissionMinusVAT, 0, True, False, Nothing, Nothing, Nothing, YourNSSUser.UserId, True, True, False), YourNSSUser)

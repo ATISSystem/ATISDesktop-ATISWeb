@@ -63,6 +63,13 @@ Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions
 Imports R2CoreParkingSystem.SMS.SMSControllingMoneyWallet
 Imports PayanehClassLibrary.TruckersAssociationControllingMoneyWallet
 Imports R2Core.SMS.SMSOwners
+Imports R2CoreParkingSystem.SMS.SMSOwners
+Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement
+Imports R2Core.SMS.SMSHandling
+Imports R2CoreTransportationAndLoadNotification.SMS.SMSTypes
+Imports System.Reflection
+Imports R2CoreParkingSystem.EnterExitManagement
+Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 
 Public Class Form3
     Private _DateTime As R2DateTime = New R2DateTime
@@ -564,7 +571,7 @@ Public Class Form3
 
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
         Try
-            RmtoWebService.GetNSSTruckDriver("3012237")
+            'RmtoWebService.GetNSSTruckDriver("1160095663")
             RmtoWebService.GetNSSTruck("2312401")
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -573,19 +580,102 @@ Public Class Form3
 
     Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
         Try
-            Dim uc As New UCBillOfLadingControl : uc.UCViewNSS(2)
-            Dim NSSExtended As R2CoreTransportationAndLoadNotificationStandardBillOfLadingControlExtendedStructure = uc.UCNSSCurrent
+            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
+            InstanceCarTruckNobat.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser())
 
-            MessageBox.Show(NSSExtended.BLCTitle)
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
     End Sub
 
     Private Sub Button12_Click(sender As Object, e As EventArgs) Handles Button12.Click
+        Dim Cmdsql As New SqlClient.SqlCommand
+        Cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
-            R2CoreTransportationAndLoadNotification.ReportManagement.R2CoreTransportationAndLoadNotificationReportsManagement.ReportingInformationProviderBillOfLadingControlReport(10002)
+            'لیست خوداظهاری
+            Dim Da As New SqlClient.SqlDataAdapter : Dim DS As New DataSet
+            Da.SelectCommand = New SqlCommand("
+                    Select DriverSelfDeclarations.nIdCar,Cars.strCarNo,Cars.strCarSerialNo,DriverSelfDeclarationParameters.DSDTitle,DriverSelfDeclarations.DSDId,DriverSelfDeclarations.DSDValue,DriverSelfDeclarations.DateShamsi,SoftwareUsers.UserName  
+                    From [R2PrimaryTransportationAndLoadNotification].[dbo].[TblDriverSelfDeclarations] as DriverSelfDeclarations
+                     Inner join [R2PrimaryTransportationAndLoadNotification].[dbo].TblDriverSelfDeclarationParameters as DriverSelfDeclarationParameters on  DriverSelfDeclarations.DSDId=DriverSelfDeclarationParameters.DSDId 
+                     Inner join dbtransport.dbo.TbCar as Cars on DriverSelfDeclarations.nIdCar=cars.nIDCar 
+	                 Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On DriverSelfDeclarations.UserId=SoftwareUsers.UserId 
+                    Where DriverSelfDeclarations.RelationActive=1 and Cars.ViewFlag=1
+                    Order by DriverSelfDeclarations.nIdCar")
+            Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection
+            Da.Fill(DS)
+
+            'ناوگان
+            Dim DaCars As New SqlClient.SqlDataAdapter : Dim DSCars As New DataSet
+            DaCars.SelectCommand = New SqlCommand("
+                    Select Cars.strCarNo,Cars.strCarSerialNo
+                    From [R2PrimaryTransportationAndLoadNotification].[dbo].[TblDriverSelfDeclarations] as DriverSelfDeclarations
+                     Inner join [R2PrimaryTransportationAndLoadNotification].[dbo].TblDriverSelfDeclarationParameters as DriverSelfDeclarationParameters on  DriverSelfDeclarations.DSDId=DriverSelfDeclarationParameters.DSDId 
+                     Inner join dbtransport.dbo.TbCar as Cars on DriverSelfDeclarations.nIdCar=cars.nIDCar 
+                     Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On DriverSelfDeclarations.UserId=SoftwareUsers.UserId 
+                    Where DriverSelfDeclarations.RelationActive=1 and Cars.ViewFlag=1
+                    Group By Cars.strCarNo,Cars.strCarSerialNo")
+            DaCars.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection
+            DaCars.Fill(DSCars)
+
+            Dim CurrentDateShamsi = _DateTime.GetCurrentDateShamsiFull
+
+            Cmdsql.Connection.Open()
+            Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
+            Cmdsql.CommandText = "Delete R2PrimaryReports.dbo.TblDSDTemp"
+            Cmdsql.ExecuteNonQuery()
+            'ایجاد لیست ناوگان
+            For Loopx As Int64 = 0 To DSCars.Tables(0).Rows.Count - 1
+                Dim Pelak = DSCars.Tables(0).Rows(Loopx).Item("strCarNo").trim
+                Dim Serial = DSCars.Tables(0).Rows(Loopx).Item("strCarSerialNo").trim
+                Cmdsql.CommandText = "Insert Into R2PrimaryReports.dbo.TblDSDTemp(UserName,Pelak,Serial,LoaderLength,LoaderWidth,AxleNumber,WheelNumber,EmptyWeight,LoaderType,CoilCarrier,DateShamsi) Values('','" & Pelak & "','" & Serial & "','','','','','','','','')"
+                Cmdsql.ExecuteNonQuery()
+            Next
+            'تکمیل اطلاعات خوداظهاری در جدول موقت
+            For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                Dim ValueTemp = DS.Tables(0).Rows(Loopx).Item("DSDValue").trim
+                Dim Pelak = DS.Tables(0).Rows(Loopx).Item("StrCarNo").trim
+                Dim Serial = DS.Tables(0).Rows(Loopx).Item("StrCarSerialNo").trim
+                Dim DateShamsi = DS.Tables(0).Rows(Loopx).Item("DateShamsi").trim
+                Dim UserName = DS.Tables(0).Rows(Loopx).Item("UserName").trim
+                'طول بارگیر
+                If DS.Tables(0).Rows(Loopx).Item("DSDId") = 1 Then
+                    Cmdsql.CommandText = "Update R2PrimaryReports.dbo.TblDSDTemp Set DateShamsi='" & DateShamsi & "',UserName='" & UserName & "',LoaderLength ='" & ValueTemp & "' 
+                                          Where Pelak = '" & Pelak & "' and Serial='" & Serial & "'"
+                    'عرض بارگیر
+                ElseIf DS.Tables(0).Rows(Loopx).Item("DSDId") = 2 Then
+                    Cmdsql.CommandText = "Update R2PrimaryReports.dbo.TblDSDTemp Set DateShamsi='" & DateShamsi & "',UserName='" & UserName & "',LoaderWidth ='" & ValueTemp & "' 
+                                          Where Pelak = '" & Pelak & "' and Serial='" & Serial & "'"
+                    'تعداد محور
+                ElseIf DS.Tables(0).Rows(Loopx).Item("DSDId") = 3 Then
+                    Cmdsql.CommandText = "Update R2PrimaryReports.dbo.TblDSDTemp Set DateShamsi='" & DateShamsi & "',UserName='" & UserName & "',AxleNumber ='" & ValueTemp & "' 
+                                          Where Pelak = '" & Pelak & "' and Serial='" & Serial & "'"
+                    'تعداد چرخ
+                ElseIf DS.Tables(0).Rows(Loopx).Item("DSDId") = 4 Then
+                    Cmdsql.CommandText = "Update R2PrimaryReports.dbo.TblDSDTemp Set DateShamsi='" & DateShamsi & "',UserName='" & UserName & "',WheelNumber ='" & ValueTemp & "' 
+                                          Where Pelak = '" & Pelak & "' and Serial='" & Serial & "'"
+                    'وزن بدون بار
+                ElseIf DS.Tables(0).Rows(Loopx).Item("DSDId") = 6 Then
+                    Cmdsql.CommandText = "Update R2PrimaryReports.dbo.TblDSDTemp Set DateShamsi='" & DateShamsi & "',UserName='" & UserName & "',EmptyWeight ='" & ValueTemp & "' 
+                                          Where Pelak = '" & Pelak & "' and Serial='" & Serial & "'"
+                    'نوع بارگیر
+                ElseIf DS.Tables(0).Rows(Loopx).Item("DSDId") = 7 Then
+                    Cmdsql.CommandText = "Update R2PrimaryReports.dbo.TblDSDTemp Set DateShamsi='" & DateShamsi & "',UserName='" & UserName & "',LoaderType ='" & ValueTemp & "' 
+                                          Where Pelak = '" & Pelak & "' and Serial='" & Serial & "'"
+                    'رول کش
+                ElseIf DS.Tables(0).Rows(Loopx).Item("DSDId") = 8 Then
+                    Cmdsql.CommandText = "Update R2PrimaryReports.dbo.TblDSDTemp Set DateShamsi='" & DateShamsi & "',UserName='" & UserName & "',CoilCarrier ='" & ValueTemp & "' 
+                                          Where Pelak = '" & Pelak & "' and Serial='" & Serial & "'"
+                End If
+                Cmdsql.ExecuteNonQuery()
+            Next
+            Cmdsql.Transaction.Commit() : Cmdsql.Connection.Close()
+            MessageBox.Show("Finished ...")
         Catch ex As Exception
+            If Cmdsql.Connection.State <> ConnectionState.Closed Then
+                Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
+            End If
             MessageBox.Show(ex.Message)
         End Try
     End Sub
@@ -596,17 +686,65 @@ Public Class Form3
     Private Sub Button14_Click(sender As Object, e As EventArgs)
     End Sub
 
+    Private Sub SendingSMSLoadPermission(YourNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+        Try
+            Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+            Dim LstUser = New List(Of R2CoreStandardSoftwareUserStructure) From {YourNSSSoftwareUser}
+            Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = YourNSSLoadCapacitorLoad.GoodTitle + " - " + YourNSSLoadCapacitorLoad.LoadTargetTitle, .Data2 = YourNSSLoadCapacitorLoad.TransportCompanyTitle}}
+            Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, R2CoreTransportationAndLoadNotificationSMSTypes.SendingLoadPermissionIssuedInfSMS, LstCreationData, True)
+            Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
+            'If Not SMSResultAnalyze = String.Empty Then Throw New 
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
 
 
         Try
+            Dim x As New R2CoreParkingSystemMClassSMSOwnersManager
+            x.ActivateSMSOwner(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(17705), R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            ''exec xp_ sp_ insert bulk from bcp select declare null admin char( tblsoftwareusers dbo password ' -- drop table alter or = @ union having delete sa= sa: openrowset oledb 1433 1434 sysdatabases master sys sysobjects syscolumns syslogins sysxlogins sysservers database hkey hkey_ hkey_local tempdb syscomments sysadmin administrator userid and '% %' like where ;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+            'Dim YourParam = "sysadmin1"
+            'Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+            'Dim SqlInjectionPreventionKeywords = Split(InstanceConfiguration.GetConfigString(R2CoreConfigurations.SqlInjectionPrevention, 0), " ")
+            'Dim Wanted = YourParam.ToLower().Split(" ")
+            'For Each Str As String In Wanted
+            '    If SqlInjectionPreventionKeywords.Any(Function(s) Str.Equals(s)) Or (New String() {";"}).Any(Function(s) Str.Equals(s)) Then
+            '        Throw New SqlInjectionException
+            '    End If
+            'Next
 
-            Try
-                Dim InstanceSMSOwners = New R2CoreMClassSMSOwnersManager
-                InstanceSMSOwners.SendSMSOwnersPleaseCharge()
-            Catch ex As Exception
-                EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSOwners.SendSMSOwnersPleaseCharge:" + ex.Message.ToString, EventLogEntryType.Error)
-            End Try
+            'اعلان پلاک و سریال به سرویس ارسال اس ام اس
+            'Try
+            '    R2CoreParkingSystemMClassEnterExitManagement.EntryExitAllownSMSControlling("216ع51", "53")
+            'Catch ex As Exception
+            'End Try
+
+            'Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            'Dim Lst = InstanceLoadCapacitorLoad.GetLoadCapacitorLoadsfromSubscriptionDB(, Convert.ToInt64(AHSGId), ListTypeConv, False, True, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.TargetProvince, Int64.MinValue, Convert.ToInt64(ProvinceId));
+
+            'PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(2, 7, Int64.MinValue, New R2StandardDateAndTimeStructure(Nothing, "1402/08/18", "00:00:00"), New R2StandardDateAndTimeStructure(Nothing, "1402/08/18", "23:59:00"), Int64.MinValue, Int64.MinValue)
+            'ارسال اس ام اس آزاد سازی بار
+            'Dim InstanceSoftwareUsers_TruckDriver = New R2CoreParkingSystemInstanceSoftwareUsersManager
+            'Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            'Dim YourNSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(763190, True)
+            'Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+            'Dim NSSTruck = InstanceTurns.GetNSSTruck(1682775)
+            'SendingSMSLoadPermission(YourNSSLoadCapacitorLoad, InstanceSoftwareUsers_TruckDriver.GetNSSSoftwareUser(NSSTruck.NSSCar))
+
+            'Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            'Dim InstanceSMSOwners = New R2CoreParkingSystemMClassSMSOwnersManager
+            'InstanceSMSOwners.ActivateSMSOwner(InstanceSoftwareUsers.GetNSSUserUnChangeable(New R2CoreSoftwareUserMobile("09138361912")), InstanceSoftwareUsers.GetNSSSystemUser)
+
+
+            'Try
+            '    Dim InstanceSMSOwners = New R2CoreMClassSMSOwnersManager
+            '    InstanceSMSOwners.SendSMSOwnersPleaseCharge()
+            'Catch ex As Exception
+            '    EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSOwners.SendSMSOwnersPleaseCharge:" + ex.Message.ToString, EventLogEntryType.Error)
+            'End Try
 
             'ثبت اکانتینگ کیف پول کنترلی اس ام اس
             'Try
@@ -773,8 +911,11 @@ Public Class Form3
 
     Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
         Try
-            Dim x As New PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManager
-            x.TurnsCancellation(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            Dim X As New R2Core.SMS.SMSHandling.R2CoreSMSHandlingManager
+            X.RecivedSMSHandling(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+
+            'Dim x As New PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManager
+            'x.TurnsCancellation(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
             'Dim x As New MSCOCoreAnnouncementforTransportCompaniesManager
             'x.AnnouncementforTransportCompanies(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
         Catch ex As Exception
@@ -799,7 +940,7 @@ Public Class Form3
             CmdSql.Connection.Open()
             CmdSql.Transaction = CmdSql.Connection.BeginTransaction
             For loopx As Int64 = 1 To Convert.ToInt64(TxtCalendarTotalDay.Text)
-                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar(DateShamsi,PCType) Values('" & TxtCalendarYear.Text + "/" + TxtCalendarMonth.Text + "/" + InstancePublicProcedures.RepeatStr("0", 2 - loopx.ToString.Length) + loopx.ToString & "',0)"
+                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar(DateShamsi,PCType,LoadAnnounce) Values('" & TxtCalendarYear.Text + "/" + TxtCalendarMonth.Text + "/" + InstancePublicProcedures.RepeatStr("0", 2 - loopx.ToString.Length) + loopx.ToString & "',0,0)"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.CommandText = "Insert Into  R2Primary.dbo.TblPersianCalendar (DateShamsi,PCType) Values('" & TxtCalendarYear.Text + "/" + TxtCalendarMonth.Text + "/" + InstancePublicProcedures.RepeatStr("0", 2 - loopx.ToString.Length) + loopx.ToString & "',0)"
                 CmdSql.ExecuteNonQuery()
@@ -815,33 +956,37 @@ Public Class Form3
     End Sub
 
     Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
-        Dim CmdSql As New SqlClient.SqlCommand
-        CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+        'Dim CmdSql As New SqlClient.SqlCommand
+        'CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
-            Dim Da As New OleDbDataAdapter : Dim Ds As New DataSet
-            Da.SelectCommand = New OleDbCommand("Select * from TblMSCOTargets Order By Field6,Field4")
-            Da.SelectCommand.Connection = New OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=G:\MSCOTrgets.mdb")
-            Da.Fill(Ds)
-            CmdSql.Connection.Open()
-            CmdSql.Transaction = CmdSql.Connection.BeginTransaction
-            CmdSql.CommandText = "Delete MSCO.dbo.TblMSCOTargets" : CmdSql.ExecuteNonQuery()
-            For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                Dim myMSCOCityId As String = Ds.Tables(0).Rows(Loopx).Item("Field4").trim
-                Dim myMSCOCityName As String = Ds.Tables(0).Rows(Loopx).Item("Field5").trim
-                Dim myMSCOProvinceId As Int64 = Ds.Tables(0).Rows(Loopx).Item("Field6").trim
-                Dim Dax As New SqlClient.SqlDataAdapter : Dim Dsx As New DataSet
-                Dax.SelectCommand = New SqlClient.SqlCommand("Select Top 1 nCityCode,strCityName from Dbtransport.dbo.TbCity Where nProvince=" & myMSCOProvinceId & " and strCityName='" & myMSCOCityName & "' and ViewFlag=1 and Deleted=0 Order By strCityName")
-                Dax.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
-                If Dax.Fill(Dsx) > 0 Then
-                    CmdSql.CommandText = "Insert Into MSCO.dbo.TblMSCOTargets(CityId,CityName,MSCOCityId,MSCOCityName,MSCOProvinceId,RelationActive)  Values(" & Dsx.Tables(0).Rows(0).Item("nCityCode") & ",'" & Dsx.Tables(0).Rows(0).Item("strCityName") & "','" & myMSCOCityId & "','" & myMSCOCityName & "'," & myMSCOProvinceId & ",1)"
-                    CmdSql.ExecuteNonQuery()
-                Else
-                    CmdSql.CommandText = "Insert Into MSCO.dbo.TblMSCOTargets(CityId,CityName,MSCOCityId,MSCOCityName,MSCOProvinceId,RelationActive)  Values(0,'" & myMSCOCityName & "','" & myMSCOCityId & "','" & myMSCOCityName & "'," & myMSCOProvinceId & ",1)"
-                    CmdSql.ExecuteNonQuery()
-                End If
-            Next
-            CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
-            MessageBox.Show("Ok...")
+            Dim x As New PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManager
+            x.ResuscitationNonCreditTurn(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(7188), R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            'PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderContractorCompanyFinancialReport(New R2StandardDateAndTimeStructure(Nothing, "1403/01/01", "00:00:00"), New R2StandardDateAndTimeStructure(Nothing, "1403/01/05", "00:00:00"), True)
+
+            'Dim Da As New OleDbDataAdapter : Dim Ds As New DataSet
+            'Da.SelectCommand = New OleDbCommand("Select * from TblMSCOTargets Order By Field6,Field4")
+            'Da.SelectCommand.Connection = New OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=G:\MSCOTrgets.mdb")
+            'Da.Fill(Ds)
+            'CmdSql.Connection.Open()
+            'CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+            'CmdSql.CommandText = "Delete MSCO.dbo.TblMSCOTargets" : CmdSql.ExecuteNonQuery()
+            'For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+            '    Dim myMSCOCityId As String = Ds.Tables(0).Rows(Loopx).Item("Field4").trim
+            '    Dim myMSCOCityName As String = Ds.Tables(0).Rows(Loopx).Item("Field5").trim
+            '    Dim myMSCOProvinceId As Int64 = Ds.Tables(0).Rows(Loopx).Item("Field6").trim
+            '    Dim Dax As New SqlClient.SqlDataAdapter : Dim Dsx As New DataSet
+            '    Dax.SelectCommand = New SqlClient.SqlCommand("Select Top 1 nCityCode,strCityName from Dbtransport.dbo.TbCity Where nProvince=" & myMSCOProvinceId & " and strCityName='" & myMSCOCityName & "' and ViewFlag=1 and Deleted=0 Order By strCityName")
+            '    Dax.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
+            '    If Dax.Fill(Dsx) > 0 Then
+            '        CmdSql.CommandText = "Insert Into MSCO.dbo.TblMSCOTargets(CityId,CityName,MSCOCityId,MSCOCityName,MSCOProvinceId,RelationActive)  Values(" & Dsx.Tables(0).Rows(0).Item("nCityCode") & ",'" & Dsx.Tables(0).Rows(0).Item("strCityName") & "','" & myMSCOCityId & "','" & myMSCOCityName & "'," & myMSCOProvinceId & ",1)"
+            '        CmdSql.ExecuteNonQuery()
+            '    Else
+            '        CmdSql.CommandText = "Insert Into MSCO.dbo.TblMSCOTargets(CityId,CityName,MSCOCityId,MSCOCityName,MSCOProvinceId,RelationActive)  Values(0,'" & myMSCOCityName & "','" & myMSCOCityId & "','" & myMSCOCityName & "'," & myMSCOProvinceId & ",1)"
+            '        CmdSql.ExecuteNonQuery()
+            '    End If
+            'Next
+            'CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            'MessageBox.Show("Ok...")
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try

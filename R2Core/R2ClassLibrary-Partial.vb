@@ -645,11 +645,20 @@ Namespace MonetaryCreditSupplySources
             Public Overrides Sub DoCreditSupply()
                 Try
                     Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
+                    Dim requesturl As String
+                    If (_Amount = 1000000) Or (_Amount >= 5000000) Then
+                        'requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 1) + "19db8e91-89b9-4a38-a527-d704bfe3d370" + "&amount=" + _Amount.ToString() +
+                        requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 1) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() +
+                        "&callback_url=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 3) +
+                        "&description=" + "پرداخت خودگردان" +
+                        "&metadata[0]=" + String.Empty + "& metadata[1]=" + String.Empty
+                    Else
+                        requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 1) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() +
+                        "&callback_url=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 3) +
+                        "&description=" + "درخواست پرداخت-زرین پال-آتیس" +
+                        "&metadata[0]=" + String.Empty + "& metadata[1]=" + String.Empty
+                    End If
 
-                    Dim requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 1) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() +
-                    "&callback_url=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 3) +
-                    "&description=" + "درخواست پرداخت-زرین پال-آتیس" +
-                    "&metadata[0]=" + String.Empty + "& metadata[1]=" + String.Empty
                     Dim client = New RestClient(requesturl)
                     client.Timeout = -1
                     Dim request = New RestRequest(Method.POST)
@@ -681,7 +690,13 @@ Namespace MonetaryCreditSupplySources
             Public Overrides Sub DoVerification(YourAuthority As String)
                 Try
                     Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
-                    Dim url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
+                    Dim url As String = String.Empty
+                    If (_Amount = 1000000) Or (_Amount >= 5000000) Then
+                        url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
+                        'url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + "19db8e91-89b9-4a38-a527-d704bfe3d370" + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
+                    Else
+                        url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
+                    End If
                     Dim client = New RestClient(url)
                     client.Timeout = -1
                     Dim request = New RestRequest(Method.POST)
@@ -1334,7 +1349,7 @@ Namespace SecurityAlgorithmsManagement
                     Dim SqlInjectionPreventionKeywords = Split(InstanceConfiguration.GetConfigString(R2CoreConfigurations.SqlInjectionPrevention, 0), " ")
                     Dim Wanted = YourParam.ToLower().Split(" ")
                     For Each Str As String In Wanted
-                        If SqlInjectionPreventionKeywords.Any(Function(s) Str.Contains(s)) Or (New String() {";"}).Any(Function(s) Str.Contains(s)) Then
+                        If SqlInjectionPreventionKeywords.Any(Function(s) Str.Equals(s)) Or (New String() {";"}).Any(Function(s) Str.Equals(s)) Then
                             Throw New SqlInjectionException
                         End If
                     Next
@@ -1715,7 +1730,7 @@ Namespace SecurityAlgorithmsManagement
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "نوعی از حمله سایبری به بانک اطلاعاتی شناسایی شد"
+                    Return "نوعی از ارتباط مخرب شناسایی شد"
                 End Get
             End Property
         End Class
@@ -3710,7 +3725,7 @@ Namespace SMS
                 End Try
             End Function
 
-            Public Function SendSMS(YourSoftwareUsers As List(Of R2CoreStandardSoftwareUserStructure), YourSMSTypeId As Int64, YourSMSCreationData As List(Of SMSCreationData)) As List(Of KeyValuePair(Of Int64, String))
+            Public Function SendSMS(YourSoftwareUsers As List(Of R2CoreStandardSoftwareUserStructure), YourSMSTypeId As Int64, YourSMSCreationData As List(Of SMSCreationData), YourChekDelayFromActivation As Boolean) As List(Of KeyValuePair(Of Int64, String))
                 Dim CmdSql As New SqlClient.SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
                 Try
@@ -3746,14 +3761,16 @@ Namespace SMS
                             Continue For
                         End If
                         If NSSSMSType.Price <> 0 And SMSOwner.ReminderCharge <> 0 Then
-                            If SMSOwner.ReminderCharge - SMSOwner.ReminderHolder < NSSSMSType.Price Then
+                            If SMSOwner.ReminderCharge - SMSOwner.ReminderHolder <= NSSSMSType.Price Then
                                 LstResult.Add(New KeyValuePair(Of Long, String)(R2CoreSendSMSCodes.InsufficientSMSMoneyWalletCharge, YourSoftwareUsers(Loopx).MobileNumber))
                                 Continue For
                             End If
                         End If
-                        If DateDiff(DateInterval.Minute, SMSOwner.DateTimeMilladi, myCurrentDateTime.DateTimeMilladi) < InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.SmsSystemSetting, 16) Then
-                            LstResult.Add(New KeyValuePair(Of Long, String)(R2CoreSendSMSCodes.DelayToStartSMSSending, YourSoftwareUsers(Loopx).MobileNumber))
-                            Continue For
+                        If YourChekDelayFromActivation Then
+                            If DateDiff(DateInterval.Minute, SMSOwner.DateTimeMilladi, myCurrentDateTime.DateTimeMilladi) < InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.SmsSystemSetting, 16) Then
+                                LstResult.Add(New KeyValuePair(Of Long, String)(R2CoreSendSMSCodes.DelayToStartSMSSending, YourSoftwareUsers(Loopx).MobileNumber))
+                                Continue For
+                            End If
                         End If
                         Dim SMSContent = GetCompositedSMSCreationData(NSSSMSType, YourSMSCreationData(Loopx))
                         Dim SMS = New R2CoreStandardSMSStructure(Nothing, YourSoftwareUsers(Loopx).MobileNumber, SMSContent, NSSSMSType.SMSMinutes, Nothing, Nothing, Nothing, Nothing)
@@ -3788,7 +3805,7 @@ Namespace SMS
                 Try
                     Dim InstanceSMSOwners = New R2Core.SMS.SMSOwners.R2CoreMClassSMSOwnersManager
                     Dim LstSoftwareUsers = InstanceSMSOwners.GetNSSSoftwareUsers(YourNSSUserTypeId)
-                    Return SendSMS(LstSoftwareUsers, YourNSSSMSTypeid, RepeatSMSCreationData(YourSMSCreationData, LstSoftwareUsers.Count))
+                    Return SendSMS(LstSoftwareUsers, YourNSSSMSTypeid, RepeatSMSCreationData(YourSMSCreationData, LstSoftwareUsers.Count), True)
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
                 End Try
@@ -3896,6 +3913,23 @@ Namespace SMS
                     End Get
                 End Property
             End Class
+
+            Public Class SMSResultException
+                Inherits ApplicationException
+
+                Private _Message As String = String.Empty
+                Public Sub New(YourMessage As String)
+                    _Message = YourMessage
+                End Sub
+
+                Public Overrides ReadOnly Property Message As String
+                    Get
+                        Return _Message.Trim
+                    End Get
+                End Property
+
+            End Class
+
 
         End Namespace
 
@@ -4057,6 +4091,8 @@ Namespace SMS
             Public Shared ReadOnly Property ApplicationActivationCode = 3
             Public Shared ReadOnly Property SMSControllingMoneyWallet = 7
             Public Shared ReadOnly Property PleaseCharge = 8
+            Public Shared ReadOnly Property ATISMobileAppDownloadLink = 14
+
         End Class
 
         Public Class R2CoreStandardSMSTypeStructure
@@ -4375,12 +4411,12 @@ Namespace SMS
                     Dim Da As New SqlClient.SqlDataAdapter
                     If YourImmediately Then
                         Da.SelectCommand = New SqlClient.SqlCommand("Select Top 1 * from R2PrimarySMSSystem.dbo.TblSMSOwners Where SMSOwnerUserId=" & YourNSSSoftwareUser.UserId & " and Active=1 and Deleted=0 Order By DateTimeMilladi Desc")
-                        Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection
+                        Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
                         If Da.Fill(DS) <> 0 Then Return New R2CoreStandardSMSOwnerStructure(DS.Tables(0).Rows(0).Item("SMSOwnerUserId"), DS.Tables(0).Rows(0).Item("SMSOTypeId"), DS.Tables(0).Rows(0).Item("ReminderCharge"), DS.Tables(0).Rows(0).Item("ReminderHolder"), DS.Tables(0).Rows(0).Item("IsSendingActive"), DS.Tables(0).Rows(0).Item("PleaseCharge"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi").trim, DS.Tables(0).Rows(0).Item("Time").trim, DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
                         Throw New SMSOwnerForSoftwareUserDoNotRegisteredException
                     Else
                         Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
-                        If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 * from R2PrimarySMSSystem.dbo.TblSMSOwners Where SMSOwnerUserId=" & YourNSSSoftwareUser.UserId & " and Active=1 and Deleted=0 Order By DateTimeMilladi Desc", 3600, DS).GetRecordsCount <> 0 Then
+                        If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 * from R2PrimarySMSSystem.dbo.TblSMSOwners Where SMSOwnerUserId=" & YourNSSSoftwareUser.UserId & " and Active=1 and Deleted=0 Order By DateTimeMilladi Desc", 60, DS).GetRecordsCount <> 0 Then
                             Return New R2CoreStandardSMSOwnerStructure(DS.Tables(0).Rows(0).Item("SMSOwnerUserId"), DS.Tables(0).Rows(0).Item("SMSOTypeId"), DS.Tables(0).Rows(0).Item("ReminderCharge"), DS.Tables(0).Rows(0).Item("ReminderHolder"), DS.Tables(0).Rows(0).Item("IsSendingActive"), DS.Tables(0).Rows(0).Item("PleaseCharge"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi").trim, DS.Tables(0).Rows(0).Item("Time").trim, DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
                         Else
                             Throw New SMSOwnerForSoftwareUserDoNotRegisteredException
@@ -4462,7 +4498,7 @@ Namespace SMS
                     Dim DS As New DataSet
                     Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                     InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                  "Select SoftwareUsers.* from R2PrimarySMSSystem.dbo.TblSMSOwners as SMSOwners 
+                  "Select Distinct SoftwareUsers.* from R2PrimarySMSSystem.dbo.TblSMSOwners as SMSOwners 
                      Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On SMSOwners.SMSOwnerUserId =SoftwareUsers.UserId 
                    Where SoftwareUsers.UserTypeId=" & YourNSSUserTypeId & " and SMSOwners.IsSendingActive=1 and SMSOwners.Active=1 and SMSOwners.Deleted=0 and SoftwareUsers.UserActive=1 ", 3600, DS)
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
@@ -4532,10 +4568,10 @@ Namespace SMS
                     'ارسال پیام به مالکان اس ام اس
                     Dim LstUsers = New List(Of R2CoreStandardSoftwareUserStructure)
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                        LstUsers.Add(New R2CoreStandardSoftwareUserStructure(DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("ApiKey").trim, DS.Tables(0).Rows(0).Item("APIKeyExpiration"), DS.Tables(0).Rows(0).Item("UserName").trim, DS.Tables(0).Rows(0).Item("UserShenaseh").trim, DS.Tables(0).Rows(0).Item("UserPassword").trim, DS.Tables(0).Rows(0).Item("UserPasswordExpiration"), DS.Tables(0).Rows(0).Item("UserPinCode").trim, DS.Tables(0).Rows(0).Item("UserCanCharge"), DS.Tables(0).Rows(0).Item("UserActive"), DS.Tables(0).Rows(0).Item("UserTypeId"), DS.Tables(0).Rows(0).Item("MobileNumber").trim, DS.Tables(0).Rows(0).Item("UserStatus").trim, DS.Tables(0).Rows(0).Item("VerificationCode").trim, DS.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), DS.Tables(0).Rows(0).Item("VerificationCodeCount"), DS.Tables(0).Rows(0).Item("Nonce").trim, DS.Tables(0).Rows(0).Item("NonceTimeStamp"), DS.Tables(0).Rows(0).Item("NonceCount"), DS.Tables(0).Rows(0).Item("PersonalNonce").trim, DS.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), DS.Tables(0).Rows(0).Item("Captcha").trim, DS.Tables(0).Rows(0).Item("CaptchaValid"), DS.Tables(0).Rows(0).Item("UserCreatorId"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted")))
+                        LstUsers.Add(New R2CoreStandardSoftwareUserStructure(DS.Tables(0).Rows(Loopx).Item("UserId"), DS.Tables(0).Rows(Loopx).Item("ApiKey").trim, DS.Tables(0).Rows(Loopx).Item("APIKeyExpiration"), DS.Tables(0).Rows(Loopx).Item("UserName").trim, DS.Tables(0).Rows(Loopx).Item("UserShenaseh").trim, DS.Tables(0).Rows(Loopx).Item("UserPassword").trim, DS.Tables(0).Rows(Loopx).Item("UserPasswordExpiration"), DS.Tables(0).Rows(Loopx).Item("UserPinCode").trim, DS.Tables(0).Rows(Loopx).Item("UserCanCharge"), DS.Tables(0).Rows(Loopx).Item("UserActive"), DS.Tables(0).Rows(Loopx).Item("UserTypeId"), DS.Tables(0).Rows(Loopx).Item("MobileNumber").trim, DS.Tables(0).Rows(Loopx).Item("UserStatus").trim, DS.Tables(0).Rows(Loopx).Item("VerificationCode").trim, DS.Tables(0).Rows(Loopx).Item("VerificationCodeTimeStamp"), DS.Tables(0).Rows(Loopx).Item("VerificationCodeCount"), DS.Tables(0).Rows(Loopx).Item("Nonce").trim, DS.Tables(0).Rows(Loopx).Item("NonceTimeStamp"), DS.Tables(0).Rows(Loopx).Item("NonceCount"), DS.Tables(0).Rows(Loopx).Item("PersonalNonce").trim, DS.Tables(0).Rows(Loopx).Item("PersonalNonceTimeStamp"), DS.Tables(0).Rows(Loopx).Item("Captcha").trim, DS.Tables(0).Rows(Loopx).Item("CaptchaValid"), DS.Tables(0).Rows(Loopx).Item("UserCreatorId"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                     Next
                     Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
-                    Dim SMSResult = InstanceSMSHandling.SendSMS(LstUsers, R2CoreSMSTypes.PleaseCharge, InstanceSMSHandling.RepeatSMSCreationData(New SMSCreationData With {.Data1 = String.Empty}, LstUsers.Count))
+                    Dim SMSResult = InstanceSMSHandling.SendSMS(LstUsers, R2CoreSMSTypes.PleaseCharge, InstanceSMSHandling.RepeatSMSCreationData(New SMSCreationData With {.Data1 = String.Empty}, LstUsers.Count), True)
                     Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
                     If Not SMSResultAnalyze = String.Empty Then Throw New SMSOwnerSendingPleaseChargeMessageFailedException(SMSResultAnalyze)
                 Catch ex As SMSOwnerSendingPleaseChargeMessageFailedException

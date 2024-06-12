@@ -31,9 +31,10 @@ Partial Class UCDriver
         Dim CBlendItems1 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems2 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems3 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
-        Dim CBlendItems4 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems5 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems6 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
+        Dim CBlendItems7 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
+        Dim CBlendItems4 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.CButtonDelete = New CButtonLib.CButton()
         Me.UcActivateUnActivateSMSOwner = New R2CoreParkingSystem.UCActivateUnActivateSMSOwner()
@@ -61,6 +62,7 @@ Partial Class UCDriver
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
+        Me.CButtonATISMobileAppDownloadLink = New CButtonLib.CButton()
         Me.PnlMain.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -252,6 +254,7 @@ Partial Class UCDriver
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.CButtonATISMobileAppDownloadLink)
         Me.Panel1.Controls.Add(Me.CButtonSendSmsUserShenasehPassword)
         Me.Panel1.Controls.Add(Me.CButtonSoftwareUserVerificationCodeInjection)
         Me.Panel1.Controls.Add(Me.CButtonViewPrintUserShenasehPassword)
@@ -275,12 +278,12 @@ Partial Class UCDriver
         'CButtonSendSmsUserShenasehPassword
         '
         Me.CButtonSendSmsUserShenasehPassword.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems4.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems4.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonSendSmsUserShenasehPassword.ColorFillBlend = CBlendItems4
+        CBlendItems5.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems5.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonSendSmsUserShenasehPassword.ColorFillBlend = CBlendItems5
         Me.CButtonSendSmsUserShenasehPassword.Corners.LowerRight = 10
         Me.CButtonSendSmsUserShenasehPassword.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.CButtonSendSmsUserShenasehPassword.DesignerSelected = False
+        Me.CButtonSendSmsUserShenasehPassword.DesignerSelected = True
         Me.CButtonSendSmsUserShenasehPassword.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButtonSendSmsUserShenasehPassword.ImageIndex = 0
         Me.CButtonSendSmsUserShenasehPassword.Location = New System.Drawing.Point(12, 44)
@@ -292,9 +295,9 @@ Partial Class UCDriver
         'CButtonSoftwareUserVerificationCodeInjection
         '
         Me.CButtonSoftwareUserVerificationCodeInjection.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems5.iColor = New System.Drawing.Color() {System.Drawing.Color.DeepPink, System.Drawing.Color.Purple, System.Drawing.Color.Black}
-        CBlendItems5.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonSoftwareUserVerificationCodeInjection.ColorFillBlend = CBlendItems5
+        CBlendItems6.iColor = New System.Drawing.Color() {System.Drawing.Color.DeepPink, System.Drawing.Color.Purple, System.Drawing.Color.Black}
+        CBlendItems6.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonSoftwareUserVerificationCodeInjection.ColorFillBlend = CBlendItems6
         Me.CButtonSoftwareUserVerificationCodeInjection.ColorFillSolid = System.Drawing.SystemColors.ActiveCaption
         Me.CButtonSoftwareUserVerificationCodeInjection.Corners.LowerRight = 10
         Me.CButtonSoftwareUserVerificationCodeInjection.Cursor = System.Windows.Forms.Cursors.Hand
@@ -310,9 +313,9 @@ Partial Class UCDriver
         'CButtonViewPrintUserShenasehPassword
         '
         Me.CButtonViewPrintUserShenasehPassword.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems6.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems6.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonViewPrintUserShenasehPassword.ColorFillBlend = CBlendItems6
+        CBlendItems7.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems7.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonViewPrintUserShenasehPassword.ColorFillBlend = CBlendItems7
         Me.CButtonViewPrintUserShenasehPassword.Corners.LowerRight = 10
         Me.CButtonViewPrintUserShenasehPassword.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonViewPrintUserShenasehPassword.DesignerSelected = False
@@ -439,10 +442,10 @@ Partial Class UCDriver
         Me.UcPersianTextBoxAddress.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBoxAddress.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxAddress.Location = New System.Drawing.Point(388, 43)
+        Me.UcPersianTextBoxAddress.Location = New System.Drawing.Point(667, 43)
         Me.UcPersianTextBoxAddress.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxAddress.Name = "UcPersianTextBoxAddress"
-        Me.UcPersianTextBoxAddress.Size = New System.Drawing.Size(474, 24)
+        Me.UcPersianTextBoxAddress.Size = New System.Drawing.Size(195, 24)
         Me.UcPersianTextBoxAddress.TabIndex = 7
         Me.UcPersianTextBoxAddress.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBoxAddress.UCBorder = True
@@ -527,6 +530,25 @@ Partial Class UCDriver
         Me.Label8.TabIndex = 18
         Me.Label8.Text = "گواهینامه :"
         '
+        'CButtonATISMobileAppDownloadLink
+        '
+        Me.CButtonATISMobileAppDownloadLink.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        CBlendItems4.iColor = New System.Drawing.Color() {System.Drawing.Color.OrangeRed, System.Drawing.Color.SaddleBrown}
+        CBlendItems4.iPoint = New Single() {0!, 1.0!}
+        Me.CButtonATISMobileAppDownloadLink.ColorFillBlend = CBlendItems4
+        Me.CButtonATISMobileAppDownloadLink.ColorFillSolid = System.Drawing.SystemColors.ActiveCaption
+        Me.CButtonATISMobileAppDownloadLink.Corners.LowerRight = 10
+        Me.CButtonATISMobileAppDownloadLink.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.CButtonATISMobileAppDownloadLink.DesignerSelected = False
+        Me.CButtonATISMobileAppDownloadLink.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.CButtonATISMobileAppDownloadLink.ImageIndex = 0
+        Me.CButtonATISMobileAppDownloadLink.Location = New System.Drawing.Point(388, 44)
+        Me.CButtonATISMobileAppDownloadLink.Name = "CButtonATISMobileAppDownloadLink"
+        Me.CButtonATISMobileAppDownloadLink.Size = New System.Drawing.Size(226, 22)
+        Me.CButtonATISMobileAppDownloadLink.TabIndex = 24
+        Me.CButtonATISMobileAppDownloadLink.Text = "ارسال لینک دانلود اپلیکیشن آتیس موبایل"
+        Me.CButtonATISMobileAppDownloadLink.TextShadow = System.Drawing.Color.Black
+        '
         'UCDriver
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -571,4 +593,5 @@ End Sub
     Friend WithEvents CButtonSabt As CButtonLib.CButton
     Friend WithEvents CButtonDelete As CButtonLib.CButton
     Friend WithEvents CButtonNew As CButtonLib.CButton
+    Friend WithEvents CButtonATISMobileAppDownloadLink As CButtonLib.CButton
 End Class

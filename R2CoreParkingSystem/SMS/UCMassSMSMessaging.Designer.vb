@@ -27,6 +27,7 @@ Partial Class UCMassSMSMessaging
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UCMassSMSMessaging))
         Me.PnlMain = New System.Windows.Forms.Panel()
+        Me.UcLabel4 = New R2CoreGUI.UCLabel()
         Me.UcLabel3 = New R2CoreGUI.UCLabel()
         Me.UcLabelTop = New R2CoreGUI.UCLabel()
         Me.UcLabel2 = New R2CoreGUI.UCLabel()
@@ -36,7 +37,6 @@ Partial Class UCMassSMSMessaging
         Me.UcSearcherUserTypes = New R2CoreGUI.UCSearcherUserTypes()
         Me.UcLabel1 = New R2CoreGUI.UCLabel()
         Me.UcEntrySMSData = New R2CoreParkingSystem.UCEntrySMSData()
-        Me.UcLabel4 = New R2CoreGUI.UCLabel()
         Me.PnlMain.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -55,8 +55,25 @@ Partial Class UCMassSMSMessaging
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(616, 533)
+        Me.PnlMain.Size = New System.Drawing.Size(738, 626)
         Me.PnlMain.TabIndex = 0
+        '
+        'UcLabel4
+        '
+        Me.UcLabel4._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel4._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcLabel4.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabel4.Location = New System.Drawing.Point(337, 68)
+        Me.UcLabel4.Name = "UcLabel4"
+        Me.UcLabel4.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel4.Size = New System.Drawing.Size(395, 32)
+        Me.UcLabel4.TabIndex = 10
+        Me.UcLabel4.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabel4.UCFont = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel4.UCForeColor = System.Drawing.Color.Red
+        Me.UcLabel4.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.UcLabel4.UCValue = "ارسال اس ام اس فقط برای کاربرانی است که فعال سازی انجام داده اند"
         '
         'UcLabel3
         '
@@ -64,7 +81,7 @@ Partial Class UCMassSMSMessaging
         Me.UcLabel3._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel3.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel3.Location = New System.Drawing.Point(212, 41)
+        Me.UcLabel3.Location = New System.Drawing.Point(334, 41)
         Me.UcLabel3.Name = "UcLabel3"
         Me.UcLabel3.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabel3.Size = New System.Drawing.Size(395, 32)
@@ -84,7 +101,7 @@ Partial Class UCMassSMSMessaging
         Me.UcLabelTop.Location = New System.Drawing.Point(0, 0)
         Me.UcLabelTop.Name = "UcLabelTop"
         Me.UcLabelTop.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelTop.Size = New System.Drawing.Size(616, 32)
+        Me.UcLabelTop.Size = New System.Drawing.Size(738, 32)
         Me.UcLabelTop.TabIndex = 8
         Me.UcLabelTop.UCBackColor = System.Drawing.Color.LightSteelBlue
         Me.UcLabelTop.UCFont = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
@@ -129,10 +146,10 @@ Partial Class UCMassSMSMessaging
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBox.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBox.Location = New System.Drawing.Point(6, 352)
+        Me.UcPersianTextBox.Location = New System.Drawing.Point(17, 472)
         Me.UcPersianTextBox.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBox.Name = "UcPersianTextBox"
-        Me.UcPersianTextBox.Size = New System.Drawing.Size(604, 174)
+        Me.UcPersianTextBox.Size = New System.Drawing.Size(700, 143)
         Me.UcPersianTextBox.TabIndex = 3
         Me.UcPersianTextBox.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBox.UCBorder = True
@@ -168,7 +185,7 @@ Partial Class UCMassSMSMessaging
         '
         Me.UcSearcherUserTypes.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcSearcherUserTypes.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherUserTypes.Location = New System.Drawing.Point(346, 105)
+        Me.UcSearcherUserTypes.Location = New System.Drawing.Point(468, 105)
         Me.UcSearcherUserTypes.Name = "UcSearcherUserTypes"
         Me.UcSearcherUserTypes.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcSearcherUserTypes.Size = New System.Drawing.Size(188, 31)
@@ -190,7 +207,7 @@ Partial Class UCMassSMSMessaging
         Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel1.Location = New System.Drawing.Point(535, 104)
+        Me.UcLabel1.Location = New System.Drawing.Point(657, 104)
         Me.UcLabel1.Name = "UcLabel1"
         Me.UcLabel1.Padding = New System.Windows.Forms.Padding(1)
         Me.UcLabel1.Size = New System.Drawing.Size(59, 32)
@@ -206,28 +223,11 @@ Partial Class UCMassSMSMessaging
         Me.UcEntrySMSData.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcEntrySMSData.BackColor = System.Drawing.Color.Transparent
-        Me.UcEntrySMSData.Location = New System.Drawing.Point(-2, 142)
+        Me.UcEntrySMSData.Location = New System.Drawing.Point(6, 142)
         Me.UcEntrySMSData.Name = "UcEntrySMSData"
         Me.UcEntrySMSData.Padding = New System.Windows.Forms.Padding(5)
-        Me.UcEntrySMSData.Size = New System.Drawing.Size(620, 213)
+        Me.UcEntrySMSData.Size = New System.Drawing.Size(723, 335)
         Me.UcEntrySMSData.TabIndex = 4
-        '
-        'UcLabel4
-        '
-        Me.UcLabel4._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabel4._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabel4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcLabel4.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel4.Location = New System.Drawing.Point(215, 68)
-        Me.UcLabel4.Name = "UcLabel4"
-        Me.UcLabel4.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabel4.Size = New System.Drawing.Size(395, 32)
-        Me.UcLabel4.TabIndex = 10
-        Me.UcLabel4.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel4.UCFont = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabel4.UCForeColor = System.Drawing.Color.Red
-        Me.UcLabel4.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.UcLabel4.UCValue = "ارسال اس ام اس فقط برای کاربرانی است که فعال سازی انجام داده اند"
         '
         'UCMassSMSMessaging
         '
@@ -236,7 +236,7 @@ Partial Class UCMassSMSMessaging
         Me.BackColor = System.Drawing.Color.White
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCMassSMSMessaging"
-        Me.Size = New System.Drawing.Size(616, 533)
+        Me.Size = New System.Drawing.Size(738, 626)
         Me.PnlMain.ResumeLayout(False)
         Me.ResumeLayout(False)
 

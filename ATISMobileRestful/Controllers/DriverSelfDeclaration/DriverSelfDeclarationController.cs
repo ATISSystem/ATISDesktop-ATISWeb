@@ -87,10 +87,12 @@ namespace ATISMobileRestful.Controllers.DriverSelfDeclaration
                 //ثبت مشخصات
                 InstanceDriverSelfDeclaration.SetDeclarations(DSDs, NSSTruck, NSSSoftwareuser);
                 //بروز رسانی مشخصات در اپلیکیشن
-                InstanceDriverSelfDeclaration.GetDeclarations(NSSTruck, true);
+                //InstanceDriverSelfDeclaration.GetDeclarations(NSSTruck, true);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
+            catch (DSDDataOutofRangeException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (DriverSelfDeclarationsEmtpyNotAllowdException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByMobileNumberException ex)

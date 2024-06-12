@@ -68,7 +68,7 @@ Partial Class UCEntrySMSData
         Me.PnlOutter.Location = New System.Drawing.Point(5, 5)
         Me.PnlOutter.Name = "PnlOutter"
         Me.PnlOutter.Padding = New System.Windows.Forms.Padding(1)
-        Me.PnlOutter.Size = New System.Drawing.Size(615, 212)
+        Me.PnlOutter.Size = New System.Drawing.Size(569, 327)
         Me.PnlOutter.TabIndex = 0
         '
         'PnlInner
@@ -80,12 +80,11 @@ Partial Class UCEntrySMSData
         Me.PnlInner.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlInner.Location = New System.Drawing.Point(1, 1)
         Me.PnlInner.Name = "PnlInner"
-        Me.PnlInner.Size = New System.Drawing.Size(613, 210)
+        Me.PnlInner.Size = New System.Drawing.Size(567, 325)
         Me.PnlInner.TabIndex = 0
         '
         'CButtonSubmit
         '
-        Me.CButtonSubmit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         CBlendItems1.iColor = New System.Drawing.Color() {System.Drawing.Color.ForestGreen, System.Drawing.Color.DarkGreen, System.Drawing.Color.Olive}
         CBlendItems1.iPoint = New Single() {0!, 0.5!, 1.0!}
         Me.CButtonSubmit.ColorFillBlend = CBlendItems1
@@ -94,7 +93,7 @@ Partial Class UCEntrySMSData
         Me.CButtonSubmit.DesignerSelected = False
         Me.CButtonSubmit.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButtonSubmit.ImageIndex = 0
-        Me.CButtonSubmit.Location = New System.Drawing.Point(21, 10)
+        Me.CButtonSubmit.Location = New System.Drawing.Point(42, 9)
         Me.CButtonSubmit.Name = "CButtonSubmit"
         Me.CButtonSubmit.Size = New System.Drawing.Size(117, 22)
         Me.CButtonSubmit.TabIndex = 33
@@ -102,11 +101,11 @@ Partial Class UCEntrySMSData
         '
         'Label1
         '
-        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
         Me.Label1.BackColor = System.Drawing.Color.White
         Me.Label1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label1.Location = New System.Drawing.Point(405, 8)
+        Me.Label1.Location = New System.Drawing.Point(366, 6)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(172, 23)
         Me.Label1.TabIndex = 0
@@ -114,7 +113,7 @@ Partial Class UCEntrySMSData
         '
         'AlphaGradientPanel1
         '
-        Me.AlphaGradientPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.AlphaGradientPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AlphaGradientPanel1.BackColor = System.Drawing.Color.Transparent
         Me.AlphaGradientPanel1.Border = True
@@ -156,10 +155,10 @@ Partial Class UCEntrySMSData
         Me.AlphaGradientPanel1.ImagePadding = New System.Windows.Forms.Padding(5)
         Me.AlphaGradientPanel1.ImagePosition = BlueActivity.Controls.ImagePosition.BottomRight
         Me.AlphaGradientPanel1.ImageSize = New System.Drawing.Size(48, 48)
-        Me.AlphaGradientPanel1.Location = New System.Drawing.Point(3, 22)
+        Me.AlphaGradientPanel1.Location = New System.Drawing.Point(3, 21)
         Me.AlphaGradientPanel1.Name = "AlphaGradientPanel1"
         Me.AlphaGradientPanel1.Rounded = True
-        Me.AlphaGradientPanel1.Size = New System.Drawing.Size(607, 185)
+        Me.AlphaGradientPanel1.Size = New System.Drawing.Size(561, 298)
         Me.AlphaGradientPanel1.TabIndex = 0
         '
         'ColorWithAlpha1
@@ -183,7 +182,7 @@ Partial Class UCEntrySMSData
         'UcPersianTextBox10
         '
         Me.UcPersianTextBox10.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBox10.Location = New System.Drawing.Point(15, 151)
+        Me.UcPersianTextBox10.Location = New System.Drawing.Point(39, 259)
         Me.UcPersianTextBox10.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBox10.Name = "UcPersianTextBox10"
         Me.UcPersianTextBox10.Size = New System.Drawing.Size(156, 27)
@@ -204,7 +203,7 @@ Partial Class UCEntrySMSData
         Me.Label8.AutoSize = True
         Me.Label8.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Label8.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label8.Location = New System.Drawing.Point(177, 152)
+        Me.Label8.Location = New System.Drawing.Point(201, 260)
         Me.Label8.Name = "Label8"
         Me.Label8.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label8.Size = New System.Drawing.Size(67, 23)
@@ -215,7 +214,7 @@ Partial Class UCEntrySMSData
         'UcPersianTextBox9
         '
         Me.UcPersianTextBox9.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBox9.Location = New System.Drawing.Point(15, 118)
+        Me.UcPersianTextBox9.Location = New System.Drawing.Point(39, 226)
         Me.UcPersianTextBox9.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBox9.Name = "UcPersianTextBox9"
         Me.UcPersianTextBox9.Size = New System.Drawing.Size(156, 27)
@@ -236,7 +235,7 @@ Partial Class UCEntrySMSData
         Me.Label7.AutoSize = True
         Me.Label7.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Label7.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label7.Location = New System.Drawing.Point(177, 119)
+        Me.Label7.Location = New System.Drawing.Point(201, 227)
         Me.Label7.Name = "Label7"
         Me.Label7.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label7.Size = New System.Drawing.Size(64, 23)
@@ -247,7 +246,7 @@ Partial Class UCEntrySMSData
         'UcPersianTextBox8
         '
         Me.UcPersianTextBox8.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBox8.Location = New System.Drawing.Point(15, 85)
+        Me.UcPersianTextBox8.Location = New System.Drawing.Point(39, 193)
         Me.UcPersianTextBox8.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBox8.Name = "UcPersianTextBox8"
         Me.UcPersianTextBox8.Size = New System.Drawing.Size(156, 27)
@@ -268,7 +267,7 @@ Partial Class UCEntrySMSData
         Me.Label6.AutoSize = True
         Me.Label6.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Label6.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label6.Location = New System.Drawing.Point(177, 86)
+        Me.Label6.Location = New System.Drawing.Point(201, 194)
         Me.Label6.Name = "Label6"
         Me.Label6.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label6.Size = New System.Drawing.Size(75, 23)
@@ -279,7 +278,7 @@ Partial Class UCEntrySMSData
         'UcPersianTextBox7
         '
         Me.UcPersianTextBox7.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBox7.Location = New System.Drawing.Point(15, 52)
+        Me.UcPersianTextBox7.Location = New System.Drawing.Point(39, 160)
         Me.UcPersianTextBox7.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBox7.Name = "UcPersianTextBox7"
         Me.UcPersianTextBox7.Size = New System.Drawing.Size(156, 27)
@@ -300,7 +299,7 @@ Partial Class UCEntrySMSData
         Me.Label5.AutoSize = True
         Me.Label5.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Label5.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label5.Location = New System.Drawing.Point(177, 53)
+        Me.Label5.Location = New System.Drawing.Point(201, 161)
         Me.Label5.Name = "Label5"
         Me.Label5.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label5.Size = New System.Drawing.Size(71, 23)
@@ -311,7 +310,7 @@ Partial Class UCEntrySMSData
         'UcPersianTextBox6
         '
         Me.UcPersianTextBox6.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBox6.Location = New System.Drawing.Point(15, 20)
+        Me.UcPersianTextBox6.Location = New System.Drawing.Point(39, 128)
         Me.UcPersianTextBox6.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBox6.Name = "UcPersianTextBox6"
         Me.UcPersianTextBox6.Size = New System.Drawing.Size(156, 27)
@@ -332,7 +331,7 @@ Partial Class UCEntrySMSData
         Me.Label4.AutoSize = True
         Me.Label4.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Label4.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label4.Location = New System.Drawing.Point(177, 21)
+        Me.Label4.Location = New System.Drawing.Point(201, 129)
         Me.Label4.Name = "Label4"
         Me.Label4.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label4.Size = New System.Drawing.Size(73, 23)
@@ -342,9 +341,9 @@ Partial Class UCEntrySMSData
         '
         'UcPersianTextBox5
         '
-        Me.UcPersianTextBox5.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBox5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBox5.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBox5.Location = New System.Drawing.Point(355, 151)
+        Me.UcPersianTextBox5.Location = New System.Drawing.Point(314, 226)
         Me.UcPersianTextBox5.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBox5.Name = "UcPersianTextBox5"
         Me.UcPersianTextBox5.Size = New System.Drawing.Size(156, 27)
@@ -362,9 +361,9 @@ Partial Class UCEntrySMSData
         '
         'UcPersianTextBox4
         '
-        Me.UcPersianTextBox4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBox4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBox4.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBox4.Location = New System.Drawing.Point(355, 118)
+        Me.UcPersianTextBox4.Location = New System.Drawing.Point(314, 193)
         Me.UcPersianTextBox4.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBox4.Name = "UcPersianTextBox4"
         Me.UcPersianTextBox4.Size = New System.Drawing.Size(156, 27)
@@ -382,9 +381,9 @@ Partial Class UCEntrySMSData
         '
         'UcPersianTextBox3
         '
-        Me.UcPersianTextBox3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBox3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBox3.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBox3.Location = New System.Drawing.Point(355, 85)
+        Me.UcPersianTextBox3.Location = New System.Drawing.Point(314, 160)
         Me.UcPersianTextBox3.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBox3.Name = "UcPersianTextBox3"
         Me.UcPersianTextBox3.Size = New System.Drawing.Size(156, 27)
@@ -402,9 +401,9 @@ Partial Class UCEntrySMSData
         '
         'UcPersianTextBox2
         '
-        Me.UcPersianTextBox2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBox2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBox2.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBox2.Location = New System.Drawing.Point(355, 52)
+        Me.UcPersianTextBox2.Location = New System.Drawing.Point(314, 127)
         Me.UcPersianTextBox2.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBox2.Name = "UcPersianTextBox2"
         Me.UcPersianTextBox2.Size = New System.Drawing.Size(156, 27)
@@ -422,12 +421,13 @@ Partial Class UCEntrySMSData
         '
         'UcPersianTextBox1
         '
-        Me.UcPersianTextBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcPersianTextBox1.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBox1.Location = New System.Drawing.Point(355, 19)
+        Me.UcPersianTextBox1.Location = New System.Drawing.Point(39, 35)
         Me.UcPersianTextBox1.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBox1.Name = "UcPersianTextBox1"
-        Me.UcPersianTextBox1.Size = New System.Drawing.Size(156, 27)
+        Me.UcPersianTextBox1.Size = New System.Drawing.Size(496, 86)
         Me.UcPersianTextBox1.TabIndex = 2
         Me.UcPersianTextBox1.UCBackColor = System.Drawing.Color.White
         Me.UcPersianTextBox1.UCBorder = True
@@ -435,18 +435,18 @@ Partial Class UCEntrySMSData
         Me.UcPersianTextBox1.UCEnable = True
         Me.UcPersianTextBox1.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcPersianTextBox1.UCForeColor = System.Drawing.Color.Black
-        Me.UcPersianTextBox1.UCMultiLine = False
+        Me.UcPersianTextBox1.UCMultiLine = True
         Me.UcPersianTextBox1.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
         Me.UcPersianTextBox1.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.UcPersianTextBox1.UCValue = ""
         '
         'Label3
         '
-        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
         Me.Label3.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Label3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Label3.Location = New System.Drawing.Point(512, 152)
+        Me.Label3.Location = New System.Drawing.Point(471, 227)
         Me.Label3.Name = "Label3"
         Me.Label3.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Label3.Size = New System.Drawing.Size(70, 23)
@@ -456,11 +456,11 @@ Partial Class UCEntrySMSData
         '
         'Lbl4
         '
-        Me.Lbl4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Lbl4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Lbl4.AutoSize = True
         Me.Lbl4.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Lbl4.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Lbl4.Location = New System.Drawing.Point(512, 119)
+        Me.Lbl4.Location = New System.Drawing.Point(471, 194)
         Me.Lbl4.Name = "Lbl4"
         Me.Lbl4.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Lbl4.Size = New System.Drawing.Size(73, 23)
@@ -470,11 +470,11 @@ Partial Class UCEntrySMSData
         '
         'Lbl3
         '
-        Me.Lbl3.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Lbl3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Lbl3.AutoSize = True
         Me.Lbl3.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Lbl3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Lbl3.Location = New System.Drawing.Point(512, 86)
+        Me.Lbl3.Location = New System.Drawing.Point(471, 161)
         Me.Lbl3.Name = "Lbl3"
         Me.Lbl3.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Lbl3.Size = New System.Drawing.Size(69, 23)
@@ -484,11 +484,11 @@ Partial Class UCEntrySMSData
         '
         'Lbl2
         '
-        Me.Lbl2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Lbl2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Lbl2.AutoSize = True
         Me.Lbl2.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Lbl2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Lbl2.Location = New System.Drawing.Point(512, 53)
+        Me.Lbl2.Location = New System.Drawing.Point(471, 128)
         Me.Lbl2.Name = "Lbl2"
         Me.Lbl2.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Lbl2.Size = New System.Drawing.Size(65, 23)
@@ -498,11 +498,11 @@ Partial Class UCEntrySMSData
         '
         'Lbl1
         '
-        Me.Lbl1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Lbl1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Lbl1.AutoSize = True
         Me.Lbl1.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Lbl1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.Lbl1.Location = New System.Drawing.Point(512, 20)
+        Me.Lbl1.Location = New System.Drawing.Point(466, 9)
         Me.Lbl1.Name = "Lbl1"
         Me.Lbl1.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.Lbl1.Size = New System.Drawing.Size(64, 23)
@@ -518,7 +518,7 @@ Partial Class UCEntrySMSData
         Me.Controls.Add(Me.PnlOutter)
         Me.Name = "UCEntrySMSData"
         Me.Padding = New System.Windows.Forms.Padding(5)
-        Me.Size = New System.Drawing.Size(625, 222)
+        Me.Size = New System.Drawing.Size(579, 337)
         Me.PnlOutter.ResumeLayout(False)
         Me.PnlInner.ResumeLayout(False)
         Me.PnlInner.PerformLayout()

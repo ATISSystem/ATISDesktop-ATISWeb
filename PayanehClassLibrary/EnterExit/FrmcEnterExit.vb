@@ -239,6 +239,12 @@ Public Class FrmcEnterExit
             Catch ex As Exception
             End Try
 
+            'اعلان پلاک و سریال به سرویس ارسال اس ام اس
+            Try
+                R2CoreParkingSystemMClassEnterExitManagement.EntryExitAllownSMSControlling(myLP.Pelak, myLP.Serial)
+            Catch ex As Exception
+            End Try
+
             'محاسبه هزينه تردد
             Dim myMblgh As Int64 = 0
             Dim myTavaghof As Int64 = 0

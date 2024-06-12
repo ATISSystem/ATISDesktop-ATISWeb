@@ -99,23 +99,23 @@ namespace ATISWeb.MoneyWalletManagement.MoneyWalletChargingManagement
         {
             try
             {
-
+                //return;
                 var WS = new R2Core.R2PrimaryWS.R2PrimaryWebService();
                 var InstanceMoneyWalletChargingAmounts = new R2CoreParkingSystemMoneyWalletChargingAmountsManager();
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var InstanceLogin = new ATISWebMClassLoginManager();
                 var NSSSoftwareUser = InstanceLogin.GetNSSCurrentUser();
 
-                //var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, InstanceMoneyWalletChargingAmounts.GetNSSAmount(WCGetSelected()).MWCARial, NSSSoftwareUser.UserId, WS.WebMethodLogin(NSSSoftwareUser.UserShenaseh, NSSSoftwareUser.UserPassword));
-                var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ShepaPaymentGate, InstanceMoneyWalletChargingAmounts.GetNSSAmount(WCGetSelected()).MWCARial, NSSSoftwareUser.UserId, WS.WebMethodLogin(NSSSoftwareUser.UserShenaseh, NSSSoftwareUser.UserPassword));
+                var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, InstanceMoneyWalletChargingAmounts.GetNSSAmount(WCGetSelected()).MWCARial, NSSSoftwareUser.UserId, WS.WebMethodLogin(NSSSoftwareUser.UserShenaseh, NSSSoftwareUser.UserPassword));
+                //var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ShepaPaymentGate, InstanceMoneyWalletChargingAmounts.GetNSSAmount(WCGetSelected()).MWCARial, NSSSoftwareUser.UserId, WS.WebMethodLogin(NSSSoftwareUser.UserShenaseh, NSSSoftwareUser.UserPassword));
                 var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
                 var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(PayId);
                 while ((NSSPaymentRequest.Authority == string.Empty) & (NSSPaymentRequest.PaymentErrors == string.Empty))
                 { System.Threading.Thread.Sleep(500); NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(PayId); }
                 if (NSSPaymentRequest.Authority != string.Empty)
                 {
-                    //Response.Redirect(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 2) + NSSPaymentRequest.Authority);
-                    Response.Redirect(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ShepaPaymentGate, 2) + NSSPaymentRequest.Authority);
+                    Response.Redirect(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 2) + NSSPaymentRequest.Authority);
+                    //Response.Redirect(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ShepaPaymentGate, 2) + NSSPaymentRequest.Authority);
                 }
                 else
                 { throw new Exception(NSSPaymentRequest.PaymentErrors); }

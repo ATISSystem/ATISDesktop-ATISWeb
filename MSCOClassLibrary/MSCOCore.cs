@@ -556,7 +556,7 @@ namespace MSCOCore
                     { LstUsers.Add(InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64(TargetUsers[LoopxUsers]))); }
                     var MSCOData = new SMSCreationData() { Data1 = string.Empty };
                     var InstanceSMSHandling = new R2CoreSMSHandlingManager();
-                    var SMSResult = InstanceSMSHandling.SendSMS(LstUsers, MSCOCore.SMS.SMSTypes.MSCOCoreSMSTypes.MSCOSuccess, InstanceSMSHandling.RepeatSMSCreationData(MSCOData, LstUsers.Count));
+                    var SMSResult = InstanceSMSHandling.SendSMS(LstUsers, MSCOCore.SMS.SMSTypes.MSCOCoreSMSTypes.MSCOSuccess, InstanceSMSHandling.RepeatSMSCreationData(MSCOData, LstUsers.Count), true);
                     var SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult);
                     if (!(SMSResultAnalyze == String.Empty)) { throw new MSCOCoreSendSMSFailedException(SMSResultAnalyze); }
                 }

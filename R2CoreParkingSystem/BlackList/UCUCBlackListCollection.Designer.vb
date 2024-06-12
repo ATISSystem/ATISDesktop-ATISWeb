@@ -40,9 +40,9 @@ Partial Class UCUCBlackListCollection
         'PnlMain
         '
         Me.PnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlMain.Controls.Add(Me.UcButtonAdd)
         Me.PnlMain.Controls.Add(Me.UcDriver)
         Me.PnlMain.Controls.Add(Me.UcMoney)
-        Me.PnlMain.Controls.Add(Me.UcButtonAdd)
         Me.PnlMain.Controls.Add(Me.UcPersianTextBoxSharh)
         Me.PnlMain.Controls.Add(Me.UcCar)
         Me.PnlMain.Controls.Add(Me.PnlUCs)
@@ -57,29 +57,35 @@ Partial Class UCUCBlackListCollection
         '
         'UcDriver
         '
-        Me.UcDriver.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcDriver.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcDriver.BackColor = System.Drawing.Color.Transparent
-        Me.UcDriver.Enabled = false
+        Me.UcDriver.Enabled = False
         Me.UcDriver.Location = New System.Drawing.Point(3, 156)
         Me.UcDriver.Name = "UcDriver"
         Me.UcDriver.Padding = New System.Windows.Forms.Padding(3)
         Me.UcDriver.Size = New System.Drawing.Size(865, 100)
         Me.UcDriver.TabIndex = 21
-        Me.UcDriver.UCViewButtons = false
+        Me.UcDriver.UCViewButtons = False
         '
         'UcMoney
         '
-        Me.UcMoney.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.UcMoney.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.UcMoney.Location = New System.Drawing.Point(112, 417)
         Me.UcMoney.Name = "UcMoney"
         Me.UcMoney.Size = New System.Drawing.Size(123, 26)
         Me.UcMoney.TabIndex = 0
+        Me.UcMoney.UCBackColor = System.Drawing.Color.White
+        Me.UcMoney.UCBorder = True
+        Me.UcMoney.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcMoney.UCFont = New System.Drawing.Font("Alborz Titr", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(2, Byte))
+        Me.UcMoney.UCForeColor = System.Drawing.Color.Black
+        Me.UcMoney.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.UcMoney.UCValue = "23423424"
         '
         'UcButtonAdd
         '
-        Me.UcButtonAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.UcButtonAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.UcButtonAdd.BackColor = System.Drawing.Color.Transparent
         Me.UcButtonAdd.Location = New System.Drawing.Point(13, 415)
         Me.UcButtonAdd.Name = "UcButtonAdd"
@@ -88,47 +94,51 @@ Partial Class UCUCBlackListCollection
         Me.UcButtonAdd.TabIndex = 20
         Me.UcButtonAdd.UCBackColor = System.Drawing.Color.OrangeRed
         Me.UcButtonAdd.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonAdd.UCEnable = true
-        Me.UcButtonAdd.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonAdd.UCEnable = True
+        Me.UcButtonAdd.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonAdd.UCForeColor = System.Drawing.Color.White
         Me.UcButtonAdd.UCValue = "اضافه به لیست"
         '
         'UcPersianTextBoxSharh
         '
-        Me.UcPersianTextBoxSharh.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBoxSharh.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcPersianTextBoxSharh.BackColor = System.Drawing.Color.Transparent
         Me.UcPersianTextBoxSharh.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.UcPersianTextBoxSharh.Location = New System.Drawing.Point(280, 417)
-        Me.UcPersianTextBoxSharh.MaxCharacterReached = CType(50,Short)
+        Me.UcPersianTextBoxSharh.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxSharh.Name = "UcPersianTextBoxSharh"
         Me.UcPersianTextBoxSharh.Size = New System.Drawing.Size(551, 26)
         Me.UcPersianTextBoxSharh.TabIndex = 17
         Me.UcPersianTextBoxSharh.UCBackColor = System.Drawing.Color.White
-        Me.UcPersianTextBoxSharh.UCEnable = true
-        Me.UcPersianTextBoxSharh.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcPersianTextBoxSharh.UCBorder = True
+        Me.UcPersianTextBoxSharh.UCBorderColor = System.Drawing.Color.DarkGray
+        Me.UcPersianTextBoxSharh.UCEnable = True
+        Me.UcPersianTextBoxSharh.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcPersianTextBoxSharh.UCForeColor = System.Drawing.Color.Black
+        Me.UcPersianTextBoxSharh.UCMultiLine = False
         Me.UcPersianTextBoxSharh.UCOnlyDigit = R2Core.R2Enums.OnlyDigit.Any
         Me.UcPersianTextBoxSharh.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.UcPersianTextBoxSharh.UCValue = "sdfdsdfs"
         '
         'UcCar
         '
-        Me.UcCar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcCar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcCar.BackColor = System.Drawing.Color.Transparent
         Me.UcCar.Location = New System.Drawing.Point(3, 62)
         Me.UcCar.Name = "UcCar"
         Me.UcCar.Padding = New System.Windows.Forms.Padding(3)
         Me.UcCar.Size = New System.Drawing.Size(866, 88)
         Me.UcCar.TabIndex = 13
-        Me.UcCar.UCViewButtons = false
+        Me.UcCar.UCViewButtons = False
         '
         'PnlUCs
         '
-        Me.PnlUCs.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.PnlUCs.AutoScroll = true
+        Me.PnlUCs.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PnlUCs.AutoScroll = True
         Me.PnlUCs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlUCs.Location = New System.Drawing.Point(6, 257)
         Me.PnlUCs.Name = "PnlUCs"
@@ -138,6 +148,8 @@ Partial Class UCUCBlackListCollection
         '
         'UcLabelTop
         '
+        Me.UcLabelTop._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabelTop._UCForeColorPopuped = System.Drawing.Color.Red
         Me.UcLabelTop.BackColor = System.Drawing.Color.DodgerBlue
         Me.UcLabelTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.UcLabelTop.Location = New System.Drawing.Point(0, 0)
@@ -153,7 +165,9 @@ Partial Class UCUCBlackListCollection
         '
         'UcLabel1
         '
-        Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabel1._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
         Me.UcLabel1.Location = New System.Drawing.Point(829, 412)
         Me.UcLabel1.Name = "UcLabel1"
@@ -162,14 +176,16 @@ Partial Class UCUCBlackListCollection
         Me.UcLabel1.Size = New System.Drawing.Size(46, 32)
         Me.UcLabel1.TabIndex = 16
         Me.UcLabel1.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel1.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabel1.UCFont = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabel1.UCForeColor = System.Drawing.Color.Navy
         Me.UcLabel1.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabel1.UCValue = "شرح :"
         '
         'UcLabel2
         '
-        Me.UcLabel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.UcLabel2._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel2._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.UcLabel2.BackColor = System.Drawing.Color.Transparent
         Me.UcLabel2.Location = New System.Drawing.Point(231, 412)
         Me.UcLabel2.Name = "UcLabel2"

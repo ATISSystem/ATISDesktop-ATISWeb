@@ -33,6 +33,7 @@ using R2Core.MoneyWallet.Exceptions;
 using R2CoreTransportationAndLoadNotification.BillOfLading;
 using R2CoreTransportationAndLoadNotification.BillOfLading.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions;
+using R2CoreTransportationAndLoadNotification.DriverSelfDeclaration.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -171,7 +172,9 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                                        ex is TruckTotalLoadPermissionReachedException ||
                                        ex is LastLoadPermissionIssuedforThisTurnException ||
                                        ex is RequesterCanNotAllocateSedimentedLoadInTimeRangeException ||
-                                       ex is LoadAllocationTimeNotReachedException)
+                                       ex is LoadAllocationTimeNotReachedException ||
+                                       ex is DSDsNotFoundException)
+
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message.Replace("\r\n", " ") + "');", true); }
             catch (PleaseReloginException ex)
             { Response.Redirect("/LoginManagement/Wflogin.aspx"); }

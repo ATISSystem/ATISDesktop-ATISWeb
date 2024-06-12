@@ -126,7 +126,7 @@
                     </div>
                     <br />
                     <div style="width: 100%; text-align: center;">
-                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span><%=PPDS.LoadCapacitorLoadDescription%></span></div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>محل بارگیری-محل تخلیه: <%=PPDS.LoadingAndDischargingPlace%></span></div>
                     </div>
                     <br />
                     <div style="width: 100%; text-align: center;">
@@ -184,7 +184,7 @@
                     </div>
                     <br />
                     <div style="width: 100%; text-align: center;">
-                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span><%=PPDS.LoadCapacitorLoadDescription%></span></div>
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>محل بارگیری-محل تخلیه: <%=PPDS.LoadingAndDischargingPlace%></span></div>
                     </div>
                     <br />
                     <div style="width: 100%; text-align: center;">

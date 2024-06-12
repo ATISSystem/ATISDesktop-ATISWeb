@@ -334,10 +334,12 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 BtnNewLoad.Click += BtnNewLoad_Click;
 
                 //کنترل مجوز دسترسی کاربر برای مشاهده لیست کامل شرکت های حمل و نقل
+                DropDownListTC.Enabled = false;
+                TxtSearchTC.Enabled = false;
+                BtnSearchTC.Visible = false;
                 if (!IsPostBack)
                 {
-                    DropDownListTC.Enabled = false;
-                    TxtSearchTC.Enabled = false;
+
                     var InstancePermissions = new R2Core.PermissionManagement.R2CoreInstansePermissionsManager();
                     var InstanceLogin = new ATISWeb.LoginManagement.ATISWebMClassLoginManager();
                     if (!InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.SoftwareUserCanViewListofAllTransportCompanies, InstanceLogin.GetNSSCurrentUser().UserId, 0))
@@ -348,6 +350,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                         return;
                     }
                     DropDownListTC.Enabled = true;
+                    BtnSearchTC.Visible = true;
                     TxtSearchTC.Enabled = true;
                 }
             }
@@ -380,7 +383,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 
         private void BtnSearchDischargingPlace_ServerClick(object sender, EventArgs e)
         {
-            try {WcFillDischargingPlaces( TxtSearchDischargingPlace .Text); }
+            try { WcFillDischargingPlaces(TxtSearchDischargingPlace.Text); }
             catch (DischargingPlaceNotFoundException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (PermissionException ex)
@@ -467,6 +470,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 WcInformationChangedEvent?.Invoke(this, new EventArgs());
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "بار با موفقیت به ثبت رسید" + "');", true);
             }
+            catch (LoadCapacitorLoadTonajNotAllowedException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (LoadCapacitorLoadRegisteringInHolidayNotAllowedException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (TransportPriceTarrifParameterDetailsNotAdjustedException ex)
@@ -494,6 +499,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 WcInformationChangedEvent?.Invoke(this, new EventArgs());
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "ویرایش بار با موفقیت انجام شد" + "');", true);
             }
+            catch (LoadCapacitorLoadTonajNotAllowedException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (EditOrDeleteReRegisteredLoadNotAllowedException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (TransportPriceTarrifParameterDetailsNotAdjustedException ex)

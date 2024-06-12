@@ -103,6 +103,8 @@ Imports R2Core.SMS.Exceptions
 Imports R2Core.SMS.SMSHandling
 Imports PayanehClassLibrary.SMS.SMSTypes
 Imports R2Core.SoftwareUserManagement.Exceptions
+Imports R2CoreParkingSystem.SoftwareUsersManagement
+Imports R2CoreParkingSystem.SMS.SMSOwners
 
 Namespace Logging
 
@@ -776,6 +778,98 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
+        Public Sub ResuscitationNonCreditTurn(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure)
+            Try
+                'کنترل فعال بودن و غیرفعال بودن سرویس
+                Dim InstanceConfigurations = New R2CoreInstanceConfigurationManager
+                If Not InstanceConfigurations.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 7) Then Throw New ResuscitationReserveTurnServiceIsUnactiveException
+
+                'کنترل وضعیت نوبت
+                If YourNSSTurn.TurnStatus <> TurnStatuses.CancelledUnderScore Then Throw New TurnHandlingNotAllowedBecuaseTurnStatusException
+
+                'کنترل موجودی
+                Dim InstanceTrafficCard = New R2CoreParkingSystemInstanceTrafficCardsManager
+                Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
+                Dim InstanceCars = New R2CoreParkingSystemInstanceCarsManager
+                Dim NSSTrafficCard = InstanceTrafficCard.GetNSSTrafficCard(InstanceCars.GetCardIdFromnIdCar(YourNSSTurn.StrCardNo))
+                If Not InstanceTurnRegisterRequest.IsMoneyWalletInventoryIsEnoughForTurnRegistering(NSSTrafficCard) Then Throw New MoneyWalletCurrentChargeNotEnoughException
+
+                'کنترل محدوده زمانی مجاز برای درخواست احیا نوبت
+                If YourNSSTurn.LastChangedDate = _DateTime.GetCurrentDateShamsiFull Then Throw New ResuscitationReserveTurnEndTimeReachedException
+                If YourNSSTurn.LastChangedDate <> _DateTime.GetCurrentDateShamsiFull Then
+                    If _DateTime.GetCurrentTime > InstanceConfigurations.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 8) Then Throw New ResuscitationReserveTurnEndTimeReachedException
+                End If
+
+                'کنترل تاریخ تغییر وضعیت نوبت ، درخواست میتواند در همان روز و یا حداکثر تا روز کاری بعد ارسال گردد به سامانه
+                Dim Ds As DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                       "Select Count(*) as Counting From R2PrimaryTransportationAndLoadNotification.Dbo.TblTransportationLoadNotificationSpecializedPersianCalendar AS SpecializedPersianCalendar
+                            Where SpecializedPersianCalendar.DateShamsi > '" & YourNSSTurn.EnterDate & "' and SpecializedPersianCalendar.DateShamsi < '" & _DateTime.GetCurrentDateShamsiFull & "' and PCType=0 ", 3600, Ds)
+                Dim CancellingDates = InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotification.ConfigurationsManagement.R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 5)
+                If Ds.Tables(0).Rows(0).Item("Counting") <> CancellingDates Then Throw New ResuscitationReserveTurnEndDateReachedException
+
+                'هزینه نوبت انجمن و شرکت
+                Dim CostOfTurnRegistering As Int64 = PayanehClassLibraryMClassCarTruckNobatManagement.GetSherkatHazinehNobatMblgh(NSSTrafficCard)
+                If CostOfTurnRegistering > 0 Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, CostOfTurnRegistering, R2CoreParkingSystemAccountings.SherkatHazinehNobat, YourNSSUser)
+                If NSSTrafficCard.CardType = TerafficCardType.Tereili Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 1), R2CoreParkingSystemAccountings.AnjomanHazinehNobat, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+                If NSSTrafficCard.CardType = TerafficCardType.SixCharkh Or NSSTrafficCard.CardType = TerafficCardType.TenCharkh Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 4), R2CoreParkingSystemAccountings.AnjomanHazinehNobat, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+
+                'احیاء نوبت
+                PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToFalse(YourNSSTurn.nEnterExitId)
+
+            Catch ex As ResuscitationReserveTurnEndDateReachedException
+                Throw ex
+            Catch ex As ResuscitationReserveTurnEndTimeReachedException
+                Throw ex
+            Catch ex As ResuscitationReserveTurnServiceIsUnactiveException
+                Throw ex
+            Catch ex As MoneyWalletCurrentChargeNotEnoughException
+                Throw ex
+            Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
+                Throw ex
+            Catch ex As Exception
+                Throw ex
+            End Try
+        End Sub
+
+        Private Sub SendingSMSResuscitationNonCreditTurn(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+            Try
+                Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                Dim LstUser = New List(Of R2CoreStandardSoftwareUserStructure) From {YourNSSSoftwareUser}
+                Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = " "}}
+                Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, PayanehClassLibrarySMSTypes.ResuscitationNonCreditTurn, LstCreationData, True)
+                Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
+                'If Not SMSResultAnalyze = String.Empty Then Throw New 
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub ResuscitationNonCreditTurn(YourSofttWareUser As R2CoreStandardSoftwareUserStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure)
+            Try
+                Dim NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = Nothing
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager()
+                NSSTurn = InstanceTurns.GetNSSLastTurn(YourSofttWareUser)
+                ResuscitationNonCreditTurn(NSSTurn, YourNSSUser)
+
+                'ارسال پیام به راننده 
+                Try
+                    SendingSMSResuscitationNonCreditTurn(YourSofttWareUser)
+                Catch ex As Exception
+                End Try
+
+            Catch ex As ResuscitationReserveTurnEndDateReachedException
+            Catch ex As ResuscitationReserveTurnEndTimeReachedException
+            Catch ex As ResuscitationReserveTurnServiceIsUnactiveException
+            Catch ex As MoneyWalletCurrentChargeNotEnoughException
+            Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
+            Catch ex As TruckDriverNotFoundException
+            Catch ex As TurnNotFoundException
+            Catch ex As Exception
+            End Try
+        End Sub
+
 
     End Class
 
@@ -1441,6 +1535,27 @@ Namespace CarTruckNobatManagement
                 If NSSTrafficCard.CardType = TerafficCardType.SixCharkh Or NSSTrafficCard.CardType = TerafficCardType.TenCharkh And R2CoreMClassConfigurationManagement.GetConfigBoolean(PayanehClassLibraryConfigurations.TWS, 1) Then
                     TWSClassLibrary.TDBClientManagement.TWSClassTDBClientManagement.AddNobat(NSSTruck.NSSCar.StrCarNo, NSSTruck.NSSCar.StrCarSerialNo)
                 End If
+
+                'ارسال اس ام اس نوبت
+                Try
+                    Dim InstanceSoftwareUsers = New R2CoreParkingSystemInstanceSoftwareUsersManager
+                    SendingSMSTurn(InstanceSoftwareUsers.GetNSSSoftwareUser(NSSTruck.NSSCar))
+                Catch ex As Exception
+                End Try
+
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Private Sub SendingSMSTurn(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+            Try
+                Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                Dim LstUser = New List(Of R2CoreStandardSoftwareUserStructure) From {YourNSSSoftwareUser}
+                Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = NSSTurn.EnterDate + " " + NSSTurn.EnterTime, .Data2 = NSSTurn.OtaghdarTurnNumber}}
+                Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, R2CoreTransportationAndLoadNotificationSMSTypes.SendingTurnNumberSMS, LstCreationData, True)
+                Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
+                'If Not SMSResultAnalyze = String.Empty Then Throw New 
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -1533,6 +1648,7 @@ Namespace CarTruckNobatManagement
                                       Where nEnterExitId = " & NSSTurn.nEnterExitId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                NSSTurn = InstanceTurns.GetNSSTurn(NSSTurn.nEnterExitId)
                 DoStrategyComplementaryWorks()
             Catch ex As Exception When TypeOf ex Is TurnNotFoundException OrElse TypeOf ex Is ReserveTurnAlreadyUsedException OrElse TypeOf ex Is ResuscitationReserveTurnFailedException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
@@ -1550,6 +1666,25 @@ Namespace CarTruckNobatManagement
     End Class
 
     Namespace Exceptions
+        Public Class ResuscitationReserveTurnEndDateReachedException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "محدوده تقویمی احیا نوبت زیر اعتبار به پایان رسیده است"
+                End Get
+            End Property
+        End Class
+
+        Public Class ResuscitationReserveTurnEndTimeReachedException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "زمان احیا نوبت زیر اعتبار به پایان رسیده است"
+                End Get
+            End Property
+        End Class
 
         Public Class ResuscitationReserveTurnFailedException
             Inherits ApplicationException
@@ -1557,6 +1692,16 @@ Namespace CarTruckNobatManagement
             Public Overrides ReadOnly Property Message As String
                 Get
                     Return "امکان احیاء نوبت رزرو وجود ندارد"
+                End Get
+            End Property
+        End Class
+
+        Public Class ResuscitationReserveTurnServiceIsUnactiveException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "سرویس احیا نوبت زیر اعتبار غیر فعال است"
                 End Get
             End Property
         End Class
@@ -3690,21 +3835,22 @@ Namespace ReportsManagement
                 'شش چرخ یا دو محور
                 Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
                                                     Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
-                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=8) or (Accounting.EEAccountingProcessType=11))  And ((Accounting.MblghA=40000) Or (Accounting.MblghA=43600) Or (Accounting.MblghA=45000) Or (Accounting.MblghA=65400) Or (Accounting.MblghA=85020)  Or (Accounting.MblghA=130000) Or (Accounting.MblghA=175000) Or (Accounting.MblghA=220000))
+                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=8) or (Accounting.EEAccountingProcessType=11))  And ((Accounting.MblghA=40000) Or (Accounting.MblghA=43600) Or (Accounting.MblghA=45000) Or (Accounting.MblghA=65400) Or (Accounting.MblghA=85020)  Or (Accounting.MblghA=130000) Or (Accounting.MblghA=175000) Or (Accounting.MblghA=220000) Or (Accounting.MblghA=277750))
                                                     Group By DateShamsiA"
                 DSSixCharkh.Tables.Clear()
                 Da.Fill(DSSixCharkh)
                 'سواری
                 Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
                                                     Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
-                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17))  And ((Accounting.MblghA=14170) Or (Accounting.MblghA=15000) Or (Accounting.MblghA=21255) Or (Accounting.MblghA=27250) Or (Accounting.MblghA=38000) Or (Accounting.MblghA=50000) Or (Accounting.MblghA=62500))
+                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17))  And ((Accounting.MblghA=14170) Or (Accounting.MblghA=15000) Or (Accounting.MblghA=21255) Or (Accounting.MblghA=27250) Or (Accounting.MblghA=38000) Or (Accounting.MblghA=50000) Or (Accounting.MblghA=62500)  Or (Accounting.MblghA=82500))
                                                     Group By DateShamsiA"
                 DSSavari.Tables.Clear()
                 Da.Fill(DSSavari)
                 'ده و چرخ تریلی یا سه محور به بالا
                 Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
                                                     Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
-                                                          and ((Accounting.EEAccountingProcessType=1) OR (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=7) OR (Accounting.EEAccountingProcessType=8) OR (Accounting.EEAccountingProcessType=11)) And ((Accounting.MblghA=60000) or (Accounting.MblghA=59950) or (Accounting.MblghA=81750) or (Accounting.MblghA=105730) or (Accounting.MblghA=160000) or (Accounting.MblghA=215000) or (Accounting.MblghA=280000))
+                                                          and ((Accounting.EEAccountingProcessType=1) OR (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=7) OR (Accounting.EEAccountingProcessType=8) OR (Accounting.EEAccountingProcessType=11)) And ((Accounting.MblghA=60000) or (Accounting.MblghA=59950) or (Accounting.MblghA=81750) or (Accounting.MblghA=105730) or (Accounting.MblghA=160000) or (Accounting.MblghA=215000) or (Accounting.MblghA=280000)  or (Accounting.MblghA=353100))
+                                                          --and Accounting.UserIdA<400
                                                     Group By DateShamsiA"
                 DSTereiliTenCharkh.Tables.Clear()
                 Da.Fill(DSTereiliTenCharkh)
@@ -4336,7 +4482,7 @@ Namespace ReportsManagement
                     Next
                     Dim DaLoadPermission As New SqlClient.SqlDataAdapter : Dim DsLoadPermission As New DataSet
                     DaLoadPermission.SelectCommand = New SqlCommand("
-                         Select LoadPermissions.nEstelamId,LoadPermissions.StrExitDate,LoadPermissions.StrExitTime,LoadPermissions.StrDriverName,Cars.strCarNo,Cars.strCarSerialNo,LoadPermissionStatuses.LoadPermissionStatusTitle,Cars.StrBodyNo,LoadAllocations.LANote,LoadPermissions.OtaghdarTurnNumber as SequentialTurnNumber 
+                         Select LoadPermissions.nEstelamId,LoadPermissions.StrExitDate,LoadPermissions.StrExitTime,LoadPermissions.StrDriverName,Cars.strCarNo,Cars.strCarSerialNo,LoadPermissionStatuses.LoadPermissionStatusTitle,Cars.StrBodyNo,LoadAllocations.LANote,LoadPermissions.OtaghdarTurnNumber as SequentialTurnNumber,LoadAllocations.LAId 
                            from DBTransport.dbo.TbEnterExit as LoadPermissions
                              Inner Join dbtransport.dbo.TbCar as Cars On LoadPermissions.strCardno=Cars.nIDCar 
                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadPermissionStatuses as LoadPermissionStatuses On LoadPermissionStatuses.LoadPermissionStatusId=LoadPermissions.LoadPermissionStatus 
@@ -4366,68 +4512,118 @@ Namespace ReportsManagement
                         Dim TPTParams = InstanceTransportTarrifsParameters.GetTransportTarrifsComposit(Ds.Tables(0).Rows(Loopx).Item("TPTParams"))
 
                         'اطلاعات مجوزهای صادره
-                        Dim LoadPermissions As DataRow()
-                        LoadPermissions = DsLoadPermission.Tables(0).Select("nEstelamId=" + mynEstelamid)
-                        Dim CompositStringDriverName As String = String.Empty
-                        Dim CompositStringDate = String.Empty
-                        Dim CompositStringTime = String.Empty
-                        Dim CompositStringLoadPermissionStatus = String.Empty
-                        For LoopPermissions As Int64 = 0 To LoadPermissions.Count() - 1
-                            CompositStringDate = CompositStringDate & LoadPermissions(LoopPermissions)(1).trim & vbCrLf
-                            CompositStringTime = CompositStringTime & LoadPermissions(LoopPermissions)(2).trim + " - " + LoadPermissions(LoopPermissions)(9).trim & vbCrLf
-                            CompositStringLoadPermissionStatus = CompositStringLoadPermissionStatus & LoadPermissions(LoopPermissions)(8).trim + vbCrLf
-                            Dim Truck As String = LoadPermissions(LoopPermissions)(4).trim + " - " + LoadPermissions(LoopPermissions)(5).trim
-                            Dim SmartCardId = LoadPermissions(LoopPermissions)(7).trim
-                            CompositStringDriverName = CompositStringDriverName & LoadPermissions(LoopPermissions)(3).trim & " " & Truck & " " + SmartCardId + vbCrLf
-                        Next
-
-                        CmdSql.Parameters.Clear()
+                        Dim DataX As DataRow()
+                        DataX = DsLoadPermission.Tables(0).Select("nEstelamId=" + mynEstelamid.ToString)
                         Dim P As SqlClient.SqlParameter
-                        P = New SqlClient.SqlParameter("@nEstelamId", SqlDbType.Int) : P.Value = mynEstelamid
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@StrGoodName", SqlDbType.VarChar) : P.Value = myStrGoodName
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@StrCityName", SqlDbType.VarChar) : P.Value = myStrCityName
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@nTonaj", SqlDbType.Float) : P.Value = mynTonaj
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@nCarNumKol", SqlDbType.Int) : P.Value = mynCarNumKol
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@StrCompanyName", SqlDbType.VarChar) : P.Value = myCompanyName
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@StrPriceSug", SqlDbType.VarChar) : P.Value = myStrPriceSug
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@StrDescription", SqlDbType.VarChar) : P.Value = myStrDescription
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@StrAddress", SqlDbType.VarChar) : P.Value = myStrAddress
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@StrBarName", SqlDbType.VarChar) : P.Value = myStrBarname
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@dDateElam", SqlDbType.VarChar) : P.Value = mydDateElam
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@dTimeElam", SqlDbType.VarChar) : P.Value = mydTimeElam
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@AHSGTitle", SqlDbType.VarChar) : P.Value = myAHSGTitle
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@StrExitDate", SqlDbType.VarChar) : P.Value = CompositStringDate
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@StrExitTime", SqlDbType.VarChar) : P.Value = CompositStringTime
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@StrDriverName", SqlDbType.VarChar) : P.Value = CompositStringDriverName
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@LoadPermissionStatus", SqlDbType.VarChar) : P.Value = CompositStringLoadPermissionStatus
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@LoadStatusName", SqlDbType.VarChar) : P.Value = myLoadStatusName
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@UserName", SqlDbType.VarChar) : P.Value = UserName
-                        CmdSql.Parameters.Add(P)
-                        P = New SqlClient.SqlParameter("@TPTParams", SqlDbType.VarChar) : P.Value = TPTParams
-                        CmdSql.Parameters.Add(P)
-                        CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(nEstelamId,StrGoodName,StrCityName,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,AHSGTitle,StrExitDate,StrExitTime,StrDriverName,nTonaj,LoadPermissionStatus,LoadStatusName,UserName,TPTParams) Values(@nEstelamId,@StrGoodName,@StrCityName,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@AHSGTitle,@StrExitDate,@StrExitTime,@StrDriverName,@nTonaj,@LoadPermissionStatus,@LoadStatusName,@UserName,@TPTParams)"
-                        CmdSql.ExecuteNonQuery()
+                        If DataX.Length = 0 Then
+                            CmdSql.Parameters.Clear()
+                            P = New SqlClient.SqlParameter("@nEstelamId", SqlDbType.Int) : P.Value = mynEstelamid
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@StrGoodName", SqlDbType.VarChar) : P.Value = myStrGoodName
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@StrCityName", SqlDbType.VarChar) : P.Value = myStrCityName
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@nTonaj", SqlDbType.Float) : P.Value = mynTonaj
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@nCarNumKol", SqlDbType.Int) : P.Value = mynCarNumKol
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@StrCompanyName", SqlDbType.VarChar) : P.Value = myCompanyName
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@StrPriceSug", SqlDbType.VarChar) : P.Value = myStrPriceSug
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@StrDescription", SqlDbType.VarChar) : P.Value = myStrDescription
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@StrAddress", SqlDbType.VarChar) : P.Value = myStrAddress
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@StrBarName", SqlDbType.VarChar) : P.Value = myStrBarname
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@dDateElam", SqlDbType.VarChar) : P.Value = mydDateElam
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@dTimeElam", SqlDbType.VarChar) : P.Value = mydTimeElam
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@AHSGTitle", SqlDbType.VarChar) : P.Value = myAHSGTitle
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@StrExitDate", SqlDbType.VarChar) : P.Value = String.Empty
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@StrExitTime", SqlDbType.VarChar) : P.Value = String.Empty
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@StrDriverName", SqlDbType.VarChar) : P.Value = String.Empty
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@LoadPermissionStatus", SqlDbType.VarChar) : P.Value = String.Empty
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@LoadStatusName", SqlDbType.VarChar) : P.Value = myLoadStatusName
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@UserName", SqlDbType.VarChar) : P.Value = UserName
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@TPTParams", SqlDbType.VarChar) : P.Value = TPTParams
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@TurnNo", SqlDbType.VarChar) : P.Value = String.Empty
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@Pelak", SqlDbType.VarChar) : P.Value = String.Empty
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@Serial", SqlDbType.VarChar) : P.Value = String.Empty
+                            CmdSql.Parameters.Add(P)
+                            P = New SqlClient.SqlParameter("@TruckSmartCardNo", SqlDbType.VarChar) : P.Value = String.Empty
+                            CmdSql.Parameters.Add(P)
+                            CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(nEstelamId,StrGoodName,StrCityName,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,AHSGTitle,StrExitDate,StrExitTime,StrDriverName,nTonaj,LoadPermissionStatus,LoadStatusName,UserName,TPTParams,TurnNo,Pelak,Serial,TruckSmartCardNo) Values(@nEstelamId,@StrGoodName,@StrCityName,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@AHSGTitle,@StrExitDate,@StrExitTime,@StrDriverName,@nTonaj,@LoadPermissionStatus,@LoadStatusName,@UserName,@TPTParams,@TurnNo,@Pelak,@Serial,@TruckSmartCardNo)"
+                            CmdSql.ExecuteNonQuery()
+                        Else
+                            For PermissionsCounting As Int64 = 0 To DataX.Count - 1
+                                CmdSql.Parameters.Clear()
+                                P = New SqlClient.SqlParameter("@nEstelamId", SqlDbType.Int) : P.Value = mynEstelamid
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@StrGoodName", SqlDbType.VarChar) : P.Value = myStrGoodName
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@StrCityName", SqlDbType.VarChar) : P.Value = myStrCityName
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@nTonaj", SqlDbType.Float) : P.Value = mynTonaj
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@nCarNumKol", SqlDbType.Int) : P.Value = mynCarNumKol
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@StrCompanyName", SqlDbType.VarChar) : P.Value = myCompanyName
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@StrPriceSug", SqlDbType.VarChar) : P.Value = myStrPriceSug
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@StrDescription", SqlDbType.VarChar) : P.Value = myStrDescription
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@StrAddress", SqlDbType.VarChar) : P.Value = myStrAddress
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@StrBarName", SqlDbType.VarChar) : P.Value = myStrBarname
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@dDateElam", SqlDbType.VarChar) : P.Value = mydDateElam
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@dTimeElam", SqlDbType.VarChar) : P.Value = mydTimeElam
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@AHSGTitle", SqlDbType.VarChar) : P.Value = myAHSGTitle
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@StrExitDate", SqlDbType.VarChar) : P.Value = DataX(PermissionsCounting).Item("StrExitDate").trim
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@StrExitTime", SqlDbType.VarChar) : P.Value = DataX(PermissionsCounting).Item("StrExitTime").trim
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@StrDriverName", SqlDbType.VarChar) : P.Value = DataX(PermissionsCounting).Item("StrDriverName").trim
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@LoadPermissionStatus", SqlDbType.VarChar) : P.Value = DataX(PermissionsCounting).Item("LANote").trim + " " + DataX(PermissionsCounting).Item("LAId").ToString
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@LoadStatusName", SqlDbType.VarChar) : P.Value = myLoadStatusName
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@UserName", SqlDbType.VarChar) : P.Value = UserName
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@TPTParams", SqlDbType.VarChar) : P.Value = TPTParams
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@TurnNo", SqlDbType.VarChar) : P.Value = DataX(PermissionsCounting).Item("SequentialTurnNumber").trim
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@Pelak", SqlDbType.VarChar) : P.Value = DataX(PermissionsCounting).Item("strCarNo").trim
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@Serial", SqlDbType.VarChar) : P.Value = DataX(PermissionsCounting).Item("strCarSerialNo").trim
+                                CmdSql.Parameters.Add(P)
+                                P = New SqlClient.SqlParameter("@TruckSmartCardNo", SqlDbType.VarChar) : P.Value = DataX(PermissionsCounting).Item("StrBodyNo").trim
+                                CmdSql.Parameters.Add(P)
+                                CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblCapacitorLoadsCompanyRegisteredLoads(nEstelamId,StrGoodName,StrCityName,nCarNumKol,StrCompanyName,StrPriceSug,StrDescription,StrAddress,StrBarName,dDateElam,dTimeElam,AHSGTitle,StrExitDate,StrExitTime,StrDriverName,nTonaj,LoadPermissionStatus,LoadStatusName,UserName,TPTParams,TurnNo,Pelak,Serial,TruckSmartCardNo) Values(@nEstelamId,@StrGoodName,@StrCityName,@nCarNumKol,@StrCompanyName,@StrPriceSug,@StrDescription,@StrAddress,@StrBarName,@dDateElam,@dTimeElam,@AHSGTitle,@StrExitDate,@StrExitTime,@StrDriverName,@nTonaj,@LoadPermissionStatus,@LoadStatusName,@UserName,@TPTParams,@TurnNo,@Pelak,@Serial,@TruckSmartCardNo)"
+                                CmdSql.ExecuteNonQuery()
+                            Next
+                        End If
                     Next
                 End If
-
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
@@ -4985,6 +5181,9 @@ Namespace ReportsManagement
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimaryReportsSqlConnection).GetConnection()
             Try
+                Dim Concat1 As String = YourDate1.GetConcatString
+                Dim Concat2 As String = YourDate2.GetConcatString
+
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblLoadPermissionIssuedOrderByPriorityReport" : CmdSql.ExecuteNonQuery()
@@ -5003,7 +5202,7 @@ Namespace ReportsManagement
                             Inner Join dbtransport.dbo.TbCar as Trucks On Turns.strCardno=Trucks.nIDCar
                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId
                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocationStatuses as LoadAllocationStatuses On LoadAllocations.LAStatusId=LoadAllocationStatuses.LoadAllocationStatusId
-                          Where Turns.strExitDate>='" & YourDate1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDate2.DateShamsiFull & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and
+                          Where  ((REPLACE(Turns.strExitDate,'/','')+REPLACE(Turns.strExitTime,':','')) >='" & Concat1 & "') and ((REPLACE(Turns.strExitDate,'/','')+REPLACE(Turns.strExitTime,':','' ))<='" & Concat2 & "') and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and
                                 LoadAllocations.LAStatusId=2 and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & " 
                           Order By LoadAllocations.DateTimeMilladi"
                 CmdSql.ExecuteNonQuery()
@@ -6372,7 +6571,7 @@ Namespace TruckersAssociationControllingMoneyWallet
                 myData.Data1 = InstanceMoneyWallet.GetMoneyWalletCharge(NSSControllingMoneyWallet)
                 'ارسال اس ام اس
                 Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
-                Dim SMSResult = InstanceSMSHandling.SendSMS(LstSoftwareUsers, PayanehClassLibrarySMSTypes.TruckersAssociationControllingMoneyWallet, InstanceSMSHandling.RepeatSMSCreationData(myData, LstSoftwareUsers.Count))
+                Dim SMSResult = InstanceSMSHandling.SendSMS(LstSoftwareUsers, PayanehClassLibrarySMSTypes.TruckersAssociationControllingMoneyWallet, InstanceSMSHandling.RepeatSMSCreationData(myData, LstSoftwareUsers.Count), True)
                 Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
                 If Not SMSResultAnalyze = String.Empty Then Throw New TruckersAssociationControllingMoneyWalletSendSMSFailedException(SMSResultAnalyze)
             Catch ex As TruckersAssociationControllingMoneyWalletSendSMSFailedException
@@ -6485,10 +6684,40 @@ Namespace SMS
             Inherits R2CoreTransportationAndLoadNotificationSMSTypes
 
             Public Shared ReadOnly Property TruckersAssociationControllingMoneyWallet = 6
-
+            Public Shared ReadOnly Property ResuscitationNonCreditTurn = 15
 
 
         End Class
 
     End Namespace
+
+    Namespace RecivedSMSCodes
+        Public MustInherit Class RecivedSMSCodes
+            Public Shared ReadOnly Property ResuscitationNonCreditTurn = 3
+        End Class
+    End Namespace
+
+    Namespace SMSHandling
+
+        Public Class PayanehClassLibraryResuscitationNonCreditTurn
+            Inherits RecievedSMSHandler
+
+            Public Sub New()
+                MyBase.New()
+            End Sub
+
+            Private Sub HandlingEvent_Handler() Handles MyBase.HandlingEvent
+                Try
+                    Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                    Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
+                    InstanceCarTruckNobat.ResuscitationNonCreditTurn(InstanceSoftwareUsers.GetNSSUserUnChangeable(New R2CoreSoftwareUserMobile(_MobileNumber)), _NSSUser)
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+        End Class
+
+    End Namespace
+
 End Namespace

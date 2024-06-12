@@ -12,7 +12,7 @@ Imports R2CoreTransportationAndLoadNotification.ProcessesManagement
 Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions
-
+Imports R2CoreTransportationAndLoadNotification.DriverSelfDeclaration.Exceptions
 
 Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
     Inherits FrmcGeneral
@@ -100,7 +100,8 @@ Public Class FrmcTruckDriverLoadAllocationsPriorityApplied
          OrElse TypeOf ex Is TruckTotalLoadPermissionReachedException _
          OrElse TypeOf ex Is LastLoadPermissionIssuedforThisTurnException _
          OrElse TypeOf ex Is RequesterCanNotAllocateSedimentedLoadInTimeRangeException _
-         OrElse TypeOf ex Is LoadAllocationTimeNotReachedException
+         OrElse TypeOf ex Is LoadAllocationTimeNotReachedException _
+         OrElse TypeOf ex Is DSDsNotFoundException
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

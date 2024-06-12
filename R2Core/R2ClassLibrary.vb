@@ -1822,15 +1822,47 @@ Namespace SoftwareUserManagement
             End Try
         End Function
 
+        Public Function GetNSSSelfGoverningChargingSoftwareUser() As R2CoreStandardSoftwareUserStructure
+            Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
+            Dim InstanceSoftwareUser As New R2CoreInstanseSoftwareUsersManager
+            Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+            Try
+                Dim Ds As DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                         "Select Top 1 SoftwareUsers.UserId from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                          Where SoftwareUsers.UserId=" & InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 14) & " and SoftwareUsers.Deleted=0", 3600, Ds).GetRecordsCount = 0 Then Throw New UserIdNotExistException
+                Return InstanceSoftwareUser.GetNSSUser(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("UserId")))
+            Catch ex As UserIdNotExistException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Sub SendUserSecurity(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
             Try
                 Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
                 Dim LstUser = New List(Of R2CoreStandardSoftwareUserStructure) From {YourNSSSoftwareUser}
                 Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = YourNSSSoftwareUser.UserShenaseh, .Data2 = YourNSSSoftwareUser.UserPassword}}
-                Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, R2CoreSMSTypes.SoftwareUserSecurity, LstCreationData)
+                Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, R2CoreSMSTypes.SoftwareUserSecurity, LstCreationData, True)
                 Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
                 If Not SMSResultAnalyze = String.Empty Then Throw New SendSMSSoftwareUserSecurityFailedException(SMSResultAnalyze)
             Catch ex As SendSMSSoftwareUserSecurityFailedException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub SendATISMobileAppDownloadLink(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+            Try
+                Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                Dim LstUser = New List(Of R2CoreStandardSoftwareUserStructure) From {YourNSSSoftwareUser}
+                Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = String.Empty}}
+                Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, R2CoreSMSTypes.ATISMobileAppDownloadLink, LstCreationData, True)
+                Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
+                If Not SMSResultAnalyze = String.Empty Then Throw New SendSMSATISMobileAppDownloadLinkFailedException(SMSResultAnalyze)
+            Catch ex As SendSMSATISMobileAppDownloadLinkFailedException
                 Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -1842,7 +1874,7 @@ Namespace SoftwareUserManagement
                 Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
                 Dim LstUser = New List(Of R2CoreStandardSoftwareUserStructure) From {YourNSSSoftwareUser}
                 Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = YourVerificationCode}}
-                Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, R2CoreSMSTypes.ApplicationActivationCode, LstCreationData)
+                Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, R2CoreSMSTypes.ApplicationActivationCode, LstCreationData, False)
                 Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
                 If Not SMSResultAnalyze = String.Empty Then Throw New SendSMSApplicationActivationCodeFailedException(SMSResultAnalyze)
             Catch ex As SendSMSApplicationActivationCodeFailedException
@@ -2178,6 +2210,21 @@ Namespace SoftwareUserManagement
             Public Overrides ReadOnly Property Message As String
                 Get
                     Return "ارسال اس ام اس مشخصات کاربر با خطا مواجه شد" + _Message
+                End Get
+            End Property
+        End Class
+
+        Public Class SendSMSATISMobileAppDownloadLinkFailedException
+            Inherits ApplicationException
+
+            Private _Message As String
+            Public Sub New(YourMessage As String)
+                _Message = vbCrLf + YourMessage
+            End Sub
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "ارسال اس ام اس لینک دانلود اپلیکیشن آتیس موبایل با خطا مواجه شد" + _Message
                 End Get
             End Property
         End Class

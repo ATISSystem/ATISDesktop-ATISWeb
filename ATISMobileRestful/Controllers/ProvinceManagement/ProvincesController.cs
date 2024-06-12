@@ -26,6 +26,8 @@ using R2Core.DateAndTimeManagement;
 using R2Core.PermissionManagement;
 using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
 using R2CoreTransportationAndLoadNotification.Turns;
+using R2Core.SiteIsBusy;
+using R2Core.SiteIsBusy.Exceptions;
 
 namespace ATISMobileRestful.Controllers.ProvinceManagement
 {
@@ -41,6 +43,9 @@ namespace ATISMobileRestful.Controllers.ProvinceManagement
             {
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClientApikeyNonceWith3Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientProvincesRequest);
+
+                var InstanceSiteIsBusy = new R2CoreSiteIsBusyManager();
+                InstanceSiteIsBusy.SiteIsBusy();
 
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var AHId = Content.Split(';')[2];
@@ -60,6 +65,8 @@ namespace ATISMobileRestful.Controllers.ProvinceManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(_Provinces), Encoding.UTF8, "application/json");
                 return response;
             }
+            catch (R2CoreSiteIsBusyException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadTargetsforProvinceNotFoundException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)

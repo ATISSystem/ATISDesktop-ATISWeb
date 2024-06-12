@@ -32,6 +32,8 @@ using R2Core.PermissionManagement;
 using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
 using R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions;
 using R2Core.SiteIsBusy.Exceptions;
+using R2CoreTransportationAndLoadNotification.DriverSelfDeclaration.Exceptions;
+using R2CoreTransportationAndLoadNotification.LoadPermission;
 
 namespace ATISMobileRestful.Controllers.LoadAllocationManagement
 {
@@ -75,6 +77,8 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
+            catch (DSDsNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LastLoadPermissionIssuedforThisTurnException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (LoadAllocationNotAllowedBecauseCarHasBlackListException ex)
@@ -348,6 +352,39 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (TurnNotFoundException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+        }
+
+        [HttpPost]
+        public HttpResponseMessage HaveLoadingPermission()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNoncePasswordWith7Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientHaveLoadingPermission);
+
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
+                var LoadingPermissionId = Convert.ToInt64(Content.Split(';')[2]);
+                var TCompanyId = Convert.ToInt64(Content.Split(';')[3]);
+                var TruckDriverNationalCode = Convert.ToInt64(Content.Split(';')[4]);
+                var TruckSmartCardNo = Content.Split(';')[5];
+                var LoadSourceId = Convert.ToInt64(Content.Split(';')[6]);
+                var LoadTargetId = Convert.ToInt64(Content.Split(';')[7]);
+                var GoodId = Convert.ToInt64(Content.Split(';')[8]);
+
+                var InstanceLoadPermission = new R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager();
+                var HLPResult = InstanceLoadPermission.HaveLoadingPermission(LoadingPermissionId, TCompanyId, TruckSmartCardNo, TruckDriverNationalCode, GoodId, LoadSourceId, LoadTargetId);
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(HLPResult), Encoding.UTF8, "application/json");
+                return response;
+            }
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
