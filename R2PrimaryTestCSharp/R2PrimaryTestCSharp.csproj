@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>R2PrimaryTestCSharp</RootNamespace>
     <AssemblyName>R2PrimaryTestCSharp</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -89,6 +90,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Connected Services\ServiceReference\PaymentGatewayImplementationService.wsdl" />
     <None Include="Connected Services\ServiceReference\R2PrimaryTestCSharp.ServiceReference.GetUnverifiedTransactionsResponse.datasource">

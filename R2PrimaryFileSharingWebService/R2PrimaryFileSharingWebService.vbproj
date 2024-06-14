@@ -15,7 +15,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>R2PrimaryFileSharingWebService</RootNamespace>
     <AssemblyName>R2PrimaryFileSharingWebService</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
