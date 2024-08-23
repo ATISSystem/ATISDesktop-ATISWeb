@@ -239,7 +239,7 @@ Public Class UCSearcherAdvance
         End Try
     End Sub
 
-    Public Sub UCRefreshGeneral()
+    Public Shadows Sub UCRefreshGeneral()
         UCSelectedItem = Nothing
         UCRefresh()
     End Sub

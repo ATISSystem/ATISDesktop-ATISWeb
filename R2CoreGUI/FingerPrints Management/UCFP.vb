@@ -6,16 +6,20 @@ Imports R2CoreGUI
 Public Class UCFP
     Inherits UCGeneral
 
-    Private _Segement As Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint = Nothing
+    'Private _Segement As Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint = Nothing
+    Private _Segement As Object = Nothing
     Public Event UCPicFPClicked(ByVal Pic As Bitmap)
 
 #Region "General Properties"
 
-    Public Property UCFPSegment As Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint
+    'Public Property UCFPSegment As Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint
+
+    Public Property UCFPSegment As Object
         Get
             Return _Segement
         End Get
-        Set(ByVal value As Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint)
+        'Set(ByVal value As Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint)
+        Set(ByVal value As Object)
             _Segement = value
             PicFP.Image = value.Image
             LblLocation.Text = value.Hand.ToString + "  " + value.Position.ToString

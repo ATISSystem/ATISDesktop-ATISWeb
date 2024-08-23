@@ -20,6 +20,7 @@ Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions
 Imports R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces
 Imports R2Core.ExceptionManagement
+Imports R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces.Exceptions
 
 Public Class UCLoadCapacitorLoadManipulation
     Inherits UCLoadCapacitorLoad
@@ -108,6 +109,7 @@ Public Class UCLoadCapacitorLoadManipulation
     Private Sub UCLoadCapacitorLoadManipulation_UCViewNSSRequested() Handles Me.UCViewNSSRequested
         Try
             Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
+            Dim InstanceLoadingAndDischargingPlaces = New R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManager
             UcNumbernEstelamId.UCValue = UCNSSCurrent.nEstelamId
             UcPersianTextBoxLoadCapacitorLoadDateTimeComposite.UCValue = UCNSSCurrent.dTimeElam & " - " & UCNSSCurrent.dDateElam
             UcPersianTextBoxLoadPermissionStatus.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoadStatus(UCNSSCurrent.LoadStatus).LoadStatusName
@@ -116,8 +118,8 @@ Public Class UCLoadCapacitorLoadManipulation
             UcSearcherGoods.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassGoodsManagement.GetNSSGood(UCNSSCurrent.nBarCode))
             UcSearcherLoadTargets.UCViewNSS(R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetNSSLoadTarget(UCNSSCurrent.nCityCode))
             UcSearcherLoadSources.UCViewNSS(R2CoreTransportationAndLoadNotificationMclassLoadSourcesManagement.GetNSSLoadSource(UCNSSCurrent.nBarSource))
-            UcSearcherLoadingPlaces.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManagement.GetNSSLoadingAndDischargingPlace(UCNSSCurrent.LoadingPlaceId))
-            UcSearcherDischargingPlaces.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManagement.GetNSSLoadingAndDischargingPlace(UCNSSCurrent.DischargingPlaceId))
+            UcSearcherLoadingPlaces.UCViewNSS(InstanceLoadingAndDischargingPlaces.GetNSSLoadingAndDischargingPlace(UCNSSCurrent.LoadingPlaceId, True))
+            UcSearcherDischargingPlaces.UCViewNSS(InstanceLoadingAndDischargingPlaces.GetNSSLoadingAndDischargingPlace(UCNSSCurrent.DischargingPlaceId, True))
             UcNumbernCarNumKol.UCValue = UCNSSCurrent.nCarNumKol
             UcNumericFloatTonaj.UCValue = UCNSSCurrent.nTonaj
             UcNumberTransportPrice.UCValue = UCNSSCurrent.StrPriceSug
@@ -157,6 +159,12 @@ Public Class UCLoadCapacitorLoadManipulation
             End If
             UCViewNSS(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue, True))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ثبت بار انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As LoadingPlaceIsUnActiveException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As DischargingPlaceIsUnActiveException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As LoadingAndDischargingPlaceNotFoundException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadCapacitorLoadTonajNotAllowedException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadCapacitorLoadRegisteringInHolidayNotAllowedException

@@ -5319,6 +5319,10 @@ Namespace SMS
                         InstanceSMSOwners.RegisteringSMSOwner(New R2CoreStandardSMSOwnerStructure(YourNSSSoftwareUser.UserId, NSSSMSOwnerType.SMSOTypeId, SMSOwnerReminderCredit, 0, True, False, Nothing, Nothing, Nothing, YourNSSUser.UserId, True, True, False), YourNSSUser)
                     End If
 
+                    'ارسال اس ام اس فعال سازی
+                    Dim InstanceSoftwareUsers = New R2CoreParkingSystemInstanceSoftwareUsersManager
+                    SendingSMSActivateSMSOwner(YourNSSSoftwareUser)
+
                 Catch ex As MoneyWalletCurrentChargeNotEnoughException
                     Throw ex
                 Catch ex As SoftwareUserMoneyWalletNotFoundException
@@ -5326,6 +5330,21 @@ Namespace SMS
                 Catch ex As SMSOwnerTypeBySoftwareUserNotFoundException
                     Throw ex
                 Catch ex As SMSOwnerHasCreditYetException
+                    Throw ex
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+            Private Sub SendingSMSActivateSMSOwner(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+                Try
+                    Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                    Dim LstUser = New List(Of R2CoreStandardSoftwareUserStructure) From {YourNSSSoftwareUser}
+                    Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = String.Empty}}
+                    Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, R2Core.SMS.SMSTypes.R2CoreSMSTypes.ActivateSMSOwnerSuccess, LstCreationData, True)
+                    Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
+                    If Not SMSResultAnalyze = String.Empty Then Throw New SMSResultException(SMSResultAnalyze)
+                Catch ex As SMSResultException
                     Throw ex
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

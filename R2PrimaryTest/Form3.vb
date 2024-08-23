@@ -70,60 +70,64 @@ Imports R2CoreTransportationAndLoadNotification.SMS.SMSTypes
 Imports System.Reflection
 Imports R2CoreParkingSystem.EnterExitManagement
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
+Imports R2Core.HumanResourcesManagement.Personnel
 
 Public Class Form3
     Private _DateTime As R2DateTime = New R2DateTime
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
-            'R2CoreMClassSoftwareUsersManagement.SetCurrentUserByPinCode(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
-            R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadOtherThanManipulationManagement.TransferringTommorowLoads()
-            'PayanehClassLibrary.Rmto.RmtoWebService.GetInf(RmtoWebService.InfoType.GET_DRIVER_BY_SHC, "1222524")
+            R2CorePersonnelMClassManagement.PersonelFunctionCalculate(R2CorePersonnelMClassManagement.GetNSSPersonnel(Convert.ToInt64(TextBoxConcat1.Text)), New R2StandardDateAndTimeStructure(Nothing, "1403/04/01", Nothing))
+
+            MessageBox.Show("Finished ... ")
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Dim CmdSql As New SqlClient.SqlCommand
-        CmdSql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
+        'Dim CmdSql As New SqlClient.SqlCommand
+        'CmdSql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
-            Da.SelectCommand = New SqlClient.SqlCommand("Select * from  R2PrimaryParkingSystem.dbo.TblEntryExit as EntryExit
-                                                            Inner Join (Select Distinct CardNo from R2Primary.dbo.TblRFIDCards  Where CardType=2 or CardType=3) as RFIDCards On EntryExit.CardNoEnter=RFIDCards.CardNo
-                                                         Where EntryExit.DateShamsiExit>='1398/03/01' and EntryExit.DateShamsiExit<='1398/03/02'
-                                                         Order By CardNoEnter,DateTimeMilladiEnter")
-            Da.SelectCommand.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
-            Da.Fill(Ds)
+            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
+            InstanceCarTruckNobat.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser())
+            'Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
+            'Da.SelectCommand = New SqlClient.SqlCommand("Select * from  R2PrimaryParkingSystem.dbo.TblEntryExit As EntryExit
+            '                                                Inner Join(Select Distinct CardNo from R2Primary.dbo.TblRFIDCards  Where CardType=2 Or CardType=3) as RFIDCards On EntryExit.CardNoEnter=RFIDCards.CardNo
+            '                                             Where EntryExit.DateShamsiExit >='1398/03/01' and EntryExit.DateShamsiExit<='1398/03/02'
+            '                                             Order By CardNoEnter, DateTimeMilladiEnter")
+            'Da.SelectCommand.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
+            'Da.Fill(Ds)
 
-            Dim myIndex As Int64 = 0
-            CmdSql.Connection.Open()
-            CmdSql.Transaction = CmdSql.Connection.BeginTransaction
-            Do While myIndex <= Ds.Tables(0).Rows.Count - 1
-                Dim myMainDataRow As DataRow = Ds.Tables(0).Rows(myIndex)
-                Dim myIndex2 As Int64 = myIndex + 1 : If myIndex2 > Ds.Tables(0).Rows.Count - 1 Then Exit Do
-                Do While 3 = 3
-                    Dim myIndex2DataRow As DataRow = Ds.Tables(0).Rows(myIndex2)
-                    If (myIndex2DataRow.Item("CardNoEnter") <> myMainDataRow.Item("CardNoEnter")) Or (myIndex2DataRow.Item("MblghEnter") <> 0) Then
-                        CmdSql.CommandText = "Insert Into R2PrimarySMSSystem.dbo.TblEnterExits(CardEnter,DEnter,DExit,Mblgh) Values('" & myMainDataRow.Item("CardNoEnter") & "','" & Convert.ToDateTime(myMainDataRow.Item("DateTimeMilladiEnter")).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "','" & Convert.ToDateTime(Ds.Tables(0).Rows(myIndex2 - 1).Item("DateTimeMilladiExit")).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "'," & Convert.ToInt64(Ds.Tables(0).Rows(myIndex2 - 1).Item("MblghExit")) & ")"
-                        CmdSql.ExecuteNonQuery()
-                        myIndex = myIndex2
-                        Exit Do
-                    End If
-                    myIndex2 += 1
-                    If myIndex2 > Ds.Tables(0).Rows.Count - 1 Then
-                        myIndex = myIndex2
-                        Exit Do
-                    End If
-                Loop
-            Loop
-            CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            'Dim myIndex As Int64 = 0
+            'CmdSql.Connection.Open()
+            'CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+            'Do While myIndex <= Ds.Tables(0).Rows.Count - 1
+            '    Dim myMainDataRow As DataRow = Ds.Tables(0).Rows(myIndex)
+            '    Dim myIndex2 As Int64 = myIndex + 1 : If myIndex2 > Ds.Tables(0).Rows.Count - 1 Then Exit Do
+            '    Do While 3 = 3
+            '        Dim myIndex2DataRow As DataRow = Ds.Tables(0).Rows(myIndex2)
+            '        If (myIndex2DataRow.Item("CardNoEnter") <> myMainDataRow.Item("CardNoEnter")) Or (myIndex2DataRow.Item("MblghEnter") <> 0) Then
+            '            CmdSql.CommandText = "Insert Into R2PrimarySMSSystem.dbo.TblEnterExits(CardEnter, DEnter, DExit, Mblgh) Values('" & myMainDataRow.Item("CardNoEnter") & "','" & Convert.ToDateTime(myMainDataRow.Item("DateTimeMilladiEnter")).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "','" & Convert.ToDateTime(Ds.Tables(0).Rows(myIndex2 - 1).Item("DateTimeMilladiExit")).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "'," & Convert.ToInt64(Ds.Tables(0).Rows(myIndex2 - 1).Item("MblghExit")) & ")"
+            '            CmdSql.ExecuteNonQuery()
+            '            myIndex = myIndex2
+            '            Exit Do
+            '        End If
+            '        myIndex2 += 1
+            '        If myIndex2 > Ds.Tables(0).Rows.Count - 1 Then
+            '            myIndex = myIndex2
+            '            Exit Do
+            '        End If
+            '    Loop
+            'Loop
+            'CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
 
         Catch ex As Exception
             MessageBox.Show("Error : " + ex.Message)
-            If CmdSql.Connection.State <> ConnectionState.Closed Then
-                CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
-            End If
+            'If CmdSql.Connection.State <> ConnectionState.Closed Then
+            '    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+            'End If
         End Try
     End Sub
 
@@ -464,7 +468,15 @@ Public Class Form3
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         Try
-            RmtoWebService.GetNSSTruck("2646978")
+            Try
+                Dim InstancePaymentRequests = New R2CoreInstansePaymentRequestsManager
+                Dim PayId = InstancePaymentRequests.PaymentRequest(3, 50000, 21)
+                MessageBox.Show(PayId.ToString)
+            Catch ex As Exception
+                MessageBox.Show(ex.Message)
+            End Try
+
+            'RmtoWebService.GetNSSTruck("2646978")
             'Dim x As New R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsManager
             'MessageBox.Show(x.GetUltimateTransportTarrif(14, 25, 17447890))
 
@@ -488,7 +500,8 @@ Public Class Form3
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         Try
-            R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocationsforLoadPermissionRegistering(2, 7)
+            Dim InstancePaymentRequests = New R2CoreInstansePaymentRequestsManager
+            Dim PayId = InstancePaymentRequests.PaymentRequest(3, 50000, 21)
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
@@ -571,8 +584,8 @@ Public Class Form3
 
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
         Try
-            'RmtoWebService.GetNSSTruckDriver("1160095663")
-            RmtoWebService.GetNSSTruck("2312401")
+            RmtoWebService.GetNSSTruckDriver("4172722997")
+            'RmtoWebService.GetNSSTruck("2312401")
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
@@ -700,11 +713,17 @@ Public Class Form3
     End Sub
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
+        Try
+            PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+        Catch ex As Exception
+            EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+        End Try
+
 
 
         Try
-            Dim x As New R2CoreParkingSystemMClassSMSOwnersManager
-            x.ActivateSMSOwner(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(17705), R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            'Dim x As New R2CoreParkingSystemMClassSMSOwnersManager
+            'x.ActivateSMSOwner(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(17705), R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
             ''exec xp_ sp_ insert bulk from bcp select declare null admin char( tblsoftwareusers dbo password ' -- drop table alter or = @ union having delete sa= sa: openrowset oledb 1433 1434 sysdatabases master sys sysobjects syscolumns syslogins sysxlogins sysservers database hkey hkey_ hkey_local tempdb syscomments sysadmin administrator userid and '% %' like where ;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
             'Dim YourParam = "sysadmin1"
             'Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
@@ -960,7 +979,7 @@ Public Class Form3
         'CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
             Dim x As New PayanehClassLibrary.CarTruckNobatManagement.PayanehClassLibraryMClassCarTruckNobatManager
-            x.ResuscitationNonCreditTurn(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(7188), R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+            x.ResuscitationNonCreditTurn(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(27481), R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
             'PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderContractorCompanyFinancialReport(New R2StandardDateAndTimeStructure(Nothing, "1403/01/01", "00:00:00"), New R2StandardDateAndTimeStructure(Nothing, "1403/01/05", "00:00:00"), True)
 
             'Dim Da As New OleDbDataAdapter : Dim Ds As New DataSet

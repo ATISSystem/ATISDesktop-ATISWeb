@@ -646,8 +646,7 @@ Namespace MonetaryCreditSupplySources
                 Try
                     Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
                     Dim requesturl As String
-                    If (_Amount = 1000000) Or (_Amount >= 5000000) Then
-                        'requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 1) + "19db8e91-89b9-4a38-a527-d704bfe3d370" + "&amount=" + _Amount.ToString() +
+                    If (_Amount = 200000) Then
                         requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 1) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() +
                         "&callback_url=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 3) +
                         "&description=" + "پرداخت خودگردان" +
@@ -691,9 +690,8 @@ Namespace MonetaryCreditSupplySources
                 Try
                     Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
                     Dim url As String = String.Empty
-                    If (_Amount = 1000000) Or (_Amount >= 5000000) Then
+                    If (_Amount = 200000) Then
                         url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
-                        'url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + "19db8e91-89b9-4a38-a527-d704bfe3d370" + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
                     Else
                         url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
                     End If
@@ -2328,7 +2326,7 @@ Namespace PermissionManagement
                 Dim Ds As DataSet
                 If Instanse.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                       "Select * from R2Primary.dbo.TblPermissions as Permissions 
-                       Where Permissions.PermissionTypeId=" & YourPermissionTypeId & " and Permissions.RelationActive=1 and Permissions.EntityIdFirst=" & YourEntityIdFirst & " and Permissions.EntityIdSecond=" & YourEntityIdSecond & "", 3600, Ds).GetRecordsCount() = 0 Then
+                       Where Permissions.PermissionTypeId=" & YourPermissionTypeId & " and Permissions.RelationActive=1 and Permissions.EntityIdFirst=" & YourEntityIdFirst & " and Permissions.EntityIdSecond=" & YourEntityIdSecond & "", 32000, Ds).GetRecordsCount() = 0 Then
                     Return False
                 Else
                     Return True
@@ -2706,7 +2704,7 @@ Namespace MobileProcessesManagement
                               Where SoftwareUser.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUser.UserActive=1 and SoftwareUser.Deleted=0 and SoftwareUserMobileProcessGroup.ERTypeId=" & R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup & "
                                     and SoftwareUserMobileProcessGroup.RelationActive=1 and  MobileProcessGroup.ViewFlag=1 and  MobileProcessGroup.Active=1 and MobileProcessGroup.Deleted=0 and MobileProcessGroupMobileProcess.ERTypeId=" & R2CoreEntityRelationTypes.MobileProcessGroup_MobileProcess & " 
                                     and MobileProcessGroupMobileProcess.RelationActive=1 and MobileProcesses.ViewFlag=1 and MobileProcesses.Active=1 and MobileProcesses.Deleted=0 
-                              Order By MobileProcessGroup.PGId,MobileProcesses.PId ", 3600, Ds).GetRecordsCount <> 0 Then
+                              Order By MobileProcessGroup.PGId,MobileProcesses.PId ", 32000, Ds).GetRecordsCount <> 0 Then
                     Dim Lst As New List(Of R2StandardMobileProcessStructure)
                     For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                         Dim NSS As New R2StandardMobileProcessStructure
@@ -3060,6 +3058,8 @@ Namespace BlackIPs
 
         Public Function IsBlackIPActive(YourNSS As R2StandardBlackIPStructure)
             Try
+                'فراموش نشود باید بررسی شود و فعال شود
+                Return False
                 'SqlInjectionPrevention
                 Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
                 InstanceSQLInjectionPrevention.GeneralAuthorization(YourNSS.BlackIP)
@@ -3740,8 +3740,8 @@ Namespace SMS
                     Dim NSSSMSType = InstanceSMSTypes.GetNSSSMSType(YourSMSTypeId)
                     CmdSql.Connection.Open()
                     CmdSql.Transaction = CmdSql.Connection.BeginTransaction
-                    CmdSql.CommandText = "Select Top 1 SMSId from R2PrimarySMSSystem.dbo.TblSMSWareHouse with (tablockx) Order By SMSId Desc"
-                    CmdSql.ExecuteNonQuery()
+                    'CmdSql.CommandText = "Select Top 1 SMSId from R2PrimarySMSSystem.dbo.TblSMSWareHouse with (tablockx) Order By SMSId Desc"
+                    'CmdSql.ExecuteNonQuery()
                     Dim SMSOwner As R2CoreStandardSMSOwnerStructure = Nothing
                     For Loopx As Int64 = 0 To YourSoftwareUsers.Count - 1
                         Try
@@ -4092,6 +4092,7 @@ Namespace SMS
             Public Shared ReadOnly Property SMSControllingMoneyWallet = 7
             Public Shared ReadOnly Property PleaseCharge = 8
             Public Shared ReadOnly Property ATISMobileAppDownloadLink = 14
+            Public Shared ReadOnly Property ActivateSMSOwnerSuccess = 16
 
         End Class
 

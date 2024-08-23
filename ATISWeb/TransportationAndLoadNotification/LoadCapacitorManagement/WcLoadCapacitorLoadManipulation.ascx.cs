@@ -126,6 +126,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         {
             try
             {
+                if (YourSearchString == String.Empty) { return; }
                 DropDownListLoad.Items.Clear();
                 DropDownListLoad.Items.Add("انتخاب کنید ...");
                 DropDownListLoad.Enabled = false;
@@ -147,6 +148,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         {
             try
             {
+                if (YourSearchString == String.Empty) { return; }
                 DropDownListTargetCity.Items.Clear();
                 DropDownListTargetCity.Items.Add("انتخاب کنید ...");
                 DropDownListTargetCity.Enabled = false;
@@ -217,10 +219,12 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         {
             try
             {
+                if (YourSearchString == String.Empty) { return; }
+                var InstanceLoadingAndDischargingPlaces = new R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces.R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManager();
                 DropDownListLoadingPlace.Items.Clear();
                 DropDownListLoadingPlace.Items.Add("انتخاب کنید ...");
                 DropDownListLoadingPlace.Enabled = false;
-                var myLoadingPlaces = R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManagement.GetLoadingAndDischargingPlaces_SearchIntroCharacters(YourSearchString);
+                var myLoadingPlaces = InstanceLoadingAndDischargingPlaces.GetLoadingAndDischargingPlaces_SearchIntroCharacters(YourSearchString);
                 for (int loop = 0; loop <= myLoadingPlaces.Count - 1; loop++)
                 {
                     var myLoadingPlace = myLoadingPlaces[loop];
@@ -238,10 +242,12 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         {
             try
             {
+                if (YourSearchString == String.Empty) { return; }
+                var InstanceLoadingAndDischargingPlaces = new R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces.R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManager();
                 DropDownListDischargingPlace.Items.Clear();
                 DropDownListDischargingPlace.Items.Add("انتخاب کنید ...");
                 DropDownListDischargingPlace.Enabled = false;
-                var myDischargingPlaces = R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManagement.GetLoadingAndDischargingPlaces_SearchIntroCharacters(YourSearchString);
+                var myDischargingPlaces = InstanceLoadingAndDischargingPlaces.GetLoadingAndDischargingPlaces_SearchIntroCharacters(YourSearchString);
                 for (int loop = 0; loop <= myDischargingPlaces.Count - 1; loop++)
                 {
                     var myDischargingPlace = myDischargingPlaces[loop];
@@ -470,6 +476,12 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 WcInformationChangedEvent?.Invoke(this, new EventArgs());
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "بار با موفقیت به ثبت رسید" + "');", true);
             }
+            catch (LoadingPlaceIsUnActiveException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+            catch (DischargingPlaceIsUnActiveException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+            catch (LoadingAndDischargingPlaceNotFoundException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (LoadCapacitorLoadTonajNotAllowedException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (LoadCapacitorLoadRegisteringInHolidayNotAllowedException ex)
@@ -499,6 +511,12 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 WcInformationChangedEvent?.Invoke(this, new EventArgs());
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "ویرایش بار با موفقیت انجام شد" + "');", true);
             }
+            catch (LoadingPlaceIsUnActiveException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+            catch (DischargingPlaceIsUnActiveException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+            catch (LoadingAndDischargingPlaceNotFoundException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (LoadCapacitorLoadTonajNotAllowedException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (EditOrDeleteReRegisteredLoadNotAllowedException ex)

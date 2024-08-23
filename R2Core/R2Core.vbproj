@@ -56,17 +56,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\ATISDesktopRefrences\Dermalog.AFIS.FingerCode3.dll</HintPath>
     </Reference>
-    <Reference Include="Dermalog.AFIS.FourprintSegmentation, Version=2.0.1004.2, Culture=neutral, PublicKeyToken=ef55bea453c09cea, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\ATISDesktopRefrences\Dermalog.AFIS.FourprintSegmentation.dll</HintPath>
-    </Reference>
     <Reference Include="Dermalog.AFIS.NFIQ, Version=2.0.1111.1, Culture=neutral, PublicKeyToken=c55ae690a9eb3838, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\ATISDesktopRefrences\Dermalog.AFIS.NFIQ.dll</HintPath>
     </Reference>
     <Reference Include="Dermalog.Imaging.Capturing, Version=2.2.1322.13, Culture=neutral, PublicKeyToken=d215f80b62562526, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\ATISDesktopRefrences\Dermalog.Imaging.Capturing.dll</HintPath>
+      <HintPath>..\..\..\..\..\UtilityAndPrograms\Programming\Dernalog\Dermalog\ComponentSystem\v2.0\Dermalog.Imaging.Capturing.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -211,10 +207,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://192.168.1.2:2011/R2PrimaryWebService.asmx">
+    <WebReferenceUrl Include="http://172.26.29.22:2011/R2PrimaryWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\R2PrimaryWS\</RelPath>
-      <UpdateFromURL>http://192.168.1.2:2011/R2PrimaryWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://172.26.29.22:2011/R2PrimaryWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -222,10 +218,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>R2Core_R2PrimaryWS_R2PrimaryWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://192.168.1.2:2013/R2PrimaryFileSharingWebService.asmx">
+    <WebReferenceUrl Include="http://172.26.29.22:2013/R2PrimaryFileSharingWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\R2PrimaryFileSharingWS\</RelPath>
-      <UpdateFromURL>http://192.168.1.2:2013/R2PrimaryFileSharingWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://172.26.29.22:2013/R2PrimaryFileSharingWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

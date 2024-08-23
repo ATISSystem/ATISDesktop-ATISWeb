@@ -37,6 +37,14 @@ Public Class UCUCLoadAllocationCollectionAdvance
         End Try
     End Sub
 
+    Public Sub UCViewCollection(YourNSSLoadCapacitorLoad As R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad.R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure)
+        Try
+            UcucLoadAllocationCollection.UCViewCollection(R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetLoadAllocations(Nothing, Nothing, Nothing, Nothing, YourNSSLoadCapacitorLoad.nEstelamId))
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
 
 
 #End Region

@@ -75,9 +75,8 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="TWS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\ATISDesktopRefrences\TWS.dll</HintPath>
+    <Reference Include="TWS">
+      <HintPath>..\..\..\..\Other Projects\TWSSystem\TerminalsSolution\TWSClassLibrary\bin\Release\TWS.dll</HintPath>
     </Reference>
     <Reference Include="UI.Glass.Panel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -510,6 +509,24 @@
     <Compile Include="Goods\UCSearcherGoods.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="LoadingAndDischargingPlaces\FrmcLoadingAndDischargingPlaces.Designer.vb">
+      <DependentUpon>FrmcLoadingAndDischargingPlaces.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingAndDischargingPlaces\FrmcLoadingAndDischargingPlaces.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoadingAndDischargingPlaces\UCLoadingAndDischargingPlaceDataEntry.Designer.vb">
+      <DependentUpon>UCLoadingAndDischargingPlaceDataEntry.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingAndDischargingPlaces\UCLoadingAndDischargingPlaceDataEntry.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LoadingAndDischargingPlaces\UCLoadingAndDischargingPlace.Designer.vb">
+      <DependentUpon>UCLoadingAndDischargingPlace.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingAndDischargingPlaces\UCLoadingAndDischargingPlace.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="LoadingAndDischargingPlaces\UCSearcherLoadingAndDischargingPlaces.Designer.vb">
       <DependentUpon>UCSearcherLoadingAndDischargingPlaces.vb</DependentUpon>
     </Compile>
@@ -824,6 +841,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Loader Types\UCSearcherLoaderTypes.resx">
       <DependentUpon>UCSearcherLoaderTypes.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadingAndDischargingPlaces\FrmcLoadingAndDischargingPlaces.resx">
+      <DependentUpon>FrmcLoadingAndDischargingPlaces.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadingAndDischargingPlaces\UCLoadingAndDischargingPlaceDataEntry.resx">
+      <DependentUpon>UCLoadingAndDischargingPlaceDataEntry.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MoneyWalletCharge\FrmcMoneyWalletChargeByTransportCompany.resx">
       <DependentUpon>FrmcMoneyWalletChargeByTransportCompany.vb</DependentUpon>

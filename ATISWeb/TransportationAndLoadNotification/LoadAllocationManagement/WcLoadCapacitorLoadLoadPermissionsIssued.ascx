@@ -126,6 +126,10 @@
                     </div>
                     <br />
                     <div style="width: 100%; text-align: center;">
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span><%=PPDS.LoadCapacitorLoadDescription%></span></div>
+                    </div>
+                    <br />
+                    <div style="width: 100%; text-align: center;">
                         <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span>محل بارگیری-محل تخلیه: <%=PPDS.LoadingAndDischargingPlace%></span></div>
                     </div>
                     <br />
@@ -181,6 +185,10 @@
                     <div style="width: 100%; text-align: right;">
                         <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>با نرخ <%=PPDS.TransportPrice%> ریال با مسئولیت آن شرکت/موسسه معرفی می گردد</span></div>
                         <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span></span>&nbsp;&nbsp;&nbsp;</div>
+                    </div>
+                    <br />
+                    <div style="width: 100%; text-align: center;">
+                        <div style="display: inline-block; float: right; font-family: 'B Homa'; font-size: smaller;"><span><%=PPDS.LoadCapacitorLoadDescription%></span></div>
                     </div>
                     <br />
                     <div style="width: 100%; text-align: center;">

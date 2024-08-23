@@ -42,6 +42,7 @@ Imports R2Core.RFIDCardsManagement.Exceptions
 Imports R2Core.SMS
 Imports R2Core.SMS.SMSHandling
 Imports R2Core.SMS.SMSTypes
+Imports R2Core.DateAndTimeManagement.CalendarManagement.PersianCalendar
 
 Public Class R2Enums
 
@@ -1452,7 +1453,7 @@ Namespace SoftwareUserManagement
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 InstanceEVA.ValidationMobileNumber(YourSoftWareUserMobile.SoftwareUserMobileNumber)
                 Dim Ds As DataSet
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 * from R2Primary.dbo.TblSoftwareUsers Where MobileNumber='" & YourSoftWareUserMobile.SoftwareUserMobileNumber & "' Order By UserId Desc", 3600, Ds).GetRecordsCount() = 0 Then
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 * from R2Primary.dbo.TblSoftwareUsers Where MobileNumber='" & YourSoftWareUserMobile.SoftwareUserMobileNumber & "' Order By UserId Desc", 32000, Ds).GetRecordsCount() = 0 Then
                     Throw New UserNotExistByMobileNumberException
                 End If
                 Return New R2CoreStandardSoftwareUserStructure(Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("ApiKey").trim, Ds.Tables(0).Rows(0).Item("APIKeyExpiration"), Ds.Tables(0).Rows(0).Item("UserName").trim, Ds.Tables(0).Rows(0).Item("UserShenaseh").trim, Ds.Tables(0).Rows(0).Item("UserPassword").trim, Ds.Tables(0).Rows(0).Item("UserPasswordExpiration"), Ds.Tables(0).Rows(0).Item("UserPinCode").trim, Ds.Tables(0).Rows(0).Item("UserCanCharge"), Ds.Tables(0).Rows(0).Item("UserActive"), Ds.Tables(0).Rows(0).Item("UserTypeId"), Ds.Tables(0).Rows(0).Item("MobileNumber").trim, Ds.Tables(0).Rows(0).Item("UserStatus").trim, Ds.Tables(0).Rows(0).Item("VerificationCode").trim, Ds.Tables(0).Rows(0).Item("VerificationCodeTimeStamp"), Ds.Tables(0).Rows(0).Item("VerificationCodeCount"), Ds.Tables(0).Rows(0).Item("Nonce").trim, Ds.Tables(0).Rows(0).Item("NonceTimeStamp"), Ds.Tables(0).Rows(0).Item("NonceCount"), Ds.Tables(0).Rows(0).Item("PersonalNonce").trim, Ds.Tables(0).Rows(0).Item("PersonalNonceTimeStamp"), Ds.Tables(0).Rows(0).Item("Captcha").trim, Ds.Tables(0).Rows(0).Item("CaptchaValid"), Ds.Tables(0).Rows(0).Item("UserCreatorId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi").trim, Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
@@ -2243,6 +2244,16 @@ Namespace SoftwareUserManagement
                 End Get
             End Property
         End Class
+
+        Public Class SoftWareUserNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کاربری با مشخصات مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
     End Namespace
 
 End Namespace
@@ -3538,6 +3549,10 @@ Namespace DateAndTimeManagement
             If YourUnDelimetedTime.Length < 8 Then YourUnDelimetedTime = YourUnDelimetedTime + InstancePublicProcedures.RepeatStr("0", 8 - YourUnDelimetedTime.Length)
             Return Mid(YourUnDelimetedTime, 1, 2) + ":" + Mid(YourUnDelimetedTime, 3, 2) + ":" + Mid(YourUnDelimetedTime, 5, 2)
         End Function
+
+        Public Function Get6ZeroTime() As String
+            Return "00:00:00"
+        End Function
     End Class
     Public Class HafteMahManagement
         'روتين پر کردن کمبو هفته 
@@ -3639,6 +3654,26 @@ Namespace DateAndTimeManagement
                 Holiday = 1
             End Enum
 
+            Public Class R2CoreStandardPersianCalendarStructure
+                Inherits BaseStandardClass.R2StandardStructure
+                Public Sub New()
+                    _HId = Int64.MinValue
+                    _DateShamsi = String.Empty
+                    _PCType = Int16.MinValue
+                End Sub
+
+                Public Sub New(ByVal YourHId As Int64, YourDateShamsi As String, YourPCType As String)
+                    _HId = YourHId
+                    _DateShamsi = YourDateShamsi
+                    _PCType = YourPCType
+                End Sub
+
+                Public Property HId As Int64
+                Public Property DateShamsi As String
+                Public Property PCType As Int16
+
+            End Class
+
             Public Class R2CoreInstanceDateAndTimePersianCalendarManager
                 Private _DateTime = New R2DateTime
 
@@ -3653,6 +3688,22 @@ Namespace DateAndTimeManagement
                     End Try
                 End Function
 
+                Public Function GetforThisMonth(YourDateTime As R2StandardDateAndTimeStructure) As List(Of R2CoreStandardPersianCalendarStructure)
+                    Try
+                        Dim DSPersianCallendar As New DataSet
+                        Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                         "Select * From R2Primary.Dbo.TblPersianCalendar Where SUBSTRING(DateShamsi,6,2)='" & YourDateTime.GetShamsiMonth & "' Order By DateShamsi ", 3600, DSPersianCallendar)
+                        Dim Lst = New List(Of R2CoreStandardPersianCalendarStructure)
+                        For Loopx As Int64 = 0 To DSPersianCallendar.Tables(0).Rows.Count - 1
+                            Dim PersianCalendar = New R2CoreStandardPersianCalendarStructure(DSPersianCallendar.Tables(0).Rows(Loopx).Item("HId"), DSPersianCallendar.Tables(0).Rows(Loopx).Item("DateShamsi").trim, DSPersianCallendar.Tables(0).Rows(Loopx).Item("PCType"))
+                            Lst.Add(PersianCalendar)
+                        Next
+                        Return Lst
+                    Catch ex As Exception
+                        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                    End Try
+                End Function
 
             End Class
 
@@ -3875,7 +3926,7 @@ Namespace LoggingManagement
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet = Nothing
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select * from R2PrimaryLogging.dbo.TblLoggingTypes Where LogId=" & YourTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New LoggingTypeNotFoundException
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select * from R2PrimaryLogging.dbo.TblLoggingTypes Where LogId=" & YourTypeId & "", 32000, DS).GetRecordsCount = 0 Then Throw New LoggingTypeNotFoundException
                 Return New R2CoreStandardLogTypeStructure(DS.Tables(0).Rows(0).Item("LogId"), DS.Tables(0).Rows(0).Item("LogName").trim, DS.Tables(0).Rows(0).Item("LogTitle").trim, Color.FromName(DS.Tables(0).Rows(0).Item("LogColor").trim), DS.Tables(0).Rows(0).Item("Core").trim, DS.Tables(0).Rows(0).Item("AssemblyDll").trim, DS.Tables(0).Rows(0).Item("AssemblyPath").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As LoggingTypeNotFoundException
                 Throw ex
@@ -5588,6 +5639,8 @@ Namespace HumanResourcesManagement
         Public Class R2CoreStandardPersonnelStructure
             Inherits BaseStandardClass.R2StandardStructure
 
+            Dim _DateTime As New R2DateTime
+
             Private _PId As Int64
             Private _PIdOther As String
             Private _PNameFamily As String
@@ -5606,15 +5659,18 @@ Namespace HumanResourcesManagement
             Private _FingerPrint2 As Byte()
             Private _FingerPrint3 As Byte()
             Private _FingerPrint4 As Byte()
+            Private _StartTimeShift As String
+            Private _EndTimeShift As String
+            Private _ShiftMinutes As Int64
 
 #Region "Constructing Management"
             Public Sub New()
                 MyBase.New()
                 _PId = 0 : _PIdOther = String.Empty : _PNameFamily = String.Empty : _PFatherName = String.Empty : _NationalCode = String.Empty : _Active = False : _Tel = String.Empty : _Address = String.Empty
                 _UserIdSabt = 0 : _UserIdEdit = 0 : _DateTimeMilladiSabt = Nothing : _DateTimeMilladiEdit = Nothing : _DateShamsiSabt = String.Empty : _DateShamsiEdit = String.Empty
-                _FingerPrint1 = Nothing : _FingerPrint2 = Nothing : _FingerPrint3 = Nothing : _FingerPrint4 = Nothing
+                _FingerPrint1 = Nothing : _FingerPrint2 = Nothing : _FingerPrint3 = Nothing : _FingerPrint4 = Nothing : _StartTimeShift = _DateTime.Get6ZeroTime : _EndTimeShift = _DateTime.Get6ZeroTime : _ShiftMinutes = 0
             End Sub
-            Public Sub New(ByVal YourPId As Int64, ByVal YourPIdOther As String, ByVal YourPNameFamily As String, ByVal YourPFatherName As String, ByVal YourNationCode As String, ByVal YourActive As Boolean, YourTel As String, YourAddress As String, ByVal YourUserIdSabt As Int64, ByVal YourUserIdEdit As Int64, ByVal YourDateTimeMilladiSabt As DateTime, ByVal YourDateTimeMilladiEdit As DateTime, ByVal YourDateShamsiSabt As String, ByVal YourDateShamsiEdit As String, ByVal YourFingerPrint1 As Byte(), ByVal YourFingerPrint2 As Byte(), ByVal YourFingerPrint3 As Byte(), ByVal YourFingerPrint4 As Byte())
+            Public Sub New(ByVal YourPId As Int64, ByVal YourPIdOther As String, ByVal YourPNameFamily As String, ByVal YourPFatherName As String, ByVal YourNationCode As String, ByVal YourActive As Boolean, YourTel As String, YourAddress As String, ByVal YourUserIdSabt As Int64, ByVal YourUserIdEdit As Int64, ByVal YourDateTimeMilladiSabt As DateTime, ByVal YourDateTimeMilladiEdit As DateTime, ByVal YourDateShamsiSabt As String, ByVal YourDateShamsiEdit As String, ByVal YourFingerPrint1 As Byte(), ByVal YourFingerPrint2 As Byte(), ByVal YourFingerPrint3 As Byte(), ByVal YourFingerPrint4 As Byte(), YourStartTimeShift As String, YourEndTimeShift As String, YourShiftMinutes As Int64)
                 MyBase.New(YourPId, YourPNameFamily)
                 _PId = YourPId
                 _PIdOther = YourPIdOther
@@ -5634,6 +5690,9 @@ Namespace HumanResourcesManagement
                 _FingerPrint2 = YourFingerPrint2
                 _FingerPrint3 = YourFingerPrint3
                 _FingerPrint4 = YourFingerPrint4
+                _StartTimeShift = YourStartTimeShift
+                _EndTimeShift = YourEndTimeShift
+                _ShiftMinutes = YourShiftMinutes
             End Sub
 #End Region
 #Region "Properting Management"
@@ -5781,6 +5840,30 @@ Namespace HumanResourcesManagement
                     _FingerPrint4 = Value
                 End Set
             End Property
+            Public Property StartTImeShift() As String
+                Get
+                    Return _StartTimeShift
+                End Get
+                Set(ByVal Value As String)
+                    _StartTimeShift = Value
+                End Set
+            End Property
+            Public Property EndTImeShift() As String
+                Get
+                    Return _EndTimeShift
+                End Get
+                Set(ByVal Value As String)
+                    _EndTimeShift = Value
+                End Set
+            End Property
+            Public Property ShiftMinutes() As Int64
+                Get
+                    Return _ShiftMinutes
+                End Get
+                Set(ByVal Value As Int64)
+                    _ShiftMinutes = Value
+                End Set
+            End Property
 
 
 #End Region
@@ -5819,6 +5902,9 @@ Namespace HumanResourcesManagement
                     NSS.PNameFamily = DS.Tables(0).Rows(0).Item("PNameFamily")
                     NSS.Tel = DS.Tables(0).Rows(0).Item("Tel")
                     NSS.Address = DS.Tables(0).Rows(0).Item("Address")
+                    NSS.StartTImeShift = DS.Tables(0).Rows(0).Item("StartTImeShift")
+                    NSS.EndTImeShift = DS.Tables(0).Rows(0).Item("EndTImeShift")
+                    NSS.ShiftMinutes = DS.Tables(0).Rows(0).Item("ShiftMinutes")
                     Return NSS
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -5850,6 +5936,9 @@ Namespace HumanResourcesManagement
                     NSS.PNameFamily = DS.Tables(0).Rows(0).Item("PNameFamily")
                     NSS.Tel = DS.Tables(0).Rows(0).Item("Tel")
                     NSS.Address = DS.Tables(0).Rows(0).Item("Address")
+                    NSS.StartTImeShift = DS.Tables(0).Rows(0).Item("StartTImeShift")
+                    NSS.EndTImeShift = DS.Tables(0).Rows(0).Item("EndTImeShift")
+                    NSS.ShiftMinutes = DS.Tables(0).Rows(0).Item("ShiftMinutes")
                     Return NSS
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -5878,7 +5967,7 @@ Namespace HumanResourcesManagement
                     CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                     CmdSql.CommandText = "Select top 1 PId from R2Primary.dbo.TblPersonelInf with (tablockx) Order by PId Desc "
                     Dim PId As Int64 = CmdSql.ExecuteScalar + 1
-                    CmdSql.CommandText = "Insert Into R2Primary.dbo.TblPersonelInf(PId,PIdOther,PNameFamily,PFatherName,NationalCode,Tel,Address,Active,DateTimeMilladiSabt,DateTimeMilladiEdit,DateShamsiSabt,DateShamsiEdit,UserIdSabt,UserIdEdit,FingerPrint,FingerPrint2,FingerPrint3,FingerPrint4) Values(" & PId & ",'" & YourNSS.PIdOther & "','" & YourNSS.PNameFamily & "','" & YourNSS.PFatherName & "','" & YourNSS.NationalCode & "','" & YourNSS.Tel & "','" & YourNSS.Address & "'," & IIf(YourNSS.Active, 1, 0) & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "'," & YourUserNSS.UserId & "," & YourUserNSS.UserId & ",0,0,0,0)"
+                    CmdSql.CommandText = "Insert Into R2Primary.dbo.TblPersonelInf(PId,PIdOther,PNameFamily,PFatherName,NationalCode,Tel,Address,Active,DateTimeMilladiSabt,DateTimeMilladiEdit,DateShamsiSabt,DateShamsiEdit,UserIdSabt,UserIdEdit,FingerPrint,FingerPrint2,FingerPrint3,FingerPrint4,StartTImeShift,EndTImeShift,ShiftMinutes) Values(" & PId & ",'" & YourNSS.PIdOther & "','" & YourNSS.PNameFamily & "','" & YourNSS.PFatherName & "','" & YourNSS.NationalCode & "','" & YourNSS.Tel & "','" & YourNSS.Address & "'," & IIf(YourNSS.Active, 1, 0) & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateTimeMilladiFormated() & "','" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentDateShamsiFull() & "'," & YourUserNSS.UserId & "," & YourUserNSS.UserId & ",0,0,0,0,'" & YourNSS.StartTImeShift & "','" & YourNSS.EndTImeShift & "','" & YourNSS.ShiftMinutes & "')"
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                     Return PId
@@ -5896,7 +5985,7 @@ Namespace HumanResourcesManagement
                 Try
                     CmdSql.Connection.Open()
                     CmdSql.Transaction = CmdSql.Connection.BeginTransaction
-                    CmdSql.CommandText = "Update R2Primary.dbo.TblPersonelInf Set PIdOther='" & YourNSS.PIdOther & "',PNameFamily='" & YourNSS.PNameFamily & "',PFatherName='" & YourNSS.PFatherName & "',NationalCode='" & YourNSS.NationalCode & "',Tel='" & YourNSS.Tel & "',Address='" & YourNSS.Address & "',Active=" & IIf(YourNSS.Active, 1, 0) & ",DateTimeMilladiEdit='" & _DateTime.GetCurrentDateTimeMilladiFormated() & "',DateShamsiEdit='" & _DateTime.GetCurrentDateShamsiFull() & "',UserIdEdit=" & YourUserNSS.UserId & " Where PId=" & YourNSS.PId & ""
+                    CmdSql.CommandText = "Update R2Primary.dbo.TblPersonelInf Set PIdOther='" & YourNSS.PIdOther & "',PNameFamily='" & YourNSS.PNameFamily & "',PFatherName='" & YourNSS.PFatherName & "',NationalCode='" & YourNSS.NationalCode & "',Tel='" & YourNSS.Tel & "',Address='" & YourNSS.Address & "',Active=" & IIf(YourNSS.Active, 1, 0) & ",DateTimeMilladiEdit='" & _DateTime.GetCurrentDateTimeMilladiFormated() & "',DateShamsiEdit='" & _DateTime.GetCurrentDateShamsiFull() & "',UserIdEdit=" & YourUserNSS.UserId & ", StartTimeShift='" & YourNSS.StartTImeShift & "',EndTimeShift='" & YourNSS.EndTImeShift & "',ShiftMinutes='" & YourNSS.ShiftMinutes & "' Where PId=" & YourNSS.PId & ""
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Catch ex As Exception
@@ -5930,7 +6019,7 @@ Namespace HumanResourcesManagement
                     If YourActiveStatus = False Then R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPersonelInf Order By PNameFamily", 1, DS)
                     Dim ListOfNSS As List(Of R2CoreStandardPersonnelStructure) = New List(Of R2CoreStandardPersonnelStructure)()
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
-                        ListOfNSS.Add(New R2CoreStandardPersonnelStructure(DS.Tables(0).Rows(Loopx).Item("PId"), DS.Tables(0).Rows(Loopx).Item("PIdOther"), DS.Tables(0).Rows(Loopx).Item("PNameFamily"), DS.Tables(0).Rows(Loopx).Item("PFatherName"), DS.Tables(0).Rows(Loopx).Item("NationalCode"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Tel"), DS.Tables(0).Rows(Loopx).Item("Address"), DS.Tables(0).Rows(Loopx).Item("UserIdSabt"), DS.Tables(0).Rows(Loopx).Item("UserIdEdit"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladiSabt"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladiEdit"), DS.Tables(0).Rows(Loopx).Item("DateShamsiSabt"), DS.Tables(0).Rows(Loopx).Item("DateShamsiEdit"), DS.Tables(0).Rows(Loopx).Item("FingerPrint"), DS.Tables(0).Rows(Loopx).Item("FingerPrint2"), DS.Tables(0).Rows(Loopx).Item("FingerPrint3"), DS.Tables(0).Rows(Loopx).Item("FingerPrint4")))
+                        ListOfNSS.Add(New R2CoreStandardPersonnelStructure(DS.Tables(0).Rows(Loopx).Item("PId"), DS.Tables(0).Rows(Loopx).Item("PIdOther"), DS.Tables(0).Rows(Loopx).Item("PNameFamily"), DS.Tables(0).Rows(Loopx).Item("PFatherName"), DS.Tables(0).Rows(Loopx).Item("NationalCode"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Tel"), DS.Tables(0).Rows(Loopx).Item("Address"), DS.Tables(0).Rows(Loopx).Item("UserIdSabt"), DS.Tables(0).Rows(Loopx).Item("UserIdEdit"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladiSabt"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladiEdit"), DS.Tables(0).Rows(Loopx).Item("DateShamsiSabt"), DS.Tables(0).Rows(Loopx).Item("DateShamsiEdit"), DS.Tables(0).Rows(Loopx).Item("FingerPrint"), DS.Tables(0).Rows(Loopx).Item("FingerPrint2"), DS.Tables(0).Rows(Loopx).Item("FingerPrint3"), DS.Tables(0).Rows(Loopx).Item("FingerPrint4"), DS.Tables(0).Rows(Loopx).Item("StartTImeShift"), DS.Tables(0).Rows(Loopx).Item("EndTImeShift"), DS.Tables(0).Rows(Loopx).Item("ShiftMinutes")))
                     Next
                     Return ListOfNSS
                 Catch ex As Exception
@@ -6081,6 +6170,124 @@ Namespace HumanResourcesManagement
                         CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblPersonnelEnterExit(PId,PNameFamily,DateShamsi,Time) values(" & PId & ",'" & PNameFamily & "','" & DateShamsi & "','" & Time & "')"
                         CmdSql.ExecuteNonQuery()
                     Next
+                    CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Catch ex As Exception
+                    If CmdSql.Connection.State <> ConnectionState.Closed Then
+                        CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                    End If
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+            Public Shared Sub PersonelFunctionCalculate(YourNSSPersonel As R2CoreStandardPersonnelStructure, YourDateTime As R2StandardDateAndTimeStructure)
+                Dim CmdSql As New SqlClient.SqlCommand
+                CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+                Try
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    'لیست روزهای ماه مورد نظر
+                    Dim InstancePersianCalendar = New R2CoreInstanceDateAndTimePersianCalendarManager
+                    Dim Lst = InstancePersianCalendar.GetforThisMonth(YourDateTime)
+                    CmdSql.Connection.Open()
+                    CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                    CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblPersonelFunction" : CmdSql.ExecuteNonQuery()
+                    Dim JamFunctionMinutes = 0
+                    Dim JamOverTimeWorkMinutes = 0
+                    For Loopx As Int64 = 0 To Lst.Count - 1
+                        Dim DateShamsi = Lst(Loopx).DateShamsi
+                        Dim PCTypePersian = IIf(Lst(Loopx).PCType = 1, "تعطیل", "عادی")
+                        Dim DSPersonnelAttendance As New DataSet
+                        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                            "Select * From R2Primary.dbo.TblPersonelAttendance where PId=" & YourNSSPersonel.PId & " and DateShamsi='" & DateShamsi & "' Order By DateTimeMilladi ", 3600, DSPersonnelAttendance)
+                        If DSPersonnelAttendance.Tables(0).Rows.Count = 0 Then
+                            Dim FunctionMinutes = 0
+                            Dim OverTimeWorkMinutes = 0
+                            If Lst(Loopx).PCType = PersianCalendarType.Holiday Then FunctionMinutes = YourNSSPersonel.ShiftMinutes
+                            CmdSql.CommandText = "Insert into R2PrimaryReports.dbo.TblPersonelFunction (PId,DateShamsi,PCType,In1,Out1,In2,Out2,FunctionMinutes,JamFunctionMinutes,JamFunctionDays,OverTimeWorkMinutes,JamOverTimeWorkMinutes,JamOverTimeWorkDays,StartTimeShift,EndTimeShift,ShiftMinutes,PersonelName) Values(" & YourNSSPersonel.PId & ",'" & DateShamsi & "','" & PCTypePersian & "','" & _DateTime.Get6ZeroTime & "','" & _DateTime.Get6ZeroTime & "','" & _DateTime.Get6ZeroTime & "','" & _DateTime.Get6ZeroTime & "'," & FunctionMinutes & ",0,0," & OverTimeWorkMinutes & ",0,0,'" & YourNSSPersonel.StartTImeShift & "','" & YourNSSPersonel.EndTImeShift & "'," & YourNSSPersonel.ShiftMinutes & ",'" & YourNSSPersonel.PNameFamily & "')"
+                            CmdSql.ExecuteNonQuery()
+                            JamFunctionMinutes += FunctionMinutes
+                            JamOverTimeWorkMinutes += OverTimeWorkMinutes
+                        ElseIf DSPersonnelAttendance.Tables(0).Rows.Count = 1 Then
+                            Dim In1 = DSPersonnelAttendance.Tables(0).Rows(0).Item("Time").ToString
+                            Dim FunctionMinutes = 0
+                            Dim OverTimeWorkMinutes = 0
+                            If Lst(Loopx).PCType = PersianCalendarType.Holiday Then FunctionMinutes = YourNSSPersonel.ShiftMinutes
+                            CmdSql.CommandText = "Insert into R2PrimaryReports.dbo.TblPersonelFunction (PId,DateShamsi,PCType,In1,Out1,In2,Out2,FunctionMinutes,JamFunctionMinutes,JamFunctionDays,OverTimeWorkMinutes,JamOverTimeWorkMinutes,JamOverTimeWorkDays,StartTimeShift,EndTimeShift,ShiftMinutes,PersonelName) Values(" & YourNSSPersonel.PId & ",'" & DateShamsi & "','" & PCTypePersian & "','" & In1 & "','" & _DateTime.Get6ZeroTime & "','" & _DateTime.Get6ZeroTime & "','" & _DateTime.Get6ZeroTime & "'," & FunctionMinutes & ",0,0," & OverTimeWorkMinutes & ",0,0,'" & YourNSSPersonel.StartTImeShift & "','" & YourNSSPersonel.EndTImeShift & "'," & YourNSSPersonel.ShiftMinutes & ",'" & YourNSSPersonel.PNameFamily & "')"
+                            CmdSql.ExecuteNonQuery()
+                            JamFunctionMinutes += FunctionMinutes
+                            JamOverTimeWorkMinutes += OverTimeWorkMinutes
+                        ElseIf DSPersonnelAttendance.Tables(0).Rows.Count = 2 Then
+                            Dim In1 = DSPersonnelAttendance.Tables(0).Rows(0).Item("Time").ToString
+                            Dim In1DT = Convert.ToDateTime(DSPersonnelAttendance.Tables(0).Rows(0).Item("DateTimeMilladi"))
+                            Dim Out1 = DSPersonnelAttendance.Tables(0).Rows(1).Item("Time").ToString
+                            Dim Out1DT = Convert.ToDateTime(DSPersonnelAttendance.Tables(0).Rows(1).Item("DateTimeMilladi"))
+                            Dim FunctionMinutes = 0
+                            Dim OverTimeWorkMinutes = 0
+                            If Lst(Loopx).PCType = PersianCalendarType.Holiday Then
+                                FunctionMinutes = YourNSSPersonel.ShiftMinutes
+                                OverTimeWorkMinutes = Out1DT.Subtract(In1DT).TotalMinutes
+                            Else
+                                FunctionMinutes = Out1DT.Subtract(In1DT).TotalMinutes
+                                If In1 < YourNSSPersonel.StartTImeShift Then FunctionMinutes = (TimeSpan.Parse(Out1.ToString) - TimeSpan.Parse(YourNSSPersonel.StartTImeShift)).TotalMinutes
+                                If Out1 > YourNSSPersonel.EndTImeShift Then FunctionMinutes = (TimeSpan.Parse(YourNSSPersonel.EndTImeShift) - TimeSpan.Parse(YourNSSPersonel.StartTImeShift)).TotalMinutes
+                                Dim OverTimeWorkMinutesTemp = (TimeSpan.Parse(Out1.ToString) - TimeSpan.Parse(YourNSSPersonel.EndTImeShift)).TotalMinutes
+                                OverTimeWorkMinutes = IIf(OverTimeWorkMinutesTemp < 0, 0, OverTimeWorkMinutesTemp)
+                                End If
+                            CmdSql.CommandText = "Insert into R2PrimaryReports.dbo.TblPersonelFunction (PId,DateShamsi,PCType,In1,Out1,In2,Out2,FunctionMinutes,JamFunctionMinutes,JamFunctionDays,OverTimeWorkMinutes,JamOverTimeWorkMinutes,JamOverTimeWorkDays,StartTimeShift,EndTimeShift,ShiftMinutes,PersonelName) Values(" & YourNSSPersonel.PId & ",'" & DateShamsi & "','" & PCTypePersian & "','" & In1 & "','" & Out1 & "','" & _DateTime.Get6ZeroTime & "','" & _DateTime.Get6ZeroTime & "'," & FunctionMinutes & ",0,0," & OverTimeWorkMinutes & ",0,0,'" & YourNSSPersonel.StartTImeShift & "','" & YourNSSPersonel.EndTImeShift & "'," & YourNSSPersonel.ShiftMinutes & ",'" & YourNSSPersonel.PNameFamily & "')"
+                            CmdSql.ExecuteNonQuery()
+                            JamFunctionMinutes += FunctionMinutes
+                            JamOverTimeWorkMinutes += OverTimeWorkMinutes
+                        ElseIf DSPersonnelAttendance.Tables(0).Rows.Count = 3 Then
+                            Dim In1 = DSPersonnelAttendance.Tables(0).Rows(0).Item("Time").ToString
+                            Dim In1DT = Convert.ToDateTime(DSPersonnelAttendance.Tables(0).Rows(0).Item("DateTimeMilladi"))
+                            Dim Out1 = DSPersonnelAttendance.Tables(0).Rows(1).Item("Time").ToString
+                            Dim Out1DT = Convert.ToDateTime(DSPersonnelAttendance.Tables(0).Rows(1).Item("DateTimeMilladi"))
+                            Dim In2 = DSPersonnelAttendance.Tables(0).Rows(2).Item("Time").ToString
+                            Dim FunctionMinutes = 0
+                            Dim OverTimeWorkMinutes = 0
+                            If Lst(Loopx).PCType = PersianCalendarType.Holiday Then
+                                FunctionMinutes = YourNSSPersonel.ShiftMinutes
+                                OverTimeWorkMinutes = Out1DT.Subtract(In1DT).TotalMinutes
+                            Else
+                                FunctionMinutes = Out1DT.Subtract(In1DT).TotalMinutes
+                                If In1 < YourNSSPersonel.StartTImeShift Then FunctionMinutes = (TimeSpan.Parse(Out1.ToString) - TimeSpan.Parse(YourNSSPersonel.StartTImeShift)).TotalMinutes
+                                If Out1 > YourNSSPersonel.EndTImeShift Then FunctionMinutes = (TimeSpan.Parse(YourNSSPersonel.EndTImeShift) - TimeSpan.Parse(YourNSSPersonel.StartTImeShift)).TotalMinutes
+                                Dim OverTimeWorkMinutesTemp = (TimeSpan.Parse(Out1.ToString) - TimeSpan.Parse(YourNSSPersonel.EndTImeShift)).TotalMinutes
+                                OverTimeWorkMinutes = IIf(OverTimeWorkMinutesTemp < 0, 0, OverTimeWorkMinutesTemp)
+                            End If
+                            CmdSql.CommandText = "Insert into R2PrimaryReports.dbo.TblPersonelFunction (PId,DateShamsi,PCType,In1,Out1,In2,Out2,FunctionMinutes,JamFunctionMinutes,JamFunctionDays,OverTimeWorkMinutes,JamOverTimeWorkMinutes,JamOverTimeWorkDays,StartTimeShift,EndTimeShift,ShiftMinutes,PersonelName) Values(" & YourNSSPersonel.PId & ",'" & DateShamsi & "','" & PCTypePersian & "','" & In1 & "','" & Out1 & "','" & In2 & "','" & _DateTime.Get6ZeroTime & "'," & FunctionMinutes & ",0,0," & OverTimeWorkMinutes & ",0,0,'" & YourNSSPersonel.StartTImeShift & "','" & YourNSSPersonel.EndTImeShift & "'," & YourNSSPersonel.ShiftMinutes & ",'" & YourNSSPersonel.PNameFamily & "')"
+                            CmdSql.ExecuteNonQuery()
+                            JamFunctionMinutes += FunctionMinutes
+                            JamOverTimeWorkMinutes += OverTimeWorkMinutes
+                        ElseIf DSPersonnelAttendance.Tables(0).Rows.Count >= 4 Then
+                            Dim In1 = DSPersonnelAttendance.Tables(0).Rows(0).Item("Time").ToString
+                            Dim In1DT = Convert.ToDateTime(DSPersonnelAttendance.Tables(0).Rows(0).Item("DateTimeMilladi"))
+                            Dim Out1 = DSPersonnelAttendance.Tables(0).Rows(1).Item("Time").ToString
+                            Dim Out1DT = Convert.ToDateTime(DSPersonnelAttendance.Tables(0).Rows(1).Item("DateTimeMilladi"))
+                            Dim In2 = DSPersonnelAttendance.Tables(0).Rows(2).Item("Time").ToString
+                            Dim Out2 = DSPersonnelAttendance.Tables(0).Rows(3).Item("Time").ToString
+                            Dim Out2DT = Convert.ToDateTime(DSPersonnelAttendance.Tables(0).Rows(3).Item("DateTimeMilladi"))
+                            Dim FunctionMinutes = 0
+                            Dim OverTimeWorkMinutes = 0
+                            If Lst(Loopx).PCType = PersianCalendarType.Holiday Then
+                                FunctionMinutes = YourNSSPersonel.ShiftMinutes
+                                OverTimeWorkMinutes = Out1DT.Subtract(In1DT).TotalMinutes
+                            Else
+                                FunctionMinutes = Out2DT.Subtract(In1DT).TotalMinutes
+                                If In1 < YourNSSPersonel.StartTImeShift Then FunctionMinutes = (TimeSpan.Parse(Out2.ToString) - TimeSpan.Parse(YourNSSPersonel.StartTImeShift)).TotalMinutes
+                                If Out1 > YourNSSPersonel.EndTImeShift Then FunctionMinutes = (TimeSpan.Parse(YourNSSPersonel.EndTImeShift) - TimeSpan.Parse(YourNSSPersonel.StartTImeShift)).TotalMinutes
+                                Dim OverTimeWorkMinutesTemp = (TimeSpan.Parse(Out2.ToString) - TimeSpan.Parse(YourNSSPersonel.EndTImeShift)).TotalMinutes
+                                OverTimeWorkMinutes = IIf(OverTimeWorkMinutesTemp < 0, 0, OverTimeWorkMinutesTemp)
+                            End If
+                            CmdSql.CommandText = "Insert into R2PrimaryReports.dbo.TblPersonelFunction (PId,DateShamsi,PCType,In1,Out1,In2,Out2,FunctionMinutes,JamFunctionMinutes,JamFunctionDays,OverTimeWorkMinutes,JamOverTimeWorkMinutes,JamOverTimeWorkDays,StartTimeShift,EndTimeShift,ShiftMinutes,PersonelName) Values(" & YourNSSPersonel.PId & ",'" & DateShamsi & "','" & PCTypePersian & "','" & In1 & "','" & Out1 & "','" & In2 & "','" & Out2 & "'," & FunctionMinutes & ",0,0," & OverTimeWorkMinutes & ",0,0,'" & YourNSSPersonel.StartTImeShift & "','" & YourNSSPersonel.EndTImeShift & "'," & YourNSSPersonel.ShiftMinutes & ",'" & YourNSSPersonel.PNameFamily & "')"
+                            CmdSql.ExecuteNonQuery()
+                            JamFunctionMinutes += FunctionMinutes
+                            JamOverTimeWorkMinutes += OverTimeWorkMinutes
+                        End If
+                    Next
+                    Dim JamFunctionDays = JamFunctionMinutes / YourNSSPersonel.ShiftMinutes
+                    Dim JamOverTimeWorkDays = JamOverTimeWorkMinutes / YourNSSPersonel.ShiftMinutes
+                    CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblPersonelFunction Set JamFunctionMinutes=" & JamFunctionMinutes & ",JamFunctionDays=" & JamFunctionDays & ",JamOverTimeWorkMinutes=" & JamOverTimeWorkMinutes & ",JamOverTimeWorkDays=" & JamOverTimeWorkDays & ""
+                    CmdSql.ExecuteNonQuery()
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Catch ex As Exception
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
@@ -6250,7 +6457,9 @@ Namespace FingerPrintsManagement
 
             Private Shared Matcher As Dermalog.AFIS.FingerCode3.Matcher = New Dermalog.AFIS.FingerCode3.Matcher
             Private Shared EnCoder As Dermalog.AFIS.FingerCode3.Encoder = New Dermalog.AFIS.FingerCode3.Encoder
-            Public Shared Function Verification(ByVal YourListOfFPs As Generic.List(Of Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint), ByVal YourTemplateArray As Byte()(), ByVal YourTemplateNumbers As Integer, ByRef YourScore As Double) As Boolean
+            'Public Shared Function Verification(ByVal YourListOfFPs As Generic.List(Of Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint), ByVal YourTemplateArray As Byte()(), ByVal YourTemplateNumbers As Integer, ByRef YourScore As Double) As Boolean
+            Public Shared Function Verification(ByVal YourListOfFPs As Generic.List(Of Object), ByVal YourTemplateArray As Byte()(), ByVal YourTemplateNumbers As Integer, ByRef YourScore As Double) As Boolean
+
                 Try
                     EnCoder.Format = Dermalog.AFIS.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005
                     For Loopx As UInt16 = 0 To YourListOfFPs.Count - 1

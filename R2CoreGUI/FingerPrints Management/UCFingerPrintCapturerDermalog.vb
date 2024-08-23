@@ -16,7 +16,8 @@ Public Class UCFingerPrintCapturerDermalog
     Inherits UCGeneral
 
     Private WithEvents DDevice As Dermalog.Imaging.Capturing.Device
-    Private lISTfPS As New Generic.List(Of Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint)
+    'Private lISTfPS As New Generic.List(Of Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint)
+    Private lISTfPS As New Generic.List(Of Object)
     Dim QualityChecker As Dermalog.AFIS.NFIQ.NistQualityCheck
     Private EnCoder As Dermalog.AFIS.FingerCode3.Encoder
 
@@ -24,7 +25,8 @@ Public Class UCFingerPrintCapturerDermalog
 
 #Region "General Properties"
 
-    Public ReadOnly Property GetlISTfPS As Generic.List(Of Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint)
+    'Public ReadOnly Property GetlISTfPS As Generic.List(Of Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint)
+    Public ReadOnly Property GetlISTfPS As Generic.List(Of Object)
         Get
             Return lISTfPS
         End Get
@@ -220,11 +222,13 @@ Public Class UCFingerPrintCapturerDermalog
                 Dim params() As Object = New Object() {}
                 BeginInvoke(myDelegate, params)
             Else
-                Dim s As Dermalog.AFIS.FourprintSegmentation.FourprintSegmenation = New Dermalog.AFIS.FourprintSegmentation.FourprintSegmenation
+                'Dim s As Dermalog.AFIS.FourprintSegmentation.FourprintSegmenation = New Dermalog.AFIS.FourprintSegmentation.FourprintSegmenation
+                Dim s As Object = New Object
                 Dim x As UInt16 = s.GetSegmentationCount(PicFingerPrint.Image)
                 If x = 0 Then Exit Sub
                 For loopx As UInt16 = 0 To x - 1
-                    Dim seg As Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint
+                    'Dim seg As Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint
+                    Dim seg As Object
                     Try
                         seg = s.GetSegmentedFingerprint(loopx)
                     Catch ex As Exception

@@ -65,14 +65,14 @@ Partial Class Form3
         '
         Me.Button1.Location = New System.Drawing.Point(12, 12)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.Size = New System.Drawing.Size(136, 23)
         Me.Button1.TabIndex = 0
-        Me.Button1.Text = "Button1"
+        Me.Button1.Text = "محاسبات کارکرد پرسنل"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(174, 12)
+        Me.Button2.Location = New System.Drawing.Point(500, 12)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 23)
         Me.Button2.TabIndex = 1
@@ -156,16 +156,16 @@ Partial Class Form3
         '
         'Button5
         '
-        Me.Button5.Location = New System.Drawing.Point(255, 126)
+        Me.Button5.Location = New System.Drawing.Point(154, 12)
         Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(75, 23)
+        Me.Button5.Size = New System.Drawing.Size(128, 23)
         Me.Button5.TabIndex = 9
-        Me.Button5.Text = "Button5"
+        Me.Button5.Text = "تست شپا و زرین پال"
         Me.Button5.UseVisualStyleBackColor = True
         '
         'Button6
         '
-        Me.Button6.Location = New System.Drawing.Point(93, 12)
+        Me.Button6.Location = New System.Drawing.Point(419, 12)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(75, 23)
         Me.Button6.TabIndex = 10
@@ -301,7 +301,7 @@ Partial Class Form3
         Me.Button9.Name = "Button9"
         Me.Button9.Size = New System.Drawing.Size(75, 23)
         Me.Button9.TabIndex = 34
-        Me.Button9.Text = "Button9"
+        Me.Button9.Text = "تست دوکارته"
         Me.Button9.UseVisualStyleBackColor = True
         '
         'Button13

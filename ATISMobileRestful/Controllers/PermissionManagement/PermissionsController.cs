@@ -33,10 +33,15 @@ namespace ATISMobileRestful.Controllers.PermissionManagement
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClientApikeyNonceWith1Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientExistPermissionRequest);
 
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceAES = new AESAlgorithmsManager();
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var TargetMobileProcessId = Content.Split(';')[2];
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
                 var InstansePermissions = new R2CoreInstansePermissionsManager();
-                bool P = InstansePermissions.ExistPermission(R2CorePermissionTypes.SoftwareUsersAccessMobileProcesses, WebAPi.GetNSSSoftwareUser(Request).UserId, Convert.ToInt64(TargetMobileProcessId));
+                bool P = InstansePermissions.ExistPermission(R2CorePermissionTypes.SoftwareUsersAccessMobileProcesses, NSSSoftwareuser.UserId, Convert.ToInt64(TargetMobileProcessId));
 
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(P), Encoding.UTF8, "application/json");

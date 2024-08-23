@@ -1,6 +1,6 @@
 ﻿
 Imports System.Reflection
-
+Imports System.Windows.Forms
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
@@ -32,11 +32,21 @@ Public Class UCLoadAllocationManipulationByLoadAllocations
 #Region "Event Handlers"
     Private Sub UcucLoadCapacitorLoadCollectionAdvance_UCSelectedNSSChangedEvent(NSS As R2CoreTransportationAndLoadNotificationStandardLoadAllocationStructure) Handles UcucLoadAllocationCollectionAdvance.UCSelectedNSSChangedEvent
         Try
-            UcLoadAllocationManipulation.UCViewNSS(nss)
+            UcLoadAllocationManipulation.UCViewNSS(NSS)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
+
+    Private Sub UcLoadAllocationManipulation_UCnEstelamIdEnteredEvent(NSSLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure) Handles UcLoadAllocationManipulation.UCnEstelamIdEnteredEvent
+        Try
+            UcucLoadAllocationCollectionAdvance.UCViewCollection(NSSLoad)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+
 
 #End Region
 

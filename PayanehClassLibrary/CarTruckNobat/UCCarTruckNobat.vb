@@ -145,6 +145,8 @@ Public Class UCCarTruckNobat
         Try
             Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
             InstanceCarTruckNobat.ResuscitationNonCreditTurn(_NSSTurn, R2CoreGUI.R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            _NSSTurn.bFlagDriver = False
+            UCViewInf(_NSSTurn)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "فرآیند با موفقیت انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As ResuscitationReserveTurnEndDateReachedException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

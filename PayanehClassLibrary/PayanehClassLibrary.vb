@@ -105,6 +105,13 @@ Imports PayanehClassLibrary.SMS.SMSTypes
 Imports R2Core.SoftwareUserManagement.Exceptions
 Imports R2CoreParkingSystem.SoftwareUsersManagement
 Imports R2CoreParkingSystem.SMS.SMSOwners
+Imports R2CoreTransportationAndLoadNotification.IndigenousTrucks
+Imports R2CoreTransportationAndLoadNotification.IndigenousTrucks.Exceptions
+Imports R2CoreParkingSystem.PredefinedMessagesManagement
+Imports R2Core.PredefinedMessagesManagement
+Imports R2CoreTransportationAndLoadNotification.PredefinedMessagesManagement
+Imports PayanehClassLibrary.PredefinedMessagesManagement
+Imports R2CoreTransportationAndLoadNotification.CalendarManagement.SpecializedPersianCalendar
 
 Namespace Logging
 
@@ -393,12 +400,17 @@ Namespace CarTruckNobatManagement
                 Dim InstancePermissions = New R2CoreInstansePermissionsManager
                 If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.SoftwareUserCanExcecuteTurnCancellation, YourNSSSoftwareUser.UserId, 0) Then Throw New PermissionException
 
+                Dim InstanceSpecializedPersianCalendar = New R2CoreTransportationAndLoadNotificationSpecializedPersianCalendarManager
                 Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
                 Dim InstanceSequentialTurns = New R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager
                 Dim InstanceConfigurations = New R2CoreInstanceConfigurationManager
                 Dim TimeOfDay = _DateTime.GetCurrentDateTime()
                 'طبق کانفیگ سیستم کلا ابطال نوبت ها فعال باشد یا نه
                 If Not InstanceConfigurations.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 0) Then Return
+
+                'ابطال نوبت ها در روزهای تعطیل صورت نمی گیرد
+                If InstanceSpecializedPersianCalendar.IsTodayIsHoliday() Then Return
+
                 'کنترل این که ممکن است هنوز آزاد سازی بار تمام نشده باشد لذا ابطال نوبت ها نباید انجام گیرد حتی اگر زمان ابطال نوبت ها فرارسیده باشد
                 Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
                 If InstanceLoadAllocation.GetLoadAllocationsforLoadPermissionRegistering().Count <> 0 Then Exit Sub
@@ -780,9 +792,16 @@ Namespace CarTruckNobatManagement
 
         Public Sub ResuscitationNonCreditTurn(YourNSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure)
             Try
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim mySoftWareUser = InstanceTurns.GetNSSSoftwareUser(YourNSSTurn)
+
                 'کنترل فعال بودن و غیرفعال بودن سرویس
                 Dim InstanceConfigurations = New R2CoreInstanceConfigurationManager
                 If Not InstanceConfigurations.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 7) Then Throw New ResuscitationReserveTurnServiceIsUnactiveException
+
+                'کنترل بومی و غیر بومی ناوگان
+                Dim InstanceIndigenousTrucks = New R2CoreTransportationAndLoadNotificationsIndigenousTrucksManager
+                If Not InstanceIndigenousTrucks.IsTruckIndigenous(YourNSSTurn) Then Throw New NonIndigenousTrucksException
 
                 'کنترل وضعیت نوبت
                 If YourNSSTurn.TurnStatus <> TurnStatuses.CancelledUnderScore Then Throw New TurnHandlingNotAllowedBecuaseTurnStatusException
@@ -817,7 +836,8 @@ Namespace CarTruckNobatManagement
 
                 'احیاء نوبت
                 PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToFalse(YourNSSTurn.nEnterExitId)
-
+            Catch ex As NonIndigenousTrucksException
+                Throw ex
             Catch ex As ResuscitationReserveTurnEndDateReachedException
                 Throw ex
             Catch ex As ResuscitationReserveTurnEndTimeReachedException
@@ -833,11 +853,11 @@ Namespace CarTruckNobatManagement
             End Try
         End Sub
 
-        Private Sub SendingSMSResuscitationNonCreditTurn(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+        Private Sub SendingSMSResuscitationNonCreditTurn(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourMessage As String)
             Try
                 Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
                 Dim LstUser = New List(Of R2CoreStandardSoftwareUserStructure) From {YourNSSSoftwareUser}
-                Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = " "}}
+                Dim LstCreationData = New List(Of SMSCreationData) From {New SMSCreationData With {.Data1 = YourMessage}}
                 Dim SMSResult = InstanceSMSHandling.SendSMS(LstUser, PayanehClassLibrarySMSTypes.ResuscitationNonCreditTurn, LstCreationData, True)
                 Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
                 'If Not SMSResultAnalyze = String.Empty Then Throw New 
@@ -848,6 +868,8 @@ Namespace CarTruckNobatManagement
 
         Public Sub ResuscitationNonCreditTurn(YourSofttWareUser As R2CoreStandardSoftwareUserStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure)
             Try
+                Dim InstancePredefinedMessages = New R2CoreMClassPredefinedMessagesManager
+
                 Dim NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = Nothing
                 Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager()
                 NSSTurn = InstanceTurns.GetNSSLastTurn(YourSofttWareUser)
@@ -855,17 +877,57 @@ Namespace CarTruckNobatManagement
 
                 'ارسال پیام به راننده 
                 Try
-                    SendingSMSResuscitationNonCreditTurn(YourSofttWareUser)
+                    SendingSMSResuscitationNonCreditTurn(YourSofttWareUser, InstancePredefinedMessages.GetNSS(PayanehClassLibraryPredefinedMessages.ResuscitationNonCreditTurnSuccess).MsgContent)
                 Catch ex As Exception
                 End Try
-
+            Catch ex As NonIndigenousTrucksException
+                Try
+                    Dim InstancePredefinedMessages = New R2CoreMClassPredefinedMessagesManager
+                    SendingSMSResuscitationNonCreditTurn(YourSofttWareUser, InstancePredefinedMessages.GetNSS(R2CoreTransportationPredefinedMessages.UnIndigenousTrucks).MsgContent)
+                Catch exSendingSMS As Exception
+                End Try
             Catch ex As ResuscitationReserveTurnEndDateReachedException
+                Try
+                    Dim InstancePredefinedMessages = New R2CoreMClassPredefinedMessagesManager
+                    SendingSMSResuscitationNonCreditTurn(YourSofttWareUser, ex.Message)
+                Catch exSendingSMS As Exception
+                End Try
             Catch ex As ResuscitationReserveTurnEndTimeReachedException
+                Try
+                    Dim InstancePredefinedMessages = New R2CoreMClassPredefinedMessagesManager
+                    SendingSMSResuscitationNonCreditTurn(YourSofttWareUser, ex.Message)
+                Catch exSendingSMS As Exception
+                End Try
             Catch ex As ResuscitationReserveTurnServiceIsUnactiveException
+                Try
+                    Dim InstancePredefinedMessages = New R2CoreMClassPredefinedMessagesManager
+                    SendingSMSResuscitationNonCreditTurn(YourSofttWareUser, InstancePredefinedMessages.GetNSS(PayanehClassLibraryPredefinedMessages.ResuscitationNonCreditTurnServiceDisable).MsgContent)
+                Catch exSendingSMS As Exception
+                End Try
             Catch ex As MoneyWalletCurrentChargeNotEnoughException
+                Try
+                    Dim InstancePredefinedMessages = New R2CoreMClassPredefinedMessagesManager
+                    SendingSMSResuscitationNonCreditTurn(YourSofttWareUser, ex.Message)
+                Catch exSendingSMS As Exception
+                End Try
             Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
+                Try
+                    Dim InstancePredefinedMessages = New R2CoreMClassPredefinedMessagesManager
+                    SendingSMSResuscitationNonCreditTurn(YourSofttWareUser, ex.Message)
+                Catch exSendingSMS As Exception
+                End Try
             Catch ex As TruckDriverNotFoundException
+                Try
+                    Dim InstancePredefinedMessages = New R2CoreMClassPredefinedMessagesManager
+                    SendingSMSResuscitationNonCreditTurn(YourSofttWareUser, ex.Message)
+                Catch exSendingSMS As Exception
+                End Try
             Catch ex As TurnNotFoundException
+                Try
+                    Dim InstancePredefinedMessages = New R2CoreMClassPredefinedMessagesManager
+                    SendingSMSResuscitationNonCreditTurn(YourSofttWareUser, ex.Message)
+                Catch exSendingSMS As Exception
+                End Try
             Catch ex As Exception
             End Try
         End Sub
@@ -1671,7 +1733,7 @@ Namespace CarTruckNobatManagement
 
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "محدوده تقویمی احیا نوبت زیر اعتبار به پایان رسیده است"
+                    Return "محدوده احیا نوبت زیر اعتبار به پایان رسیده است"
                 End Get
             End Property
         End Class
@@ -3034,7 +3096,8 @@ Namespace DriverTruckPresentManagement
             End Try
         End Function
 
-        Public Shared Sub SaveDriverTruckFPs(YourNSSDriverTruck As R2StandardDriverTruckStructure, YourListOfFPs As Generic.List(Of Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint), YourDriverImage As R2CoreImage, YourUserNSS As R2CoreStandardSoftwareUserStructure)
+        'Public Shared Sub SaveDriverTruckFPs(YourNSSDriverTruck As R2StandardDriverTruckStructure, YourListOfFPs As Generic.List(Of Dermalog.Afis.FourprintSegmentation.SegmentedFingerprint), YourDriverImage As R2CoreImage, YourUserNSS As R2CoreStandardSoftwareUserStructure)
+        Public Shared Sub SaveDriverTruckFPs(YourNSSDriverTruck As R2StandardDriverTruckStructure, YourListOfFPs As Generic.List(Of Object), YourDriverImage As R2CoreImage, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
@@ -3051,8 +3114,8 @@ Namespace DriverTruckPresentManagement
                 Dim FPTemplate1 As Byte() = Nothing, FPTemplate2 As Byte() = Nothing, FPTemplate3 As Byte() = Nothing, FPTemplate4 As Byte() = Nothing, FPTemplate5 As Byte() = Nothing, FPTemplate6 As Byte() = Nothing, FPTemplate7 As Byte() = Nothing, FPTemplate8 As Byte() = Nothing, FPTemplate9 As Byte() = Nothing, FPTemplate10 As Byte() = Nothing
                 Dim FPTemplateFlag1 As Boolean = False, FPTemplateFlag2 As Boolean = False, FPTemplateFlag3 As Boolean = False, FPTemplateFlag4 As Boolean = False, FPTemplateFlag5 As Boolean = False, FPTemplateFlag6 As Boolean = False, FPTemplateFlag7 As Boolean = False, FPTemplateFlag8 As Boolean = False, FPTemplateFlag9 As Boolean = False, FPTemplateFlag10 As Boolean = False
                 Dim FPTemplateLocation1 As String, FPTemplateLocation2 As String, FPTemplateLocation3 As String, FPTemplateLocation4 As String, FPTemplateLocation5 As String, FPTemplateLocation6 As String, FPTemplateLocation7 As String, FPTemplateLocation8 As String, FPTemplateLocation9 As String, FPTemplateLocation10 As String
-                Dim EnCoderDermalog As Dermalog.AFIS.FingerCode3.Encoder = New Dermalog.AFIS.FingerCode3.Encoder
-                EnCoderDermalog.Format = Dermalog.AFIS.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005
+                Dim EnCoderDermalog As Dermalog.Afis.FingerCode3.Encoder = New Dermalog.Afis.FingerCode3.Encoder
+                EnCoderDermalog.Format = Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005
                 Dim P As SqlClient.SqlParameter
                 If YourListOfFPs.Count = 0 Then
                     Throw New DriverTruckFingerPrintNeededException
@@ -3067,7 +3130,8 @@ Namespace DriverTruckPresentManagement
                 Else
                     FPTemplate1 = New Byte() {0}
                     FPTemplateFlag1 = False
-                    FPTemplateLocation1 = Dermalog.AFIS.FourprintSegmentation.HandPositions.Unknown
+                    'FPTemplateLocation1 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+                    FPTemplateLocation1 = New Object
                     P = New SqlClient.SqlParameter("@FPTemplate1", SqlDbType.VarBinary) : P.Value = FPTemplate1
                     CmdSql.Parameters.Add(P)
                     CmdSql.Parameters.AddWithValue("@FPTemplateFlag1", FPTemplateFlag1)
@@ -3084,7 +3148,8 @@ Namespace DriverTruckPresentManagement
                 Else
                     FPTemplate2 = New Byte() {0}
                     FPTemplateFlag2 = False
-                    FPTemplateLocation2 = Dermalog.AFIS.FourprintSegmentation.HandPositions.Unknown
+                    'FPTemplateLocation2 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+                    FPTemplateLocation2 = New Object
                     P = New SqlClient.SqlParameter("@FPTemplate2", SqlDbType.VarBinary) : P.Value = FPTemplate2
                     CmdSql.Parameters.Add(P)
                     CmdSql.Parameters.AddWithValue("@FPTemplateFlag2", FPTemplateFlag2)
@@ -3101,7 +3166,8 @@ Namespace DriverTruckPresentManagement
                 Else
                     FPTemplate3 = New Byte() {0}
                     FPTemplateFlag3 = False
-                    FPTemplateLocation3 = Dermalog.AFIS.FourprintSegmentation.HandPositions.Unknown
+                    'FPTemplateLocation3 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+                    FPTemplateLocation3 = New Object
                     P = New SqlClient.SqlParameter("@FPTemplate3", SqlDbType.VarBinary) : P.Value = FPTemplate3
                     CmdSql.Parameters.Add(P)
                     CmdSql.Parameters.AddWithValue("@FPTemplateFlag3", FPTemplateFlag3)
@@ -3118,7 +3184,8 @@ Namespace DriverTruckPresentManagement
                 Else
                     FPTemplate4 = New Byte() {0}
                     FPTemplateFlag4 = False
-                    FPTemplateLocation4 = Dermalog.AFIS.FourprintSegmentation.HandPositions.Unknown
+                    'FPTemplateLocation4 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+                    FPTemplateLocation4 = New Object
                     P = New SqlClient.SqlParameter("@FPTemplate4", SqlDbType.VarBinary) : P.Value = FPTemplate4
                     CmdSql.Parameters.Add(P)
                     CmdSql.Parameters.AddWithValue("@FPTemplateFlag4", FPTemplateFlag4)
@@ -3135,7 +3202,8 @@ Namespace DriverTruckPresentManagement
                 Else
                     FPTemplate5 = New Byte() {0}
                     FPTemplateFlag5 = False
-                    FPTemplateLocation5 = Dermalog.AFIS.FourprintSegmentation.HandPositions.Unknown
+                    'FPTemplateLocation5 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+                    FPTemplateLocation5 = New Object
                     P = New SqlClient.SqlParameter("@FPTemplate5", SqlDbType.VarBinary) : P.Value = FPTemplate5
                     CmdSql.Parameters.Add(P)
                     CmdSql.Parameters.AddWithValue("@FPTemplateFlag5", FPTemplateFlag5)
@@ -3152,7 +3220,8 @@ Namespace DriverTruckPresentManagement
                 Else
                     FPTemplate6 = New Byte() {0}
                     FPTemplateFlag6 = False
-                    FPTemplateLocation6 = Dermalog.AFIS.FourprintSegmentation.HandPositions.Unknown
+                    'FPTemplateLocation6 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+                    FPTemplateLocation6 = New Object
                     P = New SqlClient.SqlParameter("@FPTemplate6", SqlDbType.VarBinary) : P.Value = FPTemplate6
                     CmdSql.Parameters.Add(P)
                     CmdSql.Parameters.AddWithValue("@FPTemplateFlag6", FPTemplateFlag6)
@@ -3169,7 +3238,8 @@ Namespace DriverTruckPresentManagement
                 Else
                     FPTemplate7 = New Byte() {0}
                     FPTemplateFlag7 = False
-                    FPTemplateLocation7 = Dermalog.AFIS.FourprintSegmentation.HandPositions.Unknown
+                    'FPTemplateLocation7 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+                    FPTemplateLocation7 = New Object
                     P = New SqlClient.SqlParameter("@FPTemplate7", SqlDbType.VarBinary) : P.Value = FPTemplate7
                     CmdSql.Parameters.Add(P)
                     CmdSql.Parameters.AddWithValue("@FPTemplateFlag7", FPTemplateFlag7)
@@ -3186,7 +3256,8 @@ Namespace DriverTruckPresentManagement
                 Else
                     FPTemplate8 = New Byte() {0}
                     FPTemplateFlag8 = False
-                    FPTemplateLocation8 = Dermalog.AFIS.FourprintSegmentation.HandPositions.Unknown
+                    'FPTemplateLocation8 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+                    FPTemplateLocation8 = New Object
                     P = New SqlClient.SqlParameter("@FPTemplate8", SqlDbType.VarBinary) : P.Value = FPTemplate8
                     CmdSql.Parameters.Add(P)
                     CmdSql.Parameters.AddWithValue("@FPTemplateFlag8", FPTemplateFlag8)
@@ -3203,7 +3274,8 @@ Namespace DriverTruckPresentManagement
                 Else
                     FPTemplate9 = New Byte() {0}
                     FPTemplateFlag9 = False
-                    FPTemplateLocation9 = Dermalog.AFIS.FourprintSegmentation.HandPositions.Unknown
+                    'FPTemplateLocation9 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+                    FPTemplateLocation9 = New Object
                     P = New SqlClient.SqlParameter("@FPTemplate9", SqlDbType.VarBinary) : P.Value = FPTemplate9
                     CmdSql.Parameters.Add(P)
                     CmdSql.Parameters.AddWithValue("@FPTemplateFlag9", FPTemplateFlag9)
@@ -3220,7 +3292,8 @@ Namespace DriverTruckPresentManagement
                 Else
                     FPTemplate10 = New Byte() {0}
                     FPTemplateFlag10 = False
-                    FPTemplateLocation10 = Dermalog.AFIS.FourprintSegmentation.HandPositions.Unknown
+                    'FPTemplateLocation10 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+                    FPTemplateLocation10 = New Object
                     P = New SqlClient.SqlParameter("@FPTemplate10", SqlDbType.VarBinary) : P.Value = FPTemplate10
                     CmdSql.Parameters.Add(P)
                     CmdSql.Parameters.AddWithValue("@FPTemplateFlag10", FPTemplateFlag10)
@@ -4061,6 +4134,9 @@ Namespace ReportsManagement
                     _JamMblgh = _JamMblgh + Mblgh
                     _JamTeadad = _JamTeadad + 1
                 Next
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim Vat = InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.GovernmentVat, 0)
+                _JamMblgh = _JamMblgh * 100 / (100 + Vat)
                 CmdSql.CommandText = "Update R2PrimaryReports.dbo.TblTruckersAssociationFinancialReport Set JamMblgh= " & _JamMblgh & ",JamTeadad= " & _JamTeadad & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -4415,8 +4491,10 @@ Namespace ReportsManagement
                 If YourAHId = AnnouncementHalls.None Then 'AHId=None and AHSGId<>None
                     If YourCompanyCode = Int64.MinValue Then
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,E.TPTParams,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,E.TPTParams,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName,LoadingPlaces.LADPlaceTitle as LoadingPlace,DischargingPlaces.LADPlaceTitle as DischargingPlace
                             from DBTransport.dbo.tbElam as E 
+							   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On E.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+							   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On E.DischargingPlaceId=DischargingPlaces.LADPlaceId 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
                                inner join DBTransport.dbo.tbCompany as CO On e.nCompCode=CO.nCompCode 
@@ -4429,8 +4507,10 @@ Namespace ReportsManagement
                             " Order By E.dDateElam,E.nCompCode,E.nTruckType,E.dTimeElam")
                     Else
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,E.TPTParams,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName 
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,E.TPTParams,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName ,LoadingPlaces.LADPlaceTitle as LoadingPlace,DischargingPlaces.LADPlaceTitle as DischargingPlace
                             from DBTransport.dbo.tbElam as E 
+							   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On E.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+							   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On E.DischargingPlaceId=DischargingPlaces.LADPlaceId 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
                                inner join DBTransport.dbo.tbCompany as CO On e.nCompCode=CO.nCompCode 
@@ -4445,8 +4525,10 @@ Namespace ReportsManagement
                 Else  'AHId<>None and AHSGId=None
                     If YourCompanyCode = Int64.MinValue Then
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,E.TPTParams,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName 
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,E.TPTParams,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName ,LoadingPlaces.LADPlaceTitle as LoadingPlace,DischargingPlaces.LADPlaceTitle as DischargingPlace
                             from DBTransport.dbo.tbElam as E 
+							   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On E.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+							   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On E.DischargingPlaceId=DischargingPlaces.LADPlaceId 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
                                inner join DBTransport.dbo.tbCompany as CO On e.nCompCode=CO.nCompCode 
@@ -4459,8 +4541,10 @@ Namespace ReportsManagement
                             " Order By E.dDateElam,E.nCompCode,E.dTimeElam")
                     Else
                         Da.SelectCommand = New SqlClient.SqlCommand("
-                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,E.TPTParams,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName
+                            Select E.nEstelamID,P.strGoodName,C.strCityName,E.nTonaj,E.nCarNumKol,E.strPriceSug,E.strDescription,E.strAddress,E.strBarName,E.dDateElam,E.dTimeElam,E.TPTParams,CO.strCompName,AnnouncementHallSubGroups.AHSGTitle,LoadCapacitorLoadStatuses.LoadStatusName,SoftwareUsers.UserName,LoadingPlaces.LADPlaceTitle as LoadingPlace,DischargingPlaces.LADPlaceTitle as DischargingPlace
                             from DBTransport.dbo.tbElam as E 
+							   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On E.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+							   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On E.DischargingPlaceId=DischargingPlaces.LADPlaceId 
                                inner join DBTransport.dbo.tbProducts as P On E.nBarcode=P.strGoodCode 
                                inner join DBTransport.dbo.tbCity as C On E.nCityCode=C.nCityCode 
                                inner join DBTransport.dbo.tbCompany as CO On e.nCompCode=CO.nCompCode 
@@ -4500,7 +4584,7 @@ Namespace ReportsManagement
                         Dim mynTonaj As Double = Ds.Tables(0).Rows(Loopx).Item("nTonaj")
                         Dim mynCarNumKol As Int64 = Ds.Tables(0).Rows(Loopx).Item("nCarNumKol")
                         Dim myStrPriceSug As String = Ds.Tables(0).Rows(Loopx).Item("strPriceSug").trim
-                        Dim myStrDescription As String = Ds.Tables(0).Rows(Loopx).Item("strDescription").trim
+                        Dim myStrDescription As String = Ds.Tables(0).Rows(Loopx).Item("strDescription").trim + vbCrLf + "مبدا:" + Ds.Tables(0).Rows(Loopx).Item("LoadingPlace").trim + vbCrLf + "مقصد:" + Ds.Tables(0).Rows(Loopx).Item("DischargingPlace").trim
                         Dim myStrAddress As String = Ds.Tables(0).Rows(Loopx).Item("strAddress").trim
                         Dim myStrBarname As String = Ds.Tables(0).Rows(Loopx).Item("strBarName").trim
                         Dim mydDateElam As String = Ds.Tables(0).Rows(Loopx).Item("dDateElam").trim
@@ -6719,5 +6803,18 @@ Namespace SMS
         End Class
 
     End Namespace
+
+End Namespace
+
+Namespace PredefinedMessagesManagement
+
+    Public MustInherit Class PayanehClassLibraryPredefinedMessages
+        Inherits R2CoreTransportationPredefinedMessages
+
+        Public Shared ReadOnly ResuscitationNonCreditTurnSuccess As Int64 = 16
+        Public Shared ReadOnly ResuscitationNonCreditTurnServiceDisable As Int64 = 17
+
+
+    End Class
 
 End Namespace

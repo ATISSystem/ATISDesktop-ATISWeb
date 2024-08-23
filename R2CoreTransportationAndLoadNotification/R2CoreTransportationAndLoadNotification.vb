@@ -91,6 +91,9 @@ Imports R2CoreParkingSystem.SoftwareUsersManagement
 Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement
 Imports R2CoreParkingSystem.SMS.SMSTypes
 Imports R2CoreParkingSystem
+Imports R2CoreParkingSystem.PredefinedMessagesManagement
+Imports R2Core.PredefinedMessagesManagement
+Imports R2Core.SoftwareUserManagement.Exceptions
 
 Namespace Rmto
     Public MustInherit Class RmtoWebService
@@ -160,7 +163,7 @@ Namespace Rmto
             Catch ex As InternetIsnotAvailableException
                 Throw ex
             Catch ex As Exception
-                Throw New RMTOWebServiceSmartCardInvalidException
+                Throw ex
             End Try
         End Function
 
@@ -1682,7 +1685,32 @@ Namespace Turns
             End Try
         End Function
 
-
+        Public Function GetNSSSoftwareUser(YourTurn As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure) As R2CoreStandardSoftwareUserStructure
+            Try
+                Dim InstanceTruckDrivers = New R2CoreTransportationAndLoadNotificationInstanceTruckDriversManager
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim Ds As New DataSet
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                     "Select Top 1 SoftwareUsers.UserId from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                         Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1
+	                     Inner Join dbtransport.dbo.TbDriver as Drivers On EntityRelations.E2=Drivers.nIDDriver 
+                         Inner Join dbtransport.dbo.TbPerson as Persons On Drivers.nIDDriver=Persons.nIDPerson 
+                         Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPersons On Drivers.nIDDriver=CarAndPersons.nIDPerson
+                         Inner Join dbtransport.dbo.TbCar as Cars On CarAndPersons.nIDCar=Cars.nIDCar 
+                         Inner Join dbtransport.dbo.tbEnterExit as Turns On Cars.nIDCar=Turns.strCardno 
+                      Where Turns.nEnterExitId=" & YourTurn.nEnterExitId & " and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0 and EntityRelations.ERTypeId=" & R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 and Cars.ViewFlag=1 and CarAndPersons.snRelation=2 
+                             and ((DATEDIFF(SECOND,CarAndPersons.RelationTimeStamp,getdate())<240) or (CarAndPersons.RelationTimeStamp='2015-01-01 00:00:00.000')) 
+	                   Order By SoftwareUsers.UserId DESC", 300, Ds).GetRecordsCount() = 0 Then
+                    Throw New SoftWareUserNotFoundException
+                End If
+                Dim InstanceSoftwareUsers = New R2Core.SoftwareUserManagement.R2CoreInstanseSoftwareUsersManager
+                Return InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("UserId")))
+            Catch ex As SoftWareUserNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
     End Class
 
@@ -3300,6 +3328,7 @@ Namespace ProcessesManagement
         Public Shared ReadOnly FrmcLoadCapacitorMonitoring As Int64 = 64
         Public Shared ReadOnly FrmcTransportCompniesManipulation As Int64 = 68
         Public Shared ReadOnly FrmcMoneyWalletChargeByTransportCompany As Int64 = 72
+        Public Shared ReadOnly FrmcLoadingAndDischargingPlaces As Int64 = 75
 
     End Class
 
@@ -4302,6 +4331,21 @@ Namespace CalendarManagement
                 End Try
             End Function
 
+            Public Function IsTodayIsHoliday() As Boolean
+                Try
+                    Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
+                    Dim Ds As DataSet = Nothing
+                    R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                            "Select Top 1 PCTYpe from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
+                               Where DateShamsi='" & _DateTime.GetCurrentDateShamsiFull & "' 
+                               Order By HId Desc", 3600, Ds)
+                    Return Convert.ToBoolean(Ds.Tables(0).Rows(0).Item("PCTYpe"))
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
+                End Try
+            End Function
+
+
         End Class
 
 
@@ -4352,9 +4396,46 @@ Namespace IndigenousTrucks
             End Try
         End Function
 
+        Public Function IsTruckIndigenous(YourTurn As R2CoreTransportationAndLoadNotificationStandardTurnExtendedStructure) As Boolean
+            Try
+                Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
+                Return IsTruckIndigenous(InstanceTrucks.GetNSSTruck(YourTurn, False))
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
+            End Try
+        End Function
+
+
+    End Class
+
+    Namespace Exceptions
+        Public Class NonIndigenousTrucksException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Dim InstancePredefinedMessages = New R2CoreMClassPredefinedMessagesManager
+                    Return InstancePredefinedMessages.GetNSS(R2CoreTransportationAndLoadNotification.PredefinedMessagesManagement.R2CoreTransportationPredefinedMessages.UnIndigenousTrucks).MsgContent
+                End Get
+            End Property
+        End Class
+    End Namespace
+End Namespace
+
+Namespace PredefinedMessagesManagement
+
+    Public MustInherit Class R2CoreTransportationPredefinedMessages
+        Inherits R2CoreParkingSystemPredefinedMessages
+
+        Public Shared ReadOnly UnIndigenousTrucks As Int64 = 15
+
+
     End Class
 
 End Namespace
+
+
+
+
 
 
 

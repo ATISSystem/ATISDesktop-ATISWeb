@@ -25,6 +25,7 @@ Partial Class UCCarTruckNobat
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.PnlMain = New System.Windows.Forms.Panel()
+        Me.UcButtonResuscitationNonCreditTurn = New R2CoreGUI.UCButton()
         Me.UcButtonResuscitationNobat = New R2CoreGUI.UCButton()
         Me.UcButtonEbtalNobat = New R2CoreGUI.UCButton()
         Me.UcButtonChop = New R2CoreGUI.UCButton()
@@ -45,7 +46,6 @@ Partial Class UCCarTruckNobat
         Me.LblEnterTime = New System.Windows.Forms.Label()
         Me.LblEnterDate = New System.Windows.Forms.Label()
         Me.LblnEnterExitId = New System.Windows.Forms.Label()
-        Me.UcButtonResuscitationNonCreditTurn = New R2CoreGUI.UCButton()
         Me.PnlMain.SuspendLayout()
         Me.PnlSubMain.SuspendLayout()
         Me.SuspendLayout()
@@ -62,6 +62,22 @@ Partial Class UCCarTruckNobat
         Me.PnlMain.Name = "PnlMain"
         Me.PnlMain.Size = New System.Drawing.Size(841, 128)
         Me.PnlMain.TabIndex = 0
+        '
+        'UcButtonResuscitationNonCreditTurn
+        '
+        Me.UcButtonResuscitationNonCreditTurn.BackColor = System.Drawing.Color.Transparent
+        Me.UcButtonResuscitationNonCreditTurn.Enabled = False
+        Me.UcButtonResuscitationNonCreditTurn.Location = New System.Drawing.Point(163, 4)
+        Me.UcButtonResuscitationNonCreditTurn.Name = "UcButtonResuscitationNonCreditTurn"
+        Me.UcButtonResuscitationNonCreditTurn.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcButtonResuscitationNonCreditTurn.Size = New System.Drawing.Size(159, 37)
+        Me.UcButtonResuscitationNonCreditTurn.TabIndex = 18
+        Me.UcButtonResuscitationNonCreditTurn.UCBackColor = System.Drawing.Color.OrangeRed
+        Me.UcButtonResuscitationNonCreditTurn.UCBackColorDisable = System.Drawing.Color.Gray
+        Me.UcButtonResuscitationNonCreditTurn.UCEnable = True
+        Me.UcButtonResuscitationNonCreditTurn.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcButtonResuscitationNonCreditTurn.UCForeColor = System.Drawing.Color.White
+        Me.UcButtonResuscitationNonCreditTurn.UCValue = "احیاء نوبت زیر اعتبار"
         '
         'UcButtonResuscitationNobat
         '
@@ -165,9 +181,9 @@ Partial Class UCCarTruckNobat
         Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label6.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label6.ForeColor = System.Drawing.Color.Silver
-        Me.Label6.Location = New System.Drawing.Point(613, 48)
+        Me.Label6.Location = New System.Drawing.Point(644, 48)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(91, 23)
+        Me.Label6.Size = New System.Drawing.Size(101, 23)
         Me.Label6.TabIndex = 18
         Me.Label6.Text = "تسلسل"
         Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -188,9 +204,9 @@ Partial Class UCCarTruckNobat
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label1.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Silver
-        Me.Label1.Location = New System.Drawing.Point(706, 48)
+        Me.Label1.Location = New System.Drawing.Point(751, 48)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(124, 23)
+        Me.Label1.Size = New System.Drawing.Size(79, 23)
         Me.Label1.TabIndex = 8
         Me.Label1.Text = "شاخص"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -212,9 +228,9 @@ Partial Class UCCarTruckNobat
         Me.LblSequentialNumber.BackColor = System.Drawing.Color.Transparent
         Me.LblSequentialNumber.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LblSequentialNumber.ForeColor = System.Drawing.Color.Black
-        Me.LblSequentialNumber.Location = New System.Drawing.Point(613, 71)
+        Me.LblSequentialNumber.Location = New System.Drawing.Point(648, 71)
         Me.LblSequentialNumber.Name = "LblSequentialNumber"
-        Me.LblSequentialNumber.Size = New System.Drawing.Size(91, 23)
+        Me.LblSequentialNumber.Size = New System.Drawing.Size(97, 23)
         Me.LblSequentialNumber.TabIndex = 39
         Me.LblSequentialNumber.Text = "180125"
         Me.LblSequentialNumber.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -236,7 +252,7 @@ Partial Class UCCarTruckNobat
         Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.Silver
-        Me.Label2.Location = New System.Drawing.Point(527, 48)
+        Me.Label2.Location = New System.Drawing.Point(558, 48)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(80, 23)
         Me.Label2.TabIndex = 9
@@ -250,7 +266,7 @@ Partial Class UCCarTruckNobat
         Me.Label3.ForeColor = System.Drawing.Color.Silver
         Me.Label3.Location = New System.Drawing.Point(451, 48)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(70, 23)
+        Me.Label3.Size = New System.Drawing.Size(101, 23)
         Me.Label3.TabIndex = 10
         Me.Label3.Text = "ساعت صدور"
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -297,11 +313,11 @@ Partial Class UCCarTruckNobat
         '
         Me.LblEnterTime.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LblEnterTime.BackColor = System.Drawing.Color.Transparent
-        Me.LblEnterTime.Font = New System.Drawing.Font("IRMehr", 9.75!)
+        Me.LblEnterTime.Font = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblEnterTime.ForeColor = System.Drawing.Color.Black
         Me.LblEnterTime.Location = New System.Drawing.Point(451, 71)
         Me.LblEnterTime.Name = "LblEnterTime"
-        Me.LblEnterTime.Size = New System.Drawing.Size(70, 23)
+        Me.LblEnterTime.Size = New System.Drawing.Size(101, 23)
         Me.LblEnterTime.TabIndex = 36
         Me.LblEnterTime.Text = "عملیات"
         Me.LblEnterTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -312,7 +328,7 @@ Partial Class UCCarTruckNobat
         Me.LblEnterDate.BackColor = System.Drawing.Color.Transparent
         Me.LblEnterDate.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LblEnterDate.ForeColor = System.Drawing.Color.Black
-        Me.LblEnterDate.Location = New System.Drawing.Point(527, 71)
+        Me.LblEnterDate.Location = New System.Drawing.Point(558, 71)
         Me.LblEnterDate.Name = "LblEnterDate"
         Me.LblEnterDate.Size = New System.Drawing.Size(80, 23)
         Me.LblEnterDate.TabIndex = 35
@@ -325,28 +341,12 @@ Partial Class UCCarTruckNobat
         Me.LblnEnterExitId.BackColor = System.Drawing.Color.Transparent
         Me.LblnEnterExitId.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LblnEnterExitId.ForeColor = System.Drawing.Color.Black
-        Me.LblnEnterExitId.Location = New System.Drawing.Point(710, 71)
+        Me.LblnEnterExitId.Location = New System.Drawing.Point(747, 71)
         Me.LblnEnterExitId.Name = "LblnEnterExitId"
-        Me.LblnEnterExitId.Size = New System.Drawing.Size(120, 23)
+        Me.LblnEnterExitId.Size = New System.Drawing.Size(83, 23)
         Me.LblnEnterExitId.TabIndex = 34
-        Me.LblnEnterExitId.Text = "عملیات"
+        Me.LblnEnterExitId.Text = "8888888"
         Me.LblnEnterExitId.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'UcButtonResuscitationNonCreditTurn
-        '
-        Me.UcButtonResuscitationNonCreditTurn.BackColor = System.Drawing.Color.Transparent
-        Me.UcButtonResuscitationNonCreditTurn.Enabled = False
-        Me.UcButtonResuscitationNonCreditTurn.Location = New System.Drawing.Point(163, 4)
-        Me.UcButtonResuscitationNonCreditTurn.Name = "UcButtonResuscitationNonCreditTurn"
-        Me.UcButtonResuscitationNonCreditTurn.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcButtonResuscitationNonCreditTurn.Size = New System.Drawing.Size(159, 37)
-        Me.UcButtonResuscitationNonCreditTurn.TabIndex = 18
-        Me.UcButtonResuscitationNonCreditTurn.UCBackColor = System.Drawing.Color.OrangeRed
-        Me.UcButtonResuscitationNonCreditTurn.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonResuscitationNonCreditTurn.UCEnable = True
-        Me.UcButtonResuscitationNonCreditTurn.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcButtonResuscitationNonCreditTurn.UCForeColor = System.Drawing.Color.White
-        Me.UcButtonResuscitationNonCreditTurn.UCValue = "احیاء نوبت زیر اعتبار"
         '
         'UCCarTruckNobat
         '

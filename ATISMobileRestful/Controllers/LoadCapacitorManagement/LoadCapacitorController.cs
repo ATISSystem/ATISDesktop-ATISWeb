@@ -62,8 +62,12 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                     if (TPTParams == string.Empty)
                     { Item.TransportCompanyTarrifPrice = Lst[Loopx].TransportCompanyTitle.Trim() + " تلفن: " + Lst[Loopx].TransportCompanyTel.Trim() + "\n نرخ پایه : " + R2CoreMClassPublicProcedures.R2MakeCamaYourDigit(Convert.ToUInt64(Lst[Loopx].StrPriceSug)); }
                     else
-                    { Item.TransportCompanyTarrifPrice = Lst[Loopx].TransportCompanyTitle.Trim() + " تلفن: " + Lst[Loopx].TransportCompanyTel.Trim() + "\n نرخ پایه : " + R2CoreMClassPublicProcedures.R2MakeCamaYourDigit(Convert.ToUInt64(Lst[Loopx].StrPriceSug)) + "\n شرایط بار - پارامترهای موثر در نرخ پایه : "+ "\n" + TPTParams; }
+                    { Item.TransportCompanyTarrifPrice = Lst[Loopx].TransportCompanyTitle.Trim() + " تلفن: " + Lst[Loopx].TransportCompanyTel.Trim() + "\n نرخ پایه : " + R2CoreMClassPublicProcedures.R2MakeCamaYourDigit(Convert.ToUInt64(Lst[Loopx].StrPriceSug)) + "\n شرایط بار - پارامترهای موثر در نرخ پایه : " + "\n" + TPTParams; }
                     Item.Description = Lst[Loopx].StrDescription.Trim() + " " + Lst[Loopx].StrBarName.Trim() + " " + Lst[Loopx].StrAddress.Trim() + "\n محل بارگیری : " + Lst[Loopx].LoadingPlaceTitle.Trim() + "\n محل تخلیه : " + Lst[Loopx].DischargingPlaceTitle.Trim();
+                    //if (Lst[Loopx].AHId == Convert.ToInt64(R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHalls.Anbari))
+                    //{ Item.Description = Lst[Loopx].StrDescription.Trim() + " " + Lst[Loopx].StrBarName.Trim() + " " + Lst[Loopx].StrAddress.Trim() + "\n محل بارگیری : " + " انبار آهن آلات" + "\n محل تخلیه : " + " انبار آهن آلات"; }
+                    //else
+                    //{ Item.Description = Lst[Loopx].StrDescription.Trim() + " " + Lst[Loopx].StrBarName.Trim() + " " + Lst[Loopx].StrAddress.Trim() + "\n محل بارگیری : " + Lst[Loopx].LoadingPlaceTitle.Trim() + "\n محل تخلیه : " + " انبار آهن آلات"; }
                     _Loads.Add(Item);
                 }
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);

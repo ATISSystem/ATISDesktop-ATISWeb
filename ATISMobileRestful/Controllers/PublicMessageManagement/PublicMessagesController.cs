@@ -35,10 +35,13 @@ namespace ATISMobileRestful.Controllers.PublicMessageManagement
                 string Message = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.PublicMessagesforSoftWareUsers, 1);
                 string ExpirationDate = R2CoreMClassConfigurationManagement.GetConfigString(R2CoreConfigurations.PublicMessagesforSoftWareUsers, 0);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-                if (R2CoreMclassDateAndTimeManagement.GetPersianDaysDiffDate(_DateTime.GetCurrentDateShamsiFull(), ExpirationDate) >= 0)
-                { response.Content = new StringContent(JsonConvert.SerializeObject(Message), Encoding.UTF8, "application/json"); }
-                else
-                { response.Content = new StringContent(JsonConvert.SerializeObject(string.Empty), Encoding.UTF8, "application/json"); }
+                response.Content = new StringContent(JsonConvert.SerializeObject(Message), Encoding.UTF8, "application/json");
+
+                ////if (R2CoreMclassDateAndTimeManagement.GetPersianDaysDiffDate(_DateTime.GetCurrentDateShamsiFull(), ExpirationDate) >= 0)
+                ////{ response.Content = new StringContent(JsonConvert.SerializeObject(Message), Encoding.UTF8, "application/json"); }
+                ////else
+                ////{ response.Content = new StringContent(JsonConvert.SerializeObject(string.Empty), Encoding.UTF8, "application/json"); }
+
                 return response;
             }
             catch (Exception ex)

@@ -23,12 +23,12 @@ Partial Class UCTransportCompanyManipulation
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim CBlendItems7 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems1 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems2 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems3 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems4 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim CBlendItems5 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
+        Dim CBlendItems6 As CButtonLib.cBlendItems = New CButtonLib.cBlendItems()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UCTransportCompanyManipulation))
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PnlOutter = New System.Windows.Forms.Panel()
@@ -122,9 +122,9 @@ Partial Class UCTransportCompanyManipulation
         'CButtonViewUserPassword
         '
         Me.CButtonViewUserPassword.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems7.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems7.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonViewUserPassword.ColorFillBlend = CBlendItems7
+        CBlendItems1.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems1.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonViewUserPassword.ColorFillBlend = CBlendItems1
         Me.CButtonViewUserPassword.Corners.LowerRight = 10
         Me.CButtonViewUserPassword.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonViewUserPassword.DesignerSelected = False
@@ -139,9 +139,9 @@ Partial Class UCTransportCompanyManipulation
         'CButtonSendSMSUserPassword
         '
         Me.CButtonSendSMSUserPassword.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        CBlendItems1.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems1.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonSendSMSUserPassword.ColorFillBlend = CBlendItems1
+        CBlendItems2.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems2.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonSendSMSUserPassword.ColorFillBlend = CBlendItems2
         Me.CButtonSendSMSUserPassword.Corners.LowerRight = 10
         Me.CButtonSendSMSUserPassword.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonSendSMSUserPassword.DesignerSelected = False
@@ -179,9 +179,9 @@ Partial Class UCTransportCompanyManipulation
         '
         'CButtonNew
         '
-        CBlendItems2.iColor = New System.Drawing.Color() {System.Drawing.Color.DarkGray, System.Drawing.Color.Black, System.Drawing.Color.DimGray}
-        CBlendItems2.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonNew.ColorFillBlend = CBlendItems2
+        CBlendItems3.iColor = New System.Drawing.Color() {System.Drawing.Color.DarkGray, System.Drawing.Color.Black, System.Drawing.Color.DimGray}
+        CBlendItems3.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonNew.ColorFillBlend = CBlendItems3
         Me.CButtonNew.Corners.LowerRight = 10
         Me.CButtonNew.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonNew.DesignerSelected = False
@@ -195,9 +195,9 @@ Partial Class UCTransportCompanyManipulation
         '
         'CButtonDelete
         '
-        CBlendItems3.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
-        CBlendItems3.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonDelete.ColorFillBlend = CBlendItems3
+        CBlendItems4.iColor = New System.Drawing.Color() {System.Drawing.Color.Maroon, System.Drawing.Color.Red, System.Drawing.Color.OrangeRed}
+        CBlendItems4.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonDelete.ColorFillBlend = CBlendItems4
         Me.CButtonDelete.Corners.LowerRight = 10
         Me.CButtonDelete.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonDelete.DesignerSelected = False
@@ -211,9 +211,9 @@ Partial Class UCTransportCompanyManipulation
         '
         'CButtonEdit
         '
-        CBlendItems4.iColor = New System.Drawing.Color() {System.Drawing.Color.DarkSlateBlue, System.Drawing.Color.DarkBlue, System.Drawing.Color.MediumBlue}
-        CBlendItems4.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonEdit.ColorFillBlend = CBlendItems4
+        CBlendItems5.iColor = New System.Drawing.Color() {System.Drawing.Color.DarkSlateBlue, System.Drawing.Color.DarkBlue, System.Drawing.Color.MediumBlue}
+        CBlendItems5.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonEdit.ColorFillBlend = CBlendItems5
         Me.CButtonEdit.Corners.LowerRight = 10
         Me.CButtonEdit.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonEdit.DesignerSelected = False
@@ -227,9 +227,9 @@ Partial Class UCTransportCompanyManipulation
         '
         'CButtonRegister
         '
-        CBlendItems5.iColor = New System.Drawing.Color() {System.Drawing.Color.ForestGreen, System.Drawing.Color.DarkGreen, System.Drawing.Color.Olive}
-        CBlendItems5.iPoint = New Single() {0!, 0.5!, 1.0!}
-        Me.CButtonRegister.ColorFillBlend = CBlendItems5
+        CBlendItems6.iColor = New System.Drawing.Color() {System.Drawing.Color.ForestGreen, System.Drawing.Color.DarkGreen, System.Drawing.Color.Olive}
+        CBlendItems6.iPoint = New Single() {0!, 0.5!, 1.0!}
+        Me.CButtonRegister.ColorFillBlend = CBlendItems6
         Me.CButtonRegister.Corners.LowerRight = 10
         Me.CButtonRegister.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CButtonRegister.DesignerSelected = False
@@ -520,9 +520,9 @@ Partial Class UCTransportCompanyManipulation
         Me.ChkActive.Location = New System.Drawing.Point(12, 22)
         Me.ChkActive.Name = "ChkActive"
         Me.ChkActive.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.ChkActive.Size = New System.Drawing.Size(103, 28)
+        Me.ChkActive.Size = New System.Drawing.Size(140, 28)
         Me.ChkActive.TabIndex = 28
-        Me.ChkActive.Text = "فعال/ غیرفعال"
+        Me.ChkActive.Text = "کاربری فعال/ غیرفعال"
         Me.ChkActive.UseVisualStyleBackColor = True
         '
         'UcLabelSherkatHamloNaghl4
@@ -565,10 +565,10 @@ Partial Class UCTransportCompanyManipulation
         'UcSearcherCities
         '
         Me.UcSearcherCities.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherCities.Location = New System.Drawing.Point(142, 20)
+        Me.UcSearcherCities.Location = New System.Drawing.Point(158, 20)
         Me.UcSearcherCities.Name = "UcSearcherCities"
         Me.UcSearcherCities.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcSearcherCities.Size = New System.Drawing.Size(237, 31)
+        Me.UcSearcherCities.Size = New System.Drawing.Size(221, 31)
         Me.UcSearcherCities.TabIndex = 21
         Me.UcSearcherCities.UCBackColor = System.Drawing.Color.White
         Me.UcSearcherCities.UCFillFirstTime = False

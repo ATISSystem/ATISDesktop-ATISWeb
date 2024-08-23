@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28729.10
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "R2Core", "R2Core\R2Core.vbproj", "{B0651D1E-73A2-4E74-8483-6FBC60831969}"
 EndProject
@@ -46,6 +46,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESCOClassLibrary", "ESCOClassLibrary\ESCOClassLibrary.csproj", "{DF7D04FF-6D7D-4579-BC0C-75DFF65EDAD9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESCOAutomatedJobs", "ESCOAutomatedJobs\ESCOAutomatedJobs.csproj", "{257FCDCC-D311-49F5-866E-C4A017E0B870}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ATISSetup", "ATISSetup\ATISSetup.vdproj", "{DDE274E2-288E-4AD7-9B1B-E8F575B02C03}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "R2PrimaryAutomatedJobsSetup", "R2PrimaryAutomatedJobsSetup\R2PrimaryAutomatedJobsSetup.vdproj", "{3F59BBAF-ADC9-4155-8563-ADFD45C3804D}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MSCOAutomatedJobsSetup", "MSCOAutomatedJobsSetup\MSCOAutomatedJobsSetup.vdproj", "{B7781B9E-8797-459C-93FE-A390685D6E68}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PayanehAmirKabirAutomatedJobsSetup", "PayanehAmirKabirAutomatedJobsSetup\PayanehAmirKabirAutomatedJobsSetup.vdproj", "{1DC10FC9-62CB-493A-856A-0125712C167B}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ESCOAutomatedJobsSetup", "ESCOAutomatedJobsSetup\ESCOAutomatedJobsSetup.vdproj", "{9AD0EE8F-350F-4348-BE59-2886E2295E01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,6 +151,16 @@ Global
 		{257FCDCC-D311-49F5-866E-C4A017E0B870}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{257FCDCC-D311-49F5-866E-C4A017E0B870}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{257FCDCC-D311-49F5-866E-C4A017E0B870}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDE274E2-288E-4AD7-9B1B-E8F575B02C03}.Debug|Any CPU.ActiveCfg = Debug
+		{DDE274E2-288E-4AD7-9B1B-E8F575B02C03}.Release|Any CPU.ActiveCfg = Release
+		{3F59BBAF-ADC9-4155-8563-ADFD45C3804D}.Debug|Any CPU.ActiveCfg = Debug
+		{3F59BBAF-ADC9-4155-8563-ADFD45C3804D}.Release|Any CPU.ActiveCfg = Release
+		{B7781B9E-8797-459C-93FE-A390685D6E68}.Debug|Any CPU.ActiveCfg = Debug
+		{B7781B9E-8797-459C-93FE-A390685D6E68}.Release|Any CPU.ActiveCfg = Release
+		{1DC10FC9-62CB-493A-856A-0125712C167B}.Debug|Any CPU.ActiveCfg = Debug
+		{1DC10FC9-62CB-493A-856A-0125712C167B}.Release|Any CPU.ActiveCfg = Release
+		{9AD0EE8F-350F-4348-BE59-2886E2295E01}.Debug|Any CPU.ActiveCfg = Debug
+		{9AD0EE8F-350F-4348-BE59-2886E2295E01}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

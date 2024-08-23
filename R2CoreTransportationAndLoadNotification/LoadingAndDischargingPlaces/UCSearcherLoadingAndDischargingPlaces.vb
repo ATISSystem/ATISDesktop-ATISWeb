@@ -42,7 +42,9 @@ Public Class UCSearcherLoadingAndDischargingPlaces
 
     Private Sub UCSearcherLoadingAndDischargingPlaces_UCSearchOptional1RequestEvent(SearchString As String) Handles Me.UCSearchOptional1RequestEvent
         Try
-            UCFillListBox(R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManagement.GetLoadingAndDischargingPlaces_SearchforLeftCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList())
+            Dim InstanceLoadingAndDischargingPlaces = New R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManager
+
+            UCFillListBox(InstanceLoadingAndDischargingPlaces.GetLoadingAndDischargingPlaces_SearchforLeftCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList())
         Catch ex As SqlInjectionException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
@@ -52,7 +54,9 @@ Public Class UCSearcherLoadingAndDischargingPlaces
 
     Private Sub UCSearcherLoadingAndDischargingPlaces_UCSearchOptional2RequestEvent(SearchString As String) Handles Me.UCSearchOptional2RequestEvent
         Try
-            UCFillListBox(R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManagement.GetLoadingAndDischargingPlaces_SearchIntroCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList())
+            Dim InstanceLoadingAndDischargingPlaces = New R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManager
+
+            UCFillListBox(InstanceLoadingAndDischargingPlaces.GetLoadingAndDischargingPlaces_SearchIntroCharacters(SearchString).Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList())
         Catch ex As SqlInjectionException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception

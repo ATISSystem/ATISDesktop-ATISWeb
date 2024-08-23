@@ -35,7 +35,12 @@ namespace ATISMobileRestful.Controllers.MobileProcessManagement
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClientApikeyNonce(Request, ATISMobileWebApiLogTypes.WebApiClientMobileProccessesRequest);
 
-                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
                 R2CoreInstanceMobileProcessesManager InstanceMobileProcesses = new R2CoreInstanceMobileProcessesManager();
                 List<MobileProcess> _MobileProcesses = new List<MobileProcess>();
                 var Lst = InstanceMobileProcesses.GetMobileProcesses(NSSSoftwareuser);

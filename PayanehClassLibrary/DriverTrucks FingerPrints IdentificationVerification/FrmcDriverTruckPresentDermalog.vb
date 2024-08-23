@@ -250,7 +250,8 @@ Public Class FrmcDriverTruckPresentDermalog
 
             'اجرای فرآیند اصلی تایید هویت
             Dim myScore As Double
-            If R2CoreFingerPrintMClassDermalogManagemet.Verification(UcFingerPrintCapturerDermalog.GetlISTfPS, TemplateArray, TemplateNumber, myScore) = True Then
+            'If R2CoreFingerPrintMClassDermalogManagemet.Verification(UcFingerPrintCapturerDermalog.GetlISTfPS, TemplateArray, TemplateNumber, myScore) = True Then
+            If R2CoreFingerPrintMClassDermalogManagemet.Verification(New Object, TemplateArray, TemplateNumber, myScore) = True Then
                 UcFingerPrintCapturerDermalog.UCViewOtherMessage("Score:" + myScore.ToString)
                 CmdSql.Connection.Open()
                 CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblTruckDriverPresent(NobatId,CardId,CarId,DriverId,CardNo,PelakSerial,DriverNameFamily,PresentType,DateTimeMilladi,DateShamsi,UserId) values(" & UcCarTruckNobat.UCGetNSS.nEnterExitId & "," & _NSSTerafficCard.CardId & "," & _NSSCar.nIdCar & "," & _NSSDriverTruck.NSSDriver.nIdPerson & ",'" & _NSSTerafficCard.CardNo & "','" & _NSSCar.GetCarPelakSerialComposit() & "','" & R2CoreParkingSystemMClassDrivers.GetNSSDriver(R2CoreParkingSystemMClassCars.GetnIdPersonFirst(_NSSCar.nIdCar)).StrPersonFullName & "'," & PresentType.Salon & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull & "'," & R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId & ")"

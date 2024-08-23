@@ -107,12 +107,13 @@ Partial Class FrmcLoadPermissions
         '
         'UcLoadPermissionCancellation
         '
-        Me.UcLoadPermissionCancellation.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.UcLoadPermissionCancellation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLoadPermissionCancellation.BackColor = System.Drawing.Color.Transparent
         Me.UcLoadPermissionCancellation.Location = New System.Drawing.Point(7, 15)
         Me.UcLoadPermissionCancellation.Name = "UcLoadPermissionCancellation"
-        Me.UcLoadPermissionCancellation.Size = New System.Drawing.Size(981, 418)
+        Me.UcLoadPermissionCancellation.Size = New System.Drawing.Size(981, 493)
         Me.UcLoadPermissionCancellation.TabIndex = 0
         Me.UcLoadPermissionCancellation.UCBackColor = System.Drawing.Color.SkyBlue
         Me.UcLoadPermissionCancellation.UCBackColorDisable = System.Drawing.Color.Gray
@@ -123,13 +124,13 @@ Partial Class FrmcLoadPermissions
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
-        Me.Controls.Add(Me.PnlLoadPermissions)
         Me.Controls.Add(Me.PnlLoadPermissionCancellation)
+        Me.Controls.Add(Me.PnlLoadPermissions)
         Me.Location = New System.Drawing.Point(0, 0)
         Me.Name = "FrmcLoadPermissions"
         Me.Text = "FrmcLoadPermissions"
-        Me.Controls.SetChildIndex(Me.PnlLoadPermissionCancellation, 0)
         Me.Controls.SetChildIndex(Me.PnlLoadPermissions, 0)
+        Me.Controls.SetChildIndex(Me.PnlLoadPermissionCancellation, 0)
         Me.PnlLoadPermissions.ResumeLayout(False)
         Me.PnlLoadPermissionCancellation.ResumeLayout(false)
         Me.ResumeLayout(false)

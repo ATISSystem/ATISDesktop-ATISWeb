@@ -41,6 +41,7 @@ using R2Core.SMS;
 using PayanehClassLibrary.SoftwareUsers;
 using PayanehClassLibrary.SMS.SMSTypes;
 using R2Core.SMS.SMSHandling;
+using R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces.Exceptions;
 
 namespace MSCOCore
 {
@@ -273,7 +274,7 @@ namespace MSCOCore
                     if (myLTN != string.Empty) { NSS.StrDescription = NSS.StrDescription + "لبه دار تخلیه ندارد"; }
                     NSS.TPTParams = string.Empty;
                     NSS.LoadingPlaceId = 1001;
-                    NSS.DischargingPlaceId = 1000;
+                    NSS.DischargingPlaceId = 1001;
                     return NSS;
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
@@ -347,7 +348,10 @@ namespace MSCOCore
                    ex is HasNotRelationBetweenProvinceAndAnnouncementHallSubGroup ||
                    ex is MSCOCoreMSCOTargetnotfoundException ||
                    ex is TransportPriceTarrifParameterDetailNotFoundException ||
-                   ex is LoadCapacitorLoadRegisteringInHolidayNotAllowedException)
+                   ex is LoadCapacitorLoadRegisteringInHolidayNotAllowedException ||
+                   ex is LoadingPlaceIsUnActiveException ||
+                   ex is DischargingPlaceIsUnActiveException ||
+                   ex is LoadingAndDischargingPlaceNotFoundException)
                 { throw ex; }
                 catch (MSCOCoreLoadsAnnouncementforTransportCompaniesFirstOrSecondStepNotReachedException ex)
                 { throw ex; }
@@ -437,6 +441,8 @@ namespace MSCOCore
                            ex is MSCOCoreMSCOTCFileNotFoundException ||
                            ex is MSCOCoreMSCOTargetnotfoundException ||
                            ex is LoadCapacitorLoadRegisteringInHolidayNotAllowedException ||
+                           ex is LoadingPlaceIsUnActiveException ||
+                           ex is DischargingPlaceIsUnActiveException ||
                            ex is Exception)
                         {
                             if (InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).Active)

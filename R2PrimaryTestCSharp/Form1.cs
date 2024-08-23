@@ -171,6 +171,16 @@ namespace R2PrimaryTestCSharp
 
         private void Button2_Click(object sender, EventArgs e)
         {
+            //اعلام بار خودکار شرکت ها
+            try
+            {
+                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                InstanceAnnouncementforTransportCompanies.LoadsAnnouncementforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+            }
+            catch (Exception ex)
+            { EventLog.WriteEntry("MSCOAutomatedJobs.LoadsAnnouncement", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+
             //try
             //{
             //    string url = "https://gateway.zibal.ir/v1/request"; // url
