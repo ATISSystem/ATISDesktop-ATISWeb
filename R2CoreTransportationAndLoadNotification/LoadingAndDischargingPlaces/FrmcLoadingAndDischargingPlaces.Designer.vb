@@ -22,7 +22,7 @@ Partial Class FrmcLoadingAndDischargingPlaces
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.PnlLADPlaces = New System.Windows.Forms.Panel()
         Me.UcSearcherLoadingAndDischargingPlaces = New R2CoreTransportationAndLoadNotification.UCSearcherLoadingAndDischargingPlaces()
@@ -52,7 +52,7 @@ Partial Class FrmcLoadingAndDischargingPlaces
         '
         Me.UcSearcherLoadingAndDischargingPlaces.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcSearcherLoadingAndDischargingPlaces.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherLoadingAndDischargingPlaces.Location = New System.Drawing.Point(359, 37)
+        Me.UcSearcherLoadingAndDischargingPlaces.Location = New System.Drawing.Point(481, 37)
         Me.UcSearcherLoadingAndDischargingPlaces.Name = "UcSearcherLoadingAndDischargingPlaces"
         Me.UcSearcherLoadingAndDischargingPlaces.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcSearcherLoadingAndDischargingPlaces.Size = New System.Drawing.Size(275, 165)
@@ -77,7 +77,7 @@ Partial Class FrmcLoadingAndDischargingPlaces
         Me.UcLoadingAndDischargingPlaceDataEntry.Location = New System.Drawing.Point(52, 208)
         Me.UcLoadingAndDischargingPlaceDataEntry.Name = "UcLoadingAndDischargingPlaceDataEntry"
         Me.UcLoadingAndDischargingPlaceDataEntry.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLoadingAndDischargingPlaceDataEntry.Size = New System.Drawing.Size(888, 267)
+        Me.UcLoadingAndDischargingPlaceDataEntry.Size = New System.Drawing.Size(888, 299)
         Me.UcLoadingAndDischargingPlaceDataEntry.TabIndex = 1
         Me.UcLoadingAndDischargingPlaceDataEntry.UCNSSCurrent = Nothing
         '

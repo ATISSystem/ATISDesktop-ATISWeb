@@ -42,6 +42,7 @@ using PayanehClassLibrary.SoftwareUsers;
 using PayanehClassLibrary.SMS.SMSTypes;
 using R2Core.SMS.SMSHandling;
 using R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces.Exceptions;
+using R2CoreParkingSystem.City.Execption;
 
 namespace MSCOCore
 {
@@ -337,8 +338,11 @@ namespace MSCOCore
                     else
                     { if (!GetAnnounceFirstStep()) { InstanceLoadCapacitorLoadManipulation.LoadCapacitorLoadRegistering(GetNSS(YourSB, YourNSSSoftwareUser)); return; } }
                 }
+                catch (LoadTargetorLoadSourceIsUnActiveException ex)
+                { throw ex; }
                 catch (Exception ex) when
                   (ex is LoadCapacitorLoadNumberOverLimitException ||
+                   ex is LoadCapacitorLoadTonajExceededException ||
                    ex is LoadCapacitorLoadnCarNumKolCanNotBeZeroException ||
                    ex is TransportCompanyISNotActiveException ||
                    ex is LoadCapacitorLoadRegisterTimePassedException ||
@@ -443,6 +447,7 @@ namespace MSCOCore
                            ex is LoadCapacitorLoadRegisteringInHolidayNotAllowedException ||
                            ex is LoadingPlaceIsUnActiveException ||
                            ex is DischargingPlaceIsUnActiveException ||
+                           ex is LoadTargetorLoadSourceIsUnActiveException ||
                            ex is Exception)
                         {
                             if (InstanceLogging.GetNSSLogType(MSCOCoreloggings.MSCOLogs).Active)
@@ -683,7 +688,7 @@ namespace MSCOCore
                          @"Select Top 1 TransportCompanies.TCId from MSCO.dbo.TblMSCOTransportCompanies as MSCOTransportCompanies
                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On MSCOTransportCompanies.TCId = TransportCompanies.TCId
                           Where ltrim(rtrim(MSCOTransportCompanies.MSCOId)) = '" + YourMSCOId + "' Order By MSCOTransportCompanies.DateTimeMilladi Desc", 3600, ref DS).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
-                    return InstanceTransportCompanies.GetNSSTransportCompany(System.Convert.ToInt64(DS.Tables[0].Rows[0]["TCId"]));
+                    return InstanceTransportCompanies.GetNSSTransportCompany(System.Convert.ToInt64(DS.Tables[0].Rows[0]["TCId"]),true );
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
                 { throw ex; }

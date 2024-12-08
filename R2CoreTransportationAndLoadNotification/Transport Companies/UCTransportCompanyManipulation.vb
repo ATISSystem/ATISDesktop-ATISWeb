@@ -122,7 +122,7 @@ Public Class UCTransportCompanyManipulation
             Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
             If UCNSSCurrent IsNot Nothing Then Return
             UcNumberTCId.UCValue = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.RegisteringTransportCompany(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(0, UcPersianTextBoxTCTitle.UCValue, UcPersianTextBoxTCOrganizationCode.UCValue, UcSearcherCities.UCGetSelectedNSS.OCode, Nothing, UcPersianTextBoxTCTel.UCValue, UcPersianTextBoxManagerNameFamily.UCValue, UcPersianTextBoxManagerMobileNumber.UCValue, UcPersianTextBoxEmailAddress.UCValue, ChkViewFlag.Checked, ChkActive.Checked, 0), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
-            UCViewNSS(InstanceTransportCompanies.GetNSSTransportCompany(UcNumberTCId.UCValue))
+            UCViewNSS(InstanceTransportCompanies.GetNSSTransportCompany(UcNumberTCId.UCValue, True))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ثبت اطلاعات شرکت حمل و نقل با موفقیت انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As DataEntryException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -136,7 +136,7 @@ Public Class UCTransportCompanyManipulation
             Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
             If UCNSSCurrent Is Nothing Then Return
             R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.UpdatingTransportCompany(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(UCNSSCurrent.TCId, UcPersianTextBoxTCTitle.UCValue, UcPersianTextBoxTCOrganizationCode.UCValue, UcSearcherCities.UCGetSelectedNSS.OCode, Nothing, UcPersianTextBoxTCTel.UCValue, UcPersianTextBoxManagerNameFamily.UCValue, UcPersianTextBoxManagerMobileNumber.UCValue, UcPersianTextBoxEmailAddress.UCValue, ChkViewFlag.Checked, ChkActive.Checked, False), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
-            UCViewNSS(InstanceTransportCompanies.GetNSSTransportCompany(UcNumberTCId.UCValue))
+            UCViewNSS(InstanceTransportCompanies.GetNSSTransportCompany(UcNumberTCId.UCValue, True))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ویرایش اطلاعات شرکت حمل و نقل با موفقیت انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As DataEntryException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
@@ -303,6 +303,19 @@ Public Class UCTransportCompanyManipulation
 
     Private Sub UcPersianTextBoxManagerMobileNumber_UC13PressedEvent(PersianText As String) Handles UcPersianTextBoxManagerMobileNumber.UC13PressedEvent
         CButtonRegister.ShowFocus = CButtonLib.CButton.eFocus.Dot
+    End Sub
+
+    Private Sub ChkActive_CheckedChanged(sender As Object, e As EventArgs) Handles ChkActive.CheckedChanged
+        Try
+            Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
+            If UCNSSCurrent Is Nothing Then Return
+            InstanceTransportCompanies.TransportCompanyChangeActiveStatus(UCNSSCurrent)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "فرآیند با موفقیت انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As DataEntryException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
     End Sub
 
 

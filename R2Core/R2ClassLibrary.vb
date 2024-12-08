@@ -188,6 +188,14 @@ Namespace PublicProc
     Public Class R2CoreInstancePublicProceduresManager
         Private _R2PrimaryFSWS = New R2PrimaryFileSharingWebService()
 
+        Public Function GetBooleanVariablePersianEquivalent(YourBooleanVariable As Boolean) As String
+            If YourBooleanVariable Then
+                Return "فعال"
+            Else
+                Return "غیر فعال"
+            End If
+        End Function
+
         Public Sub SaveFile(YourRawGroupId As Int64, YourFileName As String, YourFile As Byte(), YourNSSUser As R2CoreStandardSoftwareUserStructure)
             Try
                 _R2PrimaryFSWS.WebMethodSaveFile(YourRawGroupId, YourFileName, YourFile, _R2PrimaryFSWS.WebMethodLogin(YourNSSUser.UserShenaseh, YourNSSUser.UserPassword))
@@ -3693,7 +3701,7 @@ Namespace DateAndTimeManagement
                         Dim DSPersianCallendar As New DataSet
                         Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                         InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
-                         "Select * From R2Primary.Dbo.TblPersianCalendar Where SUBSTRING(DateShamsi,6,2)='" & YourDateTime.GetShamsiMonth & "' Order By DateShamsi ", 3600, DSPersianCallendar)
+                         "Select * From R2Primary.Dbo.TblPersianCalendar Where SUBSTRING(DateShamsi,1,7)='" & Mid(YourDateTime.DateShamsiFull, 1, 7) & "' Order By DateShamsi ", 3600, DSPersianCallendar)
                         Dim Lst = New List(Of R2CoreStandardPersianCalendarStructure)
                         For Loopx As Int64 = 0 To DSPersianCallendar.Tables(0).Rows.Count - 1
                             Dim PersianCalendar = New R2CoreStandardPersianCalendarStructure(DSPersianCallendar.Tables(0).Rows(Loopx).Item("HId"), DSPersianCallendar.Tables(0).Rows(Loopx).Item("DateShamsi").trim, DSPersianCallendar.Tables(0).Rows(Loopx).Item("PCType"))
@@ -6412,76 +6420,76 @@ Namespace FingerPrintsManagement
 
     Namespace DermalogSystem
 
-        Public MustInherit Class R2CoreFingerPrintMClassDermalogManagemet
+        'Public MustInherit Class R2CoreFingerPrintMClassDermalogManagemet
 
-            Private Shared DDevice As Dermalog.Imaging.Capturing.Device
-            Public Shared Function DermalogInitializeScanner(ByRef YourMessage As String) As Dermalog.Imaging.Capturing.Device
-                Try
-                    If Not (DDevice Is Nothing) Then
-                        YourMessage = "Dermalog Device Initialized At Few Moments Ago."
-                        Return DDevice
-                    End If
-                    Dim I As Dermalog.Imaging.Capturing.DeviceIdentity() = Dermalog.Imaging.Capturing.DeviceManager.GetAvailableDevices
-                    DDevice = Dermalog.Imaging.Capturing.DeviceManager.GetDevice(I(0))
-                    YourMessage = DDevice.DeviceID.ToString
-                    Dermalog.Imaging.Capturing.DeviceManager.SetActiveDevice(0, DDevice)
-                    YourMessage += vbCrLf + "FG_BEEP:" + DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_BEEP).ToString
-                    YourMessage += vbCrLf + "FG_AUTO_CAPTURE_BEEP:" + DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_AUTO_CAPTURE_BEEP).ToString
-                    YourMessage += vbCrLf + "FG_FAKE_DETECT:" + DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_FAKE_DETECT).ToString
-                    YourMessage += vbCrLf + "FG_LEDS:" + DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_LEDS).ToString
-                    YourMessage += vbCrLf + "FG_MAX_CHANNEL:" + DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_MAX_CHANNEL).ToString
-                    YourMessage += vbCrLf + "FG_ROTATE_AND_CROP_ROLLED_IMAGE:" + DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_ROTATE_AND_CROP_ROLLED_IMAGE).ToString
-                    YourMessage += vbCrLf + "DeviceID:" + DDevice.DeviceID.ToString
-                    YourMessage += vbCrLf + "ColorMode:" + DDevice.ColorMode.ToString
-                    YourMessage += vbCrLf + "CaptureMode:" + DDevice.CaptureMode.ToString
-                    YourMessage += vbCrLf + "CameraType:" + DDevice.CameraType.ToString
-                    DDevice.CaptureMode = Dermalog.Imaging.Capturing.CaptureMode.PREVIEW_IMAGE_AUTO_DETECT
-                    DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_BEEP) = 1
-                    DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_FAKE_DETECT) = 1
-                    DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_LEDS) = 1
-                    DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_AUTO_CAPTURE_BEEP) = 1
-                    Dim CM As Dermalog.Imaging.Capturing.ColorMode() = DDevice.ColorModes
-                    For LOOPX As UInt16 = 0 To CM.Length - 1
-                        YourMessage += vbCrLf + "ColorMode:" + CM(LOOPX).ToString
-                    Next
-                    'Dim CA As Dermalog.Imaging.Capturing.CaptureMode() = DDevice.CaptureModes
-                    'For LOOPX As UInt16 = 0 To CA.Length - 1
-                    '    ViewMessage("CaptureMode:" + CA(LOOPX).ToString)
-                    'Next
-                    'DDevice.ColorMode = Dermalog.Imaging.Capturing.ColorMode.RGB_32
-                    Return DDevice
-                Catch ex As Exception
-                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-                End Try
-            End Function
+        '    Private Shared DDevice As Dermalog.Imaging.Capturing.Device
+        '    Public Shared Function DermalogInitializeScanner(ByRef YourMessage As String) As Dermalog.Imaging.Capturing.Device
+        '        Try
+        '            If Not (DDevice Is Nothing) Then
+        '                YourMessage = "Dermalog Device Initialized At Few Moments Ago."
+        '                Return DDevice
+        '            End If
+        '            Dim I As Dermalog.Imaging.Capturing.DeviceIdentity() = Dermalog.Imaging.Capturing.DeviceManager.GetAvailableDevices
+        '            DDevice = Dermalog.Imaging.Capturing.DeviceManager.GetDevice(I(0))
+        '            YourMessage = DDevice.DeviceID.ToString
+        '            Dermalog.Imaging.Capturing.DeviceManager.SetActiveDevice(0, DDevice)
+        '            YourMessage += vbCrLf + "FG_BEEP:" + DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_BEEP).ToString
+        '            YourMessage += vbCrLf + "FG_AUTO_CAPTURE_BEEP:" + DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_AUTO_CAPTURE_BEEP).ToString
+        '            YourMessage += vbCrLf + "FG_FAKE_DETECT:" + DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_FAKE_DETECT).ToString
+        '            YourMessage += vbCrLf + "FG_LEDS:" + DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_LEDS).ToString
+        '            YourMessage += vbCrLf + "FG_MAX_CHANNEL:" + DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_MAX_CHANNEL).ToString
+        '            YourMessage += vbCrLf + "FG_ROTATE_AND_CROP_ROLLED_IMAGE:" + DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_ROTATE_AND_CROP_ROLLED_IMAGE).ToString
+        '            YourMessage += vbCrLf + "DeviceID:" + DDevice.DeviceID.ToString
+        '            YourMessage += vbCrLf + "ColorMode:" + DDevice.ColorMode.ToString
+        '            YourMessage += vbCrLf + "CaptureMode:" + DDevice.CaptureMode.ToString
+        '            YourMessage += vbCrLf + "CameraType:" + DDevice.CameraType.ToString
+        '            DDevice.CaptureMode = Dermalog.Imaging.Capturing.CaptureMode.PREVIEW_IMAGE_AUTO_DETECT
+        '            DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_BEEP) = 1
+        '            DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_FAKE_DETECT) = 1
+        '            DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_LEDS) = 1
+        '            DDevice.Property.Item(Dermalog.Imaging.Capturing.PropertyType.FG_AUTO_CAPTURE_BEEP) = 1
+        '            Dim CM As Dermalog.Imaging.Capturing.ColorMode() = DDevice.ColorModes
+        '            For LOOPX As UInt16 = 0 To CM.Length - 1
+        '                YourMessage += vbCrLf + "ColorMode:" + CM(LOOPX).ToString
+        '            Next
+        '            'Dim CA As Dermalog.Imaging.Capturing.CaptureMode() = DDevice.CaptureModes
+        '            'For LOOPX As UInt16 = 0 To CA.Length - 1
+        '            '    ViewMessage("CaptureMode:" + CA(LOOPX).ToString)
+        '            'Next
+        '            'DDevice.ColorMode = Dermalog.Imaging.Capturing.ColorMode.RGB_32
+        '            Return DDevice
+        '        Catch ex As Exception
+        '            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        '        End Try
+        '    End Function
 
-            Private Shared Matcher As Dermalog.AFIS.FingerCode3.Matcher = New Dermalog.AFIS.FingerCode3.Matcher
-            Private Shared EnCoder As Dermalog.AFIS.FingerCode3.Encoder = New Dermalog.AFIS.FingerCode3.Encoder
-            'Public Shared Function Verification(ByVal YourListOfFPs As Generic.List(Of Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint), ByVal YourTemplateArray As Byte()(), ByVal YourTemplateNumbers As Integer, ByRef YourScore As Double) As Boolean
-            Public Shared Function Verification(ByVal YourListOfFPs As Generic.List(Of Object), ByVal YourTemplateArray As Byte()(), ByVal YourTemplateNumbers As Integer, ByRef YourScore As Double) As Boolean
+        '    Private Shared Matcher As Dermalog.AFIS.FingerCode3.Matcher = New Dermalog.AFIS.FingerCode3.Matcher
+        '    Private Shared EnCoder As Dermalog.AFIS.FingerCode3.Encoder = New Dermalog.AFIS.FingerCode3.Encoder
+        '    'Public Shared Function Verification(ByVal YourListOfFPs As Generic.List(Of Dermalog.AFIS.FourprintSegmentation.SegmentedFingerprint), ByVal YourTemplateArray As Byte()(), ByVal YourTemplateNumbers As Integer, ByRef YourScore As Double) As Boolean
+        '    Public Shared Function Verification(ByVal YourListOfFPs As Generic.List(Of Object), ByVal YourTemplateArray As Byte()(), ByVal YourTemplateNumbers As Integer, ByRef YourScore As Double) As Boolean
 
-                Try
-                    EnCoder.Format = Dermalog.AFIS.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005
-                    For Loopx As UInt16 = 0 To YourListOfFPs.Count - 1
-                        Dim myQuery As Dermalog.AFIS.FingerCode3.Template
-                        myQuery = EnCoder.Encode(YourListOfFPs(Loopx).Image)
-                        For LoopY As UInt16 = 0 To YourTemplateNumbers - 1
-                            Dim myTarget As Dermalog.AFIS.FingerCode3.Template = New Dermalog.AFIS.FingerCode3.Template
-                            myTarget.SetData(YourTemplateArray(LoopY), Dermalog.AFIS.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005)
-                            YourScore = Matcher.Match(myTarget, myQuery)
-                            If YourScore >= R2CoreMClassConfigurationOfComputersManagement.GetConfigByte(R2CoreConfigurations.Dermalog, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 2) Then
-                                Return True
-                            End If
-                        Next
-                    Next
-                    Return False
-                Catch ex As Exception
-                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-                End Try
-            End Function
+        '        Try
+        '            EnCoder.Format = Dermalog.AFIS.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005
+        '            For Loopx As UInt16 = 0 To YourListOfFPs.Count - 1
+        '                Dim myQuery As Dermalog.AFIS.FingerCode3.Template
+        '                myQuery = EnCoder.Encode(YourListOfFPs(Loopx).Image)
+        '                For LoopY As UInt16 = 0 To YourTemplateNumbers - 1
+        '                    Dim myTarget As Dermalog.AFIS.FingerCode3.Template = New Dermalog.AFIS.FingerCode3.Template
+        '                    myTarget.SetData(YourTemplateArray(LoopY), Dermalog.AFIS.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005)
+        '                    YourScore = Matcher.Match(myTarget, myQuery)
+        '                    If YourScore >= R2CoreMClassConfigurationOfComputersManagement.GetConfigByte(R2CoreConfigurations.Dermalog, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 2) Then
+        '                        Return True
+        '                    End If
+        '                Next
+        '            Next
+        '            Return False
+        '        Catch ex As Exception
+        '            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        '        End Try
+        '    End Function
 
 
-        End Class
+        'End Class
 
     End Namespace
 

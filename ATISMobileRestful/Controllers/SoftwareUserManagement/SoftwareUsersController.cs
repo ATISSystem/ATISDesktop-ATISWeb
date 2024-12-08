@@ -202,6 +202,30 @@ namespace ATISMobileRestful.Controllers.SoftwareUserManagement
             }
         }
 
+        [HttpPost]
+        public HttpResponseMessage Login()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientLogin(Request, ATISMobileWebApiLogTypes.WebApiClientLogin);
+
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareuser = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var nonce = InstanceSoftwareuser.GetNonceforSoftwareUser(new R2CoreSoftwareUserMobile(MobileNumber ));
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(nonce), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+        }
+
+
 
     }
 }

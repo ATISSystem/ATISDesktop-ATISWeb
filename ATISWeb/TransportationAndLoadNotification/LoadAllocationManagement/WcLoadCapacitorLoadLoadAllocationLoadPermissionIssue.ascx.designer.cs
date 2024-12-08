@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
-    
-    
-    public partial class WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue {
-        
+namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
+{
+
+
+    public partial class WcLoadCapacitorLoadLoadAllocationLoadPermissionIssue
+    {
+
         /// <summary>
         /// BtnNewLoadAllocation control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnNewLoadAllocation;
-        
+
         /// <summary>
         /// UpdatePanelWcViewerNSSLoadCapacitorLoad control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanelWcViewerNSSLoadCapacitorLoad;
-        
+
         /// <summary>
         /// WcLoadCapacitorLoadsCollectionSummaryIntelligently control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement.WcLoadCapacitorLoadsCollectionSummaryIntelligently WcLoadCapacitorLoadsCollectionSummaryIntelligently;
-        
+
         /// <summary>
         /// WcViewerNSSLoadCapacitorLoad control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement.WcViewerNSSLoadCapacitorLoad WcViewerNSSLoadCapacitorLoad;
-        
+
         /// <summary>
         /// WcSmartCardsInquiry control.
         /// </summary>
@@ -56,16 +58,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::ATISWeb.TransportationAndLoadNotification.SmartCards.WcSmartCardsInquiry WcSmartCardsInquiry;
-        
-        /// <summary>
-        /// WcEntryBillOfLadingNumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement.WCEntryBillOfLadingNumber WcEntryBillOfLadingNumber;
-        
+
         /// <summary>
         /// PnlTurnStatus control.
         /// </summary>
@@ -74,7 +67,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel PnlTurnStatus;
-        
+
         /// <summary>
         /// LblTurnStatus control.
         /// </summary>
@@ -83,7 +76,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label LblTurnStatus;
-        
+
         /// <summary>
         /// BtnLoadAllocation control.
         /// </summary>

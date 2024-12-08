@@ -10,15 +10,15 @@
                 <asp:Label runat="server" ID="LblCaption" CssClass="R2FontBHomaLarge text-white">لیست بار</asp:Label>
             </div>
         </div>
-    </div> 
+    </div>
     <div class="container-fluid p-1">
         <div class="d-flex flex-row">
         </div>
     </div>
     <asp:UpdatePanel ID="UpdatePanelTxtnEstelamIdTxtDateTimeofLoadRegistering" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="False">
         <ContentTemplate>
-            <div class="table table-responsive-lg border" >
-                <asp:Table ID="TblLoadCapacitorLoads" runat="server" CssClass="table table-striped table-hover table-borderless text-center border-white" HorizontalAlign="Center" CellSpacing="0">
+            <div class="table table-responsive-lg border">
+                <asp:Table ID="TblLoadCapacitorLoads" runat="server" CssClass="table table-striped table-hover table-borderless  text-center border-white" style="table-layout:fixed;overflow-wrap :break-word" HorizontalAlign="Center" CellSpacing="0">
                     <asp:TableHeaderRow runat="server" CssClass="bg-primary" ForeColor="White">
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">کاربر</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">محل تخلیه</asp:TableHeaderCell>
@@ -34,6 +34,7 @@
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">تناژ</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">بارگیر</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">مقصد</asp:TableHeaderCell>
+                        <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">مبدا</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">شرح بار</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">زمان ثبت بار</asp:TableHeaderCell>
                         <asp:TableHeaderCell CssClass="R2FontBYekanSmall" HorizontalAlign="Center">کد مخزن</asp:TableHeaderCell>

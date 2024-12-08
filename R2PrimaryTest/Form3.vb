@@ -4,6 +4,8 @@ Imports System.Globalization
 Imports System.IO
 Imports System.Net.Mail
 Imports System.Text
+Imports Newtonsoft.Json
+
 Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.CarTrucksManagement
 Imports PayanehClassLibrary.PayanehWS
@@ -27,7 +29,6 @@ Imports R2Core.SecurityAlgorithmsManagement.AESAlgorithms
 Imports R2Core.SecurityAlgorithmsManagement.Captcha
 Imports R2Core.SecurityAlgorithmsManagement.Hashing
 Imports R2Core.SMS
-Imports R2Core.SMSSendAndRecieved
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.BlackList
@@ -71,13 +72,16 @@ Imports System.Reflection
 Imports R2CoreParkingSystem.EnterExitManagement
 Imports R2Core.SecurityAlgorithmsManagement.Exceptions
 Imports R2Core.HumanResourcesManagement.Personnel
+Imports System.Net
+Imports WhatsAppApi
+Imports System.Web.UI.Design.WebControls
 
 Public Class Form3
     Private _DateTime As R2DateTime = New R2DateTime
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
-            R2CorePersonnelMClassManagement.PersonelFunctionCalculate(R2CorePersonnelMClassManagement.GetNSSPersonnel(Convert.ToInt64(TextBoxConcat1.Text)), New R2StandardDateAndTimeStructure(Nothing, "1403/04/01", Nothing))
+            R2CorePersonnelMClassManagement.PersonelFunctionCalculate(R2CorePersonnelMClassManagement.GetNSSPersonnel(Convert.ToInt64(TextBoxConcat1.Text)), New R2StandardDateAndTimeStructure(Nothing, "1403/08/01", Nothing))
 
             MessageBox.Show("Finished ... ")
         Catch ex As Exception
@@ -89,9 +93,16 @@ Public Class Form3
         'Dim CmdSql As New SqlClient.SqlCommand
         'CmdSql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
-            Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
-            InstanceCarTruckNobat.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser())
+            Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            Dim xx As New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+            Dim NSSLoadAllocation = xx.GetNSSLoadAllocation(6130548)
+            Dim CurrentDateTime = New R2StandardDateAndTimeStructure(_DateTime.GetCurrentDateTimeMilladi, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime)
+            Dim NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(881180, True)
+            xx.LoadAllocationLoadPermissionRegistering(NSSLoadAllocation, NSSLoadCapacitorLoad, CurrentDateTime, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
+
+            'Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            'Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
+            'InstanceCarTruckNobat.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser())
             'Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
             'Da.SelectCommand = New SqlClient.SqlCommand("Select * from  R2PrimaryParkingSystem.dbo.TblEntryExit As EntryExit
             '                                                Inner Join(Select Distinct CardNo from R2Primary.dbo.TblRFIDCards  Where CardType=2 Or CardType=3) as RFIDCards On EntryExit.CardNoEnter=RFIDCards.CardNo
@@ -508,14 +519,125 @@ Public Class Form3
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        Dim CmdSql As New SqlClient.SqlCommand
+        CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
-            Dim fs As New System.IO.FileStream("c:\1221TXT_EMAIL_saba.TXT", IO.FileMode.Open, IO.FileAccess.Read)
-            Dim sr As New System.IO.StreamReader(fs)
-            sr.BaseStream.Seek(0, IO.SeekOrigin.Begin)
-            While Not sr.EndOfStream
-                Dim FirstLine = sr.ReadLine
 
-            End While
+            Dim FDOpen = New OpenFileDialog
+            If FDOpen.ShowDialog = DialogResult.Cancel Then Exit Sub
+            Dim DaShey As New OleDb.OleDbDataAdapter : Dim DsShey As New DataSet
+            DaShey.SelectCommand = New OleDb.OleDbCommand("Select * from TblXX where comment not like '%فعال%'")
+            DaShey.SelectCommand.Connection = New OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source='" & FDOpen.FileName & "'")
+            DaShey.Fill(DsShey)
+
+            Dim Counting = 0
+            CmdSql.Connection.Open()
+            CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+            For Loopx As Int64 = 0 To DsShey.Tables(0).Rows.Count - 1
+                'اطلاعات شیخ بهایی
+                Dim Comment = DsShey.Tables(0).Rows(Loopx).Item("comment").ToString
+                Dim Code As Int64 = DsShey.Tables(0).Rows(Loopx).Item("code").ToString
+                Dim Name = DsShey.Tables(0).Rows(Loopx).Item("Name").ToString
+                Dim nDistance = 0
+                Dim nProvince = Mid(DsShey.Tables(0).Rows(Loopx).Item("ostancode").ToString, 1, 2)
+
+                'کنترل وجود شهر در بانک
+                Dim DSCity As New DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select * From dbtransport.dbo.tbcity where nCItyCode=" & Code & "", 0, DSCity).GetRecordsCount = 0 Then
+                    CmdSql.CommandText = "Insert Into dbtransport.dbo.tbCityX(nCityCode,strCityName,nDistance,nProvince,DateTimeMilladi,DateShamsi,Active,ViewFlag,Deleted,nOCityCode)
+                                                  Values(" & Code & ",'" & Name & "'," & nDistance & "," & nProvince & ",'2024-11-17 00:00:00','1403/08/27',0,0,0," & Code & ")"
+                    CmdSql.ExecuteNonQuery()
+                    Counting = Counting + 1
+                End If
+            Next
+            CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            MessageBox.Show("Finished ...")
+
+            'Dim DaCity As New SqlClient.SqlDataAdapter : Dim DSCity As New DataSet
+            'DaCity.SelectCommand = New SqlCommand("select * from dbtransport.dbo.tbcity order by ncitycode")
+            'DaCity.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
+            'DSCity.Clear()
+            'DaCity.Fill(DSCity)
+            'Dim FDOpen = New OpenFileDialog
+            'If FDOpen.ShowDialog = DialogResult.Cancel Then Exit Sub
+            'Dim Da As New OleDb.OleDbDataAdapter : Dim Ds As New DataSet
+            'Da.SelectCommand = New OleDb.OleDbCommand("Select * from TblXX")
+            'Da.SelectCommand.Connection = New OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source='" & FDOpen.FileName & "'")
+            'Da.Fill(Ds)
+            'CmdSql.Connection.Open()
+            'CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+            'For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+            '    Dim nCityCode = Ds.Tables(0).Rows(Loopx).Item(0).ToString
+            '    'If DSCity.Tables(0).Select("nCityCode=" + nCityCode).Count = 0 Then
+            '    Dim strCityName = Ds.Tables(0).Rows(Loopx).Item(1).ToString
+            '    Dim nDistance = 0
+            '    Dim nProvince = Mid(Ds.Tables(0).Rows(Loopx).Item(3).ToString, 1, 2)
+            '    CmdSql.CommandText = "Insert Into dbtransport.dbo.tbCityX(nCityCode,strCityName,nDistance,nProvince,DateTimeMilladi,DateShamsi,Active,ViewFlag,Deleted,nOCityCode)
+            '                              Values(" & nCityCode & ",'" & strCityName & "'," & nDistance & "," & nProvince & ",'2024-11-17 23:59:59','1403/08/27',0,0,0," & nCityCode & ")"
+            '    CmdSql.ExecuteNonQuery()
+            '    'End If
+            'Next
+            'CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+
+
+
+
+
+
+
+
+
+
+            'Dim FDOpen = New OpenFileDialog
+            'If FDOpen.ShowDialog = DialogResult.Cancel Then Exit Sub
+            'Dim Da As New OleDb.OleDbDataAdapter : Dim Ds As New DataSet
+            'Da.SelectCommand = New OleDb.OleDbCommand("Select * from TblXX")
+            'Da.SelectCommand.Connection = New OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source='" & FDOpen.FileName & "'")
+            'Da.Fill(Ds)
+            'CmdSql.Connection.Open()
+            'CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+            'For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
+            '    Dim Year = Ds.Tables(0).Rows(Loopx).Item(0).ToString
+            '    Dim TCId = Ds.Tables(0).Rows(Loopx).Item(1).ToString
+            '    Dim TCTItle = Ds.Tables(0).Rows(Loopx).Item(2).ToString
+            '    Dim BillOfLadingSerialNo = Ds.Tables(0).Rows(Loopx).Item(3).ToString
+            '    Dim BillOfLadingNo = Ds.Tables(0).Rows(Loopx).Item(4).ToString
+            '    Dim Tarrif = Ds.Tables(0).Rows(Loopx).Item(5).ToString
+            '    Dim TarrifCalc = Ds.Tables(0).Rows(Loopx).Item(6).ToString
+            '    Dim Weight = Ds.Tables(0).Rows(Loopx).Item(7).ToString
+            '    Dim Distance = Ds.Tables(0).Rows(Loopx).Item(8).ToString
+            '    Dim GoodId = Ds.Tables(0).Rows(Loopx).Item(9).ToString
+            '    Dim GoodTitle = Ds.Tables(0).Rows(Loopx).Item(10).ToString
+            '    Dim SourceCityId = Ds.Tables(0).Rows(Loopx).Item(11).ToString
+            '    Dim SourceCityTitle = Ds.Tables(0).Rows(Loopx).Item(12).ToString
+            '    Dim TargetCityId = Ds.Tables(0).Rows(Loopx).Item(13).ToString
+            '    Dim TargetCityTitle = Ds.Tables(0).Rows(Loopx).Item(14).ToString
+            '    Dim LoaderId = Ds.Tables(0).Rows(Loopx).Item(15).ToString
+            '    Dim IssueDate = Ds.Tables(0).Rows(Loopx).Item(16).ToString
+            '    Dim DeliveryDate = Ds.Tables(0).Rows(Loopx).Item(17).ToString
+
+
+
+
+
+
+
+
+
+            '    CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblOrganizationTarrifs(SourceId,SourceTitle,TargetId,TargetTitle,GoodId,GoodTitle,Tarrif)
+            '                              Values(" & SourceId & ",'" & SourceTitle & "'," & TargetId & ",'" & TargetTitle & "'," & GoodCode & ",'" & GoodTitle & "'," & Tarrif & ")"
+            '    CmdSql.ExecuteNonQuery()
+            'Next
+            'CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            'MessageBox.Show("Ok...")
+            'Dim fs As New System.IO.FileStream("c:\1221TXT_EMAIL_saba.TXT", IO.FileMode.Open, IO.FileAccess.Read)
+            'Dim sr As New System.IO.StreamReader(fs)
+            'sr.BaseStream.Seek(0, IO.SeekOrigin.Begin)
+            'While Not sr.EndOfStream
+            '    Dim FirstLine = sr.ReadLine
+
+            'End While
 
             'Dim SecondLine = sr.ReadLine
             'Dim thirdLine = sr.ReadLine
@@ -532,15 +654,37 @@ Public Class Form3
             '_WS.WebMethodGetnIdCarTruckBySmartCarNo("2063514", "74094")
             'PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckBySmartCardNoWithUpdating("1775507", R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
         Catch ex As Exception
+            If CmdSql.Connection.State <> ConnectionState.Closed Then
+                CmdSql.Transaction.Rollback()
+                CmdSql.Connection.Close()
+            End If
             MessageBox.Show(ex.Message)
         End Try
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
         Try
-            Dim x As New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager
-            Dim y As New R2CoreTransportationAndLoadNotification.Trucks.R2CoreTransportationAndLoadNotificationInstanceTrucksManager
-            x.GetDeclarations(y.GetNSSTruck(85179), True)
+            PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(2, 7, Int64.MinValue, New R2StandardDateAndTimeStructure(Date.Now, "1403/08/06", "00:00:00"), New R2StandardDateAndTimeStructure(Date.Now, "1403/08/06", "23:59:59"), Int64.MinValue, Int64.MinValue)
+            'Dim nss = R2CorePersonnelMClassManagement.GetNSSPersonnel("D4115E83")
+            'MessageBox.Show(nss.OName)
+
+
+            'Dim x = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            'Dim y = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
+            'Dim z = x.GetNSSLoadCapacitorLoad(854686, True)
+            'z.nTonaj = 27.6
+            'y.LoadCapacitorLoadEditing(z, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+
+            ''صدور خودکار نوبت ها
+            'Try
+            '    PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+            'Catch ex As Exception
+            '    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+            'End Try
+
+            'Dim x As New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager
+            'Dim y As New R2CoreTransportationAndLoadNotification.Trucks.R2CoreTransportationAndLoadNotificationInstanceTrucksManager
+            'x.GetDeclarations(y.GetNSSTruck(85179), True)
             'Dim x As New R2CoreEmailManager
             'Dim sb As New StringBuilder
             'sb.Append(";sdlfl;sf")
@@ -713,11 +857,21 @@ Public Class Form3
     End Sub
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
+
+        'ابطال گروهی نوبت ها
         Try
-            PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
+            InstanceCarTruckNobat.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser())
         Catch ex As Exception
-            EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+            EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TurnsCancellation:" + ex.Message.ToString, EventLogEntryType.Error)
         End Try
+
+        'Try
+        '    PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+        'Catch ex As Exception
+        '    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+        'End Try
 
 
 
@@ -1037,5 +1191,18 @@ Public Class Form3
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
+    End Sub
+
+    Private Sub Button20_Click(sender As Object, e As EventArgs) Handles Button20.Click
+        Try
+            Dim InstanceAES = New AESAlgorithmsManager()
+            Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
+            Dim MobileNumber = TextBoxConcat1.Text
+            TextBoxTerraficCardTypeSqlString.Text = InstanceAES.Encrypt(MobileNumber, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3))
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+
     End Sub
 End Class

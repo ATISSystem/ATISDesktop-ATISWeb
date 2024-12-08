@@ -1,0 +1,1312 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dermalog.AFIS.FingerCode3</name>
+    </assembly>
+    <members>
+        <member name="M:Dermalog.Afis.FingerCode3.DermalogFingerCode3Wrapper.#cctor">
+            <summary>
+            Initializes static members of the DermalogFingerCode3Wrapper class
+            </summary>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.NamespaceDoc">
+            <summary>
+            Dermalog.Afis.FingerCode3 Namespace.
+            </summary>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.Enums.NamespaceDoc">
+            <summary>
+            Enums for Dermalog.Afis.FingerCode3
+            </summary>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.FC3Exception">
+            <summary>
+            Exception class for errors from the underlaying SDK.
+            </summary>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.FC3Exception.#ctor(Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode,System.String)">
+            <summary>
+            Creates a new instance of FC3Exeption
+            </summary>
+            <remarks>This constructor is just for internal generation of exception.</remarks>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.FC3Exception.Error">
+            <summary>
+            Gets the error number of exception.
+            </summary>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode">
+            <summary>
+            Error codes from the native SDK.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.SUCCESS">
+            <summary>
+            No errors occurred.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_INITIALIZED">
+            <summary>
+            Multiple initialization.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_NOT_INITIALIZED">
+            <summary>
+            Prior initialization is necessary.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_NO_LICENCE">
+            <summary>
+            The license for the SDK is not valid (Check whether the DermalogLicenser or a DermalogLiveScanner is required for your product).
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_NO_CB_ONEND">
+            <summary>
+            OnEnd CallBack-Method is missing.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_NO_CB_ONERROR">
+            <summary>
+            OnError CallBack-Method is missing.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BITMAP_PTR">
+            <summary>
+            The input image is not valid.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BITMAP_COMPRESSION">
+            <summary>
+            The compression FOCC is not supported.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BITMAP_HEADERSIZE">
+            <summary>
+            The header size of the Bitmap is unknown.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BITMAP_UNEXPECTED_FILEHEADER">
+            <summary>
+            Fileheader found but expected bitmapinfoheader.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BITMAP_PLANE">
+            <summary>
+            Number of image planes is invalid. (see documentation).
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BITMAP_BITCOUNT">
+            <summary>
+            Pixel depth is invalid (see documentation).
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BITMAP_PELS">
+            <summary>
+            Pels are not in a valid range (see documentation).
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BITMAP_DIMENSION">
+            <summary>
+            The image is too small or too big.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BITMAP_NO_FINGER">
+            <summary>
+            No Finger found in the image.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_INSUFFICIENT_MINUTIAE">
+            <summary>
+            Insufficient number of minutia found.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_UNSPECIFIED_WARNING">
+            <summary>
+            Warning: something uncritical went wrong.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TEMPLATE_PTR">
+            <summary>
+            The template is not valid.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TEMPLATE_SIZE">
+            <summary>
+            The size of the finger template is not valid.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TEMPLATE_PTRPTR">
+            <summary>
+            The template-pointer is not valid.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TEMPLATE_PTR_NULL">
+            <summary>
+            The template-pointer is not valid.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TEMPLATE_SIZE_PTR">
+            <summary>
+            Pointer to template-size is not valid.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TEMPLATE1_BAD">
+            <summary>
+            Template1 is invalid.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TEMPLATE2_BAD">
+            <summary>
+            Template2 is invalid.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ROTATIONS_RANGE">
+            <summary>
+            Given rotation is out of valid range.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_MATCHER_INIT">
+            <summary>
+            Matcher problem during initialization.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_MATCHER_PARAMS">
+            <summary>
+            Matcher problem (parameters).
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_IN_CB_FUNCTION">
+            <summary>
+            An error occurred in a callback function.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_FORMAT_NOTSUPPORTED">
+            <summary>
+            The required format is not supported.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_FORMAT_IS_TOO_NEW">
+            <summary>
+            The template is generated with a newer encoding and can not be read. Please update all necessary libraries.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_PARAM_OUT_OF_RANGE">
+            <summary>
+            One of the parameters is out of range.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_PARAM_IS_MISSING">
+            <summary>
+            One of the required parameter is missing.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_CURRUPT_BYTECODE">
+            <summary>
+            The input is corrupt can be a memoryblock or a file.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_CURRUPT_DATA">
+            <summary>
+            The input is corrupt; it can be a memoryblock or a file.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_UNEXPECTED_SIGNATURE">
+            <summary>
+            The input signature is not expected here.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_PARAM_DIFFERES_IN_VALUES">
+            <summary>
+            One of the parameters is given in different ways to the function and its values are not the same.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_NO_HANDLE">
+            <summary>
+            The handle parameter is set to NULL.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_INVALID_HANDLE">
+            <summary>
+            The handle parameter is not a valid handle for that function.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_INVALID_PARAMETER">
+            <summary>
+            One(or more) parameter(s) is(are) invalid.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_INVALID_OPTIONS_SETTING">
+            <summary>
+            The options are set in a combination which will not work.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_PARAM_VALUE_DUPLICATE">
+            <summary>
+            The given parameter is a duplicate of a previously given parameter.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_PARAM_IS_READONLY">
+            <summary>
+            The requested parameter is read only.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_PARAM_IS_WRITEONLY">
+            <summary>
+            The requested parameter is write only.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_LOGGING">
+            <summary>
+            An error occurred in the log function, maybe log full.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_INVALID_STATE">
+            <summary>
+            Function call is not possible in current state.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_EMPTY_HANDLE">
+            <summary>
+            The handle contains no data.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_DEVICE_DISCONNECTED">
+            <summary>
+            Function call failed, because assigned device was disconnected.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_DEVICE_OPEN_FAIL">
+            <summary>
+            Failed to open device
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_UNSPECIFIED_INTERNAL">
+            <summary>
+            Something unspecified went wrong.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_INTERNAL">
+            <summary>
+            Internal error.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_OUT_OF_MEMORY">
+            <summary>
+            Memory allocation failed or given mem-block too small.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_UNSUPPORTED_FEATURE">
+            <summary>
+            The feature is currently not supported.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.FATAL_ERROR_TERMINATION_NECESSARY">
+            <summary>
+            A fatal error has occurred. Process integrity may be corrupted. Terminate application.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_FROM_SYSTEM_FUNCTION">
+            <summary>
+            A error has occurred in a system function call. use the system errorfunction to get more info.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_NOT_IMPLEMENTED">
+            <summary>
+            The feature is not implemented.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_FILE_OPEN_FAIL">
+            <summary>
+            Failed to open the specified file.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_UNEXPECTED_EOF">
+            <summary>
+            Unexpected end of file.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_WRITE_FAIL">
+            <summary>
+            Failed to write the data.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_READ_FAIL">
+            <summary>
+            Failed to read the data.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_IO">
+            <summary>
+            Unspecified I/O error.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_PATH_PTR_NULL">
+            <summary>
+            The path string pointer is NULL.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_UNKNOWN_PARAMETER">
+            <summary>
+            A given parameter is unknown.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_UNKNOWN_CODEC">
+            <summary>
+            The codec for that extension is unknown.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_VALUE_EXPECTED">
+            <summary>
+            A value is expected for the parameter.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_VALUE_WRONG">
+            <summary>
+            The value for the parameter is out of range.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BMP_NO_SIGNATURE">
+            <summary>
+            No BMP signature found.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BMP_FAILURE">
+            <summary>
+            Failed to load or store a BMP.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_JPEG_NO_SIGNATURE">
+            <summary>
+            No JPEG signature found.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_JPEG_FAILURE">
+            <summary>
+            Failed to load or store a JPEG.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_JPEG_WRONG_COLORSPACE">
+            <summary>
+            JPEG codec can only store 8bit grayscale or 24bit RGB images.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_JPEG_QUALITY_OUTOFRANGE">
+            <summary>
+            JPEG quality parameter is out of range [-1,0..255].
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_JPEG_SMOOTHING_OUTOFRANGE">
+            <summary>
+            JPEG smoothing parameter is out of range [-1,0..100].
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_PNG_NO_SIGNATURE">
+            <summary>
+            No PNG signature found.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_PNG_FAILURE">
+            <summary>
+            Failed to load or store a PNG.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TIFF_NO_SIGNATURE">
+            <summary>
+            No TIFF signature found.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TIFF_FAILURE">
+            <summary>
+            Failed to load or store a TIFF.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TIFF_WRONG_COLORSPACE">
+            <summary>
+            TIFF codec can only store 1, 8, 24Bit images.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TIFF_QUALITY_OUTOFRANGE">
+            <summary>
+            TIFF quality parameter is out of range: [-1,0..100] for colorimages [-1,1..9] for index images.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TIFF_PREDICTOR_OUTOFRANGE">
+            <summary>
+            TIFF predictor parameter is out of range [-1,0..1].
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_TIFF_COMPRESSMODE_UNKNOWN">
+            <summary>
+            TIFF compression mode given is unknown.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_WSQ_NO_CODEC">
+            <summary>
+            WSQ DLL has not been found.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_WSQ_FAILURE">
+            <summary>
+            Failed to load or store a WSQ file.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_WSQ_WRONG_VERSION">
+            <summary>
+            WSQ DLL version is too old.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_WSQ_GRAYSCALE_ONLY">
+            <summary>
+            WSQ codec can only store 8-bit grayscale images.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_WSQ_RATIO_OUTOFRANGE">
+            <summary>
+            WSQ compression ratio is out of range [-1,2..50].
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_WSQ_CURRUPT_DATA">
+            <summary>
+            WSQ the wsq file is not readable.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_LURA_NO_CODEC">
+            <summary>
+            LuraWave DLL not found.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_LURA_NO_SIGNATURE">
+            <summary>
+            No LuraWave signature found.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_LURA_FAILURE">
+            <summary>
+            Failed to load or store a LuraWave file.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_LURA_WRONG_COLORSPACE">
+            <summary>
+            LuraWave codec can only store 8bit grayscale or 24bit rgb images.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ONCARDMATCHING_NOT_A_FINGER_BIT">
+            <summary>
+            The given BIT(BiometricInformationTemplate) does not describe a finger.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ONCARDMATCHING_FORMAT_OWNER_MISSING">
+            <summary>
+            The mandatory field -Format Owner- is missing.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ONCARDMATCHING_FORMAT_TYPE_MISSING">
+            <summary>
+            The mandatory field -Format Type- is missing.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ONCARDMATCHING_OID_MISSING">
+            <summary>
+            The mandatory field -OID Type- is missing.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ONCARDMATCHING_OID_UNKNOWN">
+            <summary>
+            The OID is unknown.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ONCARDMATCHING_FORMAT_IS_NOT_SUPPORTED">
+            <summary>
+            The requested format by the BIT is not supported.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ONCARDMATCHING_TAG_UNKNOWN">
+            <summary>
+            In the TLV structure, there is an unknown tag.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BLUEBOX_NO_COLORIMAGE">
+            <summary>
+            Only 24 bit color images are accepted.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BLUEBOX_TEMPLATE_OPEN_FAIL">
+            <summary>
+            The template for the face detection could not be loaded.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BLUEBOX_SOURCE_IMAGE_EMPTY">
+            <summary>
+            The source image is empty.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BLUEBOX_DOCUMENT_IMAGE_EMPTY">
+            <summary>
+            The document image is empty.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BLUEBOX_MASK_IMAGE_EMPTY">
+            <summary>
+            The mask image is empty.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BLUEBOX_ALPHA_IMAGE_EMPTY">
+            <summary>
+            The alpha image is empty.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BLUEBOX_IMAGE_DIMENSIONS_DIFFERENT">
+            <summary>
+            The input images differ in size.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BLUEBOX_INSERTION_COORDINATES_OUTOFRANGE">
+            <summary>
+            The insert-coordinates for the photo are outside range.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BLUEBOX_TEMPLATE_MATCH_FAIL">
+            <summary>
+            Can not find valid photo in image.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BLUEBOX_MASK_FAIL">
+            <summary>
+            Can not mask portrait image.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_ERROR_INTERNAL">
+            <summary>
+            Unknown Error.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_INVALID_PARAMETER">
+            <summary>
+            Parameter sent to SDK is incorrect.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_MEM_FREE_FAILED">
+            <summary>
+            Can not free memory used by SDK.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_MEM_ALLOC_FAILED">
+            <summary>
+            Can not allocate memory needed for SDK.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_NOT_INITIALIZED">
+            <summary>
+            SDK not initialized!
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_CAMERA_NOT_OPEN">
+            <summary>
+            No Camera open at this time!
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_CAMERA_OPEN">
+            <summary>
+            A Camera is open!
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_CAMERA_NOT_FOUND">
+            <summary>
+            Can not find Camera.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_CAMERA_NOT_SUPPORTED">
+            <summary>
+            Camera does not support Remote Control.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_VIEWFINDER_NOT_SUPPORTED">
+            <summary>
+            Camera does not support Viewfinder.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_VIEWFINDER_NOT_OPEN">
+            <summary>
+            No Viewfinder open at this time!
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_CAMERA_NOT_RELEASED">
+            <summary>
+            Release failed! Camera couldn't shutter release.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_CAMERA_RELEASE_CANCELLED">
+            <summary>
+            Release was cancelled by user or SDK.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_UNSUPPORTED_DATA_FORMAT">
+            <summary>
+            Released data has unsupported data format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_NO_VAILID_IMAGE_IN_BUFFER">
+            <summary>
+            No valid image in buffer to get!
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_PROPERTY_NOT_SUPPORTED">
+            <summary>
+            Camera doesn't support the property.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.CDSDK_INITIALIZED">
+            <summary>
+            SDK is already initialized!
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ADVANCEDIMAGING_COMMAND_UNKNOWN">
+            <summary>
+            Unknown Command.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ADVANCEDIMAGING_IMAGE_UNKNOWN">
+            <summary>
+            Unknown image identifier.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ADVANCEDIMAGING_PARAMETERS">
+            <summary>
+            One or more parameters are invalid.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ADVANCEDIMAGING_PROCESSING">
+            <summary>
+            Unspecified error while image processing.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ADVANCEDIMAGING_READSCRIPT">
+            <summary>
+            Error while reading the script.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_ADVANCEDIMAGING_SCRIPTCONTENT">
+            <summary>
+            The content of the script is invalid.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_CALIBRATE_FAILED_TO_GENERATE">
+            <summary>
+            The calibration failed to generate the calibrations data from the given pattern.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BAD_POINTER">
+            <summary>
+            The pointer is bad or invalid.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_SIZE_TOO_SMALL">
+            <summary>
+            Given size is too small.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BAD_FINGER_NUMBER">
+            <summary>
+            Invalid fingernumber (allowed is 1..10)
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_BAD_CAST">
+            <summary>
+            RecordType is different from Matching-type.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_LATENT_FINGERPOSITION_ALREADY_SET">
+            <summary>
+            LatentPosition is already set for given latent-finger.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_LATENT_FINGERPOSITION_NOT_FOUND">
+            <summary>
+            LatentPosition is not set for given latent-finger.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_NO_ENTRY_FOR_GIVEN_CELL">
+            <summary>
+            No SingleMatchResult was calculated for given indices.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_STD_EXCEPTION">
+            <summary>
+            An exception of type std::exceptions was caught. Exact type is unspecified.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION">
+            <summary>
+            An unknown exception was caught with (...)
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_NO_LATENT_FINGER_GIVEN_FOR_LATENT_MATCHING">
+            <summary>
+            No latent template given to latent matching.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_NO_LICENCE_INSTALLED">
+            <summary>
+            The licenser is not installed. Please reinstall (Check whether the DermalogLicenser or a DermalogLiveScanner is required for your product).
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_LD_FINGERPRINT_TOO_SMALL">
+            <summary>
+            The detected fingerprint region on the scanner surface is too small. Press harder.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_LD_NO_FINGERPRINT_IN_LOWER_AREA">
+            <summary>
+            Lower scanning region must be covered by the fingerprint. Move finger down.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_LD_FINGER_PLACED_SKEWLY">
+            <summary>
+            The fingerprint has to be placed straightly. Adjust finger placement.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_LD_VIDEO_FRAME_INFO_ID_INVALID">
+            <summary>
+            Unsupported info id supplied to get image functions.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.FC3Exception.ErrorCode.ERROR_LD_ILLUMINATION_TOO_HIGH">
+            <summary>
+            Overexposured images have been captured. Reduce ambient illumination.
+            </summary>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.SDKBaseClass">
+            <summary>
+            Class to handle all common Dermalog SDKHandle functions.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.SDKBaseClass.handle">
+            <summary>
+            handle for the native SDK.
+            </summary>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.SDKBaseClass.GetProperty(System.String)">
+            <summary>
+            Gets the named property from the underlying native handle as string.
+            </summary>
+            <param name="name">The name of the property. </param>
+            <returns>Returns property value as string.</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.SDKBaseClass.SetProperty(System.String,System.String)">
+            <summary>
+            Sets the named property from the underlying native handle as string.
+            </summary>
+            <param name="name">The name of the property. </param>
+            <param name="value">The value of the property as string. </param>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.SDKBaseClass.GetPropertyDouble(System.String)">
+            <summary>
+            Gets the named property from the underlying native handle as double.
+            </summary>
+            <param name="name">The name of the property. </param>
+            <returns>Returns property value as double.</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.SDKBaseClass.SetProperty(System.String,System.Double)">
+            <summary>
+            Sets the named property from the underlying native handle as double.
+            </summary>
+            <param name="name">The name of the property. </param>
+            <param name="value">The value of the property as double. </param>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.SDKBaseClass.GetPropertyLong(System.String)">
+            <summary>
+            Gets the named property from the underlying native handle as long.
+            </summary>
+            <param name="name">The name of the property. </param>
+            <returns>Returns property value as long.</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.SDKBaseClass.SetProperty(System.String,System.Int32)">
+            <summary>
+            Sets the named property from the underlying native handle as long.
+            </summary>
+            <param name="name">The name of the property. </param>
+            <param name="value">The value of the property as long. </param>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.SDKBaseClass.Finalize">
+            <summary>
+            Finalizes an instance of the SDKBaseClass class.
+            </summary>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.SDKBaseClass.op_Implicit(Dermalog.Afis.FingerCode3.SDKBaseClass)~System.IntPtr">
+            <summary>
+            Supplies a automatic cast to the SDK handle type.
+            </summary>
+            <param name="value">
+            Contains the object to query the handle.
+            </param>
+            <returns>
+            The handle for the SDK functions.
+            </returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.SDKBaseClass.Dispose">
+            <summary>
+            Implement IDisposable.
+            Do not make this method virtual.
+            A derived class should not be able to override this method.
+            </summary>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.SDKBaseClass.Dispose(System.Boolean)">
+            <summary>
+            Dispose(bool disposing) executes in two distinct scenarios.
+            If disposing equals true, the method has been called directly
+            or indirectly by a user's code. Managed and unmanaged resources
+            can be disposed.
+            If disposing equals false, the method has been called by the
+            runtime from inside the finalizer and you should not reference
+            other objects. Only unmanaged resources can be disposed.
+            </summary>
+            <param name="disposing">
+            true to release both managed and unmanaged resources; false to release only unmanaged resources.
+            </param>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.SDKBaseClass.Version">
+            <summary>
+            Gets the version of the underlying native SDK.
+            </summary>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.Enums.TemplateFormat">
+            <summary>
+            Enum which contains the supported template formats.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005">
+            <summary>
+            The ISO/IEC 19794-2:2005 format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ANSI378_2004">
+            <summary>
+            The ANSI INCITS 378-2004 format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.Dermalog">
+            <summary>
+            The Dermalog format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.MINEX_Min_A">
+            <summary>
+            The MINEX Min:A format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005_0001">
+            <summary>
+            The 0001 subformat from the ISO/IEC 19794-2:2005 format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005_0002">
+            <summary>
+            The 0002 subformat from the ISO/IEC 19794-2:2005 format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005_0003">
+            <summary>
+            The 0003 subformat from the ISO/IEC 19794-2:2005 format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005_0004">
+            <summary>
+            The 0004 subformat from the ISO/IEC 19794-2:2005 format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005_0005">
+            <summary>
+            The 0005 subformat from the ISO/IEC 19794-2:2005 format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005_0006">
+            <summary>
+            The 0006 subformat from the ISO/IEC 19794-2:2005 format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005_0019">
+            <summary>
+            The 0019 subformat from the ISO/IEC 19794-2:2005 format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005_001A">
+            <summary>
+            The 001A subformat from the ISO/IEC 19794-2:2005 format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005_001B">
+            <summary>
+            The 001B subformat from the ISO/IEC 19794-2:2005 format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005_001C">
+            <summary>
+            The 001C subformat from the ISO/IEC 19794-2:2005 format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.TemplateFormat.DermalogMatchOnCardSmartMatch">
+            <summary>
+            The Dermalog Match-on-Card SmartMatch format (export only, no matching supported).
+            </summary>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.Enums.SubFormats">
+            <summary>
+            Specify sub formats from the selected format.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.SubFormats.Default">
+            <summary>
+            The Default subformat.
+            </summary>
+        </member>
+        <member name="F:Dermalog.Afis.FingerCode3.Enums.SubFormats.Stripped">
+            <summary>
+            Remove some information to reduce space usage.
+            </summary>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.Enums.StringEnum">
+            <summary>
+            Helper class for working with 'extended' enums using <see cref="T:Dermalog.Afis.FingerCode3.Enums.StringValueAttribute"/> attributes.
+            </summary>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringEnum.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the StringEnum class.
+            </summary>
+            <param name="enumType">Enum type.</param>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringEnum.GetStringValue(System.String)">
+            <summary>
+            Gets the string value associated with the given enum value.
+            </summary>
+            <param name="valueName">Name of the enum value.</param>
+            <returns>String Value</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringEnum.GetStringValues">
+            <summary>
+            Gets the string values associated with the enum.
+            </summary>
+            <returns>String value array</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringEnum.GetListValues">
+            <summary>
+            Gets the values as a 'bindable' list data source.
+            </summary>
+            <returns>IList for data binding</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringEnum.IsStringDefined(System.String)">
+            <summary>
+            Return the existence of the given string value within the enum.
+            </summary>
+            <param name="stringValue">String value.</param>
+            <returns>Existence of the string value</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringEnum.IsStringDefined(System.String,System.Boolean)">
+            <summary>
+            Return the existence of the given string value within the enum.
+            </summary>
+            <param name="stringValue">String value.</param>
+            <param name="ignoreCase">Denotes whether to conduct a case-insensitive match on the supplied string value</param>
+            <returns>Existence of the string value</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringEnum.GetStringValue(System.Enum)">
+            <summary>
+            Gets a string value for a particular enum value.
+            </summary>
+            <param name="value">Value.</param>
+            <returns>String Value associated via a <see cref="T:Dermalog.Afis.FingerCode3.Enums.StringValueAttribute"/> attribute, or null if not found.</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringEnum.Parse(System.Type,System.String)">
+            <summary>
+            Parses the supplied enum and string value to find an associated enum value (case sensitive).
+            </summary>
+            <param name="type">Type.</param>
+            <param name="stringValue">String value.</param>
+            <returns>Enum value associated with the string value, or null if not found.</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringEnum.Parse``1(System.String)">
+            <summary>
+            Parses the supplied enum and string value to find an associated enum value (case sensitive).
+            </summary>
+            <param name="stringValue">String value.</param>
+            <returns>Enum value associated with the string value, or null if not found.</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringEnum.Parse(System.Type,System.String,System.Boolean)">
+            <summary>
+            Parses the supplied enum and string value to find an associated enum value.
+            </summary>
+            <param name="type">Type.</param>
+            <param name="stringValue">String value.</param>
+            <param name="ignoreCase">Denotes whether to conduct a case-insensitive match on the supplied string value</param>
+            <returns>Enum value associated with the string value, or null if not found.</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringEnum.IsStringDefined(System.Type,System.String)">
+            <summary>
+            Return the existence of the given string value within the enum.
+            </summary>
+            <param name="stringValue">String value.</param>
+            <param name="enumType">Type of enum</param>
+            <returns>Existence of the string value</returns>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringEnum.IsStringDefined(System.Type,System.String,System.Boolean)">
+            <summary>
+            Return the existence of the given string value within the enum.
+            </summary>
+            <param name="stringValue">String value.</param>
+            <param name="enumType">Type of enum</param>
+            <param name="ignoreCase">Denotes whether to conduct a case-insensitive match on the supplied string value</param>
+            <returns>Existence of the string value</returns>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Enums.StringEnum.EnumType">
+            <summary>
+            Gets the underlying enum type for this instance.
+            </summary>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.Enums.StringValueAttribute">
+            <summary>
+            Simple attribute class for storing String Values
+            </summary>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Enums.StringValueAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the StringValueAttribute class.
+            </summary>
+            <param name="value">Value.</param>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Enums.StringValueAttribute.Value">
+            <summary>
+            Gets the value.
+            </summary>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.Matcher">
+            <summary>
+            Instance of a matcher.
+            </summary>
+            <remarks>
+            <para> The use of the matcher is also described in the <a href="8b87ca48-29a6-4bc8-88c9-361b89a64552.htm#Section3">Application Workflows</a> page. </para>
+            </remarks>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Matcher.#ctor">
+            <summary>
+            Initializes a new instance of the Matcher class.
+            </summary>
+            <exception cref="T:Dermalog.Afis.FingerCode3.FC3Exception"/>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Matcher.Match(Dermalog.Afis.FingerCode3.Template,Dermalog.Afis.FingerCode3.Template)">
+            <summary>
+            Compare two finger templates.
+            </summary>
+            <remarks>
+            <para>This method matches two templates and returns a score which describes the similarity of both templates. The template objects can be generated from fingerprint images using this component (please refer to the <see cref="M:Dermalog.Afis.FingerCode3.Encoder.Encode(System.Drawing.Image)"/> method) or from external sources using the <see cref="M:Dermalog.Afis.FingerCode3.Template.SetData(System.Byte[],Dermalog.Afis.FingerCode3.Enums.TemplateFormat)"/> method or a mixture of both. This is a symmetric function, i.e. the order of the two templates has no effect on the resulting score. </para>
+            </remarks>
+            <param name="Target">
+            Target template for the match.
+            </param>
+            <param name="Query">
+            Query template for the match.
+            </param>
+            <returns>
+            Score of the match [0-100].
+            </returns>
+            <exception cref="T:Dermalog.Afis.FingerCode3.FC3Exception"/>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.Encoder">
+            <summary>
+            Instance of an encoder.
+            </summary>
+            <remarks>
+            <para> In order to configure the encoder, please also refer to the <a href="35aac77f-92c5-4eb6-be81-accd89ceb078.htm#Properties_S1">Encoder Class Properties</a> page. </para> <para> The use of the encoder is also described in the <a href="8b87ca48-29a6-4bc8-88c9-361b89a64552.htm#Section3">Application Workflows</a> page. </para>
+            </remarks>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Encoder.#ctor">
+            <summary>
+            Initializes a new instance of the Encoder class.
+            </summary>
+            <exception cref="T:Dermalog.Afis.FingerCode3.FC3Exception"/>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Encoder.Encode(System.Drawing.Image)">
+            <summary>
+            Encode a fingerprint image to a finger template.
+            </summary>
+            <remarks>
+            <para> This method is used to extract fingerprint templates out of fingerprint images. The fingerprint template returned by this method can be used to match two fingerprints using <see cref="M:Dermalog.Afis.FingerCode3.Matcher.Match(Dermalog.Afis.FingerCode3.Template,Dermalog.Afis.FingerCode3.Template)"/>. They can also be stored for later use with the <see cref="M:Dermalog.Afis.FingerCode3.Template.GetData"/> method.</para> <para> All required properties should be set before calling <see cref="M:Dermalog.Afis.FingerCode3.Encoder.Encode(System.Drawing.Image)"/> </para> <para> The encoding of fingerprint images is quite computational expensive. In order to be able to track the progress of the encoding (for use with e.g. progress bars etc.) the user can optionally set a callback (<see cref="T:Dermalog.Afis.FingerCode3.Encoder.ProgressCallBack"/>) which is called periodically during the encoding and which reports the progress. </para> <para> Please consider the <a href="8b87ca48-29a6-4bc8-88c9-361b89a64552.htm#Section5">Requirements for Fingerprint Images</a> page. </para>
+            </remarks>
+            <param name="FingerImage">
+            Image to be encoded.
+            </param>
+            <returns>
+            Template extracted from the image.
+            </returns>
+            <exception cref="T:Dermalog.Afis.FingerCode3.FC3Exception"/>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Encoder.FingerPosition">
+            <summary>
+            Gets or sets the position of the finger to be encoded.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Encoder.ImpressionType">
+            <summary>
+            Gets or sets the source of the image to be encoded.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Encoder.CaptureEquipmentCertification">
+            <summary>
+            Gets or sets the certifications of the capture equipment.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Encoder.CaptureDeviceTypeID">
+            <summary>
+            Gets or sets the capture equipment ID.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Encoder.CodingType">
+            <summary>
+            Gets or sets the kind of the coding used.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Encoder.UseShapeCoding">
+            <summary>
+            Gets or sets the shape coding enable state.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Encoder.MinutiaeMinCount">
+            <summary>
+            Gets or sets the minimal minutiae count.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Encoder.MinutiaeMaxCount">
+            <summary>
+            Gets or sets the maximal minutiae count.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Encoder.MinutiaeSort">
+            <summary>
+            Gets or sets the sorting order.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Encoder.MaxSize">
+            <summary>
+            Gets or sets the max size of the template in bytes.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Encoder.Format">
+            <summary>
+            Gets or sets the template format to generated.
+            </summary>
+        </member>
+        <member name="E:Dermalog.Afis.FingerCode3.Encoder.Progress">
+            <summary>
+            Event for  tracking encoding progress delegate.
+            </summary>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.Encoder.ProgressCallBack">
+            <summary>
+            Typedef of the  tracking encoding progress delegate.
+            </summary>
+            <remarks>
+            <para>This class is used for delegating an encoding progress callback. It can be used for progress bars etc. </para> <para>Setting a progress callback is optional. Note that the userdata provided in this delegate will be passed to the callback. </para>
+            </remarks>
+        </member>
+        <member name="T:Dermalog.Afis.FingerCode3.Template">
+            <summary>
+            Instance of a template.
+            </summary>
+            <remarks>
+            <para>This object holds the finger template data. Use the <see cref="M:Dermalog.Afis.FingerCode3.Template.SetData(System.Byte[],Dermalog.Afis.FingerCode3.Enums.TemplateFormat)"/> and <see cref="M:Dermalog.Afis.FingerCode3.Template.GetData"/> for template data IO. This enables to match with external templates as well as to store the template data for later use. The supported template formats depend on the license you purchased. </para> <para> In order to configure or query properties of the template generated please refer to the <a href="35aac77f-92c5-4eb6-be81-accd89ceb078.htm#Properties_S3">Template Class Properties</a> page. </para> <para> A conversion of a fingerprint template is also described in the <a href="8b87ca48-29a6-4bc8-88c9-361b89a64552.htm#Section3">Application Workflows</a> page. </para>
+            </remarks>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Template.#ctor">
+            <summary>
+            Initializes a new instance of the Template class.
+            </summary>
+            <exception cref="T:Dermalog.Afis.FingerCode3.FC3Exception"/>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Template.GetData">
+            <summary>
+            Gets the binary template data.
+            </summary>
+            <remarks>
+            <para>This function can be used to extract the data contained in a template object. </para>
+            </remarks>
+            <returns>
+            The binary template data.
+            </returns>
+            <exception cref="T:Dermalog.Afis.FingerCode3.FC3Exception"/>
+        </member>
+        <member name="M:Dermalog.Afis.FingerCode3.Template.SetData(System.Byte[],Dermalog.Afis.FingerCode3.Enums.TemplateFormat)">
+            <summary>
+            Sets the binary template data.
+            </summary>
+            <remarks>
+            <para>This function is used to set external data to a fingerprint template. The user must also provide the format type of the template data. Note that you can only set template types which are supported by your license of the FingerCode3 component. A simple validity check is performed upon setting the data. This should lead to rejection of corrupt data. </para>
+            </remarks>
+            <param name="Data">
+            The binary template data.
+            </param>
+            <param name="Format">
+            Gets and sets the format of the data.
+            </param>
+            <exception cref="T:Dermalog.Afis.FingerCode3.FC3Exception"/>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Template.FingerPosition">
+            <summary>
+            Gets the position of the finger, set from <see cref="M:Dermalog.Afis.FingerCode3.Encoder.Encode(System.Drawing.Image)"/>.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Template.ImpressionType">
+            <summary>
+            Gets the source of the image, set from <see cref="M:Dermalog.Afis.FingerCode3.Encoder.Encode(System.Drawing.Image)"/>.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Template.CaptureEquipmentCertification">
+            <summary>
+            Gets the certifications of the capture equipment, set from <see cref="M:Dermalog.Afis.FingerCode3.Encoder.Encode(System.Drawing.Image)"/>.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Template.CaptureDeviceTypeID">
+            <summary>
+            Gets the capture equipment ID, set from <see cref="M:Dermalog.Afis.FingerCode3.Encoder.Encode(System.Drawing.Image)"/>.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Template.Quality">
+            <summary>
+            Gets the encoding quality of the template, set from <see cref="M:Dermalog.Afis.FingerCode3.Encoder.Encode(System.Drawing.Image)"/>.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Template.CodingType">
+            <summary>
+            Gets the used coding type used, set from <see cref="M:Dermalog.Afis.FingerCode3.Encoder.Encode(System.Drawing.Image)"/>).
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Template.Subformat">
+            <summary>
+            Deprecated, kept for backward compatibility only.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Template.MinutiaeMinCount">
+            <summary>
+            Gets or sets the minimal minutiae count.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Template.MinutiaeMaxCount">
+            <summary>
+            Gets or sets the maximal minutiae count.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Template.MinutiaeSort">
+            <summary>
+            Gets or sets the sorting order.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Template.MaxSize">
+            <summary>
+            Gets or sets the max size of the template in bytes.
+            </summary>
+        </member>
+        <member name="P:Dermalog.Afis.FingerCode3.Template.Format">
+            <summary>
+            Gets or sets the template format to generated.
+            </summary>
+        </member>
+    </members>
+</doc>

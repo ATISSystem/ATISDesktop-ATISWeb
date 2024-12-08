@@ -28,37 +28,38 @@ Partial Class UCComputerMessageProducerRealTimeTurnRegisterRequest
         Me.UcDriver = New R2CoreParkingSystem.UCDriver()
         Me.UcCarImage = New R2CoreParkingSystem.UCCarImage()
         Me.UcDriverImage = New R2CoreParkingSystem.UCDriverImage()
-        Me.SuspendLayout
+        Me.UcucSequentialTurnCollection = New R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection()
+        Me.SuspendLayout()
         '
         'UcCar
         '
-        Me.UcCar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcCar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcCar.BackColor = System.Drawing.Color.Transparent
-        Me.UcCar.Location = New System.Drawing.Point(116, 63)
+        Me.UcCar.Location = New System.Drawing.Point(116, 102)
         Me.UcCar.Name = "UcCar"
         Me.UcCar.Padding = New System.Windows.Forms.Padding(3)
         Me.UcCar.Size = New System.Drawing.Size(781, 88)
         Me.UcCar.TabIndex = 1
-        Me.UcCar.UCViewButtons = false
+        Me.UcCar.UCViewButtons = False
         '
         'UcDriver
         '
-        Me.UcDriver.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcDriver.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcDriver.BackColor = System.Drawing.Color.Transparent
-        Me.UcDriver.Enabled = false
-        Me.UcDriver.Location = New System.Drawing.Point(116, 152)
+        Me.UcDriver.Enabled = False
+        Me.UcDriver.Location = New System.Drawing.Point(116, 191)
         Me.UcDriver.Name = "UcDriver"
         Me.UcDriver.Padding = New System.Windows.Forms.Padding(3)
         Me.UcDriver.Size = New System.Drawing.Size(781, 105)
         Me.UcDriver.TabIndex = 4
-        Me.UcDriver.UCViewButtons = false
+        Me.UcDriver.UCViewButtons = False
         '
         'UcCarImage
         '
         Me.UcCarImage.BackColor = System.Drawing.Color.White
-        Me.UcCarImage.Location = New System.Drawing.Point(14, 66)
+        Me.UcCarImage.Location = New System.Drawing.Point(14, 105)
         Me.UcCarImage.Name = "UcCarImage"
         Me.UcCarImage.Size = New System.Drawing.Size(103, 82)
         Me.UcCarImage.TabIndex = 5
@@ -67,32 +68,46 @@ Partial Class UCComputerMessageProducerRealTimeTurnRegisterRequest
         '
         Me.UcDriverImage.BackColor = System.Drawing.Color.Transparent
         Me.UcDriverImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcDriverImage.Location = New System.Drawing.Point(14, 155)
+        Me.UcDriverImage.Location = New System.Drawing.Point(14, 194)
         Me.UcDriverImage.Name = "UcDriverImage"
         Me.UcDriverImage.Padding = New System.Windows.Forms.Padding(10)
         Me.UcDriverImage.Size = New System.Drawing.Size(103, 99)
         Me.UcDriverImage.TabIndex = 6
         '
-        'UCComputerMessageProducerSodoorNobat
+        'UcucSequentialTurnCollection
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.UcucSequentialTurnCollection.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcucSequentialTurnCollection.BackColor = System.Drawing.Color.Transparent
+        Me.UcucSequentialTurnCollection.Location = New System.Drawing.Point(361, 65)
+        Me.UcucSequentialTurnCollection.Name = "UcucSequentialTurnCollection"
+        Me.UcucSequentialTurnCollection.Size = New System.Drawing.Size(530, 31)
+        Me.UcucSequentialTurnCollection.TabIndex = 7
+        Me.UcucSequentialTurnCollection.UCCurrentNSS = Nothing
+        Me.UcucSequentialTurnCollection.UCSimulatedSequentialTurnId = CType(0, Long)
+        '
+        'UCComputerMessageProducerRealTimeTurnRegisterRequest
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.UcucSequentialTurnCollection)
         Me.Controls.Add(Me.UcDriverImage)
         Me.Controls.Add(Me.UcCarImage)
         Me.Controls.Add(Me.UcDriver)
         Me.Controls.Add(Me.UcCar)
-        Me.Name = "UCComputerMessageProducerSodoorNobat"
-        Me.Size = New System.Drawing.Size(911, 270)
+        Me.Name = "UCComputerMessageProducerRealTimeTurnRegisterRequest"
+        Me.Size = New System.Drawing.Size(911, 312)
         Me.Controls.SetChildIndex(Me.UcCar, 0)
         Me.Controls.SetChildIndex(Me.UcDriver, 0)
         Me.Controls.SetChildIndex(Me.UcCarImage, 0)
         Me.Controls.SetChildIndex(Me.UcDriverImage, 0)
-        Me.ResumeLayout(false)
+        Me.Controls.SetChildIndex(Me.UcucSequentialTurnCollection, 0)
+        Me.ResumeLayout(False)
 
-End Sub
+    End Sub
 
     Friend WithEvents UcCar As R2CoreParkingSystem.UCCar
     Friend WithEvents UcDriver As R2CoreParkingSystem.UCDriver
     Friend WithEvents UcCarImage As R2CoreParkingSystem.UCCarImage
     Friend WithEvents UcDriverImage As R2CoreParkingSystem.UCDriverImage
+    Friend WithEvents UcucSequentialTurnCollection As R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection
 End Class

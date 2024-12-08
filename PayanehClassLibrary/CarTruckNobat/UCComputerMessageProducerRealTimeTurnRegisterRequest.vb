@@ -35,6 +35,7 @@ Public Class UCComputerMessageProducerRealTimeTurnRegisterRequest
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
+        UcucSequentialTurnCollection.UCRefreshGeneral()
 
     End Sub
 

@@ -38,7 +38,7 @@
     </asp:UpdatePanel>
 
     <TWebControl:WcSmartCardsInquiry runat="server" ID="WcSmartCardsInquiry" />
-    <TWebControl:WcEntryBillOfLadingNumber runat="server" ID="WcEntryBillOfLadingNumber" />
+    <%--<TWebControl:WcEntryBillOfLadingNumber runat="server"  Visible="false" ID="WcEntryBillOfLadingNumber" />--%>
 
     <br />
     <br />

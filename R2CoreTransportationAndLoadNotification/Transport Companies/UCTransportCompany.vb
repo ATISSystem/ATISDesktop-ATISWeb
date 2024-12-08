@@ -73,7 +73,7 @@ Public Class UCTransportCompany
     Public Sub UCViewNSS(YourTransportCompanyId As Int64)
         Try
             Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
-            UCNSSCurrent = InstanceTransportCompanies.GetNSSTransportCompany(YourTransportCompanyId)
+            UCNSSCurrent = InstanceTransportCompanies.GetNSSTransportCompany(YourTransportCompanyId, True)
             RaiseEvent UCViewNSSRequested(UCNSSCurrent)
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)

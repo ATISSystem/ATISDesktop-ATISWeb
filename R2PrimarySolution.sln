@@ -57,6 +57,12 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PayanehAmirKabirAutomatedJo
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ESCOAutomatedJobsSetup", "ESCOAutomatedJobsSetup\ESCOAutomatedJobsSetup.vdproj", "{9AD0EE8F-350F-4348-BE59-2886E2295E01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillOfLadingClassLibrary", "BillOfLadingClassLibrary\BillOfLadingClassLibrary.csproj", "{9FD0B5FA-5481-486F-AC33-43D0E1AAA996}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillOfLadingAutomatedJobs", "BillOfLadingAutomatedJobs\BillOfLadingAutomatedJobs.csproj", "{38D26D30-B0F4-43F9-BC56-B62279245410}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BillOfLadingAutomatedJobsSetup", "BillOfLadingAutomatedJobsSetup\BillOfLadingAutomatedJobsSetup.vdproj", "{EEAC0417-3990-40A2-8765-60B4A67AF4A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,6 +167,16 @@ Global
 		{1DC10FC9-62CB-493A-856A-0125712C167B}.Release|Any CPU.ActiveCfg = Release
 		{9AD0EE8F-350F-4348-BE59-2886E2295E01}.Debug|Any CPU.ActiveCfg = Debug
 		{9AD0EE8F-350F-4348-BE59-2886E2295E01}.Release|Any CPU.ActiveCfg = Release
+		{9FD0B5FA-5481-486F-AC33-43D0E1AAA996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FD0B5FA-5481-486F-AC33-43D0E1AAA996}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FD0B5FA-5481-486F-AC33-43D0E1AAA996}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FD0B5FA-5481-486F-AC33-43D0E1AAA996}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38D26D30-B0F4-43F9-BC56-B62279245410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38D26D30-B0F4-43F9-BC56-B62279245410}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38D26D30-B0F4-43F9-BC56-B62279245410}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38D26D30-B0F4-43F9-BC56-B62279245410}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEAC0417-3990-40A2-8765-60B4A67AF4A9}.Debug|Any CPU.ActiveCfg = Debug
+		{EEAC0417-3990-40A2-8765-60B4A67AF4A9}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

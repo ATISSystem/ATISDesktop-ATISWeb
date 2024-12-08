@@ -25,7 +25,7 @@ Public Class UCUCEnterExitCollection
 
 #Region "General Properties"
 
-    Private Property UCTotalNumberOfRecordstoView As Int32 = 20
+    Private Property UCTotalNumberOfRecordstoView As Int32 = 50
 
 #End Region
 

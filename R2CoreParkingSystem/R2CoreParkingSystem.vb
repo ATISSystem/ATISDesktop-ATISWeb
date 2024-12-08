@@ -4047,10 +4047,10 @@ Namespace City
         Public Shared Function GetNSSCity(YournCityCode As Int64) As R2StandardCityStructure
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select Top 1 * from dbtransport.dbo.TbCity Where nCityCode=" & YournCityCode & "", 1, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select Top 1 * from dbtransport.dbo.TbCity Where nCityCode=" & YournCityCode & "", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 End If
-                Return New R2StandardCityStructure(Ds.Tables(0).Rows(0).Item("nCityCode"), Ds.Tables(0).Rows(0).Item("StrCityName").trim, Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDistance") / 25), Ds.Tables(0).Rows(0).Item("nProvince"))
+                Return New R2StandardCityStructure(Ds.Tables(0).Rows(0).Item("nCityCode"), Ds.Tables(0).Rows(0).Item("StrCityName").trim, Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDistance") / 25), Ds.Tables(0).Rows(0).Item("nProvince"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("ViewFlag"))
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -4062,7 +4062,7 @@ Namespace City
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select Top 1 * from dbtransport.dbo.TbCity Where strCityName like '%" & YourCityTitle.Trim() & "%'", 1, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 End If
-                Return New R2StandardCityStructure(Ds.Tables(0).Rows(0).Item("nCityCode"), Ds.Tables(0).Rows(0).Item("StrCityName").trim, Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDistance") / 25), Ds.Tables(0).Rows(0).Item("nProvince"))
+                Return New R2StandardCityStructure(Ds.Tables(0).Rows(0).Item("nCityCode"), Ds.Tables(0).Rows(0).Item("StrCityName").trim, Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDistance") / 25), Ds.Tables(0).Rows(0).Item("nProvince"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("ViewFlag"))
             Catch ex As GetNSSException
                 Throw ex
             Catch ex As Exception
@@ -4077,21 +4077,24 @@ Namespace City
             Private myStrCityName As String
             Private mynDistance As Int64
             Private mynProvince As Int64
-
+            Private _Active As Boolean
+            Private _ViewFlag As Boolean
 
 
 #Region "Constructing Management"
             Public Sub New()
                 MyBase.New()
-                mynCityCode = 0 : myStrCityName = "" : mynDistance = 0 : mynProvince = 0
+                mynCityCode = 0 : myStrCityName = "" : mynDistance = 0 : mynProvince = 0 : _Active = False : _ViewFlag = False
             End Sub
 
-            Public Sub New(ByVal YournCityCode As Int64, ByVal YourStrCityName As String, ByVal YournDistance As Int64, ByVal YournProvince As Int64)
+            Public Sub New(ByVal YournCityCode As Int64, ByVal YourStrCityName As String, ByVal YournDistance As Int64, ByVal YournProvince As Int64, YourActive As Boolean, YourViewFlag As Boolean)
                 MyBase.New(YournCityCode, YourStrCityName)
                 mynCityCode = YournCityCode
                 myStrCityName = YourStrCityName
                 mynDistance = YournDistance
                 mynProvince = YournProvince
+                _Active = YourActive
+                _ViewFlag = YourViewFlag
             End Sub
 #End Region
 #Region "Properting Management"
@@ -4125,6 +4128,22 @@ Namespace City
                 End Get
                 Set(ByVal Value As Int64)
                     mynProvince = Value
+                End Set
+            End Property
+            Public Property ViewFlag() As Boolean
+                Get
+                    Return _ViewFlag
+                End Get
+                Set(ByVal Value As Boolean)
+                    _ViewFlag = Value
+                End Set
+            End Property
+            Public Property Active() As Boolean
+                Get
+                    Return _Active
+                End Get
+                Set(ByVal Value As Boolean)
+                    _Active = Value
                 End Set
             End Property
 
@@ -4178,12 +4197,12 @@ Namespace City
                 Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
                 InstanceSQLInjectionPrevention.GeneralAuthorization(YourSearchStr)
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbCity Where Viewflag=1 and Deleted=0 and StrCityNAME LIKE '%" & YourSearchStr.Replace("ی", "ي").Replace("ک", "ك") & "%' Order by StrCityName", 3600, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbCity Where Viewflag=1 and Deleted=0 and StrCityNAME LIKE '%" & YourSearchStr.Replace("ی", "ي").Replace("ک", "ك") & "%' and ViewFlag=1 Order by StrCityName", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 End If
                 Dim Lst As List(Of R2StandardCityStructure) = New List(Of R2StandardCityStructure)
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    Dim NSS As R2StandardCityStructure = New R2StandardCityStructure(Ds.Tables(0).Rows(Loopx).Item("nCityCode"), Ds.Tables(0).Rows(Loopx).Item("StrCityName").trim, Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nDistance") / 25), Ds.Tables(0).Rows(Loopx).Item("nProvince"))
+                    Dim NSS As R2StandardCityStructure = New R2StandardCityStructure(Ds.Tables(0).Rows(Loopx).Item("nCityCode"), Ds.Tables(0).Rows(Loopx).Item("StrCityName").trim, Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nDistance") / 25), Ds.Tables(0).Rows(Loopx).Item("nProvince"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("ViewFlag"))
                     Lst.Add(NSS)
                 Next
                 Return Lst
@@ -4199,12 +4218,12 @@ Namespace City
                 Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
                 InstanceSQLInjectionPrevention.GeneralAuthorization(YourSearchStr)
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbCity Where Left(StrCityNAME," & YourSearchStr.Length & ")='" & YourSearchStr.Replace("ی", "ي").Replace("ک", "ك") & "' Order by StrCityName", 3600, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2ClassSqlConnectionSepas, "Select * from dbtransport.dbo.TbCity Where Left(StrCityNAME," & YourSearchStr.Length & ")='" & YourSearchStr.Replace("ی", "ي").Replace("ک", "ك") & "' and ViewFlag=1 Order by StrCityName", 3600, Ds).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 End If
                 Dim Lst As List(Of R2StandardCityStructure) = New List(Of R2StandardCityStructure)
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    Dim NSS As R2StandardCityStructure = New R2StandardCityStructure(Ds.Tables(0).Rows(Loopx).Item("nCityCode"), Ds.Tables(0).Rows(Loopx).Item("StrCityName").trim, Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nDistance") / 25), Ds.Tables(0).Rows(Loopx).Item("nProvince"))
+                    Dim NSS As R2StandardCityStructure = New R2StandardCityStructure(Ds.Tables(0).Rows(Loopx).Item("nCityCode"), Ds.Tables(0).Rows(Loopx).Item("StrCityName").trim, Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nDistance") / 25), Ds.Tables(0).Rows(Loopx).Item("nProvince"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("ViewFlag"))
                     Lst.Add(NSS)
                 Next
                 Return Lst
@@ -4223,7 +4242,7 @@ Namespace City
                 End If
                 Dim Lst As List(Of R2StandardCityStructure) = New List(Of R2StandardCityStructure)
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    Dim NSS As R2StandardCityStructure = New R2StandardCityStructure(Ds.Tables(0).Rows(Loopx).Item("nCityCode"), Ds.Tables(0).Rows(Loopx).Item("StrCityName").trim, Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nDistance") / 25), Ds.Tables(0).Rows(Loopx).Item("nProvince"))
+                    Dim NSS As R2StandardCityStructure = New R2StandardCityStructure(Ds.Tables(0).Rows(Loopx).Item("nCityCode"), Ds.Tables(0).Rows(Loopx).Item("StrCityName").trim, Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nDistance") / 25), Ds.Tables(0).Rows(Loopx).Item("nProvince"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("ViewFlag"))
                     Lst.Add(NSS)
                 Next
                 Return Lst
@@ -4265,6 +4284,18 @@ Namespace City
 
 
     End Class
+
+    Namespace Execption
+        Public Class LoadTargetorLoadSourceIsUnActiveException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "مبدا یا مقصد غیر فعال است"
+                End Get
+            End Property
+        End Class
+
+    End Namespace
 
 End Namespace
 

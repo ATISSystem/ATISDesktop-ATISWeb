@@ -30,10 +30,9 @@ using R2CoreTransportationAndLoadNotification.Trucks.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
 using PayanehClassLibrary.CarTruckNobatManagement.Exceptions;
 using R2Core.MoneyWallet.Exceptions;
-using R2CoreTransportationAndLoadNotification.BillOfLading;
-using R2CoreTransportationAndLoadNotification.BillOfLading.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions;
 using R2CoreTransportationAndLoadNotification.DriverSelfDeclaration.Exceptions;
+using BillOfLadingCore.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -73,7 +72,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
             LblTurnStatus.Text = String.Empty;
             LblTurnStatus.ForeColor = System.Drawing.Color.White;
             PnlTurnStatus.BackColor = System.Drawing.Color.Transparent;
-            WcEntryBillOfLadingNumber.WCRefreshGeneral();
+            //WcEntryBillOfLadingNumber.WCRefreshGeneral();
         }
 
         private void WcLoadCapacitorLoadsCollectionSummaryIntelligently_WcLoadCapacitorLoadSelectedEvent(object sender, WcLoadCapacitorLoadsCollectionSummaryIntelligently.nEstelamIdEventArgs e)
@@ -99,7 +98,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 var NSSTransportCompany = InstanceTransportCompanies.GetNSSTransportCompany(NSSLoadCapacitorLoad);
 
                 /*کنترل شماره بارنامه وارد شده*/
-                var BillOfLadingNumber = WcEntryBillOfLadingNumber.WcBillOfLadingNumber;
+                //var BillOfLadingNumber = WcEntryBillOfLadingNumber.WcBillOfLadingNumber;
 
                 //به دست آوردن نوبت موجود ناوگان و یا این که در صورت عدم وجود نوبت باید روابط موقت ایجاد گردد و نوبت صادر گردد
                 //در این جا از کیف پول شرکت حمل و نقل استفاده شده است
@@ -124,10 +123,10 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 //تخصیص بار - آزاد سازی بار به صورت خودکار توسط سرور انجام می گردد
                 //مشاهده و چاپ مجوز از طریق قسمت مجوزهای صادر شده در بارهای رسوبی قابل مشاهده است
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                var InstanceBillOfLading = new R2CoreTransportationAndLoadNotificationMClassBillOfLadingManager();
+                //var InstanceBillOfLading = new R2CoreTransportationAndLoadNotificationMClassBillOfLadingManager();
                 InstanceLoadAllocation.LoadAllocationRegistering(NSSLoadCapacitorLoad.nEstelamId, NSSTurn, InstanceLogin.GetNSSCurrentUser(), R2CoreTransportationAndLoadNotificationRequesters.WcLoadCapacitorLoadAllocationLoadPermissionIssue, false, true);
                 LblTurnStatus.Text = TempTurnReport;
-                InstanceBillOfLading.AttachBillOfLadingToLoadPermission(NSSLoadCapacitorLoad.nEstelamId, NSSTurn.nEnterExitId, BillOfLadingNumber);
+                //InstanceBillOfLading.AttachBillOfLadingToLoadPermission(NSSLoadCapacitorLoad.nEstelamId, NSSTurn.nEnterExitId, BillOfLadingNumber);
 
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','تخصیص بار با موفقیت انجام شد');", true);
             }

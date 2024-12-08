@@ -155,90 +155,6 @@
     <Compile Include="AnnouncementHalls\UCViewerNSSAnnouncementHallSubGroup.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCBillOfLadingControlInfraction.Designer.vb">
-      <DependentUpon>UCBillOfLadingControlInfraction.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCBillOfLadingControlInfraction.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCManipulationBillOfLadingControlInfraction.Designer.vb">
-      <DependentUpon>UCManipulationBillOfLadingControlInfraction.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCManipulationBillOfLadingControlInfraction.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCUCBillOfLadingControlInfractionCollection.Designer.vb">
-      <DependentUpon>UCUCBillOfLadingControlInfractionCollection.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCUCBillOfLadingControlInfractionCollection.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCUCBillOfLadingControlInfractionCollectionAdvance.Designer.vb">
-      <DependentUpon>UCUCBillOfLadingControlInfractionCollectionAdvance.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCUCBillOfLadingControlInfractionCollectionAdvance.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCViewerNSSBillOfLadingControlInfraction.Designer.vb">
-      <DependentUpon>UCViewerNSSBillOfLadingControlInfraction.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCViewerNSSBillOfLadingControlInfraction.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCViewerNSSBillOfLadingControlInfractionExtended.Designer.vb">
-      <DependentUpon>UCViewerNSSBillOfLadingControlInfractionExtended.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControlInfraction\UCViewerNSSBillOfLadingControlInfractionExtended.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\FrmcBillOfLadingControl.Designer.vb">
-      <DependentUpon>FrmcBillOfLadingControl.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\FrmcBillOfLadingControl.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCBillOfLadingControl.Designer.vb">
-      <DependentUpon>UCBillOfLadingControl.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCBillOfLadingControl.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCCreatorBillOfLadingControl.Designer.vb">
-      <DependentUpon>UCCreatorBillOfLadingControl.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCCreatorBillOfLadingControl.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCManipulationBillOfLadingControl.Designer.vb">
-      <DependentUpon>UCManipulationBillOfLadingControl.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCManipulationBillOfLadingControl.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCUCBillOfLadingControlCollection.Designer.vb">
-      <DependentUpon>UCUCBillOfLadingControlCollection.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCUCBillOfLadingControlCollection.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCUCBillOfLadingControlCollectionAdvance.Designer.vb">
-      <DependentUpon>UCUCBillOfLadingControlCollectionAdvance.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCUCBillOfLadingControlCollectionAdvance.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCViewerNSSBillOfLadingControl.Designer.vb">
-      <DependentUpon>UCViewerNSSBillOfLadingControl.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCViewerNSSBillOfLadingControl.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCViewerNSSBillOfLadingControlExtended.Designer.vb">
-      <DependentUpon>UCViewerNSSBillOfLadingControlExtended.vb</DependentUpon>
-    </Compile>
-    <Compile Include="BillOfLading\BillOfLadingControl\UCViewerNSSBillOfLadingControlExtended.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Configuration Management\UCConfigurationOfAnnouncementHalls.Designer.vb">
       <DependentUpon>UCConfigurationOfAnnouncementHalls.vb</DependentUpon>
     </Compile>
@@ -671,48 +587,6 @@
     <EmbeddedResource Include="AnnouncementHalls\UCViewerNSSAnnouncementHallSubGroup.resx">
       <DependentUpon>UCViewerNSSAnnouncementHallSubGroup.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControlInfraction\UCBillOfLadingControlInfraction.resx">
-      <DependentUpon>UCBillOfLadingControlInfraction.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControlInfraction\UCManipulationBillOfLadingControlInfraction.resx">
-      <DependentUpon>UCManipulationBillOfLadingControlInfraction.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControlInfraction\UCUCBillOfLadingControlInfractionCollection.resx">
-      <DependentUpon>UCUCBillOfLadingControlInfractionCollection.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControlInfraction\UCUCBillOfLadingControlInfractionCollectionAdvance.resx">
-      <DependentUpon>UCUCBillOfLadingControlInfractionCollectionAdvance.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControlInfraction\UCViewerNSSBillOfLadingControlInfraction.resx">
-      <DependentUpon>UCViewerNSSBillOfLadingControlInfraction.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControlInfraction\UCViewerNSSBillOfLadingControlInfractionExtended.resx">
-      <DependentUpon>UCViewerNSSBillOfLadingControlInfractionExtended.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\FrmcBillOfLadingControl.resx">
-      <DependentUpon>FrmcBillOfLadingControl.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCBillOfLadingControl.resx">
-      <DependentUpon>UCBillOfLadingControl.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCCreatorBillOfLadingControl.resx">
-      <DependentUpon>UCCreatorBillOfLadingControl.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCManipulationBillOfLadingControl.resx">
-      <DependentUpon>UCManipulationBillOfLadingControl.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCUCBillOfLadingControlCollection.resx">
-      <DependentUpon>UCUCBillOfLadingControlCollection.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCUCBillOfLadingControlCollectionAdvance.resx">
-      <DependentUpon>UCUCBillOfLadingControlCollectionAdvance.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCViewerNSSBillOfLadingControl.resx">
-      <DependentUpon>UCViewerNSSBillOfLadingControl.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BillOfLading\BillOfLadingControl\UCViewerNSSBillOfLadingControlExtended.resx">
-      <DependentUpon>UCViewerNSSBillOfLadingControlExtended.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Configuration Management\UCConfigurationOfAnnouncementHalls.resx">
       <DependentUpon>UCConfigurationOfAnnouncementHalls.vb</DependentUpon>
     </EmbeddedResource>
@@ -847,6 +721,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LoadingAndDischargingPlaces\UCLoadingAndDischargingPlaceDataEntry.resx">
       <DependentUpon>UCLoadingAndDischargingPlaceDataEntry.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoadingAndDischargingPlaces\UCSearcherLoadingAndDischargingPlaces.resx">
+      <DependentUpon>UCSearcherLoadingAndDischargingPlaces.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MoneyWalletCharge\FrmcMoneyWalletChargeByTransportCompany.resx">
       <DependentUpon>FrmcMoneyWalletChargeByTransportCompany.vb</DependentUpon>

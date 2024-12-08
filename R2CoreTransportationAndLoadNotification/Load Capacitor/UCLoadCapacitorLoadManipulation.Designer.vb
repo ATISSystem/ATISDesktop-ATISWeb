@@ -440,7 +440,6 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         Me.UcSearcherLoadSources.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcSearcherLoadSources.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherLoadSources.Enabled = False
         Me.UcSearcherLoadSources.Location = New System.Drawing.Point(823, 48)
         Me.UcSearcherLoadSources.Name = "UcSearcherLoadSources"
         Me.UcSearcherLoadSources.RightToLeft = System.Windows.Forms.RightToLeft.Yes
@@ -916,14 +915,15 @@ Partial Class UCLoadCapacitorLoadManipulation
         '
         'UcTransportTarrifsParameters
         '
-        Me.UcTransportTarrifsParameters.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.UcTransportTarrifsParameters.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTransportTarrifsParameters.BackColor = System.Drawing.Color.Transparent
         Me.UcTransportTarrifsParameters.Location = New System.Drawing.Point(-4, 147)
         Me.UcTransportTarrifsParameters.Name = "UcTransportTarrifsParameters"
         Me.UcTransportTarrifsParameters.Padding = New System.Windows.Forms.Padding(10)
         Me.UcTransportTarrifsParameters.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.UcTransportTarrifsParameters.Size = New System.Drawing.Size(1084, 89)
+        Me.UcTransportTarrifsParameters.Size = New System.Drawing.Size(1084, 85)
         Me.UcTransportTarrifsParameters.TabIndex = 22
         '
         'UcucLoadCapacitorAccountingCollection

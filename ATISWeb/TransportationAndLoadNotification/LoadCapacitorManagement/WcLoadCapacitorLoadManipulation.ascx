@@ -87,6 +87,25 @@
                                 <asp:AsyncPostBackTrigger ControlID="BtnSearchTargetCity" EventName="ServerClick" />
                             </Triggers>
                         </asp:UpdatePanel>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group text-center border rounded p-1" style="border-color: gainsboro">
+                        <span class="R2FontBYekanMedium " style="vertical-align: central; color: blue;">مبدا</span>
+                        <asp:UpdatePanel ID="UpdatePanel6" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="True">
+                            <ContentTemplate>
+                                <div class="input-group mb-1">
+                                    <asp:TextBox ID="TxtSearchSourceCity" runat="server" CssClass="form-control R2FontBHomaSmall text-center" placeholder="جستجو" Style="direction: rtl;"></asp:TextBox>
+                                    <div class="input-group-append">
+                                        <button runat="server" id="BtnSearchSourceCity" class="btn btn-group-sm" style="background-color: gray; color: white"><i class="fa fa-search" style=""></i></button>
+                                    </div>
+                                </div>
+                                <asp:DropDownList ID="DropDownListSourceCity" runat="server" CssClass="form-control form-control-sm R2FontBHomaSmall" dir="rtl" AutoPostBack="True"></asp:DropDownList>
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="BtnSearchSourceCity" EventName="ServerClick" />
+                            </Triggers>
+                        </asp:UpdatePanel>
 
                     </div>
                 </div>
@@ -180,6 +199,7 @@
                             <asp:TextBox runat="server" ID="TxtTarrif" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
                             <div class="input-group-append">
                                 <span class="input-group-text R2FontBHomaSmall" style="background-color: yellow; color: blue">تعرفه حمل</span>
+                                <button runat="server" id="BtnSearchTarrif" class="btn btn-group-sm" style="background-color: gray; color: white"><i class="fa fa-search" style=""></i></button>
                             </div>
                         </div>
                         <div class="input-group col-sm-3 col-lg-3">
@@ -202,6 +222,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="container-fluid p-1">
                     <div class="d-flex flex-row-reverse">
                         <div class="input-group col-sm-6 col-lg-6">
@@ -211,7 +232,7 @@
                             </div>
                         </div>
                         <div class="input-group col-sm-6 col-lg-6">
-                            <asp:TextBox runat="server" ID="TxtDescription" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
+                            <asp:TextBox runat="server" Text="" ID="TxtDescription" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
                             <div class="input-group-append">
                                 <span class="input-group-text R2FontBHomaSmall" style="background-color: yellow; color: blue">توضیحات</span>
                             </div>
@@ -221,6 +242,7 @@
             </ContentTemplate>
             <Triggers>
                 <asp:AsyncPostBackTrigger ControlID="BtnNewLoad" EventName="Click" />
+                <asp:AsyncPostBackTrigger ControlID="BtnSearchTarrif" EventName="ServerClick" />
             </Triggers>
         </asp:UpdatePanel>
 

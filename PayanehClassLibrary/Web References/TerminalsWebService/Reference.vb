@@ -69,7 +69,7 @@ Namespace TerminalsWebService
         '''<remarks/>
         Public Sub New()
             MyBase.New
-            Me.Url = "http://172.26.29.16:2010/TerminalsWebService.asmx"
+            Me.Url = Global.PayanehClassLibrary.My.MySettings.Default.PayanehClassLibrary_TerminalsWebService_TerminalsWebService
             If (Me.IsLocalFileSystemWebService(Me.Url) = true) Then
                 Me.UseDefaultCredentials = true
                 Me.useDefaultCredentialsSetExplicitly = false

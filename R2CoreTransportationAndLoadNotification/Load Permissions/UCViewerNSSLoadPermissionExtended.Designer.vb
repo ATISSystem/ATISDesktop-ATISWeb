@@ -26,6 +26,8 @@ Partial Class UCViewerNSSLoadPermissionExtended
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PnlOutter = New System.Windows.Forms.Panel()
         Me.PnlInner = New System.Windows.Forms.Panel()
+        Me.LblPermissionDate = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
         Me.LabelUserName = New System.Windows.Forms.Label()
         Me.PnlTop = New System.Windows.Forms.Panel()
         Me.LabelOtaghdarTurnNumber = New System.Windows.Forms.Label()
@@ -79,6 +81,8 @@ Partial Class UCViewerNSSLoadPermissionExtended
         'PnlInner
         '
         Me.PnlInner.BackColor = System.Drawing.Color.PaleTurquoise
+        Me.PnlInner.Controls.Add(Me.LblPermissionDate)
+        Me.PnlInner.Controls.Add(Me.Label9)
         Me.PnlInner.Controls.Add(Me.LabelUserName)
         Me.PnlInner.Controls.Add(Me.PnlTop)
         Me.PnlInner.Controls.Add(Me.Label5)
@@ -88,15 +92,41 @@ Partial Class UCViewerNSSLoadPermissionExtended
         Me.PnlInner.Size = New System.Drawing.Size(975, 59)
         Me.PnlInner.TabIndex = 0
         '
+        'LblPermissionDate
+        '
+        Me.LblPermissionDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LblPermissionDate.BackColor = System.Drawing.Color.Transparent
+        Me.LblPermissionDate.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.LblPermissionDate.Font = New System.Drawing.Font("IRMehr", 9.75!)
+        Me.LblPermissionDate.ForeColor = System.Drawing.Color.Black
+        Me.LblPermissionDate.Location = New System.Drawing.Point(676, 89)
+        Me.LblPermissionDate.Name = "LblPermissionDate"
+        Me.LblPermissionDate.Size = New System.Drawing.Size(100, 23)
+        Me.LblPermissionDate.TabIndex = 61
+        Me.LblPermissionDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label9
+        '
+        Me.Label9.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label9.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label9.ForeColor = System.Drawing.Color.DarkGray
+        Me.Label9.Location = New System.Drawing.Point(672, 66)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(100, 23)
+        Me.Label9.TabIndex = 60
+        Me.Label9.Text = "تاریخ صدور مجوز"
+        Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'LabelUserName
         '
+        Me.LabelUserName.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LabelUserName.BackColor = System.Drawing.Color.Transparent
         Me.LabelUserName.Cursor = System.Windows.Forms.Cursors.Hand
         Me.LabelUserName.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LabelUserName.ForeColor = System.Drawing.Color.Black
-        Me.LabelUserName.Location = New System.Drawing.Point(876, 89)
+        Me.LabelUserName.Location = New System.Drawing.Point(782, 89)
         Me.LabelUserName.Name = "LabelUserName"
-        Me.LabelUserName.Size = New System.Drawing.Size(93, 23)
+        Me.LabelUserName.Size = New System.Drawing.Size(187, 23)
         Me.LabelUserName.TabIndex = 59
         Me.LabelUserName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -357,13 +387,14 @@ Partial Class UCViewerNSSLoadPermissionExtended
         '
         'Label5
         '
+        Me.Label5.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label5.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label5.ForeColor = System.Drawing.Color.DarkGray
-        Me.Label5.Location = New System.Drawing.Point(872, 66)
+        Me.Label5.Location = New System.Drawing.Point(778, 66)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(100, 23)
+        Me.Label5.Size = New System.Drawing.Size(194, 23)
         Me.Label5.TabIndex = 39
-        Me.Label5.Text = "کاربر"
+        Me.Label5.Text = "کاربر تخصیص بار"
         Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'UCViewerNSSLoadPermissionExtended
@@ -409,4 +440,6 @@ End Sub
     Friend WithEvents Label6 As Windows.Forms.Label
     Friend WithEvents LabelOtaghdarTurnNumber As Windows.Forms.Label
     Friend WithEvents LabelOtagharTurNumber As Windows.Forms.Label
+    Friend WithEvents LblPermissionDate As Windows.Forms.Label
+    Friend WithEvents Label9 As Windows.Forms.Label
 End Class

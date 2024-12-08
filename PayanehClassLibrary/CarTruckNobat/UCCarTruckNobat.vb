@@ -132,10 +132,12 @@ Public Class UCCarTruckNobat
 
     Private Sub UcButtonResuscitationNobat_UCClickedEvent() Handles UcButtonResuscitationNobat.UCClickedEvent
         Try
-            PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToFalse(_NSSTurn.nEnterExitId)
+            PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToFalse(_NSSTurn.nEnterExitId, True)
             _NSSTurn.bFlagDriver = False
             UCViewInf(_NSSTurn)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت احیاء شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -170,6 +172,20 @@ Public Class UCCarTruckNobat
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
+
+    Private Sub UcButtonEmergencyResuscitationNobat_UCClickedEvent() Handles UcButtonEmergencyResuscitationNobat.UCClickedEvent
+        Try
+            PayanehClassLibraryMClassCarTruckNobatManagement.EmergencySetbFlagDriverToFalse(_NSSTurn.nEnterExitId)
+            _NSSTurn.bFlagDriver = False
+            UCViewInf(_NSSTurn)
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت احیاء شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
 
 
 

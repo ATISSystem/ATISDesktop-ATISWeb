@@ -64,6 +64,15 @@ Public Class UCSearcherLoadingAndDischargingPlaces
         End Try
     End Sub
 
+    Private Sub PicUnActives_Click(sender As Object, e As EventArgs)
+        Try
+            Dim InstanceLoadingAndDischargingPlaces = New R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManager
+            UCFillListBox(InstanceLoadingAndDischargingPlaces.GetUnActiveLoadingAndDischargingPlaces.Select(Function(X) New R2StandardStructure(X.OCode, X.OName)).ToList())
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
 
 #End Region
 

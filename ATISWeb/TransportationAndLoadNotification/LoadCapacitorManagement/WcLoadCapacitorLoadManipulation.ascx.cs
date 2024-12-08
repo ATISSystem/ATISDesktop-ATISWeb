@@ -27,6 +27,9 @@ using R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Excepti
 using R2CoreTransportationAndLoadNotification.TransportTarrifsParameters;
 using R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces;
 using R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces.Exceptions;
+using R2CoreParkingSystem.City.Execption;
+using R2CoreTransportationAndLoadNotification.TransportTarrifs;
+using R2CoreTransportationAndLoadNotification.TransportTarrifs.Exceptions;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 {
@@ -65,6 +68,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 
                 if (TxtSearchLoad.Text == string.Empty) { throw new DataEntryException("نوع بار انتخاب نشده است"); }
                 if (TxtSearchTargetCity.Text == string.Empty) { throw new DataEntryException("مقصد انتخاب نشده است"); }
+                //if (TxtSearchTargetCity.Text.Split('#')[0] == "21310000") { throw new DataEntryException("کد مقصد مورد نظر فقط برای مبدا قابل انتخاب است"); }
+                if (TxtSearchSourceCity.Text == string.Empty) { throw new DataEntryException("مبدا انتخاب نشده است"); }
                 if (TxtSearchLoaderType.Text == string.Empty) { throw new DataEntryException("بارگیر انتخاب نشده است"); }
                 if (TxtSearchTC.Text == string.Empty) { throw new DataEntryException("شرکت حمل و نقل انتخاب نشده است"); }
                 if (TxtSearchLoadingPlace.Text == string.Empty) { throw new DataEntryException("محل بارگیری انتخاب نشده است"); }
@@ -81,9 +86,9 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 var NSSAnnouncementHall = InstanceAnnouncementHalls.GetNSSAnnouncementHallByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]));
                 var NSSAnnouncementHallSubGroup = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroupByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]));
                 if (TxtnEstelamId.Text != "0" & TxtnEstelamId.Text != string.Empty)
-                { NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(Convert.ToInt64(TxtnEstelamId.Text), string.Empty, TxtLoadReciever.Text, Convert.ToInt64(TxtSearchTargetCity.Text.Split('#')[0]), TonajValue, Convert.ToInt64(TxtSearchLoad.Text.Split('#')[0]), Convert.ToInt64(TxtSearchTC.Text.Split('#')[0]), false, Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]), TxtAddress.Text, InstanceLogin.GetNSSCurrentUser().UserId, Convert.ToInt64(TxtnCarNumKol.Text), Convert.ToInt64(TxtTarrif.Text.Replace(",", "")), TxtDescription.Text, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), Convert.ToInt64(TxtnCarNumKol.Text), R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, 21310000, NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, WCTransportTarrifsParameters1.WCGetTPTParams(NSSAnnouncementHallSubGroup), false, Convert.ToInt64(TxtSearchLoadingPlace.Text.Split('#')[0]), Convert.ToInt64(TxtSearchDischargingPlace.Text.Split('#')[0])); }
+                { NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(Convert.ToInt64(TxtnEstelamId.Text), string.Empty, TxtLoadReciever.Text, Convert.ToInt64(TxtSearchTargetCity.Text.Split('#')[0]), TonajValue, Convert.ToInt64(TxtSearchLoad.Text.Split('#')[0]), Convert.ToInt64(TxtSearchTC.Text.Split('#')[0]), false, Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]), TxtAddress.Text, InstanceLogin.GetNSSCurrentUser().UserId, Convert.ToInt64(TxtnCarNumKol.Text), Convert.ToInt64(TxtTarrif.Text.Replace(",", "")), TxtDescription.Text, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), Convert.ToInt64(TxtnCarNumKol.Text), R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, Convert.ToInt64(TxtSearchSourceCity.Text.Split('#')[0]), NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, WCTransportTarrifsParameters1.WCGetTPTParams(NSSAnnouncementHallSubGroup), false, Convert.ToInt64(TxtSearchLoadingPlace.Text.Split('#')[0]), Convert.ToInt64(TxtSearchDischargingPlace.Text.Split('#')[0])); }
                 else
-                { NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, string.Empty, TxtLoadReciever.Text, Convert.ToInt64(TxtSearchTargetCity.Text.Split('#')[0]), TonajValue, Convert.ToInt64(TxtSearchLoad.Text.Split('#')[0]), Convert.ToInt64(TxtSearchTC.Text.Split('#')[0]), false, Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]), TxtAddress.Text, InstanceLogin.GetNSSCurrentUser().UserId, Convert.ToInt64(TxtnCarNumKol.Text), Convert.ToInt64(TxtTarrif.Text.Replace(",", "")), TxtDescription.Text, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), Convert.ToInt64(TxtnCarNumKol.Text), R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, 21310000, NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, WCTransportTarrifsParameters1.WCGetTPTParams(NSSAnnouncementHallSubGroup), false, Convert.ToInt64(TxtSearchLoadingPlace.Text.Split('#')[0]), Convert.ToInt64(TxtSearchDischargingPlace.Text.Split('#')[0])); }
+                { NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, string.Empty, TxtLoadReciever.Text, Convert.ToInt64(TxtSearchTargetCity.Text.Split('#')[0]), TonajValue, Convert.ToInt64(TxtSearchLoad.Text.Split('#')[0]), Convert.ToInt64(TxtSearchTC.Text.Split('#')[0]), false, Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]), TxtAddress.Text, InstanceLogin.GetNSSCurrentUser().UserId, Convert.ToInt64(TxtnCarNumKol.Text), Convert.ToInt64(TxtTarrif.Text.Replace(",", "")), TxtDescription.Text, _DateTime.GetCurrentDateShamsiFull(), _DateTime.GetCurrentTime(), Convert.ToInt64(TxtnCarNumKol.Text), R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered, Convert.ToInt64(TxtSearchSourceCity.Text.Split('#')[0]), NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, WCTransportTarrifsParameters1.WCGetTPTParams(NSSAnnouncementHallSubGroup), false, Convert.ToInt64(TxtSearchLoadingPlace.Text.Split('#')[0]), Convert.ToInt64(TxtSearchDischargingPlace.Text.Split('#')[0])); }
                 return NSS;
 
             }
@@ -97,6 +102,9 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
             { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "\\n" + MethodBase.GetCurrentMethod().Name + "\\n" + ex.Message); }
         }
 
+        private void WCViewTarrif(Int64 YourTarrif)
+        { TxtTarrif.Text = R2CoreMClassPublicProcedures.ParseSignDigitToSignString(YourTarrif); }
+
         public void WcViewInformation(R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure YourNSS)
         {
             try
@@ -104,6 +112,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 TxtnEstelamId.Text = YourNSS.nEstelamId.ToString();
                 TxtDateTimeofLoadRegistering.Text = YourNSS.dTimeElam + " - " + YourNSS.dDateElam;
                 TxtLoadReciever.Text = YourNSS.StrBarName;
+                TxtSearchSourceCity.Text = YourNSS.nBarSource + "    #    " + YourNSS.LoadSourceTitle.Trim();
                 TxtSearchTargetCity.Text = YourNSS.nCityCode + "    #    " + YourNSS.LoadTargetTitle.Trim();
                 TxtSearchLoad.Text = YourNSS.nBarCode + "    #    " + YourNSS.GoodTitle.Trim();
                 TxtSearchLoaderType.Text = YourNSS.nTruckType + "    #    " + YourNSS.LoaderTypeTitle.Trim();
@@ -113,7 +122,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 TxtAddress.Text = YourNSS.StrAddress;
                 TxtnCarNumKol.Text = YourNSS.nCarNumKol.ToString();
                 TxtnTonaj.Text = YourNSS.nTonaj.ToString();
-                TxtTarrif.Text = R2CoreMClassPublicProcedures.ParseSignDigitToSignString(YourNSS.StrPriceSug);
+                WCViewTarrif(YourNSS.StrPriceSug);
                 TxtDescription.Text = YourNSS.StrDescription;
                 WCUpdateWCTransportTarrifsParametersByLoad(YourNSS);
                 WcViewInformationCompleted?.Invoke(this, new EventArgs());
@@ -159,6 +168,28 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                     DropDownListTargetCity.Items.Add(myTarget.NSSCity.nCityCode + "    #    " + myTarget.NSSCity.StrCityName);
                 }
                 DropDownListTargetCity.Enabled = true;
+            }
+            catch (SqlInjectionException ex)
+            { throw ex; }
+            catch (Exception ex)
+            { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
+        }
+
+        private void WcFillSources(string YourSearchString)
+        {
+            try
+            {
+                if (YourSearchString == String.Empty) { return; }
+                DropDownListSourceCity.Items.Clear();
+                DropDownListSourceCity.Items.Add("انتخاب کنید ...");
+                DropDownListSourceCity.Enabled = false;
+                var mySources = R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetLoadTargets_SearchIntroCharacters(YourSearchString);
+                for (int loop = 0; loop <= mySources.Count - 1; loop++)
+                {
+                    var mySource = mySources[loop];
+                    DropDownListSourceCity.Items.Add(mySource.NSSCity.nCityCode + "    #    " + mySource.NSSCity.StrCityName);
+                }
+                DropDownListSourceCity.Enabled = true;
             }
             catch (SqlInjectionException ex)
             { throw ex; }
@@ -322,12 +353,15 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 if (!IsPostBack) { WcLoadCapacitorLoadsCollectionSummaryIntelligently.WcViewInformation(); }
                 BtnSearchLoaderType.ServerClick += BtnSearchLoaderType_ServerClick;
                 BtnSearchLoad.ServerClick += BtnSearchLoad_ServerClick;
+                BtnSearchSourceCity.ServerClick += BtnSearchSourceCity_ServerClick;
                 BtnSearchTargetCity.ServerClick += BtnSearchTargetCity_ServerClick;
+                BtnSearchTarrif.ServerClick += BtnSearchTarrif_ServerClick;
                 BtnSearchTC.ServerClick += BtnSearchTC_ServerClick;
                 BtnSearchDischargingPlace.ServerClick += BtnSearchDischargingPlace_ServerClick;
                 BtnSearchLoadingPlace.ServerClick += BtnSearchLoadingPlace_ServerClick;
                 DropDownListLoad.SelectedIndexChanged += DropDownListGoods_SelectedIndexChanged;
                 DropDownListLoaderType.SelectedIndexChanged += DropDownListLoaderType_SelectedIndexChanged;
+                DropDownListSourceCity.SelectedIndexChanged += DropDownListSourceCity_SelectedIndexChanged;
                 DropDownListTargetCity.SelectedIndexChanged += DropDownListTargetCity_SelectedIndexChanged;
                 DropDownListTC.SelectedIndexChanged += DropDownListTC_SelectedIndexChanged;
                 DropDownListDischargingPlace.SelectedIndexChanged += DropDownListDischargingPlace_SelectedIndexChanged;
@@ -426,6 +460,40 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
         }
 
+        private void BtnSearchTarrif_ServerClick(object sender, EventArgs e)
+        {
+            try
+            {
+                if ((TxtSearchLoaderType.Text.Split('#')[0] != String.Empty) && (TxtSearchTargetCity.Text.Split('#')[0] != String.Empty))
+                {
+                    var InstanceAnnouncementHalls = new R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager();
+                    var NSSAnnouncementHall = InstanceAnnouncementHalls.GetNSSAnnouncementHallByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]));
+                    var NSSAnnouncementHallSubGroup = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroupByLoaderTypeId(Convert.ToInt64(TxtSearchLoaderType.Text.Split('#')[0]));
+                    var NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(0, string.Empty, null, Convert.ToInt64(TxtSearchTargetCity.Text.Split('#')[0]), double.MinValue, long.MinValue, long.MinValue, false, long.MinValue, null, long.MinValue, long.MinValue, long.MinValue, string.Empty, null, String.Empty, long.MinValue, long.MinValue, Convert.ToInt64(TxtSearchSourceCity.Text.Split('#')[0]), NSSAnnouncementHall.AHId, NSSAnnouncementHallSubGroup.AHSGId, null, false, long.MinValue, long.MinValue);
+                    var InstanceTransportTarrifs = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsManager();
+                    var Tarrif = InstanceTransportTarrifs.GetNSSTransportTarrif(NSS).Tarrif;
+                    WCViewTarrif(Tarrif);
+                }
+            }
+            catch (TransportPriceTarrifNotFoundException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "lkfwlkflskdf" + "');", true);
+                WCViewTarrif(0);
+            }
+            catch (Exception ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true);
+                WCViewTarrif(0);
+            }
+        }
+
+        private void BtnSearchSourceCity_ServerClick(object sender, EventArgs e)
+        {
+            try { WcFillSources(TxtSearchSourceCity.Text); }
+            catch (SqlInjectionException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+            catch (Exception ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+        }
+
         private void BtnSearchLoad_ServerClick(object sender, EventArgs e)
         {
             try { WcFillGoods(TxtSearchLoad.Text); }
@@ -476,13 +544,15 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 WcInformationChangedEvent?.Invoke(this, new EventArgs());
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "بار با موفقیت به ثبت رسید" + "');", true);
             }
+            catch (LoadTargetorLoadSourceIsUnActiveException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (LoadingPlaceIsUnActiveException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (DischargingPlaceIsUnActiveException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (LoadingAndDischargingPlaceNotFoundException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
-            catch (LoadCapacitorLoadTonajNotAllowedException ex)
+            catch (LoadCapacitorLoadTonajExceededException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (LoadCapacitorLoadRegisteringInHolidayNotAllowedException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
@@ -511,13 +581,15 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                 WcInformationChangedEvent?.Invoke(this, new EventArgs());
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','" + "ویرایش بار با موفقیت انجام شد" + "');", true);
             }
+            catch (LoadTargetorLoadSourceIsUnActiveException ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (LoadingPlaceIsUnActiveException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (DischargingPlaceIsUnActiveException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (LoadingAndDischargingPlaceNotFoundException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
-            catch (LoadCapacitorLoadTonajNotAllowedException ex)
+            catch (LoadCapacitorLoadTonajExceededException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
             catch (EditOrDeleteReRegisteredLoadNotAllowedException ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
@@ -635,9 +707,17 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
 
         }
 
+        private void DropDownListSourceCity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try { if (DropDownListSourceCity.SelectedIndex > 0) { TxtSearchSourceCity.Text = DropDownListSourceCity.SelectedValue.Trim(); } }
+            catch (Exception ex)
+            { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
+        }
+
         private void DropDownListTargetCity_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try { if (DropDownListTargetCity.SelectedIndex > 0) { TxtSearchTargetCity.Text = DropDownListTargetCity.SelectedValue.Trim(); } }
+            try
+            { if (DropDownListTargetCity.SelectedIndex > 0) { TxtSearchTargetCity.Text = DropDownListTargetCity.SelectedValue.Trim(); } }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
         }
@@ -645,13 +725,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
         private void DropDownListLoaderType_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
-            {
-                if (DropDownListLoaderType.SelectedIndex > 0)
-                {
-                    TxtSearchLoaderType.Text = DropDownListLoaderType.SelectedValue.Trim();
-                    WCUpdateWCTransportTarrifsParametersByAHSGId();
-                }
-            }
+            { if (DropDownListLoaderType.SelectedIndex > 0) { TxtSearchLoaderType.Text = DropDownListLoaderType.SelectedValue.Trim(); WCUpdateWCTransportTarrifsParametersByAHSGId(); } }
             catch (Exception ex)
             { Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('1','" + ex.Message + "');", true); }
         }

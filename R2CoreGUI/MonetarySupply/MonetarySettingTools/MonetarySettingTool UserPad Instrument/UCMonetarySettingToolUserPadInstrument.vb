@@ -74,7 +74,31 @@ Public Class UCMonetarySettingToolUserPadInstrument
         End Try
     End Sub
 
-    Private Sub UcMblghSelector1000_UCClickedEvent() Handles UcMblghSelector1000.UCClickedEvent
+    Private Sub UcMblghSelector1000_UCClickedEvent() Handles UcMblghSelector28000.UCClickedEvent
+        Try
+            UCToChangeAmount(UcMblghSelector28000.UCMblgh)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub UcMblghSelector10000_UCClickedEvent() Handles UcMblghSelector100000.UCClickedEvent
+        Try
+            UCToChangeAmount(UcMblghSelector100000.UCMblgh)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub UcMblghSelector3000_UCClickedEvent() Handles UcMblghSelector36000.UCClickedEvent
+        Try
+            UCToChangeAmount(UcMblghSelector36000.UCMblgh)
+        Catch ex As Exception
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
+        End Try
+    End Sub
+
+    Private Sub UcMblghSelector500_UCClickedEvent() Handles UcMblghSelector1000.UCClickedEvent
         Try
             UCToChangeAmount(UcMblghSelector1000.UCMblgh)
         Catch ex As Exception
@@ -82,7 +106,7 @@ Public Class UCMonetarySettingToolUserPadInstrument
         End Try
     End Sub
 
-    Private Sub UcMblghSelector10000_UCClickedEvent() Handles UcMblghSelector10000.UCClickedEvent
+    Private Sub UcMblghSelector5000_UCClickedEvent() Handles UcMblghSelector10000.UCClickedEvent
         Try
             UCToChangeAmount(UcMblghSelector10000.UCMblgh)
         Catch ex As Exception
@@ -90,33 +114,9 @@ Public Class UCMonetarySettingToolUserPadInstrument
         End Try
     End Sub
 
-    Private Sub UcMblghSelector3000_UCClickedEvent() Handles UcMblghSelector3000.UCClickedEvent
+    Private Sub UcMblghSelector6000_UCClickedEvent() Handles UcMblghSelector50000.UCClickedEvent
         Try
-            UCToChangeAmount(UcMblghSelector3000.UCMblgh)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
-    Private Sub UcMblghSelector500_UCClickedEvent() Handles UcMblghSelector500.UCClickedEvent
-        Try
-            UCToChangeAmount(UcMblghSelector500.UCMblgh)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
-    Private Sub UcMblghSelector5000_UCClickedEvent() Handles UcMblghSelector5000.UCClickedEvent
-        Try
-            UCToChangeAmount(UcMblghSelector5000.UCMblgh)
-        Catch ex As Exception
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
-        End Try
-    End Sub
-
-    Private Sub UcMblghSelector6000_UCClickedEvent() Handles UcMblghSelector6000.UCClickedEvent
-        Try
-            UCToChangeAmount(UcMblghSelector6000.UCMblgh)
+            UCToChangeAmount(UcMblghSelector50000.UCMblgh)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

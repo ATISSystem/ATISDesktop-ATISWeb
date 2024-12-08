@@ -213,6 +213,7 @@
     <Content Include="TransportationAndLoadNotification\DriverSelfDeclaration\WCDriverSelfDeclarationViewer.ascx" />
     <Content Include="TransportationAndLoadNotification\LoadCapacitorManagement\WCTransportTarrifsParameters.ascx" />
     <Content Include="TransportationAndLoadNotification\LoadCapacitorMonitoringManagement\WfLoadCapacitorMonitoringMuted.aspx" />
+    <Content Include="TransportationAndLoadNotification\Tarrifs\WCTarrifs.ascx" />
     <Content Include="WfSiteUnderConstructionAlert.aspx" />
     <Content Include="libman.json" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
@@ -599,6 +600,13 @@
     <Compile Include="TransportationAndLoadNotification\SmartCards\WcSmartCardsInquiry.ascx.designer.cs">
       <DependentUpon>WcSmartCardsInquiry.ascx</DependentUpon>
     </Compile>
+    <Compile Include="TransportationAndLoadNotification\Tarrifs\WCTarrifs.ascx.cs">
+      <DependentUpon>WCTarrifs.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TransportationAndLoadNotification\Tarrifs\WCTarrifs.ascx.designer.cs">
+      <DependentUpon>WCTarrifs.ascx</DependentUpon>
+    </Compile>
     <Compile Include="TransportationAndLoadNotification\TransportCompanies\WcViewerNSSTransportCompanyIntelligently.ascx.cs">
       <DependentUpon>WcViewerNSSTransportCompanyIntelligently.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -639,6 +647,10 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BillOfLadingClassLibrary\BillOfLadingClassLibrary.csproj">
+      <Project>{9fd0b5fa-5481-486f-ac33-43d0e1aaa996}</Project>
+      <Name>BillOfLadingClassLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PayanehClassLibrary\PayanehClassLibrary.vbproj">
       <Project>{8bcfe2ef-2c83-4137-baaf-87e380d41971}</Project>
       <Name>PayanehClassLibrary</Name>
@@ -676,7 +688,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1954</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8252/</IISUrl>
+          <IISUrl>http://localhost:8052/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

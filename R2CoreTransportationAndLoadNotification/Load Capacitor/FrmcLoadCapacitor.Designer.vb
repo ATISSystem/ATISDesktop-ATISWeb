@@ -53,14 +53,15 @@ Partial Class FrmcLoadCapacitor
         '
         'UcLoadCapacitorLoadManipulation
         '
-        Me.UcLoadCapacitorLoadManipulation.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.UcLoadCapacitorLoadManipulation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLoadCapacitorLoadManipulation.BackColor = System.Drawing.Color.Transparent
-        Me.UcLoadCapacitorLoadManipulation.DisableUCSearcherLoadSources = True
+        Me.UcLoadCapacitorLoadManipulation.DisableUCSearcherLoadSources = False
         Me.UcLoadCapacitorLoadManipulation.Location = New System.Drawing.Point(2, -2)
         Me.UcLoadCapacitorLoadManipulation.Name = "UcLoadCapacitorLoadManipulation"
         Me.UcLoadCapacitorLoadManipulation.Padding = New System.Windows.Forms.Padding(5)
-        Me.UcLoadCapacitorLoadManipulation.Size = New System.Drawing.Size(990, 303)
+        Me.UcLoadCapacitorLoadManipulation.Size = New System.Drawing.Size(990, 509)
         Me.UcLoadCapacitorLoadManipulation.TabIndex = 2
         Me.UcLoadCapacitorLoadManipulation.UCNSSCurrent = Nothing
         '

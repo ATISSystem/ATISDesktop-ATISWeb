@@ -34,11 +34,20 @@ using R2Core.DateAndTimeManagement;
 using R2CoreParkingSystem.MoneyWalletChargeManagement;
 using R2CoreTransportationAndLoadNotification.TerraficCardsManagement;
 using R2Core.MoneyWallet.PaymentRequests;
+using R2Core.SoftwareUserManagement.Exceptions;
+using System.Net.Http;
+using System.Net;
+using System.IO;
+using R2Core.FileShareRawGroupsManagement;
+using BillOfLadingCore.BillOfLading;
+using R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms;
 
 namespace R2PrimaryTestCSharp
 {
     public partial class Form1 : Form
     {
+        private R2Core.R2PrimaryFileSharingWS.R2PrimaryFileSharingWebService WS = new R2Core.R2PrimaryFileSharingWS.R2PrimaryFileSharingWebService();
+
         public Form1()
         {
             InitializeComponent();
@@ -49,20 +58,74 @@ namespace R2PrimaryTestCSharp
 
         private void Button1_Click(object sender, EventArgs e)
         {
+
+                var InstanceAES = new AESAlgorithmsManager();
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var MobileNumber = "09139655846";
+                var InstanceEVA = new ExpressionValidationAlgorithmsManager();
+                InstanceEVA.ValidationMobileNumber(MobileNumber);
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserChangeableData(new R2CoreSoftwareUserMobile(MobileNumber));
+
+            var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
+            var Truck = InstanceTrucks.GetNSSTruck(NSSSoftwareuser);
+
             try
             {
                 try
                 {
-                    var _R2DateTime = new R2DateTime();
-                    var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
-                    var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(164477);
-                    var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-                    var NSSSoftwareUser = InstanceSoftwareUsers.GetNSSUser(NSSPaymentRequest.SoftwareUserId);
-                    var InstanceTrafficCards = new R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
-                    var InstanceMoneyWalletCharge = new R2CoreParkingSystemInstanceMoneyWalletChargeManager();
-                    var NSSTrafficCard = InstanceTrafficCards.GetNSSTerafficCard(NSSSoftwareUser);
+                    //ایجاد فایل های اعلام بار شرکت ها 
+                    try
+                    {
+                        var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                        var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                        InstanceAnnouncementforTransportCompanies.CreateAnnouncementFileforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                    }
+                    catch (Exception ex)
+                    { EventLog.WriteEntry("MSCOAutomatedJobs.CreateAnnouncementFile", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
 
-                    InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, 157, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + 100, 0, _R2DateTime.GetCurrentTime()));
+                    //اعلام بار خودکار شرکت ها
+                    try
+                    {
+                        var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                        var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                        InstanceAnnouncementforTransportCompanies.LoadsAnnouncementforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                    }
+                    catch (Exception ex)
+                    { EventLog.WriteEntry("MSCOAutomatedJobs.LoadsAnnouncement", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+
+                    //ارسال ایمیل شرکت ها
+                    try
+                    {
+                        var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                        var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                        InstanceAnnouncementforTransportCompanies.SentEmailforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                    }
+                    catch (Exception ex)
+                    { EventLog.WriteEntry("MSCOAutomatedJobs.SendEmail", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+
+                    //var x = new BillOfLadingCoreBillOfLadingConditionedAnnouncementManager();
+                    //x.TurnsCancellation(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
+                    //var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+
+                    //string tempFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\BL14030819.mdb";
+                    //using (var fileStream = File.Create(tempFilePath))
+                    //{
+                    //    var ms = new System.IO.MemoryStream(WS.WebMethodGetFile(R2CoreRawGroups.UploadedFiles, "BL14030819.mdb", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword)));
+                    //    ms.CopyTo(fileStream);
+                    //}
+
+                    return;
+                    //var _R2DateTime = new R2DateTime();
+                    //var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
+                    //var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(164477);
+                    //var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                    //var NSSSoftwareUser = InstanceSoftwareUsers.GetNSSUser(NSSPaymentRequest.SoftwareUserId);
+                    //var InstanceTrafficCards = new R2CoreTransportationAndLoadNotificationInstanceTerraficCardsManager();
+                    //var InstanceMoneyWalletCharge = new R2CoreParkingSystemInstanceMoneyWalletChargeManager();
+                    //var NSSTrafficCard = InstanceTrafficCards.GetNSSTerafficCard(NSSSoftwareUser);
+
+                    //InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, 157, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + 100, 0, _R2DateTime.GetCurrentTime()));
 
                     //var InstanceAES = new AESAlgorithmsManager();
                     //var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
@@ -90,6 +153,37 @@ namespace R2PrimaryTestCSharp
                 //var NSSTruck = InstanceTrucks.GetNSSTruck(NSSSoftwareuser);
                 //var Lst = InstanceDriverSelfDeclaration.GetDeclarations(NSSTruck, false);
                 //var x = 2;
+
+                //ایجاد فایل های اعلام بار شرکت ها 
+                try
+                {
+                    var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                    var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                    InstanceAnnouncementforTransportCompanies.CreateAnnouncementFileforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                }
+                catch (Exception ex)
+                { EventLog.WriteEntry("MSCOAutomatedJobs.CreateAnnouncementFile", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+
+                //اعلام بار خودکار شرکت ها
+                try
+                {
+                    var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                    var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                    InstanceAnnouncementforTransportCompanies.LoadsAnnouncementforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                }
+                catch (Exception ex)
+                { EventLog.WriteEntry("MSCOAutomatedJobs.LoadsAnnouncement", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+
+                //ارسال ایمیل شرکت ها
+                try
+                {
+                    var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                    var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                    InstanceAnnouncementforTransportCompanies.SentEmailforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+                }
+                catch (Exception ex)
+                { EventLog.WriteEntry("MSCOAutomatedJobs.SendEmail", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+
                 //try
                 //{
                 //    var InstanceLogging = new R2CoreInstanceLoggingManager();
@@ -207,7 +301,22 @@ namespace R2PrimaryTestCSharp
 
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
 
+                var InstanceAES = new AESAlgorithmsManager();
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceSoftwareUser = new R2CoreInstanseSoftwareUsersManager();
+                var AMUStatus = InstanceAES.Encrypt(textBox1.Text , InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) ;
+                textBox2.Text = AMUStatus;
+            }
+            catch (Exception ex)
+            { MessageBox.Show(ex.Message ); }
+
+        }
     }
 
 

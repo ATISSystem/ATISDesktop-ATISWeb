@@ -456,7 +456,7 @@ Namespace CarTruckNobatManagement
             End Try
         End Sub
 
-        Public Sub TurnCancellationWithLicensePlate(YourLPPelak As String, YourLPSerial As String, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+        Public Sub TurnCancellationWithLicensePlate(YourLPPelak As String, YourLPSerial As String, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourTurnStatuses As Int64)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -472,7 +472,7 @@ Namespace CarTruckNobatManagement
                 Dim TruckId As Int64 = Nothing
                 If InstanceCarTrucks.IsExistCarTruckWithLicensePlate(New R2StandardCarTruckStructure(NSSTruck.NSSCar, Nothing), TruckId) Then
                     CmdSql.Connection.Open()
-                    CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.CancelledUser & ",bFlag=1,bFlagDriver=1,nUserIdExit=" & YourNSSSoftwareUser.UserId & " 
+                    CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & YourTurnStatuses & ",bFlag=1,bFlagDriver=1,nUserIdExit=" & YourNSSSoftwareUser.UserId & ",strElamDate='" & _DateTime.GetCurrentDateShamsiFull & "',strElamTime='" & _DateTime.GetCurrentTime & "'
                                           Where StrCardNo=" & TruckId & " and (TurnStatus=" & TurnStatuses.Registered & " or TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or TurnStatus=" & TurnStatuses.ResuscitationUser & ")"
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Connection.Close()
@@ -835,7 +835,7 @@ Namespace CarTruckNobatManagement
                 If NSSTrafficCard.CardType = TerafficCardType.SixCharkh Or NSSTrafficCard.CardType = TerafficCardType.TenCharkh Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 4), R2CoreParkingSystemAccountings.AnjomanHazinehNobat, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
 
                 'احیاء نوبت
-                PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToFalse(YourNSSTurn.nEnterExitId)
+                PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToFalse(YourNSSTurn.nEnterExitId, True)
             Catch ex As NonIndigenousTrucksException
                 Throw ex
             Catch ex As ResuscitationReserveTurnEndDateReachedException
@@ -1233,14 +1233,43 @@ Namespace CarTruckNobatManagement
             End Try
         End Sub
 
-        Public Shared Function SetbFlagDriverToFalse(YournEnterExitId As Int64)
+        Public Shared Function EmergencySetbFlagDriverToFalse(YournEnterExitId As Int64)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim NSSTurn = InstanceTurns.GetNSSTurn(YournEnterExitId)
                 CmdSql.Connection.Open()
                 CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.ResuscitationUser & ",bFlag=1,bFlagDriver=0 Where nEnterExitId=" & YournEnterExitId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
+            Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Shared Function SetbFlagDriverToFalse(YournEnterExitId As Int64, DoSendtoTWSFlag As Boolean)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
+            Try
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim NSSTurn = InstanceTurns.GetNSSTurn(YournEnterExitId)
+                If NSSTurn.TurnStatus = TurnStatuses.UsedLoadPermissionRegistered Then
+                    Throw New TurnHandlingNotAllowedBecuaseTurnStatusException
+                End If
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.ResuscitationUser & ",bFlag=1,bFlagDriver=0 Where nEnterExitId=" & YournEnterExitId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+                If DoSendtoTWSFlag Then
+                    Dim NSSCarTruck As R2StandardCarTruckStructure = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTruck(YournEnterExitId).NSSCar.nIdCar)
+                    TWSClassLibrary.TDBClientManagement.TWSClassTDBClientManagement.DelNobat(NSSCarTruck.NSSCar.StrCarNo, NSSCarTruck.NSSCar.StrCarSerialNo)
+                End If
+            Catch ex As TurnHandlingNotAllowedBecuaseTurnStatusException
+                Throw ex
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -3097,237 +3126,237 @@ Namespace DriverTruckPresentManagement
         End Function
 
         'Public Shared Sub SaveDriverTruckFPs(YourNSSDriverTruck As R2StandardDriverTruckStructure, YourListOfFPs As Generic.List(Of Dermalog.Afis.FourprintSegmentation.SegmentedFingerprint), YourDriverImage As R2CoreImage, YourUserNSS As R2CoreStandardSoftwareUserStructure)
-        Public Shared Sub SaveDriverTruckFPs(YourNSSDriverTruck As R2StandardDriverTruckStructure, YourListOfFPs As Generic.List(Of Object), YourDriverImage As R2CoreImage, YourUserNSS As R2CoreStandardSoftwareUserStructure)
-            Dim CmdSql As New SqlClient.SqlCommand
-            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
-            Try
-                If YourDriverImage.GetImage() Is Nothing Then
-                    Throw New DriverImageNothingException
-                End If
+        'Public Shared Sub SaveDriverTruckFPs(YourNSSDriverTruck As R2StandardDriverTruckStructure, YourListOfFPs As Generic.List(Of Object), YourDriverImage As R2CoreImage, YourUserNSS As R2CoreStandardSoftwareUserStructure)
+        '    Dim CmdSql As New SqlClient.SqlCommand
+        '    CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
+        '    Try
+        '        If YourDriverImage.GetImage() Is Nothing Then
+        '            Throw New DriverImageNothingException
+        '        End If
 
-                Dim DS As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select DriverId from R2PrimaryTransportationAndLoadNotification.dbo.TblFingerPrints where DriverId=" & YourNSSDriverTruck.NSSDriver.nIdPerson & "", 1, DS).GetRecordsCount = 0 Then
-                Else
-                    Throw New DriverTruckFPsExistException
-                End If
+        '        Dim DS As DataSet
+        '        If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select DriverId from R2PrimaryTransportationAndLoadNotification.dbo.TblFingerPrints where DriverId=" & YourNSSDriverTruck.NSSDriver.nIdPerson & "", 1, DS).GetRecordsCount = 0 Then
+        '        Else
+        '            Throw New DriverTruckFPsExistException
+        '        End If
 
-                Dim FPTemplate1 As Byte() = Nothing, FPTemplate2 As Byte() = Nothing, FPTemplate3 As Byte() = Nothing, FPTemplate4 As Byte() = Nothing, FPTemplate5 As Byte() = Nothing, FPTemplate6 As Byte() = Nothing, FPTemplate7 As Byte() = Nothing, FPTemplate8 As Byte() = Nothing, FPTemplate9 As Byte() = Nothing, FPTemplate10 As Byte() = Nothing
-                Dim FPTemplateFlag1 As Boolean = False, FPTemplateFlag2 As Boolean = False, FPTemplateFlag3 As Boolean = False, FPTemplateFlag4 As Boolean = False, FPTemplateFlag5 As Boolean = False, FPTemplateFlag6 As Boolean = False, FPTemplateFlag7 As Boolean = False, FPTemplateFlag8 As Boolean = False, FPTemplateFlag9 As Boolean = False, FPTemplateFlag10 As Boolean = False
-                Dim FPTemplateLocation1 As String, FPTemplateLocation2 As String, FPTemplateLocation3 As String, FPTemplateLocation4 As String, FPTemplateLocation5 As String, FPTemplateLocation6 As String, FPTemplateLocation7 As String, FPTemplateLocation8 As String, FPTemplateLocation9 As String, FPTemplateLocation10 As String
-                Dim EnCoderDermalog As Dermalog.Afis.FingerCode3.Encoder = New Dermalog.Afis.FingerCode3.Encoder
-                EnCoderDermalog.Format = Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005
-                Dim P As SqlClient.SqlParameter
-                If YourListOfFPs.Count = 0 Then
-                    Throw New DriverTruckFingerPrintNeededException
-                ElseIf YourListOfFPs.Count > 0 Then
-                    FPTemplate1 = EnCoderDermalog.Encode(YourListOfFPs(0).Image).GetData
-                    FPTemplateFlag1 = True
-                    FPTemplateLocation1 = YourListOfFPs(0).Hand.ToString + YourListOfFPs(0).Position.ToString
-                    P = New SqlClient.SqlParameter("@FPTemplate1", SqlDbType.VarBinary) : P.Value = FPTemplate1
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag1", FPTemplateFlag1)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation1", FPTemplateLocation1)
-                Else
-                    FPTemplate1 = New Byte() {0}
-                    FPTemplateFlag1 = False
-                    'FPTemplateLocation1 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
-                    FPTemplateLocation1 = New Object
-                    P = New SqlClient.SqlParameter("@FPTemplate1", SqlDbType.VarBinary) : P.Value = FPTemplate1
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag1", FPTemplateFlag1)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation1", FPTemplateLocation1)
-                End If
-                If YourListOfFPs.Count > 1 Then
-                    FPTemplate2 = EnCoderDermalog.Encode(YourListOfFPs(1).Image).GetData
-                    FPTemplateFlag2 = True
-                    FPTemplateLocation2 = YourListOfFPs(1).Hand.ToString + YourListOfFPs(1).Position.ToString
-                    P = New SqlClient.SqlParameter("@FPTemplate2", SqlDbType.VarBinary) : P.Value = FPTemplate2
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag2", FPTemplateFlag2)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation2", FPTemplateLocation2)
-                Else
-                    FPTemplate2 = New Byte() {0}
-                    FPTemplateFlag2 = False
-                    'FPTemplateLocation2 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
-                    FPTemplateLocation2 = New Object
-                    P = New SqlClient.SqlParameter("@FPTemplate2", SqlDbType.VarBinary) : P.Value = FPTemplate2
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag2", FPTemplateFlag2)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation2", FPTemplateLocation2)
-                End If
-                If YourListOfFPs.Count > 2 Then
-                    FPTemplate3 = EnCoderDermalog.Encode(YourListOfFPs(2).Image).GetData
-                    FPTemplateFlag3 = True
-                    FPTemplateLocation3 = YourListOfFPs(2).Hand.ToString + YourListOfFPs(2).Position.ToString
-                    P = New SqlClient.SqlParameter("@FPTemplate3", SqlDbType.VarBinary) : P.Value = FPTemplate3
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag3", FPTemplateFlag3)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation3", FPTemplateLocation3)
-                Else
-                    FPTemplate3 = New Byte() {0}
-                    FPTemplateFlag3 = False
-                    'FPTemplateLocation3 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
-                    FPTemplateLocation3 = New Object
-                    P = New SqlClient.SqlParameter("@FPTemplate3", SqlDbType.VarBinary) : P.Value = FPTemplate3
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag3", FPTemplateFlag3)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation3", FPTemplateLocation3)
-                End If
-                If YourListOfFPs.Count > 3 Then
-                    FPTemplate4 = EnCoderDermalog.Encode(YourListOfFPs(3).Image).GetData
-                    FPTemplateFlag4 = True
-                    FPTemplateLocation4 = YourListOfFPs(3).Hand.ToString + YourListOfFPs(3).Position.ToString
-                    P = New SqlClient.SqlParameter("@FPTemplate4", SqlDbType.VarBinary) : P.Value = FPTemplate4
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag4", FPTemplateFlag4)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation4", FPTemplateLocation4)
-                Else
-                    FPTemplate4 = New Byte() {0}
-                    FPTemplateFlag4 = False
-                    'FPTemplateLocation4 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
-                    FPTemplateLocation4 = New Object
-                    P = New SqlClient.SqlParameter("@FPTemplate4", SqlDbType.VarBinary) : P.Value = FPTemplate4
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag4", FPTemplateFlag4)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation4", FPTemplateLocation4)
-                End If
-                If YourListOfFPs.Count > 4 Then
-                    FPTemplate5 = EnCoderDermalog.Encode(YourListOfFPs(4).Image).GetData
-                    FPTemplateFlag5 = True
-                    FPTemplateLocation5 = YourListOfFPs(4).Hand.ToString + YourListOfFPs(4).Position.ToString
-                    P = New SqlClient.SqlParameter("@FPTemplate5", SqlDbType.VarBinary) : P.Value = FPTemplate5
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag5", FPTemplateFlag5)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation5", FPTemplateLocation5)
-                Else
-                    FPTemplate5 = New Byte() {0}
-                    FPTemplateFlag5 = False
-                    'FPTemplateLocation5 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
-                    FPTemplateLocation5 = New Object
-                    P = New SqlClient.SqlParameter("@FPTemplate5", SqlDbType.VarBinary) : P.Value = FPTemplate5
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag5", FPTemplateFlag5)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation5", FPTemplateLocation5)
-                End If
-                If YourListOfFPs.Count > 5 Then
-                    FPTemplate6 = EnCoderDermalog.Encode(YourListOfFPs(5).Image).GetData
-                    FPTemplateFlag6 = True
-                    FPTemplateLocation6 = YourListOfFPs(5).Hand.ToString + YourListOfFPs(5).Position.ToString
-                    P = New SqlClient.SqlParameter("@FPTemplate6", SqlDbType.VarBinary) : P.Value = FPTemplate6
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag6", FPTemplateFlag6)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation6", FPTemplateLocation6)
-                Else
-                    FPTemplate6 = New Byte() {0}
-                    FPTemplateFlag6 = False
-                    'FPTemplateLocation6 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
-                    FPTemplateLocation6 = New Object
-                    P = New SqlClient.SqlParameter("@FPTemplate6", SqlDbType.VarBinary) : P.Value = FPTemplate6
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag6", FPTemplateFlag6)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation6", FPTemplateLocation6)
-                End If
-                If YourListOfFPs.Count > 6 Then
-                    FPTemplate7 = EnCoderDermalog.Encode(YourListOfFPs(6).Image).GetData
-                    FPTemplateFlag7 = True
-                    FPTemplateLocation7 = YourListOfFPs(6).Hand.ToString + YourListOfFPs(6).Position.ToString
-                    P = New SqlClient.SqlParameter("@FPTemplate7", SqlDbType.VarBinary) : P.Value = FPTemplate7
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag7", FPTemplateFlag7)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation7", FPTemplateLocation7)
-                Else
-                    FPTemplate7 = New Byte() {0}
-                    FPTemplateFlag7 = False
-                    'FPTemplateLocation7 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
-                    FPTemplateLocation7 = New Object
-                    P = New SqlClient.SqlParameter("@FPTemplate7", SqlDbType.VarBinary) : P.Value = FPTemplate7
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag7", FPTemplateFlag7)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation7", FPTemplateLocation7)
-                End If
-                If YourListOfFPs.Count > 7 Then
-                    FPTemplate8 = EnCoderDermalog.Encode(YourListOfFPs(7).Image).GetData
-                    FPTemplateFlag8 = True
-                    FPTemplateLocation8 = YourListOfFPs(7).Hand.ToString + YourListOfFPs(7).Position.ToString
-                    P = New SqlClient.SqlParameter("@FPTemplate8", SqlDbType.VarBinary) : P.Value = FPTemplate8
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag8", FPTemplateFlag8)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation8", FPTemplateLocation8)
-                Else
-                    FPTemplate8 = New Byte() {0}
-                    FPTemplateFlag8 = False
-                    'FPTemplateLocation8 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
-                    FPTemplateLocation8 = New Object
-                    P = New SqlClient.SqlParameter("@FPTemplate8", SqlDbType.VarBinary) : P.Value = FPTemplate8
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag8", FPTemplateFlag8)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation8", FPTemplateLocation8)
-                End If
-                If YourListOfFPs.Count > 8 Then
-                    FPTemplate9 = EnCoderDermalog.Encode(YourListOfFPs(8).Image).GetData
-                    FPTemplateFlag9 = True
-                    FPTemplateLocation9 = YourListOfFPs(8).Hand.ToString + YourListOfFPs(8).Position.ToString
-                    P = New SqlClient.SqlParameter("@FPTemplate9", SqlDbType.VarBinary) : P.Value = FPTemplate9
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag9", FPTemplateFlag9)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation9", FPTemplateLocation9)
-                Else
-                    FPTemplate9 = New Byte() {0}
-                    FPTemplateFlag9 = False
-                    'FPTemplateLocation9 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
-                    FPTemplateLocation9 = New Object
-                    P = New SqlClient.SqlParameter("@FPTemplate9", SqlDbType.VarBinary) : P.Value = FPTemplate9
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag9", FPTemplateFlag9)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation9", FPTemplateLocation9)
-                End If
-                If YourListOfFPs.Count > 9 Then
-                    FPTemplate10 = EnCoderDermalog.Encode(YourListOfFPs(9).Image).GetData
-                    FPTemplateFlag10 = True
-                    FPTemplateLocation10 = YourListOfFPs(9).Hand.ToString + YourListOfFPs(9).Position.ToString
-                    P = New SqlClient.SqlParameter("@FPTemplate10", SqlDbType.VarBinary) : P.Value = FPTemplate10
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag10", FPTemplateFlag10)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation10", FPTemplateLocation10)
-                Else
-                    FPTemplate10 = New Byte() {0}
-                    FPTemplateFlag10 = False
-                    'FPTemplateLocation10 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
-                    FPTemplateLocation10 = New Object
-                    P = New SqlClient.SqlParameter("@FPTemplate10", SqlDbType.VarBinary) : P.Value = FPTemplate10
-                    CmdSql.Parameters.Add(P)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateFlag10", FPTemplateFlag10)
-                    CmdSql.Parameters.AddWithValue("@FPTemplateLocation10", FPTemplateLocation10)
-                End If
+        '        Dim FPTemplate1 As Byte() = Nothing, FPTemplate2 As Byte() = Nothing, FPTemplate3 As Byte() = Nothing, FPTemplate4 As Byte() = Nothing, FPTemplate5 As Byte() = Nothing, FPTemplate6 As Byte() = Nothing, FPTemplate7 As Byte() = Nothing, FPTemplate8 As Byte() = Nothing, FPTemplate9 As Byte() = Nothing, FPTemplate10 As Byte() = Nothing
+        '        Dim FPTemplateFlag1 As Boolean = False, FPTemplateFlag2 As Boolean = False, FPTemplateFlag3 As Boolean = False, FPTemplateFlag4 As Boolean = False, FPTemplateFlag5 As Boolean = False, FPTemplateFlag6 As Boolean = False, FPTemplateFlag7 As Boolean = False, FPTemplateFlag8 As Boolean = False, FPTemplateFlag9 As Boolean = False, FPTemplateFlag10 As Boolean = False
+        '        Dim FPTemplateLocation1 As String, FPTemplateLocation2 As String, FPTemplateLocation3 As String, FPTemplateLocation4 As String, FPTemplateLocation5 As String, FPTemplateLocation6 As String, FPTemplateLocation7 As String, FPTemplateLocation8 As String, FPTemplateLocation9 As String, FPTemplateLocation10 As String
+        '        Dim EnCoderDermalog As Dermalog.Afis.FingerCode3.Encoder = New Dermalog.Afis.FingerCode3.Encoder
+        '        EnCoderDermalog.Format = Dermalog.Afis.FingerCode3.Enums.TemplateFormat.ISO19794_2_2005
+        '        Dim P As SqlClient.SqlParameter
+        '        If YourListOfFPs.Count = 0 Then
+        '            Throw New DriverTruckFingerPrintNeededException
+        '        ElseIf YourListOfFPs.Count > 0 Then
+        '            FPTemplate1 = EnCoderDermalog.Encode(YourListOfFPs(0).Image).GetData
+        '            FPTemplateFlag1 = True
+        '            FPTemplateLocation1 = YourListOfFPs(0).Hand.ToString + YourListOfFPs(0).Position.ToString
+        '            P = New SqlClient.SqlParameter("@FPTemplate1", SqlDbType.VarBinary) : P.Value = FPTemplate1
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag1", FPTemplateFlag1)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation1", FPTemplateLocation1)
+        '        Else
+        '            FPTemplate1 = New Byte() {0}
+        '            FPTemplateFlag1 = False
+        '            'FPTemplateLocation1 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+        '            FPTemplateLocation1 = New Object
+        '            P = New SqlClient.SqlParameter("@FPTemplate1", SqlDbType.VarBinary) : P.Value = FPTemplate1
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag1", FPTemplateFlag1)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation1", FPTemplateLocation1)
+        '        End If
+        '        If YourListOfFPs.Count > 1 Then
+        '            FPTemplate2 = EnCoderDermalog.Encode(YourListOfFPs(1).Image).GetData
+        '            FPTemplateFlag2 = True
+        '            FPTemplateLocation2 = YourListOfFPs(1).Hand.ToString + YourListOfFPs(1).Position.ToString
+        '            P = New SqlClient.SqlParameter("@FPTemplate2", SqlDbType.VarBinary) : P.Value = FPTemplate2
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag2", FPTemplateFlag2)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation2", FPTemplateLocation2)
+        '        Else
+        '            FPTemplate2 = New Byte() {0}
+        '            FPTemplateFlag2 = False
+        '            'FPTemplateLocation2 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+        '            FPTemplateLocation2 = New Object
+        '            P = New SqlClient.SqlParameter("@FPTemplate2", SqlDbType.VarBinary) : P.Value = FPTemplate2
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag2", FPTemplateFlag2)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation2", FPTemplateLocation2)
+        '        End If
+        '        If YourListOfFPs.Count > 2 Then
+        '            FPTemplate3 = EnCoderDermalog.Encode(YourListOfFPs(2).Image).GetData
+        '            FPTemplateFlag3 = True
+        '            FPTemplateLocation3 = YourListOfFPs(2).Hand.ToString + YourListOfFPs(2).Position.ToString
+        '            P = New SqlClient.SqlParameter("@FPTemplate3", SqlDbType.VarBinary) : P.Value = FPTemplate3
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag3", FPTemplateFlag3)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation3", FPTemplateLocation3)
+        '        Else
+        '            FPTemplate3 = New Byte() {0}
+        '            FPTemplateFlag3 = False
+        '            'FPTemplateLocation3 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+        '            FPTemplateLocation3 = New Object
+        '            P = New SqlClient.SqlParameter("@FPTemplate3", SqlDbType.VarBinary) : P.Value = FPTemplate3
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag3", FPTemplateFlag3)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation3", FPTemplateLocation3)
+        '        End If
+        '        If YourListOfFPs.Count > 3 Then
+        '            FPTemplate4 = EnCoderDermalog.Encode(YourListOfFPs(3).Image).GetData
+        '            FPTemplateFlag4 = True
+        '            FPTemplateLocation4 = YourListOfFPs(3).Hand.ToString + YourListOfFPs(3).Position.ToString
+        '            P = New SqlClient.SqlParameter("@FPTemplate4", SqlDbType.VarBinary) : P.Value = FPTemplate4
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag4", FPTemplateFlag4)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation4", FPTemplateLocation4)
+        '        Else
+        '            FPTemplate4 = New Byte() {0}
+        '            FPTemplateFlag4 = False
+        '            'FPTemplateLocation4 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+        '            FPTemplateLocation4 = New Object
+        '            P = New SqlClient.SqlParameter("@FPTemplate4", SqlDbType.VarBinary) : P.Value = FPTemplate4
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag4", FPTemplateFlag4)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation4", FPTemplateLocation4)
+        '        End If
+        '        If YourListOfFPs.Count > 4 Then
+        '            FPTemplate5 = EnCoderDermalog.Encode(YourListOfFPs(4).Image).GetData
+        '            FPTemplateFlag5 = True
+        '            FPTemplateLocation5 = YourListOfFPs(4).Hand.ToString + YourListOfFPs(4).Position.ToString
+        '            P = New SqlClient.SqlParameter("@FPTemplate5", SqlDbType.VarBinary) : P.Value = FPTemplate5
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag5", FPTemplateFlag5)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation5", FPTemplateLocation5)
+        '        Else
+        '            FPTemplate5 = New Byte() {0}
+        '            FPTemplateFlag5 = False
+        '            'FPTemplateLocation5 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+        '            FPTemplateLocation5 = New Object
+        '            P = New SqlClient.SqlParameter("@FPTemplate5", SqlDbType.VarBinary) : P.Value = FPTemplate5
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag5", FPTemplateFlag5)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation5", FPTemplateLocation5)
+        '        End If
+        '        If YourListOfFPs.Count > 5 Then
+        '            FPTemplate6 = EnCoderDermalog.Encode(YourListOfFPs(5).Image).GetData
+        '            FPTemplateFlag6 = True
+        '            FPTemplateLocation6 = YourListOfFPs(5).Hand.ToString + YourListOfFPs(5).Position.ToString
+        '            P = New SqlClient.SqlParameter("@FPTemplate6", SqlDbType.VarBinary) : P.Value = FPTemplate6
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag6", FPTemplateFlag6)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation6", FPTemplateLocation6)
+        '        Else
+        '            FPTemplate6 = New Byte() {0}
+        '            FPTemplateFlag6 = False
+        '            'FPTemplateLocation6 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+        '            FPTemplateLocation6 = New Object
+        '            P = New SqlClient.SqlParameter("@FPTemplate6", SqlDbType.VarBinary) : P.Value = FPTemplate6
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag6", FPTemplateFlag6)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation6", FPTemplateLocation6)
+        '        End If
+        '        If YourListOfFPs.Count > 6 Then
+        '            FPTemplate7 = EnCoderDermalog.Encode(YourListOfFPs(6).Image).GetData
+        '            FPTemplateFlag7 = True
+        '            FPTemplateLocation7 = YourListOfFPs(6).Hand.ToString + YourListOfFPs(6).Position.ToString
+        '            P = New SqlClient.SqlParameter("@FPTemplate7", SqlDbType.VarBinary) : P.Value = FPTemplate7
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag7", FPTemplateFlag7)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation7", FPTemplateLocation7)
+        '        Else
+        '            FPTemplate7 = New Byte() {0}
+        '            FPTemplateFlag7 = False
+        '            'FPTemplateLocation7 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+        '            FPTemplateLocation7 = New Object
+        '            P = New SqlClient.SqlParameter("@FPTemplate7", SqlDbType.VarBinary) : P.Value = FPTemplate7
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag7", FPTemplateFlag7)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation7", FPTemplateLocation7)
+        '        End If
+        '        If YourListOfFPs.Count > 7 Then
+        '            FPTemplate8 = EnCoderDermalog.Encode(YourListOfFPs(7).Image).GetData
+        '            FPTemplateFlag8 = True
+        '            FPTemplateLocation8 = YourListOfFPs(7).Hand.ToString + YourListOfFPs(7).Position.ToString
+        '            P = New SqlClient.SqlParameter("@FPTemplate8", SqlDbType.VarBinary) : P.Value = FPTemplate8
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag8", FPTemplateFlag8)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation8", FPTemplateLocation8)
+        '        Else
+        '            FPTemplate8 = New Byte() {0}
+        '            FPTemplateFlag8 = False
+        '            'FPTemplateLocation8 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+        '            FPTemplateLocation8 = New Object
+        '            P = New SqlClient.SqlParameter("@FPTemplate8", SqlDbType.VarBinary) : P.Value = FPTemplate8
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag8", FPTemplateFlag8)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation8", FPTemplateLocation8)
+        '        End If
+        '        If YourListOfFPs.Count > 8 Then
+        '            FPTemplate9 = EnCoderDermalog.Encode(YourListOfFPs(8).Image).GetData
+        '            FPTemplateFlag9 = True
+        '            FPTemplateLocation9 = YourListOfFPs(8).Hand.ToString + YourListOfFPs(8).Position.ToString
+        '            P = New SqlClient.SqlParameter("@FPTemplate9", SqlDbType.VarBinary) : P.Value = FPTemplate9
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag9", FPTemplateFlag9)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation9", FPTemplateLocation9)
+        '        Else
+        '            FPTemplate9 = New Byte() {0}
+        '            FPTemplateFlag9 = False
+        '            'FPTemplateLocation9 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+        '            FPTemplateLocation9 = New Object
+        '            P = New SqlClient.SqlParameter("@FPTemplate9", SqlDbType.VarBinary) : P.Value = FPTemplate9
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag9", FPTemplateFlag9)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation9", FPTemplateLocation9)
+        '        End If
+        '        If YourListOfFPs.Count > 9 Then
+        '            FPTemplate10 = EnCoderDermalog.Encode(YourListOfFPs(9).Image).GetData
+        '            FPTemplateFlag10 = True
+        '            FPTemplateLocation10 = YourListOfFPs(9).Hand.ToString + YourListOfFPs(9).Position.ToString
+        '            P = New SqlClient.SqlParameter("@FPTemplate10", SqlDbType.VarBinary) : P.Value = FPTemplate10
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag10", FPTemplateFlag10)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation10", FPTemplateLocation10)
+        '        Else
+        '            FPTemplate10 = New Byte() {0}
+        '            FPTemplateFlag10 = False
+        '            'FPTemplateLocation10 = Dermalog.Afis.FourprintSegmentation.HandPositions.Unknown
+        '            FPTemplateLocation10 = New Object
+        '            P = New SqlClient.SqlParameter("@FPTemplate10", SqlDbType.VarBinary) : P.Value = FPTemplate10
+        '            CmdSql.Parameters.Add(P)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateFlag10", FPTemplateFlag10)
+        '            CmdSql.Parameters.AddWithValue("@FPTemplateLocation10", FPTemplateLocation10)
+        '        End If
 
-                CmdSql.Parameters.AddWithValue("@DriverId", YourNSSDriverTruck.NSSDriver.nIdPerson)
-                Dim R2DateAndTime As New R2DateTime
-                CmdSql.Parameters.AddWithValue("@DateTimeMilladi", R2DateAndTime.GetCurrentDateTimeMilladiFormated)
-                CmdSql.Parameters.AddWithValue("@DateShamsi", R2DateAndTime.GetCurrentDateShamsiFull)
-                CmdSql.Parameters.AddWithValue("@UserId", YourUserNSS.UserId)
-                CmdSql.Parameters.AddWithValue("@NameFamily", YourNSSDriverTruck.NSSDriver.StrPersonFullName)
-                CmdSql.Parameters.AddWithValue("@SmartCardNo", YourNSSDriverTruck.StrSmartCardNo)
-                CmdSql.Parameters.AddWithValue("@LicenseNo", YourNSSDriverTruck.NSSDriver.strDrivingLicenceNo)
-                CmdSql.Parameters.AddWithValue("@NationalCode", YourNSSDriverTruck.NSSDriver.StrNationalCode)
-                CmdSql.Parameters.AddWithValue("@FPActive", True)
+        '        CmdSql.Parameters.AddWithValue("@DriverId", YourNSSDriverTruck.NSSDriver.nIdPerson)
+        '        Dim R2DateAndTime As New R2DateTime
+        '        CmdSql.Parameters.AddWithValue("@DateTimeMilladi", R2DateAndTime.GetCurrentDateTimeMilladiFormated)
+        '        CmdSql.Parameters.AddWithValue("@DateShamsi", R2DateAndTime.GetCurrentDateShamsiFull)
+        '        CmdSql.Parameters.AddWithValue("@UserId", YourUserNSS.UserId)
+        '        CmdSql.Parameters.AddWithValue("@NameFamily", YourNSSDriverTruck.NSSDriver.StrPersonFullName)
+        '        CmdSql.Parameters.AddWithValue("@SmartCardNo", YourNSSDriverTruck.StrSmartCardNo)
+        '        CmdSql.Parameters.AddWithValue("@LicenseNo", YourNSSDriverTruck.NSSDriver.strDrivingLicenceNo)
+        '        CmdSql.Parameters.AddWithValue("@NationalCode", YourNSSDriverTruck.NSSDriver.StrNationalCode)
+        '        CmdSql.Parameters.AddWithValue("@FPActive", True)
 
-                CmdSql.Connection.Open()
-                CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
-                CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblFingerPrints Values(@DriverId,@FPTemplate1,@FPTemplateFlag1,@FPTemplateLocation1,@FPTemplate2,@FPTemplateFlag2,@FPTemplateLocation2,@FPTemplate3,@FPTemplateFlag3,@FPTemplateLocation3,@FPTemplate4,@FPTemplateFlag4,@FPTemplateLocation4,@FPTemplate5,@FPTemplateFlag5,@FPTemplateLocation5,@FPTemplate6,@FPTemplateFlag6,@FPTemplateLocation6,@FPTemplate7,@FPTemplateFlag7,@FPTemplateLocation7,@FPTemplate8,@FPTemplateFlag8,@FPTemplateLocation8,@FPTemplate9,@FPTemplateFlag9,@FPTemplateLocation9,@FPTemplate10,@FPTemplateFlag10,@FPTemplateLocation10,@DateTimeMilladi,@DateShamsi,@UserId,@NameFamily,@SmartCardNo,@LicenseNo,@NationalCode,@FPActive)"
-                CmdSql.ExecuteNonQuery()
-                R2CoreParkingSystemMClassDrivers.SaveDriverImage(YourNSSDriverTruck.NSSDriver, YourDriverImage, YourUserNSS)
-                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
-            Catch exx As DriverImageNothingException
-                Throw exx
-            Catch exxx As DriverTruckFPsExistException
-                Throw exxx
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then
-                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
-                End If
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
+        '        CmdSql.Connection.Open()
+        '        CmdSql.Transaction = CmdSql.Connection.BeginTransaction()
+        '        CmdSql.CommandText = "Insert Into R2PrimaryTransportationAndLoadNotification.dbo.TblFingerPrints Values(@DriverId,@FPTemplate1,@FPTemplateFlag1,@FPTemplateLocation1,@FPTemplate2,@FPTemplateFlag2,@FPTemplateLocation2,@FPTemplate3,@FPTemplateFlag3,@FPTemplateLocation3,@FPTemplate4,@FPTemplateFlag4,@FPTemplateLocation4,@FPTemplate5,@FPTemplateFlag5,@FPTemplateLocation5,@FPTemplate6,@FPTemplateFlag6,@FPTemplateLocation6,@FPTemplate7,@FPTemplateFlag7,@FPTemplateLocation7,@FPTemplate8,@FPTemplateFlag8,@FPTemplateLocation8,@FPTemplate9,@FPTemplateFlag9,@FPTemplateLocation9,@FPTemplate10,@FPTemplateFlag10,@FPTemplateLocation10,@DateTimeMilladi,@DateShamsi,@UserId,@NameFamily,@SmartCardNo,@LicenseNo,@NationalCode,@FPActive)"
+        '        CmdSql.ExecuteNonQuery()
+        '        R2CoreParkingSystemMClassDrivers.SaveDriverImage(YourNSSDriverTruck.NSSDriver, YourDriverImage, YourUserNSS)
+        '        CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+        '    Catch exx As DriverImageNothingException
+        '        Throw exx
+        '    Catch exxx As DriverTruckFPsExistException
+        '        Throw exxx
+        '    Catch ex As Exception
+        '        If CmdSql.Connection.State <> ConnectionState.Closed Then
+        '            CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+        '        End If
+        '        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        '    End Try
+        'End Sub
 
         Public Shared Sub DeleteDriverTruckFPs(YourNSSDriverTruck As R2StandardDriverTruckStructure)
             Dim CmdSql As New SqlClient.SqlCommand
@@ -4154,15 +4183,16 @@ Namespace ReportsManagement
             Try
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 Da.SelectCommand = New SqlClient.SqlCommand("
-                  Select LoadAllocations.LAId,Turns.strDriverName,c.strCarNo,c.strCarSerialNo,co.strCompName,Turns.strExitDate,Turns.nEstelamID,Turns.OtaghdarTurnNumber,ci.strCityName,p.strGoodName,Turns.strBarnameNo as LoadPermissionLocation 
+                  Select LoadAllocations.Lanote,LoadAllocations.LAId,Turns.strDriverName,c.strCarNo,c.strCarSerialNo,co.strCompName,Turns.strExitDate,Turns.nEstelamID,Turns.OtaghdarTurnNumber,ci.strCityName,p.strGoodName,Turns.strBarnameNo as LoadPermissionLocation 
                   from Dbtransport.dbo.tbenterexit as Turns
 	                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId 
+					 Inner Join dbtransport.dbo.tbElam as Loads on LoadAllocations.nEstelamId=Loads.nEstelamID 
+	                 Inner Join Dbtransport.dbo.tbCompany as Co on Loads.nCompCode=CO.nCompCode 
+	                 Inner Join Dbtransport.dbo.tbCity as Ci on Loads.nCityCode=CI.nCityCode 
+	                 Inner Join Dbtransport.dbo.tbProducts as P on Loads.nBarCode=p.strGoodCode 
 	                 Inner Join Dbtransport.dbo.tbcar as C on Turns.strCardno=C.nIDCar 
-	                 Inner Join Dbtransport.dbo.tbCompany as Co on Turns.nCompCode=CO.nCompCode 
-	                 Inner Join Dbtransport.dbo.tbCity as Ci on Turns.nCityCode=CI.nCityCode 
-	                 Inner Join Dbtransport.dbo.tbProducts as P on Turns.nBarCode=p.strGoodCode 
-                  where Turns.nDriverCode='" & YourDriverId & "' and Turns.strExitDate>='" & YourDateTime1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDateTime2.DateShamsiFull & "'  and LoadAllocations.LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & " 
-                  Order By Turns.nEnterExitId Desc")
+                  where Turns.nDriverCode='" & YourDriverId & "' and Turns.strExitDate>='" & YourDateTime1.DateShamsiFull & "' and Turns.strExitDate<='" & YourDateTime2.DateShamsiFull & " ' and (LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionSucceeded & " or LAStatusId=" & R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.PermissionCancelled & ")
+                  Order By  Turns.nEnterExitId desc ,LoadAllocations.LAId Desc")
                 Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection()
                 Da.Fill(Ds)
 
@@ -4172,7 +4202,7 @@ Namespace ReportsManagement
                 CmdSql.ExecuteNonQuery()
 
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    Dim myStrDrivername As String = Ds.Tables(0).Rows(Loopx).Item("strdrivername").trim
+                    Dim myStrDrivername As String = Ds.Tables(0).Rows(Loopx).Item("Lanote").trim
                     Dim myStrTruckno As String = Ds.Tables(0).Rows(Loopx).Item("strCarNo").trim
                     Dim myStrSerialno As String = Ds.Tables(0).Rows(Loopx).Item("strCarSerialNo").trim
                     Dim myStrCompname As String = Ds.Tables(0).Rows(Loopx).Item("strcompname").trim

@@ -106,6 +106,8 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
                     tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].LoadTargetTitle; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     tempCell = new TableCell();
+                    tempCell.Text = Lst[Loopx].LoadSourceTitle; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
+                    tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].GoodTitle; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;
                     tempCell = new TableCell();
                     tempCell.Text = Lst[Loopx].dDateElam + " - " + Lst[Loopx].dTimeElam; tempCell.CssClass = "R2FontBHomaSmall"; tempRow.Cells.Add(tempCell); tempCell.HorizontalAlign = HorizontalAlign.Center;

@@ -25,6 +25,7 @@ Partial Class UCCarTruckNobat
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.PnlMain = New System.Windows.Forms.Panel()
+        Me.UcButtonEmergencyResuscitationNobat = New R2CoreGUI.UCButton()
         Me.UcButtonResuscitationNonCreditTurn = New R2CoreGUI.UCButton()
         Me.UcButtonResuscitationNobat = New R2CoreGUI.UCButton()
         Me.UcButtonEbtalNobat = New R2CoreGUI.UCButton()
@@ -52,6 +53,7 @@ Partial Class UCCarTruckNobat
         '
         'PnlMain
         '
+        Me.PnlMain.Controls.Add(Me.UcButtonEmergencyResuscitationNobat)
         Me.PnlMain.Controls.Add(Me.UcButtonResuscitationNonCreditTurn)
         Me.PnlMain.Controls.Add(Me.UcButtonResuscitationNobat)
         Me.PnlMain.Controls.Add(Me.UcButtonEbtalNobat)
@@ -63,14 +65,30 @@ Partial Class UCCarTruckNobat
         Me.PnlMain.Size = New System.Drawing.Size(841, 128)
         Me.PnlMain.TabIndex = 0
         '
+        'UcButtonEmergencyResuscitationNobat
+        '
+        Me.UcButtonEmergencyResuscitationNobat.BackColor = System.Drawing.Color.Transparent
+        Me.UcButtonEmergencyResuscitationNobat.Enabled = False
+        Me.UcButtonEmergencyResuscitationNobat.Location = New System.Drawing.Point(337, 4)
+        Me.UcButtonEmergencyResuscitationNobat.Name = "UcButtonEmergencyResuscitationNobat"
+        Me.UcButtonEmergencyResuscitationNobat.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcButtonEmergencyResuscitationNobat.Size = New System.Drawing.Size(140, 37)
+        Me.UcButtonEmergencyResuscitationNobat.TabIndex = 19
+        Me.UcButtonEmergencyResuscitationNobat.UCBackColor = System.Drawing.Color.Firebrick
+        Me.UcButtonEmergencyResuscitationNobat.UCBackColorDisable = System.Drawing.Color.Gray
+        Me.UcButtonEmergencyResuscitationNobat.UCEnable = True
+        Me.UcButtonEmergencyResuscitationNobat.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcButtonEmergencyResuscitationNobat.UCForeColor = System.Drawing.Color.White
+        Me.UcButtonEmergencyResuscitationNobat.UCValue = "احیاء اضطراری نوبت"
+        '
         'UcButtonResuscitationNonCreditTurn
         '
         Me.UcButtonResuscitationNonCreditTurn.BackColor = System.Drawing.Color.Transparent
         Me.UcButtonResuscitationNonCreditTurn.Enabled = False
-        Me.UcButtonResuscitationNonCreditTurn.Location = New System.Drawing.Point(163, 4)
+        Me.UcButtonResuscitationNonCreditTurn.Location = New System.Drawing.Point(216, 4)
         Me.UcButtonResuscitationNonCreditTurn.Name = "UcButtonResuscitationNonCreditTurn"
         Me.UcButtonResuscitationNonCreditTurn.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcButtonResuscitationNonCreditTurn.Size = New System.Drawing.Size(159, 37)
+        Me.UcButtonResuscitationNonCreditTurn.Size = New System.Drawing.Size(118, 37)
         Me.UcButtonResuscitationNonCreditTurn.TabIndex = 18
         Me.UcButtonResuscitationNonCreditTurn.UCBackColor = System.Drawing.Color.OrangeRed
         Me.UcButtonResuscitationNonCreditTurn.UCBackColorDisable = System.Drawing.Color.Gray
@@ -83,12 +101,12 @@ Partial Class UCCarTruckNobat
         '
         Me.UcButtonResuscitationNobat.BackColor = System.Drawing.Color.Transparent
         Me.UcButtonResuscitationNobat.Enabled = False
-        Me.UcButtonResuscitationNobat.Location = New System.Drawing.Point(107, 3)
+        Me.UcButtonResuscitationNobat.Location = New System.Drawing.Point(160, 3)
         Me.UcButtonResuscitationNobat.Name = "UcButtonResuscitationNobat"
         Me.UcButtonResuscitationNobat.Padding = New System.Windows.Forms.Padding(1)
         Me.UcButtonResuscitationNobat.Size = New System.Drawing.Size(55, 37)
         Me.UcButtonResuscitationNobat.TabIndex = 17
-        Me.UcButtonResuscitationNobat.UCBackColor = System.Drawing.Color.OrangeRed
+        Me.UcButtonResuscitationNobat.UCBackColor = System.Drawing.Color.Firebrick
         Me.UcButtonResuscitationNobat.UCBackColorDisable = System.Drawing.Color.Gray
         Me.UcButtonResuscitationNobat.UCEnable = True
         Me.UcButtonResuscitationNobat.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
@@ -101,7 +119,7 @@ Partial Class UCCarTruckNobat
         Me.UcButtonEbtalNobat.Location = New System.Drawing.Point(53, 3)
         Me.UcButtonEbtalNobat.Name = "UcButtonEbtalNobat"
         Me.UcButtonEbtalNobat.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcButtonEbtalNobat.Size = New System.Drawing.Size(55, 37)
+        Me.UcButtonEbtalNobat.Size = New System.Drawing.Size(104, 37)
         Me.UcButtonEbtalNobat.TabIndex = 16
         Me.UcButtonEbtalNobat.UCBackColor = System.Drawing.Color.OrangeRed
         Me.UcButtonEbtalNobat.UCBackColorDisable = System.Drawing.Color.Gray
@@ -385,4 +403,5 @@ End Sub
     Friend WithEvents Label8 As Windows.Forms.Label
     Friend WithEvents Label7 As Windows.Forms.Label
     Friend WithEvents UcButtonResuscitationNonCreditTurn As UCButton
+    Friend WithEvents UcButtonEmergencyResuscitationNobat As UCButton
 End Class

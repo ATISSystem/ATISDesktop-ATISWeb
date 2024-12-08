@@ -56,7 +56,8 @@ Public Class UCViewerNSSLoadPermissionExtended
             LabelLoadPermissionStatus.Text = String.Empty
             LabelStrDescription.Text = String.Empty
             LabelOtaghdarTurnNumber.Text = String.Empty
-
+            LabelUserName.Text = String.Empty
+            LblPermissionDate.Text = String.Empty
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -65,6 +66,7 @@ Public Class UCViewerNSSLoadPermissionExtended
     Private Sub UCRefreshExtended()
         Try
             LabelUserName.Text = String.Empty
+            LblPermissionDate.Text = String.Empty
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -88,8 +90,6 @@ Public Class UCViewerNSSLoadPermissionExtended
 
     Private Sub UcMinimizeMaximize_UCMaximizeRequestedEvent() Handles UcMinimizeMaximize.UCMaximizeRequestedEvent
         Try
-            UCRefreshExtended()
-            LabelUserName.Text = R2CoreMClassSoftwareUsersManagement.GetNSSUser(UCNSSCurrent.UserId).UserName
             Me.Size = New Size(Me.Width, _MaxHight)
         Catch ex As Exception
             MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -116,6 +116,8 @@ Public Class UCViewerNSSLoadPermissionExtended
             LabelLoadPermissionStatus.Text = NSS.LoadPermissionStatusTitle
             LabelStrDescription.Text = NSS.StrDescription
             LabelOtaghdarTurnNumber.Text = NSS.SequentialTurnNumber
+            LabelUserName.Text = R2CoreMClassSoftwareUsersManagement.GetNSSUser(UCNSSCurrent.UserId).UserName
+            LblPermissionDate.Text = UCNSSCurrent.LoadPermissionDate
         Catch ex As Exception
             MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

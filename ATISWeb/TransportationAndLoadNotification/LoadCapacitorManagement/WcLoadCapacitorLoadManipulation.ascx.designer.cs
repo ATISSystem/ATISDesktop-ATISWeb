@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
-    
-    
-    public partial class WcLoadCapacitorLoadManipulation {
-        
+namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement
+{
+
+
+    public partial class WcLoadCapacitorLoadManipulation
+    {
+
         /// <summary>
         /// WcAlertShower control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::ATISWeb.AlertManagement.WcAlertShower WcAlertShower;
-        
+
         /// <summary>
         /// Label2 control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label2;
-        
+
         /// <summary>
         /// WcLoadCapacitorLoadsCollectionSummaryIntelligently control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement.WcLoadCapacitorLoadsCollectionSummaryIntelligently WcLoadCapacitorLoadsCollectionSummaryIntelligently;
-        
+
         /// <summary>
         /// UpdatePanelTxtnEstelamIdTxtDateTimeofLoadRegistering control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanelTxtnEstelamIdTxtDateTimeofLoadRegistering;
-        
+
         /// <summary>
         /// TxtnEstelamId control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtnEstelamId;
-        
+
         /// <summary>
         /// TxtDateTimeofLoadRegistering control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtDateTimeofLoadRegistering;
-        
+
         /// <summary>
         /// BtnLoadRegistering control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnLoadRegistering;
-        
+
         /// <summary>
         /// BtnLoadEditing control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnLoadEditing;
-        
+
         /// <summary>
         /// BtnLoadDeleting control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnLoadDeleting;
-        
+
         /// <summary>
         /// BtnLoadCancelling control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnLoadCancelling;
-        
+
         /// <summary>
         /// BtnReRegistering control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnReRegistering;
-        
+
         /// <summary>
         /// BtnNewLoad control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnNewLoad;
-        
+
         /// <summary>
         /// UpdatePanel control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel;
-        
+
         /// <summary>
         /// TxtSearchLoaderType control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtSearchLoaderType;
-        
+
         /// <summary>
         /// BtnSearchLoaderType control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton BtnSearchLoaderType;
-        
+
         /// <summary>
         /// DropDownListLoaderType control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DropDownListLoaderType;
-        
+
         /// <summary>
         /// UpdatePanel1 control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
-        
+
         /// <summary>
         /// TxtSearchTargetCity control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtSearchTargetCity;
-        
+
         /// <summary>
         /// BtnSearchTargetCity control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton BtnSearchTargetCity;
-        
+
         /// <summary>
         /// DropDownListTargetCity control.
         /// </summary>
@@ -191,7 +193,43 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DropDownListTargetCity;
-        
+
+        /// <summary>
+        /// UpdatePanel6 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel6;
+
+        /// <summary>
+        /// TxtSearchSourceCity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TxtSearchSourceCity;
+
+        /// <summary>
+        /// BtnSearchSourceCity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton BtnSearchSourceCity;
+
+        /// <summary>
+        /// DropDownListSourceCity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownListSourceCity;
+
         /// <summary>
         /// UpdatePanel2 control.
         /// </summary>
@@ -200,7 +238,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
-        
+
         /// <summary>
         /// TxtSearchLoad control.
         /// </summary>
@@ -209,7 +247,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtSearchLoad;
-        
+
         /// <summary>
         /// BtnSearchLoad control.
         /// </summary>
@@ -218,7 +256,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton BtnSearchLoad;
-        
+
         /// <summary>
         /// DropDownListLoad control.
         /// </summary>
@@ -227,7 +265,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DropDownListLoad;
-        
+
         /// <summary>
         /// UpdatePanel3 control.
         /// </summary>
@@ -236,7 +274,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel3;
-        
+
         /// <summary>
         /// TxtSearchTC control.
         /// </summary>
@@ -245,7 +283,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtSearchTC;
-        
+
         /// <summary>
         /// BtnSearchTC control.
         /// </summary>
@@ -254,7 +292,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton BtnSearchTC;
-        
+
         /// <summary>
         /// DropDownListTC control.
         /// </summary>
@@ -263,7 +301,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DropDownListTC;
-        
+
         /// <summary>
         /// UpdatePanel5 control.
         /// </summary>
@@ -272,7 +310,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel5;
-        
+
         /// <summary>
         /// TxtSearchDischargingPlace control.
         /// </summary>
@@ -281,7 +319,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtSearchDischargingPlace;
-        
+
         /// <summary>
         /// BtnSearchDischargingPlace control.
         /// </summary>
@@ -290,7 +328,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton BtnSearchDischargingPlace;
-        
+
         /// <summary>
         /// DropDownListDischargingPlace control.
         /// </summary>
@@ -299,7 +337,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DropDownListDischargingPlace;
-        
+
         /// <summary>
         /// UpdatePanel4 control.
         /// </summary>
@@ -308,7 +346,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel4;
-        
+
         /// <summary>
         /// TxtSearchLoadingPlace control.
         /// </summary>
@@ -317,7 +355,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtSearchLoadingPlace;
-        
+
         /// <summary>
         /// BtnSearchLoadingPlace control.
         /// </summary>
@@ -326,7 +364,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton BtnSearchLoadingPlace;
-        
+
         /// <summary>
         /// DropDownListLoadingPlace control.
         /// </summary>
@@ -335,7 +373,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DropDownListLoadingPlace;
-        
+
         /// <summary>
         /// UpdatePanelDetails control.
         /// </summary>
@@ -344,7 +382,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanelDetails;
-        
+
         /// <summary>
         /// TxtTarrif control.
         /// </summary>
@@ -353,7 +391,16 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtTarrif;
-        
+
+        /// <summary>
+        /// BtnSearchTarrif control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton BtnSearchTarrif;
+
         /// <summary>
         /// TxtnCarNumKol control.
         /// </summary>
@@ -362,7 +409,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtnCarNumKol;
-        
+
         /// <summary>
         /// TxtnTonaj control.
         /// </summary>
@@ -371,7 +418,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtnTonaj;
-        
+
         /// <summary>
         /// TxtLoadReciever control.
         /// </summary>
@@ -380,7 +427,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtLoadReciever;
-        
+
         /// <summary>
         /// TxtAddress control.
         /// </summary>
@@ -389,7 +436,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtAddress;
-        
+
         /// <summary>
         /// TxtDescription control.
         /// </summary>
@@ -398,7 +445,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtDescription;
-        
+
         /// <summary>
         /// UpdatePanelWCTransportTarrifsParameters control.
         /// </summary>
@@ -407,7 +454,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadCapacitorManagement {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanelWCTransportTarrifsParameters;
-        
+
         /// <summary>
         /// WCTransportTarrifsParameters1 control.
         /// </summary>

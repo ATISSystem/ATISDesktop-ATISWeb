@@ -21,6 +21,7 @@ Imports R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Excep
 Imports R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces
 Imports R2Core.ExceptionManagement
 Imports R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces.Exceptions
+Imports R2CoreParkingSystem.City.Execption
 
 Public Class UCLoadCapacitorLoadManipulation
     Inherits UCLoadCapacitorLoad
@@ -34,7 +35,7 @@ Public Class UCLoadCapacitorLoadManipulation
 
 #Region "General Properties"
 
-    Private _DisableUCSearcherLoadSources As Boolean = True
+    Private _DisableUCSearcherLoadSources As Boolean = False
     <Browsable(False)>
     Public Property DisableUCSearcherLoadSources() As Boolean
         Get
@@ -114,7 +115,7 @@ Public Class UCLoadCapacitorLoadManipulation
             UcPersianTextBoxLoadCapacitorLoadDateTimeComposite.UCValue = UCNSSCurrent.dTimeElam & " - " & UCNSSCurrent.dDateElam
             UcPersianTextBoxLoadPermissionStatus.UCValue = R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetNSSLoadCapacitorLoadStatus(UCNSSCurrent.LoadStatus).LoadStatusName
             UcNumbernCarNum.UCValue = UCNSSCurrent.nCarNum
-            UcSearcherTransportCompanies.UCViewNSS(InstanceTransportCompanies.GetNSSTransportCompany(UCNSSCurrent.nCompCode))
+            UcSearcherTransportCompanies.UCViewNSS(InstanceTransportCompanies.GetNSSTransportCompany(UCNSSCurrent.nCompCode, True))
             UcSearcherGoods.UCViewNSS(R2CoreTransportationAndLoadNotificationMClassGoodsManagement.GetNSSGood(UCNSSCurrent.nBarCode))
             UcSearcherLoadTargets.UCViewNSS(R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetNSSLoadTarget(UCNSSCurrent.nCityCode))
             UcSearcherLoadSources.UCViewNSS(R2CoreTransportationAndLoadNotificationMclassLoadSourcesManagement.GetNSSLoadSource(UCNSSCurrent.nBarSource))
@@ -159,13 +160,15 @@ Public Class UCLoadCapacitorLoadManipulation
             End If
             UCViewNSS(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(UcNumbernEstelamId.UCValue, True))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ثبت بار انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As LoadTargetorLoadSourceIsUnActiveException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadingPlaceIsUnActiveException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As DischargingPlaceIsUnActiveException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadingAndDischargingPlaceNotFoundException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
-        Catch ex As LoadCapacitorLoadTonajNotAllowedException
+        Catch ex As LoadCapacitorLoadTonajExceededException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As LoadCapacitorLoadRegisteringInHolidayNotAllowedException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)

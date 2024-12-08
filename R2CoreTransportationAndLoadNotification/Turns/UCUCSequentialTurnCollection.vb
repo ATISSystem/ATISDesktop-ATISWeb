@@ -8,6 +8,7 @@ Imports R2Core.ComputersManagement
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
+Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions
 
 Public Class UCUCSequentialTurnCollection
     Inherits UCGeneral
@@ -20,6 +21,7 @@ Public Class UCUCSequentialTurnCollection
     <Browsable(False)>
     Public Property UCCurrentNSS() As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure
         Get
+            If _UCCurrentNSS Is Nothing Then Throw New AnySequentialTurnDoNotSelectedException
             Return _UCCurrentNSS
         End Get
         Set(value As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure)
@@ -40,6 +42,7 @@ Public Class UCUCSequentialTurnCollection
         End Set
     End Property
 
+
 #End Region
 
 #Region "Subroutins And Functions"
@@ -56,6 +59,14 @@ Public Class UCUCSequentialTurnCollection
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
 
+    End Sub
+
+    Public Overrides Sub UCRefreshGeneral()
+        Try
+            UCUnActiveAllUCs()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
     End Sub
 
     Public Sub UCViewCollection()
@@ -99,6 +110,18 @@ Public Class UCUCSequentialTurnCollection
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
     End Sub
+
+    Private Sub UCUnActiveAllUCs()
+        Try
+            UCCurrentNSS = Nothing
+            Dim InstanceSequentialTurns = New R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager
+            UCSimulateThisNSS(InstanceSequentialTurns.GetNSSSequentialTurn(SequentialTurns.None))
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+
 
 #End Region
 

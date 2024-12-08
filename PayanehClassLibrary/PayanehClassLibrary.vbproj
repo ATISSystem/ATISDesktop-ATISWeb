@@ -53,10 +53,6 @@
     <Reference Include="CButtonLib">
       <HintPath>C:\ATISDesktopRefrences\CButtonLib.dll</HintPath>
     </Reference>
-    <Reference Include="Dermalog.AFIS.FingerCode3, Version=1.1.1204.19, Culture=neutral, PublicKeyToken=97cac07b8409e999, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\ATISDesktopRefrences\Dermalog.AFIS.FingerCode3.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -257,18 +253,6 @@
     </Compile>
     <Compile Include="Configuration Management\UCConfigurationOfTransportCompanies.vb">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcDriverTruckFingerPrintRegister.Designer.vb">
-      <DependentUpon>FrmcDriverTruckFingerPrintRegister.vb</DependentUpon>
-    </Compile>
-    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcDriverTruckFingerPrintRegister.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcDriverTruckPresentDermalog.Designer.vb">
-      <DependentUpon>FrmcDriverTruckPresentDermalog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcDriverTruckPresentDermalog.vb">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="AnnouncementHall\FrmcAnnouncementHallAutomation.Designer.vb">
       <DependentUpon>FrmcAnnouncementHallAutomation.vb</DependentUpon>
@@ -701,12 +685,6 @@
     <EmbeddedResource Include="Configuration Management\UCConfigurationOfTransportCompanies.resx">
       <DependentUpon>UCConfigurationOfTransportCompanies.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\FrmcDriverTruckFingerPrintRegister.resx">
-      <DependentUpon>FrmcDriverTruckFingerPrintRegister.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\FrmcDriverTruckPresentDermalog.resx">
-      <DependentUpon>FrmcDriverTruckPresentDermalog.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="AnnouncementHall\FrmcAnnouncementHallAutomation.resx">
       <DependentUpon>FrmcAnnouncementHallAutomation.vb</DependentUpon>
     </EmbeddedResource>
@@ -948,10 +926,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>PayanehClassLibrary_PayanehWS_PayanehWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://172.26.29.16:2010/TerminalsWebService.asmx">
+    <WebReferenceUrl Include="http://172.26.29.22:2010/TerminalsWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\TerminalsWebService\</RelPath>
-      <UpdateFromURL>http://172.26.29.16:2010/TerminalsWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://172.26.29.22:2010/TerminalsWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

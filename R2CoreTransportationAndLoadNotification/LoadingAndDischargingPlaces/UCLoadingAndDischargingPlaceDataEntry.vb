@@ -7,6 +7,7 @@ Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
 Imports R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces
+Imports R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Turns
 
 
@@ -127,9 +128,11 @@ Public Class UCLoadingAndDischargingPlaceDataEntry
             Dim InstanceLoadingAndDischargingPlaces = New R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManager
 
             If UcLabelLADPlaceId.UCValue.Trim = String.Empty Then Return
-            InstanceLoadingAndDischargingPlaces.LoadingPlaceChangeActiveStatus(New R2CoreTransportationAndLoadNotificationStandardLoadingAndDischargingPlacesStructure(UcLabelLADPlaceId.UCValue, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+            InstanceLoadingAndDischargingPlaces.LoadingPlaceChangeActiveStatus(InstanceLoadingAndDischargingPlaces.GetNSSLoadingAndDischargingPlace(UcLabelLADPlaceId.UCValue, True))
             UCViewNSS(UcLabelLADPlaceId.UCValue)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "فرآیند با موفقیت انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As LoadingAndDischargingSendSMSFailedException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -140,9 +143,11 @@ Public Class UCLoadingAndDischargingPlaceDataEntry
             Dim InstanceLoadingAndDischargingPlaces = New R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManager
 
             If UcLabelLADPlaceId.UCValue.Trim = String.Empty Then Return
-            InstanceLoadingAndDischargingPlaces.DischargingPlaceChangeActiveStatus(New R2CoreTransportationAndLoadNotificationStandardLoadingAndDischargingPlacesStructure(UcLabelLADPlaceId.UCValue, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing))
+            InstanceLoadingAndDischargingPlaces.DischargingPlaceChangeActiveStatus(InstanceLoadingAndDischargingPlaces.GetNSSLoadingAndDischargingPlace(UcLabelLADPlaceId.UCValue, True))
             UCViewNSS(UcLabelLADPlaceId.UCValue)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "فرآیند با موفقیت انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As LoadingAndDischargingSendSMSFailedException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

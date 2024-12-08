@@ -168,7 +168,7 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                 var LPSerial = Content.Split(';')[3];
 
                 var InstanceCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
-                InstanceCarTruckNobat.TurnCancellationWithLicensePlate(LPPelak, LPSerial, NSSSoftwareuser);
+                InstanceCarTruckNobat.TurnCancellationWithLicensePlate(LPPelak, LPSerial, NSSSoftwareuser, TurnStatuses.CancelledUser );
 
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;

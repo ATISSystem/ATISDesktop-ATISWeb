@@ -25,12 +25,12 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UCMonetarySettingToolUserPadInstrument))
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PicMblghZero = New System.Windows.Forms.PictureBox()
-        Me.UcMblghSelector5000 = New R2CoreGUI.UCMblghSelector()
-        Me.UcMblghSelector6000 = New R2CoreGUI.UCMblghSelector()
         Me.UcMblghSelector10000 = New R2CoreGUI.UCMblghSelector()
-        Me.UcMblghSelector500 = New R2CoreGUI.UCMblghSelector()
+        Me.UcMblghSelector50000 = New R2CoreGUI.UCMblghSelector()
+        Me.UcMblghSelector100000 = New R2CoreGUI.UCMblghSelector()
         Me.UcMblghSelector1000 = New R2CoreGUI.UCMblghSelector()
-        Me.UcMblghSelector3000 = New R2CoreGUI.UCMblghSelector()
+        Me.UcMblghSelector28000 = New R2CoreGUI.UCMblghSelector()
+        Me.UcMblghSelector36000 = New R2CoreGUI.UCMblghSelector()
         Me.UcLabelHint = New R2CoreGUI.UCLabel()
         Me.UcLabelAmount = New R2CoreGUI.UCLabel()
         Me.PnlMain.SuspendLayout()
@@ -40,12 +40,12 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         'PnlMain
         '
         Me.PnlMain.Controls.Add(Me.PicMblghZero)
-        Me.PnlMain.Controls.Add(Me.UcMblghSelector5000)
-        Me.PnlMain.Controls.Add(Me.UcMblghSelector6000)
         Me.PnlMain.Controls.Add(Me.UcMblghSelector10000)
-        Me.PnlMain.Controls.Add(Me.UcMblghSelector500)
+        Me.PnlMain.Controls.Add(Me.UcMblghSelector50000)
+        Me.PnlMain.Controls.Add(Me.UcMblghSelector100000)
         Me.PnlMain.Controls.Add(Me.UcMblghSelector1000)
-        Me.PnlMain.Controls.Add(Me.UcMblghSelector3000)
+        Me.PnlMain.Controls.Add(Me.UcMblghSelector28000)
+        Me.PnlMain.Controls.Add(Me.UcMblghSelector36000)
         Me.PnlMain.Controls.Add(Me.UcLabelHint)
         Me.PnlMain.Controls.Add(Me.UcLabelAmount)
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
@@ -66,119 +66,125 @@ Partial Class UCMonetarySettingToolUserPadInstrument
         Me.PicMblghZero.TabIndex = 12
         Me.PicMblghZero.TabStop = False
         '
-        'UcMblghSelector5000
-        '
-        Me.UcMblghSelector5000.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcMblghSelector5000.BackColor = System.Drawing.Color.Transparent
-        Me.UcMblghSelector5000.Location = New System.Drawing.Point(274, 70)
-        Me.UcMblghSelector5000.Name = "UcMblghSelector5000"
-        Me.UcMblghSelector5000.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcMblghSelector5000.Size = New System.Drawing.Size(134, 70)
-        Me.UcMblghSelector5000.TabIndex = 5
-        Me.UcMblghSelector5000.UCBackColor = System.Drawing.Color.Coral
-        Me.UcMblghSelector5000.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcMblghSelector5000.UCDeleteOneZeroWhenView = True
-        Me.UcMblghSelector5000.UCEnable = True
-        Me.UcMblghSelector5000.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcMblghSelector5000.UCForeColor = System.Drawing.Color.White
-        Me.UcMblghSelector5000.UCMblgh = CType(50000, Long)
-        Me.UcMblghSelector5000.UCValue = "5,000تومان"
-        Me.UcMblghSelector5000.UCViewString = "تومان"
-        '
-        'UcMblghSelector6000
-        '
-        Me.UcMblghSelector6000.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcMblghSelector6000.BackColor = System.Drawing.Color.Transparent
-        Me.UcMblghSelector6000.Location = New System.Drawing.Point(140, 70)
-        Me.UcMblghSelector6000.Name = "UcMblghSelector6000"
-        Me.UcMblghSelector6000.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcMblghSelector6000.Size = New System.Drawing.Size(134, 70)
-        Me.UcMblghSelector6000.TabIndex = 4
-        Me.UcMblghSelector6000.UCBackColor = System.Drawing.Color.OrangeRed
-        Me.UcMblghSelector6000.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcMblghSelector6000.UCDeleteOneZeroWhenView = True
-        Me.UcMblghSelector6000.UCEnable = True
-        Me.UcMblghSelector6000.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcMblghSelector6000.UCForeColor = System.Drawing.Color.White
-        Me.UcMblghSelector6000.UCMblgh = CType(60000, Long)
-        Me.UcMblghSelector6000.UCValue = "6,000تومان"
-        Me.UcMblghSelector6000.UCViewString = "تومان"
-        '
         'UcMblghSelector10000
         '
         Me.UcMblghSelector10000.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcMblghSelector10000.BackColor = System.Drawing.Color.Transparent
-        Me.UcMblghSelector10000.Location = New System.Drawing.Point(6, 70)
+        Me.UcMblghSelector10000.Location = New System.Drawing.Point(274, 70)
         Me.UcMblghSelector10000.Name = "UcMblghSelector10000"
         Me.UcMblghSelector10000.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcMblghSelector10000.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcMblghSelector10000.Size = New System.Drawing.Size(134, 70)
-        Me.UcMblghSelector10000.TabIndex = 3
-        Me.UcMblghSelector10000.UCBackColor = System.Drawing.Color.Red
+        Me.UcMblghSelector10000.TabIndex = 5
+        Me.UcMblghSelector10000.UCBackColor = System.Drawing.Color.Coral
         Me.UcMblghSelector10000.UCBackColorDisable = System.Drawing.Color.Gray
         Me.UcMblghSelector10000.UCDeleteOneZeroWhenView = True
         Me.UcMblghSelector10000.UCEnable = True
         Me.UcMblghSelector10000.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcMblghSelector10000.UCForeColor = System.Drawing.Color.White
         Me.UcMblghSelector10000.UCMblgh = CType(100000, Long)
-        Me.UcMblghSelector10000.UCValue = "10,000تومان"
+        Me.UcMblghSelector10000.UCValue = "10,000 تومان"
         Me.UcMblghSelector10000.UCViewString = "تومان"
         '
-        'UcMblghSelector500
+        'UcMblghSelector50000
         '
-        Me.UcMblghSelector500.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcMblghSelector500.BackColor = System.Drawing.Color.Transparent
-        Me.UcMblghSelector500.Location = New System.Drawing.Point(274, 2)
-        Me.UcMblghSelector500.Name = "UcMblghSelector500"
-        Me.UcMblghSelector500.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcMblghSelector500.Size = New System.Drawing.Size(134, 70)
-        Me.UcMblghSelector500.TabIndex = 2
-        Me.UcMblghSelector500.UCBackColor = System.Drawing.Color.LimeGreen
-        Me.UcMblghSelector500.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcMblghSelector500.UCDeleteOneZeroWhenView = False
-        Me.UcMblghSelector500.UCEnable = True
-        Me.UcMblghSelector500.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcMblghSelector500.UCForeColor = System.Drawing.Color.White
-        Me.UcMblghSelector500.UCMblgh = CType(5000, Long)
-        Me.UcMblghSelector500.UCValue = "5,00تومان"
-        Me.UcMblghSelector500.UCViewString = "تومان"
+        Me.UcMblghSelector50000.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcMblghSelector50000.BackColor = System.Drawing.Color.Transparent
+        Me.UcMblghSelector50000.Location = New System.Drawing.Point(140, 70)
+        Me.UcMblghSelector50000.Name = "UcMblghSelector50000"
+        Me.UcMblghSelector50000.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcMblghSelector50000.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcMblghSelector50000.Size = New System.Drawing.Size(134, 70)
+        Me.UcMblghSelector50000.TabIndex = 4
+        Me.UcMblghSelector50000.UCBackColor = System.Drawing.Color.OrangeRed
+        Me.UcMblghSelector50000.UCBackColorDisable = System.Drawing.Color.Gray
+        Me.UcMblghSelector50000.UCDeleteOneZeroWhenView = True
+        Me.UcMblghSelector50000.UCEnable = True
+        Me.UcMblghSelector50000.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcMblghSelector50000.UCForeColor = System.Drawing.Color.White
+        Me.UcMblghSelector50000.UCMblgh = CType(500000, Long)
+        Me.UcMblghSelector50000.UCValue = "50,000 تومان"
+        Me.UcMblghSelector50000.UCViewString = "تومان"
+        '
+        'UcMblghSelector100000
+        '
+        Me.UcMblghSelector100000.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcMblghSelector100000.BackColor = System.Drawing.Color.Transparent
+        Me.UcMblghSelector100000.Location = New System.Drawing.Point(6, 70)
+        Me.UcMblghSelector100000.Name = "UcMblghSelector100000"
+        Me.UcMblghSelector100000.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcMblghSelector100000.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcMblghSelector100000.Size = New System.Drawing.Size(134, 70)
+        Me.UcMblghSelector100000.TabIndex = 3
+        Me.UcMblghSelector100000.UCBackColor = System.Drawing.Color.Red
+        Me.UcMblghSelector100000.UCBackColorDisable = System.Drawing.Color.Gray
+        Me.UcMblghSelector100000.UCDeleteOneZeroWhenView = True
+        Me.UcMblghSelector100000.UCEnable = True
+        Me.UcMblghSelector100000.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcMblghSelector100000.UCForeColor = System.Drawing.Color.White
+        Me.UcMblghSelector100000.UCMblgh = CType(1000000, Long)
+        Me.UcMblghSelector100000.UCValue = "100,000 تومان"
+        Me.UcMblghSelector100000.UCViewString = "تومان"
         '
         'UcMblghSelector1000
         '
         Me.UcMblghSelector1000.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcMblghSelector1000.BackColor = System.Drawing.Color.Transparent
-        Me.UcMblghSelector1000.Location = New System.Drawing.Point(140, 2)
+        Me.UcMblghSelector1000.Location = New System.Drawing.Point(274, 2)
         Me.UcMblghSelector1000.Name = "UcMblghSelector1000"
         Me.UcMblghSelector1000.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcMblghSelector1000.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcMblghSelector1000.Size = New System.Drawing.Size(134, 70)
-        Me.UcMblghSelector1000.TabIndex = 1
-        Me.UcMblghSelector1000.UCBackColor = System.Drawing.Color.ForestGreen
+        Me.UcMblghSelector1000.TabIndex = 2
+        Me.UcMblghSelector1000.UCBackColor = System.Drawing.Color.LimeGreen
         Me.UcMblghSelector1000.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcMblghSelector1000.UCDeleteOneZeroWhenView = True
+        Me.UcMblghSelector1000.UCDeleteOneZeroWhenView = False
         Me.UcMblghSelector1000.UCEnable = True
         Me.UcMblghSelector1000.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcMblghSelector1000.UCForeColor = System.Drawing.Color.White
         Me.UcMblghSelector1000.UCMblgh = CType(10000, Long)
-        Me.UcMblghSelector1000.UCValue = "1,000تومان"
+        Me.UcMblghSelector1000.UCValue = "1,000 تومان"
         Me.UcMblghSelector1000.UCViewString = "تومان"
         '
-        'UcMblghSelector3000
+        'UcMblghSelector28000
         '
-        Me.UcMblghSelector3000.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.UcMblghSelector3000.BackColor = System.Drawing.Color.Transparent
-        Me.UcMblghSelector3000.Location = New System.Drawing.Point(6, 2)
-        Me.UcMblghSelector3000.Name = "UcMblghSelector3000"
-        Me.UcMblghSelector3000.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcMblghSelector3000.Size = New System.Drawing.Size(134, 70)
-        Me.UcMblghSelector3000.TabIndex = 0
-        Me.UcMblghSelector3000.UCBackColor = System.Drawing.Color.DodgerBlue
-        Me.UcMblghSelector3000.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcMblghSelector3000.UCDeleteOneZeroWhenView = True
-        Me.UcMblghSelector3000.UCEnable = True
-        Me.UcMblghSelector3000.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcMblghSelector3000.UCForeColor = System.Drawing.Color.White
-        Me.UcMblghSelector3000.UCMblgh = CType(30000, Long)
-        Me.UcMblghSelector3000.UCValue = "3,000تومان"
-        Me.UcMblghSelector3000.UCViewString = "تومان"
+        Me.UcMblghSelector28000.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcMblghSelector28000.BackColor = System.Drawing.Color.Transparent
+        Me.UcMblghSelector28000.Location = New System.Drawing.Point(140, 2)
+        Me.UcMblghSelector28000.Name = "UcMblghSelector28000"
+        Me.UcMblghSelector28000.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcMblghSelector28000.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcMblghSelector28000.Size = New System.Drawing.Size(134, 70)
+        Me.UcMblghSelector28000.TabIndex = 1
+        Me.UcMblghSelector28000.UCBackColor = System.Drawing.Color.ForestGreen
+        Me.UcMblghSelector28000.UCBackColorDisable = System.Drawing.Color.Gray
+        Me.UcMblghSelector28000.UCDeleteOneZeroWhenView = True
+        Me.UcMblghSelector28000.UCEnable = True
+        Me.UcMblghSelector28000.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcMblghSelector28000.UCForeColor = System.Drawing.Color.White
+        Me.UcMblghSelector28000.UCMblgh = CType(280000, Long)
+        Me.UcMblghSelector28000.UCValue = "28,000 تومان"
+        Me.UcMblghSelector28000.UCViewString = "تومان"
+        '
+        'UcMblghSelector36000
+        '
+        Me.UcMblghSelector36000.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.UcMblghSelector36000.BackColor = System.Drawing.Color.Transparent
+        Me.UcMblghSelector36000.Location = New System.Drawing.Point(6, 2)
+        Me.UcMblghSelector36000.Name = "UcMblghSelector36000"
+        Me.UcMblghSelector36000.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcMblghSelector36000.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UcMblghSelector36000.Size = New System.Drawing.Size(134, 70)
+        Me.UcMblghSelector36000.TabIndex = 0
+        Me.UcMblghSelector36000.UCBackColor = System.Drawing.Color.DodgerBlue
+        Me.UcMblghSelector36000.UCBackColorDisable = System.Drawing.Color.Gray
+        Me.UcMblghSelector36000.UCDeleteOneZeroWhenView = True
+        Me.UcMblghSelector36000.UCEnable = True
+        Me.UcMblghSelector36000.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcMblghSelector36000.UCForeColor = System.Drawing.Color.White
+        Me.UcMblghSelector36000.UCMblgh = CType(360000, Long)
+        Me.UcMblghSelector36000.UCValue = "36,000 تومان"
+        Me.UcMblghSelector36000.UCViewString = "تومان"
         '
         'UcLabelHint
         '
@@ -231,12 +237,12 @@ Partial Class UCMonetarySettingToolUserPadInstrument
     End Sub
 
     Friend WithEvents PnlMain As Panel
-    Friend WithEvents UcMblghSelector3000 As UCMblghSelector
+    Friend WithEvents UcMblghSelector36000 As UCMblghSelector
+    Friend WithEvents UcMblghSelector28000 As UCMblghSelector
     Friend WithEvents UcMblghSelector1000 As UCMblghSelector
-    Friend WithEvents UcMblghSelector500 As UCMblghSelector
+    Friend WithEvents UcMblghSelector100000 As UCMblghSelector
+    Friend WithEvents UcMblghSelector50000 As UCMblghSelector
     Friend WithEvents UcMblghSelector10000 As UCMblghSelector
-    Friend WithEvents UcMblghSelector6000 As UCMblghSelector
-    Friend WithEvents UcMblghSelector5000 As UCMblghSelector
     Friend WithEvents UcLabelHint As UCLabel
     Friend WithEvents UcLabelAmount As UCLabel
     Friend WithEvents PicMblghZero As PictureBox
