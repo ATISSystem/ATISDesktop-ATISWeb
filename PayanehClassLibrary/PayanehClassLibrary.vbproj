@@ -296,9 +296,6 @@
     <Compile Include="CarTruck and DriverTruck Relation\FrmcCarAndDriversInformation.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DriverTrucks FingerPrints IdentificationVerification\FrmcIndigenousTrucksWithUNNativeLP.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="DriverTrucks FingerPrints IdentificationVerification\UCDriverTruckPresentCollection.Designer.vb">
       <DependentUpon>UCDriverTruckPresentCollection.vb</DependentUpon>
     </Compile>
@@ -702,9 +699,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CarTruck and DriverTruck Relation\FrmcCarAndDriversInformation.resx">
       <DependentUpon>FrmcCarAndDriversInformation.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\FrmcIndigenousTrucksWithUNNativeLP.resx">
-      <DependentUpon>FrmcIndigenousTrucksWithUNNativeLP.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DriverTrucks FingerPrints IdentificationVerification\UCDriverTruckPresentCollection.resx">
       <DependentUpon>UCDriverTruckPresentCollection.vb</DependentUpon>

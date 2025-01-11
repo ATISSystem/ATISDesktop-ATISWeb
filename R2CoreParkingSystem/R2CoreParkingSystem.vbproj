@@ -196,6 +196,18 @@
     <Compile Include="Cars And Drivers\UCDriverImage.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="CarsNativeness\UCCarNativeness.Designer.vb">
+      <DependentUpon>UCCarNativeness.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarsNativeness\UCCarNativeness.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CarsNativeness\UCCarNativenessManipulation.Designer.vb">
+      <DependentUpon>UCCarNativenessManipulation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CarsNativeness\UCCarNativenessManipulation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Citys\FrmcLoadTargetsTravelLength.Designer.vb">
       <DependentUpon>FrmcLoadTargetsTravelLength.vb</DependentUpon>
     </Compile>
@@ -639,6 +651,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cars And Drivers\UCDriverImage.resx">
       <DependentUpon>UCDriverImage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarsNativeness\UCCarNativenessManipulation.resx">
+      <DependentUpon>UCCarNativenessManipulation.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Citys\FrmcLoadTargetsTravelLength.resx">
       <DependentUpon>FrmcLoadTargetsTravelLength.vb</DependentUpon>

@@ -86,10 +86,14 @@ Imports R2Core.SiteIsBusy
 Imports R2Core.SMS.SMSHandling
 Imports R2CoreTransportationAndLoadNotification.SMS.SMSTypes
 Imports R2CoreParkingSystem.SoftwareUsersManagement
-Imports R2CoreTransportationAndLoadNotification.IndigenousTrucks
 Imports R2CoreParkingSystem.City.Execption
 Imports R2Core.SMS.Exceptions
 Imports R2Core.PublicProc
+Imports R2CoreTransportationAndLoadNotification.TrucksNativeness
+Imports R2Core.SoftwareUserManagement.Exceptions
+Imports System.ComponentModel.Design
+Imports R2CoreTransportationAndLoadNotification.LoadSources.Exceptions
+Imports R2CoreTransportationAndLoadNotification.LoadSources
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -567,70 +571,6 @@ Namespace Trucks
 
 
     End Class
-
-    Namespace IndigenousTrucks
-
-        Public Class R2CoreTransportationAndLoadNotificationInstanceIndigenousTrucksManager
-            Public Function IsIndigenousTruck(ByVal YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure) As Boolean
-                Try
-                    Dim InstanceSqlDataBox = New R2CoreInstanseSqlDataBOXManager
-                    Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
-                    Dim InstanceAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
-                    Dim InstanceConfigurationOfAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager
-                    Dim NSSAnnouncementHallSubGroup = InstanceTrucks.GetNSSAnnouncementHallSubGroup(YourNSSTruck)(0)
-                    Dim NSSAnnouncementHall = InstanceAnnouncementHalls.GetNSSAnnouncementHallByAnnouncementHallSubGroup(NSSAnnouncementHallSubGroup.AHSGId)
-                    Dim IndigousTrucks As String() = Split(InstanceConfigurationOfAnnouncementHalls.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, NSSAnnouncementHall.AHId, 6), "-")
-                    If IndigousTrucks.Contains(YourNSSTruck.NSSCar.StrCarSerialNo) Then
-                        Return True
-                    Else
-                        Dim DS As DataSet
-                        If InstanceSqlDataBox.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP Where (Pelak='" & YourNSSTruck.NSSCar.StrCarNo.Trim & "') and (Serial='" & YourNSSTruck.NSSCar.StrCarSerialNo.Trim & "')", 1, DS).GetRecordsCount() = 0 Then
-                            Return False
-                        Else
-                            Return True
-                        End If
-                    End If
-                Catch ex As AnnouncementHallSubGroupNotFoundException
-                    Throw ex
-                Catch ex As AnnouncementHallSubGroupRelationTruckNotExistException
-                    Throw ex
-                Catch ex As Exception
-                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-                End Try
-            End Function
-
-        End Class
-
-        Public MustInherit Class R2CoreTransportationAndLoadNotificationMClassIndigenousTrucksManagement
-            Private Shared _DateTime As New R2DateTime
-            Public Shared Function IsIndigenousTruck(ByVal YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure) As Boolean
-                Try
-                    Dim NSSAnnouncementHallSubGroup As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure = R2CoreTransportationAndLoadNotificationMClassTrucksManagement.GetNSSAnnouncementHallSubGroup(YourNSSTruck)(0)
-                    Dim NSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure = R2CoreTransportationAndLoadNotificationMClassAnnouncementHallsManagement.GetNSSAnnouncementHallByAnnouncementHallSubGroup(NSSAnnouncementHallSubGroup.AHSGId)
-                    Dim IndigousTrucks As String() = Split(R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, NSSAnnouncementHall.AHId, 6), "-")
-                    If IndigousTrucks.Contains(YourNSSTruck.NSSCar.StrCarSerialNo) Then
-                        Return True
-                    Else
-                        Dim DS As DataSet
-                        If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP Where (Pelak='" & YourNSSTruck.NSSCar.StrCarNo.Trim & "') and (Serial='" & YourNSSTruck.NSSCar.StrCarSerialNo.Trim & "')", 1, DS).GetRecordsCount() = 0 Then
-                            Return False
-                        Else
-                            Return True
-                        End If
-                    End If
-                Catch ex As AnnouncementHallSubGroupNotFoundException
-                    Throw ex
-                Catch ex As AnnouncementHallSubGroupRelationTruckNotExistException
-                    Throw ex
-                Catch ex As Exception
-                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-                End Try
-            End Function
-
-
-        End Class
-
-    End Namespace
 
     Namespace Exceptions
         Public Class TruckNotFoundException
@@ -2764,7 +2704,16 @@ Namespace LoadCapacitor
                     End Try
 
                     'کنترل وضعیت بار
-                    If YourNSS.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented Or YourNSS.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled Or YourNSS.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted Then Throw New LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException
+                    If YourNSS.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Cancelled Or YourNSS.LoadStatus = R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Deleted Then Throw New LoadCapacitorLoadHandlingNotAllowedBecuaseLoadStatusException
+
+                    'تنظیم مقدار باقیمانده بار
+                    Dim ReminderTotal As Int64 = 0
+                    Dim LastNSS = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(YourNSS.nEstelamId, True)
+                    If LastNSS.nCarNumKol = YourNSS.nCarNumKol Then
+                        ReminderTotal = LastNSS.nCarNum
+                    Else
+                        ReminderTotal = YourNSS.nCarNumKol
+                    End If
 
                     'کنترل محل تخلیه بار 
                     If YourNSS.DischargingPlaceId = LoadingAndDischargingPlaces.LoadingAndDischargingPlaces.None Then Throw New DataEntryException
@@ -2797,7 +2746,7 @@ Namespace LoadCapacitor
                     CmdSql.Parameters.Add(P)
                     P = New SqlClient.SqlParameter("@nTruckType", SqlDbType.Int) : P.Value = YourNSS.nTruckType
                     CmdSql.Parameters.Add(P)
-                    P = New SqlClient.SqlParameter("@nCarNum", SqlDbType.Int) : P.Value = YourNSS.nCarNumKol
+                    P = New SqlClient.SqlParameter("@nCarNum", SqlDbType.Int) : P.Value = ReminderTotal
                     CmdSql.Parameters.Add(P)
                     P = New SqlClient.SqlParameter("@StrAddress", SqlDbType.VarChar) : P.Value = YourNSS.StrAddress
                     CmdSql.Parameters.Add(P)
@@ -3047,6 +2996,96 @@ Namespace LoadCapacitor
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
             End Sub
+
+            Private Sub SendSMS(YourTCTitle As String, YourMessage As String)
+                Try
+                    Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                    Dim TargetUsers = InstanceSoftwareUsers.GetNSSUser(InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.SmsSystemSetting, 18))
+                    Dim LstUsers = New List(Of R2CoreStandardSoftwareUserStructure)
+                    LstUsers.Add(TargetUsers)
+                    Dim SMSData = New SMSCreationData()
+                    SMSData.Data1 = YourTCTitle
+                    SMSData.Data2 = YourMessage
+                    Dim InstanceSMSHandling = New R2CoreSMSHandlingManager
+                    Dim SMSResult = InstanceSMSHandling.SendSMS(LstUsers, R2CoreTransportationAndLoadNotification.SMS.SMSTypes.R2CoreTransportationAndLoadNotificationSMSTypes.ChangeLoadInformation, InstanceSMSHandling.RepeatSMSCreationData(SMSData, LstUsers.Count), True)
+                    Dim SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult)
+                    'If (Not (SMSResultAnalyze <> String.Empty)) Then Throw New Exception
+                Catch ex As Exception
+                    'Nothing to do
+                End Try
+            End Sub
+
+            Public Sub ChangeLoadSource(YourMobileNumber As String, YourMessageContent As String)
+                '997;882244;21310000
+                Dim CmdSql As New SqlClient.SqlCommand
+                CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+                Try
+                    Dim nEstelamId As Int64 = YourMessageContent.Split(";")(1)
+                    Dim loadSourceId As Int64 = YourMessageContent.Split(";")(2)
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                    Dim InstanceLoadSources = New R2CoreTransportationAndLoadNotificationMclassLoadSourcesManager
+                    'بررسی صحت شهر
+                    InstanceLoadSources.GetNSSLoadSource(loadSourceId)
+                    'بررسی کاربر درخواست کننده باید ادمین سیستم باشد
+                    If YourMobileNumber <> InstanceConfiguration.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 1) Then Throw New UserNotAlllowedException
+                    Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+                    Dim NSSLoadLast = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamId, True)
+                    CmdSql.CommandText = "Update dbtransport.dbo.tbElam Set nBarSource=" & loadSourceId & " Where nEstelamID=" & nEstelamId & ""
+                    CmdSql.Connection.Open()
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.Connection.Close()
+                    Dim NSSLoadCurrent = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamId, True)
+                    'ارسال اس ام اس موفق
+                    SendSMS(NSSLoadLast.TransportCompanyTitle, "بار " + NSSLoadLast.GoodTitle + " تغییر مبدا از " + NSSLoadLast.LoadSourceTitle + " به " + NSSLoadCurrent.LoadSourceTitle + " و مقصد " + NSSLoadCurrent.LoadTargetTitle)
+                Catch ex As LoadSourceIdNotFoundException
+                    SendSMS("بروز خطا", ex.Message)
+                Catch ex As LoadCapacitorLoadNotFoundException
+                    SendSMS("بروز خطا", ex.Message)
+                Catch ex As UserNotExistByMobileNumberException
+                    SendSMS("بروز خطا", ex.Message)
+                Catch ex As UserNotAlllowedException
+                    SendSMS("بروز خطا", ex.Message)
+                Catch ex As Exception
+                    SendSMS("بروز خطا", "")
+                End Try
+            End Sub
+
+            Public Sub ChangeLoadTarget(YourMobileNumber As String, YourMessageContent As String)
+                '998;882244;21310000
+                Dim CmdSql As New SqlClient.SqlCommand
+                CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+                Try
+                    Dim nEstelamId As Int64 = YourMessageContent.Split(";")(1)
+                    Dim loadTargetId As Int64 = YourMessageContent.Split(";")(2)
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                    Dim InstanceLoadTarget = New R2CoreTransportationAndLoadNotificationMclassLoadTargetsManager
+                    'بررسی صحت شهر
+                    InstanceLoadTarget.GetNSSLoadTarget(loadTargetId)
+                    'بررسی کاربر درخواست کننده باید ادمین سیستم باشد
+                    If YourMobileNumber <> InstanceConfiguration.GetConfigString(R2CoreConfigurations.SmsSystemSetting, 1) Then Throw New UserNotAlllowedException
+                    Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+                    Dim NSSLoadLast = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamId, True)
+                    CmdSql.CommandText = "Update dbtransport.dbo.tbElam Set nCityCode=" & loadTargetId & " Where nEstelamID=" & nEstelamId & ""
+                    CmdSql.Connection.Open()
+                    CmdSql.ExecuteNonQuery()
+                    CmdSql.Connection.Close()
+                    Dim NSSLoadCurrent = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamId, True)
+                    'ارسال اس ام اس موفق
+                    SendSMS(NSSLoadLast.TransportCompanyTitle, "بار " + NSSLoadLast.GoodTitle + " تغییر مقصد از " + NSSLoadLast.LoadTargetTitle + " به " + NSSLoadCurrent.LoadTargetTitle + " و مبدا " + NSSLoadCurrent.LoadSourceTitle)
+                Catch ex As LoadTargetIdNotFoundException
+                    SendSMS("بروز خطا", ex.Message)
+                Catch ex As LoadCapacitorLoadNotFoundException
+                    SendSMS("بروز خطا", ex.Message)
+                Catch ex As UserNotExistByMobileNumberException
+                    SendSMS("بروز خطا", ex.Message)
+                Catch ex As UserNotAlllowedException
+                    SendSMS("بروز خطا", ex.Message)
+                Catch ex As Exception
+                    SendSMS("بروز خطا", "")
+                End Try
+            End Sub
+
 
         End Class
 
@@ -4768,23 +4807,6 @@ Namespace LoadPermission
             Dim InstanceTransportTarrifsParameters = New R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager
             Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
             Try
-                'Dim SqlString = "Select Top 2000 LoadAllocations.DateShamsi as ActionDateShamsi,LoadAllocations.Time as ActionTime,Turns.OtaghdarTurnNumber,ltrim(rtrim(Replace(Persons.strPersonFullName ,';',' '))) as PersonFullName,Trucks.strCarNo+'-'+Trucks.strCarSerialNo as Truck,LoadAllocations.LAId,LoadAllocations.Priority,Loads.nEstelamID,Loads.nTonaj,
-                '                                 Products.strGoodName,LoadTargets.strCityName,LoadingPlaces.LADPlaceTitle as LoadingPlace,DischargingPlaces.LADPlaceTitle as DischargingPlace,Loads.TPTParams,Turns.strExitDate+'-'+strExitTime as LoadPermissionDateTime,TransportCompanies.TCTitle,AnnouncementHallSubGroups.AHSGTitle,Loads.strDescription,Loads.strAddress,Loads.strBarName  
-                '                   from dbtransport.dbo.tbEnterExit as Turns
-                '                    Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID=Loads.nEstelamID
-                '                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On Loads.AHSGId=AnnouncementHallSubGroups.AHSGId 
-                '                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Loads.nCompCode=TransportCompanies.TCId 
-                '                    Inner Join dbtransport.dbo.tbCity as LoadTargets On Loads.nCityCode=LoadTargets.nCityCode
-                '                    Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode=Products.strGoodCode
-                '                    Inner Join dbtransport.dbo.TbPerson as Persons On Turns.nDriverCode=Persons.nIDPerson
-                '                    Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver
-                '                    Inner Join dbtransport.dbo.TbCar as Trucks On Turns.strCardno=Trucks.nIDCar
-                '                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId
-                '                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocationStatuses as LoadAllocationStatuses On LoadAllocations.LAStatusId=LoadAllocationStatuses.LoadAllocationStatusId
-                'Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On Loads.LoadingPlaceId=LoadingPlaces.LADPlaceId 
-                ' Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On Loads.DischargingPlaceId=DischargingPlaces.LADPlaceId 
-                '                   Where LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull() & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and  LoadAllocations.LAStatusId=2 and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & " 
-                '                   Order By LoadAllocations.TurnId,LoadAllocations.Priority"
                 Dim SqlString = "Select Top 2000 LoadAllocations.DateShamsi as ActionDateShamsi,LoadAllocations.Time as ActionTime,Turns.OtaghdarTurnNumber,ltrim(rtrim(Replace(Persons.strPersonFullName ,';',' '))) as PersonFullName,Trucks.strCarNo+'-'+Trucks.strCarSerialNo as Truck,LoadAllocations.LAId,LoadAllocations.Priority,Loads.nEstelamID,Loads.nTonaj,
                                                  Products.strGoodName,LoadTargets.strCityName,LoadingPlaces.LADPlaceTitle as LoadingPlace,DischargingPlaces.LADPlaceTitle as DischargingPlace,Loads.TPTParams,Turns.strExitDate+'-'+strExitTime as LoadPermissionDateTime,TransportCompanies.TCTitle,AnnouncementHallSubGroups.AHSGTitle,Loads.strDescription,Loads.strAddress,Loads.strBarName  
                                    from dbtransport.dbo.tbEnterExit as Turns
@@ -4801,8 +4823,25 @@ Namespace LoadPermission
                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On Loads.LoadingPlaceId=LoadingPlaces.LADPlaceId 
                  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On Loads.DischargingPlaceId=DischargingPlaces.LADPlaceId 
                                    Where LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull() & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and  LoadAllocations.LAStatusId=2 and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & " 
-                                         and Turns.nEnterExitId>(Select Top 1 nEnterExitId from dbtransport.dbo.tbEnterExit as Turns Where TurnStatus=3 Order By nEnterExitId Desc)
                                    Order By LoadAllocations.TurnId,LoadAllocations.Priority"
+                'Dim SqlString = "Select Top 2000 LoadAllocations.DateShamsi as ActionDateShamsi,LoadAllocations.Time as ActionTime,Turns.OtaghdarTurnNumber,ltrim(rtrim(Replace(Persons.strPersonFullName ,';',' '))) as PersonFullName,Trucks.strCarNo+'-'+Trucks.strCarSerialNo as Truck,LoadAllocations.LAId,LoadAllocations.Priority,Loads.nEstelamID,Loads.nTonaj,
+                '                                 Products.strGoodName,LoadTargets.strCityName,LoadingPlaces.LADPlaceTitle as LoadingPlace,DischargingPlaces.LADPlaceTitle as DischargingPlace,Loads.TPTParams,Turns.strExitDate+'-'+strExitTime as LoadPermissionDateTime,TransportCompanies.TCTitle,AnnouncementHallSubGroups.AHSGTitle,Loads.strDescription,Loads.strAddress,Loads.strBarName  
+                '                   from dbtransport.dbo.tbEnterExit as Turns
+                '                    Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID=Loads.nEstelamID
+                '                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On Loads.AHSGId=AnnouncementHallSubGroups.AHSGId 
+                '                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Loads.nCompCode=TransportCompanies.TCId 
+                '                    Inner Join dbtransport.dbo.tbCity as LoadTargets On Loads.nCityCode=LoadTargets.nCityCode
+                '                    Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode=Products.strGoodCode
+                '                    Inner Join dbtransport.dbo.TbPerson as Persons On Turns.nDriverCode=Persons.nIDPerson
+                '                    Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver
+                '                    Inner Join dbtransport.dbo.TbCar as Trucks On Turns.strCardno=Trucks.nIDCar
+                '                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId
+                '                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocationStatuses as LoadAllocationStatuses On LoadAllocations.LAStatusId=LoadAllocationStatuses.LoadAllocationStatusId
+                'Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On Loads.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+                ' Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On Loads.DischargingPlaceId=DischargingPlaces.LADPlaceId 
+                '                   Where LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull() & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and  LoadAllocations.LAStatusId=2 and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & " 
+                '                         and Turns.nEnterExitId>(Select Top 1 nEnterExitId from dbtransport.dbo.tbEnterExit as Turns Where TurnStatus=3 Order By nEnterExitId Desc)
+                '                   Order By LoadAllocations.TurnId,LoadAllocations.Priority"
 
                 Dim Ds As DataSet
                 InstanceSqlDataBox.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, SqlString, 120, Ds)
@@ -5218,7 +5257,7 @@ Namespace LoadPermission
         Public Shared Function GetNSSPrimaryTurn(YournEstelamId As Int64, YourExcludedTurnId As Int64) As R2CoreTransportationAndLoadNotificationStandardTurnStructure
             Try
                 Dim DS As DataSet = Nothing
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                       "Select Top 1 LoadAllocations.TurnId from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations
                           Inner Join dbtransport.dbo.tbEnterExit as Turns On LoadAllocations.TurnId=Turns.nEnterExitId 
                        Inner Join dbtransport.dbo.tbElam as Loads On LoadAllocations.nEstelamId=Loads.nEstelamID 
@@ -5236,6 +5275,14 @@ Namespace LoadPermission
             End Try
         End Function
 
+        Public Function IsLoadPermisionRegisteringRunning() As Boolean
+            Try
+
+            Catch ex As Exception
+
+            End Try
+        End Function
+
         Public Shared Sub LoadPermissionCancelling(YournEstelamId As Int64, YourTurnId As Int64, YourTurnResuscitationFlag As Boolean, YourLoadResuscitationFlag As Boolean, YourDescription As String, YourUserNSS As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
@@ -5244,6 +5291,16 @@ Namespace LoadPermission
                 Dim NSSLoadPermission = GetNSSLoadPermission(YournEstelamId, YourTurnId)
                 Dim NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(YournEstelamId, True)
                 Dim NSSLoadAllocation = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(NSSLoadPermission.nEstelamId, NSSLoadPermission.TurnId)
+
+                'کنترل زمان 
+                Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
+                If InstanceAnnouncementTiming.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
+                    Dim Timing = InstanceAnnouncementTiming.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId, _DateTime.GetCurrentTime)
+                    If Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering Then
+                        Throw New LoadPermisionCancellationTimePassedException
+                    End If
+                End If
+
                 'کنترل وضعیت مجوز
                 If Not NSSLoadPermission.LoadPermissionStatusId = R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.Registered Then Throw New LoadPermissionCancellingNotAllowedBecuaseLoadPermissionStatusException
                 'احیاء نوبت یا کنسلی نوبت به دلیل عدم احیاء
@@ -5265,6 +5322,8 @@ Namespace LoadPermission
                 Else
                     Throw New GetDataException
                 End If
+            Catch ex As LoadPermisionCancellationTimePassedException
+                Throw ex
             Catch ex As UnableResucitationTemporayTurnException
                 Throw ex
             Catch exx As LoadPermissionCancellingNotAllowedBecuaseLoadPermissionStatusException
@@ -5676,6 +5735,15 @@ Namespace LoadPermission
 
     Namespace Exceptions
 
+        Public Class LoadPermisionCancellationTimePassedException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "با توجه به زمانبندی اعلام بار امکان کنسلی مجوز بار در حال حاضر وجود ندارد"
+                End Get
+            End Property
+        End Class
+
         Public Class ExeededNumberofLoadPermisionsWithOneTurnException
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
@@ -5790,7 +5858,7 @@ Namespace LoadPermission
 
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "پیش نوبت معتبری یافت نشد " + vbCrLf + "با توجه به شرایط تخصیص های بار ، وضعیت بار مورد نظر و وضعیت نوبت ها ، پیش نوبت معتبر وجود ندارد"
+                    Return "پیش نوبت معتبری یافت نشد " + vbCrLf + "با توجه به شرایط تخصیص بار ، وضعیت بار مورد نظر و وضعیت نوبت ها ، پیش نوبت معتبر وجود ندارد"
                 End Get
             End Property
         End Class
@@ -6312,7 +6380,7 @@ Namespace LoadAllocation
                 Dim InstanceLoadCapacitorLoadOtherThanManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadOtherThanManipulationManager
                 Dim InstanceBlackList = New R2CoreParkingSystemInstanceBlackListManager
                 Dim InstanceLoadPermission = New R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager
-                Dim InstanceIndigenousTrucks = New R2CoreTransportationAndLoadNotificationsIndigenousTrucksManager
+                Dim InstanceTruckNativeness = New R2CoreTransportationAndLoadNotificationsTruckNativenessManager
 
                 Dim NSSLoadCapacitorLoad = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(YournEstelamId, YourImmediately)
                 Dim NSSAnnouncementHallSubGroup = InstanceAnnouncementHall.GetNSSAnnouncementHallSubGroup(NSSLoadCapacitorLoad.AHSGId)
@@ -6385,7 +6453,7 @@ Namespace LoadAllocation
 
                 'کنترل ثبت اطلاعات خوداظهاری توسط راننده
                 If InstanceConfiguration.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.IndigenousTrucks, 0) Then
-                    If (YourRequesterId <> 4) And (Not InstanceIndigenousTrucks.IsTruckIndigenous(NSSTruck)) Then If Not (InstanceDriverSelfDeclaration.GetDeclarations(NSSTruck, False).Count > 0) Then Throw New DSDsNotFoundException
+                    If (YourRequesterId <> 4) And (Not InstanceTruckNativeness.IsTruckIndigenous(NSSTruck)) Then If Not (InstanceDriverSelfDeclaration.GetDeclarations(NSSTruck, False).Count > 0) Then Throw New DSDsNotFoundException
                 End If
 
                 'کنترل گذشت مدت زمان معین از زمان رسوب بار و مجوز برای رکستر خاص
@@ -6425,6 +6493,14 @@ Namespace LoadAllocation
 
                 RePrioritize(YourNSSTurn, DShamsiFull)
                 Return LAIdNew
+            Catch ex As TruckNotFoundException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                If InstanceLogging.GetNSSLogType(R2CoreTransportationAndLoadNotificationLogType.Warn).Active Then
+                    InstanceLogging.LogRegister(New R2CoreStandardLoggingStructure(0, R2CoreTransportationAndLoadNotificationLogType.Warn, InstanceLogging.GetNSSLogType(R2CoreTransportationAndLoadNotificationLogType.Warn).LogTitle, "TurnId=" + YourNSSTurn.nEnterExitId.ToString, String.Empty, String.Empty, String.Empty, String.Empty, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId, _DateTime.GetCurrentDateTimeMilladi(), Nothing))
+                End If
+                Throw ex
             Catch ex As Exception When TypeOf ex Is AnnouncementHallSubGroupUnActiveException _
                 OrElse TypeOf ex Is AnnouncementHallSubGroupRelationTruckNotExistException _
                 OrElse TypeOf ex Is AnnouncementHallSubGroupNotFoundException _
@@ -6441,7 +6517,6 @@ Namespace LoadAllocation
                 OrElse TypeOf ex Is LoadAllocationNotAllowedBecauseCarHasBlackListException _
                 OrElse TypeOf ex Is TimingNotReachedException _
                 OrElse TypeOf ex Is TurnNotFoundException _
-                OrElse TypeOf ex Is TruckNotFoundException _
                 OrElse TypeOf ex Is TurnHandlingNotAllowedBecuaseTurnStatusException _
                 OrElse TypeOf ex Is UnableAllocatingTommorowLoadException _
                 OrElse TypeOf ex Is TruckTotalLoadPermissionReachedException _
@@ -8238,6 +8313,7 @@ Namespace TransportCompanies
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
                 Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
+                Dim NSSTCSoftwareuser = InstanceTransportCompanies.GetNSSTCSoftwareuser(YourNSS.TCId, True)
                 Dim TCNSS = InstanceTransportCompanies.GetNSSTransportCompany(YourNSS.TCId, True)
 
                 CmdSql.Connection.Open()
@@ -8249,6 +8325,8 @@ Namespace TransportCompanies
                 CmdSql.CommandText = "Update dbtransport.dbo.tbCompany 
                                       Set Active=" & IIf(TCNSS.Active, 0, 1) & "
                                       Where nCompCode =" & YourNSS.TCId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserActive=" & IIf(TCNSS.Active, 0, 1) & " Where Userid=" & NSSTCSoftwareuser.UserId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
 
@@ -8295,6 +8373,32 @@ Namespace TransportCompanies
             End Try
         End Sub
 
+        Public Function GetNSSTCSoftwareuser(YourTransportCompanyId As Int64, YourImmediate As Boolean) As R2CoreStandardSoftwareUserStructure
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim DS As New DataSet
+                If YourImmediate Then
+                    Dim Da As New SqlClient.SqlDataAdapter
+                    Da.SelectCommand = New SqlCommand("select Top 1 SoftwareUsers.UserId from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                        inner join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationSoftwareUsers as TCRelationSoftwareUsers on SoftwareUsers.UserId=TCRelationSoftwareUsers.UserId 
+                        inner join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies on TCRelationSoftwareUsers.TCId=TransportCompanies.TCId 
+                        where TCRelationSoftwareUsers.TCId=" & YourTransportCompanyId & " and TCRelationSoftwareUsers.RelationActive=1")
+                    Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
+                    If Da.Fill(DS) < 0 Then Throw New TransportCompanyNotFoundException
+                Else
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "select Top 1 SoftwareUsers.UserId from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                        inner join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationSoftwareUsers as TCRelationSoftwareUsers on SoftwareUsers.UserId=TCRelationSoftwareUsers.UserId 
+                        inner join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies on TCRelationSoftwareUsers.TCId=TransportCompanies.TCId 
+                        where TCRelationSoftwareUsers.TCId=" & YourTransportCompanyId & " and TCRelationSoftwareUsers.RelationActive=1", 3600, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
+                End If
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                Return InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64(DS.Tables(0).Rows(0).Item("UserId")))
+            Catch ex As TransportCompanyNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
     End Class
 
@@ -8351,6 +8455,8 @@ Namespace TransportCompanies
                     R2CoreMClassEntityRelationManagement.RegisteringEntityRelations(R2CoreEntityRelationTypes.SoftwareUser_WebProcessGroup, myUserId, AllofProcessGroupsIds)
                 End If
                 Return myTCId
+            Catch ex As SoftwareUserMobileNumberAlreadyExistException
+                Throw ex
             Catch ex As DataEntryException
                 Throw ex
             Catch ex As Exception
@@ -8422,6 +8528,8 @@ Namespace TransportCompanies
                     If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                     Throw ex
                 End Try
+            Catch ex As SoftwareUserMobileNumberAlreadyExistException
+                Throw ex
             Catch ex As DataEntryException
                 Throw ex
             Catch ex As Exception
@@ -8627,15 +8735,16 @@ Namespace LoadTargets
 
         Public Function GetNSSLoadTarget(YournIdTarget As Int64) As R2CoreTransportationAndLoadNotificationStandardLoadTargetStructure
             Try
-                Dim NSSCity As R2CoreParkingSystemMClassCitys.R2StandardCityStructure = R2CoreParkingSystemMClassCitys.GetNSSCity(YournIdTarget)
+                Dim NSSCity = R2CoreParkingSystemMClassCitys.GetNSSCity(YournIdTarget)
                 If NSSCity Is Nothing Then Throw New GetNSSException
                 Return New R2CoreTransportationAndLoadNotificationStandardLoadTargetStructure(NSSCity)
             Catch ex As GetNSSException
-                Throw ex
+                Throw New LoadTargetIdNotFoundException
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Function
+
 
     End Class
 
@@ -8695,6 +8804,15 @@ Namespace LoadTargets
             End Property
         End Class
 
+        Public Class LoadTargetIdNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "شهری با کدشاخص مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
 
     End Namespace
 
@@ -8722,6 +8840,21 @@ Namespace LoadSources
         End Sub
 
         Public Property NSSCity As R2CoreParkingSystemMClassCitys.R2StandardCityStructure
+
+    End Class
+
+    Public NotInheritable Class R2CoreTransportationAndLoadNotificationMclassLoadSourcesManager
+        Public Function GetNSSLoadSource(YournIdSource As Int64) As R2CoreTransportationAndLoadNotificationStandardLoadSourceStructure
+            Try
+                Dim NSSCity = R2CoreParkingSystemMClassCitys.GetNSSCity(YournIdSource)
+                If NSSCity Is Nothing Then Throw New LoadSourceIdNotFoundException
+                Return New R2CoreTransportationAndLoadNotificationStandardLoadSourceStructure(NSSCity)
+            Catch exx As GetNSSException
+                Throw New LoadSourceIdNotFoundException
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
 
     End Class
 
@@ -8768,6 +8901,21 @@ Namespace LoadSources
 
 
     End Class
+
+    Namespace Exceptions
+
+        Public Class LoadSourceIdNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "شهری با کدشاخص مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+
+
+    End Namespace
 
 
 End Namespace

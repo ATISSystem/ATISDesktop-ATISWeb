@@ -1909,6 +1909,18 @@ Namespace SoftwareUserManagement
             Dim Hasher = New R2Core.SecurityAlgorithmsManagement.Hashing.SHAHasher
             Try
                 If YourNSSSoftwareUser.MobileNumber.Trim = String.Empty Then Throw New SoftwareUserMobileNumberNeedforRegisteringException
+
+                'اگر کاربر یبا شماره موبایل موجود بود رجیستر جدید امکان پذیر نیست
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                Try
+                    If YourNSSSoftwareUser.MobileNumber = "09130000000" Then Exit Try
+                    InstanceSoftwareUsers.GetNSSUserUnChangeable(New R2CoreSoftwareUserMobile(YourNSSSoftwareUser.MobileNumber))
+                    Throw New SoftwareUserMobileNumberAlreadyExistException
+                Catch ex As UserNotExistByMobileNumberException
+                Catch ex As Exception
+                    Throw ex
+                End Try
+
                 Dim InstanceConfiguration As New R2CoreInstanceConfigurationManager
                 Dim APIKeyExpiration As String = _DateTime.GetNextShamsiMonth(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime), InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 1)).DateShamsiFull
                 Dim UserPasswordExpiration As String = _DateTime.GetNextShamsiMonth(New R2StandardDateAndTimeStructure(Nothing, _DateTime.GetCurrentDateShamsiFull, _DateTime.GetCurrentTime), InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.DefaultConfigurationOfSoftwareUserSecurity, 2)).DateShamsiFull
@@ -1927,7 +1939,15 @@ Namespace SoftwareUserManagement
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Return myUserId
+            Catch ex As SoftwareUserMobileNumberAlreadyExistException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw ex
             Catch ex As SoftwareUserMobileNumberNeedforRegisteringException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
                 Throw ex
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
@@ -2098,6 +2118,16 @@ Namespace SoftwareUserManagement
     End Class
 
     Namespace Exceptions
+
+        Public Class SoftwareUserMobileNumberAlreadyExistException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "کاربری با شماره موبایل مورد نظر قبلا ثبت شده است"
+                End Get
+            End Property
+        End Class
+
         Public Class SoftwareUserPasswordExpiredException
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
@@ -4165,6 +4195,15 @@ Namespace ExceptionManagement
             End Try
         End Function
 
+    End Class
+
+    Public Class UserNotAlllowedException
+        Inherits ApplicationException
+        Public Overrides ReadOnly Property Message As String
+            Get
+                Return "کاربر مجاز به اجرای این فرآیند نیست"
+            End Get
+        End Property
     End Class
 
     Public Class SqlExceptionNotFoundException

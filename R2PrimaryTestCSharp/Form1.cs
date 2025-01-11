@@ -59,16 +59,16 @@ namespace R2PrimaryTestCSharp
         private void Button1_Click(object sender, EventArgs e)
         {
 
-                var InstanceAES = new AESAlgorithmsManager();
-                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
-                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
-                var MobileNumber = "09139655846";
-                var InstanceEVA = new ExpressionValidationAlgorithmsManager();
-                InstanceEVA.ValidationMobileNumber(MobileNumber);
-                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserChangeableData(new R2CoreSoftwareUserMobile(MobileNumber));
+            //    var InstanceAES = new AESAlgorithmsManager();
+            //    var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+            //    var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+            //    var MobileNumber = "09139655846";
+            //    var InstanceEVA = new ExpressionValidationAlgorithmsManager();
+            //    InstanceEVA.ValidationMobileNumber(MobileNumber);
+            //    var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserChangeableData(new R2CoreSoftwareUserMobile(MobileNumber));
 
-            var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
-            var Truck = InstanceTrucks.GetNSSTruck(NSSSoftwareuser);
+            //var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
+            //var Truck = InstanceTrucks.GetNSSTruck(NSSSoftwareuser);
 
             try
             {

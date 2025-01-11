@@ -170,6 +170,8 @@ Public Class UCDriver
                 R2CoreParkingSystemMClassDrivers.UpdateDriver(New R2StandardDriverStructure(UcNumberDrivernIdPerson.UCValue, UcPersianTextBoxNameFamily.UCValue, UcTextBoxNationalCode.UCValue, UcPersianTextBoxFather.UCValue, UcPersianTextBoxAddress.UCValue, UcPersianTextBoxTel.UCValue, UcNumberLicenseNo.UCValue), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
                 UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "مشخصات راننده ویرایش شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
             End If
+        Catch ex As SoftwareUserMobileNumberAlreadyExistException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -258,6 +260,8 @@ Public Class UCDriver
     Private Sub CButtonSabt_Click(sender As Object, e As EventArgs) Handles CButtonSabt.Click
         Try
             UCSabtRoutin()
+        Catch ex As SoftwareUserMobileNumberAlreadyExistException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

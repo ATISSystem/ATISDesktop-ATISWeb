@@ -355,6 +355,8 @@ Public Class PayanehWebService
         Try
             Dim NSS = _ExchangeKeyManager.GetNSSUser(YourExchangeKey)
             Return PayanehClassLibraryMClassDriverTrucksManagement.GetDriverTruckfromRMTOAndInsertUpdateLocalDataBaseByNationalCode(YourNationalCode).NSSDriver.nIdPerson
+        Catch ex As SoftwareUserMobileNumberAlreadyExistException
+            Throw ex
         Catch ex As ExchangeKeyTimeRangePassedException
             Throw ex
         Catch ex As ExchangeKeyNotExistException

@@ -105,13 +105,13 @@ Imports PayanehClassLibrary.SMS.SMSTypes
 Imports R2Core.SoftwareUserManagement.Exceptions
 Imports R2CoreParkingSystem.SoftwareUsersManagement
 Imports R2CoreParkingSystem.SMS.SMSOwners
-Imports R2CoreTransportationAndLoadNotification.IndigenousTrucks
-Imports R2CoreTransportationAndLoadNotification.IndigenousTrucks.Exceptions
 Imports R2CoreParkingSystem.PredefinedMessagesManagement
 Imports R2Core.PredefinedMessagesManagement
 Imports R2CoreTransportationAndLoadNotification.PredefinedMessagesManagement
 Imports PayanehClassLibrary.PredefinedMessagesManagement
 Imports R2CoreTransportationAndLoadNotification.CalendarManagement.SpecializedPersianCalendar
+Imports R2CoreTransportationAndLoadNotification.TrucksNativeness
+Imports R2CoreTransportationAndLoadNotification.TrucksNativeness.Exceptions
 
 Namespace Logging
 
@@ -301,11 +301,7 @@ Namespace CarTruckNobatManagement
                        "Select nEnterExitId from dbtransport.dbo.tbEnterExit as Turns
                         Where (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and
                               Substring(Turns.OtaghdarTurnNumber,1,1)='" & YourNSSSequentialTurn.SequentialTurnKeyWord & "' and
-                              ((Turns.strCardno in (Select Distinct nIDCar from dbtransport.dbo.TbCar Where strCarSerialNo in ('13','23','43','53')
-                                                    Union
-                                                    Select Distinct nIDCar from dbtransport.dbo.TbCar as Cars 
-                                                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP as IndigenousTrucksWithUNNativeLP On Cars.strCarNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Pelak Collate Arabic_CI_AI_WS and Cars.strCarSerialNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Serial Collate Arabic_CI_AI_WS 
-							                        Where IndigenousTrucksWithUNNativeLP.EnghezaDate>='" & YourTimeOfDay.DateShamsiFull & "' or IndigenousTrucksWithUNNativeLP.EnghezaDate='') and
+                              ((Turns.strCardno in (Select Distinct nIDCar from dbtransport.dbo.TbCar Where CarNativenessTypeId=1) and
 	                            Turns.strEnterDate Collate Arabic_CI_AI_WS<=(Select Top 1 DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
                                                                              Where DateShamsi<
                                                                                 (Select Top 1 DateShamsi from 
@@ -315,11 +311,7 @@ Namespace CarTruckNobatManagement
                                                                              Order By DateShamsi Desc)
    	                           )
 	                           or
-	                           (Turns.strCardno not in (Select Distinct nIDCar from dbtransport.dbo.TbCar Where strCarSerialNo in ('13','23','43','53')
-                                                        Union
-                                                        Select Distinct nIDCar from dbtransport.dbo.TbCar as Cars 
-                                                          Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP as IndigenousTrucksWithUNNativeLP On Cars.strCarNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Pelak Collate Arabic_CI_AI_WS and Cars.strCarSerialNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Serial Collate Arabic_CI_AI_WS
- 						                                Where IndigenousTrucksWithUNNativeLP.EnghezaDate>='" & YourTimeOfDay.DateShamsiFull & "' or IndigenousTrucksWithUNNativeLP.EnghezaDate='') and
+	                           (Turns.strCardno not in (Select Distinct nIDCar from dbtransport.dbo.TbCar Where CarNativenessTypeId=1) and
 	                            Turns.strEnterDate Collate Arabic_CI_AI_WS<=(Select Top 1 DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
                                                                              Where DateShamsi<
                                                                                 (Select Top 1 DateShamsi from 
@@ -340,11 +332,7 @@ Namespace CarTruckNobatManagement
                        (Select nEnterExitId from dbtransport.dbo.tbEnterExit as Turns
                         Where (Turns.TurnStatus=" & TurnStatuses.Registered & " or Turns.TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & "  or Turns.TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or Turns.TurnStatus=" & TurnStatuses.ResuscitationUser & ") and
                               Substring(Turns.OtaghdarTurnNumber,1,1)='" & YourNSSSequentialTurn.SequentialTurnKeyWord & "' and
-                              ((Turns.strCardno in (Select Distinct nIDCar from dbtransport.dbo.TbCar Where strCarSerialNo in ('13','23','43','53')
-                                                    Union
-                                                    Select Distinct nIDCar from dbtransport.dbo.TbCar as Cars 
-                                                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP as IndigenousTrucksWithUNNativeLP On Cars.strCarNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Pelak Collate Arabic_CI_AI_WS and Cars.strCarSerialNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Serial Collate Arabic_CI_AI_WS 
-							                        Where IndigenousTrucksWithUNNativeLP.EnghezaDate>='" & YourTimeOfDay.DateShamsiFull & "' or IndigenousTrucksWithUNNativeLP.EnghezaDate='') and
+                              ((Turns.strCardno in (Select Distinct nIDCar from dbtransport.dbo.TbCar Where CarNativenessTypeId=1) and
 	                            Turns.strEnterDate Collate Arabic_CI_AI_WS<=(Select Top 1 DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
                                                                              Where DateShamsi<
                                                                                 (Select Top 1 DateShamsi from 
@@ -354,11 +342,7 @@ Namespace CarTruckNobatManagement
                                                                              Order By DateShamsi Desc)
    	                           )
 	                           or
-	                           (Turns.strCardno not in (Select Distinct nIDCar from dbtransport.dbo.TbCar Where strCarSerialNo in ('13','23','43','53')
-                                                        Union
-                                                        Select Distinct nIDCar from dbtransport.dbo.TbCar as Cars 
-                                                          Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP as IndigenousTrucksWithUNNativeLP On Cars.strCarNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Pelak Collate Arabic_CI_AI_WS and Cars.strCarSerialNo Collate Arabic_CI_AI_WS=IndigenousTrucksWithUNNativeLP.Serial Collate Arabic_CI_AI_WS
- 						                                Where IndigenousTrucksWithUNNativeLP.EnghezaDate>='" & YourTimeOfDay.DateShamsiFull & "' or IndigenousTrucksWithUNNativeLP.EnghezaDate='') and
+	                           (Turns.strCardno not in (Select Distinct nIDCar from dbtransport.dbo.TbCar Where CarNativenessTypeId=1) and
 	                            Turns.strEnterDate Collate Arabic_CI_AI_WS<=(Select Top 1 DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportationLoadNotificationSpecializedPersianCalendar 
                                                                              Where DateShamsi<
                                                                                 (Select Top 1 DateShamsi from 
@@ -800,8 +784,8 @@ Namespace CarTruckNobatManagement
                 If Not InstanceConfigurations.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTurnCancellationSetting, 7) Then Throw New ResuscitationReserveTurnServiceIsUnactiveException
 
                 'کنترل بومی و غیر بومی ناوگان
-                Dim InstanceIndigenousTrucks = New R2CoreTransportationAndLoadNotificationsIndigenousTrucksManager
-                If Not InstanceIndigenousTrucks.IsTruckIndigenous(YourNSSTurn) Then Throw New NonIndigenousTrucksException
+                Dim InstanceTruckNativeness = New R2CoreTransportationAndLoadNotificationsTruckNativenessManager
+                If Not InstanceTruckNativeness.IsTruckIndigenous(YourNSSTurn) Then Throw New NonIndigenousTrucksException
 
                 'کنترل وضعیت نوبت
                 If YourNSSTurn.TurnStatus <> TurnStatuses.CancelledUnderScore Then Throw New TurnHandlingNotAllowedBecuaseTurnStatusException
@@ -2648,7 +2632,8 @@ Namespace DriverTrucksManagement
                 Return GetNSSDriverTruckbySmartCardNo(YourSmartCardNo)
             Catch ex As Exception When TypeOf ex Is InternetIsnotAvailableException OrElse
                                        TypeOf ex Is RMTOWebServiceSmartCardInvalidException OrElse
-                                       TypeOf ex Is ConnectionIsNotAvailableException
+                                       TypeOf ex Is ConnectionIsNotAvailableException OrElse
+                                       TypeOf ex Is SoftwareUserMobileNumberAlreadyExistException
                 Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -2673,7 +2658,8 @@ Namespace DriverTrucksManagement
                 Return GetNSSDriverTruckbyNationalCode(YourNationalCode)
             Catch ex As Exception When TypeOf ex Is InternetIsnotAvailableException OrElse
                                        TypeOf ex Is RMTOWebServiceSmartCardInvalidException OrElse
-                                       TypeOf ex Is ConnectionIsNotAvailableException
+                                       TypeOf ex Is ConnectionIsNotAvailableException OrElse
+                                       TypeOf ex Is SoftwareUserMobileNumberAlreadyExistException
                 Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -2727,6 +2713,7 @@ Namespace CarTrucksManagement
             myNSSCar = NSSCar
             myStrBodyNo = StrBodyNo
         End Sub
+
 #End Region
 #Region "Properting Management"
         Public Property NSSCar() As R2StandardCarStructure
@@ -5198,12 +5185,13 @@ Namespace ReportsManagement
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblTransportPriceTarrifsReport" : CmdSql.ExecuteNonQuery()
                 CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblTransportPriceTarrifsReport
-                   Select AH.AHTitle,AHSG.AHSGTitle,Tarrifs.TargetCityId,Citys.strCityName,Tarrifs.Tarrif,Tarrifs.DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifs as Tarrifs
+                   Select AH.AHTitle,AHSG.AHSGTitle,Tarrifs.SourceCityId ,Sources.StrCityName as SourceName,Tarrifs.TargetCityId,Targets.strCityName as TargetName,Tarrifs.Tarrif,Tarrifs.DateShamsi from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifs as Tarrifs
                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls AS AH On Tarrifs.AHId=AH.AHId
                      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSG On Tarrifs.AHSGId=AHSG.AHSGId
-                     Inner Join dbtransport.dbo.tbCity as Citys On Tarrifs.TargetCityId=Citys.nCityCode
-                       Where " + OActiveSqlString + " Tarrifs.AHId=" & YourAnnouncementHallId & " and Tarrifs.AHSGId=" & YourAnnouncementHallSubGroupId & " and Citys.Deleted=0 and AH.Deleted=0 and AHSG.Deleted=0
-                       Order By Citys.strCityName,Tarrifs.DateTimeMilladi"
+                     Inner Join dbtransport.dbo.tbCity as Targets On Tarrifs.TargetCityId=Targets.nCityCode
+					 Inner Join dbtransport.dbo.tbCity as Sources On Tarrifs.SourceCityId=Sources.nCityCode
+                       Where " + OActiveSqlString + " Tarrifs.AHId=" & YourAnnouncementHallId & " and Tarrifs.AHSGId=" & YourAnnouncementHallSubGroupId & " and Targets.Deleted=0 and Sources.Deleted=0 and AH.Deleted=0 and AHSG.Deleted=0
+                       Order By TargetName,SourceName,Tarrifs.DateTimeMilladi"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             Catch ex As Exception

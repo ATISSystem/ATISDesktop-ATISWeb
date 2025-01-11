@@ -52,6 +52,7 @@ Public Class UCTransportCompanyManipulation
             End If
         End Set
     End Property
+
 #End Region
 
 #Region "Subroutins And Functions"
@@ -124,6 +125,8 @@ Public Class UCTransportCompanyManipulation
             UcNumberTCId.UCValue = R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.RegisteringTransportCompany(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(0, UcPersianTextBoxTCTitle.UCValue, UcPersianTextBoxTCOrganizationCode.UCValue, UcSearcherCities.UCGetSelectedNSS.OCode, Nothing, UcPersianTextBoxTCTel.UCValue, UcPersianTextBoxManagerNameFamily.UCValue, UcPersianTextBoxManagerMobileNumber.UCValue, UcPersianTextBoxEmailAddress.UCValue, ChkViewFlag.Checked, ChkActive.Checked, 0), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCViewNSS(InstanceTransportCompanies.GetNSSTransportCompany(UcNumberTCId.UCValue, True))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ثبت اطلاعات شرکت حمل و نقل با موفقیت انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As SoftwareUserMobileNumberAlreadyExistException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As DataEntryException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
@@ -138,6 +141,8 @@ Public Class UCTransportCompanyManipulation
             R2CoreTransportationAndLoadNotificationMClassTransportCompaniesManagement.UpdatingTransportCompany(New R2CoreTransportationAndLoadNotificationStandardTransportCompanyStructure(UCNSSCurrent.TCId, UcPersianTextBoxTCTitle.UCValue, UcPersianTextBoxTCOrganizationCode.UCValue, UcSearcherCities.UCGetSelectedNSS.OCode, Nothing, UcPersianTextBoxTCTel.UCValue, UcPersianTextBoxManagerNameFamily.UCValue, UcPersianTextBoxManagerMobileNumber.UCValue, UcPersianTextBoxEmailAddress.UCValue, ChkViewFlag.Checked, ChkActive.Checked, False), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCViewNSS(InstanceTransportCompanies.GetNSSTransportCompany(UcNumberTCId.UCValue, True))
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ویرایش اطلاعات شرکت حمل و نقل با موفقیت انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+        Catch ex As SoftwareUserMobileNumberAlreadyExistException
+            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As DataEntryException
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, ex.Message, "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
@@ -306,6 +311,9 @@ Public Class UCTransportCompanyManipulation
     End Sub
 
     Private Sub ChkActive_CheckedChanged(sender As Object, e As EventArgs) Handles ChkActive.CheckedChanged
+    End Sub
+
+    Private Sub ChkActive_Click(sender As Object, e As EventArgs) Handles ChkActive.Click
         Try
             Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
             If UCNSSCurrent Is Nothing Then Return

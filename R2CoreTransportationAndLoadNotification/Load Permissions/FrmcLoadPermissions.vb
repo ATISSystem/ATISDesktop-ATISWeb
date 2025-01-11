@@ -59,6 +59,10 @@ Public Class FrmcLoadPermissions
 
     End Sub
 
+    Private Sub UcLoadPermissionCancellation_UCCancellationCompleteEvent() Handles UcLoadPermissionCancellation.UCCancellationCompleteEvent
+
+    End Sub
+
 #End Region
 
 #Region "Override Methods"

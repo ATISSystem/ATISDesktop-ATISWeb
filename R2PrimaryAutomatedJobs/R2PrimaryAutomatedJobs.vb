@@ -9,6 +9,7 @@ Imports R2Core.LoggingManagement
 Imports R2Core.SMS
 Imports R2Core.SMS.SMSHandling
 Imports R2Core.SMS.SMSOwners
+Imports R2Core.SMS.SMSOwners.Exceptions
 Imports R2Core.SMS.SMSSendRecive
 Imports R2Core.SoftwareUserManagement
 Imports R2CoreParkingSystem.SMS.SMSControllingMoneyWallet
@@ -130,6 +131,8 @@ Public Class R2PrimaryAutomatedJobs
             Try
                 Dim InstanceSMSOwners = New R2CoreMClassSMSOwnersManager
                 InstanceSMSOwners.SendSMSOwnersPleaseCharge()
+            Catch ex As SMSOwnerSendingPleaseChargeMessageFailedException
+                EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSOwners.SendSMSOwnersPleaseCharge:" + ex.Message.ToString, EventLogEntryType.Warning)
             Catch ex As Exception
                 EventLog.WriteEntry("R2PrimaryAutomatedJobs", "SMSOwners.SendSMSOwnersPleaseCharge:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try

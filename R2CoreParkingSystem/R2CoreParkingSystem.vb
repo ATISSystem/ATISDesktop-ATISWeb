@@ -1,5 +1,4 @@
 ﻿
-
 Imports System
 Imports System.Drawing
 Imports System.Globalization
@@ -70,6 +69,7 @@ Imports R2Core.SMS.SMSOwners.R2CoreMClassSMSOwnersManager
 Imports R2CoreParkingSystem.BlackList.Exceptions
 Imports R2CoreParkingSystem.SMS.SMSTypes
 Imports R2Core.SMS.SMSHandling.Exceptions
+Imports R2CoreParkingSystem.CarsNativeness.Exceptions
 
 Namespace Logging
 
@@ -1806,6 +1806,7 @@ Namespace ConfigurationManagement
         Public Shared ReadOnly Property LPRIsActive As Int64 = 40
         Public Shared ReadOnly Property TarrifsMeselanius As Int64 = 41
         Public Shared ReadOnly Property FrmcEnterExitSetting As Int64 = 48
+        Public Shared ReadOnly Property IndigenousCars As Int64 = 89
         Public Shared ReadOnly Property EntryExitAllownSMS As Int64 = 90
 
 
@@ -2943,12 +2944,21 @@ Namespace Cars
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
                 ''If IsExistCar(YourNSS) = True Then Throw New Exception("خودرو با مشخصات مورد نظر قبلا ثبت شده است")
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim AllCarSerials = Split(InstanceConfiguration.GetConfigString(R2CoreParkingSystemConfigurations.IndigenousCars, 1), ";")
+                Dim CarSerials() = Split(AllCarSerials(0), "-")
+                Dim NativenessType As Int16 = 0
+                If CarSerials.Contains(YourNSS.StrCarSerialNo) Then
+                    NativenessType = R2CoreParkingSystem.CarsNativeness.CarNativenessTypes.Native
+                Else
+                    NativenessType = R2CoreParkingSystem.CarsNativeness.CarNativenessTypes.UnNative
+                End If
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Select top 1 * from dbtransport.dbo.tbcar with (tablockx)" : CmdSql.ExecuteNonQuery()
                 CmdSql.CommandText = "Select IDENT_CURRENT('dbtransport.dbo.tbCar')"
                 Dim mynIdCar As Int64 = CmdSql.ExecuteScalar + 1
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.tbCar(snCarType,StrCarNo,StrCarSerialNo,nIdCity,StrBodyNo,nUserID,strFanniDate,ViewFlag) Values(" & YourNSS.snCarType & ",'" & YourNSS.StrCarNo & "','" & YourNSS.StrCarSerialNo & "'," & YourNSS.nIdCity & ",'" & mynIdCar & "'," & YourUserNSS.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull & "',1)"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.tbCar(snCarType,StrCarNo,StrCarSerialNo,nIdCity,StrBodyNo,nUserID,strFanniDate,CarNativenessTypeId,CarNativenessExpireDate,ViewFlag) Values(" & YourNSS.snCarType & ",'" & YourNSS.StrCarNo & "','" & YourNSS.StrCarSerialNo & "'," & YourNSS.nIdCity & ",'" & mynIdCar & "'," & YourUserNSS.UserId & ",'" & _DateTime.GetCurrentDateShamsiFull & "'," & NativenessType & ",'',1)"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
                 Return mynIdCar
@@ -3086,34 +3096,6 @@ Namespace Cars
             End Try
         End Function
 
-        'Public Shared Sub MakeRelationCarAndPerson(ByVal YourSepasCarId As Int64, ByVal YourPersonId As Int64)
-        '    Dim CmdSql As New SqlClient.SqlCommand
-        '    CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
-        '    Try
-        '        CmdSql.CommandText = "Insert Into dbtransport.dbo.tbcarandperson(nidcar,nidperson,snrelation,ddate) Values(" & YourSepasCarId & "," & YourPersonId & ",2,'" & _DateTime.GetCurrentDateShamsiFull & "')"
-        '        CmdSql.Connection.Open()
-        '        CmdSql.ExecuteNonQuery()
-        '        CmdSql.Connection.Close()
-        '    Catch ex As Exception
-        '        If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
-        '        Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-        '    End Try
-        'End Sub
-
-        Public Shared Sub CreateCar(ByVal YourLP As R2StandardLicensePlateStructure)
-            Dim CmdSql As New SqlClient.SqlCommand
-            CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
-            Try
-                CmdSql.CommandText = "Insert into dbtransport.dbo.tbcar(sncartype,strcarno,strcarserialno,nidcity,strbodyno,nuserid) values(505,'" & YourLP.Pelak & "','" & YourLP.Serial & "',99960000,'" & "موقت" & "',9999)"
-                CmdSql.Connection.Open()
-                CmdSql.ExecuteNonQuery()
-                CmdSql.Connection.Close()
-            Catch ex As Exception
-                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
-                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-            End Try
-        End Sub
-
         Public Shared Function GetCarEnterExitImage(YourNSSCar As R2StandardCarStructure, YourNSSUser As R2CoreStandardSoftwareUserStructure) As R2CoreImage
             Try
                 Dim _NSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure = R2CoreParkingSystemMClassTrafficCardManagement.GetNSSTrafficCard(R2CoreParkingSystemMClassCars.GetCardIdFromnIdCar(YourNSSCar.nIdCar))
@@ -3230,6 +3212,7 @@ Namespace Cars
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
         End Sub
+
     End Class
 
     Public Class CarNotExistException
@@ -3849,6 +3832,8 @@ Namespace Drivers
                     R2CoreMClassEntityRelationManagement.RegisteringEntityRelations(R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup, UserId, AllofMobileProcessGroupsIds)
                 End If
                 Return mynIdPerson
+            Catch ex As SoftwareUserMobileNumberAlreadyExistException
+                Throw ex
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -3890,6 +3875,8 @@ Namespace Drivers
                 Catch ex As Exception
                     Throw ex
                 End Try
+            Catch ex As SoftwareUserMobileNumberAlreadyExistException
+                Throw ex
             Catch ex As Exception
                 If CmdSql.Connection.State <> ConnectionState.Closed Then
                     CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -4051,6 +4038,8 @@ Namespace City
                     Throw New GetNSSException
                 End If
                 Return New R2StandardCityStructure(Ds.Tables(0).Rows(0).Item("nCityCode"), Ds.Tables(0).Rows(0).Item("StrCityName").trim, Convert.ToInt64(Ds.Tables(0).Rows(0).Item("nDistance") / 25), Ds.Tables(0).Rows(0).Item("nProvince"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("ViewFlag"))
+            Catch ex As GetNSSException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -5066,8 +5055,8 @@ End Namespace
 Namespace PredefinedMessagesManagement
     Public MustInherit Class R2CoreParkingSystemPredefinedMessages
         Public Shared ReadOnly AmountInvalid As Int64 = 5
+        Public Shared ReadOnly UnIndigenousCars As Int64 = 15
     End Class
-
 End Namespace
 
 Namespace SMS
@@ -5435,6 +5424,238 @@ Namespace SMS
 
         End Class
 
+
+    End Namespace
+
+End Namespace
+
+Namespace CarsNativeness
+    Public Class CarNativenessTypes
+        Public Shared ReadOnly Property None As Int64 = 0
+        Public Shared ReadOnly Property Native As Int64 = 1
+        Public Shared ReadOnly Property UnNative As Int64 = 2
+    End Class
+
+    Public Class R2CoreParkingSystemStandardCarNativenessTypeStructure
+        Inherits R2StandardStructure
+        Public Sub New()
+            MyBase.New()
+            _NId = Int64.MinValue
+            _NName = String.Empty
+            _NTitle = String.Empty
+            _NColor = Color.Red
+            _DateTimeMilladi = DateTime.Now
+            _DateShamsi = String.Empty
+            _Time = String.Empty
+            _Active = Boolean.FalseString
+            _ViewFlag = Boolean.FalseString
+            _Deleted = Boolean.TrueString
+        End Sub
+
+        Public Sub New(YourNId As Int64, YourNName As String, YourNTitle As String, YourNColor As Color, YourDateTimeMilladi As DateTime, YOurDateShamsi As String, YourTime As String, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourNId, YourNName)
+            _NId = YourNId
+            _NName = YourNName
+            _NTitle = YourNTitle
+            _NColor = YourNColor
+            _DateTimeMilladi = YourDateTimeMilladi
+            _DateShamsi = YOurDateShamsi
+            _Time = YourTime
+            _Active = YourActive
+            _ViewFlag = YourViewFlag
+            _Deleted = YourDeleted
+        End Sub
+
+        Public Property NId As Int64
+        Public Property NName As String
+        Public Property NTitle As String
+        Public Property NColor As Drawing.Color
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property Time As String
+        Public Property Active As Boolean
+        Public Property ViewFlag As Boolean
+        Public Property Deleted As Boolean
+
+
+
+    End Class
+
+    Public Structure R2CoreParkingSystemCarNativenessStructure
+        Dim CarNativenessTypeId As Int64
+        Dim CarNativenessExpireDate As R2StandardDateAndTimeStructure
+    End Structure
+
+    Public Class R2CoreParkingSystemCarNativenessManager
+        Private _DateTime As New R2DateTime
+
+        Public Function ChangeCarNativeness(YourNSSCar As R2CoreParkingSystem.Cars.R2StandardCarStructure, YourCarNativenessExpireDate As R2StandardDateAndTimeStructure) As R2CoreParkingSystemCarNativenessStructure
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                'کنترل محتوای پارامتر ارسالی
+                If YourNSSCar Is Nothing Then Throw New CarNotExistException
+                'کنترل تغییر وضعیت بومی گری خودرو بومی با پلاک بومی - که البته امکان پذیر نیست
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim IndigenousCars() = InstanceConfiguration.GetConfigString(R2CoreParkingSystemConfigurations.IndigenousCars, 1).Split("-")
+                If IndigenousCars.Contains(YourNSSCar.StrCarSerialNo) Then Throw New IndigenousCarChangeNativnessFailedException
+                'تغییر وضعیت بومی گری
+                Dim newCarNativenessTypeId = CarsNativeness.CarNativenessTypes.None
+                Dim NSS = GetNSSCarNativeness(YourNSSCar, True)
+                If NSS.CarNativenessTypeId = CarsNativeness.CarNativenessTypes.Native Then
+                    newCarNativenessTypeId = CarNativenessTypes.UnNative
+                ElseIf NSS.carNativenessTypeId = CarsNativeness.CarNativenessTypes.UnNative Then
+                    newCarNativenessTypeId = CarNativenessTypes.Native
+                Else
+                    Throw New CarNativenessTypeNotValidException
+                End If
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Update dbtransport.dbo.TbCar Set CarNativenessTypeId=" & newCarNativenessTypeId & ",CarNativenessExpireDate='" & YourCarNativenessExpireDate.DateShamsiFull & "' Where nIdCar=" & YourNSSCar.nIdCar & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Dim CarNativeness = New R2CoreParkingSystemCarNativenessStructure
+                CarNativeness.CarNativenessExpireDate = YourCarNativenessExpireDate
+                CarNativeness.CarNativenessTypeId = newCarNativenessTypeId
+                Return CarNativeness
+            Catch ex As IndigenousCarChangeNativnessFailedException
+                Throw ex
+            Catch ex As CarNotExistException
+                Throw ex
+            Catch ex As CarNativenessTypeNotValidException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSCarNativeness(YourNSSCar As R2StandardCarStructure, YourImmediately As Boolean) As R2CoreParkingSystemCarNativenessStructure
+            Try
+                If YourNSSCar Is Nothing Then Throw New CarNotExistException
+                Dim Ds As New DataSet
+                Dim NSS = New R2CoreParkingSystemCarNativenessStructure
+                If YourImmediately Then
+                    Dim Da As New SqlClient.SqlDataAdapter
+                    Da.SelectCommand = New SqlCommand("Select CarNativenessTypeId,CarNativenessExpireDate From  dbtransport.dbo.TbCar Where nIDCar=" & YourNSSCar.nIdCar & "")
+                    Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection
+                    If Da.Fill(Ds) <= 0 Then Throw New CarNotExistException
+                Else
+                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select CarNativenessTypeId,CarNativenessExpireDate From  dbtransport.dbo.TbCar Where nIDCar=" & YourNSSCar.nIdCar & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New CarNotExistException
+                End If
+                NSS.CarNativenessTypeId = Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CarNativenessTypeId"))
+                NSS.CarNativenessExpireDate = New R2StandardDateAndTimeStructure(Nothing, Ds.Tables(0).Rows(0).Item("CarNativenessExpireDate").trim, Nothing)
+                Return NSS
+            Catch ex As CarNotExistException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSCarNativenessType(YourCarNativenessTypeId As Int64) As R2CoreParkingSystemStandardCarNativenessTypeStructure
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 * From R2PrimaryParkingSystem.dbo.TblCarNativenessTypes Where NId=" & YourCarNativenessTypeId & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New CarNativenessTypeNotFoundException
+                Dim NSS = New R2CoreParkingSystemStandardCarNativenessTypeStructure(Ds.Tables(0).Rows(0).Item("NId"), Ds.Tables(0).Rows(0).Item("NName").TRIM, Ds.Tables(0).Rows(0).Item("NTitle").TRIM, Color.FromName(Ds.Tables(0).Rows(0).Item("NColor").TRIM), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("Time"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
+                Return NSS
+            Catch ex As carNativenessTypeNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+
+        End Function
+
+        Public Function GetCarNativenessType(YourNSSCar As R2StandardCarStructure) As Int64
+            Try
+                If IsCarIndigenous(YourNSSCar) Then
+                    Return CarNativenessTypes.Native
+                Else
+                    Return CarNativenessTypes.UnNative
+                End If
+            Catch ex As CarNotExistException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
+            End Try
+        End Function
+
+        Public Function IsCarIndigenous(YourNSSCar As R2StandardCarStructure) As Boolean
+            Try
+                If YourNSSCar Is Nothing Then Throw New CarNotExistException
+                Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
+                Dim Ds As DataSet = Nothing
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                  "Select CarNativenessTypeId,CarNativenessExpireDate from DBtransport.dbo.TbCar
+                   Where StrCarNo='" & YourNSSCar.StrCarNo & "' and StrCarSerialNo='" & YourNSSCar.StrCarSerialNo & "'", 3600, Ds).GetRecordsCount() = 0 Then
+                    Throw New CarNotExistException
+                End If
+                If Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CarNativenessTypeId")) = CarNativenessTypes.Native Then
+                    If Ds.Tables(0).Rows(0).Item("CarNativenessExpireDate").ToString.Trim = String.Empty Then
+                        Return True
+                    ElseIf Ds.Tables(0).Rows(0).Item("CarNativenessExpireDate").ToString.Trim > _DateTime.GetCurrentDateShamsiFull() Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Else
+                    Return False
+                End If
+            Catch ex As CarNotExistException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
+            End Try
+        End Function
+
+
+    End Class
+
+    Namespace Exceptions
+
+        Public Class IndigenousCarChangeNativnessFailedException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "تغییر وضعیت خودرو امکان پذیر نیست"
+                End Get
+            End Property
+        End Class
+
+        Public Class NonIndigenousCarsException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Dim InstancePredefinedMessages = New R2CoreMClassPredefinedMessagesManager
+                    Return InstancePredefinedMessages.GetNSS(R2CoreParkingSystemPredefinedMessages.UnIndigenousCars).MsgContent
+                End Get
+            End Property
+        End Class
+
+        Public Class CarNativenessTypeNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "اطلاعات بومی گری با کد شاخص مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+        Public Class CarNativenessTypeNotValidException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "خودرو دارای اطلاعات بومی گری غیر مجاز و تعریف نشده است"
+                End Get
+            End Property
+        End Class
 
     End Namespace
 

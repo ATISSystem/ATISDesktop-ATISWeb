@@ -6,7 +6,7 @@ Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
 Imports R2CoreParkingSystem.Cars
 Imports PayanehClassLibrary.CarTrucksManagement
-
+Imports R2CoreTransportationAndLoadNotification.Trucks
 
 Public Class UCCarTruck
     Inherits UCGeneral
@@ -34,10 +34,12 @@ Public Class UCCarTruck
                 UcButtonNew.Visible = True
                 UcButtonSabt.Visible = True
                 UcCar.UCViewButtons = True
+                UcCarNativenessManipulation.Visible = True
             Else
                 UcButtonNew.Visible = False
                 UcButtonSabt.Visible = False
                 UcCar.UCViewButtons = False
+                UcCarNativenessManipulation.Visible = False
             End If
         End Set
     End Property
@@ -61,6 +63,7 @@ Public Class UCCarTruck
     Private Sub UCRefresh()
         Try
             UcCar.UCRefreshGeneral()
+            UcCarNativenessManipulation.UCRefreshGeneral()
             UcNumberStrBodyNo.UCRefresh()
             _CurrentNSS = Nothing
         Catch ex As Exception
@@ -143,6 +146,8 @@ Public Class UCCarTruck
         Try
             _CurrentNSS = PayanehClassLibraryMClassCarTrucksManagement.GetNSSCarTruckByCarId(CarId)
             UcNumberStrBodyNo.UCValue = _CurrentNSS.StrBodyNo
+            Dim InstanceCars = New R2CoreParkingSystemInstanceCarsManager
+            UcCarNativenessManipulation.UCNSSCurrent = InstanceCars.GetNSSCar(_CurrentNSS.NSSCar.nIdCar)
             RaiseEvent UCViewCarTruckInformationCompletedEvent(CarId)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

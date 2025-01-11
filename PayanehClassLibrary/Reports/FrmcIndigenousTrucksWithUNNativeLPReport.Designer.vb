@@ -33,7 +33,7 @@ Partial Class FrmcIndigenousTrucksWithUNNativeLPReport
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(171, 178)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1000)
         '
         'PnlViewReport
         '
@@ -82,6 +82,7 @@ Partial Class FrmcIndigenousTrucksWithUNNativeLPReport
         '
         'UcIndigenousTrucksWithUNNativeLPReport
         '
+        Me.UcIndigenousTrucksWithUNNativeLPReport.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcIndigenousTrucksWithUNNativeLPReport.BackColor = System.Drawing.Color.Transparent
         Me.UcIndigenousTrucksWithUNNativeLPReport.Location = New System.Drawing.Point(314, 83)
         Me.UcIndigenousTrucksWithUNNativeLPReport.Name = "UcIndigenousTrucksWithUNNativeLPReport"

@@ -3,6 +3,7 @@ Imports System.Reflection
 Imports System.Timers
 
 Imports R2Core.BaseStandardClass
+Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad
@@ -61,6 +62,7 @@ Public Class UCUCLoadCapacitorLoadCollectionAdvance
             Else
                 UcucLoadCapacitorLoadCollection.UCViewCollection(R2CoreTransportationAndLoadNotificationMClassLoadCapacitorLoadManagement.GetLoadCapacitorLoads(UcAnnouncementHallSelection.UCNSSCurrentAnnouncementHall.AHId, UcAnnouncementHallSelection.UCNSSCurrentAnnouncementHallSubGroup.AHSGId, UcucAnnouncementHallAnnounceTimeTypeCollection.UCCurrentNSS.AHATTypeId, UCViewnCarNumZero, True, _CurrentOrderingOption))
             End If
+        Catch ex As DataEntryException
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -128,6 +130,10 @@ Public Class UCUCLoadCapacitorLoadCollectionAdvance
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
+    End Sub
+
+    Private Sub ChkViewnCarNumZero_CheckedChanged(sender As Object, e As EventArgs) Handles ChkViewnCarNumZero.CheckedChanged
+        UCViewnCarNumZero = ChkViewnCarNumZero.Checked
     End Sub
 
 

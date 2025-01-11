@@ -53,6 +53,10 @@ namespace MSCOCore
             private R2DateTime _DateTime = new R2DateTime();
             private R2Core.R2PrimaryFileSharingWS.R2PrimaryFileSharingWebService WS = new R2Core.R2PrimaryFileSharingWS.R2PrimaryFileSharingWebService();
 
+            Int64 _TotalTCsforInfSMS = 0;
+            private Int64 TotalTCsforInfSMS
+            { get { return _TotalTCsforInfSMS; } set { _TotalTCsforInfSMS = value; } }
+
             public MSCOCoreAnnouncementforTransportCompaniesManager()
             { }
 
@@ -84,7 +88,10 @@ namespace MSCOCore
                 try
                 {
                     if (InstanceTransportCompanies.IsActiveTransportCompanySentMail(YourTransportCompanyCode))
-                    { InstanceEmail.SendEmailWithTXTTypeAttachment(InstanceTransportCompanies.GetNSSTransportCompany(YourTransportCompanyCode).EmailAddress, YourSB, "اعلام بار", string.Empty, YourTransportCompanyCode + InstanceConfiguration.GetConfigString(MSCOCore.Configurations.MSCOCoreConfigurations.MSCO, 4)); }
+                    { 
+                        InstanceEmail.SendEmailWithTXTTypeAttachment(InstanceTransportCompanies.GetNSSTransportCompany(YourTransportCompanyCode).EmailAddress, YourSB, "اعلام بار", string.Empty, YourTransportCompanyCode + InstanceConfiguration.GetConfigString(MSCOCore.Configurations.MSCOCoreConfigurations.MSCO, 4));
+                        TotalTCsforInfSMS += 1;
+                    }
                     System.Threading.Thread.Sleep(10000);
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
@@ -249,6 +256,7 @@ namespace MSCOCore
 
                     var InstanceMSCOTargets = new MSCOMClassMSCOTargetsManager();
                     var InstanceTransportCompanies = new MSCOCoreMClassTransportCompaniesManager();
+                    var InstanceConfiguration = new R2CoreInstanceConfigurationManager(); 
                     var InstanceProducts = new MSCOCore.MSCOProducts.MSCOCoreMClassProductsManager();
                     var NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure();
 
@@ -276,6 +284,7 @@ namespace MSCOCore
                     NSS.TPTParams = string.Empty;
                     NSS.LoadingPlaceId = 1001;
                     NSS.DischargingPlaceId = 1001;
+                    NSS.nBarSource = InstanceConfiguration.GetConfigInt64(MSCOCore.Configurations.MSCOCoreConfigurations.MSCO ,11) ;
                     return NSS;
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
@@ -498,7 +507,7 @@ namespace MSCOCore
 
                     TransportCompanyCode = OtherLine.Substring(0, 7);
                     SB.AppendLine(OtherLine);
-
+                    
                     while (!(sr.EndOfStream))
                     {
                         OtherLine = sr.ReadLine();
@@ -565,9 +574,10 @@ namespace MSCOCore
                     var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
                     for (int LoopxUsers = 0; LoopxUsers <= TargetUsers.Length - 1; LoopxUsers++)
                     { LstUsers.Add(InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64(TargetUsers[LoopxUsers]))); }
-                    var MSCOData = new SMSCreationData() { Data1 = string.Empty };
+                    var MSCOData = new SMSCreationData() { Data1 = TotalTCsforInfSMS.ToString()  };
                     var InstanceSMSHandling = new R2CoreSMSHandlingManager();
                     var SMSResult = InstanceSMSHandling.SendSMS(LstUsers, MSCOCore.SMS.SMSTypes.MSCOCoreSMSTypes.MSCOSuccess, InstanceSMSHandling.RepeatSMSCreationData(MSCOData, LstUsers.Count), true);
+                    TotalTCsforInfSMS = 0;
                     var SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult);
                     if (!(SMSResultAnalyze == String.Empty)) { throw new MSCOCoreSendSMSFailedException(SMSResultAnalyze); }
                 }

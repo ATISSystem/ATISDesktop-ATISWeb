@@ -38,8 +38,6 @@ Imports R2CoreParkingSystem.FileShareRawGroupsManagement
 Imports R2CoreParkingSystem.SoftwareUsersManagement
 Imports R2CoreTransportationAndLoadNotification
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
-Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl
-Imports R2CoreTransportationAndLoadNotification.BillOfLadingControl.BillOfLadingControl
 Imports R2CoreTransportationAndLoadNotification.ConfigurationsManagement
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation
 Imports R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions
@@ -75,13 +73,15 @@ Imports R2Core.HumanResourcesManagement.Personnel
 Imports System.Net
 Imports WhatsAppApi
 Imports System.Web.UI.Design.WebControls
+Imports R2CoreLPR.LicensePlateManagement
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor
 
 Public Class Form3
     Private _DateTime As R2DateTime = New R2DateTime
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
-            R2CorePersonnelMClassManagement.PersonelFunctionCalculate(R2CorePersonnelMClassManagement.GetNSSPersonnel(Convert.ToInt64(TextBoxConcat1.Text)), New R2StandardDateAndTimeStructure(Nothing, "1403/08/01", Nothing))
+            R2CorePersonnelMClassManagement.PersonelFunctionCalculate(R2CorePersonnelMClassManagement.GetNSSPersonnel(Convert.ToInt64(TextBoxConcat1.Text)), New R2StandardDateAndTimeStructure(Nothing, "1403/09/01", Nothing))
 
             MessageBox.Show("Finished ... ")
         Catch ex As Exception
@@ -510,9 +510,11 @@ Public Class Form3
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        'ابطال گروهی نوبت ها
         Try
-            Dim InstancePaymentRequests = New R2CoreInstansePaymentRequestsManager
-            Dim PayId = InstancePaymentRequests.PaymentRequest(3, 50000, 21)
+            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
+            InstanceCarTruckNobat.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser())
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
@@ -522,37 +524,50 @@ Public Class Form3
         Dim CmdSql As New SqlClient.SqlCommand
         CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
+            'Dim XX As New R2CoreTransportationAndLoadNotification.Trucks.R2CoreTransportationAndLoadNotificationInstanceTrucksManager
 
+            'UcTruckNativenessManipulation1.UCRefreshGeneral()
+            'UcTruckNativenessManipulation1.UCNSSCurrent = XX.GetNSSTruck(TextBoxConcat1.Text)
             Dim FDOpen = New OpenFileDialog
             If FDOpen.ShowDialog = DialogResult.Cancel Then Exit Sub
-            Dim DaShey As New OleDb.OleDbDataAdapter : Dim DsShey As New DataSet
-            DaShey.SelectCommand = New OleDb.OleDbCommand("Select * from TblXX where comment not like '%فعال%'")
-            DaShey.SelectCommand.Connection = New OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source='" & FDOpen.FileName & "'")
-            DaShey.Fill(DsShey)
-
-            Dim Counting = 0
-            CmdSql.Connection.Open()
-            CmdSql.Transaction = CmdSql.Connection.BeginTransaction
-            For Loopx As Int64 = 0 To DsShey.Tables(0).Rows.Count - 1
-                'اطلاعات شیخ بهایی
-                Dim Comment = DsShey.Tables(0).Rows(Loopx).Item("comment").ToString
-                Dim Code As Int64 = DsShey.Tables(0).Rows(Loopx).Item("code").ToString
-                Dim Name = DsShey.Tables(0).Rows(Loopx).Item("Name").ToString
-                Dim nDistance = 0
-                Dim nProvince = Mid(DsShey.Tables(0).Rows(Loopx).Item("ostancode").ToString, 1, 2)
-
-                'کنترل وجود شهر در بانک
-                Dim DSCity As New DataSet
-                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select * From dbtransport.dbo.tbcity where nCItyCode=" & Code & "", 0, DSCity).GetRecordsCount = 0 Then
-                    CmdSql.CommandText = "Insert Into dbtransport.dbo.tbCityX(nCityCode,strCityName,nDistance,nProvince,DateTimeMilladi,DateShamsi,Active,ViewFlag,Deleted,nOCityCode)
-                                                  Values(" & Code & ",'" & Name & "'," & nDistance & "," & nProvince & ",'2024-11-17 00:00:00','1403/08/27',0,0,0," & Code & ")"
-                    CmdSql.ExecuteNonQuery()
-                    Counting = Counting + 1
-                End If
+            Dim Dazob As New OleDb.OleDbDataAdapter : Dim Dszob As New DataSet
+            Dazob.SelectCommand = New OleDb.OleDbCommand("Select * from TblXX")
+            Dazob.SelectCommand.Connection = New OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source='" & FDOpen.FileName & "'")
+            Dazob.Fill(Dszob)
+            Dim InstanceTransportTarrifs = New R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsManager
+            For loopx As Int64 = 0 To Dszob.Tables(0).Rows.Count - 1
+                Dim sourcecityid = Convert.ToInt64(Dszob.Tables(0).Rows(loopx).Item(0))
+                Dim targetcityid = Convert.ToInt64(Dszob.Tables(0).Rows(loopx).Item(1))
+                Dim tarrif = Convert.ToInt64(Dszob.Tables(0).Rows(loopx).Item(5))
+                InstanceTransportTarrifs.TransportTarrifRegistering(targetcityid, sourcecityid, 2, 7, tarrif)
+                InstanceTransportTarrifs.TransportTarrifRegistering(targetcityid, sourcecityid, 2, 8, tarrif)
+                InstanceTransportTarrifs.TransportTarrifRegistering(targetcityid, sourcecityid, 2, 9, tarrif)
             Next
-            CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
-            MessageBox.Show("Finished ...")
+
+            MessageBox.Show("Finished ... ")
+            'Dim Counting = 0
+            'CmdSql.Connection.Open()
+            'CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+            'For Loopx As Int64 = 0 To DsShey.Tables(0).Rows.Count - 1
+            '    'اطلاعات شیخ بهایی
+            '    Dim Comment = DsShey.Tables(0).Rows(Loopx).Item("comment").ToString
+            '    Dim Code As Int64 = DsShey.Tables(0).Rows(Loopx).Item("code").ToString
+            '    Dim Name = DsShey.Tables(0).Rows(Loopx).Item("Name").ToString
+            '    Dim nDistance = 0
+            '    Dim nProvince = Mid(DsShey.Tables(0).Rows(Loopx).Item("ostancode").ToString, 1, 2)
+
+            '    'کنترل وجود شهر در بانک
+            '    Dim DSCity As New DataSet
+            '    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+            '    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select * From dbtransport.dbo.tbcity where nCItyCode=" & Code & "", 0, DSCity).GetRecordsCount = 0 Then
+            '        CmdSql.CommandText = "Insert Into dbtransport.dbo.tbCityX(nCityCode,strCityName,nDistance,nProvince,DateTimeMilladi,DateShamsi,Active,ViewFlag,Deleted,nOCityCode)
+            '                                      Values(" & Code & ",'" & Name & "'," & nDistance & "," & nProvince & ",'2024-11-17 00:00:00','1403/08/27',0,0,0," & Code & ")"
+            '        CmdSql.ExecuteNonQuery()
+            '        Counting = Counting + 1
+            '    End If
+            'Next
+            'CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            'MessageBox.Show("Finished ...")
 
             'Dim DaCity As New SqlClient.SqlDataAdapter : Dim DSCity As New DataSet
             'DaCity.SelectCommand = New SqlCommand("select * from dbtransport.dbo.tbcity order by ncitycode")
@@ -663,8 +678,40 @@ Public Class Form3
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+        Dim cmdsql As New SqlClient.SqlCommand
+        cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
-            PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(2, 7, Int64.MinValue, New R2StandardDateAndTimeStructure(Date.Now, "1403/08/06", "00:00:00"), New R2StandardDateAndTimeStructure(Date.Now, "1403/08/06", "23:59:59"), Int64.MinValue, Int64.MinValue)
+            R2CoreParkingSystem.Cars.R2CoreParkingSystemMClassCars.InsertCar(New R2CoreParkingSystem.Cars.R2StandardCarStructure(Nothing, 505, "318ی48", "23", 2310000), R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+            'Dim x As New LoadCapacitorLoadManipulation.R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
+            'x.ChangeLoadTarget("09132043148", "123;882244;215130244")
+
+            'Dim x As New R2Core.SMS.SMSHandling.R2CoreSMSHandlingManager
+            'x.RecivedSMSHandling(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+
+            'Try
+
+            '    Dim DA As New SqlClient.SqlDataAdapter
+            '    Dim DS As DataSet
+            '    Dim XX As New R2CoreInstanseSqlDataBOXManager
+            '    XX.GetDataBOX(New R2Core.DatabaseManagement.R2PrimarySqlConnection, "select * from r2primaryreports.dbo.TblIndigenousTrucksWithUNNativeLP ", 0, DS)
+            '    cmdsql.Connection.Open()
+            '    cmdsql.Transaction = cmdsql.Connection.BeginTransaction
+            '    For loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+            '        Dim pelak = DS.Tables(0).Rows(loopx).Item("pelak").ToString.Trim
+            '        Dim serial = DS.Tables(0).Rows(loopx).Item("serial").ToString.Trim
+            '        Dim dateen = DS.Tables(0).Rows(loopx).Item("EnghezaDate").ToString.Trim
+            '        cmdsql.CommandText = "update dbtransport.dbo.tbcar set CarNativenessTypeId=1,CarNativenessExpireDate='" & dateen & "' where strcarno='" & pelak & "' and strcarserialno='" & serial & "'"
+            '        cmdsql.ExecuteNonQuery()
+            '    Next
+            '    cmdsql.Transaction.Commit() : cmdsql.Connection.Close()
+            'Catch ex As Exception
+            '    If cmdsql.Connection.State <> ConnectionState.Closed Then
+            '        cmdsql.Transaction.Rollback() : cmdsql.Connection.Close()
+            '    End If
+            'End Try
+
+
+            'PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderCapacitorLoadsCompanyRegisteredLoadsReport(2, 7, Int64.MinValue, New R2StandardDateAndTimeStructure(Date.Now, "1403/08/06", "00:00:00"), New R2StandardDateAndTimeStructure(Date.Now, "1403/08/06", "23:59:59"), Int64.MinValue, Int64.MinValue)
             'Dim nss = R2CorePersonnelMClassManagement.GetNSSPersonnel("D4115E83")
             'MessageBox.Show(nss.OName)
 
@@ -728,7 +775,7 @@ Public Class Form3
 
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
         Try
-            RmtoWebService.GetNSSTruckDriver("4172722997")
+            RmtoWebService.GetNSSTruckDriver("4233040811")
             'RmtoWebService.GetNSSTruck("2312401")
         Catch ex As Exception
             MessageBox.Show(ex.Message)

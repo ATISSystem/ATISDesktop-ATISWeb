@@ -62,7 +62,6 @@ Imports R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions
 Imports R2CoreTransportationAndLoadNotification.TurnAttendance.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Trucks
 Imports R2CoreTransportationAndLoadNotification.Trucks.Exceptions
-Imports R2CoreTransportationAndLoadNotification.Trucks.IndigenousTrucks
 Imports R2CoreTransportationAndLoadNotification.TurnAttendance
 Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
@@ -91,6 +90,11 @@ Imports R2CoreParkingSystem
 Imports R2CoreParkingSystem.PredefinedMessagesManagement
 Imports R2Core.PredefinedMessagesManagement
 Imports R2Core.SoftwareUserManagement.Exceptions
+Imports R2CoreTransportationAndLoadNotification.TrucksNativeness
+Imports R2CoreTransportationAndLoadNotification.Goods
+Imports R2CoreTransportationAndLoadNotification.TrucksNativeness.Exceptions
+Imports R2Core.SMS.SMSHandling
+Imports R2CoreTransportationAndLoadNotification.LoadSources
 
 Namespace Rmto
     Public MustInherit Class RmtoWebService
@@ -678,6 +682,29 @@ Namespace TransportTarrifs
     End Class
 
     Public Class R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsManager
+        Private _DateTime As New R2DateTime
+
+        Public Sub TransportTarrifRegistering(YourTargetCityId As Int64, YourSourceCityId As Int64, YourAHId As Int64, YourAHSGId As Int64, YourTarrif As Int64)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifs Set OActive=0
+                                      where SourceCityId=" & YourSourceCityId & " and TargetCityId=" & YourTargetCityId & " and AHId=" & YourAHId & " and AHSGId=" & YourAHSGId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.CommandText = "Insert R2PrimaryTransportationAndLoadNotification.dbo.TblTransportPriceTarrifs(AHId,AHSGId,SourceCityId,TargetCityId,Tarrif,DateTimeMilladi,DateShamsi,Time,OActive)
+                                      values(" & YourAHId & "," & YourAHSGId & "," & YourSourceCityId & "," & YourTargetCityId & "," & YourTarrif & ",'" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentTime & "',1)"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
         Public Function GetNSSTransportTarrif(YourNSS As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure) As R2CoreTransportationAndLoadNotificationStandardTransportTarrifStructure
             Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
             Try
@@ -3063,7 +3090,7 @@ Namespace TurnAttendance
                 Dim InstanceTruck = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
                 Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
                 Dim InstanceConfigurationOfAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceConfigurationOfAnnouncementHallsManager
-                Dim InstanceIndigenousTrucks = New R2CoreTransportationAndLoadNotificationInstanceIndigenousTrucksManager
+                Dim InstanceTruckNativeness = New R2CoreTransportationAndLoadNotificationsTruckNativenessManager
                 Dim InstanceDateAndTimePersianCalendar = New R2CoreInstanceDateAndTimePersianCalendarManager
                 Dim NSSTruck = InstanceTruck.GetNSSTruck(YourTurnId)
                 Dim NSSTurn = InstanceTurns.GetNSSTurn(YourTurnId)
@@ -3075,7 +3102,7 @@ Namespace TurnAttendance
                 If Not ((_DateTime.GetCurrentTime() >= PresentControlStartTime) And (_DateTime.GetCurrentTime() <= PresentControlEndTime)) Then Return 0
                 'اگر ناوگان بومی باشد یا بومی با پلاک غیربومی باشد تعداد حاضری مورد نیاز از کانفیگ بدست می آید
                 'درغیر اینصورت طبق فرمول پیشنهاد شده انجام می شود
-                If InstanceIndigenousTrucks.IsIndigenousTruck(NSSTruck) Then
+                If InstanceTruckNativeness.IsTruckIndigenous(NSSTruck) Then
                     Return InstanceConfigurationOfAnnouncementHalls.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, YourNSSAnnouncementHall.AHId, 4)
                 Else
                     If YourNSSAnnouncementHall.AHId = AnnouncementHalls.AnnouncementHalls.Zobi Then
@@ -3194,6 +3221,7 @@ Namespace TurnAttendance
 
         Public Shared Function GetTotalNumberOfNeededPresent(YourNSSAnnouncementHall As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallStructure, ByVal YourTurnId As Int64) As UInt16
             Try
+                Dim InstanceTruckNativeness = New R2CoreTransportationAndLoadNotificationsTruckNativenessManager
                 Dim NSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTruck(YourTurnId)
                 Dim NSSTurn As R2CoreTransportationAndLoadNotificationStandardTurnStructure = R2CoreTransportationAndLoadNotificationMClassTurnsManagement.GetNSSTurn(YourTurnId)
                 'درصورتی که کنترل حاضری سالن مورد نظر غیرفعال باشد تعداد حاضری مورد نیاز 0 است
@@ -3204,7 +3232,7 @@ Namespace TurnAttendance
                 If Not ((_DateTime.GetCurrentTime() >= PresentControlStartTime) And (_DateTime.GetCurrentTime() <= PresentControlEndTime)) Then Return 0
                 'اگر ناوگان بومی باشد یا بومی با پلاک غیربومی باشد تعداد حاضری مورد نیاز از کانفیگ بدست می آید
                 'درغیر اینصورت طبق فرمول پیشنهاد شده انجام می شود
-                If R2CoreTransportationAndLoadNotificationMClassIndigenousTrucksManagement.IsIndigenousTruck(NSSTruck) Then
+                If InstanceTruckNativeness.IsTruckIndigenous(NSSTruck) Then
                     Return R2CoreTransportationAndLoadNotificationMClassConfigurationOfAnnouncementHallsManagement.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.AnnouncementHallsTruckDriverAttendance, YourNSSAnnouncementHall.AHId, 4)
                 Else
                     If YourNSSAnnouncementHall.AHId = AnnouncementHalls.AnnouncementHalls.Zobi Then
@@ -3704,6 +3732,55 @@ Namespace SMS
             Public Shared ReadOnly Property SendingLoadPermissionIssuedInfSMS = 10
             Public Shared ReadOnly Property LoadingAndDischargingPLacesChangeStatus = 18
             Public Shared ReadOnly Property TransportCompanyChangeActiveStatus = 19
+            Public Shared ReadOnly Property ChangeLoadInformation = 20
+        End Class
+
+    End Namespace
+
+    Namespace RecivedSMSCodes
+        Public MustInherit Class RecivedSMSCodes
+            Public Shared ReadOnly Property ChangeLoadSource = 4
+            Public Shared ReadOnly Property ChangeLoadTarget = 5
+        End Class
+    End Namespace
+
+    Namespace SMSHandling
+
+        Public Class R2CoreTransportationAndLoadNotificationChangeLoadSource
+            Inherits RecievedSMSHandler
+
+            Public Sub New()
+                MyBase.New()
+            End Sub
+
+            Private Sub HandlingEvent_Handler() Handles MyBase.HandlingEvent
+                Try
+                    Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                    Dim LoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
+                    LoadCapacitorLoadManipulation.ChangeLoadSource(MobileNumber, SMSContent)
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+        End Class
+
+        Public Class R2CoreTransportationAndLoadNotificationChangeLoadTarget
+            Inherits RecievedSMSHandler
+
+            Public Sub New()
+                MyBase.New()
+            End Sub
+
+            Private Sub HandlingEvent_Handler() Handles MyBase.HandlingEvent
+                Try
+                    Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                    Dim LoadCapacitorLoadManipulation = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
+                    LoadCapacitorLoadManipulation.ChangeLoadTarget(MobileNumber, SMSContent)
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
 
         End Class
 
@@ -3711,46 +3788,188 @@ Namespace SMS
 
 End Namespace
 
-Namespace IndigenousTrucks
+Namespace TrucksNativeness
 
-    Public Class IndigenousTrucksTypes
+    Public Class TruckNativenessTypes
         Public Shared ReadOnly Property None As Int64 = 0
         Public Shared ReadOnly Property Native As Int64 = 1
         Public Shared ReadOnly Property UnNative As Int64 = 2
     End Class
 
-    Public Class R2CoreTransportationAndLoadNotificationsIndigenousTrucksManager
+    Public Class R2CoreTransportationAndLoadNotificationStandardTruckNativenessTypeStructure
+        Inherits R2StandardStructure
+        Public Sub New()
+            MyBase.New()
+            _NId = Int64.MinValue
+            _NName = String.Empty
+            _NTitle = String.Empty
+            _NColor = Color.Red
+            _DateTimeMilladi = DateTime.Now
+            _DateShamsi = String.Empty
+            _Time = String.Empty
+            _Active = Boolean.FalseString
+            _ViewFlag = Boolean.FalseString
+            _Deleted = Boolean.TrueString
+        End Sub
+
+        Public Sub New(YourNId As Int64, YourNName As String, YourNTitle As String, YourNColor As Color, YourDateTimeMilladi As DateTime, YOurDateShamsi As String, YourTime As String, YourActive As Boolean, YourViewFlag As Boolean, YourDeleted As Boolean)
+            MyBase.New(YourNId, YourNName)
+            _NId = YourNId
+            _NName = YourNName
+            _NTitle = YourNTitle
+            _NColor = YourNColor
+            _DateTimeMilladi = YourDateTimeMilladi
+            _DateShamsi = YOurDateShamsi
+            _Time = YourTime
+            _Active = YourActive
+            _ViewFlag = YourViewFlag
+            _Deleted = YourDeleted
+        End Sub
+
+        Public Property NId As Int64
+        Public Property NName As String
+        Public Property NTitle As String
+        Public Property NColor As Drawing.Color
+        Public Property DateTimeMilladi As DateTime
+        Public Property DateShamsi As String
+        Public Property Time As String
+        Public Property Active As Boolean
+        Public Property ViewFlag As Boolean
+        Public Property Deleted As Boolean
+
+
+
+    End Class
+
+    Public Structure R2CoreTransportationAndLoadNotificationsTruckNativenessStructure
+        Dim TruckNativenessTypeId As Int64
+        Dim TruckNativenessExpireDate As R2StandardDateAndTimeStructure
+    End Structure
+
+    Public Class R2CoreTransportationAndLoadNotificationsTruckNativenessManager
         Private _DateTime As New R2DateTime
 
-        Public Function GetIndigenousTruckType(YourTruck As Trucks.R2CoreTransportationAndLoadNotificationStandardTruckStructure) As Int64
+        Public Function ChangeTruckNativeness(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourTruckNativenessExpireDate As R2StandardDateAndTimeStructure) As R2CoreTransportationAndLoadNotificationsTruckNativenessStructure
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                'کنترل محتوای پارامتر ارسالی
+                If YourNSSTruck Is Nothing Then Throw New TruckNotFoundException
+                'کنترل تغییر وضعیت بومی گری ناوگان بومی با پلاک بومی - که البته امکان پذیر نیست
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim IndigenousTrucks() = InstanceConfiguration.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.IndigenousTrucks, 1).Split("-")
+                If IndigenousTrucks.Contains(YourNSSTruck.NSSCar.StrCarSerialNo) Then Throw New IndigenousTruckChangeNativnessFailedException
+                'تغییر وضعیت بومی گری
+                Dim newTruckNativenessTypeId = TrucksNativeness.TruckNativenessTypes.None
+                Dim NSS = GetNSSTruckNativeness(YourNSSTruck, True)
+                If NSS.TruckNativenessTypeId = R2CoreTransportationAndLoadNotification.TrucksNativeness.TruckNativenessTypes.Native Then
+                    newTruckNativenessTypeId = TruckNativenessTypes.UnNative
+                ElseIf NSS.TruckNativenessTypeId = R2CoreTransportationAndLoadNotification.TrucksNativeness.TruckNativenessTypes.UnNative Then
+                    newTruckNativenessTypeId = TruckNativenessTypes.Native
+                Else
+                    Throw New TruckNativenessTypeNotValidException
+                End If
+                CmdSql.Connection.Open()
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction
+                CmdSql.CommandText = "Update dbtransport.dbo.TbCar Set CarNativenessTypeId=" & newTruckNativenessTypeId & ",CarNativenessExpireDate='" & YourTruckNativenessExpireDate.DateShamsiFull & "' Where nIdCar=" & YourNSSTruck.NSSCar.nIdCar & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+                Dim TruckNativeness = New R2CoreTransportationAndLoadNotificationsTruckNativenessStructure
+                TruckNativeness.TruckNativenessExpireDate = YourTruckNativenessExpireDate
+                TruckNativeness.TruckNativenessTypeId = newTruckNativenessTypeId
+                Return TruckNativeness
+            Catch ex As IndigenousTruckChangeNativnessFailedException
+                Throw ex
+            Catch ex As TruckNotFoundException
+                Throw ex
+            Catch ex As TruckNativenessTypeNotValidException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then
+                    CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
+                End If
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSTruckNativeness(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourImmediately As Boolean) As R2CoreTransportationAndLoadNotificationsTruckNativenessStructure
+            Try
+                If YourNSSTruck Is Nothing Then Throw New TruckNotFoundException
+                Dim Ds As New DataSet
+                Dim NSS = New R2CoreTransportationAndLoadNotificationsTruckNativenessStructure
+                If YourImmediately Then
+                    Dim Da As New SqlClient.SqlDataAdapter
+                    Da.SelectCommand = New SqlCommand("Select CarNativenessTypeId,CarNativenessExpireDate From  dbtransport.dbo.TbCar Where nIDCar=" & YourNSSTruck.NSSCar.nIdCar & "")
+                    Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection
+                    If Da.Fill(Ds) <= 0 Then Throw New TruckNotFoundException
+                Else
+                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select CarNativenessTypeId,CarNativenessExpireDate From  dbtransport.dbo.TbCar Where nIDCar=" & YourNSSTruck.NSSCar.nIdCar & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New TruckNotFoundException
+                End If
+                NSS.TruckNativenessTypeId = Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CarNativenessTypeId"))
+                NSS.TruckNativenessExpireDate = New R2StandardDateAndTimeStructure(Nothing, Ds.Tables(0).Rows(0).Item("CarNativenessExpireDate").trim, Nothing)
+                Return NSS
+            Catch ex As TruckNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSTruckNativenessType(YourTruckNativenessTypeId As Int64) As R2CoreTransportationAndLoadNotificationStandardTruckNativenessTypeStructure
+            Try
+                Dim Ds As DataSet
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 * From R2PrimaryTransportationAndLoadNotification.dbo.TblTruckNativenessTypes Where NId=" & YourTruckNativenessTypeId & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New TruckNativenessTypeNotFoundException
+                Dim NSS = New R2CoreTransportationAndLoadNotificationStandardTruckNativenessTypeStructure(Ds.Tables(0).Rows(0).Item("NId"), Ds.Tables(0).Rows(0).Item("NName").TRIM, Ds.Tables(0).Rows(0).Item("NTitle").TRIM, Color.FromName(Ds.Tables(0).Rows(0).Item("NColor").TRIM), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("Time"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Deleted"))
+                Return NSS
+            Catch ex As TruckNativenessTypeNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+
+        End Function
+
+        Public Function GetTruckNativenessType(YourTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure) As Int64
             Try
                 If IsTruckIndigenous(YourTruck) Then
-                    Return IndigenousTrucksTypes.Native
+                    Return TruckNativenessTypes.Native
                 Else
-                    Return IndigenousTrucksTypes.UnNative
+                    Return TruckNativenessTypes.UnNative
                 End If
+            Catch ex As TruckNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
             End Try
         End Function
 
-        Public Function IsTruckIndigenous(YourTruck As Trucks.R2CoreTransportationAndLoadNotificationStandardTruckStructure) As Boolean
+        Public Function IsTruckIndigenous(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure) As Boolean
             Try
+                If YourNSSTruck Is Nothing Then Throw New TruckNotFoundException
                 Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
                 Dim Ds As DataSet = Nothing
                 Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
-                Dim IndigenousSerials = Split(InstanceConfiguration.GetConfigString(R2CoreTransportationAndLoadNotificationConfigurations.IndigenousTrucks, 1), "-")
-                'کنترل سریال پلاک
-                If IndigenousSerials.Contains(YourTruck.NSSCar.StrCarSerialNo) Then Return True
-                'کنترل وجود داشتن در لیست بومی ها
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
-                  "Select * from R2PrimaryTransportationAndLoadNotification.dbo.TblIndigenousTrucksWithUNNativeLP as Indigenous
-                   Where Indigenous.Pelak='" & YourTruck.NSSCar.StrCarNo & "' and Indigenous.Serial='" & YourTruck.NSSCar.StrCarSerialNo & "' and (Indigenous.EnghezaDate>='" & _DateTime.GetCurrentDateShamsiFull & "' or Indigenous.EnghezaDate='')", 3600, Ds).GetRecordsCount() = 0 Then
-                    Return False
-                Else
-                    Return True
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                  "Select CarNativenessTypeId,CarNativenessExpireDate from DBtransport.dbo.TbCar
+                   Where StrCarNo='" & YourNSSTruck.NSSCar.StrCarNo & "' and StrCarSerialNo='" & YourNSSTruck.NSSCar.StrCarSerialNo & "'", 3600, Ds).GetRecordsCount() = 0 Then
+                    Throw New TruckNotFoundException
                 End If
-                Return False
+                If Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CarNativenessTypeId")) = TruckNativenessTypes.Native Then
+                    If Ds.Tables(0).Rows(0).Item("CarNativenessExpireDate").ToString.Trim = String.Empty Then
+                        Return True
+                    ElseIf Ds.Tables(0).Rows(0).Item("CarNativenessExpireDate").ToString.Trim > _DateTime.GetCurrentDateShamsiFull() Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Else
+                    Return False
+                End If
+            Catch ex As TruckNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
             End Try
@@ -3760,6 +3979,8 @@ Namespace IndigenousTrucks
             Try
                 Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
                 Return IsTruckIndigenous(InstanceTrucks.GetNSSTruck(YourTurn, False))
+            Catch ex As TruckNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message)
             End Try
@@ -3769,6 +3990,16 @@ Namespace IndigenousTrucks
     End Class
 
     Namespace Exceptions
+
+        Public Class IndigenousTruckChangeNativnessFailedException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "تغییر وضعیت ناوگان امکان پذیر نیست"
+                End Get
+            End Property
+        End Class
+
         Public Class NonIndigenousTrucksException
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
@@ -3778,7 +4009,28 @@ Namespace IndigenousTrucks
                 End Get
             End Property
         End Class
+
+        Public Class TruckNativenessTypeNotFoundException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "اطلاعات بومی گری با کد شاخص مورد نظر یافت نشد"
+                End Get
+            End Property
+        End Class
+
+        Public Class TruckNativenessTypeNotValidException
+            Inherits ApplicationException
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "خدرو دارای اطلاعات بومی گری غیر مجاز و تعریف نشده است"
+                End Get
+            End Property
+        End Class
+
     End Namespace
+
+
 End Namespace
 
 Namespace PredefinedMessagesManagement

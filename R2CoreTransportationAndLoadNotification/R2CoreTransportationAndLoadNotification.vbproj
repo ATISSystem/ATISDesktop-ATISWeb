@@ -514,6 +514,18 @@
     <Compile Include="Transport Companies\UCViewerNSSTransportComapny.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="TrucksNativeness\UCTruckNativeness.Designer.vb">
+      <DependentUpon>UCTruckNativeness.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TrucksNativeness\UCTruckNativeness.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrucksNativeness\UCTruckNativenessManipulation.Designer.vb">
+      <DependentUpon>UCTruckNativenessManipulation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TrucksNativeness\UCTruckNativenessManipulation.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Turns\UCSequentialTurn.Designer.vb">
       <DependentUpon>UCSequentialTurn.vb</DependentUpon>
     </Compile>
@@ -760,6 +772,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Transport Companies\UCViewerNSSTransportComapny.resx">
       <DependentUpon>UCViewerNSSTransportComapny.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrucksNativeness\UCTruckNativeness.resx">
+      <DependentUpon>UCTruckNativeness.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrucksNativeness\UCTruckNativenessManipulation.resx">
+      <DependentUpon>UCTruckNativenessManipulation.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Turns\UCSequentialTurn.resx">
       <DependentUpon>UCSequentialTurn.vb</DependentUpon>

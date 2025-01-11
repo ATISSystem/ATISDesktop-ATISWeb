@@ -69,7 +69,8 @@ Public Class UCPersianShamsiDate
             Else
                 Throw New ShamsiDateSyntaxNotValidException
             End If
-
+        Catch ex As ShamsiDateSyntaxNotValidException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

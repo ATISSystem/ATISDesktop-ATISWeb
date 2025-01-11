@@ -57,10 +57,12 @@ Partial Class FrmcTransferPersonelFingerPrintsIntoClock4
         '
         Me.UcLabel2._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabel2._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel2.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcLabel2.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel2.Location = New System.Drawing.Point(406, 30)
+        Me.UcLabel2.Location = New System.Drawing.Point(463, 30)
         Me.UcLabel2.Name = "UcLabel2"
         Me.UcLabel2.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel2.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcLabel2.Size = New System.Drawing.Size(178, 32)
         Me.UcLabel2.TabIndex = 4
         Me.UcLabel2.UCBackColor = System.Drawing.Color.White
@@ -71,8 +73,9 @@ Partial Class FrmcTransferPersonelFingerPrintsIntoClock4
         '
         'UcPersianTextBoxSal
         '
+        Me.UcPersianTextBoxSal.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcPersianTextBoxSal.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianTextBoxSal.Location = New System.Drawing.Point(304, 32)
+        Me.UcPersianTextBoxSal.Location = New System.Drawing.Point(361, 32)
         Me.UcPersianTextBoxSal.MaxCharacterReached = CType(50, Short)
         Me.UcPersianTextBoxSal.Name = "UcPersianTextBoxSal"
         Me.UcPersianTextBoxSal.Size = New System.Drawing.Size(99, 30)
@@ -90,8 +93,9 @@ Partial Class FrmcTransferPersonelFingerPrintsIntoClock4
         '
         'UcButton
         '
+        Me.UcButton.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcButton.BackColor = System.Drawing.Color.Transparent
-        Me.UcButton.Location = New System.Drawing.Point(301, 462)
+        Me.UcButton.Location = New System.Drawing.Point(437, 462)
         Me.UcButton.Name = "UcButton"
         Me.UcButton.Padding = New System.Windows.Forms.Padding(1)
         Me.UcButton.Size = New System.Drawing.Size(118, 41)
@@ -107,22 +111,25 @@ Partial Class FrmcTransferPersonelFingerPrintsIntoClock4
         '
         Me.UcLabel1._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel1.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel1.Location = New System.Drawing.Point(365, 59)
+        Me.UcLabel1.Location = New System.Drawing.Point(422, 59)
         Me.UcLabel1.Name = "UcLabel1"
         Me.UcLabel1.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcLabel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcLabel1.Size = New System.Drawing.Size(219, 32)
         Me.UcLabel1.TabIndex = 1
         Me.UcLabel1.UCBackColor = System.Drawing.Color.White
-        Me.UcLabel1.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabel1.UCFont = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabel1.UCForeColor = System.Drawing.Color.DarkRed
         Me.UcLabel1.UCTextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.UcLabel1.UCValue = "ماه مورد نظر را انتخاب نمایید :"
         '
         'UcPersianMonths
         '
+        Me.UcPersianMonths.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcPersianMonths.BackColor = System.Drawing.Color.Transparent
-        Me.UcPersianMonths.Location = New System.Drawing.Point(301, 97)
+        Me.UcPersianMonths.Location = New System.Drawing.Point(355, 97)
         Me.UcPersianMonths.Name = "UcPersianMonths"
         Me.UcPersianMonths.Padding = New System.Windows.Forms.Padding(3)
         Me.UcPersianMonths.Size = New System.Drawing.Size(283, 359)

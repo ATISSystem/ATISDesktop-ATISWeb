@@ -217,7 +217,7 @@
                         <div class="input-group col-sm-3 col-lg-3">
                             <asp:TextBox runat="server" ID="TxtLoadReciever" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
                             <div class="input-group-append">
-                                <span class="input-group-text R2FontBHomaSmall" style="background-color: yellow; color: blue">گیرنده</span>
+                                <span class="input-group-text R2FontBHomaSmall"  style="background-color: yellow; color: blue">گیرنده</span>
                             </div>
                         </div>
                     </div>

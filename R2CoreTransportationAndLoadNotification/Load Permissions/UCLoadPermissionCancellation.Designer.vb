@@ -1,11 +1,11 @@
 ﻿Imports R2CoreGUI
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class UCLoadPermissionCancellation
     Inherits UCLoadPermission
 
     'UserControl overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -22,23 +22,23 @@ Partial Class UCLoadPermissionCancellation
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.PnlInner = New System.Windows.Forms.Panel()
-        Me.CheckBoxLoadAllocate = New System.Windows.Forms.CheckBox()
         Me.CheckBoxLoadCapacitorLoad = New System.Windows.Forms.CheckBox()
         Me.UcNumberLoadAllocationId = New R2CoreGUI.UCNumber()
         Me.CheckBoxTurn = New System.Windows.Forms.CheckBox()
         Me.UcButtonLoadPermissionCancelling = New R2CoreGUI.UCButton()
         Me.UcLabel1 = New R2CoreGUI.UCLabel()
         Me.PnlBorder = New System.Windows.Forms.Panel()
-        Me.UcLabel2 = New R2CoreGUI.UCLabel()
-        Me.UcViewerNSSSequentialTurnNumber = New R2CoreTransportationAndLoadNotification.UCViewerNSSSequentialTurnNumber()
+        Me.UcButtonLoadAllocationToOther = New R2CoreGUI.UCButton()
         Me.UcLabel3 = New R2CoreGUI.UCLabel()
         Me.UcPersianTextBoxDescription = New R2CoreGUI.UCPersianTextBox()
-        Me.UcCar = New R2CoreParkingSystem.UCCar()
         Me.UcViewerNSSLoadPermissionExtended = New R2CoreTransportationAndLoadNotification.UCViewerNSSLoadPermissionExtended()
+        Me.UcViewerNSSSequentialTurnNumber = New R2CoreTransportationAndLoadNotification.UCViewerNSSSequentialTurnNumber()
+        Me.UcLabel2 = New R2CoreGUI.UCLabel()
+        Me.UcCar = New R2CoreParkingSystem.UCCar()
         Me.UcDriver = New R2CoreParkingSystem.UCDriver()
         Me.PnlMain.SuspendLayout()
         Me.PnlInner.SuspendLayout()
@@ -59,7 +59,6 @@ Partial Class UCLoadPermissionCancellation
         'PnlInner
         '
         Me.PnlInner.BackColor = System.Drawing.Color.White
-        Me.PnlInner.Controls.Add(Me.CheckBoxLoadAllocate)
         Me.PnlInner.Controls.Add(Me.CheckBoxLoadCapacitorLoad)
         Me.PnlInner.Controls.Add(Me.UcNumberLoadAllocationId)
         Me.PnlInner.Controls.Add(Me.CheckBoxTurn)
@@ -72,22 +71,6 @@ Partial Class UCLoadPermissionCancellation
         Me.PnlInner.Size = New System.Drawing.Size(1016, 429)
         Me.PnlInner.TabIndex = 16
         '
-        'CheckBoxLoadAllocate
-        '
-        Me.CheckBoxLoadAllocate.AutoSize = True
-        Me.CheckBoxLoadAllocate.Checked = True
-        Me.CheckBoxLoadAllocate.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CheckBoxLoadAllocate.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.CheckBoxLoadAllocate.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.CheckBoxLoadAllocate.ForeColor = System.Drawing.Color.Black
-        Me.CheckBoxLoadAllocate.Location = New System.Drawing.Point(503, 8)
-        Me.CheckBoxLoadAllocate.Name = "CheckBoxLoadAllocate"
-        Me.CheckBoxLoadAllocate.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.CheckBoxLoadAllocate.Size = New System.Drawing.Size(127, 27)
-        Me.CheckBoxLoadAllocate.TabIndex = 18
-        Me.CheckBoxLoadAllocate.Text = "تخصیص به راننده دیگر"
-        Me.CheckBoxLoadAllocate.UseVisualStyleBackColor = True
-        '
         'CheckBoxLoadCapacitorLoad
         '
         Me.CheckBoxLoadCapacitorLoad.AutoSize = True
@@ -96,7 +79,7 @@ Partial Class UCLoadPermissionCancellation
         Me.CheckBoxLoadCapacitorLoad.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CheckBoxLoadCapacitorLoad.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CheckBoxLoadCapacitorLoad.ForeColor = System.Drawing.Color.Black
-        Me.CheckBoxLoadCapacitorLoad.Location = New System.Drawing.Point(201, 8)
+        Me.CheckBoxLoadCapacitorLoad.Location = New System.Drawing.Point(158, 8)
         Me.CheckBoxLoadCapacitorLoad.Name = "CheckBoxLoadCapacitorLoad"
         Me.CheckBoxLoadCapacitorLoad.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.CheckBoxLoadCapacitorLoad.Size = New System.Drawing.Size(134, 27)
@@ -134,7 +117,7 @@ Partial Class UCLoadPermissionCancellation
         Me.CheckBoxTurn.Cursor = System.Windows.Forms.Cursors.Hand
         Me.CheckBoxTurn.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CheckBoxTurn.ForeColor = System.Drawing.Color.Black
-        Me.CheckBoxTurn.Location = New System.Drawing.Point(343, 8)
+        Me.CheckBoxTurn.Location = New System.Drawing.Point(300, 8)
         Me.CheckBoxTurn.Name = "CheckBoxTurn"
         Me.CheckBoxTurn.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.CheckBoxTurn.Size = New System.Drawing.Size(142, 27)
@@ -182,6 +165,7 @@ Partial Class UCLoadPermissionCancellation
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlBorder.Controls.Add(Me.UcButtonLoadAllocationToOther)
         Me.PnlBorder.Controls.Add(Me.UcLabel3)
         Me.PnlBorder.Controls.Add(Me.UcPersianTextBoxDescription)
         Me.PnlBorder.Controls.Add(Me.UcViewerNSSLoadPermissionExtended)
@@ -194,35 +178,20 @@ Partial Class UCLoadPermissionCancellation
         Me.PnlBorder.Size = New System.Drawing.Size(1009, 403)
         Me.PnlBorder.TabIndex = 16
         '
-        'UcLabel2
+        'UcButtonLoadAllocationToOther
         '
-        Me.UcLabel2._UCBackColorPopup = System.Drawing.Color.Transparent
-        Me.UcLabel2._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcLabel2.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabel2.Location = New System.Drawing.Point(874, 142)
-        Me.UcLabel2.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.UcLabel2.Name = "UcLabel2"
-        Me.UcLabel2.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.UcLabel2.Size = New System.Drawing.Size(125, 27)
-        Me.UcLabel2.TabIndex = 16
-        Me.UcLabel2.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel2.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.UcLabel2.UCForeColor = System.Drawing.Color.Black
-        Me.UcLabel2.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.UcLabel2.UCValue = "ناوگان - راننده موافق"
-        '
-        'UcViewerNSSSequentialTurnNumber
-        '
-        Me.UcViewerNSSSequentialTurnNumber.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcViewerNSSSequentialTurnNumber.BackColor = System.Drawing.Color.Transparent
-        Me.UcViewerNSSSequentialTurnNumber.Location = New System.Drawing.Point(612, 138)
-        Me.UcViewerNSSSequentialTurnNumber.Name = "UcViewerNSSSequentialTurnNumber"
-        Me.UcViewerNSSSequentialTurnNumber.Padding = New System.Windows.Forms.Padding(2)
-        Me.UcViewerNSSSequentialTurnNumber.Size = New System.Drawing.Size(257, 34)
-        Me.UcViewerNSSSequentialTurnNumber.TabIndex = 20
-        Me.UcViewerNSSSequentialTurnNumber.UCNSSCurrent = Nothing
+        Me.UcButtonLoadAllocationToOther.BackColor = System.Drawing.Color.PaleTurquoise
+        Me.UcButtonLoadAllocationToOther.Location = New System.Drawing.Point(8, 143)
+        Me.UcButtonLoadAllocationToOther.Name = "UcButtonLoadAllocationToOther"
+        Me.UcButtonLoadAllocationToOther.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcButtonLoadAllocationToOther.Size = New System.Drawing.Size(133, 36)
+        Me.UcButtonLoadAllocationToOther.TabIndex = 19
+        Me.UcButtonLoadAllocationToOther.UCBackColor = System.Drawing.Color.Red
+        Me.UcButtonLoadAllocationToOther.UCBackColorDisable = System.Drawing.Color.Gray
+        Me.UcButtonLoadAllocationToOther.UCEnable = True
+        Me.UcButtonLoadAllocationToOther.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcButtonLoadAllocationToOther.UCForeColor = System.Drawing.Color.White
+        Me.UcButtonLoadAllocationToOther.UCValue = "تخصیص به راننده دیگر"
         '
         'UcLabel3
         '
@@ -261,18 +230,6 @@ Partial Class UCLoadPermissionCancellation
         Me.UcPersianTextBoxDescription.UCTextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.UcPersianTextBoxDescription.UCValue = ""
         '
-        'UcCar
-        '
-        Me.UcCar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcCar.BackColor = System.Drawing.Color.Transparent
-        Me.UcCar.Location = New System.Drawing.Point(6, 185)
-        Me.UcCar.Name = "UcCar"
-        Me.UcCar.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcCar.Size = New System.Drawing.Size(998, 88)
-        Me.UcCar.TabIndex = 1
-        Me.UcCar.UCViewButtons = False
-        '
         'UcViewerNSSLoadPermissionExtended
         '
         Me.UcViewerNSSLoadPermissionExtended.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -285,12 +242,54 @@ Partial Class UCLoadPermissionCancellation
         Me.UcViewerNSSLoadPermissionExtended.TabIndex = 0
         Me.UcViewerNSSLoadPermissionExtended.UCNSSCurrent = Nothing
         '
+        'UcViewerNSSSequentialTurnNumber
+        '
+        Me.UcViewerNSSSequentialTurnNumber.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcViewerNSSSequentialTurnNumber.BackColor = System.Drawing.Color.Transparent
+        Me.UcViewerNSSSequentialTurnNumber.Location = New System.Drawing.Point(618, 143)
+        Me.UcViewerNSSSequentialTurnNumber.Name = "UcViewerNSSSequentialTurnNumber"
+        Me.UcViewerNSSSequentialTurnNumber.Padding = New System.Windows.Forms.Padding(2)
+        Me.UcViewerNSSSequentialTurnNumber.Size = New System.Drawing.Size(257, 34)
+        Me.UcViewerNSSSequentialTurnNumber.TabIndex = 20
+        Me.UcViewerNSSSequentialTurnNumber.UCNSSCurrent = Nothing
+        '
+        'UcLabel2
+        '
+        Me.UcLabel2._UCBackColorPopup = System.Drawing.Color.Transparent
+        Me.UcLabel2._UCForeColorPopuped = System.Drawing.Color.Red
+        Me.UcLabel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcLabel2.BackColor = System.Drawing.Color.Transparent
+        Me.UcLabel2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel2.Location = New System.Drawing.Point(880, 147)
+        Me.UcLabel2.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.UcLabel2.Name = "UcLabel2"
+        Me.UcLabel2.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.UcLabel2.Size = New System.Drawing.Size(125, 27)
+        Me.UcLabel2.TabIndex = 16
+        Me.UcLabel2.UCBackColor = System.Drawing.Color.Transparent
+        Me.UcLabel2.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.UcLabel2.UCForeColor = System.Drawing.Color.Black
+        Me.UcLabel2.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.UcLabel2.UCValue = "ناوگان - راننده موافق"
+        '
+        'UcCar
+        '
+        Me.UcCar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcCar.BackColor = System.Drawing.Color.Transparent
+        Me.UcCar.Location = New System.Drawing.Point(6, 186)
+        Me.UcCar.Name = "UcCar"
+        Me.UcCar.Padding = New System.Windows.Forms.Padding(3)
+        Me.UcCar.Size = New System.Drawing.Size(998, 88)
+        Me.UcCar.TabIndex = 1
+        Me.UcCar.UCViewButtons = False
+        '
         'UcDriver
         '
         Me.UcDriver.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcDriver.BackColor = System.Drawing.Color.Transparent
-        Me.UcDriver.Location = New System.Drawing.Point(8, 275)
+        Me.UcDriver.Location = New System.Drawing.Point(8, 276)
         Me.UcDriver.Name = "UcDriver"
         Me.UcDriver.Padding = New System.Windows.Forms.Padding(3)
         Me.UcDriver.Size = New System.Drawing.Size(996, 121)
@@ -328,5 +327,5 @@ Partial Class UCLoadPermissionCancellation
     Friend WithEvents UcLabel3 As UCLabel
     Friend WithEvents UcPersianTextBoxDescription As UCPersianTextBox
     Friend WithEvents UcViewerNSSSequentialTurnNumber As UCViewerNSSSequentialTurnNumber
-    Friend WithEvents CheckBoxLoadAllocate As Windows.Forms.CheckBox
+    Friend WithEvents UcButtonLoadAllocationToOther As UCButton
 End Class

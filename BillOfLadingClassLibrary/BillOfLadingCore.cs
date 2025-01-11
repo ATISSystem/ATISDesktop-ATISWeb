@@ -205,7 +205,7 @@ namespace BillOfLadingCore
                         DaBillOfLading.SelectCommand.Connection = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source='" + tempFilePath + "'");
 
                         DsBillOfLading.Clear();
-                        if (DaBillOfLading.Fill(DsBillOfLading) <=0) { /*ناوگان هیچ بارنامه ای بعد از صدور نوبت ندارد*/ continue; }
+                        if (DaBillOfLading.Fill(DsBillOfLading) <= 0) { /*ناوگان هیچ بارنامه ای بعد از صدور نوبت ندارد*/ continue; }
 
                         if (DsBillOfLading.Tables[0].Rows.Count > 1)
                         {/*بیش از یک بارنامه بعد از نوبت فعال دارد*/}
@@ -214,8 +214,9 @@ namespace BillOfLadingCore
                             if (Turn.nUserIdEnter == R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId)
                             { /*نوبت در ساعات عادی نوبت خودکار توسط سیستم صادر نشده است*/
                                 if (InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).Active)
-                                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, BillOfLadingCoreloggings.BillOfLadingTurnsCancellation, InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).LogTitle, "NoAction : "+"TruckSmartCardNo=" + Turn.TruckSmartCardNo, Turn.Pelak + " - " + Turn.Serial, Turn.NSSTruckDriver.NSSDriver.StrPersonFullName, Turn.EnterDate + " " + Turn.EnterTime, DsBillOfLading.Tables[0].Rows.Count.ToString(), YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
-                                continue; }
+                                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, BillOfLadingCoreloggings.BillOfLadingTurnsCancellation, InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).LogTitle, "NoAction : " + "TruckSmartCardNo=" + Turn.TruckSmartCardNo, Turn.Pelak + " - " + Turn.Serial, Turn.NSSTruckDriver.NSSDriver.StrPersonFullName, Turn.EnterDate + " " + Turn.EnterTime, DsBillOfLading.Tables[0].Rows.Count.ToString(), YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                                continue;
+                            }
                             else
                             { }
                         }
@@ -237,7 +238,7 @@ namespace BillOfLadingCore
 
                     /*ثبت لاگ تعداد باطل شده*/
                     if (InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).Active)
-                    { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, BillOfLadingCoreloggings.BillOfLadingTurnsCancellation, InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).LogTitle, "TotalTurn=" + LstActiveTurns.Count.ToString()   ,"TotalTurnCancelled=" + TotalTurn.ToString(), string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                    { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, BillOfLadingCoreloggings.BillOfLadingTurnsCancellation, InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).LogTitle, "TotalTurn=" + LstActiveTurns.Count.ToString(), "TotalTurnCancelled=" + TotalTurn.ToString(), string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
 
                     /*حذف فایل موقت از اپ دیتا*/
                     File.Delete(tempFilePath);
@@ -246,7 +247,7 @@ namespace BillOfLadingCore
                     WS.WebMethodDeleteFileButKeepDeleted(R2CoreRawGroups.UploadedFiles, "BL" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".mdb", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword));
 
                     /*ارسال اس ام اس اتمام موفقیت آمیز*/
-                    SendSMSSuccess(TotalTurn);
+                    SendSMSSuccess(TotalTurn, _DateTime.GetCurrentDateShamsiFull());
                 }
                 catch (BillOfLadingCoreTurnsCancellationIsnotActiveException ex)
                 { throw ex; }
@@ -267,7 +268,7 @@ namespace BillOfLadingCore
                 { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
             }
 
-            private void SendSMSSuccess(Int64  YourTotalTurn  )
+            private void SendSMSSuccess(Int64 YourTotalTurn, string YourShamsiDate)
             {
                 try
                 {
@@ -277,7 +278,7 @@ namespace BillOfLadingCore
                     var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
                     for (int LoopxUsers = 0; LoopxUsers <= TargetUsers.Length - 1; LoopxUsers++)
                     { LstUsers.Add(InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64(TargetUsers[LoopxUsers]))); }
-                    var BillOfLadingData = new SMSCreationData() { Data1 = YourTotalTurn.ToString ()  };
+                    var BillOfLadingData = new SMSCreationData() { Data1 = YourTotalTurn.ToString(), Data2 = YourShamsiDate };
                     var InstanceSMSHandling = new R2CoreSMSHandlingManager();
                     var SMSResult = InstanceSMSHandling.SendSMS(LstUsers, BillOfLadingCoreSMSTypes.BillOfLadingTurnCancellationSuccess, InstanceSMSHandling.RepeatSMSCreationData(BillOfLadingData, LstUsers.Count), true);
                     var SMSResultAnalyze = InstanceSMSHandling.GetSMSResultAnalyze(SMSResult);
