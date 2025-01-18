@@ -1789,14 +1789,13 @@ Namespace Turns
     Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTurnsManagement
         Private Shared _DateTime As New R2DateTime
 
-        Public Shared Function ExistActiveTurn(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourNSSSeqT As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure)
+        Public Shared Function ExistActiveTurn(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure)
             Try
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                      "Select * from dbtransport.dbo.tbEnterExit as Turns
-                             Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SeqTs on Substring(Turns.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS=SeqTs.SeqTKeyWord Collate Arabic_CI_AI_WS
                       Where (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and Turns.bFlagDriver=0 and
-                            SeqTs.Active=1 and SeqTs.Deleted=0 and Turns.strCardno=" & YourNSSTruck.NSSCar.nIdCar & " and SeqTs.SeqTId=" & YourNSSSeqT.SequentialTurnId & "", 0, Ds).GetRecordsCount() = 0 Then
+                             Turns.strCardno=" & YourNSSTruck.NSSCar.nIdCar & "", 0, Ds).GetRecordsCount() = 0 Then
                     Return False
                 Else
                     Return True
@@ -2645,6 +2644,21 @@ Namespace Turns
                 End Try
             End Function
 
+            Public Function GetNSSSequentialTurn(YourNSSAHSG As R2CoreTransportationAndLoadNotificationStandardAnnouncementHallSubGroupStructure) As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure
+                Try
+                    Dim DS As DataSet
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                               "Select Top 1 SeqTId from R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroupsRelationSequentialTurns as AHSGRSeqT
+                                Where AHSGId=" & YourNSSAHSG.AHSGId & " and RelationActive=1 Order By RId Desc", 3600, DS).GetRecordsCount() = 0 Then Throw New SequentialTurnNotFoundException
+                    Return GetNSSSequentialTurn(Convert.ToInt64(DS.Tables(0).Rows(0).Item("SeqTId")))
+                Catch ex As SequentialTurnNotFoundException
+                    Throw ex
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
         End Class
 
         Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassSequentialTurnsManagement
@@ -2801,6 +2815,7 @@ Namespace Turns
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
                 End Try
             End Sub
+
         End Class
 
         Public NotInheritable Class R2CoreTransportationAndLoadNotificationMClassTurnExpirationManagement
@@ -3895,22 +3910,28 @@ Namespace TrucksNativeness
             End Try
         End Function
 
+
         Public Function GetNSSTruckNativeness(YourNSSTruck As R2CoreTransportationAndLoadNotificationStandardTruckStructure, YourImmediately As Boolean) As R2CoreTransportationAndLoadNotificationsTruckNativenessStructure
             Try
                 If YourNSSTruck Is Nothing Then Throw New TruckNotFoundException
-                Dim Ds As New DataSet
                 Dim NSS = New R2CoreTransportationAndLoadNotificationsTruckNativenessStructure
                 If YourImmediately Then
-                    Dim Da As New SqlClient.SqlDataAdapter
+                    Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                     Da.SelectCommand = New SqlCommand("Select CarNativenessTypeId,CarNativenessExpireDate From  dbtransport.dbo.TbCar Where nIDCar=" & YourNSSTruck.NSSCar.nIdCar & "")
                     Da.SelectCommand.Connection = (New R2PrimarySubscriptionDBSqlConnection).GetConnection
                     If Da.Fill(Ds) <= 0 Then Throw New TruckNotFoundException
+                    NSS.TruckNativenessTypeId = Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CarNativenessTypeId"))
+                    NSS.TruckNativenessExpireDate = New R2StandardDateAndTimeStructure(Nothing, Ds.Tables(0).Rows(0).Item("CarNativenessExpireDate").trim, Nothing)
+                    Return NSS
                 Else
-                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select CarNativenessTypeId,CarNativenessExpireDate From  dbtransport.dbo.TbCar Where nIDCar=" & YourNSSTruck.NSSCar.nIdCar & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New TruckNotFoundException
+                    'If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select CarNativenessTypeId,CarNativenessExpireDate From  dbtransport.dbo.TbCar Where nIDCar=" & YourNSSTruck.NSSCar.nIdCar & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New TruckNotFoundException
+                    Dim DSCarsNativeness As New DataSet
+                    R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Case nIDCar,CarNativenessTypeId,CarNativenessExpireDate From  dbtransport.dbo.TbCar", 3600, DSCarsNativeness)
+                    Dim DR() = DSCarsNativeness.Tables(0).Select("nIDCar=" + YourNSSTruck.NSSCar.nIdCar)
+                    NSS.TruckNativenessTypeId = Convert.ToInt64(DR(0).Item("CarNativenessTypeId"))
+                    NSS.TruckNativenessExpireDate = New R2StandardDateAndTimeStructure(Nothing, DR(0).Item("CarNativenessExpireDate").trim, Nothing)
+                    Return NSS
                 End If
-                NSS.TruckNativenessTypeId = Convert.ToInt64(Ds.Tables(0).Rows(0).Item("CarNativenessTypeId"))
-                NSS.TruckNativenessExpireDate = New R2StandardDateAndTimeStructure(Nothing, Ds.Tables(0).Rows(0).Item("CarNativenessExpireDate").trim, Nothing)
-                Return NSS
             Catch ex As TruckNotFoundException
                 Throw ex
             Catch ex As Exception

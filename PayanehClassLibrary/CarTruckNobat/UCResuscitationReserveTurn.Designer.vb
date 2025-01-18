@@ -6,7 +6,7 @@ Partial Class UCResuscitationReserveTurn
     Inherits UCGeneral
 
     'UserControl overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -23,7 +23,7 @@ Partial Class UCResuscitationReserveTurn
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.PnlMain = New System.Windows.Forms.Panel()
         Me.UcResuscitationReserveTurnRegisterRequestIdFounder = New PayanehClassLibrary.UCResuscitationReserveTurnRegisterRequestIdFounder()
@@ -33,12 +33,14 @@ Partial Class UCResuscitationReserveTurn
         Me.UcDriver = New R2CoreParkingSystem.UCDriver()
         Me.UcCar = New R2CoreParkingSystem.UCCar()
         Me.UcLabelTitle = New R2CoreGUI.UCLabel()
+        Me.UcucSequentialTurnCollection = New R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection()
         Me.PnlMain.SuspendLayout()
         Me.SuspendLayout()
         '
         'PnlMain
         '
         Me.PnlMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlMain.Controls.Add(Me.UcucSequentialTurnCollection)
         Me.PnlMain.Controls.Add(Me.UcResuscitationReserveTurnRegisterRequestIdFounder)
         Me.PnlMain.Controls.Add(Me.UCButtonResuscitation)
         Me.PnlMain.Controls.Add(Me.UcDriverImage)
@@ -49,7 +51,7 @@ Partial Class UCResuscitationReserveTurn
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(10, 10)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(867, 325)
+        Me.PnlMain.Size = New System.Drawing.Size(931, 362)
         Me.PnlMain.TabIndex = 0
         '
         'UcResuscitationReserveTurnRegisterRequestIdFounder
@@ -57,10 +59,10 @@ Partial Class UCResuscitationReserveTurn
         Me.UcResuscitationReserveTurnRegisterRequestIdFounder.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcResuscitationReserveTurnRegisterRequestIdFounder.BackColor = System.Drawing.Color.Transparent
-        Me.UcResuscitationReserveTurnRegisterRequestIdFounder.Location = New System.Drawing.Point(0, 245)
+        Me.UcResuscitationReserveTurnRegisterRequestIdFounder.Location = New System.Drawing.Point(0, 277)
         Me.UcResuscitationReserveTurnRegisterRequestIdFounder.Name = "UcResuscitationReserveTurnRegisterRequestIdFounder"
         Me.UcResuscitationReserveTurnRegisterRequestIdFounder.Padding = New System.Windows.Forms.Padding(2)
-        Me.UcResuscitationReserveTurnRegisterRequestIdFounder.Size = New System.Drawing.Size(862, 75)
+        Me.UcResuscitationReserveTurnRegisterRequestIdFounder.Size = New System.Drawing.Size(926, 75)
         Me.UcResuscitationReserveTurnRegisterRequestIdFounder.TabIndex = 16
         '
         'UCButtonResuscitation
@@ -82,7 +84,7 @@ Partial Class UCResuscitationReserveTurn
         '
         Me.UcDriverImage.BackColor = System.Drawing.Color.Transparent
         Me.UcDriverImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcDriverImage.Location = New System.Drawing.Point(3, 145)
+        Me.UcDriverImage.Location = New System.Drawing.Point(3, 177)
         Me.UcDriverImage.Name = "UcDriverImage"
         Me.UcDriverImage.Padding = New System.Windows.Forms.Padding(10)
         Me.UcDriverImage.Size = New System.Drawing.Size(103, 99)
@@ -91,7 +93,7 @@ Partial Class UCResuscitationReserveTurn
         'UcCarImage
         '
         Me.UcCarImage.BackColor = System.Drawing.Color.White
-        Me.UcCarImage.Location = New System.Drawing.Point(3, 56)
+        Me.UcCarImage.Location = New System.Drawing.Point(3, 88)
         Me.UcCarImage.Name = "UcCarImage"
         Me.UcCarImage.Size = New System.Drawing.Size(103, 82)
         Me.UcCarImage.TabIndex = 9
@@ -102,10 +104,10 @@ Partial Class UCResuscitationReserveTurn
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcDriver.BackColor = System.Drawing.Color.Transparent
         Me.UcDriver.Enabled = False
-        Me.UcDriver.Location = New System.Drawing.Point(105, 142)
+        Me.UcDriver.Location = New System.Drawing.Point(105, 174)
         Me.UcDriver.Name = "UcDriver"
         Me.UcDriver.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcDriver.Size = New System.Drawing.Size(757, 105)
+        Me.UcDriver.Size = New System.Drawing.Size(821, 105)
         Me.UcDriver.TabIndex = 8
         Me.UcDriver.UCViewButtons = False
         '
@@ -114,10 +116,10 @@ Partial Class UCResuscitationReserveTurn
         Me.UcCar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcCar.BackColor = System.Drawing.Color.Transparent
-        Me.UcCar.Location = New System.Drawing.Point(105, 53)
+        Me.UcCar.Location = New System.Drawing.Point(105, 85)
         Me.UcCar.Name = "UcCar"
         Me.UcCar.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcCar.Size = New System.Drawing.Size(757, 88)
+        Me.UcCar.Size = New System.Drawing.Size(821, 88)
         Me.UcCar.TabIndex = 7
         Me.UcCar.UCViewButtons = False
         '
@@ -130,13 +132,23 @@ Partial Class UCResuscitationReserveTurn
         Me.UcLabelTitle.Location = New System.Drawing.Point(0, 0)
         Me.UcLabelTitle.Name = "UcLabelTitle"
         Me.UcLabelTitle.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelTitle.Size = New System.Drawing.Size(865, 47)
+        Me.UcLabelTitle.Size = New System.Drawing.Size(929, 47)
         Me.UcLabelTitle.TabIndex = 1
         Me.UcLabelTitle.UCBackColor = System.Drawing.Color.DodgerBlue
         Me.UcLabelTitle.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabelTitle.UCForeColor = System.Drawing.Color.White
         Me.UcLabelTitle.UCTextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.UcLabelTitle.UCValue = "احیاء نوبت رزرو"
+        '
+        'UcucSequentialTurnCollection
+        '
+        Me.UcucSequentialTurnCollection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcucSequentialTurnCollection.BackColor = System.Drawing.Color.Transparent
+        Me.UcucSequentialTurnCollection.Location = New System.Drawing.Point(19, 50)
+        Me.UcucSequentialTurnCollection.Name = "UcucSequentialTurnCollection"
+        Me.UcucSequentialTurnCollection.Size = New System.Drawing.Size(908, 38)
+        Me.UcucSequentialTurnCollection.TabIndex = 17
         '
         'UCResuscitationReserveTurn
         '
@@ -146,7 +158,7 @@ Partial Class UCResuscitationReserveTurn
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCResuscitationReserveTurn"
         Me.Padding = New System.Windows.Forms.Padding(10)
-        Me.Size = New System.Drawing.Size(887, 345)
+        Me.Size = New System.Drawing.Size(951, 382)
         Me.PnlMain.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -160,4 +172,5 @@ Partial Class UCResuscitationReserveTurn
     Friend WithEvents UcCar As R2CoreParkingSystem.UCCar
     Friend WithEvents UCButtonResuscitation As UCButtonComputerMessageSender
     Friend WithEvents UcResuscitationReserveTurnRegisterRequestIdFounder As UCResuscitationReserveTurnRegisterRequestIdFounder
+    Friend WithEvents UcucSequentialTurnCollection As R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection
 End Class

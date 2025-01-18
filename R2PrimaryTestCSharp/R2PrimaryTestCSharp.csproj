@@ -129,10 +129,6 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BillOfLadingClassLibrary\BillOfLadingClassLibrary.csproj">
-      <Project>{9fd0b5fa-5481-486f-ac33-43d0e1aaa996}</Project>
-      <Name>BillOfLadingClassLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PayanehClassLibrary\PayanehClassLibrary.vbproj">
       <Project>{8bcfe2ef-2c83-4137-baaf-87e380d41971}</Project>
       <Name>PayanehClassLibrary</Name>

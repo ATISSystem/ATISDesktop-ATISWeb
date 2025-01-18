@@ -1,12 +1,12 @@
 ﻿Imports R2CoreGUI
 Imports R2CoreParkingSystem
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FrmcEnterExit
     Inherits FrmcGeneral
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -23,21 +23,23 @@ Partial Class FrmcEnterExit
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1 As R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure = New R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure()
         Me.PnlEnterExit = New System.Windows.Forms.Panel()
         Me.UcBlackListCompositBlackListViewer = New R2CoreParkingSystem.UCBlackListCompositBlackListViewer()
         Me.UcCarPresenter = New R2CoreParkingSystem.UCCarPresenter()
         Me.UCReserveTurnRegisterRequest = New PayanehClassLibrary.UCReserveTurnRegisterRequest()
         Me.UcTerafficCardPresenter = New R2CoreParkingSystem.UCTerafficCardPresenter()
         Me.UcTurnRegisterRequestConfirmation = New PayanehClassLibrary.UCTurnRegisterRequestConfirmation()
-        Me.UcCarTruckUpdateInf = New PayanehClassLibrary.UcCarTruckUpdateInf()
+        Me.UcCarTruckUpdateInf = New PayanehClassLibrary.UCCarTruckUpdateInf()
         Me.UcCarAndTrafficCard = New R2CoreParkingSystem.UCCarAndTerafficCard()
         Me.UcMoneyWallet = New R2CoreParkingSystem.UCMoneyWallet()
         Me.UcCarImage = New R2CoreParkingSystem.UCCarImage()
         Me.UcMoneyWalletCharge = New R2CoreParkingSystem.UCMoneyWalletCharge()
         Me.PnlMoneyWalletChargeSavabegh = New System.Windows.Forms.Panel()
         Me.UcTerafficCardPresenterPnlMoneyWalletChargeSavabegh = New R2CoreParkingSystem.UCTerafficCardPresenter()
+        Me.UcucSequentialTurnCollection = New R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection()
         Me.UcMoneyWalletChargeSavabeghCollection = New R2CoreParkingSystem.UCMoneyWalletChargeSavabeghCollection()
         Me.PnlUserChargeSavabegh = New System.Windows.Forms.Panel()
         Me.UcUserChargeSavabeghCollection = New R2CoreParkingSystem.UCUserChargeSavabeghCollection()
@@ -48,13 +50,13 @@ Partial Class FrmcEnterExit
         Me.PnlMoneyWalletCharge = New System.Windows.Forms.Panel()
         Me.UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge = New R2CoreParkingSystem.UCMoneyWalletChargeSavabeghCollection()
         Me.UcMoneyWalletChargePnlMoneyWalletCharge = New R2CoreParkingSystem.UCMoneyWalletCharge()
-        Me.PnlEnterExit.SuspendLayout
-        Me.PnlMoneyWalletChargeSavabegh.SuspendLayout
-        Me.PnlUserChargeSavabegh.SuspendLayout
-        Me.PnlAccounting.SuspendLayout
-        Me.PnlEnterExitReport.SuspendLayout
-        Me.PnlMoneyWalletCharge.SuspendLayout
-        Me.SuspendLayout
+        Me.PnlEnterExit.SuspendLayout()
+        Me.PnlMoneyWalletChargeSavabegh.SuspendLayout()
+        Me.PnlUserChargeSavabegh.SuspendLayout()
+        Me.PnlAccounting.SuspendLayout()
+        Me.PnlEnterExitReport.SuspendLayout()
+        Me.PnlMoneyWalletCharge.SuspendLayout()
+        Me.SuspendLayout()
         '
         '_FrmMessageDialog
         '
@@ -62,14 +64,15 @@ Partial Class FrmcEnterExit
         '
         'PnlEnterExit
         '
-        Me.PnlEnterExit.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlEnterExit.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlEnterExit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlEnterExit.Controls.Add(Me.UcBlackListCompositBlackListViewer)
         Me.PnlEnterExit.Controls.Add(Me.UcCarTruckUpdateInf)
         Me.PnlEnterExit.Controls.Add(Me.UcCarPresenter)
         Me.PnlEnterExit.Controls.Add(Me.UCReserveTurnRegisterRequest)
+        Me.PnlEnterExit.Controls.Add(Me.UcucSequentialTurnCollection)
         Me.PnlEnterExit.Controls.Add(Me.UcTerafficCardPresenter)
         Me.PnlEnterExit.Controls.Add(Me.UcTurnRegisterRequestConfirmation)
         Me.PnlEnterExit.Controls.Add(Me.UcCarAndTrafficCard)
@@ -81,6 +84,24 @@ Partial Class FrmcEnterExit
         Me.PnlEnterExit.Size = New System.Drawing.Size(995, 512)
         Me.PnlEnterExit.TabIndex = 200
         '
+        'UcucSequentialTurnCollection
+        '
+        Me.UcucSequentialTurnCollection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.UcucSequentialTurnCollection.BackColor = System.Drawing.Color.Transparent
+        Me.UcucSequentialTurnCollection.Location = New System.Drawing.Point(340, 90)
+        Me.UcucSequentialTurnCollection.Name = "UcucSequentialTurnCollection"
+        Me.UcucSequentialTurnCollection.Size = New System.Drawing.Size(400, 38)
+        Me.UcucSequentialTurnCollection.Padding = New System.Windows.Forms.Padding(1)
+        Me.UcucSequentialTurnCollection.TabIndex = 700
+        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.Active = True
+        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.Deleted = False
+        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnColor = "Red"
+        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnId = CType(0, Long)
+        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnKeyWord = "N"
+        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnTitle = "نامعلوم"
+        R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.ViewFlag = True
+        Me.UcucSequentialTurnCollection.UCCurrentNSS = R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1
+        '
         'UcCarTruckUpdateInf
         '
         Me.UcCarTruckUpdateInf.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -90,7 +111,7 @@ Partial Class FrmcEnterExit
         Me.UcCarTruckUpdateInf.Name = "UcCarTruckUpdateInf"
         Me.UcCarTruckUpdateInf.Size = New System.Drawing.Size(726, 261)
         Me.UcCarTruckUpdateInf.TabIndex = 0
-        Me.UcCarTruckUpdateInf.Visible = false
+        Me.UcCarTruckUpdateInf.Visible = False
         '
         'UcBlackListCompositBlackListViewer
         '
@@ -199,6 +220,7 @@ Partial Class FrmcEnterExit
         Me.PnlMoneyWalletChargeSavabegh.Name = "PnlMoneyWalletChargeSavabegh"
         Me.PnlMoneyWalletChargeSavabegh.Size = New System.Drawing.Size(995, 512)
         Me.PnlMoneyWalletChargeSavabegh.TabIndex = 341
+
         '
         'UcTerafficCardPresenterPnlMoneyWalletChargeSavabegh
         '
@@ -335,7 +357,7 @@ Partial Class FrmcEnterExit
         '
         'FrmcEnterExit
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
         Me.Controls.Add(Me.PnlEnterExit)
@@ -353,15 +375,15 @@ Partial Class FrmcEnterExit
         Me.Controls.SetChildIndex(Me.PnlUserChargeSavabegh, 0)
         Me.Controls.SetChildIndex(Me.PnlEnterExitReport, 0)
         Me.Controls.SetChildIndex(Me.PnlEnterExit, 0)
-        Me.PnlEnterExit.ResumeLayout(false)
-        Me.PnlMoneyWalletChargeSavabegh.ResumeLayout(false)
-        Me.PnlUserChargeSavabegh.ResumeLayout(false)
-        Me.PnlAccounting.ResumeLayout(false)
-        Me.PnlEnterExitReport.ResumeLayout(false)
-        Me.PnlMoneyWalletCharge.ResumeLayout(false)
-        Me.ResumeLayout(false)
+        Me.PnlEnterExit.ResumeLayout(False)
+        Me.PnlMoneyWalletChargeSavabegh.ResumeLayout(False)
+        Me.PnlUserChargeSavabegh.ResumeLayout(False)
+        Me.PnlAccounting.ResumeLayout(False)
+        Me.PnlEnterExitReport.ResumeLayout(False)
+        Me.PnlMoneyWalletCharge.ResumeLayout(False)
+        Me.ResumeLayout(False)
 
-End Sub
+    End Sub
     Friend WithEvents PnlEnterExit As System.Windows.Forms.Panel
     Friend WithEvents UcMoneyWallet As R2CoreParkingSystem.UCMoneyWallet
     Friend WithEvents UcCarAndTrafficCard As R2CoreParkingSystem.UCCarAndTerafficCard
@@ -384,5 +406,6 @@ End Sub
     Friend WithEvents UcMoneyWalletChargeSavabeghCollectionPnlMoneyWalletCharge As UCMoneyWalletChargeSavabeghCollection
     Friend WithEvents UcMoneyWalletChargePnlMoneyWalletCharge As UCMoneyWalletCharge
     Friend WithEvents UcBlackListCompositBlackListViewer As UCBlackListCompositBlackListViewer
-    Friend WithEvents UcCarTruckUpdateInf As UcCarTruckUpdateInf
+    Friend WithEvents UcCarTruckUpdateInf As UCCarTruckUpdateInf
+    Friend WithEvents UcucSequentialTurnCollection As R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection
 End Class

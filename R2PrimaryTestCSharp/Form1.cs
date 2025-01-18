@@ -39,7 +39,6 @@ using System.Net.Http;
 using System.Net;
 using System.IO;
 using R2Core.FileShareRawGroupsManagement;
-using BillOfLadingCore.BillOfLading;
 using R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms;
 
 namespace R2PrimaryTestCSharp

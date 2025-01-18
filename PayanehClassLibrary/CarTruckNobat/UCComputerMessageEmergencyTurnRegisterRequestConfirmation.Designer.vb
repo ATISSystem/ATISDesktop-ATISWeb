@@ -26,12 +26,13 @@ Partial Class UCComputerMessageEmergencyTurnRegisterRequestConfirmation
     Private Sub InitializeComponent()
         Me.UcButtonConfirmation = New R2CoreGUI.UCButton()
         Me.UcDriverImage = New R2CoreParkingSystem.UCDriverImage()
-        Me.SuspendLayout
+        Me.UcucSequentialTurnCollection = New R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection()
+        Me.SuspendLayout()
         '
         'UcButtonConfirmation
         '
-        Me.UcButtonConfirmation.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.UcButtonConfirmation.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.UcButtonConfirmation.BackColor = System.Drawing.Color.Transparent
         Me.UcButtonConfirmation.Location = New System.Drawing.Point(18, 16)
         Me.UcButtonConfirmation.Name = "UcButtonConfirmation"
@@ -40,15 +41,15 @@ Partial Class UCComputerMessageEmergencyTurnRegisterRequestConfirmation
         Me.UcButtonConfirmation.TabIndex = 1
         Me.UcButtonConfirmation.UCBackColor = System.Drawing.Color.OrangeRed
         Me.UcButtonConfirmation.UCBackColorDisable = System.Drawing.Color.Gray
-        Me.UcButtonConfirmation.UCEnable = true
-        Me.UcButtonConfirmation.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcButtonConfirmation.UCEnable = True
+        Me.UcButtonConfirmation.UCFont = New System.Drawing.Font("B Homa", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcButtonConfirmation.UCForeColor = System.Drawing.Color.White
         Me.UcButtonConfirmation.UCValue = "تایید"
         '
         'UcDriverImage
         '
-        Me.UcDriverImage.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.UcDriverImage.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.UcDriverImage.BackColor = System.Drawing.Color.Transparent
         Me.UcDriverImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.UcDriverImage.Location = New System.Drawing.Point(94, 16)
@@ -57,20 +58,33 @@ Partial Class UCComputerMessageEmergencyTurnRegisterRequestConfirmation
         Me.UcDriverImage.Size = New System.Drawing.Size(83, 107)
         Me.UcDriverImage.TabIndex = 4
         '
+        'UcucSequentialTurnCollection
+        '
+        Me.UcucSequentialTurnCollection.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.UcucSequentialTurnCollection.BackColor = System.Drawing.Color.Transparent
+        Me.UcucSequentialTurnCollection.Location = New System.Drawing.Point(187, 76)
+        Me.UcucSequentialTurnCollection.Name = "UcucSequentialTurnCollection"
+        Me.UcucSequentialTurnCollection.Size = New System.Drawing.Size(370, 45)
+        Me.UcucSequentialTurnCollection.TabIndex = 5
+        Me.UcucSequentialTurnCollection.UCCurrentNSS = Nothing
+        '
         'UCComputerMessageEmergencyTurnRegisterRequestConfirmation
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.UcucSequentialTurnCollection)
         Me.Controls.Add(Me.UcDriverImage)
         Me.Controls.Add(Me.UcButtonConfirmation)
         Me.Name = "UCComputerMessageEmergencyTurnRegisterRequestConfirmation"
         Me.Size = New System.Drawing.Size(850, 143)
         Me.Controls.SetChildIndex(Me.UcButtonConfirmation, 0)
         Me.Controls.SetChildIndex(Me.UcDriverImage, 0)
-        Me.ResumeLayout(false)
+        Me.Controls.SetChildIndex(Me.UcucSequentialTurnCollection, 0)
+        Me.ResumeLayout(False)
 
-End Sub
+    End Sub
 
     Friend WithEvents UcButtonConfirmation As UCButton
     Friend WithEvents UcDriverImage As R2CoreParkingSystem.UCDriverImage
+    Friend WithEvents UcucSequentialTurnCollection As R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection
 End Class

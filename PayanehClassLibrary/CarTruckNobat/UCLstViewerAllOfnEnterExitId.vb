@@ -7,6 +7,7 @@ Imports R2Core.ExceptionManagement
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.Turns
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
+Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions
 
 Public Class UCLstViewerAllOfnEnterExitId
     Inherits UCGeneral
@@ -33,7 +34,6 @@ Public Class UCLstViewerAllOfnEnterExitId
     End Sub
 
     Private Sub UCRefresh()
-
     End Sub
 
     Private Sub UCViewInf()
@@ -45,8 +45,10 @@ Public Class UCLstViewerAllOfnEnterExitId
                 Dim TurnItem = New TurnItem(TurnDetails)
                 LstViewerAllOfnEnterExitId.Items.Add(TurnItem)
             Next
-        Catch exx As GetDataException
-            Throw exx
+        Catch ex As AnySequentialTurnDoNotSelectedException
+            Throw ex
+        Catch ex As GetDataException
+            Throw ex
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

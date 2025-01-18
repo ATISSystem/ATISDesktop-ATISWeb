@@ -71,7 +71,7 @@ Public Class UCTurnsCancellation
         Try
             Cursor.Current = Cursors.WaitCursor
             Dim InstanceTurns = New PayanehClassLibraryMClassCarTruckNobatManager
-            InstanceTurns.TurnsCancellation(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            InstanceTurns.TurnsCancellationByLoadTargetMethod(UcLstViewerAllOfnEnterExitId.UCGetCurrentNSSSequentialTurn, UcLstViewerAllOfnEnterExitId.UCGetSelectedTurnId, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "ابطال گروهی نوبت ها انجام شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

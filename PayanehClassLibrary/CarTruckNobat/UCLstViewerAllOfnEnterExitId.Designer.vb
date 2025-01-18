@@ -40,7 +40,7 @@ Partial Class UCLstViewerAllOfnEnterExitId
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(2, 2)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(487, 238)
+        Me.PnlMain.Size = New System.Drawing.Size(459, 173)
         Me.PnlMain.TabIndex = 0
         '
         'LstViewerAllOfnEnterExitId
@@ -50,9 +50,10 @@ Partial Class UCLstViewerAllOfnEnterExitId
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.LstViewerAllOfnEnterExitId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.LstViewerAllOfnEnterExitId.GridLines = True
-        Me.LstViewerAllOfnEnterExitId.Location = New System.Drawing.Point(3, 36)
+        Me.LstViewerAllOfnEnterExitId.HideSelection = False
+        Me.LstViewerAllOfnEnterExitId.Location = New System.Drawing.Point(3, 47)
         Me.LstViewerAllOfnEnterExitId.Name = "LstViewerAllOfnEnterExitId"
-        Me.LstViewerAllOfnEnterExitId.Size = New System.Drawing.Size(479, 197)
+        Me.LstViewerAllOfnEnterExitId.Size = New System.Drawing.Size(451, 121)
         Me.LstViewerAllOfnEnterExitId.TabIndex = 2
         Me.LstViewerAllOfnEnterExitId.UseCompatibleStateImageBehavior = False
         Me.LstViewerAllOfnEnterExitId.View = System.Windows.Forms.View.List
@@ -66,7 +67,7 @@ Partial Class UCLstViewerAllOfnEnterExitId
         Me.UcucSequentialTurnCollection.Location = New System.Drawing.Point(3, 3)
         Me.UcucSequentialTurnCollection.Name = "UcucSequentialTurnCollection"
         Me.UcucSequentialTurnCollection.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcucSequentialTurnCollection.Size = New System.Drawing.Size(479, 27)
+        Me.UcucSequentialTurnCollection.Size = New System.Drawing.Size(451, 38)
         Me.UcucSequentialTurnCollection.TabIndex = 1
         R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.Active = True
         R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.Deleted = False
@@ -76,7 +77,6 @@ Partial Class UCLstViewerAllOfnEnterExitId
         R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.SequentialTurnTitle = "تسلسل نوبت تریلی"
         R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.ViewFlag = True
         Me.UcucSequentialTurnCollection.UCCurrentNSS = R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1
-        Me.UcucSequentialTurnCollection.UCSimulatedSequentialTurnId = CType(2, Long)
         '
         'UCLstViewerAllOfnEnterExitId
         '
@@ -86,7 +86,7 @@ Partial Class UCLstViewerAllOfnEnterExitId
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCLstViewerAllOfnEnterExitId"
         Me.Padding = New System.Windows.Forms.Padding(2)
-        Me.Size = New System.Drawing.Size(491, 242)
+        Me.Size = New System.Drawing.Size(463, 177)
         Me.PnlMain.ResumeLayout(false)
         Me.ResumeLayout(false)
 

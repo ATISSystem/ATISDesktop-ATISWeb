@@ -38,7 +38,7 @@ Partial Class UCComputerMessageProducerTurnPrintRequest
         Me.UcCar.Location = New System.Drawing.Point(116, 63)
         Me.UcCar.Name = "UcCar"
         Me.UcCar.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcCar.Size = New System.Drawing.Size(730, 88)
+        Me.UcCar.Size = New System.Drawing.Size(826, 88)
         Me.UcCar.TabIndex = 2
         Me.UcCar.UCViewButtons = False
         '
@@ -51,7 +51,7 @@ Partial Class UCComputerMessageProducerTurnPrintRequest
         Me.UcDriver.Location = New System.Drawing.Point(116, 152)
         Me.UcDriver.Name = "UcDriver"
         Me.UcDriver.Padding = New System.Windows.Forms.Padding(3)
-        Me.UcDriver.Size = New System.Drawing.Size(730, 104)
+        Me.UcDriver.Size = New System.Drawing.Size(826, 104)
         Me.UcDriver.TabIndex = 3
         Me.UcDriver.UCViewButtons = False
         '
@@ -82,7 +82,7 @@ Partial Class UCComputerMessageProducerTurnPrintRequest
         Me.Controls.Add(Me.UcDriver)
         Me.Controls.Add(Me.UcCar)
         Me.Name = "UCComputerMessageProducerTurnPrintRequest"
-        Me.Size = New System.Drawing.Size(860, 254)
+        Me.Size = New System.Drawing.Size(956, 269)
         Me.Controls.SetChildIndex(Me.UcCar, 0)
         Me.Controls.SetChildIndex(Me.UcDriver, 0)
         Me.Controls.SetChildIndex(Me.UcCarImage, 0)

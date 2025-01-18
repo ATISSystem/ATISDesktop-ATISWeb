@@ -78,6 +78,7 @@ Public Class FrmcEnterExit
         ' Add any initialization after the InitializeComponent() call.
         Try
             InitializeSpecial()
+            FrmRefresh()
             NewEnterExitRefresh()
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -90,6 +91,10 @@ Public Class FrmcEnterExit
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
+    End Sub
+
+    Protected Sub FrmRefresh()
+        UcucSequentialTurnCollection.UCRefreshGeneral()
     End Sub
 
     Private Sub NewEnterExitRefresh()
@@ -333,7 +338,7 @@ Public Class FrmcEnterExit
                     LoadNotificationLoadPermissionManagement.DoControlforTruckPresentInParkingAndLastLoadPermission(NSSTruckTemp)
                     Dim TurnId As Int64 = Int64.MinValue
                     Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
-                    Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(NSSTruckTemp, False, False, TurnId, PayanehClassLibraryRequesters.FrmcEnterExit, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, False)
+                    Dim TurnRegisterRequestId = InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(UcucSequentialTurnCollection.UCCurrentNSS, NSSTruckTemp, False, False, TurnId, PayanehClassLibraryRequesters.FrmcEnterExit, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS, False)
                     _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت صادر شد" & vbCrLf & "شماره درخواست : " + TurnRegisterRequestId.ToString & vbCrLf & "شماره نوبت :" + TurnId.ToString, String.Empty, FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
                 End If
                 UcTurnRegisterRequestConfirmation.UCChkTruckNobat = True
@@ -350,6 +355,7 @@ Public Class FrmcEnterExit
                 ChangeMenuStatus("PnlMoneyWalletCharge", True)
             End If
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
+                            OrElse TypeOf ex Is AnySequentialTurnDoNotSelectedException _
                             OrElse TypeOf ex Is TurnRegisterRequestTypeNotFoundException _
                             OrElse TypeOf ex Is CarIsNotPresentInParkingException _
                             OrElse TypeOf ex Is SequentialTurnIsNotActiveException _
@@ -381,10 +387,13 @@ Public Class FrmcEnterExit
                             OrElse TypeOf ex Is CarNotExistException _
                             OrElse TypeOf ex Is R2CoreParkingSystemRelatedCarNotExistException _
                             OrElse TypeOf ex Is LoadCapacitorLoadNotFoundException
+            UcucSequentialTurnCollection.UCRefreshGeneral()
             Throw ex
         Catch ex As Exception
+            UcucSequentialTurnCollection.UCRefreshGeneral()
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
+        UcucSequentialTurnCollection.UCRefreshGeneral()
     End Sub
 
     Public Sub PleaseReserveTurn()
@@ -426,7 +435,9 @@ Public Class FrmcEnterExit
             End If
             PleaseReserveTurn()
             DoProccess(CardNo, True)
+            UcucSequentialTurnCollection.UCRefreshGeneral()
         Catch ex As Exception When TypeOf ex Is MoneyWalletCurrentChargeNotEnoughException _
+                            OrElse TypeOf ex Is AnySequentialTurnDoNotSelectedException _
                             OrElse TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                             OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                             OrElse TypeOf ex Is TruckNotFoundException _
@@ -472,6 +483,7 @@ Public Class FrmcEnterExit
 
         Try
             StartReading()
+            UcucSequentialTurnCollection.UCRefreshGeneral()
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "خطا در عملکرد دستگاه کارت خوان", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
@@ -577,6 +589,7 @@ Public Class FrmcEnterExit
             R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.CarTruckUpdateInfSuccess, "موفقیت در آپدیت اطلاعات ناوگان باری", _NSSTrafficCard.CardNo, UcCarTruckUpdateInf.UcCarTruck.UCGetNSS.StrBodyNo, UcCarTruckUpdateInf.UcCarTruck.UCGetNSS.NSSCar.GetCarPelakSerialComposit(), 0, 0, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing))
             DoProccess(_NSSTrafficCard.CardNo, True)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                            OrElse TypeOf ex Is AnySequentialTurnDoNotSelectedException _
                             OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                             OrElse TypeOf ex Is TruckNotFoundException _
                             OrElse TypeOf ex Is SequentialTurnNotFoundException _
@@ -626,6 +639,7 @@ Public Class FrmcEnterExit
             R2CoreMClassLoggingManagement.LogRegister(New R2CoreStandardLoggingStructure(0, PayanehClassLibraryLogType.CarTruckUpdateInfNotSuccess, "عدم موفقیت در آپدیت اطلاعات ناوگان باری", _NSSTrafficCard.CardNo, "SmartCardNo=" + UcCarTruckUpdateInf.UcCarTruck.UcNumberStrBodyNoSearch.UCValue.ToString, 0, 0, Message, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, Nothing, Nothing))
             DoProccess(_NSSTrafficCard.CardNo, False)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
+                            OrElse TypeOf ex Is AnySequentialTurnDoNotSelectedException _
                             OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _
                             OrElse TypeOf ex Is TruckNotFoundException _
                             OrElse TypeOf ex Is SequentialTurnNotFoundException _

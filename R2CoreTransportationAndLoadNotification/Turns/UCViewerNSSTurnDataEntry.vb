@@ -42,7 +42,6 @@ Public Class UCViewerNSSTurnDataEntry
             UcLabelTruckDriver.UCValue = NSS.TruckDriver
             UcLabelDateTimeComposite.UCValue = NSS.EnterDate + " - " + NSS.EnterTime
             UcLabelTurnStatus.UCValue = NSS.TurnStatusTitle
-            UcucSequentialTurnCollection.UCSimulateThisNSS(R2CoreTransportationAndLoadNotificationMClassSequentialTurnsManagement.GetNSSSequentialTurn(UCNSSCurrent))
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

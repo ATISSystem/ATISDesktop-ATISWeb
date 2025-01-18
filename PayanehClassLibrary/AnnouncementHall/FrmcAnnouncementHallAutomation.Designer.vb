@@ -35,6 +35,7 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.UcucCarTruckNobatCollection = New PayanehClassLibrary.UCUCCarTruckNobatCollection()
         Me.UcCar = New R2CoreParkingSystem.UCCar()
         Me.PnlTurnsCancellation = New System.Windows.Forms.Panel()
+        Me.UcTurnsCancellation = New PayanehClassLibrary.UCTurnsCancellation()
         Me.PnlEnterExitReport = New System.Windows.Forms.Panel()
         Me.UcucEnterExitCollection = New R2CoreParkingSystem.UCUCEnterExitCollection()
         Me.PnlSediment = New System.Windows.Forms.Panel()
@@ -42,14 +43,13 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.UcSedimentalLoadControlPanel = New PayanehClassLibrary.UCSedimentalLoadControlPanel()
         Me.PNLTWS = New System.Windows.Forms.Panel()
         Me.UctwsReport = New PayanehClassLibrary.UCTWSReport()
-        Me.UcTurnsCancellation = New PayanehClassLibrary.UCTurnsCancellation()
-        Me.PnlSodoorAndPrintNobatRequest.SuspendLayout
-        Me.PnlTurnResuscitationCancellation.SuspendLayout
-        Me.PnlTurnsCancellation.SuspendLayout
-        Me.PnlEnterExitReport.SuspendLayout
-        Me.PnlSediment.SuspendLayout
-        Me.PNLTWS.SuspendLayout
-        Me.SuspendLayout
+        Me.PnlSodoorAndPrintNobatRequest.SuspendLayout()
+        Me.PnlTurnResuscitationCancellation.SuspendLayout()
+        Me.PnlTurnsCancellation.SuspendLayout()
+        Me.PnlEnterExitReport.SuspendLayout()
+        Me.PnlSediment.SuspendLayout()
+        Me.PNLTWS.SuspendLayout()
+        Me.SuspendLayout()
         '
         '_FrmMessageDialog
         '
@@ -57,9 +57,9 @@ Partial Class FrmcAnnouncementHallAutomation
         '
         'PnlSodoorAndPrintNobatRequest
         '
-        Me.PnlSodoorAndPrintNobatRequest.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlSodoorAndPrintNobatRequest.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlSodoorAndPrintNobatRequest.BackColor = System.Drawing.Color.Transparent
         Me.PnlSodoorAndPrintNobatRequest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlSodoorAndPrintNobatRequest.Controls.Add(Me.UcComputerMessageProducerSodoorNobat)
@@ -72,8 +72,8 @@ Partial Class FrmcAnnouncementHallAutomation
         '
         'UcComputerMessageProducerSodoorNobat
         '
-        Me.UcComputerMessageProducerSodoorNobat.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcComputerMessageProducerSodoorNobat.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcComputerMessageProducerSodoorNobat.BackColor = System.Drawing.Color.Transparent
         Me.UcComputerMessageProducerSodoorNobat.Location = New System.Drawing.Point(32, -4)
         Me.UcComputerMessageProducerSodoorNobat.Name = "UcComputerMessageProducerSodoorNobat"
@@ -81,13 +81,13 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.UcComputerMessageProducerSodoorNobat.Size = New System.Drawing.Size(919, 267)
         Me.UcComputerMessageProducerSodoorNobat.TabIndex = 2
         Me.UcComputerMessageProducerSodoorNobat.UCCMNote = ""
-        Me.UcComputerMessageProducerSodoorNobat.UCSendIsActive = false
+        Me.UcComputerMessageProducerSodoorNobat.UCSendIsActive = False
         Me.UcComputerMessageProducerSodoorNobat.UCTitle = ""
         '
         'UcComputerMessageProducerPrintNobat
         '
-        Me.UcComputerMessageProducerPrintNobat.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcComputerMessageProducerPrintNobat.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcComputerMessageProducerPrintNobat.BackColor = System.Drawing.Color.Transparent
         Me.UcComputerMessageProducerPrintNobat.Location = New System.Drawing.Point(30, 249)
         Me.UcComputerMessageProducerPrintNobat.Name = "UcComputerMessageProducerPrintNobat"
@@ -95,14 +95,14 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.UcComputerMessageProducerPrintNobat.Size = New System.Drawing.Size(921, 265)
         Me.UcComputerMessageProducerPrintNobat.TabIndex = 1
         Me.UcComputerMessageProducerPrintNobat.UCCMNote = ""
-        Me.UcComputerMessageProducerPrintNobat.UCSendIsActive = false
+        Me.UcComputerMessageProducerPrintNobat.UCSendIsActive = False
         Me.UcComputerMessageProducerPrintNobat.UCTitle = ""
         '
         'PnlTurnResuscitationCancellation
         '
-        Me.PnlTurnResuscitationCancellation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlTurnResuscitationCancellation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlTurnResuscitationCancellation.BackColor = System.Drawing.Color.Transparent
         Me.PnlTurnResuscitationCancellation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlTurnResuscitationCancellation.Controls.Add(Me.UcViewerTankTreiler)
@@ -129,7 +129,7 @@ Partial Class FrmcAnnouncementHallAutomation
         '
         'UcCarEnterExitStatus
         '
-        Me.UcCarEnterExitStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcCarEnterExitStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcCarEnterExitStatus.BackColor = System.Drawing.Color.Transparent
         Me.UcCarEnterExitStatus.Location = New System.Drawing.Point(589, 96)
         Me.UcCarEnterExitStatus.Name = "UcCarEnterExitStatus"
@@ -139,7 +139,7 @@ Partial Class FrmcAnnouncementHallAutomation
         '
         'UcMoneyWallet
         '
-        Me.UcMoneyWallet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcMoneyWallet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcMoneyWallet.BackColor = System.Drawing.Color.Transparent
         Me.UcMoneyWallet.Location = New System.Drawing.Point(775, 243)
         Me.UcMoneyWallet.Name = "UcMoneyWallet"
@@ -148,7 +148,7 @@ Partial Class FrmcAnnouncementHallAutomation
         '
         'UcCarAndDriverPresenter
         '
-        Me.UcCarAndDriverPresenter.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcCarAndDriverPresenter.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcCarAndDriverPresenter.BackColor = System.Drawing.Color.Transparent
         Me.UcCarAndDriverPresenter.Location = New System.Drawing.Point(775, 1)
         Me.UcCarAndDriverPresenter.Name = "UcCarAndDriverPresenter"
@@ -158,9 +158,9 @@ Partial Class FrmcAnnouncementHallAutomation
         '
         'UcucCarTruckNobatCollection
         '
-        Me.UcucCarTruckNobatCollection.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcucCarTruckNobatCollection.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcucCarTruckNobatCollection.BackColor = System.Drawing.Color.Transparent
         Me.UcucCarTruckNobatCollection.Location = New System.Drawing.Point(3, 166)
         Me.UcucCarTruckNobatCollection.Name = "UcucCarTruckNobatCollection"
@@ -170,21 +170,21 @@ Partial Class FrmcAnnouncementHallAutomation
         '
         'UcCar
         '
-        Me.UcCar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcCar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcCar.BackColor = System.Drawing.Color.Transparent
         Me.UcCar.Location = New System.Drawing.Point(144, 1)
         Me.UcCar.Name = "UcCar"
         Me.UcCar.Padding = New System.Windows.Forms.Padding(3)
         Me.UcCar.Size = New System.Drawing.Size(629, 88)
         Me.UcCar.TabIndex = 0
-        Me.UcCar.UCViewButtons = false
+        Me.UcCar.UCViewButtons = False
         '
         'PnlTurnsCancellation
         '
-        Me.PnlTurnsCancellation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlTurnsCancellation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlTurnsCancellation.BackColor = System.Drawing.Color.Transparent
         Me.PnlTurnsCancellation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlTurnsCancellation.Controls.Add(Me.UcTurnsCancellation)
@@ -193,11 +193,23 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.PnlTurnsCancellation.Size = New System.Drawing.Size(995, 512)
         Me.PnlTurnsCancellation.TabIndex = 203
         '
+        'UcTurnsCancellation
+        '
+        Me.UcTurnsCancellation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcTurnsCancellation.BackColor = System.Drawing.Color.Transparent
+        Me.UcTurnsCancellation.Location = New System.Drawing.Point(6, 3)
+        Me.UcTurnsCancellation.Name = "UcTurnsCancellation"
+        Me.UcTurnsCancellation.Size = New System.Drawing.Size(980, 502)
+        Me.UcTurnsCancellation.TabIndex = 0
+        Me.UcTurnsCancellation.UCViewTitle = True
+        '
         'PnlEnterExitReport
         '
-        Me.PnlEnterExitReport.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlEnterExitReport.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlEnterExitReport.BackColor = System.Drawing.Color.Transparent
         Me.PnlEnterExitReport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlEnterExitReport.Controls.Add(Me.UcucEnterExitCollection)
@@ -218,9 +230,9 @@ Partial Class FrmcAnnouncementHallAutomation
         '
         'PnlSediment
         '
-        Me.PnlSediment.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlSediment.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlSediment.BackColor = System.Drawing.Color.Transparent
         Me.PnlSediment.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PnlSediment.Controls.Add(Me.UcResuscitationSedimentedLoadbynEstelamId)
@@ -232,8 +244,8 @@ Partial Class FrmcAnnouncementHallAutomation
         '
         'UcResuscitationSedimentedLoadbynEstelamId
         '
-        Me.UcResuscitationSedimentedLoadbynEstelamId.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcResuscitationSedimentedLoadbynEstelamId.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcResuscitationSedimentedLoadbynEstelamId.BackColor = System.Drawing.Color.Transparent
         Me.UcResuscitationSedimentedLoadbynEstelamId.Location = New System.Drawing.Point(90, 406)
         Me.UcResuscitationSedimentedLoadbynEstelamId.Name = "UcResuscitationSedimentedLoadbynEstelamId"
@@ -242,8 +254,8 @@ Partial Class FrmcAnnouncementHallAutomation
         '
         'UcSedimentalLoadControlPanel
         '
-        Me.UcSedimentalLoadControlPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcSedimentalLoadControlPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcSedimentalLoadControlPanel.BackColor = System.Drawing.Color.Transparent
         Me.UcSedimentalLoadControlPanel.Location = New System.Drawing.Point(83, -3)
         Me.UcSedimentalLoadControlPanel.Name = "UcSedimentalLoadControlPanel"
@@ -253,9 +265,9 @@ Partial Class FrmcAnnouncementHallAutomation
         '
         'PNLTWS
         '
-        Me.PNLTWS.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PNLTWS.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PNLTWS.BackColor = System.Drawing.Color.Transparent
         Me.PNLTWS.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PNLTWS.Controls.Add(Me.UctwsReport)
@@ -274,25 +286,13 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.UctwsReport.Size = New System.Drawing.Size(993, 510)
         Me.UctwsReport.TabIndex = 0
         '
-        'UcTurnsCancellation
-        '
-        Me.UcTurnsCancellation.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.UcTurnsCancellation.BackColor = System.Drawing.Color.Transparent
-        Me.UcTurnsCancellation.Location = New System.Drawing.Point(6, 3)
-        Me.UcTurnsCancellation.Name = "UcTurnsCancellation"
-        Me.UcTurnsCancellation.Size = New System.Drawing.Size(980, 502)
-        Me.UcTurnsCancellation.TabIndex = 0
-        Me.UcTurnsCancellation.UCViewTitle = true
-        '
         'FrmcAnnouncementHallAutomation
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
-        Me.Controls.Add(Me.PnlTurnResuscitationCancellation)
         Me.Controls.Add(Me.PnlTurnsCancellation)
+        Me.Controls.Add(Me.PnlTurnResuscitationCancellation)
         Me.Controls.Add(Me.PnlSodoorAndPrintNobatRequest)
         Me.Controls.Add(Me.PnlEnterExitReport)
         Me.Controls.Add(Me.PNLTWS)
@@ -304,9 +304,9 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.Controls.SetChildIndex(Me.PNLTWS, 0)
         Me.Controls.SetChildIndex(Me.PnlEnterExitReport, 0)
         Me.Controls.SetChildIndex(Me.PnlSodoorAndPrintNobatRequest, 0)
-        Me.Controls.SetChildIndex(Me.PnlTurnsCancellation, 0)
         Me.Controls.SetChildIndex(Me.PnlTurnResuscitationCancellation, 0)
-        Me.PnlSodoorAndPrintNobatRequest.ResumeLayout(false)
+        Me.Controls.SetChildIndex(Me.PnlTurnsCancellation, 0)
+        Me.PnlSodoorAndPrintNobatRequest.ResumeLayout(False)
         Me.PnlTurnResuscitationCancellation.ResumeLayout(false)
         Me.PnlTurnsCancellation.ResumeLayout(false)
         Me.PnlEnterExitReport.ResumeLayout(false)

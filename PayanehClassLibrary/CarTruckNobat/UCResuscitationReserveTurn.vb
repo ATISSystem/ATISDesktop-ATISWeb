@@ -72,7 +72,7 @@ Public Class UCResuscitationReserveTurn
             UCButtonResuscitation.UCEnable = False
             Dim InstanceTurnRegisterRequest = New PayanehClassLibraryMClassTurnRegisterRequestManager
             Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
-            InstanceTurnRegisterRequest.ResuscitationReserveTurn(UcResuscitationReserveTurnRegisterRequestIdFounder.UCGetCurrentNSS.TRRId, InstanceTrucks.GetNSSTruck(UcCar.UCGetNSS().nIdCar), True, PayanehClassLibraryRequesters.UCResuscitationReserveTurn, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
+            InstanceTurnRegisterRequest.ResuscitationReserveTurn(UcucSequentialTurnCollection.UCCurrentNSS, UcResuscitationReserveTurnRegisterRequestIdFounder.UCGetCurrentNSS.TRRId, InstanceTrucks.GetNSSTruck(UcCar.UCGetNSS().nIdCar), True, PayanehClassLibraryRequesters.UCResuscitationReserveTurn, TurnType.Permanent, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت رزرو با موفقیت احیاء شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception When TypeOf ex Is RequesterNotAllowTurnIssueBySeqTException _
                                 OrElse TypeOf ex Is RequesterNotAllowTurnIssueByLastLoadPermissionedException _

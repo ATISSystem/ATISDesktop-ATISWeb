@@ -75,8 +75,9 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="TWS">
-      <HintPath>..\..\..\..\Other Projects\TWSSystem\TerminalsSolution\TWSClassLibrary\bin\Release\TWS.dll</HintPath>
+    <Reference Include="TWS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\TWSSystem\TerminalsSolution\TerminalsSolution\TWSClassLibrary\bin\Debug\TWS.dll</HintPath>
     </Reference>
     <Reference Include="UI.Glass.Panel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

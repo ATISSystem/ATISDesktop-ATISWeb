@@ -39,6 +39,7 @@ Partial Class FrmcTurnRegisterRequest
         Me.UcCarImagePnlCarTruckTurns = New R2CoreParkingSystem.UCCarImage()
         Me.UcCarTruckPnlCarTruckTurns = New PayanehClassLibrary.UCCarTruck()
         Me.UcucCarTruckNobatCollectionPnlCarTruckTurns = New PayanehClassLibrary.UCUCCarTruckNobatCollection()
+        Me.UcucSequentialTurnCollection = New R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection()
         Me.PnlSodoorNobat.SuspendLayout()
         Me.PnlTWS.SuspendLayout()
         Me.PnlAccounting.SuspendLayout()
@@ -55,6 +56,7 @@ Partial Class FrmcTurnRegisterRequest
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlSodoorNobat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlSodoorNobat.Controls.Add(Me.UcucSequentialTurnCollection)
         Me.PnlSodoorNobat.Controls.Add(Me.UcCarEnterExitStatus)
         Me.PnlSodoorNobat.Controls.Add(Me.UcTerafficCardPresenter)
         Me.PnlSodoorNobat.Controls.Add(Me.UcButtonSodoorNobat)
@@ -68,19 +70,19 @@ Partial Class FrmcTurnRegisterRequest
         '
         'UcCarEnterExitStatus
         '
-        Me.UcCarEnterExitStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.UcCarEnterExitStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcCarEnterExitStatus.BackColor = System.Drawing.Color.Transparent
-        Me.UcCarEnterExitStatus.Location = New System.Drawing.Point(325, 385)
+        Me.UcCarEnterExitStatus.Location = New System.Drawing.Point(247, 467)
         Me.UcCarEnterExitStatus.Name = "UcCarEnterExitStatus"
         Me.UcCarEnterExitStatus.Padding = New System.Windows.Forms.Padding(10)
-        Me.UcCarEnterExitStatus.Size = New System.Drawing.Size(189, 60)
+        Me.UcCarEnterExitStatus.Size = New System.Drawing.Size(189, 30)
         Me.UcCarEnterExitStatus.TabIndex = 6
         '
         'UcTerafficCardPresenter
         '
-        Me.UcTerafficCardPresenter.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.UcTerafficCardPresenter.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTerafficCardPresenter.BackColor = System.Drawing.Color.Transparent
-        Me.UcTerafficCardPresenter.Location = New System.Drawing.Point(325, 451)
+        Me.UcTerafficCardPresenter.Location = New System.Drawing.Point(442, 449)
         Me.UcTerafficCardPresenter.Name = "UcTerafficCardPresenter"
         Me.UcTerafficCardPresenter.Padding = New System.Windows.Forms.Padding(3)
         Me.UcTerafficCardPresenter.Size = New System.Drawing.Size(331, 58)
@@ -224,6 +226,15 @@ Partial Class FrmcTurnRegisterRequest
         Me.UcucCarTruckNobatCollectionPnlCarTruckTurns.Size = New System.Drawing.Size(985, 351)
         Me.UcucCarTruckNobatCollectionPnlCarTruckTurns.TabIndex = 0
         '
+        'UcucSequentialTurnCollection
+        '
+        Me.UcucSequentialTurnCollection.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcucSequentialTurnCollection.BackColor = System.Drawing.Color.Transparent
+        Me.UcucSequentialTurnCollection.Location = New System.Drawing.Point(403, 392)
+        Me.UcucSequentialTurnCollection.Name = "UcucSequentialTurnCollection"
+        Me.UcucSequentialTurnCollection.Size = New System.Drawing.Size(370, 45)
+        Me.UcucSequentialTurnCollection.TabIndex = 7
+        '
         'FrmcTurnRegisterRequest
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -262,4 +273,5 @@ End Sub
     Friend WithEvents UcCarImagePnlCarTruckTurns As R2CoreParkingSystem.UCCarImage
     Friend WithEvents UcCarTruckPnlCarTruckTurns As UCCarTruck
     Friend WithEvents UcucCarTruckNobatCollectionPnlCarTruckTurns As UCUCCarTruckNobatCollection
+    Friend WithEvents UcucSequentialTurnCollection As R2CoreTransportationAndLoadNotification.UCUCSequentialTurnCollection
 End Class

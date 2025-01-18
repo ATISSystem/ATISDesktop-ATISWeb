@@ -21,7 +21,7 @@ Public Class UCViewerNSSSequentialTurn
         End Get
         Set(value As Font)
             _UCFont = value
-            UcLabel.UCFont = value
+            CButton.Font = value
         End Set
     End Property
 
@@ -45,13 +45,13 @@ Public Class UCViewerNSSSequentialTurn
 #End Region
 
 #Region "Event Handlers"
-    Private Sub UcLabel_TextChanged(sender As Object, e As EventArgs) Handles UcLabel.TextChanged
-        Me.Size = New Size(TextRenderer.MeasureText(UcLabel.Text, UcLabel.UCFont).Width + 20, Me.Height)
+    Private Sub CButton_TextChanged(sender As Object, e As EventArgs) Handles CButton.TextChanged
+        Me.Size = New Size(TextRenderer.MeasureText(CButton.Text, CButton.Font).Width + 40, Me.Height)
     End Sub
 
-    Private Sub UcLabel_UCClickedEvent() Handles UcLabel.UCClickedEvent
+    Private Sub CButton_Click(sender As Object, e As EventArgs) Handles CButton.Click
         Try
-            UCChangeBackColor(Color.FromName(UCNSSCurrent.SequentialTurnColor))
+            CButton.ColorFillBlend.iColor(1) = Color.FromName(UCNSSCurrent.SequentialTurnColor)
             RaiseEvent UCClickedEvent(Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
@@ -60,12 +60,17 @@ Public Class UCViewerNSSSequentialTurn
 
     Private Sub UCViewerNSSSequentialTurn_UCViewNSSRequested(NSSCurrent As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure) Handles Me.UCViewNSSRequested
         Try
-            UcLabel.UCValue = UCNSSCurrent.SequentialTurnTitle
-            UCChangeBackColor(Color.FromName(UCNSSCurrent.SequentialTurnColor))
+            CButton.Text = UCNSSCurrent.SequentialTurnTitle
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
     End Sub
+
+
+
+
+
+
 
 
 #End Region

@@ -309,8 +309,7 @@ Public Class PayanehWebService
         Try
             _ExchangeKeyManager.AuthenticationExchangeKey(YourExchangeKey)
             Dim myTruck
-            Dim mySeqT
-            Return R2CoreTransportationAndLoadNotificationMClassTurnsManagement.ExistActiveTurn(myTruck, mySeqT)
+            Return R2CoreTransportationAndLoadNotificationMClassTurnsManagement.ExistActiveTurn(myTruck)
         Catch ex As ExchangeKeyTimeRangePassedException
             Throw ex
         Catch ex As ExchangeKeyNotExistException

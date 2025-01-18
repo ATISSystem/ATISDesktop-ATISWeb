@@ -4919,7 +4919,7 @@ Namespace LoadPermission
                 CmdSql.ExecuteScalar()
                 InstanceTurns.LoadPermissionRegistering(NSSTurn, CmdSql)
                 InstanceLoadCapacitorLoadOtherThanManipulation.LoadCapacitorLoadReleasing(YourNSSLoadCapacitorLoad, CmdSql, YourCurrentDateTime, YourUserNSS)
-                CmdSql.CommandText = "Update DBTransport.dbo.TbEnterExit Set StrBarnameNo=" & IIf(InstanceSoftwareUsers.GetNSSUser(YourNSSLoadAllocation.UserId).UserTypeId = R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TransportCompany, R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany, R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall) & ",StrExitDate='" & YourCurrentDateTime.DateShamsiFull & "',StrExitTime='" & YourCurrentDateTime.Time & "',nCityCode=" & YourNSSLoadCapacitorLoad.nCityCode & ",nBarCode=" & YourNSSLoadCapacitorLoad.nBarCode & ",bEnterExit=1,nUserIdExit=" & YourUserNSS.UserId & ",nCompCode=" & YourNSSLoadCapacitorLoad.nCompCode & ",StrDriverName='" & NSSTruckDriver.NSSDriver.StrPersonFullName & "',nDriverCode=" & NSSTruckDriver.NSSDriver.nIdPerson & ",nEstelamId=" & YourNSSLoadCapacitorLoad.nEstelamId & ",nCarNum=" & YourNSSLoadCapacitorLoad.nCarNum - 1 & ",LoadPermissionStatus=" & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.Registered & " Where nEnterExitId=" & YourNSSLoadAllocation.TurnId & ""
+                CmdSql.CommandText = "Update DBTransport.dbo.TbEnterExit Set bDelAutomated=1,StrBarnameNo=" & IIf(InstanceSoftwareUsers.GetNSSUser(YourNSSLoadAllocation.UserId).UserTypeId = R2CoreTransportationAndLoadNotificationSoftwareUserTypes.TransportCompany, R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.TransportCompany, R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall) & ",StrExitDate='" & YourCurrentDateTime.DateShamsiFull & "',StrExitTime='" & YourCurrentDateTime.Time & "',nCityCode=" & YourNSSLoadCapacitorLoad.nCityCode & ",nBarCode=" & YourNSSLoadCapacitorLoad.nBarCode & ",bEnterExit=1,nUserIdExit=" & YourUserNSS.UserId & ",nCompCode=" & YourNSSLoadCapacitorLoad.nCompCode & ",StrDriverName='" & NSSTruckDriver.NSSDriver.StrPersonFullName & "',nDriverCode=" & NSSTruckDriver.NSSDriver.nIdPerson & ",nEstelamId=" & YourNSSLoadCapacitorLoad.nEstelamId & ",nCarNum=" & YourNSSLoadCapacitorLoad.nCarNum - 1 & ",LoadPermissionStatus=" & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.Registered & " Where nEnterExitId=" & YourNSSLoadAllocation.TurnId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
 
@@ -6434,8 +6434,8 @@ Namespace LoadAllocation
                 'بارهای با وضعیت ثبت شده ، خط آزاد و رسوب شده قابل تخصیص هستند
                 If Not InstanceLoadCapacitorLoad.IsLoadCapacitorLoadStatusReadeyforLoadAllocationRegistering(NSSLoadCapacitorLoad) Then Throw New LoadAllocationRegisteringFailedBecauseLoadCapacitorLoadIsNotReadyException
 
-                'کنترل تطابق تسلسل نوبت ناوگان با گروه سالنی بار
-                If IsLoadCapacitorLoadAHSGMatchWithSequentialTurnOfTurn(YournEstelamId, YourNSSTurn.nEnterExitId, YourImmediately) = False Then Throw New LoadCapacitorLoadLoaderTypeViaSequentialTurnOfTurnNotAllowedException
+                ''کنترل تطابق تسلسل نوبت ناوگان با گروه سالنی بار
+                'If IsLoadCapacitorLoadAHSGMatchWithSequentialTurnOfTurn(YournEstelamId, YourNSSTurn.nEnterExitId, YourImmediately) = False Then Throw New LoadCapacitorLoadLoaderTypeViaSequentialTurnOfTurnNotAllowedException
 
                 'کنترل تطابق ناوگان با بار انتخاب شده
                 If InstanceTruck.GetAnnouncementHallSubGroups(NSSTruck, YourImmediately).Where(Function(x) x = NSSLoadCapacitorLoad.AHSGId).Count = 0 Then

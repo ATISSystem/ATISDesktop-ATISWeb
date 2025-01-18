@@ -33,6 +33,8 @@ using R2Core.MoneyWallet.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadPermission.Exceptions;
 using R2CoreTransportationAndLoadNotification.DriverSelfDeclaration.Exceptions;
 using BillOfLadingCore.Exceptions;
+using R2CoreTransportationAndLoadNotification.AnnouncementHalls;
+using R2CoreTransportationAndLoadNotification.Turns.SequentialTurns;
 
 namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
 {
@@ -92,9 +94,12 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
             {
                 BtnLoadAllocation.Enabled = false;
                 var InstanceTransportCompanies = new R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager();
+                var InstanceAnnouncementHalls = new R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager();
+                var InstanceSequentialTurns = new R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager();
                 var NSSTruck = WcSmartCardsInquiry.WcGetNSSTruck;
                 var NSSTruckDriver = WcSmartCardsInquiry.WcGetNSSTruckDriver;
                 var NSSLoadCapacitorLoad = WcViewerNSSLoadCapacitorLoad.WcGetNSSCurrent;
+                var NSSSeqT = InstanceSequentialTurns.GetNSSSequentialTurn(InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroup(NSSLoadCapacitorLoad.AHSGId));
                 var NSSTransportCompany = InstanceTransportCompanies.GetNSSTransportCompany(NSSLoadCapacitorLoad);
 
                 /*کنترل شماره بارنامه وارد شده*/
@@ -114,9 +119,9 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 catch (TurnNotFoundException ex)
                 {
                     if (NSSLoadCapacitorLoad.LoadStatus == R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented)
-                    { NSSTurn = InstanceTurns.GetNSSTurn(InstanceCarTruckNobat.GetTurnofKiosk(NSSTruck, NSSTruckDriver, NSSTransportCompany, NSSLoadCapacitorLoad, InstanceLogin.GetNSSCurrentUser(),true )); }
+                    { NSSTurn = InstanceTurns.GetNSSTurn(InstanceCarTruckNobat.GetTurnofKiosk(NSSSeqT,NSSTruck, NSSTruckDriver, NSSTransportCompany, NSSLoadCapacitorLoad, InstanceLogin.GetNSSCurrentUser(),true )); }
                     else
-                    { NSSTurn = InstanceTurns.GetNSSTurn(InstanceCarTruckNobat.GetTurnofKiosk(NSSTruck, NSSTruckDriver, NSSTransportCompany, NSSLoadCapacitorLoad, InstanceLogin.GetNSSCurrentUser(),false )); }
+                    { NSSTurn = InstanceTurns.GetNSSTurn(InstanceCarTruckNobat.GetTurnofKiosk(NSSSeqT,NSSTruck, NSSTruckDriver, NSSTransportCompany, NSSLoadCapacitorLoad, InstanceLogin.GetNSSCurrentUser(),false )); }
                     TempTurnReport = "ناوگان نوبت ندارد.نوبت به صورت خودکار در سامانه صادر شد ";
                     PnlTurnStatus.BackColor = System.Drawing.Color.Red;
                 }
@@ -131,6 +136,7 @@ namespace ATISWeb.TransportationAndLoadNotification.LoadAllocationManagement
                 Page.ClientScript.RegisterStartupScript(GetType(), "WcViewAlert", "WcViewAlert('2','تخصیص بار با موفقیت انجام شد');", true);
             }
             catch (Exception ex) when (ex is SoftwareUserMoneyWalletNotFoundException ||
+                                       ex is AnySequentialTurnDoNotSelectedException ||
                                        ex is MoneyWalletCurrentChargeNotEnoughException ||
                                        ex is TurnRegisterRequestTypeNotFoundException ||
                                        ex is CarIsNotPresentInParkingException ||

@@ -66,18 +66,6 @@ Public Class UCSequentialTurn
         End Try
     End Sub
 
-    Public Sub UCShowUnActive()
-        UCChangeBackColor(Color.Gray)
-    End Sub
-
-    Public Sub UCShowActive()
-        UCChangeBackColor(Color.FromName(UCNSSCurrent.SequentialTurnColor))
-    End Sub
-
-    Protected Sub UCChangeBackColor(YourColor As Color)
-        Me.BackColor = YourColor
-    End Sub
-
 #End Region
 
 #Region "Events"

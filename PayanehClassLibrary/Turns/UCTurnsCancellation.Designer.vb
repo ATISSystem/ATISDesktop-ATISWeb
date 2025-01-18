@@ -83,8 +83,8 @@ Partial Class UCTurnsCancellation
         Me.CButtonTurnsCancellation.ColorFillBlend = CBlendItems1
         Me.CButtonTurnsCancellation.Corners.LowerRight = 14
         Me.CButtonTurnsCancellation.Corners.UpperLeft = 14
-        Me.CButtonTurnsCancellation.DesignerSelected = false
-        Me.CButtonTurnsCancellation.Font = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.CButtonTurnsCancellation.DesignerSelected = True
+        Me.CButtonTurnsCancellation.Font = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButtonTurnsCancellation.ImageIndex = 0
         Me.CButtonTurnsCancellation.Location = New System.Drawing.Point(39, 279)
         Me.CButtonTurnsCancellation.Name = "CButtonTurnsCancellation"
@@ -105,7 +105,7 @@ Partial Class UCTurnsCancellation
         Me.UcLabelTop.Size = New System.Drawing.Size(825, 43)
         Me.UcLabelTop.TabIndex = 12
         Me.UcLabelTop.UCBackColor = System.Drawing.Color.DodgerBlue
-        Me.UcLabelTop.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabelTop.UCFont = New System.Drawing.Font("B Homa", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabelTop.UCForeColor = System.Drawing.Color.White
         Me.UcLabelTop.UCTextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.UcLabelTop.UCValue = "ابطال گروهی نوبت ها"
@@ -114,7 +114,7 @@ Partial Class UCTurnsCancellation
         '
         Me.UcLabel2._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabel2._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel2.BackColor = System.Drawing.Color.Transparent
         Me.UcLabel2.Location = New System.Drawing.Point(335, 69)
         Me.UcLabel2.Name = "UcLabel2"
@@ -122,7 +122,7 @@ Partial Class UCTurnsCancellation
         Me.UcLabel2.Size = New System.Drawing.Size(471, 32)
         Me.UcLabel2.TabIndex = 15
         Me.UcLabel2.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel2.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabel2.UCFont = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabel2.UCForeColor = System.Drawing.Color.Red
         Me.UcLabel2.UCTextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.UcLabel2.UCValue = "دقت کنید که کلیه نوبت های کمتر از اعتبار باطل می گردند"
@@ -131,18 +131,19 @@ Partial Class UCTurnsCancellation
         '
         Me.UcLabel1._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabel1._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcLabel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabel1.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabel1.Location = New System.Drawing.Point(572, 41)
+        Me.UcLabel1.Location = New System.Drawing.Point(242, 41)
         Me.UcLabel1.Name = "UcLabel1"
         Me.UcLabel1.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabel1.Size = New System.Drawing.Size(234, 32)
+        Me.UcLabel1.Size = New System.Drawing.Size(564, 32)
         Me.UcLabel1.TabIndex = 14
         Me.UcLabel1.UCBackColor = System.Drawing.Color.Transparent
-        Me.UcLabel1.UCFont = New System.Drawing.Font("B Homa", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178,Byte))
+        Me.UcLabel1.UCFont = New System.Drawing.Font("B Homa", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcLabel1.UCForeColor = System.Drawing.Color.Black
         Me.UcLabel1.UCTextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.UcLabel1.UCValue = "شماره نوبت را از لیست انتخاب نمایید"
+        Me.UcLabel1.UCValue = "پس از انتخاب صف نوبت و سپس شماره نوبت اعتبار از لیست ، کلید ابطال گروهی را فشار د" &
+    "هید"
         '
         'UcLstViewerAllOfnEnterExitId
         '

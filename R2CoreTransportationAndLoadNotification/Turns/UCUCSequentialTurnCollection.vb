@@ -7,6 +7,7 @@ Imports System.Windows.Forms
 Imports R2Core.ComputersManagement
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls
+Imports R2CoreTransportationAndLoadNotification.ConfigurationsManagement
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions
 
@@ -26,22 +27,16 @@ Public Class UCUCSequentialTurnCollection
         End Get
         Set(value As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure)
             _UCCurrentNSS = value
-            If value IsNot Nothing Then RaiseEvent UCCurrentNSSChangedEvent()
+            If value IsNot Nothing Then
+                RaiseEvent UCCurrentNSSChangedEvent()
+                Return
+            End If
+            If value Is Nothing Then
+                UcLabelSeqTTitle.UCValue = String.Empty
+                Return
+            End If
         End Set
     End Property
-
-    Private _UCSimulatedSequentialTurnId As Int64 = SequentialTurns.SequentialTurnZobi
-    <Browsable(True)>
-    Public Property UCSimulatedSequentialTurnId As Int64
-        Get
-            Return _UCSimulatedSequentialTurnId
-        End Get
-        Set(value As Int64)
-            _UCSimulatedSequentialTurnId = value
-            UCSimulateThisNSS(R2CoreTransportationAndLoadNotificationMClassSequentialTurnsManagement.GetNSSSequentialTurn(value))
-        End Set
-    End Property
-
 
 #End Region
 
@@ -54,7 +49,11 @@ Public Class UCUCSequentialTurnCollection
 
         ' Add any initialization after the InitializeComponent() call.
         Try
+            UCRefreshGeneral()
             UCViewCollection()
+            If R2CoreMClassConfigurationOfComputersManagement.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.TurnControlling, R2CoreMClassComputersManagement.GetNSSCurrentComputer.MId, 1) = False Then
+                Me.Visible = False
+            End If
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -63,7 +62,7 @@ Public Class UCUCSequentialTurnCollection
 
     Public Overrides Sub UCRefreshGeneral()
         Try
-            UCUnActiveAllUCs()
+            UCCurrentNSS = Nothing
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -88,41 +87,6 @@ Public Class UCUCSequentialTurnCollection
         End Try
     End Sub
 
-    Private Sub UCActiveThisNSS(YourNSS As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure)
-        Try
-            UCCurrentNSS = YourNSS
-            For Each UC As UCViewerNSSSequentialTurn In PnlUCs.Controls
-                If UC.UCNSSCurrent.SequentialTurnId <> YourNSS.SequentialTurnId Then
-                    UC.UCShowUnActive()
-                Else
-                    UC.UCShowActive()
-                End If
-            Next
-        Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-        End Try
-    End Sub
-
-    Public Sub UCSimulateThisNSS(YourNSS As R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure)
-        Try
-            UCActiveThisNSS(YourNSS)
-        Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-        End Try
-    End Sub
-
-    Private Sub UCUnActiveAllUCs()
-        Try
-            UCCurrentNSS = Nothing
-            Dim InstanceSequentialTurns = New R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager
-            UCSimulateThisNSS(InstanceSequentialTurns.GetNSSSequentialTurn(SequentialTurns.None))
-        Catch ex As Exception
-            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-        End Try
-    End Sub
-
-
-
 #End Region
 
 #Region "Events"
@@ -132,7 +96,8 @@ Public Class UCUCSequentialTurnCollection
 
     Private Sub UCs_UCClickedEvent(SenderUC As UCSequentialTurn)
         Try
-            UCActiveThisNSS(SenderUC.UCNSSCurrent)
+            UcLabelSeqTTitle.UCValue = SenderUC.UCNSSCurrent.SequentialTurnTitle
+            UCCurrentNSS = SenderUC.UCNSSCurrent
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try
