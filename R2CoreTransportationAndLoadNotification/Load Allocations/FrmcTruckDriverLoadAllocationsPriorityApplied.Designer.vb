@@ -59,9 +59,9 @@ Partial Class FrmcTruckDriverLoadAllocationsPriorityApplied
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.UcucLoadCapacitorLoadCollectionAdvance.BackColor = System.Drawing.Color.Transparent
         Me.UcucLoadCapacitorLoadCollectionAdvance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.UcucLoadCapacitorLoadCollectionAdvance.Location = New System.Drawing.Point(3, 88)
+        Me.UcucLoadCapacitorLoadCollectionAdvance.Location = New System.Drawing.Point(3, 111)
         Me.UcucLoadCapacitorLoadCollectionAdvance.Name = "UcucLoadCapacitorLoadCollectionAdvance"
-        Me.UcucLoadCapacitorLoadCollectionAdvance.Size = New System.Drawing.Size(987, 419)
+        Me.UcucLoadCapacitorLoadCollectionAdvance.Size = New System.Drawing.Size(987, 396)
         Me.UcucLoadCapacitorLoadCollectionAdvance.TabIndex = 1
         Me.UcucLoadCapacitorLoadCollectionAdvance.UCTimerInterval = CType(1, Long)
         Me.UcucLoadCapacitorLoadCollectionAdvance.UCViewnCarNumZero = False
@@ -72,7 +72,7 @@ Partial Class FrmcTruckDriverLoadAllocationsPriorityApplied
         Me.UcViewerNSSTurnDataEntry.BackColor = System.Drawing.Color.Transparent
         Me.UcViewerNSSTurnDataEntry.Location = New System.Drawing.Point(258, -2)
         Me.UcViewerNSSTurnDataEntry.Name = "UcViewerNSSTurnDataEntry"
-        Me.UcViewerNSSTurnDataEntry.Size = New System.Drawing.Size(477, 86)
+        Me.UcViewerNSSTurnDataEntry.Size = New System.Drawing.Size(477, 107)
         Me.UcViewerNSSTurnDataEntry.TabIndex = 0
         Me.UcViewerNSSTurnDataEntry.UCNSSCurrent = Nothing
         '

@@ -59,11 +59,22 @@ Public Class UCTruckDriversWaitingToGetLoadPermissionReport
 #End Region
 
 #Region "Event Handlers"
+    Private Sub RB1_CheckedChanged(sender As Object, e As EventArgs) Handles RB1.CheckedChanged
+        If RB1.Checked Then UcAnnouncementHallSelection.Enabled = True Else UcAnnouncementHallSelection.Enabled = False
+    End Sub
+
+    Private Sub RB2_CheckedChanged(sender As Object, e As EventArgs) Handles RB2.CheckedChanged
+        If RB2.Checked Then UcucSequentialTurnCollection.Enabled = True Else UcucSequentialTurnCollection.Enabled = False
+    End Sub
 
     Private Sub UcButtonSpecialViewReport_UCClickedEvent() Handles UcButtonSpecialViewReport.UCClickedEvent
         Try
             Cursor.Current = Cursors.WaitCursor
-            _WS.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport(UcAnnouncementHallSelection.UCNSSCurrentAnnouncementHallSubGroup.AHSGId,_WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh,R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
+            If RB1.Checked Then
+                _WS.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGs(UcAnnouncementHallSelection.UCNSSCurrentAnnouncementHallSubGroup.AHSGId, _WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
+            ElseIf RB2.Checked Then
+                _WS.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqts(UcucSequentialTurnCollection.UCCurrentNSS.SequentialTurnId, _WS.WebMethodLogin(R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserShenaseh, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserPassword))
+            End If
             R2CoreGUIMClassInformationManagement.PrintReport(PayanehClassLibrary.ReportsManagement.PayanehReports.TruckDriversWaitingToGetLoadPermissionReport)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)

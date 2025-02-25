@@ -69,7 +69,7 @@ Partial Class FrmcLoadAllocations
         Me.UcLoadAllocationManipulationByLoadCapacitorLoads.Location = New System.Drawing.Point(-3, 1)
         Me.UcLoadAllocationManipulationByLoadCapacitorLoads.Name = "UcLoadAllocationManipulationByLoadCapacitorLoads"
         Me.UcLoadAllocationManipulationByLoadCapacitorLoads.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLoadAllocationManipulationByLoadCapacitorLoads.Size = New System.Drawing.Size(998, 133)
+        Me.UcLoadAllocationManipulationByLoadCapacitorLoads.Size = New System.Drawing.Size(998, 160)
         Me.UcLoadAllocationManipulationByLoadCapacitorLoads.TabIndex = 0
         '
         'UcucLoadAllocationCollection
@@ -78,9 +78,9 @@ Partial Class FrmcLoadAllocations
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcucLoadAllocationCollection.BackColor = System.Drawing.Color.Transparent
-        Me.UcucLoadAllocationCollection.Location = New System.Drawing.Point(3, 140)
+        Me.UcucLoadAllocationCollection.Location = New System.Drawing.Point(3, 167)
         Me.UcucLoadAllocationCollection.Name = "UcucLoadAllocationCollection"
-        Me.UcucLoadAllocationCollection.Size = New System.Drawing.Size(984, 360)
+        Me.UcucLoadAllocationCollection.Size = New System.Drawing.Size(984, 333)
         Me.UcucLoadAllocationCollection.TabIndex = 1
         '
         'PnlLoadAllocationRecords
@@ -225,15 +225,15 @@ Partial Class FrmcLoadAllocations
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
         Me.Controls.Add(Me.PnlLoadAllocation)
-        Me.Controls.Add(Me.PnlLoadCapacitor)
         Me.Controls.Add(Me.PnlLoadCapacitorLoadsStatistics)
+        Me.Controls.Add(Me.PnlLoadCapacitor)
         Me.Controls.Add(Me.PnlLoadAllocationRecords)
         Me.Location = New System.Drawing.Point(0, 0)
         Me.Name = "FrmcLoadAllocations"
         Me.Text = "FrmcLoadAllocations"
         Me.Controls.SetChildIndex(Me.PnlLoadAllocationRecords, 0)
-        Me.Controls.SetChildIndex(Me.PnlLoadCapacitorLoadsStatistics, 0)
         Me.Controls.SetChildIndex(Me.PnlLoadCapacitor, 0)
+        Me.Controls.SetChildIndex(Me.PnlLoadCapacitorLoadsStatistics, 0)
         Me.Controls.SetChildIndex(Me.PnlLoadAllocation, 0)
         Me.PnlLoadAllocation.ResumeLayout(False)
         Me.PnlLoadAllocationRecords.ResumeLayout(false)

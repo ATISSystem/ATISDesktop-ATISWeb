@@ -27,6 +27,7 @@ Partial Class UCUCLoadCapacitorLoadCollectionAdvance
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UCUCLoadCapacitorLoadCollectionAdvance))
         Dim R2CoreTransportationAndLoadNotificationStandardAnnouncementHallAnnounceTimeTypeStructure1 As R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationStandardAnnouncementHallAnnounceTimeTypeStructure = New R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationStandardAnnouncementHallAnnounceTimeTypeStructure()
         Me.PnlMain = New System.Windows.Forms.Panel()
+        Me.UcPersianShamsiDate = New R2CoreGUI.UCPersianShamsiDate()
         Me.ChkTransportCompany = New System.Windows.Forms.CheckBox()
         Me.UcSearcherTransportCompanies = New R2CoreTransportationAndLoadNotification.UCSearcherTransportCompanies()
         Me.UcViewerCurrentLoadsStatisticsSummary = New R2CoreTransportationAndLoadNotification.UCViewerCurrentLoadsStatisticsSummary()
@@ -39,6 +40,7 @@ Partial Class UCUCLoadCapacitorLoadCollectionAdvance
         '
         'PnlMain
         '
+        Me.PnlMain.Controls.Add(Me.UcPersianShamsiDate)
         Me.PnlMain.Controls.Add(Me.ChkTransportCompany)
         Me.PnlMain.Controls.Add(Me.UcSearcherTransportCompanies)
         Me.PnlMain.Controls.Add(Me.UcViewerCurrentLoadsStatisticsSummary)
@@ -49,8 +51,18 @@ Partial Class UCUCLoadCapacitorLoadCollectionAdvance
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(811, 402)
+        Me.PnlMain.Size = New System.Drawing.Size(1254, 670)
         Me.PnlMain.TabIndex = 0
+        '
+        'UcPersianShamsiDate
+        '
+        Me.UcPersianShamsiDate.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
+        Me.UcPersianShamsiDate.BackColor = System.Drawing.Color.Transparent
+        Me.UcPersianShamsiDate.Location = New System.Drawing.Point(286, 91)
+        Me.UcPersianShamsiDate.Name = "UcPersianShamsiDate"
+        Me.UcPersianShamsiDate.Size = New System.Drawing.Size(145, 23)
+        Me.UcPersianShamsiDate.TabIndex = 9
+        Me.UcPersianShamsiDate.UCFont = New System.Drawing.Font("IRMehr", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         '
         'ChkTransportCompany
         '
@@ -65,7 +77,7 @@ Partial Class UCUCLoadCapacitorLoadCollectionAdvance
         Me.ChkTransportCompany.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Yellow
         Me.ChkTransportCompany.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ChkTransportCompany.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
-        Me.ChkTransportCompany.Location = New System.Drawing.Point(796, 101)
+        Me.ChkTransportCompany.Location = New System.Drawing.Point(1239, 101)
         Me.ChkTransportCompany.Margin = New System.Windows.Forms.Padding(0)
         Me.ChkTransportCompany.Name = "ChkTransportCompany"
         Me.ChkTransportCompany.Size = New System.Drawing.Size(12, 11)
@@ -76,7 +88,7 @@ Partial Class UCUCLoadCapacitorLoadCollectionAdvance
         '
         Me.UcSearcherTransportCompanies.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcSearcherTransportCompanies.BackColor = System.Drawing.Color.Transparent
-        Me.UcSearcherTransportCompanies.Location = New System.Drawing.Point(566, 90)
+        Me.UcSearcherTransportCompanies.Location = New System.Drawing.Point(1009, 90)
         Me.UcSearcherTransportCompanies.Name = "UcSearcherTransportCompanies"
         Me.UcSearcherTransportCompanies.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.UcSearcherTransportCompanies.Size = New System.Drawing.Size(227, 31)
@@ -109,7 +121,7 @@ Partial Class UCUCLoadCapacitorLoadCollectionAdvance
         Me.UcucLoadCapacitorLoadCollection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.UcucLoadCapacitorLoadCollection.Location = New System.Drawing.Point(3, 127)
         Me.UcucLoadCapacitorLoadCollection.Name = "UcucLoadCapacitorLoadCollection"
-        Me.UcucLoadCapacitorLoadCollection.Size = New System.Drawing.Size(805, 272)
+        Me.UcucLoadCapacitorLoadCollection.Size = New System.Drawing.Size(1248, 540)
         Me.UcucLoadCapacitorLoadCollection.TabIndex = 2
         Me.UcucLoadCapacitorLoadCollection.UCTimerInterval = CType(1, Long)
         '
@@ -120,7 +132,7 @@ Partial Class UCUCLoadCapacitorLoadCollectionAdvance
         Me.UcAnnouncementHallSelection.BackColor = System.Drawing.Color.Transparent
         Me.UcAnnouncementHallSelection.Location = New System.Drawing.Point(3, 3)
         Me.UcAnnouncementHallSelection.Name = "UcAnnouncementHallSelection"
-        Me.UcAnnouncementHallSelection.Size = New System.Drawing.Size(805, 84)
+        Me.UcAnnouncementHallSelection.Size = New System.Drawing.Size(1248, 84)
         Me.UcAnnouncementHallSelection.TabIndex = 0
         '
         'ChkViewnCarNumZero
@@ -143,7 +155,7 @@ Partial Class UCUCLoadCapacitorLoadCollectionAdvance
         Me.UcucAnnouncementHallAnnounceTimeTypeCollection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.UcucAnnouncementHallAnnounceTimeTypeCollection.Location = New System.Drawing.Point(125, 90)
         Me.UcucAnnouncementHallAnnounceTimeTypeCollection.Name = "UcucAnnouncementHallAnnounceTimeTypeCollection"
-        Me.UcucAnnouncementHallAnnounceTimeTypeCollection.Size = New System.Drawing.Size(435, 31)
+        Me.UcucAnnouncementHallAnnounceTimeTypeCollection.Size = New System.Drawing.Size(878, 31)
         Me.UcucAnnouncementHallAnnounceTimeTypeCollection.TabIndex = 1
         R2CoreTransportationAndLoadNotificationStandardAnnouncementHallAnnounceTimeTypeStructure1.AHATTypeColor = "Green                                                                            " &
     "                   "
@@ -163,7 +175,7 @@ Partial Class UCUCLoadCapacitorLoadCollectionAdvance
         Me.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCUCLoadCapacitorLoadCollectionAdvance"
-        Me.Size = New System.Drawing.Size(811, 402)
+        Me.Size = New System.Drawing.Size(1254, 670)
         Me.PnlMain.ResumeLayout(false)
         Me.PnlMain.PerformLayout
         Me.ResumeLayout(false)
@@ -178,4 +190,5 @@ End Sub
     Friend WithEvents ChkTransportCompany As Windows.Forms.CheckBox
     Friend WithEvents UcSearcherTransportCompanies As UCSearcherTransportCompanies
     Friend WithEvents ChkViewnCarNumZero As Windows.Forms.CheckBox
+    Friend WithEvents UcPersianShamsiDate As UCPersianShamsiDate
 End Class

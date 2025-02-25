@@ -26,7 +26,8 @@ using R2Core.PermissionManagement;
 using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
 using R2CoreTransportationAndLoadNotification.TransportTarrifsParameters;
 using R2CoreTransportationAndLoadNotification.Turns;
-
+using R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions;
+using R2CoreTransportationAndLoadNotification.RequesterManagement;
 
 namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
 {
@@ -43,6 +44,7 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                 //تایید اعتبار کلاینت
                 WebAPi.AuthenticateClientApikeyNonceWith4Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientLoadsReviewRequest);
 
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var AHId = Content.Split(';')[2];
                 var AHSGId = Content.Split(';')[3];
@@ -50,8 +52,9 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                 var ListType = Content.Split(';')[5];
                 var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
                 var InstanceTransportTarrifsParameters = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager();
-                Int64 ListTypeConv = Convert.ToInt64(ListType) == (long)LoadCapacitorLoadsListType.NotSedimented ? Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.AllOfLoadsWithoutSedimentedLoads) : Convert.ToInt64(AnnouncementHallAnnounceTimeTypes.SedimentedLoads);
-                var Lst = InstanceLoadCapacitorLoad.GetLoadCapacitorLoadsfromSubscriptionDB(Convert.ToInt64(AHId), Convert.ToInt64(AHSGId), ListTypeConv, false, true, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.TargetProvince, Int64.MinValue, Convert.ToInt64(ProvinceId));
+                Int64 LoadStatusId = Convert.ToInt64(ListType) == (long)R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered ? Convert.ToInt64(R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered) : Convert.ToInt64(R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented);
+                //var Lst = InstanceLoadCapacitorLoad.GetLoadCapacitorLoadsfromSubscriptionDB(Convert.ToInt64(AHId), Convert.ToInt64(AHSGId), ListTypeConv, false, true, R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions.TargetProvince, Int64.MinValue, Convert.ToInt64(ProvinceId));
+                var Lst = InstanceLoadCapacitorLoad.GetLoadCapacitorLoadsforApplication(R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent, NSSSoftwareuser, Convert.ToInt64(AHSGId), LoadStatusId, Convert.ToInt64(ProvinceId));
                 List<Models.LoadCapacitorLoad> _Loads = new List<Models.LoadCapacitorLoad>();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
@@ -64,16 +67,16 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                     else
                     { Item.TransportCompanyTarrifPrice = Lst[Loopx].TransportCompanyTitle.Trim() + " تلفن: " + Lst[Loopx].TransportCompanyTel.Trim() + "\n نرخ پایه : " + R2CoreMClassPublicProcedures.R2MakeCamaYourDigit(Convert.ToUInt64(Lst[Loopx].StrPriceSug)) + "\n شرایط بار - پارامترهای موثر در نرخ پایه : " + "\n" + TPTParams; }
                     Item.Description = Lst[Loopx].StrDescription.Trim() + " " + Lst[Loopx].StrBarName.Trim() + " " + Lst[Loopx].StrAddress.Trim() + "\n محل بارگیری : " + Lst[Loopx].LoadingPlaceTitle.Trim() + "\n محل تخلیه : " + Lst[Loopx].DischargingPlaceTitle.Trim();
-                    //if (Lst[Loopx].AHId == Convert.ToInt64(R2CoreTransportationAndLoadNotification.AnnouncementHalls.AnnouncementHalls.Anbari))
-                    //{ Item.Description = Lst[Loopx].StrDescription.Trim() + " " + Lst[Loopx].StrBarName.Trim() + " " + Lst[Loopx].StrAddress.Trim() + "\n محل بارگیری : " + " انبار آهن آلات" + "\n محل تخلیه : " + " انبار آهن آلات"; }
-                    //else
-                    //{ Item.Description = Lst[Loopx].StrDescription.Trim() + " " + Lst[Loopx].StrBarName.Trim() + " " + Lst[Loopx].StrAddress.Trim() + "\n محل بارگیری : " + Lst[Loopx].LoadingPlaceTitle.Trim() + "\n محل تخلیه : " + " انبار آهن آلات"; }
                     _Loads.Add(Item);
                 }
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(_Loads), Encoding.UTF8, "application/json");
                 return response;
             }
+            catch (NoLoadsorLoadsViewConditionsMismatchException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (BaseInfFailedException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (UserNotExistByMobileNumberException ex)
             { return WebAPi.CreateSuccessContentMessage(string.Empty); }
             catch (Exception ex)

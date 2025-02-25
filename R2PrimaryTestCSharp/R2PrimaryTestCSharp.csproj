@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BillOfLadingClassLibrary">
+      <HintPath>..\BillOfLadingClassLibrary\bin\Debug\BillOfLadingClassLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="ESCOClassLibrary">
       <HintPath>..\ESCOClassLibrary\bin\Debug\ESCOClassLibrary.dll</HintPath>
     </Reference>

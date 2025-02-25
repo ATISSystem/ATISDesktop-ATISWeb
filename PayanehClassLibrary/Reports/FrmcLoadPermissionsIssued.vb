@@ -5,7 +5,7 @@ Imports PayanehClassLibrary.ProcessesManagement
 Imports R2Core.DesktopProcessesManagement
 Imports R2CoreGUI
 
-Public Class FrmcLoadPermissionsIssuedOrderByPriorityReport
+Public Class FrmcLoadPermissionsIssued
     Inherits FrmcGeneral
 
 #Region "General Properties"

@@ -53,7 +53,7 @@ Partial Class UCLoadAllocationManipulation
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(5, 5)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(940, 125)
+        Me.PnlMain.Size = New System.Drawing.Size(940, 150)
         Me.PnlMain.TabIndex = 0
         '
         'PnlOutter
@@ -65,7 +65,7 @@ Partial Class UCLoadAllocationManipulation
         Me.PnlOutter.Location = New System.Drawing.Point(0, 0)
         Me.PnlOutter.Name = "PnlOutter"
         Me.PnlOutter.Padding = New System.Windows.Forms.Padding(2)
-        Me.PnlOutter.Size = New System.Drawing.Size(940, 125)
+        Me.PnlOutter.Size = New System.Drawing.Size(940, 150)
         Me.PnlOutter.TabIndex = 0
         '
         'PnlInner
@@ -86,7 +86,7 @@ Partial Class UCLoadAllocationManipulation
         Me.PnlInner.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlInner.Location = New System.Drawing.Point(2, 2)
         Me.PnlInner.Name = "PnlInner"
-        Me.PnlInner.Size = New System.Drawing.Size(934, 119)
+        Me.PnlInner.Size = New System.Drawing.Size(934, 144)
         Me.PnlInner.TabIndex = 0
         '
         'UcButtonNewnEstelamIdRemain
@@ -269,7 +269,7 @@ Partial Class UCLoadAllocationManipulation
         Me.PnlHolder.Controls.Add(Me.UcViewerNSSTurnDataEntry)
         Me.PnlHolder.Location = New System.Drawing.Point(3, 16)
         Me.PnlHolder.Name = "PnlHolder"
-        Me.PnlHolder.Size = New System.Drawing.Size(928, 100)
+        Me.PnlHolder.Size = New System.Drawing.Size(928, 125)
         Me.PnlHolder.TabIndex = 0
         '
         'UcViewerNSSLoadCapacitorLoadDataEntry
@@ -277,9 +277,9 @@ Partial Class UCLoadAllocationManipulation
         Me.UcViewerNSSLoadCapacitorLoadDataEntry.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcViewerNSSLoadCapacitorLoadDataEntry.BackColor = System.Drawing.Color.Transparent
-        Me.UcViewerNSSLoadCapacitorLoadDataEntry.Location = New System.Drawing.Point(468, 35)
+        Me.UcViewerNSSLoadCapacitorLoadDataEntry.Location = New System.Drawing.Point(468, 55)
         Me.UcViewerNSSLoadCapacitorLoadDataEntry.Name = "UcViewerNSSLoadCapacitorLoadDataEntry"
-        Me.UcViewerNSSLoadCapacitorLoadDataEntry.Size = New System.Drawing.Size(452, 57)
+        Me.UcViewerNSSLoadCapacitorLoadDataEntry.Size = New System.Drawing.Size(452, 62)
         Me.UcViewerNSSLoadCapacitorLoadDataEntry.TabIndex = 1
         Me.UcViewerNSSLoadCapacitorLoadDataEntry.UCNSSCurrent = Nothing
         '
@@ -288,7 +288,7 @@ Partial Class UCLoadAllocationManipulation
         Me.UcViewerNSSTurnDataEntry.BackColor = System.Drawing.Color.Transparent
         Me.UcViewerNSSTurnDataEntry.Location = New System.Drawing.Point(7, 9)
         Me.UcViewerNSSTurnDataEntry.Name = "UcViewerNSSTurnDataEntry"
-        Me.UcViewerNSSTurnDataEntry.Size = New System.Drawing.Size(454, 86)
+        Me.UcViewerNSSTurnDataEntry.Size = New System.Drawing.Size(454, 111)
         Me.UcViewerNSSTurnDataEntry.TabIndex = 0
         Me.UcViewerNSSTurnDataEntry.UCNSSCurrent = Nothing
         '
@@ -300,7 +300,7 @@ Partial Class UCLoadAllocationManipulation
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCLoadAllocationManipulation"
         Me.Padding = New System.Windows.Forms.Padding(5)
-        Me.Size = New System.Drawing.Size(950, 135)
+        Me.Size = New System.Drawing.Size(950, 160)
         Me.PnlMain.ResumeLayout(false)
         Me.PnlOutter.ResumeLayout(false)
         Me.PnlInner.ResumeLayout(false)

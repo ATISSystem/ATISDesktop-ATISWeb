@@ -291,21 +291,21 @@ Partial Class FrmcAnnouncementHallAutomation
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
-        Me.Controls.Add(Me.PnlTurnsCancellation)
         Me.Controls.Add(Me.PnlTurnResuscitationCancellation)
         Me.Controls.Add(Me.PnlSodoorAndPrintNobatRequest)
         Me.Controls.Add(Me.PnlEnterExitReport)
         Me.Controls.Add(Me.PNLTWS)
         Me.Controls.Add(Me.PnlSediment)
+        Me.Controls.Add(Me.PnlTurnsCancellation)
         Me.Location = New System.Drawing.Point(0, 0)
         Me.Name = "FrmcAnnouncementHallAutomation"
         Me.Text = "FrmcAnnouncementHallAutomation"
+        Me.Controls.SetChildIndex(Me.PnlTurnsCancellation, 0)
         Me.Controls.SetChildIndex(Me.PnlSediment, 0)
         Me.Controls.SetChildIndex(Me.PNLTWS, 0)
         Me.Controls.SetChildIndex(Me.PnlEnterExitReport, 0)
         Me.Controls.SetChildIndex(Me.PnlSodoorAndPrintNobatRequest, 0)
         Me.Controls.SetChildIndex(Me.PnlTurnResuscitationCancellation, 0)
-        Me.Controls.SetChildIndex(Me.PnlTurnsCancellation, 0)
         Me.PnlSodoorAndPrintNobatRequest.ResumeLayout(False)
         Me.PnlTurnResuscitationCancellation.ResumeLayout(false)
         Me.PnlTurnsCancellation.ResumeLayout(false)

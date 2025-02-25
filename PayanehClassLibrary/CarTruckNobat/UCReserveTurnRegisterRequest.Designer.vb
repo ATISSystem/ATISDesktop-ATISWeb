@@ -6,7 +6,7 @@ Partial Class UCReserveTurnRegisterRequest
     Inherits UCGeneral
 
     'UserControl overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -23,7 +23,7 @@ Partial Class UCReserveTurnRegisterRequest
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.PnlMain = New System.Windows.Forms.Panel()
@@ -41,7 +41,7 @@ Partial Class UCReserveTurnRegisterRequest
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(1, 1)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(139, 35)
+        Me.PnlMain.Size = New System.Drawing.Size(146, 36)
         Me.PnlMain.TabIndex = 0
         '
         'PnlOutter
@@ -52,7 +52,7 @@ Partial Class UCReserveTurnRegisterRequest
         Me.PnlOutter.Location = New System.Drawing.Point(0, 0)
         Me.PnlOutter.Name = "PnlOutter"
         Me.PnlOutter.Padding = New System.Windows.Forms.Padding(1)
-        Me.PnlOutter.Size = New System.Drawing.Size(139, 35)
+        Me.PnlOutter.Size = New System.Drawing.Size(146, 36)
         Me.PnlOutter.TabIndex = 0
         '
         'PnlInner
@@ -63,22 +63,22 @@ Partial Class UCReserveTurnRegisterRequest
         Me.PnlInner.Location = New System.Drawing.Point(1, 1)
         Me.PnlInner.Name = "PnlInner"
         Me.PnlInner.Padding = New System.Windows.Forms.Padding(2)
-        Me.PnlInner.Size = New System.Drawing.Size(137, 33)
+        Me.PnlInner.Size = New System.Drawing.Size(144, 34)
         Me.PnlInner.TabIndex = 0
         '
         'CButton
         '
         Me.CButton.BorderShow = False
-        Me.CButton.Corners.LowerLeft = 14
-        Me.CButton.Corners.UpperRight = 14
+        Me.CButton.Corners.LowerLeft = 8
+        Me.CButton.Corners.UpperRight = 8
         Me.CButton.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.CButton.DesignerSelected = True
+        Me.CButton.DesignerSelected = False
         Me.CButton.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CButton.Font = New System.Drawing.Font("B Homa", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.CButton.ImageIndex = 0
         Me.CButton.Location = New System.Drawing.Point(2, 2)
         Me.CButton.Name = "CButton"
-        Me.CButton.Size = New System.Drawing.Size(133, 29)
+        Me.CButton.Size = New System.Drawing.Size(140, 30)
         Me.CButton.TabIndex = 0
         Me.CButton.Text = "درخواست نوبت رزرو"
         Me.CButton.TextShadowShow = False
@@ -91,7 +91,7 @@ Partial Class UCReserveTurnRegisterRequest
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCReserveTurnRegisterRequest"
         Me.Padding = New System.Windows.Forms.Padding(1)
-        Me.Size = New System.Drawing.Size(141, 37)
+        Me.Size = New System.Drawing.Size(148, 38)
         Me.PnlMain.ResumeLayout(False)
         Me.PnlOutter.ResumeLayout(False)
         Me.PnlInner.ResumeLayout(False)

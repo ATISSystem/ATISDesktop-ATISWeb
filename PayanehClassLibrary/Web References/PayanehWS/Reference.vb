@@ -25,7 +25,7 @@ Imports System.Xml.Serialization
 Namespace PayanehWS
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code"),  _
      System.Web.Services.WebServiceBindingAttribute(Name:="PayanehWebServiceSoap", [Namespace]:="http://tempuri.org/")>  _
@@ -36,7 +36,9 @@ Namespace PayanehWS
         
         Private WebMethodGetDSPersonnelFingerPrintsOperationCompleted As System.Threading.SendOrPostCallback
         
-        Private WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted As System.Threading.SendOrPostCallback
+        Private WebMethodReportingInformationPrividerLoadPermissionsByAHSGsOperationCompleted As System.Threading.SendOrPostCallback
+        
+        Private WebMethodReportingInformationPrividerLoadPermissionsBySeqTsOperationCompleted As System.Threading.SendOrPostCallback
         
         Private WebMethodReportingInformationPrividerSedimentedLoadsReportOperationCompleted As System.Threading.SendOrPostCallback
         
@@ -54,7 +56,9 @@ Namespace PayanehWS
         
         Private WebMethodReportingInformationPrividerAnnouncementHallsPerformanceGeneralStatisticsReportOperationCompleted As System.Threading.SendOrPostCallback
         
-        Private WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportOperationCompleted As System.Threading.SendOrPostCallback
+        Private WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsOperationCompleted As System.Threading.SendOrPostCallback
+        
+        Private WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsOperationCompleted As System.Threading.SendOrPostCallback
         
         Private WebMethodReportingInformationPrividerTrucksAverageOfSleepDaysToGetLoadPermissionReportOperationCompleted As System.Threading.SendOrPostCallback
         
@@ -123,7 +127,10 @@ Namespace PayanehWS
         Public Event WebMethodGetDSPersonnelFingerPrintsCompleted As WebMethodGetDSPersonnelFingerPrintsCompletedEventHandler
         
         '''<remarks/>
-        Public Event WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportCompleted As WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportCompletedEventHandler
+        Public Event WebMethodReportingInformationPrividerLoadPermissionsByAHSGsCompleted As WebMethodReportingInformationPrividerLoadPermissionsByAHSGsCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodReportingInformationPrividerLoadPermissionsBySeqTsCompleted As WebMethodReportingInformationPrividerLoadPermissionsBySeqTsCompletedEventHandler
         
         '''<remarks/>
         Public Event WebMethodReportingInformationPrividerSedimentedLoadsReportCompleted As WebMethodReportingInformationPrividerSedimentedLoadsReportCompletedEventHandler
@@ -150,7 +157,10 @@ Namespace PayanehWS
         Public Event WebMethodReportingInformationPrividerAnnouncementHallsPerformanceGeneralStatisticsReportCompleted As WebMethodReportingInformationPrividerAnnouncementHallsPerformanceGeneralStatisticsReportCompletedEventHandler
         
         '''<remarks/>
-        Public Event WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportCompleted As WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportCompletedEventHandler
+        Public Event WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsCompleted As WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsCompleted As WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsCompletedEventHandler
         
         '''<remarks/>
         Public Event WebMethodReportingInformationPrividerTrucksAverageOfSleepDaysToGetLoadPermissionReportCompleted As WebMethodReportingInformationPrividerTrucksAverageOfSleepDaysToGetLoadPermissionReportCompletedEventHandler
@@ -240,29 +250,54 @@ Namespace PayanehWS
         End Sub
         
         '''<remarks/>
-        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerLoadPermissionsIssuedOrde"& _ 
-            "rByPriorityReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourAHId As Long, ByVal YourAHSGId As Long, ByVal YourExchangeKey As Long)
-            Me.Invoke("WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourAHId, YourAHSGId, YourExchangeKey})
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerLoadPermissionsByAHSGs", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationPrividerLoadPermissionsByAHSGs(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourAHId As Long, ByVal YourAHSGId As Long, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerLoadPermissionsByAHSGs", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourAHId, YourAHSGId, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourAHId As Long, ByVal YourAHSGId As Long, ByVal YourExchangeKey As Long)
-            Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourAHId, YourAHSGId, YourExchangeKey, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerLoadPermissionsByAHSGsAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourAHId As Long, ByVal YourAHSGId As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerLoadPermissionsByAHSGsAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourAHId, YourAHSGId, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourAHId As Long, ByVal YourAHSGId As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
-            If (Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted Is Nothing) Then
-                Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted
+        Public Overloads Sub WebMethodReportingInformationPrividerLoadPermissionsByAHSGsAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourAHId As Long, ByVal YourAHSGId As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationPrividerLoadPermissionsByAHSGsOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationPrividerLoadPermissionsByAHSGsOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerLoadPermissionsByAHSGsOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourAHId, YourAHSGId, YourExchangeKey}, Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerLoadPermissionsByAHSGs", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourAHId, YourAHSGId, YourExchangeKey}, Me.WebMethodReportingInformationPrividerLoadPermissionsByAHSGsOperationCompleted, userState)
         End Sub
         
-        Private Sub OnWebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportOperationCompleted(ByVal arg As Object)
-            If (Not (Me.WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportCompletedEvent) Is Nothing) Then
+        Private Sub OnWebMethodReportingInformationPrividerLoadPermissionsByAHSGsOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationPrividerLoadPermissionsByAHSGsCompletedEvent) Is Nothing) Then
                 Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
-                RaiseEvent WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+                RaiseEvent WebMethodReportingInformationPrividerLoadPermissionsByAHSGsCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerLoadPermissionsBySeqTs", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationPrividerLoadPermissionsBySeqTs(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourSeqTId As Long, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerLoadPermissionsBySeqTs", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourSeqTId, YourExchangeKey})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerLoadPermissionsBySeqTsAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourSeqTId As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerLoadPermissionsBySeqTsAsync(YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourSeqTId, YourExchangeKey, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerLoadPermissionsBySeqTsAsync(ByVal YourDateTimeMilladi1 As Date, ByVal YourDateShamsiFull1 As String, ByVal YourTime1 As String, ByVal YourDateTimeMilladi2 As Date, ByVal YourDateShamsiFull2 As String, ByVal YourTime2 As String, ByVal YourSeqTId As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationPrividerLoadPermissionsBySeqTsOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationPrividerLoadPermissionsBySeqTsOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerLoadPermissionsBySeqTsOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodReportingInformationPrividerLoadPermissionsBySeqTs", New Object() {YourDateTimeMilladi1, YourDateShamsiFull1, YourTime1, YourDateTimeMilladi2, YourDateShamsiFull2, YourTime2, YourSeqTId, YourExchangeKey}, Me.WebMethodReportingInformationPrividerLoadPermissionsBySeqTsOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodReportingInformationPrividerLoadPermissionsBySeqTsOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationPrividerLoadPermissionsBySeqTsCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodReportingInformationPrividerLoadPermissionsBySeqTsCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
             End If
         End Sub
         
@@ -486,30 +521,59 @@ Namespace PayanehWS
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerTruckDriversWaitingToGetL"& _ 
-            "oadPermissionReport", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport(ByVal YourAnnouncementHallSubGroupId As Long, ByVal YourExchangeKey As Long)
-            Me.Invoke("WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport"& _ 
-                    "", New Object() {YourAnnouncementHallSubGroupId, YourExchangeKey})
+            "oadPermissionByAHSGs", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGs(ByVal YourAnnouncementHallSubGroupId As Long, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSG"& _ 
+                    "s", New Object() {YourAnnouncementHallSubGroupId, YourExchangeKey})
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportAsync(ByVal YourAnnouncementHallSubGroupId As Long, ByVal YourExchangeKey As Long)
-            Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportAsync(YourAnnouncementHallSubGroupId, YourExchangeKey, Nothing)
+        Public Overloads Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsAsync(ByVal YourAnnouncementHallSubGroupId As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsAsync(YourAnnouncementHallSubGroupId, YourExchangeKey, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportAsync(ByVal YourAnnouncementHallSubGroupId As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
-            If (Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportOperationCompleted Is Nothing) Then
-                Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportOperationCompleted
+        Public Overloads Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsAsync(ByVal YourAnnouncementHallSubGroupId As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsOperationCompleted
             End If
-            Me.InvokeAsync("WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport"& _ 
-                    "", New Object() {YourAnnouncementHallSubGroupId, YourExchangeKey}, Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportOperationCompleted, userState)
+            Me.InvokeAsync("WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSG"& _ 
+                    "s", New Object() {YourAnnouncementHallSubGroupId, YourExchangeKey}, Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsOperationCompleted, userState)
         End Sub
         
-        Private Sub OnWebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportOperationCompleted(ByVal arg As Object)
-            If (Not (Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportCompletedEvent) Is Nothing) Then
+        Private Sub OnWebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsCompletedEvent) Is Nothing) Then
                 Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
-                RaiseEvent WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+                RaiseEvent WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/WebMethodReportingInformationPrividerTruckDriversWaitingToGetL"& _ 
+            "oadPermissionBySeqts", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqts(ByVal YourSeqTId As Long, ByVal YourExchangeKey As Long)
+            Me.Invoke("WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqt"& _ 
+                    "s", New Object() {YourSeqTId, YourExchangeKey})
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsAsync(ByVal YourSeqTId As Long, ByVal YourExchangeKey As Long)
+            Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsAsync(YourSeqTId, YourExchangeKey, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsAsync(ByVal YourSeqTId As Long, ByVal YourExchangeKey As Long, ByVal userState As Object)
+            If (Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsOperationCompleted Is Nothing) Then
+                Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsOperationCompleted = AddressOf Me.OnWebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsOperationCompleted
+            End If
+            Me.InvokeAsync("WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqt"& _ 
+                    "s", New Object() {YourSeqTId, YourExchangeKey}, Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnWebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsOperationCompleted(ByVal arg As Object)
+            If (Not (Me.WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsCompleted(Me, New System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
             End If
         End Sub
         
@@ -832,11 +896,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodLoginCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodLoginCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodLoginCompletedEventArgs
@@ -859,11 +923,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodGetDSPersonnelFingerPrintsCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodGetDSPersonnelFingerPrintsCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodGetDSPersonnelFingerPrintsCompletedEventArgs
@@ -886,79 +950,87 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
-    Public Delegate Sub WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
+    Public Delegate Sub WebMethodReportingInformationPrividerLoadPermissionsByAHSGsCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
+    Public Delegate Sub WebMethodReportingInformationPrividerLoadPermissionsBySeqTsCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerSedimentedLoadsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerTruckersAssociationFinancialReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerContractorCompanyFinancialReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerDriverTruckLoadsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerCapacitorLoadsforAnnounceReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerCapacitorLoadsTransportCompaniesRegisteredLoadsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerAnnouncementHallsPerformanceReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerAnnouncementHallsPerformanceGeneralStatisticsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
-    Public Delegate Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
+    Public Delegate Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
+    Public Delegate Sub WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerTrucksAverageOfSleepDaysToGetLoadPermissionReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerTravelLengthOfLoadTargetsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationProviderTransportPriceTarrifsReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationProviderIndigenousTrucksWithUNNativeLPReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerClearanceLoadsReportReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerAnnounceLoadsReportReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodReportingInformationPrividerSaleOfCommissionSMSReportCompletedEventHandler(ByVal sender As Object, ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodCarTruckHasTurnCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodCarTruckHasTurnCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodCarTruckHasTurnCompletedEventArgs
@@ -981,11 +1053,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodGetnIdCarTruckBySmartCarNoCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodGetnIdCarTruckBySmartCarNoCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodGetnIdCarTruckBySmartCarNoCompletedEventArgs
@@ -1008,11 +1080,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodISCompanyActiveCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodISCompanyActiveCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodISCompanyActiveCompletedEventArgs
@@ -1035,11 +1107,11 @@ Namespace PayanehWS
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
     Public Delegate Sub WebMethodGetDriverTruckByNationalCodefromRMTOCompletedEventHandler(ByVal sender As Object, ByVal e As WebMethodGetDriverTruckByNationalCodefromRMTOCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class WebMethodGetDriverTruckByNationalCodefromRMTOCompletedEventArgs

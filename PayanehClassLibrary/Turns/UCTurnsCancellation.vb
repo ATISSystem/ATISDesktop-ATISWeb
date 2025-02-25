@@ -84,7 +84,7 @@ Public Class UCTurnsCancellation
             Dim InstanceTurnExpiration = New R2CoreTransportationAndLoadNotificationMClassTurnExpirationManager
             Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
             InstanceTurnExpiration.TurnCreditRegistering(UcLstViewerAllOfnEnterExitId.UCGetCurrentNSSSequentialTurn, InstanceTurns.GetNSSTurn(UcLstViewerAllOfnEnterExitId.UCGetSelectedTurnId), R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS)
-            UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "شماره اعتبار مورد نظر ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
+            'UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "شماره اعتبار مورد نظر ثبت شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)
         Catch ex As Exception
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

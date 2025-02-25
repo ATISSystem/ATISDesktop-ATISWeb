@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
       <s:element name="WebMethodLogin">
@@ -41,7 +41,7 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport">
+      <s:element name="WebMethodReportingInformationPrividerLoadPermissionsByAHSGs">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
@@ -56,7 +56,24 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportResponse">
+      <s:element name="WebMethodReportingInformationPrividerLoadPermissionsByAHSGsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerLoadPermissionsBySeqTs">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime1" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourDateTimeMilladi2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourDateShamsiFull2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="YourTime2" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourSeqTId" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerLoadPermissionsBySeqTsResponse">
         <s:complexType />
       </s:element>
       <s:element name="WebMethodReportingInformationPrividerSedimentedLoadsReport">
@@ -193,7 +210,7 @@
       <s:element name="WebMethodReportingInformationPrividerAnnouncementHallsPerformanceGeneralStatisticsReportResponse">
         <s:complexType />
       </s:element>
-      <s:element name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport">
+      <s:element name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGs">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="1" maxOccurs="1" name="YourAnnouncementHallSubGroupId" type="s:long" />
@@ -201,7 +218,18 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportResponse">
+      <s:element name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqts">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YourSeqTId" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="YourExchangeKey" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsResponse">
         <s:complexType />
       </s:element>
       <s:element name="WebMethodReportingInformationPrividerTrucksAverageOfSleepDaysToGetLoadPermissionReport">
@@ -381,11 +409,17 @@
   <wsdl:message name="WebMethodGetDSPersonnelFingerPrintsSoapOut">
     <wsdl:part name="parameters" element="tns:WebMethodGetDSPersonnelFingerPrintsResponse" />
   </wsdl:message>
-  <wsdl:message name="WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportSoapIn">
-    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport" />
+  <wsdl:message name="WebMethodReportingInformationPrividerLoadPermissionsByAHSGsSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerLoadPermissionsByAHSGs" />
   </wsdl:message>
-  <wsdl:message name="WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportSoapOut">
-    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportResponse" />
+  <wsdl:message name="WebMethodReportingInformationPrividerLoadPermissionsByAHSGsSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerLoadPermissionsByAHSGsResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerLoadPermissionsBySeqTsSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerLoadPermissionsBySeqTs" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerLoadPermissionsBySeqTsSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerLoadPermissionsBySeqTsResponse" />
   </wsdl:message>
   <wsdl:message name="WebMethodReportingInformationPrividerSedimentedLoadsReportSoapIn">
     <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerSedimentedLoadsReport" />
@@ -435,11 +469,17 @@
   <wsdl:message name="WebMethodReportingInformationPrividerAnnouncementHallsPerformanceGeneralStatisticsReportSoapOut">
     <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerAnnouncementHallsPerformanceGeneralStatisticsReportResponse" />
   </wsdl:message>
-  <wsdl:message name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportSoapIn">
-    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport" />
+  <wsdl:message name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGs" />
   </wsdl:message>
-  <wsdl:message name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportSoapOut">
-    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportResponse" />
+  <wsdl:message name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsSoapIn">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqts" />
+  </wsdl:message>
+  <wsdl:message name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsSoapOut">
+    <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsResponse" />
   </wsdl:message>
   <wsdl:message name="WebMethodReportingInformationPrividerTrucksAverageOfSleepDaysToGetLoadPermissionReportSoapIn">
     <wsdl:part name="parameters" element="tns:WebMethodReportingInformationPrividerTrucksAverageOfSleepDaysToGetLoadPermissionReport" />
@@ -516,9 +556,13 @@
       <wsdl:input message="tns:WebMethodGetDSPersonnelFingerPrintsSoapIn" />
       <wsdl:output message="tns:WebMethodGetDSPersonnelFingerPrintsSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport">
-      <wsdl:input message="tns:WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportSoapIn" />
-      <wsdl:output message="tns:WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReportSoapOut" />
+    <wsdl:operation name="WebMethodReportingInformationPrividerLoadPermissionsByAHSGs">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerLoadPermissionsByAHSGsSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerLoadPermissionsByAHSGsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerLoadPermissionsBySeqTs">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerLoadPermissionsBySeqTsSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerLoadPermissionsBySeqTsSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="WebMethodReportingInformationPrividerSedimentedLoadsReport">
       <wsdl:input message="tns:WebMethodReportingInformationPrividerSedimentedLoadsReportSoapIn" />
@@ -552,9 +596,13 @@
       <wsdl:input message="tns:WebMethodReportingInformationPrividerAnnouncementHallsPerformanceGeneralStatisticsReportSoapIn" />
       <wsdl:output message="tns:WebMethodReportingInformationPrividerAnnouncementHallsPerformanceGeneralStatisticsReportSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport">
-      <wsdl:input message="tns:WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportSoapIn" />
-      <wsdl:output message="tns:WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReportSoapOut" />
+    <wsdl:operation name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGs">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqts">
+      <wsdl:input message="tns:WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsSoapIn" />
+      <wsdl:output message="tns:WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqtsSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="WebMethodReportingInformationPrividerTrucksAverageOfSleepDaysToGetLoadPermissionReport">
       <wsdl:input message="tns:WebMethodReportingInformationPrividerTrucksAverageOfSleepDaysToGetLoadPermissionReportSoapIn" />
@@ -621,8 +669,17 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport">
-      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport" style="document" />
+    <wsdl:operation name="WebMethodReportingInformationPrividerLoadPermissionsByAHSGs">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerLoadPermissionsByAHSGs" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerLoadPermissionsBySeqTs">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerLoadPermissionsBySeqTs" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -702,8 +759,17 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport">
-      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport" style="document" />
+    <wsdl:operation name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGs">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGs" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqts">
+      <soap:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqts" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -831,8 +897,17 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport">
-      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerLoadPermissionsIssuedOrderByPriorityReport" style="document" />
+    <wsdl:operation name="WebMethodReportingInformationPrividerLoadPermissionsByAHSGs">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerLoadPermissionsByAHSGs" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerLoadPermissionsBySeqTs">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerLoadPermissionsBySeqTs" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -912,8 +987,17 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport">
-      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionReport" style="document" />
+    <wsdl:operation name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGs">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionByAHSGs" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqts">
+      <soap12:operation soapAction="http://tempuri.org/WebMethodReportingInformationPrividerTruckDriversWaitingToGetLoadPermissionBySeqts" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1023,10 +1107,10 @@
   </wsdl:binding>
   <wsdl:service name="PayanehWebService">
     <wsdl:port name="PayanehWebServiceSoap" binding="tns:PayanehWebServiceSoap">
-      <soap:address location="http://192.168.1.2:2012/PayanehWebService.asmx" />
+      <soap:address location="http://172.26.29.22:2012/PayanehWebService.asmx" />
     </wsdl:port>
     <wsdl:port name="PayanehWebServiceSoap12" binding="tns:PayanehWebServiceSoap12">
-      <soap12:address location="http://192.168.1.2:2012/PayanehWebService.asmx" />
+      <soap12:address location="http://172.26.29.22:2012/PayanehWebService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

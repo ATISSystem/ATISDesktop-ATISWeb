@@ -54,7 +54,6 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                     var OtaghdarTurnNumber = Lst[Loopx].OtaghdarTurnNumber.Trim().Split('-')[0];
                     var TurnDistanceToValidity = Lst[Loopx].OtaghdarTurnNumber.Trim().Split('-')[1];
                     Item.OtaghdarTurnNumber = "شماره نوبت : " + OtaghdarTurnNumber + " فاصله شما تا اعتبار : " + TurnDistanceToValidity;
-                    //Item.OtaghdarTurnNumber = "شماره نوبت : " + OtaghdarTurnNumber ;
                     //if (Loopx == 0)
                     //{
                     //    var NSSSeqTurn = InstanceSequentialTurns.GetNSSSequentialTurn(Lst[Loopx]);

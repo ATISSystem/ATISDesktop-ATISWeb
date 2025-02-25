@@ -58,6 +58,10 @@ namespace R2PrimaryTestCSharp
         private void Button1_Click(object sender, EventArgs e)
         {
 
+            var x = new BillOfLadingClassLibrary.ir.rmto.bar.BarInfoServiceAtis();
+            x.GetFreighterBOLsCount("atis", "SM4W44W946", "4658475", "1403/01/01", "00:00:00");
+ 
+
             //    var InstanceAES = new AESAlgorithmsManager();
             //    var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
             //    var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();

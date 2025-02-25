@@ -35,7 +35,7 @@ Partial Class UCLoadAllocationManipulationByLoadCapacitorLoads
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(1, 1)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(948, 133)
+        Me.PnlMain.Size = New System.Drawing.Size(948, 159)
         Me.PnlMain.TabIndex = 0
         '
         'UcLoadAllocationManipulation
@@ -45,7 +45,7 @@ Partial Class UCLoadAllocationManipulationByLoadCapacitorLoads
         Me.UcLoadAllocationManipulation.Location = New System.Drawing.Point(0, 0)
         Me.UcLoadAllocationManipulation.Name = "UcLoadAllocationManipulation"
         Me.UcLoadAllocationManipulation.Padding = New System.Windows.Forms.Padding(5)
-        Me.UcLoadAllocationManipulation.Size = New System.Drawing.Size(948, 133)
+        Me.UcLoadAllocationManipulation.Size = New System.Drawing.Size(948, 159)
         Me.UcLoadAllocationManipulation.TabIndex = 0
         Me.UcLoadAllocationManipulation.UCNSSCurrent = Nothing
         Me.UcLoadAllocationManipulation.UCViewButtons = True
@@ -58,7 +58,7 @@ Partial Class UCLoadAllocationManipulationByLoadCapacitorLoads
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCLoadAllocationManipulationByLoadCapacitorLoads"
         Me.Padding = New System.Windows.Forms.Padding(1)
-        Me.Size = New System.Drawing.Size(950, 135)
+        Me.Size = New System.Drawing.Size(950, 161)
         Me.PnlMain.ResumeLayout(false)
         Me.ResumeLayout(false)
 

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetFreighterBOLsCount">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FreighterCardNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FromDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FromTime" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFreighterBOLsCountResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFreighterBOLsCountResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetFreighterBOLsCountSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFreighterBOLsCount" />
+  </wsdl:message>
+  <wsdl:message name="GetFreighterBOLsCountSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFreighterBOLsCountResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFreighterBOLsCountHttpGetIn">
+    <wsdl:part name="UserName" type="s:string" />
+    <wsdl:part name="Password" type="s:string" />
+    <wsdl:part name="FreighterCardNo" type="s:string" />
+    <wsdl:part name="FromDate" type="s:string" />
+    <wsdl:part name="FromTime" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetFreighterBOLsCountHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="GetFreighterBOLsCountHttpPostIn">
+    <wsdl:part name="UserName" type="s:string" />
+    <wsdl:part name="Password" type="s:string" />
+    <wsdl:part name="FreighterCardNo" type="s:string" />
+    <wsdl:part name="FromDate" type="s:string" />
+    <wsdl:part name="FromTime" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetFreighterBOLsCountHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="BarInfoServiceAtisSoap">
+    <wsdl:operation name="GetFreighterBOLsCount">
+      <wsdl:input message="tns:GetFreighterBOLsCountSoapIn" />
+      <wsdl:output message="tns:GetFreighterBOLsCountSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="BarInfoServiceAtisHttpGet">
+    <wsdl:operation name="GetFreighterBOLsCount">
+      <wsdl:input message="tns:GetFreighterBOLsCountHttpGetIn" />
+      <wsdl:output message="tns:GetFreighterBOLsCountHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="BarInfoServiceAtisHttpPost">
+    <wsdl:operation name="GetFreighterBOLsCount">
+      <wsdl:input message="tns:GetFreighterBOLsCountHttpPostIn" />
+      <wsdl:output message="tns:GetFreighterBOLsCountHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BarInfoServiceAtisSoap" type="tns:BarInfoServiceAtisSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetFreighterBOLsCount">
+      <soap:operation soapAction="http://tempuri.org/GetFreighterBOLsCount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BarInfoServiceAtisSoap12" type="tns:BarInfoServiceAtisSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetFreighterBOLsCount">
+      <soap12:operation soapAction="http://tempuri.org/GetFreighterBOLsCount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BarInfoServiceAtisHttpGet" type="tns:BarInfoServiceAtisHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="GetFreighterBOLsCount">
+      <http:operation location="/GetFreighterBOLsCount" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BarInfoServiceAtisHttpPost" type="tns:BarInfoServiceAtisHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="GetFreighterBOLsCount">
+      <http:operation location="/GetFreighterBOLsCount" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BarInfoServiceAtis">
+    <wsdl:port name="BarInfoServiceAtisSoap" binding="tns:BarInfoServiceAtisSoap">
+      <soap:address location="https://bar.rmto.ir/service2/barinfoserviceatis.asmx" />
+    </wsdl:port>
+    <wsdl:port name="BarInfoServiceAtisSoap12" binding="tns:BarInfoServiceAtisSoap12">
+      <soap12:address location="https://bar.rmto.ir/service2/barinfoserviceatis.asmx" />
+    </wsdl:port>
+    <wsdl:port name="BarInfoServiceAtisHttpGet" binding="tns:BarInfoServiceAtisHttpGet">
+      <http:address location="https://bar.rmto.ir/service2/barinfoserviceatis.asmx" />
+    </wsdl:port>
+    <wsdl:port name="BarInfoServiceAtisHttpPost" binding="tns:BarInfoServiceAtisHttpPost">
+      <http:address location="https://bar.rmto.ir/service2/barinfoserviceatis.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

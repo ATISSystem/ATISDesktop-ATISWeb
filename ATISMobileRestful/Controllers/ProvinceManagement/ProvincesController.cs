@@ -28,6 +28,7 @@ using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
 using R2CoreTransportationAndLoadNotification.Turns;
 using R2Core.SiteIsBusy;
 using R2Core.SiteIsBusy.Exceptions;
+using R2CoreTransportationAndLoadNotification.RequesterManagement;
 
 namespace ATISMobileRestful.Controllers.ProvinceManagement
 {
@@ -47,13 +48,16 @@ namespace ATISMobileRestful.Controllers.ProvinceManagement
                 var InstanceSiteIsBusy = new R2CoreSiteIsBusyManager();
                 InstanceSiteIsBusy.SiteIsBusy();
 
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var AHId = Content.Split(';')[2];
                 var AHSGId = Content.Split(';')[3];
                 var LoadCapacitorLoadsListType = Content.Split(';')[4];
+                Int64 LoadStatusId = Convert.ToInt64(LoadCapacitorLoadsListType) == (long)R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered ? Convert.ToInt64(R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered) : Convert.ToInt64(R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented);
+
                 List<Models.Province> _Provinces = new List<Models.Province>();
                 var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
-                var Lst = InstanceLoadCapacitorLoad.GetProvincesWithNumberOfLoads(Convert.ToInt64(AHId), Convert.ToInt64(AHSGId), Convert.ToInt64(LoadCapacitorLoadsListType));
+                var Lst = InstanceLoadCapacitorLoad.GetProvincesWithNumberOfLoadsforApplication(R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent, NSSSoftwareuser, Convert.ToInt64(AHSGId), LoadStatusId);
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
                     var Item = new Models.Province();

@@ -63,6 +63,8 @@ using PayanehClassLibrary.Logging;
 using R2CoreTransportationAndLoadNotification.LoadPermission;
 using R2CoreTransportationAndLoadNotification.Trucks;
 using R2CoreTransportationAndLoadNotification.AnnouncementTiming;
+using static System.Net.WebRequestMethods;
+using BillOfLadingClassLibrary.ir.rmto.bar;
 
 namespace BillOfLadingCore
 {
@@ -183,7 +185,7 @@ namespace BillOfLadingCore
                     if (!(WS.WebMethodIOFileExist(R2CoreRawGroups.UploadedFiles, "BL" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".mdb", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword)))) { throw new BillOfLadingCoreFilefromRefrenceNotFoundException(); }
                     /*خواندن فایل از سرور فایل و کپی آن به فولدر اپ دیتا موقت*/
                     string tempFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "BL" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".mdb";
-                    using (var fileStream = File.Create(tempFilePath))
+                    using (var fileStream = System.IO.File.Create(tempFilePath))
                     {
                         var ms = new System.IO.MemoryStream(WS.WebMethodGetFile(R2CoreRawGroups.UploadedFiles, "BL" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".mdb", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword)));
                         ms.CopyTo(fileStream);
@@ -241,7 +243,7 @@ namespace BillOfLadingCore
                     { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, BillOfLadingCoreloggings.BillOfLadingTurnsCancellation, InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).LogTitle, "TotalTurn=" + LstActiveTurns.Count.ToString(), "TotalTurnCancelled=" + TotalTurn.ToString(), string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
 
                     /*حذف فایل موقت از اپ دیتا*/
-                    File.Delete(tempFilePath);
+                    System.IO.File.Delete(tempFilePath);
 
                     ////حذف فایل با حفظ سابقه
                     WS.WebMethodDeleteFileButKeepDeleted(R2CoreRawGroups.UploadedFiles, "BL" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".mdb", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword));

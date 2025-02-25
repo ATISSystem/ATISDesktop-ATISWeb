@@ -72,8 +72,9 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="TWS">
-      <HintPath>..\..\..\..\TWSSystem\TerminalsSolution\TerminalsSolution\TWSClassLibrary\bin\Debug\TWS.dll</HintPath>
+    <Reference Include="TWS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Other Projects\TWSSystem\TerminalsSolution\TWSClassLibrary\bin\Debug\TWS.dll</HintPath>
     </Reference>
     <Reference Include="UI.Glass.Panel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -384,10 +385,10 @@
     <Compile Include="Reports\FrmcIndigenousTrucksWithUNNativeLPReport.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Reports\FrmcLoadPermissionsIssuedOrderByPriorityReport.Designer.vb">
-      <DependentUpon>FrmcLoadPermissionsIssuedOrderByPriorityReport.vb</DependentUpon>
+    <Compile Include="Reports\FrmcLoadPermissionsIssued.Designer.vb">
+      <DependentUpon>FrmcLoadPermissionsIssued.vb</DependentUpon>
     </Compile>
-    <Compile Include="Reports\FrmcLoadPermissionsIssuedOrderByPriorityReport.vb">
+    <Compile Include="Reports\FrmcLoadPermissionsIssued.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Reports\FrmcSaleOfCommissionSMSReport.Designer.vb">
@@ -480,10 +481,10 @@
     <Compile Include="Reports\UCIndigenousTrucksWithUNNativeLPReport.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Reports\UCLoadPermissionIssuedOrderByPriority.Designer.vb">
-      <DependentUpon>UCLoadPermissionIssuedOrderByPriority.vb</DependentUpon>
+    <Compile Include="Reports\UCLoadPermissionIssued.Designer.vb">
+      <DependentUpon>UCLoadPermissionIssued.vb</DependentUpon>
     </Compile>
-    <Compile Include="Reports\UCLoadPermissionIssuedOrderByPriority.vb">
+    <Compile Include="Reports\UCLoadPermissionIssued.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Reports\UCSaleOfCommissionSMSReport.Designer.vb">
@@ -742,8 +743,8 @@
     <EmbeddedResource Include="Reports\FrmcIndigenousTrucksWithUNNativeLPReport.resx">
       <DependentUpon>FrmcIndigenousTrucksWithUNNativeLPReport.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\FrmcLoadPermissionsIssuedOrderByPriorityReport.resx">
-      <DependentUpon>FrmcLoadPermissionsIssuedOrderByPriorityReport.vb</DependentUpon>
+    <EmbeddedResource Include="Reports\FrmcLoadPermissionsIssued.resx">
+      <DependentUpon>FrmcLoadPermissionsIssued.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\FrmcSaleOfCommissionSMSReport.resx">
       <DependentUpon>FrmcSaleOfCommissionSMSReport.vb</DependentUpon>
@@ -790,8 +791,8 @@
     <EmbeddedResource Include="Reports\UCIndigenousTrucksWithUNNativeLPReport.resx">
       <DependentUpon>UCIndigenousTrucksWithUNNativeLPReport.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\UCLoadPermissionIssuedOrderByPriority.resx">
-      <DependentUpon>UCLoadPermissionIssuedOrderByPriority.vb</DependentUpon>
+    <EmbeddedResource Include="Reports\UCLoadPermissionIssued.resx">
+      <DependentUpon>UCLoadPermissionIssued.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UCSaleOfCommissionSMSReport.resx">
       <DependentUpon>UCSaleOfCommissionSMSReport.vb</DependentUpon>
@@ -909,10 +910,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://192.168.1.2:2012/PayanehWebService.asmx">
+    <WebReferenceUrl Include="http://172.26.29.22:2012/PayanehWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\PayanehWS\</RelPath>
-      <UpdateFromURL>http://192.168.1.2:2012/PayanehWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://172.26.29.22:2012/PayanehWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -920,10 +921,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>PayanehClassLibrary_PayanehWS_PayanehWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://192.168.1.2:2010/TerminalsWebService.asmx">
+    <WebReferenceUrl Include="http://172.26.29.22:2010/TerminalsWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\TerminalsWebService\</RelPath>
-      <UpdateFromURL>http://192.168.1.2:2010/TerminalsWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://172.26.29.22:2010/TerminalsWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

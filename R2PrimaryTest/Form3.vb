@@ -81,8 +81,7 @@ Public Class Form3
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
-            R2CorePersonnelMClassManagement.PersonelFunctionCalculate(R2CorePersonnelMClassManagement.GetNSSPersonnel(Convert.ToInt64(TextBoxConcat1.Text)), New R2StandardDateAndTimeStructure(Nothing, "1403/09/01", Nothing))
-
+            R2CorePersonnelMClassManagement.PersonelFunctionCalculate(R2CorePersonnelMClassManagement.GetNSSPersonnel(Convert.ToInt64(TextBoxConcat1.Text)), New R2StandardDateAndTimeStructure(Nothing, "1403/11/01", Nothing))
             MessageBox.Show("Finished ... ")
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -307,16 +306,21 @@ Public Class Form3
         Dim Cmdsql As New SqlClient.SqlCommand
         Cmdsql.Connection = (New R2Core.DatabaseManagement.R2PrimarySqlConnection).GetConnection
         Try
-            'صدور خودکار مجوزهای سالن های اعلام بار
-            Try
-                Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
-                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
-                InstanceLoadAllocation.LoadAllocationsLoadPermissionRegistering(InstanceSoftwareUsers.GetNSSSystemUser())
-                InstanceSoftwareUsers = Nothing
-                InstanceLoadAllocation = Nothing
-            Catch ex As Exception
-                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
-            End Try
+            ''صدور خودکار مجوزهای سالن های اعلام بار
+            'Dim InstanceLoadAllocation = New R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager
+            'Try
+            '    Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            '    InstanceLoadAllocation.LoadAllocationsLoadPermissionRegistering(InstanceSoftwareUsers.GetNSSSystemUser())
+            '    InstanceSoftwareUsers = Nothing
+            '    InstanceLoadAllocation = Nothing
+            'Catch ex As Exception
+            '    Try
+            '        InstanceLoadAllocation.SendLoadAllocationsLoadPermissionRegisteringFailedSMS()
+            '    Catch exSMS As Exception
+            '        EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering.FailedSMS:" + ex.Message.ToString, EventLogEntryType.Error)
+            '    End Try
+            '    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+            'End Try
 
             'صدور خودکار نوبت ها
             Try
@@ -434,7 +438,7 @@ Public Class Form3
             '    R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.LoadAllocationCancelling(NSSLoadAllocation.LAId, R2CoreTransportationAndLoadNotificationLoadAllocationStatuses.CancelledSystem, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser())
             '    Throw New LoadAllocationMaxDelayFailedReachedException
             'End If
-
+            MessageBox.Show("Finished ...")
         Catch ex As Exception
             'If Cmdsql.Connection.State <> ConnectionState.Closed Then
             '    Cmdsql.Transaction.Rollback() : Cmdsql.Connection.Close()
@@ -510,11 +514,13 @@ Public Class Form3
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        'ابطال گروهی نوبت ها
+        ''ابطال گروهی نوبت ها
         Try
-            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
-            Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
-            InstanceCarTruckNobat.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser())
+            Dim x As New R2CoreParkingSystemMClassSMSOwnersManager
+            x.ActivateSMSOwner(R2CoreMClassSoftwareUsersManagement.GetNSSUser(27475), R2CoreMClassSoftwareUsersManagement.GetNSSUser(1))
+            'Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            'Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
+            'InstanceCarTruckNobat.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser())
         Catch ex As Exception
             MessageBox.Show(ex.Message)
         End Try
@@ -681,7 +687,16 @@ Public Class Form3
         Dim cmdsql As New SqlClient.SqlCommand
         cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
-            R2CoreParkingSystem.Cars.R2CoreParkingSystemMClassCars.InsertCar(New R2CoreParkingSystem.Cars.R2StandardCarStructure(Nothing, 505, "318ی48", "23", 2310000), R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
+            Dim x As New R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad.R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            Dim iksjdfj = x.GetLoadCapacitorLoadsforApplication(1, R2CoreMClassSoftwareUsersManagement.GetNSSUser(21184), 12, 1, 21)
+
+            Dim yx As Decimal = 27.5
+            'MessageBox.Show(x.ToString)
+            'PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderLoadPermissionIssuedBySeqTs(New R2StandardDateAndTimeStructure(Nothing, "1403/11/03", "00:00:00"), New R2StandardDateAndTimeStructure(Nothing, "1403/11/03", "23:00:00"), 2)
+            'Dim x = TimeSpan.Parse(TextBoxConcat1.Text)
+            'Dim y = TimeSpan.Parse(TextBoxConcat2.Text)
+            'MessageBox.Show(x.Ticks)
+            'R2CoreParkingSystem.Cars.R2CoreParkingSystemMClassCars.InsertCar(New R2CoreParkingSystem.Cars.R2StandardCarStructure(Nothing, 505, "318ی48", "23", 2310000), R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser)
             'Dim x As New LoadCapacitorLoadManipulation.R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
             'x.ChangeLoadTarget("09132043148", "123;882244;215130244")
 
@@ -905,14 +920,23 @@ Public Class Form3
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
 
+
+        PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderLoadPermissionIssuedBySeqTs(New R2StandardDateAndTimeStructure(Nothing, "1403/11/14", "00:00:00"), New R2StandardDateAndTimeStructure(Nothing, "1403/11/14", "23:59:59"), 2)
+        ''صدور خودکار نوبت ها
+        'Try
+        '    PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+        'Catch ex As Exception
+        '    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+        'End Try
+
         'ابطال گروهی نوبت ها
-        Try
-            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
-            Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
-            InstanceCarTruckNobat.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser())
-        Catch ex As Exception
-            EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TurnsCancellation:" + ex.Message.ToString, EventLogEntryType.Error)
-        End Try
+        'Try
+        '    Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+        '    Dim InstanceCarTruckNobat = New PayanehClassLibraryMClassCarTruckNobatManager
+        '    InstanceCarTruckNobat.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser())
+        'Catch ex As Exception
+        '    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "TurnsCancellation:" + ex.Message.ToString, EventLogEntryType.Error)
+        'End Try
 
         'Try
         '    PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()

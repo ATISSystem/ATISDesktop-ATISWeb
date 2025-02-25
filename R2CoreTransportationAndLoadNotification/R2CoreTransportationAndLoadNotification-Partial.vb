@@ -94,6 +94,9 @@ Imports R2Core.SoftwareUserManagement.Exceptions
 Imports System.ComponentModel.Design
 Imports R2CoreTransportationAndLoadNotification.LoadSources.Exceptions
 Imports R2CoreTransportationAndLoadNotification.LoadSources
+Imports R2CoreGUI
+Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
+Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -1422,6 +1425,56 @@ Namespace LoadCapacitor
                 End Try
             End Function
 
+            Public Function GetLoadCapacitorLoadsforApplication(YourRequesterId As Int64, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourAHSGId As Int64, YourLoadStatusId As Int64, YourProvinceId As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
+                Try
+
+                    Dim Lst As New List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    Dim DSPreInformations As DataSet = Nothing
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                           "Select Top 1 Cars.CarNativenessTypeId,SequentialTurns.SeqTId from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                               Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1 
+                               Inner Join dbtransport.dbo.TbPerson as Persons On EntityRelations.E2 =Persons.nIDPerson
+                               Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPerson On Persons.nIDPerson=CarAndPerson.nIDPerson 
+                               Inner Join dbtransport.dbo.TbCar as Cars On CarAndPerson.nIDCar=Cars.nIDCar 
+                               Inner Join dbtransport.dbo.tbEnterExit as Turns On Cars.nIDCar=Turns.strCardno 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SequentialTurns On substring(Turns.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS=SequentialTurns.SeqTKeyWord  Collate Arabic_CI_AI_WS 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTruckNativenessTypes as TruckNativenessTypes On Cars.CarNativenessTypeId=TruckNativenessTypes.NId 
+                            Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and EntityRelations.ERTypeId=" & R2CoreParkingSystem.EntityRelations.R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 and CarAndPerson.snRelation=2 and Cars.ViewFlag=1 and SequentialTurns.Active=1 and TruckNativenessTypes.Active=1
+                                  and ((DATEDIFF(SECOND,CarAndPerson.RelationTimeStamp,getdate())<240) Or (CarAndPerson.RelationTimeStamp='2015-01-01 00:00:00.000'))
+                                  and (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and Turns.bFlagDriver=0
+                            Order By Turns.nEnterExitId Desc", 300, DSPreInformations).GetRecordsCount = 0 Then Throw New BaseInfFailedException
+                    Dim SeqTId As Int64 = DSPreInformations.Tables(0).Rows(0).Item("SeqTId")
+                    Dim NativenessTypeId As Int64 = DSPreInformations.Tables(0).Rows(0).Item("CarNativenessTypeId")
+
+                    Dim DSLoads As DataSet = Nothing
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                           "Select Loads.nEstelamId,Loads.StrBarName,Loads.TPTParams,Loads.nTonaj,Loads.StrAddress,Loads.nCarNumKol,Loads.nCarNum,Loads.StrPriceSug,Loads.strDescription,TransportCompanies.TCTitle,Products.strGoodName,LoadSources.strCityName as LoadSource,LoadTargets.strCityName as LoadTarget,TransportCompanies.TCTel,LoadingPlaces.LADPlaceTitle as LoadingPlaceTitle,DischargingPlaces.LADPlaceTitle as DischargingPlaceTitle
+                           from DBTransport.dbo.TbElam as Loads
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Loads.nCompCode=TransportCompanies.TCId 
+                               Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode=Products.strGoodCode 
+                               Inner Join dbtransport.dbo.tbCity as LoadSources On Loads.nBarSource=LoadSources.nCityCode
+                               Inner Join dbtransport.dbo.tbCity as LoadTargets On Loads.nCityCode=LoadTargets.nCityCode 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces on LoadTargets.nProvince=Provinces.ProvinceId 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On Loads.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On Loads.DischargingPlaceId=DischargingPlaces.LADPlaceId 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.tblLoadsViewConditions as LoadsViewConditions On Loads.AHSGId=LoadsViewConditions.AHSGId
+                            where Loads.dDateElam='" & _DateTime.GetCurrentDateShamsiFull() & "' and Loads.LoadStatus=" & YourLoadStatusId & " and LoadsViewConditions.LoadStatusId=" & YourLoadStatusId & " and LoadsViewConditions.RequesterId=" & YourRequesterId & " and Loads.nCarNum>0 and Loads.AHSGId=" & YourAHSGId & " and Provinces.ProvinceId=" & YourProvinceId & " and LoadsViewConditions.SeqTId=" & SeqTId & " and LoadsViewConditions.NativenessTypeId=" & NativenessTypeId & "
+                            Order By LoadTargets.StrCityName  
+                          ", 120, DSLoads).GetRecordsCount = 0 Then Throw New NoLoadsorLoadsViewConditionsMismatchException
+                    For Loopx As Int64 = 0 To DSLoads.Tables(0).Rows.Count - 1
+                        Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(DSLoads.Tables(0).Rows(Loopx).Item("nEstelamId"), Nothing, DSLoads.Tables(0).Rows(Loopx).Item("StrBarName").trim, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("nTonaj"), Nothing, Nothing, Nothing, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("StrAddress").trim, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("nCarNumKol"), DSLoads.Tables(0).Rows(Loopx).Item("StrPriceSug"), DSLoads.Tables(0).Rows(Loopx).Item("strDescription").trim, Nothing, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("nCarNum"), Nothing, Nothing, Nothing, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("TPTParams"), Nothing, Nothing, Nothing), DSLoads.Tables(0).Rows(Loopx).Item("TCTitle").trim, DSLoads.Tables(0).Rows(Loopx).Item("strGoodName").trim, DSLoads.Tables(0).Rows(Loopx).Item("LoadSource").trim, DSLoads.Tables(0).Rows(Loopx).Item("LoadTarget").trim, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("TCTel").trim, Nothing, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("LoadingPlaceTitle").trim, DSLoads.Tables(0).Rows(Loopx).Item("DischargingPlaceTitle").trim))
+                    Next
+                    Return Lst
+                Catch ex As NoLoadsorLoadsViewConditionsMismatchException
+                    Throw ex
+                Catch ex As BaseInfFailedException
+                    Throw
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Function
+
             Public Function GetLoadCapacitorLoads(YourAHId As Int64, YourAHSGId As Int64, YourAHATTypeId As Int64, YournCarNumViewZeroFlag As Boolean, YourLoadStatusLimitation As Boolean, YourOrderingOptions As R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions, Optional YourTransportCompanyId As Int64 = Int64.MinValue, Optional YourProvinceId As Int64 = Int64.MinValue) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
                 Try
                     Dim LastAnnounceTime As String
@@ -1683,44 +1736,39 @@ Namespace LoadCapacitor
                 End Try
             End Function
 
-            Public Function GetProvincesWithNumberOfLoads(YourAHId As Int64, YourAHSGId As Int64, YourLoadCapacitorLoadsListType As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardNumberOfLoadsOfProvinceStructure)
-                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+            'Public Function GetProvincesWithNumberOfLoads(YourAHId As Int64, YourAHSGId As Int64, YourLoadCapacitorLoadsListType As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardNumberOfLoadsOfProvinceStructure)
+            Public Function GetProvincesWithNumberOfLoadsforApplication(YourRequesterId As Int64, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourAHSGId As Int64, YourLoadStatusId As Int64) As List(Of R2CoreTransportationAndLoadNotificationStandardNumberOfLoadsOfProvinceStructure)
                 Try
-                    Dim AHString = " and AHs.AHId=" & YourAHId & "" + IIf(YourAHSGId = Int64.MinValue, String.Empty, " and AHSGs.AHSGId=" & YourAHSGId & "")
-                    Dim DS As DataSet = New DataSet()
-                    If YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.NotSedimented Then
-                        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Sum(LoadCapacitor.nCarNum) as NumberOfLoads
-                                  from DBTransport.dbo.tbElam as LoadCapacitor
-	                                 Inner join DBTransport.dbo.tbCity as Cities On LoadCapacitor.nCityCode=Cities.nCityCode  
-                                     Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces On Cities.nProvince=Provinces.ProvinceId 
-		                             Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On LoadCapacitor.AHId=AHs.AHId 
-	                                 Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On LoadCapacitor.AHSGId=AHSGs.AHSGId 
-                                  Where ltrim(rtrim(LoadCapacitor.dDateElam))='" & _DateTime.GetCurrentDateShamsiFull & "' and LoadCapacitor.bFlag=0 and  (LoadCapacitor.LoadStatus=1 or LoadCapacitor.LoadStatus=2) and LoadCapacitor.nCarNum>0 and
-                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 120, DS)
-                    ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.Sedimented Then
-                        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Sum(LoadCapacitor.nCarNum) as NumberOfLoads 
-                                  from DBTransport.dbo.tbElam as LoadCapacitor
-	                                 Inner join DBTransport.dbo.tbCity as Cities On LoadCapacitor.nCityCode=Cities.nCityCode  
-                                     Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces On Cities.nProvince=Provinces.ProvinceId 
-		                             Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On LoadCapacitor.AHId=AHs.AHId 
-	                                 Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On LoadCapacitor.AHSGId=AHSGs.AHSGId 
-                                  Where ltrim(rtrim(LoadCapacitor.dDateElam))='" & _DateTime.GetCurrentDateShamsiFull & "' and LoadCapacitor.bFlag=1 and  (LoadCapacitor.LoadStatus=5) and LoadCapacitor.nCarNum>0 and
-                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 120, DS)
-                    ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.TommorowLoad Then
-                        InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Sum(LoadCapacitor.nCarNum) as NumberOfLoads 
-                                  from DBTransport.dbo.tbElam as LoadCapacitor
-	                                 Inner join DBTransport.dbo.tbCity as Cities On LoadCapacitor.nCityCode=Cities.nCityCode  
-                                     Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces On Cities.nProvince=Provinces.ProvinceId 
-		                             Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHalls as AHs On LoadCapacitor.AHId=AHs.AHId 
-	                                 Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On LoadCapacitor.AHSGId=AHSGs.AHSGId 
-                                  Where  LoadCapacitor.bFlag=0 and  (LoadCapacitor.LoadStatus=6) and LoadCapacitor.nCarNum>0 and
-                                         AHs.ViewFlag=1 and AHs.Deleted=0 and AHSGs.ViewFlag=1 and AHSGs.Deleted=0 and Provinces.ViewFlag=1 and Provinces.Deleted=0" + AHString + " Group By Provinces.ProvinceId, Provinces.ProvinceName Order By Provinces.ProvinceName", 120, DS)
-                    ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.None Then
-                    ElseIf YourLoadCapacitorLoadsListType = LoadCapacitorLoadsListType.LastButNotTommorowLoad Then
-                    End If
+                    Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                    Dim DSPreInformations As DataSet = Nothing
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                           "Select Top 1 Cars.CarNativenessTypeId,SequentialTurns.SeqTId from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                               Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUsers.UserId=EntityRelations.E1 
+                               Inner Join dbtransport.dbo.TbPerson as Persons On EntityRelations.E2 =Persons.nIDPerson
+                               Inner Join dbtransport.dbo.TbCarAndPerson as CarAndPerson On Persons.nIDPerson=CarAndPerson.nIDPerson 
+                               Inner Join dbtransport.dbo.TbCar as Cars On CarAndPerson.nIDCar=Cars.nIDCar 
+                               Inner Join dbtransport.dbo.tbEnterExit as Turns On Cars.nIDCar=Turns.strCardno 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblSequentialTurns as SequentialTurns On substring(Turns.OtaghdarTurnNumber,1,1) Collate Arabic_CI_AI_WS=SequentialTurns.SeqTKeyWord  Collate Arabic_CI_AI_WS 
+                               Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTruckNativenessTypes as TruckNativenessTypes On Cars.CarNativenessTypeId=TruckNativenessTypes.NId 
+                            Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUsers.UserActive=1 and EntityRelations.ERTypeId=" & R2CoreParkingSystem.EntityRelations.R2CoreParkingSystemEntityRelationTypes.SoftwareUser_Driver & " and EntityRelations.RelationActive=1 and CarAndPerson.snRelation=2 and Cars.ViewFlag=1 and SequentialTurns.Active=1 and TruckNativenessTypes.Active=1
+                                  and ((DATEDIFF(SECOND,CarAndPerson.RelationTimeStamp,getdate())<240) Or (CarAndPerson.RelationTimeStamp='2015-01-01 00:00:00.000'))
+                                  and (Turns.TurnStatus=1 or Turns.TurnStatus=7 or Turns.TurnStatus=8 or Turns.TurnStatus=9 or Turns.TurnStatus=10) and Turns.bFlagDriver=0
+                            Order By Turns.nEnterExitId Desc", 300, DSPreInformations).GetRecordsCount = 0 Then Throw New BaseInfFailedException
+                    Dim SeqTId As Int64 = DSPreInformations.Tables(0).Rows(0).Item("SeqTId")
+                    Dim NativenessTypeId As Int64 = DSPreInformations.Tables(0).Rows(0).Item("CarNativenessTypeId")
+
+                    Dim DS As DataSet = New DataSet
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                         "Select Provinces.ProvinceId, Provinces.ProvinceName,Sum(Loads.nCarNum) as NumberOfLoads
+                            from DBTransport.dbo.tbElam as Loads
+                            Inner join DBTransport.dbo.tbCity as Cities On Loads.nCityCode=Cities.nCityCode  
+                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces On Cities.nProvince=Provinces.ProvinceId 
+                            Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AHSGs On Loads.AHSGId=AHSGs.AHSGId 
+                            Inner Join R2PrimaryTransportationAndLoadNotification.dbo.tblLoadsViewConditions as LoadsViewConditions On Loads.AHSGId=LoadsViewConditions.AHSGId
+                          Where ltrim(rtrim(Loads.dDateElam))='" & _DateTime.GetCurrentDateShamsiFull() & "' and Loads.nCarNum>0 and AHSGs.Active=1 and AHSGs.Deleted=0 and Provinces.Active=1 and Provinces.Deleted=0 and
+                                Loads.LoadStatus=" & YourLoadStatusId & " and LoadsViewConditions.LoadStatusid=" & YourLoadStatusId & " and LoadsViewConditions.RequesterId=" & YourRequesterId & " and Loads.AHSGId=" & YourAHSGId & " and LoadsViewConditions.SeqTId=" & SeqTId & " and LoadsViewConditions.NativenessTypeId=" & NativenessTypeId & "
+                          Group By Provinces.ProvinceId, Provinces.ProvinceName 
+                          Order By Provinces.ProvinceName", 120, DS).GetRecordsCount = 0 Then Throw New NoLoadsorLoadsViewConditionsMismatchException
                     Dim Lst = New List(Of R2CoreTransportationAndLoadNotificationStandardNumberOfLoadsOfProvinceStructure)
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                         Dim NSSNumberOfLoadsOfProvince = New R2CoreTransportationAndLoadNotificationStandardNumberOfLoadsOfProvinceStructure
@@ -1732,6 +1780,10 @@ Namespace LoadCapacitor
                         Lst.Add(NSSNumberOfLoadsOfProvince)
                     Next
                     Return Lst
+                Catch ex As NoLoadsorLoadsViewConditionsMismatchException
+                    Throw ex
+                Catch ex As BaseInfFailedException
+                    Throw ex
                 Catch ex As LoadTargetsforProvinceNotFoundException
                     Throw ex
                 Catch ex As Exception
@@ -1800,7 +1852,7 @@ Namespace LoadCapacitor
                 End Try
             End Function
 
-            Public Shared Function GetLoadCapacitorLoads(YourAHId As Int64, YourAHSGId As Int64, YourAHATTypeId As Int64, YournCarNumViewZeroFlag As Boolean, YourLoadStatusLimitation As Boolean, YourOrderingOptions As R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions, Optional YourTransportCompanyId As Int64 = Int64.MinValue, Optional YourProvinceId As Int64 = Int64.MinValue) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
+            Public Shared Function GetLoadCapacitorLoads(YourShamsiDate As R2StandardDateAndTimeStructure, YourAHId As Int64, YourAHSGId As Int64, YourAHATTypeId As Int64, YournCarNumViewZeroFlag As Boolean, YourLoadStatusLimitation As Boolean, YourOrderingOptions As R2CoreTransportationAndLoadNotificationLoadCapacitorLoadOrderingOptions, Optional YourTransportCompanyId As Int64 = Int64.MinValue, Optional YourProvinceId As Int64 = Int64.MinValue) As List(Of R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure)
                 Try
                     Dim LastAnnounceTime As String
                     If YourAHSGId = Int64.MinValue Then
@@ -1811,16 +1863,16 @@ Namespace LoadCapacitor
                     Dim DS As DataSet
                     Dim Sql As String
                     Sql = "Select Elam.nEstelamID,Elam.nEstelamKey,Elam.strBarName,Elam.nCityCode,Elam.nTonaj,Elam.nBarcode,Elam.nCompCode,Elam.bFlagbarType,Elam.nTruckType,Elam.strAddress,Elam.nUserID,Elam.nCarNumKol,Elam.strPriceSug,Elam.strDescription,Elam.dDateElam,Elam.dTimeElam,Elam.nCarNum,Elam.LoadStatus,Elam.nBarSource,Elam.AHId,Elam.AHSGId,Elam.TPTParams,Elam.bflagCarNum as ReRegistered,Elam.LoadingPlaceId,Elam.DischargingPlaceId,TransportCompanies.TCTitle,TransportCompanies.TCTel,Product.strGoodName,City.strCityName,LoadSources.strCityName as LoadSource,LoaderType.LoaderTypeTitle,LoadingPlaces.LADPlaceTitle as LoadingPlaceTitle,DischargingPlaces.LADPlaceTitle as DischargingPlaceTitle 
-                           From DBTransport.dbo.TbElam as Elam 
-	                          Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Elam.nCompCode=TransportCompanies.TCId 
-                              Inner Join dbtransport.dbo.tbProducts as Product On Elam.nBarcode=Product.strGoodCode 
-                              Inner Join dbtransport.dbo.tbCity as LoadSources On Elam.nBarSource=LoadSources.nCityCode
-                              Inner Join dbtransport.dbo.tbCity as City On Elam.nCityCode=City.nCityCode 
-                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderType On Elam.nTruckType=LoaderType.LoaderTypeId 
-                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces on City.nProvince=Provinces.ProvinceId 
-   							  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On Elam.LoadingPlaceId=LoadingPlaces.LADPlaceId 
-							  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On Elam.DischargingPlaceId=DischargingPlaces.LADPlaceId 
-                           Where Elam.dDateElam ='" & _DateTime.GetCurrentDateShamsiFull() & "' and Elam.AHId=" & YourAHId & "" + IIf(YourAHSGId = Int64.MinValue, " ", " and Elam.AHSGId=" & YourAHSGId & "")
+                                  From DBTransport.dbo.TbElam as Elam 
+	                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Elam.nCompCode=TransportCompanies.TCId 
+                                  Inner Join dbtransport.dbo.tbProducts as Product On Elam.nBarcode=Product.strGoodCode 
+                                  Inner Join dbtransport.dbo.tbCity as LoadSources On Elam.nBarSource=LoadSources.nCityCode
+                                  Inner Join dbtransport.dbo.tbCity as City On Elam.nCityCode=City.nCityCode 
+                                  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoaderTypes as LoaderType On Elam.nTruckType=LoaderType.LoaderTypeId 
+                                  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblProvinces as Provinces on City.nProvince=Provinces.ProvinceId 
+   							      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On Elam.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+							      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On Elam.DischargingPlaceId=DischargingPlaces.LADPlaceId 
+                           Where Elam.dDateElam ='" & YourShamsiDate.DateShamsiFull & "' and Elam.AHId=" & YourAHId & "" + IIf(YourAHSGId = Int64.MinValue, " ", " and Elam.AHSGId=" & YourAHSGId & "")
                     If YourLoadStatusLimitation Then Sql = Sql + " And Elam.LoadStatus<>3 And Elam.LoadStatus<>4 And Elam.LoadStatus<>6"
                     If Not YournCarNumViewZeroFlag Then Sql = Sql + " And Elam.nCarNum>0"
                     If YourAHATTypeId = AnnouncementHallAnnounceTimeTypes.UnAnnounceLoads Then Sql = Sql + " And Elam.dTimeElam>='" & LastAnnounceTime & "' and Elam.LoadStatus<>5"
@@ -2359,6 +2411,7 @@ Namespace LoadCapacitor
                     Dim NSSAnnouncementHall = InstanceAnnouncementHalls.GetAnnouncementHallfromLoadCapacitorLoad(YourNSS)
                     Dim NSSAnnouncementHallSubGroup = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroupByLoaderTypeId(YourNSS.nTruckType)
                     Dim NSSLoadTargets = New R2CoreTransportationAndLoadNotificationMclassLoadTargetsManager
+                    Dim InstancePermissions = New R2Core.PermissionManagement.R2CoreInstansePermissionsManager
                     YourNSS.AHId = NSSAnnouncementHall.AHId
                     YourNSS.AHSGId = NSSAnnouncementHallSubGroup.AHSGId
 
@@ -2370,7 +2423,8 @@ Namespace LoadCapacitor
                     If (Not NSSLoadTargets.GetNSSLoadTarget(YourNSS.nCityCode).NSSCity.Active) Or (Not NSSLoadTargets.GetNSSLoadTarget(YourNSS.nBarSource).NSSCity.Active) Then Throw New LoadTargetorLoadSourceIsUnActiveException
 
                     'کنترل تناژ بار 
-                    If YourNSS.nTonaj > 27.5 Then Throw New LoadCapacitorLoadTonajExceededException
+                    If YourNSS.nTonaj > InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 7) Then If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.UserCanRegisterOrEditLoadsAnyTonaj, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, 0) Then Throw New LoadCapacitorLoadTonajExceededException
+
                     'Try
                     '    Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
                     '    InstanceLoadCapacitorLoad.LoadCapacitorLoadTonajValidate(YourNSS)
@@ -2647,7 +2701,7 @@ Namespace LoadCapacitor
                     If (Not NSSLoadTargets.GetNSSLoadTarget(YourNSS.nCityCode).NSSCity.Active) Or (Not NSSLoadTargets.GetNSSLoadTarget(YourNSS.nBarSource).NSSCity.Active) Then Throw New LoadTargetorLoadSourceIsUnActiveException
 
                     'کنترل تناژ بار
-                    If YourNSS.nTonaj > 27.5 Then Throw New LoadCapacitorLoadTonajExceededException
+                    If YourNSS.nTonaj > InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 7) Then If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.UserCanRegisterOrEditLoadsAnyTonaj, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, 0) Then Throw New LoadCapacitorLoadTonajExceededException
 
                     'Try
                     '    'If YourNSS.nTonaj > 27.5 Then Throw New LoadCapacitorLoadTonajExceededException
@@ -3584,6 +3638,25 @@ Namespace LoadCapacitor
     End Namespace
 
     Namespace Exceptions
+        Public Class NoLoadsorLoadsViewConditionsMismatchException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "بار موجود نیست" + vbCrLf + "عدم تطابق صف نوبت ، بار و وضعیت بار"
+                End Get
+            End Property
+        End Class
+
+        Public Class BaseInfFailedException
+            Inherits ApplicationException
+
+            Public Overrides ReadOnly Property Message As String
+                Get
+                    Return "نوبت در سامانه ندارید" + vbCrLf + "احصاء اطلاعات پایه ناموفق است" + vbCrLf + "با پشتیبانی سامانه تماس بگیرید"
+                End Get
+            End Property
+        End Class
 
         Public Class LoadCapacitorLoadRegisteringInHolidayNotAllowedException
             Inherits ApplicationException
@@ -4806,24 +4879,11 @@ Namespace LoadPermission
             'گزارش مجوزهای صادر شده برای نوبت ها به ترتیب زمان صدور مجوز و اولویت انتخابی
             Dim InstanceTransportTarrifsParameters = New R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager
             Dim InstanceSqlDataBox As New R2CoreInstanseSqlDataBOXManager
+            Dim InstanceAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
+            Dim InstanceSequentialTurns = New R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager
+            Dim NSSAHSG = InstanceAnnouncementHalls.GetNSSAnnouncementHallSubGroup(YourAHSGId)
+            Dim NSSSeqT = InstanceSequentialTurns.GetNSSSequentialTurn(NSSAHSG)
             Try
-                Dim SqlString = "Select Top 2000 LoadAllocations.DateShamsi as ActionDateShamsi,LoadAllocations.Time as ActionTime,Turns.OtaghdarTurnNumber,ltrim(rtrim(Replace(Persons.strPersonFullName ,';',' '))) as PersonFullName,Trucks.strCarNo+'-'+Trucks.strCarSerialNo as Truck,LoadAllocations.LAId,LoadAllocations.Priority,Loads.nEstelamID,Loads.nTonaj,
-                                                 Products.strGoodName,LoadTargets.strCityName,LoadingPlaces.LADPlaceTitle as LoadingPlace,DischargingPlaces.LADPlaceTitle as DischargingPlace,Loads.TPTParams,Turns.strExitDate+'-'+strExitTime as LoadPermissionDateTime,TransportCompanies.TCTitle,AnnouncementHallSubGroups.AHSGTitle,Loads.strDescription,Loads.strAddress,Loads.strBarName  
-                                   from dbtransport.dbo.tbEnterExit as Turns
-                                    Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID=Loads.nEstelamID
-                                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On Loads.AHSGId=AnnouncementHallSubGroups.AHSGId 
-                                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Loads.nCompCode=TransportCompanies.TCId 
-                                    Inner Join dbtransport.dbo.tbCity as LoadTargets On Loads.nCityCode=LoadTargets.nCityCode
-                                    Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode=Products.strGoodCode
-                                    Inner Join dbtransport.dbo.TbPerson as Persons On Turns.nDriverCode=Persons.nIDPerson
-                                    Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver
-                                    Inner Join dbtransport.dbo.TbCar as Trucks On Turns.strCardno=Trucks.nIDCar
-                                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId
-                                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocationStatuses as LoadAllocationStatuses On LoadAllocations.LAStatusId=LoadAllocationStatuses.LoadAllocationStatusId
-                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On Loads.LoadingPlaceId=LoadingPlaces.LADPlaceId 
-                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On Loads.DischargingPlaceId=DischargingPlaces.LADPlaceId 
-                                   Where LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull() & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and  LoadAllocations.LAStatusId=2 and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & " 
-                                   Order By LoadAllocations.TurnId,LoadAllocations.Priority"
                 'Dim SqlString = "Select Top 2000 LoadAllocations.DateShamsi as ActionDateShamsi,LoadAllocations.Time as ActionTime,Turns.OtaghdarTurnNumber,ltrim(rtrim(Replace(Persons.strPersonFullName ,';',' '))) as PersonFullName,Trucks.strCarNo+'-'+Trucks.strCarSerialNo as Truck,LoadAllocations.LAId,LoadAllocations.Priority,Loads.nEstelamID,Loads.nTonaj,
                 '                                 Products.strGoodName,LoadTargets.strCityName,LoadingPlaces.LADPlaceTitle as LoadingPlace,DischargingPlaces.LADPlaceTitle as DischargingPlace,Loads.TPTParams,Turns.strExitDate+'-'+strExitTime as LoadPermissionDateTime,TransportCompanies.TCTitle,AnnouncementHallSubGroups.AHSGTitle,Loads.strDescription,Loads.strAddress,Loads.strBarName  
                 '                   from dbtransport.dbo.tbEnterExit as Turns
@@ -4840,30 +4900,50 @@ Namespace LoadPermission
                 'Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On Loads.LoadingPlaceId=LoadingPlaces.LADPlaceId 
                 ' Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On Loads.DischargingPlaceId=DischargingPlaces.LADPlaceId 
                 '                   Where LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull() & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and  LoadAllocations.LAStatusId=2 and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & " 
-                '                         and Turns.nEnterExitId>(Select Top 1 nEnterExitId from dbtransport.dbo.tbEnterExit as Turns Where TurnStatus=3 Order By nEnterExitId Desc)
                 '                   Order By LoadAllocations.TurnId,LoadAllocations.Priority"
+                Dim SqlString = "Select Top 2000 LoadAllocations.DateShamsi as ActionDateShamsi,LoadAllocations.Time as ActionTime,Turns.OtaghdarTurnNumber,ltrim(rtrim(Replace(Persons.strPersonFullName ,';',' '))) as PersonFullName,Trucks.strCarNo+'-'+Trucks.strCarSerialNo as Truck,LoadAllocations.LAId,LoadAllocations.Priority,Loads.nEstelamID,Loads.nTonaj,
+                                                 Products.strGoodName,LoadTargets.strCityName,LoadingPlaces.LADPlaceTitle as LoadingPlace,DischargingPlaces.LADPlaceTitle as DischargingPlace,Loads.TPTParams,Turns.strExitDate+'-'+strExitTime as LoadPermissionDateTime,TransportCompanies.TCTitle,AnnouncementHallSubGroups.AHSGTitle,Loads.strDescription,Loads.strAddress,Loads.strBarName  
+                                   from dbtransport.dbo.tbEnterExit as Turns
+                                    Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID=Loads.nEstelamID
+                                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups On Loads.AHSGId=AnnouncementHallSubGroups.AHSGId 
+                                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On Loads.nCompCode=TransportCompanies.TCId 
+                                    Inner Join dbtransport.dbo.tbCity as LoadTargets On Loads.nCityCode=LoadTargets.nCityCode
+                                    Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode=Products.strGoodCode
+                                    Inner Join dbtransport.dbo.TbPerson as Persons On Turns.nDriverCode=Persons.nIDPerson
+                                    Inner Join dbtransport.dbo.TbDriver as Drivers On Persons.nIDPerson=Drivers.nIDDriver
+                                    Inner Join dbtransport.dbo.TbCar as Trucks On Turns.strCardno=Trucks.nIDCar
+                                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId
+                                    Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocationStatuses as LoadAllocationStatuses On LoadAllocations.LAStatusId=LoadAllocationStatuses.LoadAllocationStatusId
+                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as LoadingPlaces On Loads.LoadingPlaceId=LoadingPlaces.LADPlaceId 
+                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadingAndDischargingPlaces as DischargingPlaces On Loads.DischargingPlaceId=DischargingPlaces.LADPlaceId 
+                                   Where LoadAllocations.DateShamsi='" & _DateTime.GetCurrentDateShamsiFull() & "' and Turns.TurnStatus=6 and Turns.LoadPermissionStatus=1 and  LoadAllocations.LAStatusId=2 and AnnouncementHallSubGroups.AHSGId=" & YourAHSGId & " 
+                                         and Turns.nEnterExitId>(Select Top 1 nEnterExitId from dbtransport.dbo.tbEnterExit as Turns Where TurnStatus=3 and substring(OtaghdarTurnNumber,1,1)='" & NSSSeqT.SequentialTurnKeyWord & "' Order By nEnterExitId Desc)
+                                   Order By LoadAllocations.TurnId,LoadAllocations.Priority"
 
                 Dim Ds As DataSet
                 InstanceSqlDataBox.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, SqlString, 120, Ds)
                 Dim Lst = New List(Of KeyValuePair(Of String, String))
                 Dim StringB As New StringBuilder
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    Dim ValueHeader = IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("PersonFullName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("PersonFullName").ToString().Trim()) + "  نوبت : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber").ToString().Trim()) + vbCrLf
+                    'Dim ValueHeader = IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("PersonFullName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("PersonFullName").ToString().Trim()) + "  نوبت : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber").ToString().Trim()) + vbCrLf
+                    Dim ValueHeader = "  نوبت : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber").ToString().Trim()) + vbCrLf
                     StringB.Clear()
                     StringB.Append("زمان صدور مجوز :" + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("ActionTime"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("ActionTime").ToString().Trim()) + "-" + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("ActionDateShamsi"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("ActionDateShamsi").ToString().Trim()) + vbCrLf)
-                    StringB.Append(IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strGoodName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strGoodName").ToString().Trim()) + " " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strCityName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strCityName").ToString().Trim()) + vbCrLf)
-                    StringB.Append("شرکت حمل و نقل : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("TCTitle"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("TCTitle").ToString().Trim()) + vbCrLf)
-                    StringB.Append("کدبار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("nEstelamID"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("nEstelamID").ToString().Trim()) + " تخصیص: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("LAId"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("LAId").ToString().Trim()) + " اولویت : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("Priority"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("Priority").ToString().Trim()) + vbCrLf)
-                    StringB.Append("توضیحات بار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strDescription"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strDescription").ToString().Trim()) + " " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strAddress"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strAddress").ToString().Trim()) + " " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strBarName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strBarName").ToString().Trim()) + vbCrLf)
+                    'StringB.Append(IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strGoodName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strGoodName").ToString().Trim()) + " " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strCityName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strCityName").ToString().Trim()) + vbCrLf)
+                    StringB.Append(IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strCityName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strCityName").ToString().Trim()) + vbCrLf)
+                    'StringB.Append("شرکت حمل و نقل : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("TCTitle"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("TCTitle").ToString().Trim()) + vbCrLf)
+                    'StringB.Append("کدبار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("nEstelamID"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("nEstelamID").ToString().Trim()) + " تخصیص: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("LAId"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("LAId").ToString().Trim()) + " اولویت : " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("Priority"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("Priority").ToString().Trim()) + vbCrLf)
+                    'StringB.Append("توضیحات بار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strDescription"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strDescription").ToString().Trim()) + " " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strAddress"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strAddress").ToString().Trim()) + " " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("strBarName"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("strBarName").ToString().Trim()) + vbCrLf)
                     StringB.Append("تناژ بار: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("nTonaj"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("nTonaj").ToString().Trim()) + vbCrLf)
-                    StringB.Append("پلاک ناوگان: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("Truck"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("Truck").ToString().Trim()) + vbCrLf)
-                    StringB.Append("محل بارگیری: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("LoadingPlace"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("LoadingPlace").ToString().Trim()) + vbCrLf)
-                    StringB.Append("محل تخلیه: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("DischargingPlace"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("DischargingPlace").ToString().Trim()) + vbCrLf)
-                    Dim TPTParamsTemp = InstanceTransportTarrifsParameters.GetTransportTarrifsComposit(Ds.Tables(0).Rows(Loopx).Item("TPTParams").ToString().Trim())
-                    If TPTParamsTemp <> String.Empty Then StringB.Append("پارامترهای موثر: " + TPTParamsTemp)
+                    'StringB.Append("محل بارگیری: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("LoadingPlace"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("LoadingPlace").ToString().Trim()) + vbCrLf)
+                    'StringB.Append("محل تخلیه: " + IIf(Object.Equals(Ds.Tables(0).Rows(Loopx).Item("DischargingPlace"), DBNull.Value), String.Empty, Ds.Tables(0).Rows(Loopx).Item("DischargingPlace").ToString().Trim()) + vbCrLf)
+                    'Dim TPTParamsTemp = InstanceTransportTarrifsParameters.GetTransportTarrifsComposit(Ds.Tables(0).Rows(Loopx).Item("TPTParams").ToString().Trim())
+                    'If TPTParamsTemp <> String.Empty Then StringB.Append("پارامترهای موثر: " + TPTParamsTemp)
                     Lst.Add(New KeyValuePair(Of String, String)(ValueHeader, StringB.ToString()))
                 Next
                 Return Lst
+            Catch ex As SequentialTurnNotFoundException
+                Throw ex
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -5293,13 +5373,13 @@ Namespace LoadPermission
                 Dim NSSLoadAllocation = R2CoreTransportationAndLoadNotificationMClassLoadAllocationManagement.GetNSSLoadAllocation(NSSLoadPermission.nEstelamId, NSSLoadPermission.TurnId)
 
                 'کنترل زمان 
-                Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
-                If InstanceAnnouncementTiming.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
-                    Dim Timing = InstanceAnnouncementTiming.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId, _DateTime.GetCurrentTime)
-                    If Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering Then
-                        Throw New LoadPermisionCancellationTimePassedException
-                    End If
-                End If
+                'Dim InstanceAnnouncementTiming = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementTimingManager
+                'If InstanceAnnouncementTiming.IsTimingActive(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId) Then
+                '    Dim Timing = InstanceAnnouncementTiming.GetTiming(NSSLoadCapacitorLoad.AHId, NSSLoadCapacitorLoad.AHSGId, _DateTime.GetCurrentTime)
+                '    If Timing = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering Then
+                '        Throw New LoadPermisionCancellationTimePassedException
+                '    End If
+                'End If
 
                 'کنترل وضعیت مجوز
                 If Not NSSLoadPermission.LoadPermissionStatusId = R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.Registered Then Throw New LoadPermissionCancellingNotAllowedBecuaseLoadPermissionStatusException
@@ -8313,7 +8393,7 @@ Namespace TransportCompanies
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
             Try
                 Dim InstanceTransportCompanies = New R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager
-                Dim NSSTCSoftwareuser = InstanceTransportCompanies.GetNSSTCSoftwareuser(YourNSS.TCId, True)
+                Dim TCSoftwareusers = InstanceTransportCompanies.GetNSSTCSoftwareusers(YourNSS.TCId, True)
                 Dim TCNSS = InstanceTransportCompanies.GetNSSTransportCompany(YourNSS.TCId, True)
 
                 CmdSql.Connection.Open()
@@ -8326,8 +8406,10 @@ Namespace TransportCompanies
                                       Set Active=" & IIf(TCNSS.Active, 0, 1) & "
                                       Where nCompCode =" & YourNSS.TCId & ""
                 CmdSql.ExecuteNonQuery()
-                CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserActive=" & IIf(TCNSS.Active, 0, 1) & " Where Userid=" & NSSTCSoftwareuser.UserId & ""
-                CmdSql.ExecuteNonQuery()
+                For Loopx As Int64 = 0 To TCSoftwareusers.Count - 1
+                    CmdSql.CommandText = "Update R2Primary.dbo.TblSoftwareUsers Set UserActive=" & IIf(TCNSS.Active, 0, 1) & " Where Userid=" & TCSoftwareusers(Loopx).UserId & ""
+                    CmdSql.ExecuteNonQuery()
+                Next
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
 
                 'ارسال اس ام اس
@@ -8393,6 +8475,37 @@ Namespace TransportCompanies
                 End If
                 Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
                 Return InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64(DS.Tables(0).Rows(0).Item("UserId")))
+            Catch ex As TransportCompanyNotFoundException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function GetNSSTCSoftwareusers(YourTransportCompanyId As Int64, YourImmediate As Boolean) As List(Of R2CoreStandardSoftwareUserStructure)
+            Try
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                Dim DS As New DataSet
+                If YourImmediate Then
+                    Dim Da As New SqlClient.SqlDataAdapter
+                    Da.SelectCommand = New SqlCommand("select SoftwareUsers.UserId from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                        inner join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationSoftwareUsers as TCRelationSoftwareUsers on SoftwareUsers.UserId=TCRelationSoftwareUsers.UserId 
+                        inner join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies on TCRelationSoftwareUsers.TCId=TransportCompanies.TCId 
+                        where TCRelationSoftwareUsers.TCId=" & YourTransportCompanyId & " and TCRelationSoftwareUsers.RelationActive=1")
+                    Da.SelectCommand.Connection = (New R2PrimarySqlConnection).GetConnection
+                    If Da.Fill(DS) < 0 Then Throw New TransportCompanyNotFoundException
+                Else
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "select SoftwareUsers.UserId from R2Primary.dbo.TblSoftwareUsers as SoftwareUsers
+                        inner join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompaniesRelationSoftwareUsers as TCRelationSoftwareUsers on SoftwareUsers.UserId=TCRelationSoftwareUsers.UserId 
+                        inner join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies on TCRelationSoftwareUsers.TCId=TransportCompanies.TCId 
+                        where TCRelationSoftwareUsers.TCId=" & YourTransportCompanyId & " and TCRelationSoftwareUsers.RelationActive=1", 3600, DS).GetRecordsCount() = 0 Then Throw New TransportCompanyNotFoundException
+                End If
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                Dim Lst As New List(Of R2CoreStandardSoftwareUserStructure)
+                For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
+                    Lst.Add(InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64(DS.Tables(0).Rows(Loopx).Item("UserId"))))
+                Next
+                Return Lst
             Catch ex As TransportCompanyNotFoundException
                 Throw ex
             Catch ex As Exception

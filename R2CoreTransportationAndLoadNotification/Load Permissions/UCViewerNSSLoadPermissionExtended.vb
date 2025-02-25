@@ -118,6 +118,7 @@ Public Class UCViewerNSSLoadPermissionExtended
             LabelOtaghdarTurnNumber.Text = NSS.SequentialTurnNumber
             LabelUserName.Text = R2CoreMClassSoftwareUsersManagement.GetNSSUser(UCNSSCurrent.UserId).UserName
             LblPermissionDate.Text = UCNSSCurrent.LoadPermissionDate
+            LabelLoadPermissionDateTime.Text = UCNSSCurrent.LoadPermissionDate + vbCrLf + UCNSSCurrent.LoadPermissionTime
         Catch ex As Exception
             MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -129,6 +130,10 @@ Public Class UCViewerNSSLoadPermissionExtended
         Catch ex As Exception
             MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
+    End Sub
+
+    Private Sub PnlTop_Paint(sender As Object, e As PaintEventArgs) Handles PnlTop.Paint
+
     End Sub
 
 

@@ -21,6 +21,7 @@ using R2CoreTransportationAndLoadNotification.MobileProcessesManagement;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad;
 using R2Core.SiteIsBusy;
 using R2Core.SiteIsBusy.Exceptions;
+using R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions;
 
 namespace ATISMobileRestful.Controllers.ReportManagement
 {
@@ -56,6 +57,8 @@ namespace ATISMobileRestful.Controllers.ReportManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(_PermissionsIssued), Encoding.UTF8, "application/json");
                 return response;
             }
+            catch ( SequentialTurnNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (R2CoreSiteIsBusyException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (Exception ex)

@@ -1,7 +1,7 @@
 ﻿
 
 Imports System.Reflection
-
+Imports PayanehClassLibrary.CarTruckNobatManagement
 Imports PayanehClassLibrary.TurnRegisterRequest
 Imports PayanehClassLibrary.TurnRegisterRequest.Exceptions
 Imports R2Core.ComputersManagement
@@ -94,6 +94,7 @@ Public Class UCReserveTurnRegisterRequest
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me, False)
         End Try
     End Sub
+
 
 #End Region
 

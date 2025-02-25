@@ -33,7 +33,7 @@ Partial Class FrmcTruckDriversWaitingToGetLoadPermissionReport
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(339, 178)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1000)
         '
         'PnlViewReport
         '
@@ -85,9 +85,9 @@ Partial Class FrmcTruckDriversWaitingToGetLoadPermissionReport
         '
         Me.UcTruckDriversWaitingToGetLoadPermissionReport.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.UcTruckDriversWaitingToGetLoadPermissionReport.BackColor = System.Drawing.Color.Transparent
-        Me.UcTruckDriversWaitingToGetLoadPermissionReport.Location = New System.Drawing.Point(92, 99)
+        Me.UcTruckDriversWaitingToGetLoadPermissionReport.Location = New System.Drawing.Point(92, 22)
         Me.UcTruckDriversWaitingToGetLoadPermissionReport.Name = "UcTruckDriversWaitingToGetLoadPermissionReport"
-        Me.UcTruckDriversWaitingToGetLoadPermissionReport.Size = New System.Drawing.Size(810, 257)
+        Me.UcTruckDriversWaitingToGetLoadPermissionReport.Size = New System.Drawing.Size(810, 334)
         Me.UcTruckDriversWaitingToGetLoadPermissionReport.TabIndex = 0
         Me.UcTruckDriversWaitingToGetLoadPermissionReport.UCViewTitle = false
         '

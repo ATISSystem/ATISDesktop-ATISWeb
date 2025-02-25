@@ -199,9 +199,9 @@ Partial Class UCCarTruckNobat
         Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label6.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label6.ForeColor = System.Drawing.Color.Silver
-        Me.Label6.Location = New System.Drawing.Point(644, 48)
+        Me.Label6.Location = New System.Drawing.Point(597, 48)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(101, 23)
+        Me.Label6.Size = New System.Drawing.Size(148, 23)
         Me.Label6.TabIndex = 18
         Me.Label6.Text = "تسلسل"
         Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -246,11 +246,11 @@ Partial Class UCCarTruckNobat
         Me.LblSequentialNumber.BackColor = System.Drawing.Color.Transparent
         Me.LblSequentialNumber.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LblSequentialNumber.ForeColor = System.Drawing.Color.Black
-        Me.LblSequentialNumber.Location = New System.Drawing.Point(648, 71)
+        Me.LblSequentialNumber.Location = New System.Drawing.Point(597, 71)
         Me.LblSequentialNumber.Name = "LblSequentialNumber"
-        Me.LblSequentialNumber.Size = New System.Drawing.Size(97, 23)
+        Me.LblSequentialNumber.Size = New System.Drawing.Size(148, 23)
         Me.LblSequentialNumber.TabIndex = 39
-        Me.LblSequentialNumber.Text = "180125"
+        Me.LblSequentialNumber.Text = "T1403/888888"
         Me.LblSequentialNumber.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'LblStatus
@@ -270,9 +270,9 @@ Partial Class UCCarTruckNobat
         Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label2.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.Silver
-        Me.Label2.Location = New System.Drawing.Point(558, 48)
+        Me.Label2.Location = New System.Drawing.Point(507, 48)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(80, 23)
+        Me.Label2.Size = New System.Drawing.Size(84, 23)
         Me.Label2.TabIndex = 9
         Me.Label2.Text = "تاریخ صدور"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -282,9 +282,9 @@ Partial Class UCCarTruckNobat
         Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label3.Font = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.Silver
-        Me.Label3.Location = New System.Drawing.Point(451, 48)
+        Me.Label3.Location = New System.Drawing.Point(419, 48)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(101, 23)
+        Me.Label3.Size = New System.Drawing.Size(82, 23)
         Me.Label3.TabIndex = 10
         Me.Label3.Text = "ساعت صدور"
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -297,7 +297,7 @@ Partial Class UCCarTruckNobat
         Me.Label4.ForeColor = System.Drawing.Color.Silver
         Me.Label4.Location = New System.Drawing.Point(350, 48)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(95, 23)
+        Me.Label4.Size = New System.Drawing.Size(63, 23)
         Me.Label4.TabIndex = 11
         Me.Label4.Text = "راننده"
         Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -311,7 +311,7 @@ Partial Class UCCarTruckNobat
         Me.LblDriver.ForeColor = System.Drawing.Color.Black
         Me.LblDriver.Location = New System.Drawing.Point(354, 71)
         Me.LblDriver.Name = "LblDriver"
-        Me.LblDriver.Size = New System.Drawing.Size(91, 23)
+        Me.LblDriver.Size = New System.Drawing.Size(59, 23)
         Me.LblDriver.TabIndex = 37
         Me.LblDriver.Text = "عملیات"
         Me.LblDriver.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -333,9 +333,9 @@ Partial Class UCCarTruckNobat
         Me.LblEnterTime.BackColor = System.Drawing.Color.Transparent
         Me.LblEnterTime.Font = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblEnterTime.ForeColor = System.Drawing.Color.Black
-        Me.LblEnterTime.Location = New System.Drawing.Point(451, 71)
+        Me.LblEnterTime.Location = New System.Drawing.Point(423, 71)
         Me.LblEnterTime.Name = "LblEnterTime"
-        Me.LblEnterTime.Size = New System.Drawing.Size(101, 23)
+        Me.LblEnterTime.Size = New System.Drawing.Size(78, 23)
         Me.LblEnterTime.TabIndex = 36
         Me.LblEnterTime.Text = "عملیات"
         Me.LblEnterTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -346,9 +346,9 @@ Partial Class UCCarTruckNobat
         Me.LblEnterDate.BackColor = System.Drawing.Color.Transparent
         Me.LblEnterDate.Font = New System.Drawing.Font("IRMehr", 9.75!)
         Me.LblEnterDate.ForeColor = System.Drawing.Color.Black
-        Me.LblEnterDate.Location = New System.Drawing.Point(558, 71)
+        Me.LblEnterDate.Location = New System.Drawing.Point(507, 71)
         Me.LblEnterDate.Name = "LblEnterDate"
-        Me.LblEnterDate.Size = New System.Drawing.Size(80, 23)
+        Me.LblEnterDate.Size = New System.Drawing.Size(84, 23)
         Me.LblEnterDate.TabIndex = 35
         Me.LblEnterDate.Text = "1398/88/88"
         Me.LblEnterDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
