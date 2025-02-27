@@ -112,6 +112,11 @@ Imports PayanehClassLibrary.PredefinedMessagesManagement
 Imports R2CoreTransportationAndLoadNotification.CalendarManagement.SpecializedPersianCalendar
 Imports R2CoreTransportationAndLoadNotification.TrucksNativeness
 Imports R2CoreTransportationAndLoadNotification.TrucksNativeness.Exceptions
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoadManipulation
+Imports R2CoreTransportationAndLoadNotification.AnnouncementHalls.Exceptions
+Imports R2CoreTransportationAndLoadNotification.TransportTarrifsParameters.Exceptions
+Imports R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces.Exceptions
+Imports R2CoreParkingSystem.City.Execption
 
 Namespace Logging
 
@@ -5952,6 +5957,12 @@ Namespace CarTruckLoad
 
 
     End Class
+
+End Namespace
+
+Namespace LoadCapacitor
+
+
 
 End Namespace
 

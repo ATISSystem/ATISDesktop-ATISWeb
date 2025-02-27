@@ -97,6 +97,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadSources
 Imports R2CoreGUI
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns
 Imports R2CoreTransportationAndLoadNotification.Turns.SequentialTurns.Exceptions
+Imports R2CoreTransportationAndLoadNotification.TurnCancellation
 
 Namespace Trucks
     Public Class R2CoreTransportationAndLoadNotificationStandardTruckStructure
@@ -2398,6 +2399,7 @@ Namespace LoadCapacitor
                 Dim CmdSql As New SqlCommand
                 CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection()
                 Try
+                    Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
                     Dim InstanceLoadingAndDischargingPlaces = New R2CoreTransportationAndLoadNotification.LoadingAndDischargingPlaces.R2CoreTransportationAndLoadNotificationMClassLoadingAndDischargingPlacesManager
                     Dim InstanceSpecializedPersianCalendar = New R2CoreTransportationAndLoadNotificationSpecializedPersianCalendarManager
                     Dim InstanceAnnouncementHalls = New R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
@@ -2423,7 +2425,7 @@ Namespace LoadCapacitor
                     If (Not NSSLoadTargets.GetNSSLoadTarget(YourNSS.nCityCode).NSSCity.Active) Or (Not NSSLoadTargets.GetNSSLoadTarget(YourNSS.nBarSource).NSSCity.Active) Then Throw New LoadTargetorLoadSourceIsUnActiveException
 
                     'کنترل تناژ بار 
-                    If YourNSS.nTonaj > InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 7) Then If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.UserCanRegisterOrEditLoadsAnyTonaj, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, 0) Then Throw New LoadCapacitorLoadTonajExceededException
+                    If YourNSS.nTonaj > InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 7) Then If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.UserCanRegisterOrEditLoadsAnyTonaj, YourNSS.nUserId, 0) Then Throw New LoadCapacitorLoadTonajExceededException
 
                     'Try
                     '    Dim InstanceLoadCapacitorLoad = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
@@ -2558,6 +2560,15 @@ Namespace LoadCapacitor
                         InstanceLoadCapacitorAccounting.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(nEstelamIdNew, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Registering, YourNSS.nCarNumKol, Nothing, Nothing, Nothing, YourNSS.nUserId))
                     End If
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+
+                    'ثبت بار اعتباری
+                    Dim InstanceTurnCancellation As New R2CoreTransportationAndLoadNotificationTurnCancellationManager
+                    If InstanceTurnCancellation.IsLoadforTurnCancellation(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamIdNew, True)) Then
+                        InstanceTurnCancellation.LoadforTurnCancellationRegistering(nEstelamIdNew, True)
+                    Else
+                        InstanceTurnCancellation.LoadforTurnCancellationRegistering(nEstelamIdNew, False)
+                    End If
+
                     'ارسال کد مخزن بار
                     Return nEstelamIdNew
                 Catch ex As Exception When TypeOf ex Is LoadCapacitorLoadNumberOverLimitException _
@@ -2834,6 +2845,15 @@ Namespace LoadCapacitor
                         InstanceLoadCapacitorAccounting.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(YourNSS.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Incrementing, YourNSS.nCarNumKol - NSSCurrentLoadCapacitorLoad.nCarNumKol, Nothing, Nothing, Nothing, YourUserNSS.UserId))
                     End If
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+
+                    'ثبت باراعتباری
+                    Dim InstanceTurnCancellation As New R2CoreTransportationAndLoadNotificationTurnCancellationManager
+                    If InstanceTurnCancellation.IsLoadforTurnCancellation(InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(YourNSS.nEstelamId, True)) Then
+                        InstanceTurnCancellation.LoadforTurnCancellationActiving(YourNSS.nEstelamId)
+                    Else
+                        InstanceTurnCancellation.LoadforTurnCancellationUnActiving(YourNSS.nEstelamId)
+                    End If
+
                 Catch ex As Exception When TypeOf ex Is LoadCapacitorLoadEditTimePassedException _
                                     OrElse TypeOf ex Is LoadCapacitorLoadNumberOverLimitException _
                                     OrElse TypeOf ex Is LoadCapacitorLoadnCarNumKolCanNotBeZeroException _
@@ -2918,6 +2938,11 @@ Namespace LoadCapacitor
                     InstanceLoadCapacitorAccounting.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(YourNSS.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Cancelling, 1, Nothing, Nothing, Nothing, YourUserNSS.UserId))
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
 
+                    'ثبت باراعتباری
+                    Dim InstanceTurnCancellation As New R2CoreTransportationAndLoadNotificationTurnCancellationManager
+                    InstanceTurnCancellation.LoadforTurnCancellationUnActiving(YourNSS.nEstelamId)
+
+
                 Catch ex As Exception When TypeOf ex Is LoadCapacitorLoadCancelTimeNotReachedException OrElse TypeOf ex Is SoftwareUserCanNotCancellingLoadCapacitorLoadException
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -2987,6 +3012,11 @@ Namespace LoadCapacitor
                     Dim InstanceLoadCapacitorAccounting = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorAccountingManager
                     InstanceLoadCapacitorAccounting.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(YourNSS.nEstelamId, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.Deleting, YourNSS.nCarNumKol, Nothing, Nothing, Nothing, YourUserNSS.UserId))
                     CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
+
+                    'ثبت باراعتباری
+                    Dim InstanceTurnCancellation As New R2CoreTransportationAndLoadNotificationTurnCancellationManager
+                    InstanceTurnCancellation.LoadforTurnCancellationUnActiving(YourNSS.nEstelamId)
+
                 Catch ex As EditOrDeleteReRegisteredLoadNotAllowedException
                     If CmdSql.Connection.State <> ConnectionState.Closed Then
                         CmdSql.Transaction.Rollback() : CmdSql.Connection.Close()
@@ -3090,6 +3120,15 @@ Namespace LoadCapacitor
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Connection.Close()
                     Dim NSSLoadCurrent = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamId, True)
+
+                    'ثبت باراعتباری
+                    Dim InstanceTurnCancellation As New R2CoreTransportationAndLoadNotificationTurnCancellationManager
+                    If InstanceTurnCancellation.IsLoadforTurnCancellation(NSSLoadCurrent) Then
+                        InstanceTurnCancellation.LoadforTurnCancellationActiving(NSSLoadCurrent.nEstelamId)
+                    Else
+                        InstanceTurnCancellation.LoadforTurnCancellationUnActiving(NSSLoadCurrent.nEstelamId)
+                    End If
+
                     'ارسال اس ام اس موفق
                     SendSMS(NSSLoadLast.TransportCompanyTitle, "بار " + NSSLoadLast.GoodTitle + " تغییر مبدا از " + NSSLoadLast.LoadSourceTitle + " به " + NSSLoadCurrent.LoadSourceTitle + " و مقصد " + NSSLoadCurrent.LoadTargetTitle)
                 Catch ex As LoadSourceIdNotFoundException
@@ -3125,6 +3164,15 @@ Namespace LoadCapacitor
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Connection.Close()
                     Dim NSSLoadCurrent = InstanceLoadCapacitorLoad.GetNSSLoadCapacitorLoad(nEstelamId, True)
+
+                    'ثبت باراعتباری
+                    Dim InstanceTurnCancellation As New R2CoreTransportationAndLoadNotificationTurnCancellationManager
+                    If InstanceTurnCancellation.IsLoadforTurnCancellation(NSSLoadCurrent) Then
+                        InstanceTurnCancellation.LoadforTurnCancellationActiving(NSSLoadCurrent.nEstelamId)
+                    Else
+                        InstanceTurnCancellation.LoadforTurnCancellationUnActiving(NSSLoadCurrent.nEstelamId)
+                    End If
+
                     'ارسال اس ام اس موفق
                     SendSMS(NSSLoadLast.TransportCompanyTitle, "بار " + NSSLoadLast.GoodTitle + " تغییر مقصد از " + NSSLoadLast.LoadTargetTitle + " به " + NSSLoadCurrent.LoadTargetTitle + " و مبدا " + NSSLoadCurrent.LoadSourceTitle)
                 Catch ex As LoadTargetIdNotFoundException

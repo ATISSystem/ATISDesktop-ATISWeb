@@ -3051,6 +3051,79 @@ Namespace Turns
 
 End Namespace
 
+Namespace TurnCancellation
+    Public Class R2CoreTransportationAndLoadNotificationTurnCancellationManager
+        Private _DateTime As New R2DateTime
+
+        Private Function IsLoadTargetforTurnCancellation(YourLoadTargetId As Int64) As Boolean
+            Try
+                Dim DS As New DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
+                       "Select Top 1 LoadTargetId from R2PrimaryTransportationAndLoadNotification.dbo.TblLoadTargetsforTurnCancellation 
+                        Where LoadTargetId=" & YourLoadTargetId & " and Active=1", 3600, DS).GetRecordsCount = 0 Then
+                    Return False
+                Else
+                    Return True
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Function IsLoadforTurnCancellation(YourNSSLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure) As Boolean
+            Try
+                Return IsLoadTargetforTurnCancellation(YourNSSLoad.nCityCode)
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+        Public Sub LoadforTurnCancellationRegistering(nEstelamId As Int64, YourCancellationFlag As Boolean)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = " Insert into R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation(nEstelamId,Description,DateShamsi,DateTimeMilladi,Time,Active) Values(" & nEstelamId & ",'بار اعتباری','" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentTime & "'," & IIf(YourCancellationFlag, 1, 0) & ")"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub LoadforTurnCancellationActiving(nEstelamId As Int64)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation Set Active=1 Where nEstelamId=" & nEstelamId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub LoadforTurnCancellationUnActiving(nEstelamId As Int64)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
+            Try
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation Set Active=0 Where nEstelamId=" & nEstelamId & ""
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+    End Class
+
+
+
+End Namespace
+
 Namespace TurnAttendance
 
     Public Class R2CoreTransportationAndLoadNotificationInstanceTurnAttendanceManager

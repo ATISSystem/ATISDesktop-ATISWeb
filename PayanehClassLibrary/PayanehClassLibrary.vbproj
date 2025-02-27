@@ -74,7 +74,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="TWS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Other Projects\TWSSystem\TerminalsSolution\TWSClassLibrary\bin\Debug\TWS.dll</HintPath>
+      <HintPath>..\..\..\..\TWSSystem\TerminalsSolution\TerminalsSolution\TWSClassLibrary\bin\Debug\TWS.dll</HintPath>
     </Reference>
     <Reference Include="UI.Glass.Panel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -910,10 +910,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://172.26.29.22:2012/PayanehWebService.asmx">
+    <WebReferenceUrl Include="http://192.168.1.2:2012/PayanehWebService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\PayanehWS\</RelPath>
-      <UpdateFromURL>http://172.26.29.22:2012/PayanehWebService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://192.168.1.2:2012/PayanehWebService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

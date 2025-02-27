@@ -919,9 +919,11 @@ Public Class Form3
     End Sub
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
+        Dim xas As New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
+        xas.LoadCapacitorLoadRegistering(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(123, "123", "123", "14311022", 22, 2250001, 21263, False, 808, "123", 21, 13, 123, "123", "1403/12/08", "00:00:00", 0, 1, 21310000, 3, 14, "", False, 1075, 1075))
 
 
-        PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderLoadPermissionIssuedBySeqTs(New R2StandardDateAndTimeStructure(Nothing, "1403/11/14", "00:00:00"), New R2StandardDateAndTimeStructure(Nothing, "1403/11/14", "23:59:59"), 2)
+        'PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderLoadPermissionIssuedBySeqTs(New R2StandardDateAndTimeStructure(Nothing, "1403/11/14", "00:00:00"), New R2StandardDateAndTimeStructure(Nothing, "1403/11/14", "23:59:59"), 2)
         ''صدور خودکار نوبت ها
         'Try
         '    PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
