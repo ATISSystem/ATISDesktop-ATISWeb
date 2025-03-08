@@ -168,7 +168,7 @@ Public Class UCViewerNSSLoadCapacitorLoadExtended
             LabelTransportPrice.Text = NSS.StrPriceSug
             LabelLoaderTypeTitle.Text = NSS.LoaderTypeTitle
             LabelnCarNum.Text = NSS.nCarNum
-            LabelStrDescription.Text = NSS.StrDescription
+            LabelStrDescription.Text = NSS.StrDescription + " " + NSS.StrBarName + " " + NSS.StrAddress
         Catch ex As Exception
             MessageBox.Show(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

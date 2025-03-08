@@ -1629,7 +1629,7 @@ Namespace Turns
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
                 Dim Ds As DataSet
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 StrCardNo from dbtransport.dbo.TbEnterExit Where nEnterExitId=" & YourTurnId & "", 0, Ds).GetRecordsCount() = 0 Then
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 StrCardNo from dbtransport.dbo.TbEnterExit Where nEnterExitId=" & YourTurnId & "", 300, Ds).GetRecordsCount() = 0 Then
                     Throw New RelationBetweenTurnAndTruckNotFoundException
                 End If
                 Return InstanceTrucks.GetNSSTruck(Convert.ToInt64(Ds.Tables(0).Rows(0).Item("StrCardNo")))
@@ -3054,6 +3054,7 @@ End Namespace
 Namespace TurnCancellation
     Public Class R2CoreTransportationAndLoadNotificationTurnCancellationManager
         Private _DateTime As New R2DateTime
+        Private Const TurnCancellationDescription = "بار اعتباری"
 
         Private Function IsLoadTargetforTurnCancellation(YourLoadTargetId As Int64) As Boolean
             Try
@@ -3083,8 +3084,14 @@ Namespace TurnCancellation
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
             Try
+                Dim myDescription As String = String.Empty
+                If YourCancellationFlag Then
+                    myDescription = TurnCancellationDescription
+                Else
+                    myDescription = String.Empty
+                End If
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = " Insert into R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation(nEstelamId,Description,DateShamsi,DateTimeMilladi,Time,Active) Values(" & nEstelamId & ",'بار اعتباری','" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentTime & "'," & IIf(YourCancellationFlag, 1, 0) & ")"
+                CmdSql.CommandText = " Insert into R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation(nEstelamId,Description,DateShamsi,DateTimeMilladi,Time,Active) Values(" & nEstelamId & ",'" & myDescription & "','" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentTime & "'," & IIf(YourCancellationFlag, 1, 0) & ")"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception
@@ -3097,7 +3104,7 @@ Namespace TurnCancellation
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
             Try
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation Set Active=1 Where nEstelamId=" & nEstelamId & ""
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation Set Active=1,Description='" & TurnCancellationDescription & "' Where nEstelamId=" & nEstelamId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception
@@ -3110,7 +3117,7 @@ Namespace TurnCancellation
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
             Try
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation Set Active=0 Where nEstelamId=" & nEstelamId & ""
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation Set Active=0,Description='' Where nEstelamId=" & nEstelamId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception
@@ -3710,6 +3717,7 @@ Namespace PermissionManagement
         Public Shared ReadOnly SoftwareUserCanCancellingLoadsViaLoadStatus As Int64 = 28
         Public Shared ReadOnly RequesterCanAllocateSedimentedLoadInTimeRange As Int64 = 29
         Public Shared ReadOnly UserCanRegisterOrEditLoadsAnyTonaj As Int64 = 31
+        Public Shared ReadOnly UserCanViewAllofLoadsfromApplication As Int64 = 32
     End Class
 
 End Namespace

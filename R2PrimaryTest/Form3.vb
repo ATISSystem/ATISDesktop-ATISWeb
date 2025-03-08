@@ -688,7 +688,7 @@ Public Class Form3
         cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
             Dim x As New R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad.R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
-            Dim iksjdfj = x.GetLoadCapacitorLoadsforApplication(1, R2CoreMClassSoftwareUsersManagement.GetNSSUser(21184), 12, 1, 21)
+            Dim iksjdfj = x.GetLoadCapacitorLoadsforApplication(1, R2CoreMClassSoftwareUsersManagement.GetNSSUser(23896), 12, 5, 21)
 
             Dim yx As Decimal = 27.5
             'MessageBox.Show(x.ToString)
@@ -919,8 +919,16 @@ Public Class Form3
     End Sub
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
-        Dim xas As New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
-        xas.LoadCapacitorLoadRegistering(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(123, "123", "123", "14311022", 22, 2250001, 21263, False, 808, "123", 21, 13, 123, "123", "1403/12/08", "00:00:00", 0, 1, 21310000, 3, 14, "", False, 1075, 1075))
+        'فراخوانی سرویس رسوب بار در سالن اعلام بار
+        Try
+            Dim InstanceLoadSedimentation = New R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManager
+            InstanceLoadSedimentation.SedimentingProcess()
+        Catch ex As Exception
+            EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "SedimentingProcess:" + ex.Message.ToString, EventLogEntryType.Error)
+        End Try
+
+        'Dim xas As New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManipulationManager
+        'xas.LoadCapacitorLoadRegistering(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(123, "123", "123", "14311022", 22, 2250001, 21263, False, 808, "123", 21, 13, 123, "123", "1403/12/08", "00:00:00", 0, 1, 21310000, 3, 14, "", False, 1075, 1075))
 
 
         'PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderLoadPermissionIssuedBySeqTs(New R2StandardDateAndTimeStructure(Nothing, "1403/11/14", "00:00:00"), New R2StandardDateAndTimeStructure(Nothing, "1403/11/14", "23:59:59"), 2)

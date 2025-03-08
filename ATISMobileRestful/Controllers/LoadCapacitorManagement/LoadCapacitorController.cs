@@ -60,7 +60,10 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                 {
                     var Item = new Models.LoadCapacitorLoad();
                     Item.LoadnEstelamId = "کد مرجع : " + Lst[Loopx].nEstelamId;
-                    Item.LoadCapacitorLoadTitleTargetCityTotalAmount = Lst[Loopx].GoodTitle.Trim() + " - " + Lst[Loopx].LoadTargetTitle.Trim() + " تعداد : " + Lst[Loopx].nCarNum.ToString().Trim() + "  تناژ بار : " + Lst[Loopx].nTonaj.ToString().Trim();
+                    if (Lst[Loopx].nEstelamKey.ToString().Trim() != String.Empty)
+                    { Item.LoadCapacitorLoadTitleTargetCityTotalAmount = Lst[Loopx].GoodTitle.Trim() + " - " + Lst[Loopx].LoadTargetTitle.Trim() + " تعداد : " + Lst[Loopx].nCarNum.ToString().Trim() + "  تناژ بار : " + Lst[Loopx].nTonaj.ToString().Trim() + "\n" + Lst[Loopx].nEstelamKey.ToString().Trim(); }
+                    else
+                    { Item.LoadCapacitorLoadTitleTargetCityTotalAmount = Lst[Loopx].GoodTitle.Trim() + " - " + Lst[Loopx].LoadTargetTitle.Trim() + " تعداد : " + Lst[Loopx].nCarNum.ToString().Trim() + "  تناژ بار : " + Lst[Loopx].nTonaj.ToString().Trim(); }
                     var TPTParams = InstanceTransportTarrifsParameters.GetTransportTarrifsComposit(Lst[Loopx].TPTParams);
                     if (TPTParams == string.Empty)
                     { Item.TransportCompanyTarrifPrice = Lst[Loopx].TransportCompanyTitle.Trim() + " تلفن: " + Lst[Loopx].TransportCompanyTel.Trim() + "\n نرخ پایه : " + R2CoreMClassPublicProcedures.R2MakeCamaYourDigit(Convert.ToUInt64(Lst[Loopx].StrPriceSug)); }
