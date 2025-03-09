@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Web.Http;
 using Newtonsoft.Json;
 using System.Text;
+using System.Drawing;
 
 using R2Core.PublicProc;
 using R2Core.LoggingManagement;
@@ -60,10 +61,7 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                 {
                     var Item = new Models.LoadCapacitorLoad();
                     Item.LoadnEstelamId = "کد مرجع : " + Lst[Loopx].nEstelamId;
-                    if (Lst[Loopx].nEstelamKey.ToString().Trim() != String.Empty)
-                    { Item.LoadCapacitorLoadTitleTargetCityTotalAmount = Lst[Loopx].GoodTitle.Trim() + " - " + Lst[Loopx].LoadTargetTitle.Trim() + " تعداد : " + Lst[Loopx].nCarNum.ToString().Trim() + "  تناژ بار : " + Lst[Loopx].nTonaj.ToString().Trim() + "\n" + Lst[Loopx].nEstelamKey.ToString().Trim(); }
-                    else
-                    { Item.LoadCapacitorLoadTitleTargetCityTotalAmount = Lst[Loopx].GoodTitle.Trim() + " - " + Lst[Loopx].LoadTargetTitle.Trim() + " تعداد : " + Lst[Loopx].nCarNum.ToString().Trim() + "  تناژ بار : " + Lst[Loopx].nTonaj.ToString().Trim(); }
+                    Item.LoadCapacitorLoadTitleTargetCityTotalAmount = Lst[Loopx].GoodTitle.Trim() + " - " + Lst[Loopx].LoadTargetTitle.Trim() + " تعداد : " + Lst[Loopx].nCarNum.ToString().Trim() + "  تناژ بار : " + Lst[Loopx].nTonaj.ToString().Trim();
                     var TPTParams = InstanceTransportTarrifsParameters.GetTransportTarrifsComposit(Lst[Loopx].TPTParams);
                     if (TPTParams == string.Empty)
                     { Item.TransportCompanyTarrifPrice = Lst[Loopx].TransportCompanyTitle.Trim() + " تلفن: " + Lst[Loopx].TransportCompanyTel.Trim() + "\n نرخ پایه : " + R2CoreMClassPublicProcedures.R2MakeCamaYourDigit(Convert.ToUInt64(Lst[Loopx].StrPriceSug)); }
@@ -85,6 +83,55 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
             catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
+
+        [HttpPost]
+        public HttpResponseMessage GetLoadCapacitorLoadsExtended()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNonceWith4Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientLoadsReviewRequest);
+
+                var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var AHId = Content.Split(';')[2];
+                var AHSGId = Content.Split(';')[3];
+                var ProvinceId = Content.Split(';')[4];
+                var ListType = Content.Split(';')[5];
+                var InstanceLoadCapacitorLoad = new R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager();
+                var InstanceTransportTarrifsParameters = new R2CoreTransportationAndLoadNotificationInstanceTransportTarrifsParametersManager();
+                Int64 LoadStatusId = Convert.ToInt64(ListType) == (long)R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered ? Convert.ToInt64(R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Registered) : Convert.ToInt64(R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented);
+                var Lst = InstanceLoadCapacitorLoad.GetLoadCapacitorLoadsforApplication(R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent, NSSSoftwareuser, Convert.ToInt64(AHSGId), LoadStatusId, Convert.ToInt64(ProvinceId));
+                List<Models.LoadCapacitorLoadExtended> _Loads = new List<Models.LoadCapacitorLoadExtended>();
+                for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
+                {
+                    var Item = new Models.LoadCapacitorLoadExtended();
+                    Item.LoadnEstelamId = "کد مرجع : " + Lst[Loopx].nEstelamId;
+                    Item.LoadCapacitorLoadTitleTargetCityTotalAmount = Lst[Loopx].GoodTitle.Trim() + " - " + Lst[Loopx].LoadTargetTitle.Trim() + " تعداد : " + Lst[Loopx].nCarNum.ToString().Trim() + "  تناژ بار : " + Lst[Loopx].nTonaj.ToString().Trim();
+                    var TPTParams = InstanceTransportTarrifsParameters.GetTransportTarrifsComposit(Lst[Loopx].TPTParams);
+                    if (TPTParams == string.Empty)
+                    { Item.TransportCompanyTarrifPrice = Lst[Loopx].TransportCompanyTitle.Trim() + " تلفن: " + Lst[Loopx].TransportCompanyTel.Trim() + "\n نرخ پایه : " + R2CoreMClassPublicProcedures.R2MakeCamaYourDigit(Convert.ToUInt64(Lst[Loopx].StrPriceSug)); }
+                    else
+                    { Item.TransportCompanyTarrifPrice = Lst[Loopx].TransportCompanyTitle.Trim() + " تلفن: " + Lst[Loopx].TransportCompanyTel.Trim() + "\n نرخ پایه : " + R2CoreMClassPublicProcedures.R2MakeCamaYourDigit(Convert.ToUInt64(Lst[Loopx].StrPriceSug)) + "\n شرایط بار - پارامترهای موثر در نرخ پایه : " + "\n" + TPTParams; }
+                    Item.Description = Lst[Loopx].StrDescription.Trim() + " " + Lst[Loopx].StrBarName.Trim() + " " + Lst[Loopx].StrAddress.Trim() + "\n محل بارگیری : " + Lst[Loopx].LoadingPlaceTitle.Trim() + "\n محل تخلیه : " + Lst[Loopx].DischargingPlaceTitle.Trim();
+                    Item.TurnCancellationLoadColor = Color.FromName(Lst[Loopx].nEstelamKey.Trim());
+                    _Loads.Add(Item);
+                }
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(_Loads), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (NoLoadsorLoadsViewConditionsMismatchException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (BaseInfFailedException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserNotExistByMobileNumberException ex)
+            { return WebAPi.CreateSuccessContentMessage(string.Empty); }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+        }
+
 
     }
 }

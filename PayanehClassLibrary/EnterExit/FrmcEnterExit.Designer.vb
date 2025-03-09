@@ -86,11 +86,11 @@ Partial Class FrmcEnterExit
         '
         'UcucSequentialTurnCollection
         '
-        Me.UcucSequentialTurnCollection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right)), System.Windows.Forms.AnchorStyles)
+        Me.UcucSequentialTurnCollection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right Or System.Windows.Forms.AnchorStyles.Left)), System.Windows.Forms.AnchorStyles)
         Me.UcucSequentialTurnCollection.BackColor = System.Drawing.Color.Transparent
-        Me.UcucSequentialTurnCollection.Location = New System.Drawing.Point(340, 90)
+        Me.UcucSequentialTurnCollection.Location = New System.Drawing.Point(10, 10)
         Me.UcucSequentialTurnCollection.Name = "UcucSequentialTurnCollection"
-        Me.UcucSequentialTurnCollection.Size = New System.Drawing.Size(400, 38)
+        Me.UcucSequentialTurnCollection.Size = New System.Drawing.Size(700, 38)
         Me.UcucSequentialTurnCollection.Padding = New System.Windows.Forms.Padding(1)
         Me.UcucSequentialTurnCollection.TabIndex = 700
         R2CoreTransportationAndLoadNotificationStandardSequentialTurnStructure1.Active = True
@@ -128,7 +128,7 @@ Partial Class FrmcEnterExit
         'UcCarPresenter
         '
         Me.UcCarPresenter.BackColor = System.Drawing.Color.Transparent
-        Me.UcCarPresenter.Location = New System.Drawing.Point(13, 11)
+        Me.UcCarPresenter.Location = New System.Drawing.Point(13, 40)
         Me.UcCarPresenter.Name = "UcCarPresenter"
         Me.UcCarPresenter.Padding = New System.Windows.Forms.Padding(3)
         Me.UcCarPresenter.Size = New System.Drawing.Size(410, 74)
@@ -138,7 +138,7 @@ Partial Class FrmcEnterExit
         '
         Me.UCReserveTurnRegisterRequest.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.UCReserveTurnRegisterRequest.BackColor = System.Drawing.Color.Transparent
-        Me.UCReserveTurnRegisterRequest.Location = New System.Drawing.Point(13, 120)
+        Me.UCReserveTurnRegisterRequest.Location = New System.Drawing.Point(13, 155)
         Me.UCReserveTurnRegisterRequest.Name = "UCReserveTurnRegisterRequest"
         Me.UCReserveTurnRegisterRequest.Padding = New System.Windows.Forms.Padding(3)
         Me.UCReserveTurnRegisterRequest.Size = New System.Drawing.Size(133, 40)
@@ -147,7 +147,7 @@ Partial Class FrmcEnterExit
         'UcTerafficCardPresenter
         '
         Me.UcTerafficCardPresenter.BackColor = System.Drawing.Color.Transparent
-        Me.UcTerafficCardPresenter.Location = New System.Drawing.Point(13, 74)
+        Me.UcTerafficCardPresenter.Location = New System.Drawing.Point(13, 100)
         Me.UcTerafficCardPresenter.Name = "UcTerafficCardPresenter"
         Me.UcTerafficCardPresenter.Padding = New System.Windows.Forms.Padding(3)
         Me.UcTerafficCardPresenter.Size = New System.Drawing.Size(293, 50)
@@ -157,7 +157,7 @@ Partial Class FrmcEnterExit
         '
         Me.UcTurnRegisterRequestConfirmation.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTurnRegisterRequestConfirmation.BackColor = System.Drawing.Color.Transparent
-        Me.UcTurnRegisterRequestConfirmation.Location = New System.Drawing.Point(507, 21)
+        Me.UcTurnRegisterRequestConfirmation.Location = New System.Drawing.Point(507, 50)
         Me.UcTurnRegisterRequestConfirmation.Name = "UcTurnRegisterRequestConfirmation"
         Me.UcTurnRegisterRequestConfirmation.Padding = New System.Windows.Forms.Padding(3)
         Me.UcTurnRegisterRequestConfirmation.Size = New System.Drawing.Size(232, 62)

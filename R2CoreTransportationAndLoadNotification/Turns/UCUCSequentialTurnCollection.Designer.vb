@@ -69,12 +69,13 @@ Partial Class UCUCSequentialTurnCollection
         '
         Me.UcLabelSeqTTitle._UCBackColorPopup = System.Drawing.Color.Transparent
         Me.UcLabelSeqTTitle._UCForeColorPopuped = System.Drawing.Color.Red
-        Me.UcLabelSeqTTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcLabelSeqTTitle.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcLabelSeqTTitle.BackColor = System.Drawing.Color.Transparent
-        Me.UcLabelSeqTTitle.Location = New System.Drawing.Point(215, 24)
+        Me.UcLabelSeqTTitle.Location = New System.Drawing.Point(3, 24)
         Me.UcLabelSeqTTitle.Name = "UcLabelSeqTTitle"
         Me.UcLabelSeqTTitle.Padding = New System.Windows.Forms.Padding(1)
-        Me.UcLabelSeqTTitle.Size = New System.Drawing.Size(112, 19)
+        Me.UcLabelSeqTTitle.Size = New System.Drawing.Size(324, 19)
         Me.UcLabelSeqTTitle.TabIndex = 1
         Me.UcLabelSeqTTitle.UCBackColor = System.Drawing.Color.Transparent
         Me.UcLabelSeqTTitle.UCFont = New System.Drawing.Font("B Homa", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))

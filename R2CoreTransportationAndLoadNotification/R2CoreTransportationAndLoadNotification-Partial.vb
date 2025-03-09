@@ -63,6 +63,7 @@ Imports R2CoreTransportationAndLoadNotification.LoadTargets.Exceptions
 Imports R2CoreTransportationAndLoadNotification.Logging
 Imports R2CoreTransportationAndLoadNotification.PermissionManagement
 Imports R2CoreTransportationAndLoadNotification.PredefinedMessagesManagement
+Imports R2CoreTransportationAndLoadNotification.RequesterManagement
 Imports R2CoreTransportationAndLoadNotification.SMS.SMSTypes
 Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement
 Imports R2CoreTransportationAndLoadNotification.SoftwareUserManagement.Exceptions
@@ -1458,8 +1459,7 @@ Namespace LoadCapacitor
                                Inner Join R2PrimaryTransportationAndLoadNotification.dbo.tblLoadsViewConditions as LoadsViewConditions On Loads.AHSGId=LoadsViewConditions.AHSGId
                   			   Inner join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation as LoadsforTurnCancellation on Loads.nEstelamID=LoadsforTurnCancellation.nEstelamID
                             where Loads.dDateElam='" & _DateTime.GetCurrentDateShamsiFull() & "' and Loads.LoadStatus=" & YourLoadStatusId & " and LoadsViewConditions.LoadStatusId=" & YourLoadStatusId & " and LoadsViewConditions.RequesterId=" & YourRequesterId & " and Loads.nCarNum>0 and Loads.AHSGId=" & YourAHSGId & " and Provinces.ProvinceId=" & YourProvinceId & " and LoadsViewConditions.SeqTId=" & SeqTId & " and LoadsViewConditions.NativenessTypeId=" & NativenessTypeId & "
-                            Order By LoadTargets.StrCityName  
-                          ", 180, DSLoads).GetRecordsCount = 0 Then Throw New NoLoadsorLoadsViewConditionsMismatchException
+                            Order By LoadTargets.StrCityName", 180, DSLoads).GetRecordsCount = 0 Then Throw New NoLoadsorLoadsViewConditionsMismatchException
                     For Loopx As Int64 = 0 To DSLoads.Tables(0).Rows.Count - 1
                         Lst.Add(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadExtendedStructure(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure(DSLoads.Tables(0).Rows(Loopx).Item("nEstelamId"), DSLoads.Tables(0).Rows(Loopx).Item("TurnCancellationDescription").trim, DSLoads.Tables(0).Rows(Loopx).Item("StrBarName").trim, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("nTonaj"), Nothing, Nothing, Nothing, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("StrAddress").trim, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("nCarNumKol"), DSLoads.Tables(0).Rows(Loopx).Item("StrPriceSug"), DSLoads.Tables(0).Rows(Loopx).Item("strDescription").trim, Nothing, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("nCarNum"), Nothing, Nothing, Nothing, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("TPTParams"), Nothing, Nothing, Nothing), DSLoads.Tables(0).Rows(Loopx).Item("TCTitle").trim, DSLoads.Tables(0).Rows(Loopx).Item("strGoodName").trim, DSLoads.Tables(0).Rows(Loopx).Item("LoadSource").trim, DSLoads.Tables(0).Rows(Loopx).Item("LoadTarget").trim, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("TCTel").trim, Nothing, Nothing, DSLoads.Tables(0).Rows(Loopx).Item("LoadingPlaceTitle").trim, DSLoads.Tables(0).Rows(Loopx).Item("DischargingPlaceTitle").trim))
                     Next
@@ -6595,9 +6595,12 @@ Namespace LoadAllocation
                 'کنترل گذشت مدت زمان معین از زمان رسوب بار و مجوز برای رکستر خاص
                 Try
                     If NSSLoadCapacitorLoad.LoadStatus <> R2CoreTransportationAndLoadNotificationLoadCapacitorLoadStatuses.Sedimented Then Exit Try
+                    If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.RequesterCanAllocateSedimentedLoadInTimeRange, YourRequesterId, 0) Then Throw New RequesterCanNotAllocateSedimentedLoadInTimeRangeException
                     Dim InstanceLoadSedimentation = New R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManager
                     If InstanceLoadSedimentation.HowManyMinutesPassedfromSedimentation(NSSLoadCapacitorLoad) > InstanceLoadSedimentation.HowManyMinutesMustPassedfromSedimentation(NSSLoadCapacitorLoad) Then
-                        If Not InstancePermissions.ExistPermission(R2CoreTransportationAndLoadNotificationPermissionTypes.RequesterCanAllocateSedimentedLoadInTimeRange, YourRequesterId, 0) Then Throw New RequesterCanNotAllocateSedimentedLoadInTimeRangeException
+                        If YourRequesterId <> R2CoreTransportationAndLoadNotificationRequesters.WcLoadCapacitorLoadAllocationLoadPermissionIssue Then Throw New RequesterCanNotAllocateSedimentedLoadInTimeRangeException
+                    Else
+                        If YourRequesterId <> R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent Then Throw New RequesterCanNotAllocateSedimentedLoadInTimeRangeException
                     End If
                 Catch ex As LoadIsNotSedimentedException
                 Catch ex As Exception
@@ -7844,7 +7847,7 @@ Namespace LoadAllocation
             Inherits ApplicationException
             Public Overrides ReadOnly Property Message As String
                 Get
-                    Return "درخواست کننده مجوز تخصیص بار رسوبی پس از مدت زمان معین را ندارد"
+                    Return "درخواست کننده مجوز تخصیص بار رسوبی در این زمان را ندارد"
                 End Get
             End Property
         End Class

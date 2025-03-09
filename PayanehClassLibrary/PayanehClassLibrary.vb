@@ -457,21 +457,26 @@ Namespace CarTruckNobatManagement
             End Try
         End Sub
 
-        Public Sub TurnCancellation(YourNSSSoftwareUserMobile As R2CoreSoftwareUserMobile, YourNSSUser As R2CoreStandardSoftwareUserStructure)
+        Public Sub TurnCancellation(YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure, YourOtaghdarTurnNumber As String, YourNSSUser As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
+                Dim InstanceSQLInjectionPrevention = New R2CoreSQLInjectionPreventionManager
+                InstanceSQLInjectionPrevention.GeneralAuthorization(YourOtaghdarTurnNumber)
+
                 Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
                 Dim InstanceTrucks = New R2CoreTransportationAndLoadNotificationInstanceTrucksManager
-                Dim Truck = InstanceTrucks.GetNSSTruck(InstanceSoftwareUsers.GetNSSUserUnChangeable(YourNSSSoftwareUserMobile))
+                Dim Truck = InstanceTrucks.GetNSSTruck(YourNSSSoftwareUser)
                 CmdSql.Connection.Open()
                 CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.CancelledUser & ",bFlag=1,bFlagDriver=1,strElamDate='" & _DateTime.GetCurrentDateShamsiFull & "',strElamTime='" & _DateTime.GetCurrentTime & "',nUserIdExit=" & YourNSSUser.UserId & " 
-                                          Where StrCardNo=" & Truck.NSSCar.nIdCar & " and (TurnStatus=" & TurnStatuses.Registered & " or TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or TurnStatus=" & TurnStatuses.ResuscitationUser & ")"
+                                          Where StrCardNo=" & Truck.NSSCar.nIdCar & " and OtaghdarTurnNumber='" & YourOtaghdarTurnNumber & "' and (TurnStatus=" & TurnStatuses.Registered & " or TurnStatus=" & TurnStatuses.UsedLoadAllocationRegistered & " or TurnStatus=" & TurnStatuses.ResuscitationLoadAllocationCancelled & " or TurnStatus=" & TurnStatuses.ResuscitationLoadPermissionCancelled & " or TurnStatus=" & TurnStatuses.ResuscitationUser & ")"
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
 
                 'ارسال ابطالی به آنلاین نوبت
                 TWSClassTDBClientManagement.DelNobat(Truck.NSSCar.StrCarNo, Truck.NSSCar.StrCarSerialNo)
+            Catch ex As SqlInjectionException
+                Throw ex
             Catch ex As UserNotExistByMobileNumberException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw ex

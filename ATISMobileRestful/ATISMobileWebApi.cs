@@ -542,6 +542,7 @@ namespace ATISMobileRestful
             catch (Exception ex)
             { throw ex; }
         }
+
         public void AuthenticateClientApikeyNoncePersonalNonceWith1Parameter(HttpRequestMessage YourRequest, Int64 YourLogId)
         {
             try
@@ -773,6 +774,7 @@ namespace ATISMobileRestful
     {
         public abstract class ATISMobileWebApiLogTypes : R2CoreTransportationAndLoadNotificationLogType
         {
+            public static Int64 WebApiClientGetSequentialTurns = 19;
             public static Int64 WebApiClientIp = 20;
             public static Int64 WebApiClientPublicMessageRequest = 22;
             public static Int64 WebApiClientVersionControlRequest = 23;
@@ -814,7 +816,7 @@ namespace ATISMobileRestful
             public static Int64 WebApiClientGetDriverSelfDeclarations = 64;
             public static Int64 WebApiClientSetDriverSelfDeclarations = 65;
             public static Int64 WebApiClientSaveDSDImage = 66;
-            public static Int64 WebApiClientIsVirtualTurnsActive = 68;
+            public static Int64 WebApiClientTurnIssueRequest = 68;
             public static Int64 WebApiClientHaveLoadingPermission = 69;
             public static Int64 WebApiClientLogin = 70;
             public static Int64 WebApiClientSendBillofLadingId = 71;

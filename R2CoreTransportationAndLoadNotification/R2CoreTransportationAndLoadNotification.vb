@@ -350,7 +350,6 @@ Namespace Logging
         Public Shared ReadOnly Property LoadAllocationsAccessStatistics As Int64 = 14
         Public Shared ReadOnly Property TransferringTommorowLoads As Int64 = 15
         Public Shared ReadOnly Property ATISMobileMoneyWalletsCharging As Int64 = 16
-        Public Shared ReadOnly Property LoadAllocationsLoadPermissionRegisteringFailed As Int64 = 19
     End Class
 
 End Namespace
@@ -397,7 +396,7 @@ Namespace ConfigurationsManagement
         Public Shared ReadOnly Property AnnouncementHallsLoadAllocationSetting As Int64 = 69
         Public Shared ReadOnly Property TommorowLoads As Int64 = 71
         Public Shared ReadOnly Property DriverSelfDeclarationSetting As Int64 = 86
-        Public Shared ReadOnly Property VirtualTurnsSetting As Int64 = 88
+        Public Shared ReadOnly Property XXX As Int64 = 88
         Public Shared ReadOnly Property IndigenousTrucks As Int64 = 89
         Public Shared ReadOnly Property AnnouncementHallsLoadCapacitorControl As Int64 = 91
         Public Shared ReadOnly Property BillOfLading As Int64 = 92
@@ -2891,26 +2890,6 @@ Namespace Turns
 
     End Namespace
 
-    Namespace VirtualTurns
-        Public Class R2CoreTransportationAndLoadNotificationVirtualTurnsManager
-            Private _DateTime As New R2DateTime
-
-            Public Function IsVirtualTurnsActive() As Boolean
-                Try
-                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
-                    If InstanceConfiguration.GetConfigBoolean(R2CoreTransportationAndLoadNotificationConfigurations.VirtualTurnsSetting, 0) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Catch ex As Exception
-                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
-                End Try
-            End Function
-        End Class
-
-    End Namespace
-
     Namespace Exceptions
         Public Class AnyActiveTurnNotExistException
             Inherits ApplicationException
@@ -3054,7 +3033,8 @@ End Namespace
 Namespace TurnCancellation
     Public Class R2CoreTransportationAndLoadNotificationTurnCancellationManager
         Private _DateTime As New R2DateTime
-        Private Const TurnCancellationDescription = "بار اعتباری"
+        Private Const TurnCancellationLoadColor = "OrangeRed"
+        Private Const NonTurnCancellationLoadColor = "Green"
 
         Private Function IsLoadTargetforTurnCancellation(YourLoadTargetId As Int64) As Boolean
             Try
@@ -3074,7 +3054,16 @@ Namespace TurnCancellation
 
         Public Function IsLoadforTurnCancellation(YourNSSLoad As R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure) As Boolean
             Try
-                Return IsLoadTargetforTurnCancellation(YourNSSLoad.nCityCode)
+                Dim InstanceConfigurations As New R2CoreInstanceConfigurationManager
+                If IsLoadTargetforTurnCancellation(YourNSSLoad.nCityCode) Then
+                    If YourNSSLoad.nTonaj <= InstanceConfigurations.GetConfigInt64(R2CoreTransportationAndLoadNotificationConfigurations.DefaultTransportationAndLoadNotificationConfigs, 8) Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Else
+                    Return False
+                End If
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -3086,9 +3075,9 @@ Namespace TurnCancellation
             Try
                 Dim myDescription As String = String.Empty
                 If YourCancellationFlag Then
-                    myDescription = TurnCancellationDescription
+                    myDescription = TurnCancellationLoadColor
                 Else
-                    myDescription = String.Empty
+                    myDescription = NonTurnCancellationLoadColor
                 End If
                 CmdSql.Connection.Open()
                 CmdSql.CommandText = " Insert into R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation(nEstelamId,Description,DateShamsi,DateTimeMilladi,Time,Active) Values(" & nEstelamId & ",'" & myDescription & "','" & _DateTime.GetCurrentDateShamsiFull & "','" & _DateTime.GetCurrentDateTimeMilladiFormated & "','" & _DateTime.GetCurrentTime & "'," & IIf(YourCancellationFlag, 1, 0) & ")"
@@ -3104,7 +3093,7 @@ Namespace TurnCancellation
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
             Try
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation Set Active=1,Description='" & TurnCancellationDescription & "' Where nEstelamId=" & nEstelamId & ""
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation Set Active=1,Description='" & TurnCancellationLoadColor & "' Where nEstelamId=" & nEstelamId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception
@@ -3117,7 +3106,7 @@ Namespace TurnCancellation
             CmdSql.Connection = (New R2PrimarySqlConnection).GetConnection
             Try
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation Set Active=0,Description='' Where nEstelamId=" & nEstelamId & ""
+                CmdSql.CommandText = "Update R2PrimaryTransportationAndLoadNotification.dbo.TblLoadsforTurnCancellation Set Active=0,Description='" & NonTurnCancellationLoadColor & "' Where nEstelamId=" & nEstelamId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
             Catch ex As Exception
@@ -3682,6 +3671,7 @@ Namespace RequesterManagement
         Public Shared ReadOnly WcLoadCapacitorLoadAllocationLoadPermissionIssue As Int64 = 4
         Public Shared ReadOnly ATISRestfullTurnControllerRealTimeTurnRegisterRequest As Int64 = 12
         Public Shared ReadOnly UCLoadPermissionCancellation As Int64 = 13
+        Public Shared ReadOnly ATISRestfullTurnControlerTurnIssueRequest As Int64 = 15
     End Class
 
 

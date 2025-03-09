@@ -15,6 +15,15 @@ namespace ATISMobileRestful.Models
         public string Description { get; set; }
     }
 
+    public class LoadCapacitorLoadExtended
+    {
+        public string LoadnEstelamId { get; set; }
+        public string LoadCapacitorLoadTitleTargetCityTotalAmount { get; set; }
+        public string TransportCompanyTarrifPrice { get; set; }
+        public string Description { get; set; }
+        public Color  TurnCancellationLoadColor { get; set; }
+    }
+
     public class MoneyWalletAccounting
     {
         public string AccountName { get; set; }
@@ -117,4 +126,13 @@ namespace ATISMobileRestful.Models
         public string TextToView { get; set; }
         public string TextToViewColor { get; set; }
     }
+
+    public class SequentialTurns
+    {
+        public Int64 SeqTId { get; set; }
+        public string SeqTTitle { get; set; }
+        public string SeqTColor { get; set; }
+        public string SeqTKeyWord { get; set; }
+    }
+
 }
