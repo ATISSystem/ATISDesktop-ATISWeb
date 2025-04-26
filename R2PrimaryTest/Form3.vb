@@ -75,6 +75,8 @@ Imports WhatsAppApi
 Imports System.Web.UI.Design.WebControls
 Imports R2CoreLPR.LicensePlateManagement
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor
+Imports R2Core.MonetaryCreditSupplySources.ShepaPaymentGate
+Imports R2Core.SoftwareUserManagement.Exceptions
 
 Public Class Form3
     Private _DateTime As R2DateTime = New R2DateTime
@@ -687,10 +689,33 @@ Public Class Form3
         Dim cmdsql As New SqlClient.SqlCommand
         cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
-            Dim x As New R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad.R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
-            Dim iksjdfj = x.GetLoadCapacitorLoadsforApplication(1, R2CoreMClassSoftwareUsersManagement.GetNSSUser(23896), 12, 5, 21)
+            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            Try
+                InstanceSoftwareUsers.GetNSSUserUnChangeable(New R2CoreSoftwareUserMobile("09913891339"))
+                Throw New SoftwareUserMobileNumberAlreadyExistException
+            Catch ex As UserNotExistByMobileNumberException
+            Catch ex As Exception
+                Throw ex
+            End Try
 
-            Dim yx As Decimal = 27.5
+            'فراخوانی سرویس رسوب بار در سالن اعلام بار
+            'Try
+            '    Dim X As New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            '    Dim y As New R2Core.SoftwareUserManagement.R2CoreInstanseSoftwareUsersManager
+            '    Dim lst1 = X.GetLoadCapacitorLoadsforApplication(1, y.GetNSSUser(23896), 15, 1, 21)
+            '    Dim lst2 = X.GetLoadCapacitorLoadsforApplication(1, y.GetNSSUser(23896), 14, 1, 11)
+            '    'Dim X As New R2CoreShepaPaymentGate(5000)
+            '    'X.DoCreditSupply()
+            '    'Dim InstanceLoadSedimentation = New R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManager
+            '    'InstanceLoadSedimentation.SedimentingProcess()
+            'Catch ex As Exception
+            '    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "SedimentingProcess:" + ex.Message.ToString, EventLogEntryType.Error)
+            'End Try
+
+            'Dim x As New R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad.R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            'Dim iksjdfj = x.GetLoadCapacitorLoadsforApplication(1, R2CoreMClassSoftwareUsersManagement.GetNSSUser(23896), 12, 5, 21)
+
+            'Dim yx As Decimal = 27.5
             'MessageBox.Show(x.ToString)
             'PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderLoadPermissionIssuedBySeqTs(New R2StandardDateAndTimeStructure(Nothing, "1403/11/03", "00:00:00"), New R2StandardDateAndTimeStructure(Nothing, "1403/11/03", "23:00:00"), 2)
             'Dim x = TimeSpan.Parse(TextBoxConcat1.Text)
@@ -1086,7 +1111,7 @@ Public Class Form3
             Dim DsCoUsers As New DataSet
             R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                     "Select SoftwareUsers.UserId from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies
-                       Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On TransportCompanies.TCId=SoftwareUsers.UserShenaseh", 0, DsCoUsers)
+                       Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On TransportCompanies.TCId=SoftwareUsers.UserShenaseh", 0, DsCoUsers, New Boolean)
             Cmdsql.Connection.Open()
             Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
             For Loopx As Int64 = 0 To DsCoUsers.Tables(0).Rows.Count - 1
@@ -1120,7 +1145,7 @@ Public Class Form3
             Dim DsCoUsers As New DataSet
             R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                     "Select SoftwareUsers.UserId from R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies
-                       Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On TransportCompanies.TCId=SoftwareUsers.UserShenaseh", 0, DsCoUsers)
+                       Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On TransportCompanies.TCId=SoftwareUsers.UserShenaseh", 0, DsCoUsers, New Boolean)
             Cmdsql.Connection.Open()
             Cmdsql.Transaction = Cmdsql.Connection.BeginTransaction
             For Loopx As Int64 = 0 To DsCoUsers.Tables(0).Rows.Count - 1

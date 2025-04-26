@@ -65,10 +65,10 @@ namespace MSCOCore
                 try
                 {
                     var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
-                    DataSet DS = null;
+                    DataSet DS = null;bool DataChangeStatus=false  ;
                     InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
                         @"Select MSCOId from MSCO.dbo.TblMSCOTransportCompanies Where Announce=1 and Active=1 and Deleted=0
-                          Order By MSCOId", 3600, ref DS);
+                          Order By MSCOId", 3600, ref DS,ref DataChangeStatus);
                     List<String> Lst = new List<string>();
                     for (int Loopx = 0; Loopx <= DS.Tables[0].Rows.Count - 1; Loopx++)
                     { Lst.Add(DS.Tables[0].Rows[Loopx]["MSCOId"].ToString()); }
@@ -654,9 +654,9 @@ namespace MSCOCore
             {
                 try
                 {
-                    DataSet DS = null;
+                    DataSet DS = null; bool DataChangeStatus = false;
                     var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
-                    if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(), @"Select Top 1 CityId from MSCO.dbo.TblMSCOTargets Where MSCOCityId = '" + YourMSCOTargetId + "'  and RelationActive = 1 Order By OId Desc", 3600, ref DS).GetRecordsCount() != 0)
+                    if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(), @"Select Top 1 CityId from MSCO.dbo.TblMSCOTargets Where MSCOCityId = '" + YourMSCOTargetId + "'  and RelationActive = 1 Order By OId Desc", 3600, ref DS,ref DataChangeStatus ).GetRecordsCount() != 0)
                     { return R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetNSSLoadTarget(Convert.ToInt64(DS.Tables[0].Rows[0]["CityId"])); }
                     else
                     { throw new MSCOCoreMSCOTargetnotfoundException(); }
@@ -691,13 +691,13 @@ namespace MSCOCore
             {
                 try
                 {
-                    var DS = new System.Data.DataSet();
+                    var DS = new System.Data.DataSet(); bool DataChangeStatus = false;
                     var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
                     var InstanceTransportCompanies = new R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager();
                     if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
                          @"Select Top 1 TransportCompanies.TCId from MSCO.dbo.TblMSCOTransportCompanies as MSCOTransportCompanies
                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On MSCOTransportCompanies.TCId = TransportCompanies.TCId
-                          Where ltrim(rtrim(MSCOTransportCompanies.MSCOId)) = '" + YourMSCOId + "' Order By MSCOTransportCompanies.DateTimeMilladi Desc", 3600, ref DS).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
+                          Where ltrim(rtrim(MSCOTransportCompanies.MSCOId)) = '" + YourMSCOId + "' Order By MSCOTransportCompanies.DateTimeMilladi Desc", 3600, ref DS,ref DataChangeStatus ).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
                     return InstanceTransportCompanies.GetNSSTransportCompany(System.Convert.ToInt64(DS.Tables[0].Rows[0]["TCId"]),true );
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
@@ -710,10 +710,10 @@ namespace MSCOCore
             {
                 try
                 {
-                    System.Data.DataSet DS = null;
+                    System.Data.DataSet DS = null; bool DataChangeStatus = false;
                     var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
                     if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
-                         @"Select SendEmail from MSCO.dbo.TblMSCOTransportCompanies Where MSCOId='" + YourMSCOId + "'", 3600, ref DS).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
+                         @"Select SendEmail from MSCO.dbo.TblMSCOTransportCompanies Where MSCOId='" + YourMSCOId + "'", 3600, ref DS,ref DataChangeStatus ).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
                     return System.Convert.ToBoolean(DS.Tables[0].Rows[0]["SendEmail"]);
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
@@ -726,10 +726,10 @@ namespace MSCOCore
             {
                 try
                 {
-                    System.Data.DataSet DS = null;
+                    System.Data.DataSet DS = null; bool DataChangeStatus = false;
                     var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
                     if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
-                         @"Select Announce from MSCO.dbo.TblMSCOTransportCompanies Where MSCOId='" + YourMSCOId + "'", 3600, ref DS).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
+                         @"Select Announce from MSCO.dbo.TblMSCOTransportCompanies Where MSCOId='" + YourMSCOId + "'", 3600, ref DS, ref DataChangeStatus).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
                     return System.Convert.ToBoolean(DS.Tables[0].Rows[0]["Announce"]);
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
@@ -775,12 +775,12 @@ namespace MSCOCore
             {
                 try
                 {
-                    var DS = new System.Data.DataSet();
+                    var DS = new System.Data.DataSet(); bool DataChangeStatus = false;
                     var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
                     if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
                          @"Select Top 1 MSCOProducts.ProductId from MSCO.dbo.TblMSCOProducts as MSCOProducts
                            Where ltrim(rtrim(MSCOProducts.MSCOProductTitle)) = '" + YourMSCOProductTitle + "'" +
-                           " and MSCOProducts.Active=1 and MSCOProducts.Deleted=0 Order By MSCOProducts.DateTimeMilladi Desc", 3600, ref DS).GetRecordsCount() == 0) { throw new MSCOCoreProductNotFoundException(); };
+                           " and MSCOProducts.Active=1 and MSCOProducts.Deleted=0 Order By MSCOProducts.DateTimeMilladi Desc", 3600, ref DS,ref DataChangeStatus ).GetRecordsCount() == 0) { throw new MSCOCoreProductNotFoundException(); };
                     return System.Convert.ToInt64(DS.Tables[0].Rows[0]["ProductId"]);
                 }
                 catch (MSCOCoreProductNotFoundException ex)
@@ -812,12 +812,12 @@ namespace MSCOCore
             {
                 try
                 {
-                    var DS = new System.Data.DataSet();
+                    var DS = new System.Data.DataSet(); bool DataChangeStatus = false;
                     var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
                     if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
                          @"Select Top 1 MSCOLoadTypes.Description from MSCO.dbo.TblMSCOLoadTypes as MSCOLoadTypes
                            Where ltrim(rtrim(MSCOLoadTypes.MSCOLoadTypeTitle)) = '" + YourMSCOLoadTypeTitle + "'" +
-                           " and MSCOLoadTypes.Active=1 and MSCOLoadTypes.Deleted=0 Order By MSCOLoadTypes.DateTimeMilladi Desc", 3600, ref DS).GetRecordsCount() == 0) { throw new MSCOCoreLoadTypeTitleNotFoundException(); };
+                           " and MSCOLoadTypes.Active=1 and MSCOLoadTypes.Deleted=0 Order By MSCOLoadTypes.DateTimeMilladi Desc", 3600, ref DS, ref DataChangeStatus).GetRecordsCount() == 0) { throw new MSCOCoreLoadTypeTitleNotFoundException(); };
                     return System.Convert.ToString(DS.Tables[0].Rows[0]["Description"]);
                 }
                 catch (MSCOCoreLoadTypeTitleNotFoundException ex)

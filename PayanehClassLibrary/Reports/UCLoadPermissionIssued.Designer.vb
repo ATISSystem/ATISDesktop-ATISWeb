@@ -63,11 +63,12 @@ Partial Class UCLoadPermissionIssued
         '
         'UcucSequentialTurnCollection
         '
-        Me.UcucSequentialTurnCollection.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcucSequentialTurnCollection.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcucSequentialTurnCollection.BackColor = System.Drawing.Color.Transparent
-        Me.UcucSequentialTurnCollection.Location = New System.Drawing.Point(519, 184)
+        Me.UcucSequentialTurnCollection.Location = New System.Drawing.Point(30, 184)
         Me.UcucSequentialTurnCollection.Name = "UcucSequentialTurnCollection"
-        Me.UcucSequentialTurnCollection.Size = New System.Drawing.Size(370, 45)
+        Me.UcucSequentialTurnCollection.Size = New System.Drawing.Size(859, 45)
         Me.UcucSequentialTurnCollection.TabIndex = 13
         '
         'RB2

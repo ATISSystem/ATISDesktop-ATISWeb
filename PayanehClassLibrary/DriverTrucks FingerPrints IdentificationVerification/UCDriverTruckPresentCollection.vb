@@ -34,7 +34,7 @@ Public Class UCDriverTruckPresentCollection
                 PnlUCs.SuspendLayout()
                 UCRefresh()
                 Dim DSPresent As DataSet
-                Dim myPresentSabted As UInt16 = R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimaryTransportationAndLoadNotification.dbo.TblTruckDriverPresent where (NobatId=" & YourNobatId & ") order by DateTimeMilladi Asc", 1, DSPresent).GetRecordsCount
+                Dim myPresentSabted As UInt16 = R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2PrimaryTransportationAndLoadNotification.dbo.TblTruckDriverPresent where (NobatId=" & YourNobatId & ") order by DateTimeMilladi Asc", 1, DSPresent, New Boolean).GetRecordsCount
                 If myPresentSabted <> 0 Then
                     For Loopx As UInt16 = 0 To DSPresent.Tables(0).Rows.Count - 1
                         Dim myUC As UCDriverTruckSinglePresent = New UCDriverTruckSinglePresent(DSPresent.Tables(0).Rows(Loopx).Item("PelakSerial").trim, DSPresent.Tables(0).Rows(Loopx).Item("DriverNameFamily").trim, DSPresent.Tables(0).Rows(Loopx).Item("DateShamsi").trim, DSPresent.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DSPresent.Tables(0).Rows(Loopx).Item("PresentType"))

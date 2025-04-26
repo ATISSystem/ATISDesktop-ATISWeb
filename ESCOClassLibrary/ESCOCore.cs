@@ -90,11 +90,11 @@ namespace ESCOCore
                         else
                         { AHSGIdsSqlString = AHSGIdsSqlString + " or Loads.AHSGId=" + AHSGIds[Loopx]; }
                     }
-                    DataSet DS = null;
+                    DataSet DS = null; bool DataChangeStatus = false;
                     var InstanceSqlDataBOX = new R2Core.DatabaseManagement.R2CoreInstanseSqlDataBOXManager();
 
                     //if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(), "Select Loads.nBarCode,Products.strGoodName, Count(*) as Jam from dbtransport.dbo.tbEnterExit as Turns Inner Join dbtransport.dbo.tbElam as Loads On Turns.nEstelamID = Loads.nEstelamID Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode = Products.strGoodCode Where Turns.strExitDate = '" + TodayShamsiDate + "' and Turns.LoadPermissionStatus = 1 and (" + AHSGIdsSqlString + ") Group By Loads.nBarCode, Products.strGoodName", 300, ref DS).GetRecordsCount() == 0)
-                    if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(), "Select Loads.nBarCode,Products.strGoodName, sum(Loads.nCarNumKol) as Jam from dbtransport.dbo.tbElam AS Loads Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode = Products.strGoodCode Where Loads.dDateElam = '" + TodayShamsiDate + "' and (LoadStatus <> 3 and LoadStatus <> 4 and LoadStatus <> 6) and (" + AHSGIdsSqlString + ") Group By Loads.nBarCode, Products.strGoodName", 300, ref DS).GetRecordsCount() == 0)
+                    if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(), "Select Loads.nBarCode,Products.strGoodName, sum(Loads.nCarNumKol) as Jam from dbtransport.dbo.tbElam AS Loads Inner Join dbtransport.dbo.tbProducts as Products On Loads.nBarcode = Products.strGoodCode Where Loads.dDateElam = '" + TodayShamsiDate + "' and (LoadStatus <> 3 and LoadStatus <> 4 and LoadStatus <> 6) and (" + AHSGIdsSqlString + ") Group By Loads.nBarCode, Products.strGoodName", 300, ref DS,ref DataChangeStatus ).GetRecordsCount() == 0)
                     { return string.Empty; }
 
                     StringBuilder SB = new StringBuilder();
@@ -112,9 +112,9 @@ namespace ESCOCore
             {
                 try
                 {
-                    DataSet DS = null;
+                    DataSet DS = null; bool DataChangeStatus = false;
                     var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
-                    if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(), "Select * from ESCO.dbo.TblMessages Where ShamsiDate='" + _DateTime.GetCurrentDateShamsiFull() + "' and SentStatus=1", 0, ref DS).GetRecordsCount() == 0)
+                    if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(), "Select * from ESCO.dbo.TblMessages Where ShamsiDate='" + _DateTime.GetCurrentDateShamsiFull() + "' and SentStatus=1", 0, ref DS, ref DataChangeStatus).GetRecordsCount() == 0)
                     { return false; }
                     else
                     { return true; }

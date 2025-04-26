@@ -158,6 +158,8 @@ Namespace MonetaryCreditSupplySources
         Public Shared ReadOnly Property Pos As Int64 = 2
         Public Shared ReadOnly Property ZarrinPalPaymentGate As Int64 = 3
         Public Shared ReadOnly Property ShepaPaymentGate As Int64 = 4
+        Public Shared ReadOnly Property AqayepardakhtPaymentGate As Int64 = 5
+
 
     End Class
 
@@ -207,7 +209,7 @@ Namespace MonetaryCreditSupplySources
             Try
                 Dim Ds As New DataSet
                 Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where MCSSId=" & YourMCSSId & "", 3600, Ds).GetRecordsCount() = 0 Then
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where MCSSId=" & YourMCSSId & "", 3600, Ds, New Boolean).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 Else
                     Return New R2CoreStandardMonetaryCreditSupplySourceStructure(Ds.Tables(0).Rows(0).Item("MCSSId"), Ds.Tables(0).Rows(0).Item("MCSSName").trim, Ds.Tables(0).Rows(0).Item("MCSSTitle").trim, Color.FromName(Ds.Tables(0).Rows(0).Item("MCSSColor").trim), Ds.Tables(0).Rows(0).Item("AssemblyPath").trim, Ds.Tables(0).Rows(0).Item("AssemblyDll").trim, Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("Deleted"))
@@ -223,7 +225,7 @@ Namespace MonetaryCreditSupplySources
             Try
                 Dim DS As DataSet
                 Dim InstanceSqlDataBOX As New R2CoreInstanseSqlDataBOXManager
-                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where ViewFlag=1 and Active=1 and Deleted=0 ", 3600, DS)
+                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where ViewFlag=1 and Active=1 and Deleted=0 ", 3600, DS, New Boolean)
                 Dim Lst As New List(Of R2CoreStandardMonetaryCreditSupplySourceStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                     Lst.Add(New R2CoreStandardMonetaryCreditSupplySourceStructure(DS.Tables(0).Rows(Loopx).Item("MCSSId"), DS.Tables(0).Rows(Loopx).Item("MCSSName").trim, DS.Tables(0).Rows(Loopx).Item("MCSSTitle").trim, Color.FromName(DS.Tables(0).Rows(Loopx).Item("MCSSColor").trim), DS.Tables(0).Rows(Loopx).Item("AssemblyPath").trim, DS.Tables(0).Rows(Loopx).Item("AssemblyDll").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
@@ -280,7 +282,7 @@ Namespace MonetaryCreditSupplySources
         Public Shared Function GetNSSMonetaryCreditSupplySource(YourMCSSId As String) As R2CoreStandardMonetaryCreditSupplySourceStructure
             Try
                 Dim Ds As New DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where MCSSId=" & YourMCSSId & "", 3600, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where MCSSId=" & YourMCSSId & "", 3600, Ds, New Boolean).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 Else
                     Return New R2CoreStandardMonetaryCreditSupplySourceStructure(Ds.Tables(0).Rows(0).Item("MCSSId"), Ds.Tables(0).Rows(0).Item("MCSSName").trim, Ds.Tables(0).Rows(0).Item("MCSSTitle").trim, Color.FromName(Ds.Tables(0).Rows(0).Item("MCSSColor").trim), Ds.Tables(0).Rows(0).Item("AssemblyPath").trim, Ds.Tables(0).Rows(0).Item("AssemblyDll").trim, Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("Deleted"))
@@ -295,7 +297,7 @@ Namespace MonetaryCreditSupplySources
         Public Shared Function GetMonetaryCreditSupplySources() As List(Of R2CoreStandardMonetaryCreditSupplySourceStructure)
             Try
                 Dim DS As DataSet
-                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where ViewFlag=1 and Active=1 and Deleted=0 ", 3600, DS)
+                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetaryCreditSupplySources Where ViewFlag=1 and Active=1 and Deleted=0 ", 3600, DS, New Boolean)
                 Dim Lst As New List(Of R2CoreStandardMonetaryCreditSupplySourceStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                     Lst.Add(New R2CoreStandardMonetaryCreditSupplySourceStructure(DS.Tables(0).Rows(Loopx).Item("MCSSId"), DS.Tables(0).Rows(Loopx).Item("MCSSName").trim, DS.Tables(0).Rows(Loopx).Item("MCSSTitle").trim, Color.FromName(DS.Tables(0).Rows(Loopx).Item("MCSSColor").trim), DS.Tables(0).Rows(Loopx).Item("AssemblyPath").trim, DS.Tables(0).Rows(Loopx).Item("AssemblyDll").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
@@ -788,6 +790,90 @@ Namespace MonetaryCreditSupplySources
 
     End Namespace
 
+    Namespace AqayepardakhtPaymentGate
+
+        Public Class R2CoreAqayepardakhtPaymentGate
+            Inherits MonetaryCreditSupplySources.R2CoreMonetaryCreditSupplySource
+
+            Public Sub New(YourAmount As Int64)
+                MyBase.New(YourAmount)
+                Try
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+            Public Overrides Sub Initialize()
+
+            End Sub
+
+            Public Overrides Sub DoCreditSupply()
+                Try
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
+                    Dim requesturl As String
+                    requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 1) + "&pin=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 0) + "&amount=" + _Amount.ToString() +
+                    "&callback=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 3) +
+                    "&description=" + "پرداخت آتیس"
+                    Dim client = New RestClient(requesturl)
+                    client.Timeout = -1
+                    Dim request = New RestRequest(Method.POST)
+                    request.AddHeader("accept", "application/json")
+                    request.AddHeader("content-type", "application/json")
+                    Dim requestresponse As IRestResponse = client.Execute(request)
+                    Dim jo = Newtonsoft.Json.Linq.JObject.Parse(requestresponse.Content)
+                    Dim status = jo("status").ToString()
+                    If status = "success" Then
+                        Dim jodata = Newtonsoft.Json.Linq.JObject.Parse(requestresponse.Content)
+                        _SupplyReport = jodata("transid").ToString()
+                        _MonetarySupplyType = MonetarySupply.MonetarySupplyType.PaymentRequest
+                        _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
+                    Else
+                        Dim jodata = Newtonsoft.Json.Linq.JObject.Parse(requestresponse.Content)
+                        _SupplyReport = jodata("code").ToString()
+                        _MonetarySupplyType = MonetarySupply.MonetarySupplyType.PaymentRequest
+                        _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.UnSuccess
+                    End If
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+
+            End Sub
+
+            Public Overrides Sub Dispose()
+            End Sub
+
+            Public Overrides Sub DoVerification(YourAuthority As String)
+                Try
+                    Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
+                    Dim url As String = String.Empty
+                    url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 4) + "&pin=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&transid=" + YourAuthority
+                    Dim client = New RestClient(url)
+                    client.Timeout = -1
+                    Dim request = New RestRequest(Method.POST)
+                    request.AddHeader("accept", "application/json")
+                    request.AddHeader("content-type", "application/json")
+                    Dim response As IRestResponse = client.Execute(request)
+                    Dim jodata = Newtonsoft.Json.Linq.JObject.Parse(response.Content)
+                    Dim status = jodata("status").ToString()
+                    If (status = "success") Then
+                        _SupplyReport = jodata("code").ToString()
+                        _MonetarySupplyType = MonetarySupply.MonetarySupplyType.VerificationRequest
+                        _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.Success
+                    Else
+                        _SupplyReport = jodata("code").ToString()
+                        _MonetarySupplyType = MonetarySupply.MonetarySupplyType.VerificationRequest
+                        _MonetaryCreditSupplyResult = MonetarySupply.MonetarySupplyResult.UnSuccess
+                    End If
+                Catch ex As Exception
+                    Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+                End Try
+            End Sub
+
+        End Class
+
+    End Namespace
+
+
 
 End Namespace
 
@@ -848,7 +934,7 @@ Namespace MonetarySettingTools
         Public Shared Function GetNSSMonetarySettingTool(YourMSTId As String) As R2CoreStandardMonetarySettingToolStructure
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetarySettingTools  Where MSTId=" & YourMSTId & "", 3600, Ds).GetRecordsCount() = 0 Then
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetarySettingTools  Where MSTId=" & YourMSTId & "", 3600, Ds, New Boolean).GetRecordsCount() = 0 Then
                     Throw New GetNSSException
                 Else
                     Return New R2CoreStandardMonetarySettingToolStructure(Ds.Tables(0).Rows(0).Item("MSTId"), Ds.Tables(0).Rows(0).Item("MSTName").trim, Ds.Tables(0).Rows(0).Item("MSTTitle").trim, Color.FromName(Ds.Tables(0).Rows(0).Item("MSTColor").trim), Ds.Tables(0).Rows(0).Item("AssemblyPath").trim, Ds.Tables(0).Rows(0).Item("AssemblyDll").trim, Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("Deleted"))
@@ -863,7 +949,7 @@ Namespace MonetarySettingTools
         Public Shared Function GetMonetarySettingTools() As List(Of R2CoreStandardMonetarySettingToolStructure)
             Try
                 Dim DS As DataSet
-                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetarySettingTools Where ViewFlag=1 and Active=1 and Deleted=0", 3600, DS)
+                R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblMonetarySettingTools Where ViewFlag=1 and Active=1 and Deleted=0", 3600, DS, New Boolean)
                 Dim Lst As New List(Of R2CoreStandardMonetarySettingToolStructure)
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                     Lst.Add(New R2CoreStandardMonetarySettingToolStructure(DS.Tables(0).Rows(Loopx).Item("MSTId"), DS.Tables(0).Rows(Loopx).Item("MSTName").trim, DS.Tables(0).Rows(Loopx).Item("MSTTitle").trim, Color.FromName(DS.Tables(0).Rows(Loopx).Item("MSTColor").trim), DS.Tables(0).Rows(Loopx).Item("AssemblyPath").trim, DS.Tables(0).Rows(Loopx).Item("AssemblyDll").trim, DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
@@ -1817,7 +1903,7 @@ Namespace PredefinedMessagesManagement
         Public Shared Function GetNSS(YourMSGId As Int64) As R2CoreStandardPredefinedMessageStructure
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPredefinedMessages Where MsgId  = " & YourMSGId & " And Deleted=0", 3600, Ds).GetRecordsCount() = 0 Then Throw New PredefinedMessageNotFoundException
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPredefinedMessages Where MsgId  = " & YourMSGId & " And Deleted=0", 3600, Ds, New Boolean).GetRecordsCount() = 0 Then Throw New PredefinedMessageNotFoundException
                 Dim NSS = New R2CoreStandardPredefinedMessageStructure
                 NSS.MsgId = Ds.Tables(0).Rows(0).Item("MsgId")
                 NSS.MsgName = Ds.Tables(0).Rows(0).Item("MsgName").trim
@@ -1850,7 +1936,7 @@ Namespace PredefinedMessagesManagement
         Public Function GetNSS(YourMSGId As Int64) As R2CoreStandardPredefinedMessageStructure
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPredefinedMessages Where MsgId  = " & YourMSGId & " And Deleted=0", 3600, Ds).GetRecordsCount() = 0 Then Throw New PredefinedMessageNotFoundException
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPredefinedMessages Where MsgId  = " & YourMSGId & " And Deleted=0", 3600, Ds, New Boolean).GetRecordsCount() = 0 Then Throw New PredefinedMessageNotFoundException
                 Return New R2CoreStandardPredefinedMessageStructure(Ds.Tables(0).Rows(0).Item("MsgId"), Ds.Tables(0).Rows(0).Item("MsgName").trim, Ds.Tables(0).Rows(0).Item("MsgTitle").trim, Ds.Tables(0).Rows(0).Item("MsgContent").trim, Ds.Tables(0).Rows(0).Item("Description").trim, Ds.Tables(0).Rows(0).Item("InputLanguageType"), Color.FromName(Ds.Tables(0).Rows(0).Item("MsgColor").trim), Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi").trim, Ds.Tables(0).Rows(0).Item("ViewFlag"), Ds.Tables(0).Rows(0).Item("Active"), Ds.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As PredefinedMessageNotFoundException
                 Throw ex
@@ -2085,7 +2171,7 @@ Namespace EntityRelationManagement
         Public Shared Function GetNSSEntityRelationType(YourEntityRelationTypeId As Int64) As R2StandardEntityRelationTypeStructure
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblEntityRelationTypes as ERTypes Where ERTypes.ERTypeId=" & YourEntityRelationTypeId & "", 3600, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationTypeNotFoundException
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblEntityRelationTypes as ERTypes Where ERTypes.ERTypeId=" & YourEntityRelationTypeId & "", 3600, Ds, New Boolean).GetRecordsCount() = 0 Then Throw New EntityRelationTypeNotFoundException
                 Dim NSS = New R2StandardEntityRelationTypeStructure
                 NSS.ERTypeId = Ds.Tables(0).Rows(0).Item("ERTypeId")
                 NSS.ERTypeName = Ds.Tables(0).Rows(0).Item("ERTypeName").TRIM
@@ -2109,7 +2195,7 @@ Namespace EntityRelationManagement
         Public Shared Function GetNSSEntityRelation(YourEntityRelationId As Int64) As R2StandardEntityRelationStructure
             Try
                 Dim Ds As DataSet
-                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblEntityRelations as ERs Where ERs.ERId=" & YourEntityRelationId & "", 1, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
+                If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblEntityRelations as ERs Where ERs.ERId=" & YourEntityRelationId & "", 1, Ds, New Boolean).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
                 Dim NSS = New R2StandardEntityRelationStructure
                 NSS.ERId = Ds.Tables(0).Rows(0).Item("ERId")
                 NSS.ERTypeId = Ds.Tables(0).Rows(0).Item("ERTypeId")
@@ -2160,13 +2246,13 @@ Namespace EntityRelationManagement
             Try
                 Dim Ds As DataSet
                 If YourERId1 = Int64.MinValue Then
-                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E2=" & YourERId2 & " and ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
+                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E2=" & YourERId2 & " and ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds, New Boolean).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
                     Return GetNSSEntityRelation(Ds.Tables(0).Rows(0).Item("ERId"))
                 ElseIf YourERId2 = Int64.MinValue Then
-                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
+                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds, New Boolean).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
                     Return GetNSSEntityRelation(Ds.Tables(0).Rows(0).Item("ERId"))
                 Else
-                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.E2=" & YourERId2 & " ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
+                    If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection, "Select Top 1 ERId from R2Primary.dbo.TblEntityRelations as ERs Where ERs.E1=" & YourERId1 & " and ERs.E2=" & YourERId2 & " ERs.ERTypeId=" & YourERTypeId & " and RelationActive=1 Order By ERId Desc", 0, Ds, New Boolean).GetRecordsCount() = 0 Then Throw New EntityRelationNotFoundException
                     Return GetNSSEntityRelation(Ds.Tables(0).Rows(0).Item("ERId"))
                 End If
             Catch ex As EntityRelationNotFoundException
@@ -2326,7 +2412,7 @@ Namespace PermissionManagement
                 Dim Ds As DataSet
                 If Instanse.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                       "Select * from R2Primary.dbo.TblPermissions as Permissions 
-                       Where Permissions.PermissionTypeId=" & YourPermissionTypeId & " and Permissions.RelationActive=1 and Permissions.EntityIdFirst=" & YourEntityIdFirst & " and Permissions.EntityIdSecond=" & YourEntityIdSecond & "", 32000, Ds).GetRecordsCount() = 0 Then
+                       Where Permissions.PermissionTypeId=" & YourPermissionTypeId & " and Permissions.RelationActive=1 and Permissions.EntityIdFirst=" & YourEntityIdFirst & " and Permissions.EntityIdSecond=" & YourEntityIdSecond & "", 32000, Ds, New Boolean).GetRecordsCount() = 0 Then
                     Return False
                 Else
                     Return True
@@ -2367,7 +2453,7 @@ Namespace PermissionManagement
                 Dim Ds As DataSet
                 If R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                       "Select * from R2Primary.dbo.TblPermissions as Permissions 
-                       Where Permissions.PermissionTypeId=" & YourPermissionTypeId & " and Permissions.RelationActive=1 and Permissions.EntityIdFirst=" & YourEntityIdFirst & " and Permissions.EntityIdSecond=" & YourEntityIdSecond & "", 3600, Ds).GetRecordsCount() = 0 Then
+                       Where Permissions.PermissionTypeId=" & YourPermissionTypeId & " and Permissions.RelationActive=1 and Permissions.EntityIdFirst=" & YourEntityIdFirst & " and Permissions.EntityIdSecond=" & YourEntityIdSecond & "", 3600, Ds, New Boolean).GetRecordsCount() = 0 Then
                     Return False
                 Else
                     Return True
@@ -2522,7 +2608,7 @@ Namespace WebProcessesManagement
                          and SoftwareUserWebProcessGroup.RelationActive=1 and  WebProcessGroup.ViewFlag=1 and  WebProcessGroup.Active=1 and WebProcessGroup.Deleted=0 and WebProcessGroupWebProcess.ERTypeId=" & R2CoreEntityRelationTypes.WebProcessGroup_WebProcess & "  
                          and WebProcessGroupWebProcess.RelationActive=1 and WebProcesses.ViewFlag=1 and WebProcesses.Active=1 and WebProcesses.Deleted=0 
                          and Permission.RelationActive=1 and Permission.EntityIdFirst=" & YourNSSSoftwareUser.UserId & " and PermissionTypeId=" & R2CorePermissionTypes.SoftwareUsersAccessWebProcesses & "
-                   Order By WebProcessGroup.PGId,WebProcesses.PId ", 3600, Ds).GetRecordsCount <> 0 Then
+                   Order By WebProcessGroup.PGId,WebProcesses.PId ", 3600, Ds, New Boolean).GetRecordsCount <> 0 Then
                     Dim Lst As New List(Of R2StandardWebProcessStructure)
                     For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                         Dim NSS As New R2StandardWebProcessStructure
@@ -2704,7 +2790,7 @@ Namespace MobileProcessesManagement
                               Where SoftwareUser.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUser.UserActive=1 and SoftwareUser.Deleted=0 and SoftwareUserMobileProcessGroup.ERTypeId=" & R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup & "
                                     and SoftwareUserMobileProcessGroup.RelationActive=1 and  MobileProcessGroup.ViewFlag=1 and  MobileProcessGroup.Active=1 and MobileProcessGroup.Deleted=0 and MobileProcessGroupMobileProcess.ERTypeId=" & R2CoreEntityRelationTypes.MobileProcessGroup_MobileProcess & " 
                                     and MobileProcessGroupMobileProcess.RelationActive=1 and MobileProcesses.ViewFlag=1 and MobileProcesses.Active=1 and MobileProcesses.Deleted=0 
-                              Order By MobileProcessGroup.PGId,MobileProcesses.PId ", 32000, Ds).GetRecordsCount <> 0 Then
+                              Order By MobileProcessGroup.PGId,MobileProcesses.PId ", 32000, Ds, New Boolean).GetRecordsCount <> 0 Then
                     Dim Lst As New List(Of R2StandardMobileProcessStructure)
                     For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                         Dim NSS As New R2StandardMobileProcessStructure
@@ -2746,7 +2832,7 @@ Namespace MobileProcessesManagement
                               Where SoftwareUser.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUser.UserActive=1 and SoftwareUser.Deleted=0 and SoftwareUserMobileProcessGroup.ERTypeId=" & R2CoreEntityRelationTypes.SoftwareUser_MobileProcessGroup & "
                                     and SoftwareUserMobileProcessGroup.RelationActive=1 and  MobileProcessGroup.ViewFlag=1 and  MobileProcessGroup.Active=1 and MobileProcessGroup.Deleted=0 and MobileProcessGroupMobileProcess.ERTypeId=" & R2CoreEntityRelationTypes.MobileProcessGroup_MobileProcess & " 
                                     and MobileProcessGroupMobileProcess.RelationActive=1 and MobileProcesses.ViewFlag=1 and MobileProcesses.Active=1 and MobileProcesses.Deleted=0 
-                              Order By MobileProcessGroup.PGId,MobileProcesses.PId ", 3600, Ds).GetRecordsCount <> 0 Then
+                              Order By MobileProcessGroup.PGId,MobileProcesses.PId ", 3600, Ds, New Boolean).GetRecordsCount <> 0 Then
                     Dim Lst As New List(Of R2StandardMobileProcessStructure)
                     For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                         Dim NSS As New R2StandardMobileProcessStructure
@@ -2983,10 +3069,10 @@ Namespace BlackIPs
                 InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                     "Select BlackIPTypeId,StrategyQuery 
                      from R2Primary.dbo.TblBlackIPTypes 
-                     Where Active=1 and Deleted=0", 3600, DsBlackIPTypes)
+                     Where Active=1 and Deleted=0", 3600, DsBlackIPTypes, New Boolean)
                 For Loopx As Int64 = 0 To DsBlackIPTypes.Tables(0).Rows.Count - 1
                     Dim Ds As DataSet = Nothing
-                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, DsBlackIPTypes.Tables(0).Rows(Loopx).Item("StrategyQuery"), 0, Ds).GetRecordsCount <> 0 Then
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, DsBlackIPTypes.Tables(0).Rows(Loopx).Item("StrategyQuery"), 0, Ds, New Boolean).GetRecordsCount <> 0 Then
                         Dim SB As New StringBuilder
                         For Loopy As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                             SB.Append(Ds.Tables(0).Rows(Loopy).Item("BlackIP").trim).Append(";")
@@ -3003,7 +3089,7 @@ Namespace BlackIPs
             Try
                 Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                 Dim DS As DataSet = Nothing
-                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 * from R2Primary.dbo.TblBlackIPTypes Where BlackIPTypeId=" & YourBlackIPTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New BlackIPTypeNotFoundException
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 * from R2Primary.dbo.TblBlackIPTypes Where BlackIPTypeId=" & YourBlackIPTypeId & "", 3600, DS, New Boolean).GetRecordsCount = 0 Then Throw New BlackIPTypeNotFoundException
                 Return New R2StandardBlackIPTypeStructure(YourBlackIPTypeId, DS.Tables(0).Rows(0).Item("BlackIPName").trim, DS.Tables(0).Rows(0).Item("LockMinutes"), DS.Tables(0).Rows(0).Item("StrategyQuery").trim, Color.FromName(DS.Tables(0).Rows(0).Item("Color").trim), DS.Tables(0).Rows(0).Item("Description").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Deleted"))
             Catch ex As BlackIPTypeNotFoundException
                 Throw ex
@@ -3068,7 +3154,7 @@ Namespace BlackIPs
                 Dim DS As DataSet = Nothing
                 If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                         "Select Top 1 BlackIPId from R2Primary.dbo.TblBlackIPs 
-                         Where BlackIP='" & YourNSS.BlackIP & "' and LockStatus=1 and DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes", 0, DS).GetRecordsCount = 0 Then Return False
+                         Where BlackIP='" & YourNSS.BlackIP & "' and LockStatus=1 and DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes", 0, DS, New Boolean).GetRecordsCount = 0 Then Return False
                 Return True
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -3108,12 +3194,12 @@ Namespace BlackIPs
                     InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
                         "Select * from R2Primary.dbo.TblBlackIPs 
                          Where BlackIP='" & YourIP & "' and LockStatus=1 and 
-                               DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes order By DateTimeMilladi Desc", 0, DS)
+                               DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes order By DateTimeMilladi Desc", 0, DS, New Boolean)
                 Else
                     InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
                         "Select * from R2Primary.dbo.TblBlackIPs 
                          Where BlackIP='" & YourIP & "' and LockStatus=1 and TypeId=" & YourTypeId & " and 
-                               DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes order By DateTimeMilladi Desc", 0, DS)
+                               DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=LockMinutes order By DateTimeMilladi Desc", 0, DS, New Boolean)
                 End If
                 For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                     Dim NSS = New R2StandardBlackIPStructure(DS.Tables(0).Rows(Loopx).Item("BlackIPId"), DS.Tables(0).Rows(Loopx).Item("BlackIP").trim, DS.Tables(0).Rows(Loopx).Item("TypeId"), DS.Tables(0).Rows(Loopx).Item("LockStatus"), DS.Tables(0).Rows(Loopx).Item("LockMinutes"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi"), DS.Tables(0).Rows(Loopx).Item("Time"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Deleted"))
@@ -3300,7 +3386,7 @@ Namespace MoneyWallet
                 Try
                     Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                     Dim Ds As DataSet
-                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPaymentRequests Where Authority='" & YourAuthority & "'", 0, Ds)
+                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPaymentRequests Where Authority='" & YourAuthority & "'", 0, Ds, New Boolean)
                     Return New R2StandardPaymentRequestStructure(Ds.Tables(0).Rows(0).Item("PayId"), Ds.Tables(0).Rows(0).Item("MCSSId"), Ds.Tables(0).Rows(0).Item("SoftwareUserId"), Ds.Tables(0).Rows(0).Item("Amount"), Ds.Tables(0).Rows(0).Item("Authority").trim, Ds.Tables(0).Rows(0).Item("TransactionId").trim, Ds.Tables(0).Rows(0).Item("RefId").trim, Ds.Tables(0).Rows(0).Item("PaymentErrors").trim, Ds.Tables(0).Rows(0).Item("VerificationErrors").trim, Ds.Tables(0).Rows(0).Item("VerificationCount"), Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("Time"))
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -3325,7 +3411,7 @@ Namespace MoneyWallet
                 Try
                     Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                     Dim Ds As DataSet
-                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPaymentRequests Where PayId=" & YourPayId & "", 0, Ds)
+                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * from R2Primary.dbo.TblPaymentRequests Where PayId=" & YourPayId & "", 0, Ds, New Boolean)
                     Return New R2StandardPaymentRequestStructure(Ds.Tables(0).Rows(0).Item("PayId"), Ds.Tables(0).Rows(0).Item("MCSSId"), Ds.Tables(0).Rows(0).Item("SoftwareUserId"), Ds.Tables(0).Rows(0).Item("Amount"), Ds.Tables(0).Rows(0).Item("Authority").trim, Ds.Tables(0).Rows(0).Item("TransactionId").trim, Ds.Tables(0).Rows(0).Item("RefId").trim, Ds.Tables(0).Rows(0).Item("PaymentErrors").trim, Ds.Tables(0).Rows(0).Item("VerificationErrors").trim, Ds.Tables(0).Rows(0).Item("VerificationCount"), Ds.Tables(0).Rows(0).Item("UserId"), Ds.Tables(0).Rows(0).Item("DateTimeMilladi"), Ds.Tables(0).Rows(0).Item("DateShamsi"), Ds.Tables(0).Rows(0).Item("Time"))
                 Catch ex As Exception
                     Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
@@ -3496,7 +3582,7 @@ Namespace SMS
                     Dim DS As DataSet
                     Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                     If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                         "Select * from R2PrimarySMSSystem.dbo.TblSendSMSCodes Where SendSMSCodeId=" & YourSendSMSCodeId & "", 3600, DS).GetRecordsCount = 0 Then
+                         "Select * from R2PrimarySMSSystem.dbo.TblSendSMSCodes Where SendSMSCodeId=" & YourSendSMSCodeId & "", 3600, DS, New Boolean).GetRecordsCount = 0 Then
                         Throw New SendSMSCodeIdNotFoundExcption
                     Else
                         Return New R2CoreStandardSendSMSCodeStructure(DS.Tables(0).Rows(0).Item("SendSMSCodeId"), DS.Tables(0).Rows(0).Item("SendSMSCodeName").trim, DS.Tables(0).Rows(0).Item("SendSMSCodeTitle").trim, DS.Tables(0).Rows(0).Item("Description").trim, DS.Tables(0).Rows(0).Item("SendSMSCode").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi").trim, DS.Tables(0).Rows(0).Item("Time").trim, DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
@@ -3598,7 +3684,7 @@ Namespace SMS
                     Dim DS As New DataSet
                     Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                     If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                      "Select Top 1 * from R2PrimarySMSSystem.dbo.TblSMSRecivedCoding Where SMSCode='" & Mid(YourSMSCode.Trim, 1, 3) & "' and Active=1 and Deleted=0 Order By DateTimeMilladi Desc", 3600, DS).GetRecordsCount = 0 Then Throw New SMSRecivedCodeforSMSCodeNotFoundException
+                      "Select Top 1 * from R2PrimarySMSSystem.dbo.TblSMSRecivedCoding Where SMSCode='" & Mid(YourSMSCode.Trim, 1, 3) & "' and Active=1 and Deleted=0 Order By DateTimeMilladi Desc", 3600, DS, New Boolean).GetRecordsCount = 0 Then Throw New SMSRecivedCodeforSMSCodeNotFoundException
                     Return New R2CoreStandardRecivedSMSCodeStructure(DS.Tables(0).Rows(0).Item("SMSRCId"), DS.Tables(0).Rows(0).Item("SMSRCName").trim, DS.Tables(0).Rows(0).Item("SMSRCTitle").trim, DS.Tables(0).Rows(0).Item("SMSCode").trim, DS.Tables(0).Rows(0).Item("EndMinutes"), DS.Tables(0).Rows(0).Item("Core").trim, DS.Tables(0).Rows(0).Item("AssemblyDll").trim, DS.Tables(0).Rows(0).Item("AssemblyPath").trim, DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi"), DS.Tables(0).Rows(0).Item("Time"), DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
                 Catch ex As SqlInjectionException
                     Throw ex
@@ -3830,7 +3916,7 @@ Namespace SMS
                     If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                      "Select * from R2PrimarySMSSystem.dbo.TblSMSWareHouse as SMSWareHouse
                           Inner Join R2PrimarySMSSystem.DBO.TblSMSRecivedCoding as SMSRecivedCoding On Substring(SMSWareHouse.Message,1,3)=SMSRecivedCoding.SMSCode 
-                      Where SMSWareHouse.Active=1 and SMSWareHouse.SmsType=" & R2CoreSMSSendReciveType.Recived & " and SMSRecivedCoding.Active=1 and SMSRecivedCoding.Deleted=0", 0, DS).GetRecordsCount = 0 Then Return
+                      Where SMSWareHouse.Active=1 and SMSWareHouse.SmsType=" & R2CoreSMSSendReciveType.Recived & " and SMSRecivedCoding.Active=1 and SMSRecivedCoding.Deleted=0", 0, DS, New Boolean).GetRecordsCount = 0 Then Return
                     CmdSql.Connection.Open()
                     CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
@@ -3971,7 +4057,7 @@ Namespace SMS
                     Dim DS As DataSet
                     Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                     If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
-                         "Select * from R2PrimarySMSSystem.dbo.TblSmsWareHouse where Active=1 and SmsType=" & R2CoreSMSSendReciveType.ForSend & " and DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=EndMinutes and Message<>''", 0, DS).GetRecordsCount = 0 Then Return
+                         "Select * from R2PrimarySMSSystem.dbo.TblSmsWareHouse where Active=1 and SmsType=" & R2CoreSMSSendReciveType.ForSend & " and DATEDIFF(MINUTE,DateTimeMilladi,GETDATE())<=EndMinutes and Message<>''", 0, DS, New Boolean).GetRecordsCount = 0 Then Return
                     Dim LstMessage() As String = New String(DS.Tables(0).Rows.Count - 1) {}
                     Dim LstMobileNumber() As String = New String(DS.Tables(0).Rows.Count - 1) {}
                     Dim LstSMSId() As Int64 = New Int64(DS.Tables(0).Rows.Count - 1) {}
@@ -4173,7 +4259,7 @@ Namespace SMS
                     Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
                     Dim DS As DataSet = Nothing
                     If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
-                            "Select Top 1 * from R2PrimarySMSSystem.dbo.TblSMSTypes Where SMSTypeId=" & YourSMSTypeId & "", 3600, DS).GetRecordsCount = 0 Then Throw New SMSTypeIdNotFoundException
+                            "Select Top 1 * from R2PrimarySMSSystem.dbo.TblSMSTypes Where SMSTypeId=" & YourSMSTypeId & "", 3600, DS, New Boolean).GetRecordsCount = 0 Then Throw New SMSTypeIdNotFoundException
                     Return New R2CoreStandardSMSTypeStructure(YourSMSTypeId, DS.Tables(0).Rows(0).Item("SMSTypeName").trim, DS.Tables(0).Rows(0).Item("SMSTypeTitle").trim, Color.FromName(DS.Tables(0).Rows(0).Item("SMSTypeColor").trim), DS.Tables(0).Rows(0).Item("Price"), DS.Tables(0).Rows(0).Item("SMSTypeContent").trim, DS.Tables(0).Rows(0).Item("SMSMinutes"), DS.Tables(0).Rows(0).Item("Core").trim, DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi").trim, DS.Tables(0).Rows(0).Item("Time").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
                 Catch ex As SMSTypeIdNotFoundException
                     Throw ex
@@ -4191,7 +4277,7 @@ Namespace SMS
                     Dim DS As DataSet = Nothing
                     R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                        "Select * From R2PrimarySMSSystem.dbo.TblSMSTypes Where SMSTypeTitle Like '%" & YourSearchString.Replace("ی", "ي").Replace("ک", "ك") & "%' 
-                        and ViewFlag=1 Order By SMSTypeTitle", 3600, DS)
+                        and ViewFlag=1 Order By SMSTypeTitle", 3600, DS, New Boolean)
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                         Lst.Add(New R2CoreStandardSMSTypeStructure(DS.Tables(0).Rows(Loopx).Item("SMSTypeId"), DS.Tables(0).Rows(Loopx).Item("SMSTypeName").trim, DS.Tables(0).Rows(Loopx).Item("SMSTypeTitle").trim, DS.Tables(0).Rows(Loopx).Item("SMSTypeColor").trim, DS.Tables(0).Rows(Loopx).Item("Price"), DS.Tables(0).Rows(Loopx).Item("SMSTypeContent").trim, DS.Tables(0).Rows(Loopx).Item("SMSMinutes"), DS.Tables(0).Rows(Loopx).Item("Core").trim, DS.Tables(0).Rows(Loopx).Item("UserId"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi"), DS.Tables(0).Rows(Loopx).Item("Time"), DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                     Next
@@ -4212,7 +4298,7 @@ Namespace SMS
                     Dim DS As DataSet = Nothing
                     R2ClassSqlDataBOXManagement.GetDataBOX(New R2PrimarySqlConnection,
                              "Select * From R2PrimarySMSSystem.dbo.TblSMSTypes 
-                              Where Left(SMSTypeTitle," & YourSearchString.Length & ")='" & YourSearchString.Replace("ی", "ي").Replace("ک", "ك") & "' Order By SMSTypeTitle", 3600, DS)
+                              Where Left(SMSTypeTitle," & YourSearchString.Length & ")='" & YourSearchString.Replace("ی", "ي").Replace("ک", "ك") & "' Order By SMSTypeTitle", 3600, DS, New Boolean)
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                         Lst.Add(New R2CoreStandardSMSTypeStructure(DS.Tables(0).Rows(Loopx).Item("SMSTypeId"), DS.Tables(0).Rows(Loopx).Item("SMSTypeName").trim, DS.Tables(0).Rows(Loopx).Item("SMSTypeTitle").trim, DS.Tables(0).Rows(Loopx).Item("SMSTypeColor").trim, DS.Tables(0).Rows(Loopx).Item("Price"), DS.Tables(0).Rows(Loopx).Item("SMSTypeContent").trim, DS.Tables(0).Rows(Loopx).Item("SMSMinutes"), DS.Tables(0).Rows(Loopx).Item("Core").trim, DS.Tables(0).Rows(Loopx).Item("UserId"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi"), DS.Tables(0).Rows(Loopx).Item("Time"), DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Active"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                     Next
@@ -4231,7 +4317,7 @@ Namespace SMS
 
                     Dim Ds As DataSet
                     Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
-                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * From R2PrimarySMSSystem.dbo.TblSMSTypes Where Active=1 And ViewFlag=1 And SMSTypeTitle Like  '%" & YourSearchString & "%' Order By SMSTypeTitle ", 3600, Ds)
+                    InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection, "Select * From R2PrimarySMSSystem.dbo.TblSMSTypes Where Active=1 And ViewFlag=1 And SMSTypeTitle Like  '%" & YourSearchString & "%' Order By SMSTypeTitle ", 3600, Ds, New Boolean)
                     Dim Lst As New List(Of R2StandardStructure)
                     For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
                         Lst.Add(New R2CoreStandardSMSTypeStructure(Ds.Tables(0).Rows(Loopx).Item("SMSTypeId"), Ds.Tables(0).Rows(Loopx).Item("SMSTypeName").trim, Ds.Tables(0).Rows(Loopx).Item("SMSTypeTitle").trim, Color.FromName(Ds.Tables(0).Rows(Loopx).Item("SMSTypeColor").trim), Ds.Tables(0).Rows(Loopx).Item("Price"), Ds.Tables(0).Rows(Loopx).Item("SMSTypeContent").trim, Ds.Tables(0).Rows(Loopx).Item("SMSMinutes"), Ds.Tables(0).Rows(Loopx).Item("Core").trim, Ds.Tables(0).Rows(Loopx).Item("UserId"), Ds.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), Ds.Tables(0).Rows(Loopx).Item("DateShamsi"), Ds.Tables(0).Rows(Loopx).Item("Time"), Ds.Tables(0).Rows(Loopx).Item("ViewFlag"), Ds.Tables(0).Rows(Loopx).Item("Active"), Ds.Tables(0).Rows(Loopx).Item("Deleted")))
@@ -4377,7 +4463,7 @@ Namespace SMS
                 Try
                     Dim DS As New DataSet
                     Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
-                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select * from R2PrimarySMSSystem.dbo.TblSMSOwnerTypes Where SMSOTypeId=" & YourSMSOwnerTypeId & " and Active=1 and Deleted=0", 3600, DS).GetRecordsCount <> 0 Then
+                    If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select * from R2PrimarySMSSystem.dbo.TblSMSOwnerTypes Where SMSOTypeId=" & YourSMSOwnerTypeId & " and Active=1 and Deleted=0", 3600, DS, New Boolean).GetRecordsCount <> 0 Then
                         Return New R2CoreStandardSMSOwnerTypeStructure(DS.Tables(0).Rows(0).Item("SMSOTypeId"), DS.Tables(0).Rows(0).Item("SMSOTypeName").trim, DS.Tables(0).Rows(0).Item("SMSOTypeTitle").trim, Color.FromName(DS.Tables(0).Rows(0).Item("SMSOTypeColor")), DS.Tables(0).Rows(0).Item("Price"), DS.Tables(0).Rows(0).Item("PriceMinusCommission"), DS.Tables(0).Rows(0).Item("PriceMinusCommissionMinusVAT"), DS.Tables(0).Rows(0).Item("Core").trim, DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi").trim, DS.Tables(0).Rows(0).Item("Time").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
                     Else
                         Throw New SMSOwnerTypeNotFoundException
@@ -4398,7 +4484,7 @@ Namespace SMS
                             Inner Join R2Primary.dbo.TblSoftwareUserTypes as SoftwareUserTypes On SoftwareUsers.UserTypeId=SoftwareUserTypes.UTId 
                             Inner Join R2Primary.dbo.TblEntityRelations as EntityRelations On SoftwareUserTypes.UTId=EntityRelations.E1 
                             Inner Join R2PrimarySMSSystem.dbo.TblSMSOwnerTypes as SMSOwnerTypes On EntityRelations.E2=SMSOwnerTypes.SMSOTypeId 
-                           Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUserTypes.Active=1 and SoftwareUserTypes.Deleted=0 and EntityRelations.RelationActive=1 and EntityRelations.ERTypeId=10 and SMSOwnerTypes.Active=1", 3600, DS).GetRecordsCount <> 0 Then
+                           Where SoftwareUsers.UserId=" & YourNSSSoftwareUser.UserId & " and SoftwareUserTypes.Active=1 and SoftwareUserTypes.Deleted=0 and EntityRelations.RelationActive=1 and EntityRelations.ERTypeId=10 and SMSOwnerTypes.Active=1", 3600, DS, New Boolean).GetRecordsCount <> 0 Then
                         Return New R2CoreStandardSMSOwnerTypeStructure(DS.Tables(0).Rows(0).Item("SMSOTypeId"), DS.Tables(0).Rows(0).Item("SMSOTypeName").trim, DS.Tables(0).Rows(0).Item("SMSOTypeTitle").trim, Color.FromName(DS.Tables(0).Rows(0).Item("SMSOTypeColor")), DS.Tables(0).Rows(0).Item("Price"), DS.Tables(0).Rows(0).Item("PriceMinusCommission"), DS.Tables(0).Rows(0).Item("PriceMinusCommissionMinusVAT"), DS.Tables(0).Rows(0).Item("Core").trim, DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi").trim, DS.Tables(0).Rows(0).Item("Time").trim, DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
                     Else
                         Throw New SMSOwnerTypeBySoftwareUserNotFoundException
@@ -4428,7 +4514,7 @@ Namespace SMS
                         Throw New SMSOwnerForSoftwareUserDoNotRegisteredException
                     Else
                         Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
-                        If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 * from R2PrimarySMSSystem.dbo.TblSMSOwners Where SMSOwnerUserId=" & YourNSSSoftwareUser.UserId & " and Active=1 and Deleted=0 Order By DateTimeMilladi Desc", 60, DS).GetRecordsCount <> 0 Then
+                        If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "Select Top 1 * from R2PrimarySMSSystem.dbo.TblSMSOwners Where SMSOwnerUserId=" & YourNSSSoftwareUser.UserId & " and Active=1 and Deleted=0 Order By DateTimeMilladi Desc", 60, DS, New Boolean).GetRecordsCount <> 0 Then
                             Return New R2CoreStandardSMSOwnerStructure(DS.Tables(0).Rows(0).Item("SMSOwnerUserId"), DS.Tables(0).Rows(0).Item("SMSOTypeId"), DS.Tables(0).Rows(0).Item("ReminderCharge"), DS.Tables(0).Rows(0).Item("ReminderHolder"), DS.Tables(0).Rows(0).Item("IsSendingActive"), DS.Tables(0).Rows(0).Item("PleaseCharge"), DS.Tables(0).Rows(0).Item("DateTimeMilladi"), DS.Tables(0).Rows(0).Item("DateShamsi").trim, DS.Tables(0).Rows(0).Item("Time").trim, DS.Tables(0).Rows(0).Item("UserId"), DS.Tables(0).Rows(0).Item("ViewFlag"), DS.Tables(0).Rows(0).Item("Active"), DS.Tables(0).Rows(0).Item("Deleted"))
                         Else
                             Throw New SMSOwnerForSoftwareUserDoNotRegisteredException
@@ -4512,7 +4598,7 @@ Namespace SMS
                     InstanceSqlDataBOX.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection,
                   "Select Distinct SoftwareUsers.* from R2PrimarySMSSystem.dbo.TblSMSOwners as SMSOwners 
                      Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On SMSOwners.SMSOwnerUserId =SoftwareUsers.UserId 
-                   Where SoftwareUsers.UserTypeId=" & YourNSSUserTypeId & " and SMSOwners.IsSendingActive=1 and SMSOwners.Active=1 and SMSOwners.Deleted=0 and SoftwareUsers.UserActive=1 ", 3600, DS)
+                   Where SoftwareUsers.UserTypeId=" & YourNSSUserTypeId & " and SMSOwners.IsSendingActive=1 and SMSOwners.Active=1 and SMSOwners.Deleted=0 and SoftwareUsers.UserActive=1 ", 3600, DS, New Boolean)
                     For Loopx As Int64 = 0 To DS.Tables(0).Rows.Count - 1
                         LstUsers.Add(New R2CoreStandardSoftwareUserStructure(DS.Tables(0).Rows(Loopx).Item("UserId"), DS.Tables(0).Rows(Loopx).Item("ApiKey").trim, DS.Tables(0).Rows(Loopx).Item("APIKeyExpiration"), DS.Tables(0).Rows(Loopx).Item("UserName").trim, DS.Tables(0).Rows(Loopx).Item("UserShenaseh").trim, DS.Tables(0).Rows(Loopx).Item("UserPassword").trim, DS.Tables(0).Rows(Loopx).Item("UserPasswordExpiration"), DS.Tables(0).Rows(Loopx).Item("UserPinCode"), DS.Tables(0).Rows(Loopx).Item("UserCanCharge"), DS.Tables(0).Rows(Loopx).Item("UserActive"), DS.Tables(0).Rows(Loopx).Item("UserTypeId"), DS.Tables(0).Rows(Loopx).Item("MobileNumber").trim, DS.Tables(0).Rows(Loopx).Item("UserStatus").trim, DS.Tables(0).Rows(Loopx).Item("VerificationCode").trim, DS.Tables(0).Rows(Loopx).Item("VerificationCodeTimeStamp"), DS.Tables(0).Rows(Loopx).Item("VerificationCodeCount"), DS.Tables(0).Rows(Loopx).Item("Nonce"), DS.Tables(0).Rows(Loopx).Item("NonceTimeStamp"), DS.Tables(0).Rows(Loopx).Item("NonceCount"), DS.Tables(0).Rows(Loopx).Item("PersonalNonce"), DS.Tables(0).Rows(Loopx).Item("PersonalNonceTimeStamp"), DS.Tables(0).Rows(Loopx).Item("Captcha"), DS.Tables(0).Rows(Loopx).Item("CaptchaValid"), DS.Tables(0).Rows(Loopx).Item("UserCreatorId"), DS.Tables(0).Rows(Loopx).Item("DateTimeMilladi"), DS.Tables(0).Rows(Loopx).Item("DateShamsi"), DS.Tables(0).Rows(Loopx).Item("ViewFlag"), DS.Tables(0).Rows(Loopx).Item("Deleted")))
                     Next
@@ -4561,7 +4647,7 @@ Namespace SMS
                            "Select * from R2PrimarySMSSystem.dbo.TblSMSOwners as SMSOwners
                               Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On SMSOwners.SMSOwnerUserId=SoftwareUsers.UserId 
                             Where SMSOwners.IsSendingActive=1 and SMSOwners.ReminderCharge<>0 and ((SMSOwners.ReminderCharge-SMSOwners.ReminderHolder)<=(SMSOwners.ReminderCharge * " & InstanceConfiguration.GetConfigInt64(R2CoreConfigurations.SmsSystemSetting, 6) & " / 100))
-                                  and SMSOwners.PleaseCharge=0 and SMSOwners.Active=1 and SMSOwners.Deleted=0 and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0", 0, DS).GetRecordsCount = 0 Then
+                                  and SMSOwners.PleaseCharge=0 and SMSOwners.Active=1 and SMSOwners.Deleted=0 and SoftwareUsers.UserActive=1 and SoftwareUsers.Deleted=0", 0, DS, New Boolean).GetRecordsCount = 0 Then
                         _SendSMSOwnersPleaseChargeFlag = True
                         Return
                     End If

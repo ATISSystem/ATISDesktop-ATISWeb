@@ -37,7 +37,7 @@ Partial Class UCLoadAllocationManipulationByLoadAllocations
         Me.PnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PnlMain.Location = New System.Drawing.Point(0, 0)
         Me.PnlMain.Name = "PnlMain"
-        Me.PnlMain.Size = New System.Drawing.Size(949, 488)
+        Me.PnlMain.Size = New System.Drawing.Size(974, 618)
         Me.PnlMain.TabIndex = 0
         '
         'UcLoadAllocationManipulation
@@ -47,7 +47,7 @@ Partial Class UCLoadAllocationManipulationByLoadAllocations
         Me.UcLoadAllocationManipulation.Location = New System.Drawing.Point(0, 0)
         Me.UcLoadAllocationManipulation.Name = "UcLoadAllocationManipulation"
         Me.UcLoadAllocationManipulation.Padding = New System.Windows.Forms.Padding(5)
-        Me.UcLoadAllocationManipulation.Size = New System.Drawing.Size(949, 158)
+        Me.UcLoadAllocationManipulation.Size = New System.Drawing.Size(974, 229)
         Me.UcLoadAllocationManipulation.TabIndex = 1
         Me.UcLoadAllocationManipulation.UCNSSCurrent = Nothing
         Me.UcLoadAllocationManipulation.UCViewButtons = False
@@ -58,19 +58,19 @@ Partial Class UCLoadAllocationManipulationByLoadAllocations
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcucLoadAllocationCollectionAdvance.BackColor = System.Drawing.Color.Transparent
-        Me.UcucLoadAllocationCollectionAdvance.Location = New System.Drawing.Point(3, 157)
+        Me.UcucLoadAllocationCollectionAdvance.Location = New System.Drawing.Point(3, 225)
         Me.UcucLoadAllocationCollectionAdvance.Name = "UcucLoadAllocationCollectionAdvance"
-        Me.UcucLoadAllocationCollectionAdvance.Size = New System.Drawing.Size(943, 328)
+        Me.UcucLoadAllocationCollectionAdvance.Size = New System.Drawing.Size(968, 390)
         Me.UcucLoadAllocationCollectionAdvance.TabIndex = 0
         '
         'UCLoadAllocationManipulationByLoadAllocations
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Transparent
         Me.Controls.Add(Me.PnlMain)
         Me.Name = "UCLoadAllocationManipulationByLoadAllocations"
-        Me.Size = New System.Drawing.Size(949, 488)
+        Me.Size = New System.Drawing.Size(974, 618)
         Me.PnlMain.ResumeLayout(false)
         Me.ResumeLayout(false)
 

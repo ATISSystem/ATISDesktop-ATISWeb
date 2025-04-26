@@ -69,7 +69,7 @@ Public Class UCUCComputerMessageCollection
                         inner join R2Primary.dbo.TblSoftwareUserWorkingGroupsRelationSoftwareUsers on R2Primary.dbo.TblComputerMessageTypes.WorkingGroup=R2Primary.dbo.TblSoftwareUserWorkingGroupsRelationSoftwareUsers.WGId 
                        Where R2Primary.dbo.TblSoftwareUserWorkingGroupsRelationSoftwareUsers.UserId=" & R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId & ") 
                              and (CMActive=1) and (DateShamsi=('" & _DateTime.GetCurrentDateShamsiFull() & "'))
-                       Order By DateTimeMilladi Desc", 1, Ds)
+                       Order By DateTimeMilladi Desc", 1, Ds, New Boolean)
             PnlUCs.SuspendLayout()
             PnlUCs.Controls.Clear()
             For Loopx As Int16 = Ds.Tables(0).Rows.Count - 1 To 0 Step -1

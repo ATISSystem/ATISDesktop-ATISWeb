@@ -93,11 +93,11 @@ Public Class PayanehAmirKabirAutomatedJobs
                 InstanceSoftwareUsers = Nothing
                 InstanceLoadAllocation = Nothing
             Catch ex As Exception
-                Try
-                    InstanceLoadAllocation.SendLoadAllocationsLoadPermissionRegisteringFailedSMS()
-                Catch exSMS As Exception
-                    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering.FailedSMS:" + ex.Message.ToString, EventLogEntryType.Error)
-                End Try
+                'Try
+                '    InstanceLoadAllocation.SendLoadAllocationsLoadPermissionRegisteringFailedSMS()
+                'Catch exSMS As Exception
+                '    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering.FailedSMS:" + ex.Message.ToString, EventLogEntryType.Error)
+                'End Try
                 EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "LoadAllocationsLoadPermissionRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
             End Try
 

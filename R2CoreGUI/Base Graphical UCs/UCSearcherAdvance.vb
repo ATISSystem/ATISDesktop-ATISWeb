@@ -19,6 +19,8 @@ Public Class UCSearcherAdvance
     Public Event UC13PressedEvent()
     Public Event UC27PressedEvent()
     Public Event UCIconRefreshRequestClicked()
+    Public Event UCControlKeyPressedEvent()
+
 
 
 #Region "General Properties"
@@ -327,6 +329,10 @@ Public Class UCSearcherAdvance
 
     Private Sub ListBox_KeyUp(sender As Object, e As KeyEventArgs) Handles ListBox.KeyUp
         Try
+            If e.KeyData = Keys.ControlKey Then
+                RaiseEvent UCControlKeyPressedEvent()
+                Return
+            End If
             If e.KeyData = Keys.Up And ListBox.SelectedIndex = 0 Then
                 ListBox.SelectedIndex = -1
                 UcPersianTextBox.Focus()

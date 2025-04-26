@@ -50,6 +50,13 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                     { MonetarySupplySource = R2CoreMonetaryCreditSupplySources.ShepaPaymentGate; Authority = Request.QueryString["token"]; }
                 }
                 catch (Exception ex) { }
+                try
+                {//آقای پرداخت
+                    if (Request.QueryString["status"] == "1")
+                    { MonetarySupplySource = R2CoreMonetaryCreditSupplySources.AqayepardakhtPaymentGate ; Authority = Request.QueryString["transid"]; }
+                }
+                catch (Exception ex) { }
+
                 if (MonetarySupplySource == R2CoreMonetaryCreditSupplySources.None)
                 { throw new WebApiClientPaymentVerificationException("PaymentVerificationLocation1"); }
 
@@ -69,6 +76,8 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                     { PayId = WS.WebMethodVerificationRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, Authority, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword)); }
                     else if (MonetarySupplySource == R2CoreMonetaryCreditSupplySources.ShepaPaymentGate)
                     { PayId = WS.WebMethodVerificationRequest(R2CoreMonetaryCreditSupplySources.ShepaPaymentGate, Authority, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword)); }
+                    else if (MonetarySupplySource == R2CoreMonetaryCreditSupplySources.AqayepardakhtPaymentGate )
+                    { PayId = WS.WebMethodVerificationRequest(R2CoreMonetaryCreditSupplySources.AqayepardakhtPaymentGate, Authority, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword)); }
                     else { throw new WebApiClientPaymentVerificationException("PaymentVerificationLocation2"); }
 
                     var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
@@ -85,11 +94,12 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                         InstanceMoneyWallets.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.AddMoney, NSSPaymentRequest.Amount, R2CoreParkingSystemAccountings.ChargeType, NSSSoftwareUser);
 
 
-                        if ((NSSPaymentRequest.Amount > 500000))
+                        if ((NSSPaymentRequest.Amount == 1000000))
                         { InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSSelfGoverningChargingSoftwareUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime())); }
                         else
                         { InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSSystemUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime())); }
 
+                        //{ InstanceMoneyWalletCharge.SabtCharge(new R2StandardMoneyWalletChargeStructure(NSSTrafficCard, NSSPaymentRequest.Amount, InstanceSoftwareUsers.GetNSSSystemUser().UserId, "", _R2DateTime.GetCurrentDateTimeMilladi(), _R2DateTime.GetCurrentDateShamsiFull(), NSSPaymentRequest.Amount + CurrentCharge, 0, _R2DateTime.GetCurrentTime())); }
 
                         Int64 LastCharge = InstanceMoneyWallets.GetMoneyWalletCharge(NSSTrafficCard);
                         ViewBag.IsSuccess = true; ViewBag.RefId = NSSPaymentRequest.RefId;

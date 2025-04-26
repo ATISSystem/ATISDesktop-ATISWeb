@@ -65,6 +65,7 @@ using R2CoreTransportationAndLoadNotification.Trucks;
 using R2CoreTransportationAndLoadNotification.AnnouncementTiming;
 using static System.Net.WebRequestMethods;
 using BillOfLadingClassLibrary.ir.rmto.bar;
+using PayanehClassLibrary.ConfigurationManagement;
 
 namespace BillOfLadingCore
 {
@@ -129,11 +130,11 @@ namespace BillOfLadingCore
             //        Da.Fill(Ds);
 
             //        var InstanceMClassCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
-            //        var TotalTurn =Convert.ToInt64( Ds.Tables[0].Rows.Count);
+            //        var TotalTurn = Convert.ToInt64(Ds.Tables[0].Rows.Count);
             //        for (int Loopx = 0; Loopx <= TotalTurn - 1; Loopx++)
             //        {
             //            try
-            //            { InstanceMClassCarTruckNobat.TurnCancellationWithLicensePlate(Ds.Tables[0].Rows[Loopx][1].ToString(), Ds.Tables[0].Rows[Loopx][2].ToString(), YourNSSSoftwareUser,TurnStatuses.CancelledSystem ); }
+            //            { InstanceMClassCarTruckNobat.TurnCancellationWithLicensePlate(Ds.Tables[0].Rows[Loopx][1].ToString(), Ds.Tables[0].Rows[Loopx][2].ToString(), YourNSSSoftwareUser, TurnStatuses.CancelledSystem); }
             //            catch (Exception ex)
             //            {
             //                if (InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).Active)
@@ -269,6 +270,110 @@ namespace BillOfLadingCore
                 catch (Exception ex)
                 { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
             }
+
+            //private static bool _BillOfLadingTurnsCancellationExcecutedFlag;
+            //public void TurnsCancellation(R2CoreStandardSoftwareUserStructure YourNSSSoftwareUser)
+            //{
+            //    try
+            //    {
+            //        var InstanceLogging = new R2CoreInstanceLoggingManager();
+            //        var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+            //        var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+            //        var InstanceTurns = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
+            //        var InstanceMClassCarTruckNobat = new PayanehClassLibraryMClassCarTruckNobatManager();
+
+            //        //کنترل فعال بودن سرویس
+            //        if (!InstanceConfiguration.GetConfigBoolean(Configurations.BillOfLadingCoreConfigurations.BillOfLading, 0)) { throw new BillOfLadingCoreTurnsCancellationIsnotActiveException(); }
+            //        //کنترل زمان اجرای فرآیند
+            //        var myCurrentDateTime = _DateTime.GetCurrentDateTime();
+            //        var TimeOfDay = _DateTime.GetTickofTime(myCurrentDateTime);
+            //        var StTime1 = TimeSpan.Parse("14:00:00");
+            //        var EndTime1 = TimeSpan.Parse("15:05:00");
+            //        var StTime2 = TimeSpan.Parse("11:00:00");
+            //        var EndTime2 = TimeSpan.Parse("00:05:00");
+            //        var StTime3 = TimeSpan.Parse("16:00:00");
+            //        var EndTime3 = TimeSpan.Parse("00:05:00");
+            //        if (TimeOfDay >= StTime1 && TimeOfDay <= EndTime1)
+            //        { }
+            //        else if (TimeOfDay >= StTime2 && TimeOfDay <= EndTime2)
+            //        { }
+            //        else if (TimeOfDay >= StTime3 && TimeOfDay <= EndTime3)
+            //        { }
+            //        else
+            //        { _BillOfLadingTurnsCancellationExcecutedFlag = false; return; }
+            //        if (_BillOfLadingTurnsCancellationExcecutedFlag) { return; }
+
+            //        //var TimeofDay = _DateTime.GetCurrentTime();
+            //        //if (TimeSpan.ParseExact(TimeofDay, @"hh\:mm\:ss", CultureInfo.InvariantCulture) < TimeSpan.ParseExact(InstanceConfiguration.GetConfigString(Configurations.BillOfLadingCoreConfigurations.BillOfLading, 3), @"hh\:mm\:ss", CultureInfo.InvariantCulture)) { return; }
+
+            //        /*لیست نوبت های فعال*/
+            //        var LstActiveTurns = InstanceTurns.GetAllOfCurrentActiveTurns();
+            //        var TotalTurn = 0;
+            //        /*بررسی نوبت های فعال*/
+            //        for (int LoopBillOfLading = 0; LoopBillOfLading <= LstActiveTurns.Count - 1; LoopBillOfLading++)
+            //        {
+            //            var Turn = LstActiveTurns[LoopBillOfLading];
+            //            var BarServiceAtis = new BillOfLadingClassLibrary.ir.rmto.bar.BarInfoServiceAtis();
+            //            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            //            var BillofLadingDetails = BarServiceAtis.GetFreighterBOLsCount("atis", "SM4W44W946", Turn.TruckSmartCardNo , Turn.EnterDate , Turn.EnterTime );
+            //            var BillofLadingStatus = BillofLadingDetails.Split(';')[0];
+            //            var BillofLadingTotal = System.Convert.ToInt64(BillofLadingDetails.Split(';')[1]);
+            //            if (BillofLadingStatus.ToUpper() == "NO") { /*ناوگان هیچ بارنامه ای بعد از صدور نوبت ندارد*/ continue; }
+
+            //            if (BillofLadingTotal > 1)
+            //            {/*بیش از یک بارنامه بعد از نوبت فعال دارد*/}
+            //            else
+            //            {/*فقط یک بارنامه بعد از نوبت فعال دارد که ممکن است جزو نوبت های خودکار و شهری باشد*/
+            //                if (Turn.nUserIdEnter == R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserId)
+            //                { /*نوبت در ساعات عادی نوبت خودکار توسط سیستم صادر نشده است*/
+            //                    if (InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).Active)
+            //                    { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, BillOfLadingCoreloggings.BillOfLadingTurnsCancellation, InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).LogTitle, "NoAction : " + "TruckSmartCardNo=" + Turn.TruckSmartCardNo, Turn.Pelak + " - " + Turn.Serial, Turn.NSSTruckDriver.NSSDriver.StrPersonFullName, Turn.EnterDate + " " + Turn.EnterTime, BillofLadingTotal.ToString(), YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+            //                    continue;
+            //                }
+            //                else
+            //                { }
+            //            }
+
+            //            /*ابطال نوبت */
+            //            try
+            //            {
+            //                InstanceMClassCarTruckNobat.TurnCancellationWithLicensePlate(Turn.Pelak, Turn.Serial, YourNSSSoftwareUser, TurnStatuses.CancelledSystem);
+            //                if (InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).Active)
+            //                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, BillOfLadingCoreloggings.BillOfLadingTurnsCancellation, InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).LogTitle, "Action : " + "TruckSmartCardNo=" + Turn.TruckSmartCardNo, Turn.Pelak + " - " + Turn.Serial, Turn.NSSTruckDriver.NSSDriver.StrPersonFullName, Turn.EnterDate + " " + Turn.EnterTime, BillofLadingDetails, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+            //                TotalTurn += 1;
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                if (InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).Active)
+            //                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, BillOfLadingCoreloggings.BillOfLadingTurnsCancellation, InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).LogTitle, ex.Message, string.Empty, string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+            //            }
+            //        }
+
+            //        /*ثبت لاگ تعداد باطل شده*/
+            //        if (InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).Active)
+            //        { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, BillOfLadingCoreloggings.BillOfLadingTurnsCancellation, InstanceLogging.GetNSSLogType(BillOfLadingCoreloggings.BillOfLadingTurnsCancellation).LogTitle, "TotalTurn=" + LstActiveTurns.Count.ToString(), "TotalTurnCancelled=" + TotalTurn.ToString(), string.Empty, string.Empty, string.Empty, YourNSSSoftwareUser.UserId, _DateTime.GetCurrentDateTimeMilladi(), null)); }
+
+            //        /*ارسال اس ام اس اتمام موفقیت آمیز*/
+            //        SendSMSSuccess(TotalTurn, _DateTime.GetCurrentDateShamsiFull());
+            //    }
+            //    catch (BillOfLadingCoreTurnsCancellationIsnotActiveException ex)
+            //    { throw ex; }
+            //    catch (BillOfLadingCoreFilefromRefrenceNotFoundException ex)
+            //    { throw ex; }
+            //    catch (Exception ex) when (ex is RequesterNotAllowTurnIssueBySeqTException || ex is RequesterNotAllowTurnIssueByLastLoadPermissionedException || ex is TruckRelatedSequentialTurnNotFoundException ||
+            //                               ex is CarIsNotPresentInParkingException || ex is GetNobatExceptionCarTruckIsTankTreiler || ex is CarTruckTravelLengthNotOverYetException || ex is GetNobatExceptionCarTruckHasNobat ||
+            //                               ex is GetNobatException || ex is SequentialTurnIsNotActiveException || ex is TruckNotFoundException || ex is SequentialTurnNotFoundException || ex is TruckDriverNotFoundException ||
+            //                               ex is TurnRegisterRequestNotFoundException || ex is GetNSSException || ex is GetDataException || ex is MoneyWalletCurrentChargeNotEnoughException || ex is TurnRegisterRequestTypeNotFoundException ||
+            //                               ex is TurnPrintingInfNotFoundException || ex is RelatedTerraficCardNotFoundException || ex is TerraficCardNotFoundException || ex is DriverTruckInformationNotExistException ||
+            //                               ex is SqlInjectionException || ex is PermissionException)
+            //    { throw ex; }
+            //    catch (AnyActiveTurnNotExistException ex)
+            //    { throw ex; }
+            //    catch (BillOfLadingCoreSendSMSFailedException ex)
+            //    { throw ex; }
+            //    catch (Exception ex)
+            //    { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
+            //}
 
             private void SendSMSSuccess(Int64 YourTotalTurn, string YourShamsiDate)
             {
@@ -510,10 +615,10 @@ namespace BillOfLadingCore
                 {
                     try
                     {
-                        DataSet DS = null;
+                        DataSet DS = null; Boolean DataChangeStatus = false;
                         R2ClassSqlDataBOXManagement.GetDataBOX(new R2PrimarySqlConnection(), "Select distinct BLC.* from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC " +
                             "Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlDetails as BLCDetails On BLC.BLCId = BLCDetails.BLCId " +
-                            "Where Deleted = 0 and blc.BLCTitle like '%" + YourSearchString + "%' Order By BLC.DateTimeMilladi Desc", 0, ref DS);
+                            "Where Deleted = 0 and blc.BLCTitle like '%" + YourSearchString + "%' Order By BLC.DateTimeMilladi Desc", 0, ref DS, ref DataChangeStatus);
                         var Lst = new List<BillOfLadingCoreStandardBillOfLadingControlStructure>();
                         for (int Loopx = 0; Loopx <= DS.Tables[0].Rows.Count - 1; Loopx++)
                         { Lst.Add(new BillOfLadingCoreStandardBillOfLadingControlStructure(Convert.ToInt64(DS.Tables[0].Rows[Loopx]["BLCId"]), DS.Tables[0].Rows[Loopx]["BLCTitle"].ToString(), DS.Tables[0].Rows[Loopx]["TCOId"].ToString(), DS.Tables[0].Rows[Loopx]["TCOTitle"].ToString(), Convert.ToDateTime(DS.Tables[0].Rows[Loopx]["DateTimeMilladi"]), DS.Tables[0].Rows[Loopx]["DateShamsi"].ToString(), DS.Tables[0].Rows[Loopx]["Time"].ToString(), Convert.ToInt64(DS.Tables[0].Rows[Loopx]["UserId"]), Convert.ToBoolean(DS.Tables[0].Rows[Loopx]["Active"]), Convert.ToBoolean(DS.Tables[0].Rows[Loopx]["ViewFlag"]), Convert.ToBoolean(DS.Tables[0].Rows[Loopx]["Deleted"]), null)); }
@@ -527,13 +632,13 @@ namespace BillOfLadingCore
                 {
                     try
                     {
-                        DataSet DS = new DataSet();
+                        DataSet DS = new DataSet(); Boolean DataChangeStatus = false;
                         if (R2ClassSqlDataBOXManagement.GetDataBOX(new R2PrimarySqlConnection(),
                                         "Select BLC.BLCTitle,BLC.TCOId,BLC.TCOTitle,BLC.DateTimeMilladi,BLC.DateShamsi,BLC.Time,BLC.UserId,BLC.ViewFlag,BLC.Active,BLC.Deleted,BLCDetail.*,(Replace(BLC.DateShamsi,'/','')+'-'+Replace(BLC.Time,':','')) AS DateTimeComposite,SoftwareUsers.UserName as UserName,IIf(BLC.Active=1,'فعال','غیرفعال') as Status " +
                                           " From R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC" +
                                           " Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlDetails as BLCDetail On BLC.BLCId= BLCDetail.BLCId" +
                                           " Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On BLC.UserId= SoftwareUsers.UserId" +
-                                          " Where BLC.BLCId= " + YourBLCId + " Order By BLCDetail.BLCIndex", 3600, ref DS).GetRecordsCount() == 0) { throw new BillOfLadingControlNotFoundException(); }
+                                          " Where BLC.BLCId= " + YourBLCId + " Order By BLCDetail.BLCIndex", 3600, ref DS, ref DataChangeStatus).GetRecordsCount() == 0) { throw new BillOfLadingControlNotFoundException(); }
                         var NSSBLC = new BillOfLadingCoreStandardBillOfLadingControlExtendedStructure();
                         NSSBLC.BLCId = Convert.ToInt64(DS.Tables[0].Rows[0]["BLCId"]);
                         NSSBLC.BLCTitle = DS.Tables[0].Rows[0]["BLCTitle"].ToString();
@@ -838,13 +943,13 @@ namespace BillOfLadingCore
                 {
                     try
                     {
-                        DataSet DS = null;
+                        DataSet DS = null; Boolean DataChangeStatus = false;
                         R2ClassSqlDataBOXManagement.GetDataBOX(new R2PrimarySqlConnection(),
                              "Select distinct BLCI.*,BLC.BLCTitle " +
                                       "from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlInfractions as BLCI " +
                                       " Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlInfractionDetails as BLCIDetails On BLCI.BLCIId = BLCIDetails.BLCIId " +
                                       " Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC On BLCI.BLCId = BLC.BLCId " +
-                                      " Where BLC.Deleted = 0 and BLC.Active = 1 and BLC.ViewFlag = 1 and BLCI.RelationActive = 1 and BLC.BLCTitle like '%" + YourSearchString + "%' Order By BLCI.DateTimeMilladi Desc", 0, ref DS);
+                                      " Where BLC.Deleted = 0 and BLC.Active = 1 and BLC.ViewFlag = 1 and BLCI.RelationActive = 1 and BLC.BLCTitle like '%" + YourSearchString + "%' Order By BLCI.DateTimeMilladi Desc", 0, ref DS, ref DataChangeStatus);
                         var Lst = new List<BillOfLadingCoreStandardBillOfLadingControlInfractionExtendedStructure>();
                         for (int Loopx = 0; Loopx <= DS.Tables[0].Rows.Count - 1; Loopx++)
                         { Lst.Add(new BillOfLadingCoreStandardBillOfLadingControlInfractionExtendedStructure(new BillOfLadingCoreStandardBillOfLadingControlInfractionStructure(Convert.ToInt64(DS.Tables[0].Rows[Loopx]["BLCIId"]), Convert.ToInt64(DS.Tables[0].Rows[Loopx]["BLCId"]), Convert.ToDateTime(DS.Tables[0].Rows[Loopx]["DateTimeMilladi"]), DS.Tables[0].Rows[Loopx]["DateShamsi"].ToString(), DS.Tables[0].Rows[Loopx]["Time"].ToString(), Convert.ToInt64(DS.Tables[0].Rows[Loopx]["UserId"]), DS.Tables[0].Rows[Loopx]["Note"].ToString(), Convert.ToBoolean(DS.Tables[0].Rows[Loopx]["RelationActive"]), null), null, null, null, DS.Tables[0].Rows[Loopx]["BLCTitle"].ToString())); }
@@ -897,8 +1002,8 @@ namespace BillOfLadingCore
                             /*مقایسه کد ملی و نام فرستنده در بارنامه با سوابق قبلی*/
                             try
                             {
-                                DataSet Ds = new DataSet();
-                                if (R2ClassSqlDataBOXManagement.GetDataBOX(new R2PrimarySqlConnection(), "Select Top 1 BLC.BLCTitle,BLC.DateShamsi,BLC.Time,Detail.BLCIndex from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlDetails as Detail On BLC.BLCId = Detail.BLCId  Where(Detail.BLSenderNationalCode = '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLSenderNationalCode + "' and Detail.BLSenderTitle <> '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLSenderTitle + "') or (Detail.BLSenderTitle = '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLSenderTitle + "' and Detail.BLSenderNationalCode <> '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLSenderNationalCode + "')", 3600, ref Ds).GetRecordsCount() != 0)
+                                DataSet Ds = new DataSet(); Boolean DataChangeStatus = false;
+                                if (R2ClassSqlDataBOXManagement.GetDataBOX(new R2PrimarySqlConnection(), "Select Top 1 BLC.BLCTitle,BLC.DateShamsi,BLC.Time,Detail.BLCIndex from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlDetails as Detail On BLC.BLCId = Detail.BLCId  Where(Detail.BLSenderNationalCode = '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLSenderNationalCode + "' and Detail.BLSenderTitle <> '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLSenderTitle + "') or (Detail.BLSenderTitle = '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLSenderTitle + "' and Detail.BLSenderNationalCode <> '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLSenderNationalCode + "')", 3600, ref Ds, ref DataChangeStatus).GetRecordsCount() != 0)
                                 { NSSBillOfLadingControlInfractionDetail.SenderAnalyze = Ds.Tables[0].Rows[0]["BLCTitle"].ToString() + " - " + Ds.Tables[0].Rows[0]["DateShamsi"].ToString().Replace("/", "") + Ds.Tables[0].Rows[0]["Time"].ToString().Replace(":", "") + " - " + " Index:" + Ds.Tables[0].Rows[0]["BLCIndex"].ToString(); }
                             }
                             catch (Exception ex)
@@ -908,8 +1013,8 @@ namespace BillOfLadingCore
                             /*مقایسه کد ملی و نام گیرنده در بارنامه با سوابق قبلی*/
                             try
                             {
-                                DataSet Ds = new DataSet();
-                                if (R2ClassSqlDataBOXManagement.GetDataBOX(new R2PrimarySqlConnection(), "Select Top 1 BLC.BLCTitle,BLC.DateShamsi,BLC.Time,Detail.BLCIndex from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlDetails as Detail On BLC.BLCId = Detail.BLCId   Where(Detail.BLReceiverNationalCode = '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLReceiverNationalCode + "' and Detail.BLReceiverTitle <> '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLReceiverTitle + "')  or (Detail.BLReceiverTitle = '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLReceiverTitle + "' and Detail.BLReceiverNationalCode <> '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLReceiverNationalCode + "')", 3600, ref Ds).GetRecordsCount() != 0)
+                                DataSet Ds = new DataSet(); Boolean DataChangeStatus = false;
+                                if (R2ClassSqlDataBOXManagement.GetDataBOX(new R2PrimarySqlConnection(), "Select Top 1 BLC.BLCTitle,BLC.DateShamsi,BLC.Time,Detail.BLCIndex from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlDetails as Detail On BLC.BLCId = Detail.BLCId   Where(Detail.BLReceiverNationalCode = '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLReceiverNationalCode + "' and Detail.BLReceiverTitle <> '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLReceiverTitle + "')  or (Detail.BLReceiverTitle = '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLReceiverTitle + "' and Detail.BLReceiverNationalCode <> '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLReceiverNationalCode + "')", 3600, ref Ds, ref DataChangeStatus).GetRecordsCount() != 0)
                                 { NSSBillOfLadingControlInfractionDetail.RecieverAnalyze = Ds.Tables[0].Rows[0]["BLCTitle"].ToString() + " - " + Ds.Tables[0].Rows[0]["DateShamsi"].ToString().Replace("/", "") + Ds.Tables[0].Rows[0]["Time"].ToString().Replace(":", "") + " - " + " Index:" + Ds.Tables[0].Rows[0]["BLCIndex"].ToString(); }
                             }
                             catch (Exception ex)
@@ -921,8 +1026,8 @@ namespace BillOfLadingCore
                             {
                                 if (YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLSenderNationalCode == YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLReceiverNationalCode)
                                 {
-                                    DataSet Ds = new DataSet();
-                                    if (R2ClassSqlDataBOXManagement.GetDataBOX(new R2PrimarySqlConnection(), "Select Top 1 BLC.BLCTitle from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlDetails as Detail On BLC.BLCId = Detail.BLCId Where Detail.BLReceiverNationalCode = '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLSenderNationalCode + "' and Detail.BLGoodTitle = '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLGoodTitle + "' and BLC.BLCId <> " + YourNSSBillOfLadingControl.BLCId + "", 3600, ref Ds).GetRecordsCount() == 0)
+                                    DataSet Ds = new DataSet(); Boolean DataChangeStatus = false;
+                                    if (R2ClassSqlDataBOXManagement.GetDataBOX(new R2PrimarySqlConnection(), "Select Top 1 BLC.BLCTitle from R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC  Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlDetails as Detail On BLC.BLCId = Detail.BLCId Where Detail.BLReceiverNationalCode = '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLSenderNationalCode + "' and Detail.BLGoodTitle = '" + YourNSSBillOfLadingControl.BillOfLadings[Loopx].BLGoodTitle + "' and BLC.BLCId <> " + YourNSSBillOfLadingControl.BLCId + "", 3600, ref Ds, ref DataChangeStatus).GetRecordsCount() == 0)
                                     { NSSBillOfLadingControlInfractionDetail.SameSenderRecieverAnalyze = "محموله در سوابق قبلی وجود ندارد"; }
                                 }
                             }
@@ -1012,14 +1117,14 @@ namespace BillOfLadingCore
                 {
                     try
                     {
-                        DataSet DS = new DataSet();
+                        DataSet DS = new DataSet(); Boolean DataChangeStatus = false;
                         if (R2ClassSqlDataBOXManagement.GetDataBOX(new R2PrimarySqlConnection(),
                                 "Select BLC.BLCId,BLC.BLCTitle,BLCI.DateTimeMilladi,BLCI.DateShamsi,BLCI.Time,BLCI.UserId,BLCI.Note,BLCI.RelationActive,BLCIDetail.*,(Replace(BLCI.DateShamsi,'/','')+'-'+Replace(BLCI.Time,':','')) AS DateTimeComposite,SoftwareUsers.UserName as UserName,IIf(BLCI.RelationActive=1,'فعال','غیرفعال') as Status " +
                                     " From R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlInfractions as BLCI " +
                                     "   Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControls as BLC On BLCI.BLCId = BLC.BLCId " +
                                     "      Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblBillOfLadingControlInfractionDetails as BLCIDetail On BLCI.BLCIId = BLCIDetail.BLCIId " +
                                     "     Inner Join R2Primary.dbo.TblSoftwareUsers as SoftwareUsers On BLCI.UserId = SoftwareUsers.UserId " +
-                                    "  Where BLCI.BLCIId = " + YourBLCIId + " Order By BLCIDetail.BLCIIndex", 3600, ref DS).GetRecordsCount() == 0) { throw new BillOfLadingControlInfractionNotFoundException(); }
+                                    "  Where BLCI.BLCIId = " + YourBLCIId + " Order By BLCIDetail.BLCIIndex", 3600, ref DS, ref DataChangeStatus).GetRecordsCount() == 0) { throw new BillOfLadingControlInfractionNotFoundException(); }
 
                         var NSSBLCI = new BillOfLadingCoreStandardBillOfLadingControlInfractionExtendedStructure();
                         NSSBLCI.BLCIId = Convert.ToInt64(DS.Tables[0].Rows[0]["BLCIId"]);

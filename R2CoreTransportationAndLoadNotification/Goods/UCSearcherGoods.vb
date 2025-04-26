@@ -60,6 +60,10 @@ Public Class UCSearcherGoods
         End Try
     End Sub
 
+    Private Sub UCSearcherGoods_UCControlKeyPressedEvent() Handles Me.UCControlKeyPressedEvent
+
+    End Sub
+
 
 #End Region
 
