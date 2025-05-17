@@ -8141,7 +8141,7 @@ Namespace LoadSedimentation
                         If Not IsActiveSedimenting(AHId, AHSGId) Then Continue For
                         'کنترل تایمینگ - آیا رسوب بار برای زیرگروه مورد نظر فرارسیده است
                         If InstanceAnnouncementTiming.IsTimingActive(AHId, AHSGId) Then
-                            If InstanceAnnouncementTiming.GetTiming(AHId, AHSGId, CurrentTime) <> R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting Then
+                            If Not ((InstanceAnnouncementTiming.GetTiming(AHId, AHSGId, CurrentTime) = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InLoadPermissionRegistering) Or (InstanceAnnouncementTiming.GetTiming(AHId, AHSGId, CurrentTime) = R2CoreTransportationAndLoadNotificationVirtualAnnouncementTiming.InSedimenting)) Then
                                 Continue For
                             End If
                         Else

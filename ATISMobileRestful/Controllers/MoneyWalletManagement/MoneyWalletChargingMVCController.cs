@@ -23,6 +23,8 @@ using R2Core.MoneyWallet.PaymentRequests;
 using R2CoreParkingSystem.SoftwareUsersManagement;
 using ATISMobileRestful.Exceptions;
 using R2CoreTransportationAndLoadNotification.SoftwareUserManagement;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ATISMobileRestful.Controllers.MoneyWalletManagement
 {
@@ -39,6 +41,11 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 Int64 MonetarySupplySource = R2CoreMonetaryCreditSupplySources.None;
                 string Authority = string.Empty;
                 try
+                {//آقای پرداخت
+                    MonetarySupplySource = R2CoreMonetaryCreditSupplySources.AqayepardakhtPaymentGate; Authority = Request.QueryString["transid"];
+                }
+                catch (Exception ex) { }
+                try
                 {//زرین پال
                     if (Request.QueryString["Authority"] != "" && Request.QueryString["Authority"] != null)
                     { MonetarySupplySource = R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate; Authority = Request.QueryString["Authority"]; }
@@ -48,12 +55,6 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 {//شپا
                     if (Request.QueryString["token"] != "" && Request.QueryString["token"] != null)
                     { MonetarySupplySource = R2CoreMonetaryCreditSupplySources.ShepaPaymentGate; Authority = Request.QueryString["token"]; }
-                }
-                catch (Exception ex) { }
-                try
-                {//آقای پرداخت
-                    if (Request.QueryString["status"] == "1")
-                    { MonetarySupplySource = R2CoreMonetaryCreditSupplySources.AqayepardakhtPaymentGate ; Authority = Request.QueryString["transid"]; }
                 }
                 catch (Exception ex) { }
 
@@ -76,7 +77,7 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                     { PayId = WS.WebMethodVerificationRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, Authority, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword)); }
                     else if (MonetarySupplySource == R2CoreMonetaryCreditSupplySources.ShepaPaymentGate)
                     { PayId = WS.WebMethodVerificationRequest(R2CoreMonetaryCreditSupplySources.ShepaPaymentGate, Authority, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword)); }
-                    else if (MonetarySupplySource == R2CoreMonetaryCreditSupplySources.AqayepardakhtPaymentGate )
+                    else if (MonetarySupplySource == R2CoreMonetaryCreditSupplySources.AqayepardakhtPaymentGate)
                     { PayId = WS.WebMethodVerificationRequest(R2CoreMonetaryCreditSupplySources.AqayepardakhtPaymentGate, Authority, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword)); }
                     else { throw new WebApiClientPaymentVerificationException("PaymentVerificationLocation2"); }
 
@@ -231,6 +232,25 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
         //    return View();
         //}
 
+        public ActionResult OnGetCallbackAsync(string transid, string cardnumber, string tracking_number)
+        {
+            if (string.IsNullOrEmpty(cardnumber) || string.IsNullOrEmpty(tracking_number))
+            {
+                //throw new Exception ( "پرداخت ناموفق بوده است");
+            }
+            //throw new Exception("پرداخت موفق بوده است");
+            //var client = HttpClientFactory.CreateClient();
+            //var response = await client.PostAsJsonAsync("https://panel.aqayepardakht.ir/api/v2/verify", new
+            //{
+            //    pin = "aqayepardakht",
+            //    amount = 100,
+            //    transid = transid,
+            //});
+
+            //var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
+            //TranslateCode(result?.ErrorCode);
+            return View();
+        }
 
     }
 }

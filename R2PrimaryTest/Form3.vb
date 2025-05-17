@@ -689,14 +689,17 @@ Public Class Form3
         Dim cmdsql As New SqlClient.SqlCommand
         cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
-            Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
-            Try
-                InstanceSoftwareUsers.GetNSSUserUnChangeable(New R2CoreSoftwareUserMobile("09913891339"))
-                Throw New SoftwareUserMobileNumberAlreadyExistException
-            Catch ex As UserNotExistByMobileNumberException
-            Catch ex As Exception
-                Throw ex
-            End Try
+            Dim x As New R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
+
+            PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderTruckDriversWaitingToGetLoadPermissionByAHSGs(x.GetNSSAnnouncementHallSubGroup(7))
+            'Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+            'Try
+            '    InstanceSoftwareUsers.GetNSSUserUnChangeable(New R2CoreSoftwareUserMobile("09913891339"))
+            '    Throw New SoftwareUserMobileNumberAlreadyExistException
+            'Catch ex As UserNotExistByMobileNumberException
+            'Catch ex As Exception
+            '    Throw ex
+            'End Try
 
             'فراخوانی سرویس رسوب بار در سالن اعلام بار
             'Try

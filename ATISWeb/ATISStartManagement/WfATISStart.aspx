@@ -1,4 +1,4 @@
-﻿<%@ Page Title="آتیس - صفحه اصلی" Language="C#" MasterPageFile="~/ATISSite.Master" AutoEventWireup="true" CodeBehind="WfATISStart.aspx.cs" Inherits="ATISWeb.ATISStartManagement.WfATISStart" %>
+﻿<%@ Page Title="25286980" Language="C#" MasterPageFile="~/ATISSite.Master" AutoEventWireup="true" CodeBehind="WfATISStart.aspx.cs" Inherits="ATISWeb.ATISStartManagement.WfATISStart" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
