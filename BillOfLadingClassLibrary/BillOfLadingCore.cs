@@ -132,7 +132,8 @@ namespace BillOfLadingCore
                         var ms = new System.IO.MemoryStream(WS.WebMethodGetFile(R2CoreRawGroups.UploadedFiles, "NB" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".xlsx", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword)));
                         ms.CopyTo(fileStream);
                     }
-                    /*123456*/
+                    /*123456789123*/
+                    /*123*/
                     /*لیست ناوگان بدون بارنامه*/
                     OleDbDataAdapter DaBillOfLading = new OleDbDataAdapter(); DataSet DsBillOfLading = new DataSet();
 
