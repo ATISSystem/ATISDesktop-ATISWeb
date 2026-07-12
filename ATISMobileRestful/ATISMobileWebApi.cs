@@ -821,6 +821,9 @@ namespace ATISMobileRestful
             public static Int64 WebApiClientLogin = 70;
             public static Int64 WebApiClientSendBillofLadingId = 71;
             public static Int64 WebApiClientCancellationBillofLading = 72;
+            public static Int64 WebApiClientGetBOLsCount = 74;
+            public static Int64 WebApiClientTurnRequest = 75;
+
 
 
         }

@@ -47,12 +47,16 @@ Partial Class UCCarTruckNobat
         Me.LblEnterTime = New System.Windows.Forms.Label()
         Me.LblEnterDate = New System.Windows.Forms.Label()
         Me.LblnEnterExitId = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.LblUser = New System.Windows.Forms.Label()
         Me.PnlMain.SuspendLayout()
         Me.PnlSubMain.SuspendLayout()
         Me.SuspendLayout()
         '
         'PnlMain
         '
+        Me.PnlMain.Controls.Add(Me.LblUser)
+        Me.PnlMain.Controls.Add(Me.Label9)
         Me.PnlMain.Controls.Add(Me.UcButtonEmergencyResuscitationNobat)
         Me.PnlMain.Controls.Add(Me.UcButtonResuscitationNonCreditTurn)
         Me.PnlMain.Controls.Add(Me.UcButtonResuscitationNobat)
@@ -366,6 +370,32 @@ Partial Class UCCarTruckNobat
         Me.LblnEnterExitId.Text = "8888888"
         Me.LblnEnterExitId.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'Label9
+        '
+        Me.Label9.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label9.BackColor = System.Drawing.Color.Black
+        Me.Label9.Font = New System.Drawing.Font("B Homa", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
+        Me.Label9.ForeColor = System.Drawing.Color.Silver
+        Me.Label9.Location = New System.Drawing.Point(735, 6)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(91, 23)
+        Me.Label9.TabIndex = 44
+        Me.Label9.Text = "کاربر ثبت / تغییر"
+        Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'LblUser
+        '
+        Me.LblUser.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LblUser.BackColor = System.Drawing.Color.Transparent
+        Me.LblUser.Font = New System.Drawing.Font("IRMehr", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblUser.ForeColor = System.Drawing.Color.Black
+        Me.LblUser.Location = New System.Drawing.Point(483, 6)
+        Me.LblUser.Name = "LblUser"
+        Me.LblUser.Size = New System.Drawing.Size(247, 23)
+        Me.LblUser.TabIndex = 44
+        Me.LblUser.Text = " "
+        Me.LblUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'UCCarTruckNobat
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -404,4 +434,6 @@ End Sub
     Friend WithEvents Label7 As Windows.Forms.Label
     Friend WithEvents UcButtonResuscitationNonCreditTurn As UCButton
     Friend WithEvents UcButtonEmergencyResuscitationNobat As UCButton
+    Friend WithEvents LblUser As Windows.Forms.Label
+    Friend WithEvents Label9 As Windows.Forms.Label
 End Class

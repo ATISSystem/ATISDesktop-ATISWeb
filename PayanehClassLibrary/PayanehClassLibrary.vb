@@ -604,8 +604,8 @@ Namespace CarTruckNobatManagement
         Public Function GetHazinehSodoorNobat(YourNSSTerafficCard As R2CoreParkingSystemStandardTrafficCardStructure) As Int64
             Try
                 Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
-                If YourNSSTerafficCard.CardType = TerafficCardType.Tereili Then Return GetSherkatHazinehNobatMblgh(YourNSSTerafficCard) + InstanceConfiguration.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 1)
-                If YourNSSTerafficCard.CardType = TerafficCardType.SixCharkh Or YourNSSTerafficCard.CardType = TerafficCardType.TenCharkh Then Return GetSherkatHazinehNobatMblgh(YourNSSTerafficCard) + InstanceConfiguration.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 4)
+                If YourNSSTerafficCard.CardType = TerafficCardType.Tereili Then Return GetSherkatHazinehNobatMblgh(YourNSSTerafficCard) + InstanceConfiguration.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 1) + InstanceConfiguration.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 4)
+                'If YourNSSTerafficCard.CardType = TerafficCardType.SixCharkh Or YourNSSTerafficCard.CardType = TerafficCardType.TenCharkh Then Return GetSherkatHazinehNobatMblgh(YourNSSTerafficCard) + InstanceConfiguration.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 4)
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
             End Try
@@ -766,6 +766,26 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
+        Public Sub SetbFlagDriverToTrueCancelledSystem(YournEnterExitId As Int64, DoSendtoTWSFlag As Boolean, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
+            Try
+                Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
+                Dim InstanceCarTrucks = New PayanehClassLibraryMClassCarTrucksManager
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.CancelledSystem & ",bFlag=1,bFlagDriver=1,nUserIdExit=" & YourNSSSoftwareUser.UserId & ",strElamDate='" & _DateTime.GetCurrentDateShamsiFull & "',strElamTime='" & _DateTime.GetCurrentTime & "' Where nEnterExitId=" & YournEnterExitId & " And TurnStatus<>6"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+                If DoSendtoTWSFlag Then
+                    Dim NSSCarTruck As R2StandardCarTruckStructure = InstanceCarTrucks.GetNSSCarTruckByCarId(InstanceTurns.GetNSSTruck(YournEnterExitId).NSSCar.nIdCar)
+                    TWSClassLibrary.TDBClientManagement.TWSClassTDBClientManagement.DelNobat(NSSCarTruck.NSSCar.StrCarNo, NSSCarTruck.NSSCar.StrCarSerialNo)
+                End If
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
         Public Sub SetbFlagDriverToTrue(YournEnterExitId As Int64, DoSendtoTWSFlag As Boolean, YourNSSSoftwareUser As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
@@ -773,7 +793,7 @@ Namespace CarTruckNobatManagement
                 Dim InstanceTurns = New R2CoreTransportationAndLoadNotificationInstanceTurnsManager
                 Dim InstanceCarTrucks = New PayanehClassLibraryMClassCarTrucksManager
                 CmdSql.Connection.Open()
-                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.CancelledUser & ",bFlag=1,bFlagDriver=1,nUserIdExit=" & YourNSSSoftwareUser.UserId & " Where nEnterExitId=" & YournEnterExitId & ""
+                CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.CancelledUser & ",bFlag=1,bFlagDriver=1,nUserIdExit=" & YourNSSSoftwareUser.UserId & ",strElamDate='" & _DateTime.GetCurrentDateShamsiFull & "',strElamTime='" & _DateTime.GetCurrentTime & "' Where nEnterExitId=" & YournEnterExitId & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Connection.Close()
                 If DoSendtoTWSFlag Then
@@ -1022,7 +1042,7 @@ Namespace CarTruckNobatManagement
                 Else
                     Dim MinuteTravelLenght As Int64 = (Ds.Tables(0).Rows(0).Item("nDistance") / 25) * 60
                     Dim DateTimeMilladiExit As DateTime = _DateTime.GetMilladiDateTimeFromDateShamsiFull(Ds.Tables(0).Rows(0).Item("StrExitDate"), Ds.Tables(0).Rows(0).Item("StrExitTime"))
-                    Dim Diff As Int64 = R2CoreMClassPublicProcedures.GetDateDiff(DateInterval.Minute, DateTimeMilladiExit, _DateTime.GetCurrentDateTimeMilladiFormated())
+                    Dim Diff As Int64 = R2CoreMClassPublicProcedures.GetDateDiff(DateInterval.Minute, DateTimeMilladiExit, _DateTime.GetCurrentDateTimeMilladi())
                     Return (Diff - MinuteTravelLenght)
                 End If
             Catch ex As Exception
@@ -1113,7 +1133,7 @@ Namespace CarTruckNobatManagement
                 Dim TurnRegisteringTimeStamp = InstanceTurns.GetTurnRegisteringTimeStampWithTurnType(YourTurnType)
 
                 'ثبت نوبت ناوگان باری
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,BillOfLadingNumber,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTRR.Description & "',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',1,1," & NSSDriverTruck.NSSDriver.nIdPerson & ",'','" & SequentialTurnId_ & "'," & TurnStatuses.CancelledSystem & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladiFormated & "')"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,BillOfLadingNumber,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTRR.Description & "',0," & YourUserNSS.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',1,1," & NSSDriverTruck.NSSDriver.nIdPerson & ",'','" & SequentialTurnId_ & "'," & TurnStatuses.CancelledSystem & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladi & "')"
                 CmdSql.ExecuteNonQuery()
 
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -1215,7 +1235,7 @@ Namespace CarTruckNobatManagement
             End Try
         End Function
 
-        Public Shared Function SetbFlagDriverToTrue(YournEnterExitId As Int64, DoSendtoTWSFlag As Boolean)
+        Public Shared Function SetbFlagDriverToTrue(YournEnterExitId As Int64, DoSendtoTWSFlag As Boolean, YourUserId As Int64)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
             Try
@@ -1223,7 +1243,7 @@ Namespace CarTruckNobatManagement
                 Dim NSSTurn = InstanceTurns.GetNSSTurn(YournEnterExitId)
                 If NSSTurn.TurnStatus = TurnStatuses.Registered Or NSSTurn.TurnStatus = TurnStatuses.UsedLoadAllocationRegistered Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadAllocationCancelled Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationLoadPermissionCancelled Or NSSTurn.TurnStatus = TurnStatuses.ResuscitationUser Then
                     CmdSql.Connection.Open()
-                    CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set TurnStatus=" & TurnStatuses.CancelledUser & ",bFlag=1,bFlagDriver=1 Where nEnterExitId=" & YournEnterExitId & ""
+                    CmdSql.CommandText = "Update dbtransport.dbo.TbEnterExit Set strElamDate='" & _DateTime.GetCurrentDateShamsiFull & "',strElamTime='" & _DateTime.GetCurrentTime & "',nUserIdExit=" & YourUserId & ",TurnStatus=" & TurnStatuses.CancelledUser & ",bFlag=1,bFlagDriver=1 Where nEnterExitId=" & YournEnterExitId & ""
                     CmdSql.ExecuteNonQuery()
                     CmdSql.Connection.Close()
                     If DoSendtoTWSFlag Then
@@ -1670,7 +1690,8 @@ Namespace CarTruckNobatManagement
                 CostOfTurnRegistering = PayanehClassLibraryMClassCarTruckNobatManagement.GetSherkatHazinehNobatMblgh(NSSTrafficCard)
                 If CostOfTurnRegistering > 0 Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, CostOfTurnRegistering, R2CoreParkingSystemAccountings.SherkatHazinehNobat, NSSSoftwareUser)
                 If NSSTrafficCard.CardType = TerafficCardType.Tereili Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 1), R2CoreParkingSystemAccountings.AnjomanHazinehNobat, NSSSoftwareUser)
-                If NSSTrafficCard.CardType = TerafficCardType.SixCharkh Or NSSTrafficCard.CardType = TerafficCardType.TenCharkh Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 4), R2CoreParkingSystemAccountings.AnjomanHazinehNobat, NSSSoftwareUser)
+                If NSSTrafficCard.CardType = TerafficCardType.Tereili Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 4), R2CoreParkingSystemAccountings.AnjomanKargariHazinehNobat, NSSSoftwareUser)
+                'If NSSTrafficCard.CardType = TerafficCardType.SixCharkh Or NSSTrafficCard.CardType = TerafficCardType.TenCharkh Then R2CoreParkingSystemMClassMoneyWalletManagement.ActMoneyWalletNextStatus(NSSTrafficCard, BagPayType.MinusMoney, R2CoreMClassConfigurationManagement.GetConfigInt64(PayanehClassLibraryConfigurations.TarrifsPayaneh, 4), R2CoreParkingSystemAccountings.AnjomanHazinehNobat, NSSSoftwareUser)
 
                 'ارسال نوبت ناوگان برای سیستم آنلاین
                 If NSSTrafficCard.CardType = TerafficCardType.Tereili And R2CoreMClassConfigurationManagement.GetConfigBoolean(PayanehClassLibraryConfigurations.TWS, 0) Then
@@ -1738,7 +1759,7 @@ Namespace CarTruckNobatManagement
                 SequentialTurnId_ = NSSSequentialTurn.SequentialTurnKeyWord.Trim + _DateTime.GetCurrentSalShamsiFull() + "/" + R2CoreMClassPublicProcedures.RepeatStr("0", 6 - SequentialTurnId.ToString().Trim().Length) + SequentialTurnId.ToString().Trim()
                 Dim TurnRegisteringTimeStamp = InstanceTurns.GetTurnRegisteringTimeStampWithTurnType(TurnType)
                 'ثبت نوبت ناوگان باری
-                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,BillOfLadingNumber,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTurnRegisteringRequest.Description & "',0," & NSSSoftwareUser.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',0,0," & NSSDriverTruck.NSSDriver.nIdPerson & ",'','" & SequentialTurnId_ & "'," & TurnStatuses.Registered & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladiFormated & "')"
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbEnterExit(nEnterExitId,StrCardNo,StrEnterDate,StrEnterTime,StrDesc,bEnterExit,nUserIdEnter,StrDriverName,bFlag,bFlagDriver,nDriverCode,BillOfLadingNumber,OtaghdarTurnNumber,TurnStatus,LoadPermissionStatus,RegisteringTimeStamp) Values(" & mynIdEnterExit & "," & NSSTruck.NSSCar.nIdCar & ",'" & _DateTime.GetCurrentDateShamsiFull() & "','" & _DateTime.GetCurrentTime() & "','" & NSSTurnRegisteringRequest.Description & "',0," & NSSSoftwareUser.UserId & ",'" & NSSDriverTruck.NSSDriver.StrPersonFullName & "',0,0," & NSSDriverTruck.NSSDriver.nIdPerson & ",'','" & SequentialTurnId_ & "'," & TurnStatuses.Registered & "," & R2CoreTransportationAndLoadNotificationLoadPermissionStatuses.None & ",'" & TurnRegisteringTimeStamp.DateTimeMilladi & "')"
                 CmdSql.ExecuteNonQuery()
 
                 'bDelAutomated Used in AutomatedTurnRegistering for Control
@@ -4001,21 +4022,21 @@ Namespace ReportsManagement
                 'شش چرخ یا دو محور
                 Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
                                                     Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
-                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=8) or (Accounting.EEAccountingProcessType=11))  And ((Accounting.MblghA=40000) Or (Accounting.MblghA=43600) Or (Accounting.MblghA=45000) Or (Accounting.MblghA=65400) Or (Accounting.MblghA=85020)  Or (Accounting.MblghA=130000) Or (Accounting.MblghA=175000) Or (Accounting.MblghA=220000) Or (Accounting.MblghA=277750))
+                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=8) or (Accounting.EEAccountingProcessType=11))  And ((Accounting.MblghA=40000) Or (Accounting.MblghA=43600) Or (Accounting.MblghA=45000) Or (Accounting.MblghA=65400) Or (Accounting.MblghA=85020)  Or (Accounting.MblghA=130000) Or (Accounting.MblghA=175000) Or (Accounting.MblghA=220000) Or (Accounting.MblghA=277750)  Or (Accounting.MblghA=399993))
                                                     Group By DateShamsiA"
                 DSSixCharkh.Tables.Clear()
                 Da.Fill(DSSixCharkh)
                 'سواری
                 Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
                                                     Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
-                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17))  And ((Accounting.MblghA=14170) Or (Accounting.MblghA=15000) Or (Accounting.MblghA=21255) Or (Accounting.MblghA=27250) Or (Accounting.MblghA=38000) Or (Accounting.MblghA=50000) Or (Accounting.MblghA=62500)  Or (Accounting.MblghA=82500))
+                                                          and ((Accounting.EEAccountingProcessType=1) or (Accounting.EEAccountingProcessType=17))  And ((Accounting.MblghA=14170) Or (Accounting.MblghA=15000) Or (Accounting.MblghA=21255) Or (Accounting.MblghA=27250) Or (Accounting.MblghA=38000) Or (Accounting.MblghA=50000) Or (Accounting.MblghA=62500)  Or (Accounting.MblghA=82500) Or (Accounting.MblghA=132000))
                                                     Group By DateShamsiA"
                 DSSavari.Tables.Clear()
                 Da.Fill(DSSavari)
                 'ده و چرخ تریلی یا سه محور به بالا
                 Da.SelectCommand.CommandText = "Select Accounting.DateShamsiA,Count(*) as Total,Sum(Accounting.MblghA) as Jam from R2Primary.dbo.TblAccounting  as Accounting
                                                     Where (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))>='" & myConcat1 & "' and (REPLACE(Accounting.DateShamsiA,'/','')+REPLACE(Accounting.TimeA,':',''))<='" & myConcat2 & "'
-                                                          and ((Accounting.EEAccountingProcessType=1) OR (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=7) OR (Accounting.EEAccountingProcessType=8) OR (Accounting.EEAccountingProcessType=11)) And ((Accounting.MblghA=60000) or (Accounting.MblghA=59950) or (Accounting.MblghA=81750) or (Accounting.MblghA=105730) or (Accounting.MblghA=160000) or (Accounting.MblghA=215000) or (Accounting.MblghA=280000)  or (Accounting.MblghA=353100))
+                                                          and ((Accounting.EEAccountingProcessType=1) OR (Accounting.EEAccountingProcessType=17) or (Accounting.EEAccountingProcessType=7) OR (Accounting.EEAccountingProcessType=8) OR (Accounting.EEAccountingProcessType=11)) And ((Accounting.MblghA=60000) or (Accounting.MblghA=59950) or (Accounting.MblghA=81750) or (Accounting.MblghA=105730) or (Accounting.MblghA=160000) or (Accounting.MblghA=215000) or (Accounting.MblghA=280000)  or (Accounting.MblghA=353100)  or (Accounting.MblghA=519992))
                                                           --and Accounting.UserIdA<400
                                                     Group By DateShamsiA"
                 DSTereiliTenCharkh.Tables.Clear()
@@ -4247,10 +4268,11 @@ Namespace ReportsManagement
             Try
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 Da.SelectCommand = New SqlClient.SqlCommand("
-                  Select LoadAllocations.Lanote,LoadAllocations.LAId,Turns.strDriverName,c.strCarNo,c.strCarSerialNo,co.strCompName,Turns.strExitDate,Turns.nEstelamID,Turns.OtaghdarTurnNumber,ci.strCityName,p.strGoodName,Turns.strBarnameNo as LoadPermissionLocation 
+                  Select AnnouncementHallSubGroups.AHSGTitle,LoadAllocations.Lanote,LoadAllocations.LAId,Turns.strDriverName,c.strCarNo,c.strCarSerialNo,co.strCompName,LoadAllocations.DateShamsi,Turns.nEstelamID,Turns.strExitDate,Turns.OtaghdarTurnNumber,ci.strCityName,p.strGoodName,Turns.strBarnameNo as LoadPermissionLocation,Loads.dDateElam
                   from Dbtransport.dbo.tbenterexit as Turns
 	                 Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblLoadAllocations as LoadAllocations On Turns.nEnterExitId=LoadAllocations.TurnId 
 					 Inner Join dbtransport.dbo.tbElam as Loads on LoadAllocations.nEstelamId=Loads.nEstelamID 
+					 Inner Join R2PrimaryTransportationAndLoadNotification.DBO.TblAnnouncementHallSubGroups as AnnouncementHallSubGroups on Loads.AHSGId=AnnouncementHallSubGroups.AHSGId  
 	                 Inner Join Dbtransport.dbo.tbCompany as Co on Loads.nCompCode=CO.nCompCode 
 	                 Inner Join Dbtransport.dbo.tbCity as Ci on Loads.nCityCode=CI.nCityCode 
 	                 Inner Join Dbtransport.dbo.tbProducts as P on Loads.nBarCode=p.strGoodCode 
@@ -4270,12 +4292,12 @@ Namespace ReportsManagement
                     Dim myStrTruckno As String = Ds.Tables(0).Rows(Loopx).Item("strCarNo").trim
                     Dim myStrSerialno As String = Ds.Tables(0).Rows(Loopx).Item("strCarSerialNo").trim
                     Dim myStrCompname As String = Ds.Tables(0).Rows(Loopx).Item("strcompname").trim
-                    Dim mydDateElam As String = Ds.Tables(0).Rows(Loopx).Item("strExitDate").trim
+                    Dim mydDateElam As String = Ds.Tables(0).Rows(Loopx).Item("dDateElam").trim
                     Dim mynEstelamid As String = Ds.Tables(0).Rows(Loopx).Item("nEstelamID")
-                    Dim mydDateExit As String = Ds.Tables(0).Rows(Loopx).Item("strExitDate").trim
+                    Dim mydDateExit As String = Ds.Tables(0).Rows(Loopx).Item("DateShamsi").trim
                     Dim myOtaghdarTurnNumber As String = Ds.Tables(0).Rows(Loopx).Item("OtaghdarTurnNumber")
                     Dim myStrCityName As String = Ds.Tables(0).Rows(Loopx).Item("strCityName").trim
-                    Dim myStrBarname As String = Ds.Tables(0).Rows(Loopx).Item("strGoodName").trim
+                    Dim myStrBarname As String = Ds.Tables(0).Rows(Loopx).Item("strGoodName").trim + " - " + Ds.Tables(0).Rows(Loopx).Item("AHSGTitle").trim
                     Dim myLoadPermissionLocation As String = IIf(Ds.Tables(0).Rows(Loopx).Item("LoadPermissionLocation") = R2CoreTransportationAndLoadNotificationLoadPermissionRegisteringLocation.AnnouncementHall, "سالن اعلام بار", "سیستم")
                     Dim myLoadAllocationId As Int64 = Ds.Tables(0).Rows(Loopx).Item("LAId")
                     CmdSql.CommandText = "insert into R2PrimaryReports.dbo.TblDriverTruckLoadsReport(Radifx,StrDriverName,StrTruckNo,StrSerialNo,StrCompName,dDateElam,nEstelamId,dDateExit,OtaghdarTurnNumber,StrCityName,StrBarName,LoadPermissionLocation,LoadAllocationId) values(" & Loopx & ",'" & myStrDrivername & "','" & myStrTruckno & "','" & myStrSerialno & "','" & myStrCompname & "','" & mydDateElam & "','" & mynEstelamid & "','" & mydDateExit & "','" & myOtaghdarTurnNumber & "','" & myStrCityName & "','" & myStrBarname & "','" & myLoadPermissionLocation & "'," & myLoadAllocationId & ")"
@@ -5157,7 +5179,7 @@ Namespace ReportsManagement
             Try
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 Da.SelectCommand = New SqlCommand("
-                   Select Turns.nEnterExitId,Substring(Turns.OtaghdarTurnNumber,7,20) as SequentialId,Turns.strEnterDate,Turns.strEnterTime,DATEDIFF(day,dbtransport.dbo.Udf_Shamsi2Milady(Turns.strEnterDate),getdate()) as SleepDays,SeqT.SeqTTitle,Persons.strPersonFullName,Cars.strCarNo,Cars.strCarSerialNo,Cars.strBodyNo 
+                   Select Turns.nEnterExitId,Substring(Turns.OtaghdarTurnNumber,7,20) as SequentialId,Turns.strEnterDate,Turns.strEnterTime,DATEDIFF(day,dbtransport.dbo.Udf_Shamsi2Milady(Turns.strEnterDate),getdate()) as SleepDays,SeqT.SeqTTitle,Persons.strPersonFullName,Persons.strIDNO as MobileNumber,Cars.strCarNo,Cars.strCarSerialNo,Cars.strBodyNo 
                    from dbtransport.dbo.tbEnterExit as Turns
                      Inner Join dbtransport.dbo.TbPerson as Persons On Turns.nDriverCode=Persons.nIDPerson
                      Inner Join dbtransport.dbo.TbCar as Cars On Turns.strCardno=Cars.nIDCar
@@ -5174,7 +5196,7 @@ Namespace ReportsManagement
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblTruckDriversWaitingToGetLoadPermissionReport" : CmdSql.ExecuteNonQuery()
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblTruckDriversWaitingToGetLoadPermissionReport(EnterExitId,SequentialId,TurnDate,TurnTime,SleepDays,SequentialTurnTitle,TruckDriver,Truck) Values(" & Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nEnterExitId")) & ",'" & Ds.Tables(0).Rows(Loopx).Item("SequentialId") & "','" & Ds.Tables(0).Rows(Loopx).Item("strEnterDate") & "','" & Ds.Tables(0).Rows(Loopx).Item("strEnterTime") & "'," & Ds.Tables(0).Rows(Loopx).Item("SleepDays") & ",'" & Ds.Tables(0).Rows(Loopx).Item("SeqTTitle").trim & "','" & Ds.Tables(0).Rows(Loopx).Item("strPersonFullName").trim & "','" & Ds.Tables(0).Rows(Loopx).Item("strCarNo").trim + "-" + Ds.Tables(0).Rows(Loopx).Item("strCarSerialNo").trim + vbCrLf + Ds.Tables(0).Rows(Loopx).Item("strBodyNo").trim & "')"
+                    CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblTruckDriversWaitingToGetLoadPermissionReport(EnterExitId,SequentialId,TurnDate,TurnTime,SleepDays,SequentialTurnTitle,TruckDriver,Truck) Values(" & Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nEnterExitId")) & ",'" & Ds.Tables(0).Rows(Loopx).Item("SequentialId") & "','" & Ds.Tables(0).Rows(Loopx).Item("strEnterDate") & "','" & Ds.Tables(0).Rows(Loopx).Item("strEnterTime") & "'," & Ds.Tables(0).Rows(Loopx).Item("SleepDays") & ",'" & Ds.Tables(0).Rows(Loopx).Item("SeqTTitle").trim & "','" & Ds.Tables(0).Rows(Loopx).Item("strPersonFullName").trim + vbCrLf + Ds.Tables(0).Rows(Loopx).Item("MobileNumber").trim & "','" & Ds.Tables(0).Rows(Loopx).Item("strCarNo").trim + "-" + Ds.Tables(0).Rows(Loopx).Item("strCarSerialNo").trim + vbCrLf + Ds.Tables(0).Rows(Loopx).Item("strBodyNo").trim & "')"
                     CmdSql.ExecuteNonQuery()
                 Next
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -5194,7 +5216,7 @@ Namespace ReportsManagement
             Try
                 Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
                 Da.SelectCommand = New SqlCommand("
-                   Select Turns.nEnterExitId,Substring(Turns.OtaghdarTurnNumber,7,20) as SequentialId,Turns.strEnterDate,Turns.strEnterTime,DATEDIFF(day,dbtransport.dbo.Udf_Shamsi2Milady(Turns.strEnterDate),getdate()) as SleepDays,SeqT.SeqTTitle,Persons.strPersonFullName,Cars.strCarNo,Cars.strCarSerialNo,Cars.strBodyNo
+                   Select Turns.nEnterExitId,Substring(Turns.OtaghdarTurnNumber,7,20) as SequentialId,Turns.strEnterDate,Turns.strEnterTime,DATEDIFF(day,dbtransport.dbo.Udf_Shamsi2Milady(Turns.strEnterDate),getdate()) as SleepDays,SeqT.SeqTTitle,Persons.strPersonFullName,Persons.strIDNO as MobileNumber,Cars.strCarNo,Cars.strCarSerialNo,Cars.strBodyNo
                    from dbtransport.dbo.tbEnterExit as Turns
                      Inner Join dbtransport.dbo.TbPerson as Persons On Turns.nDriverCode=Persons.nIDPerson
                      Inner Join dbtransport.dbo.TbCar as Cars On Turns.strCardno=Cars.nIDCar
@@ -5210,7 +5232,7 @@ Namespace ReportsManagement
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 CmdSql.CommandText = "Delete R2PrimaryReports.dbo.TblTruckDriversWaitingToGetLoadPermissionReport" : CmdSql.ExecuteNonQuery()
                 For Loopx As Int64 = 0 To Ds.Tables(0).Rows.Count - 1
-                    CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblTruckDriversWaitingToGetLoadPermissionReport(EnterExitId,SequentialId,TurnDate,TurnTime,SleepDays,SequentialTurnTitle,TruckDriver,Truck) Values(" & Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nEnterExitId")) & ",'" & Ds.Tables(0).Rows(Loopx).Item("SequentialId") & "','" & Ds.Tables(0).Rows(Loopx).Item("strEnterDate") & "','" & Ds.Tables(0).Rows(Loopx).Item("strEnterTime") & "'," & Ds.Tables(0).Rows(Loopx).Item("SleepDays") & ",'" & Ds.Tables(0).Rows(Loopx).Item("SeqTTitle").trim & "','" & Ds.Tables(0).Rows(Loopx).Item("strPersonFullName").trim & "','" & Ds.Tables(0).Rows(Loopx).Item("strCarNo").trim + "-" + Ds.Tables(0).Rows(Loopx).Item("strCarSerialNo").trim + vbCrLf + Ds.Tables(0).Rows(Loopx).Item("strBodyNo").trim & "')"
+                    CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblTruckDriversWaitingToGetLoadPermissionReport(EnterExitId,SequentialId,TurnDate,TurnTime,SleepDays,SequentialTurnTitle,TruckDriver,Truck) Values(" & Convert.ToInt64(Ds.Tables(0).Rows(Loopx).Item("nEnterExitId")) & ",'" & Ds.Tables(0).Rows(Loopx).Item("SequentialId") & "','" & Ds.Tables(0).Rows(Loopx).Item("strEnterDate") & "','" & Ds.Tables(0).Rows(Loopx).Item("strEnterTime") & "'," & Ds.Tables(0).Rows(Loopx).Item("SleepDays") & ",'" & Ds.Tables(0).Rows(Loopx).Item("SeqTTitle").trim & "','" & Ds.Tables(0).Rows(Loopx).Item("strPersonFullName").trim + vbCrLf + Ds.Tables(0).Rows(Loopx).Item("MobileNumber").trim & "','" & Ds.Tables(0).Rows(Loopx).Item("strCarNo").trim + "-" + Ds.Tables(0).Rows(Loopx).Item("strCarSerialNo").trim + vbCrLf + Ds.Tables(0).Rows(Loopx).Item("strBodyNo").trim & "')"
                     CmdSql.ExecuteNonQuery()
                 Next
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -5497,7 +5519,7 @@ Namespace ReportsManagement
 
                     Try
                         CmdSql.CommandText = "Insert Into R2PrimaryReports.dbo.TblLoadPermissionIssued(OtaghdarTurnNumber,PersonFullName,Truck,LAId,Priority,nEstelamID,nTonaj,TPTParams,strGoodName,strCityName,LoadPermissionDateTime,TransportCompanyTitle,AHSGTitle,StrDescription,strBarName,strAddress,LoadingPlace,DischargingPlace) 
-                                          Values('" & OtaghdarTurnNumber & "','" & PersonFullName & "','" & Truck & "'," & LAId & "," & Priority & "," & nEstelamID & ",'" & nTonaj & "','" & TPTParams & "','" & strGoodName & "','" & strCityName & "','" & LoadPermissionDateTime & "','" & TCTitle & "','" & AHSGTitle & "','" & strDescription & "','" & strBarName & "','" & strAddress & "','" & LoadingPlace & "','" & DischargingPlace & "') "
+                                          Values('" & OtaghdarTurnNumber & "','" & PersonFullName & "','" & Truck & "'," & LAId & "," & Priority & "," & nEstelamID & ",'" & nTonaj & "','" & TPTParams & "','" & strGoodName & "','" & strCityName & "','" & LoadPermissionDateTime & "','" & TCTitle & "','" & AHSGTitle & "','" & strDescription.Replace("'", "") & "','" & strBarName & "','" & strAddress & "','" & LoadingPlace & "','" & DischargingPlace & "') "
                         CmdSql.ExecuteNonQuery()
 
                     Catch ex As Exception

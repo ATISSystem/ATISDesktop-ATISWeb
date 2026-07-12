@@ -4,12 +4,13 @@ Imports System.ComponentModel
 Imports System.Reflection
 
 Imports R2Core.DateAndTimeManagement
+Imports R2Core.PermissionManagement
 
 Public Class UCDateTime
     Inherits R2CoreGUI.UCGeneral
 
     Private ReadOnly _DateTime As R2DateTime = New R2DateTime
-    Private WithEvents _TimerDateTime As New System.Windows.Forms.Timer
+    Private WithEvents _TimerDateTime As System.Windows.Forms.Timer
 
 
 
@@ -71,7 +72,7 @@ Public Class UCDateTime
         End Set
     End Property
 
-    Private _UCEnable As Boolean = True
+    Private _UCEnable As Boolean = False
     Public Property UCEnable As Boolean
         Get
             Return _UCEnable
@@ -79,15 +80,20 @@ Public Class UCDateTime
         Set(value As Boolean)
             _UCEnable = value
             Me.Enabled = value
-            If value = True Then
-                _TimerDateTime.Enabled = True
-                _TimerDateTime.Start()
-            Else
-                _TimerDateTime.Enabled = False
-                _TimerDateTime.Stop()
-            End If
         End Set
     End Property
+
+    Private _UCVisible As Boolean = False
+    Public Property UCVisible As Boolean
+        Get
+            Return _UCVisible
+        End Get
+        Set(value As Boolean)
+            _UCVisible = value
+            Me.Visible = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Subroutins And Functions"
@@ -100,10 +106,23 @@ Public Class UCDateTime
 
         ' Add any initialization after the InitializeComponent() call.
         Try
-            _TimerDateTime.Interval = 60000
-            _TimerDateTime.Enabled = True
-            _TimerDateTime.Start()
-            SetCurrentDateTime()
+        Catch ex As Exception
+            Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+        End Try
+    End Sub
+
+    Public Sub UCInitialize()
+        Try
+            Dim InstancePermissions = New R2CoreInstansePermissionsManager
+            If InstancePermissions.ExistPermission(R2CorePermissionTypes.UserCanViewUCDateTime, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId, 0) Then
+                _TimerDateTime = New System.Windows.Forms.Timer
+                _TimerDateTime.Interval = 60000
+                _TimerDateTime.Enabled = True
+                _TimerDateTime.Start()
+                SetCurrentDateTime()
+                UCEnable = True
+                UCVisible = True
+            End If
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try

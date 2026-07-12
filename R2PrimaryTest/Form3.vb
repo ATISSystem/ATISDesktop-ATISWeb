@@ -77,13 +77,16 @@ Imports R2CoreLPR.LicensePlateManagement
 Imports R2CoreTransportationAndLoadNotification.LoadCapacitor
 Imports R2Core.MonetaryCreditSupplySources.ShepaPaymentGate
 Imports R2Core.SoftwareUserManagement.Exceptions
+Imports R2CoreTransportationAndLoadNotification.Turns.TurnValidity
+Imports R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorAccounting
+Imports R2CoreParkingSystem.AccountingManagement
 
 Public Class Form3
     Private _DateTime As R2DateTime = New R2DateTime
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
-            R2CorePersonnelMClassManagement.PersonelFunctionCalculate(R2CorePersonnelMClassManagement.GetNSSPersonnel(Convert.ToInt64(TextBoxConcat1.Text)), New R2StandardDateAndTimeStructure(Nothing, "1403/11/01", Nothing))
+            R2CorePersonnelMClassManagement.PersonelFunctionCalculate(R2CorePersonnelMClassManagement.GetNSSPersonnel(Convert.ToInt64(TextBoxConcat1.Text)), New R2StandardDateAndTimeStructure(Nothing, "1404/11/01", Nothing))
             MessageBox.Show("Finished ... ")
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -689,9 +692,26 @@ Public Class Form3
         Dim cmdsql As New SqlClient.SqlCommand
         cmdsql.Connection = (New R2PrimarySqlConnection).GetConnection
         Try
-            Dim x As New R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
+            Dim dsdx = New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager
+            dsdx.InsertCarsWithNoDSDIntoBlackList(R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(21))
 
-            PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderTruckDriversWaitingToGetLoadPermissionByAHSGs(x.GetNSSAnnouncementHallSubGroup(7))
+            dsdx.UnActiveDSDBlackList()
+
+            Return
+
+
+
+
+            Dim y = New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            y.GetLoadCapacitorLoadsforApplication(1, R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSUser(23896), 14, 5, 33)
+
+
+            Dim X = New R2CoreTransportationAndLoadNotification.LoadCapacitor.LoadCapacitorLoad.R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorLoadManager
+            Dim load = X.GetNSSLoadCapacitorLoad(939298, True)
+            load.nTonaj = 28
+            X.LoadCapacitorLoadTonajValidate(load)
+            'Dim x As New R2CoreTransportationAndLoadNotification.AnnouncementHalls.R2CoreTransportationAndLoadNotificationInstanceAnnouncementHallsManager
+            'PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderTruckDriversWaitingToGetLoadPermissionByAHSGs(x.GetNSSAnnouncementHallSubGroup(7))
             'Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
             'Try
             '    InstanceSoftwareUsers.GetNSSUserUnChangeable(New R2CoreSoftwareUserMobile("09913891339"))
@@ -818,7 +838,7 @@ Public Class Form3
 
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
         Try
-            RmtoWebService.GetNSSTruckDriver("4233040811")
+            RmtoWebService.GetNSSTruckDriver("2631391551")
             'RmtoWebService.GetNSSTruck("2312401")
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -947,6 +967,49 @@ Public Class Form3
     End Sub
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
+
+        'صدور خودکار نوبت ها
+        Try
+            PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+        Catch ex As Exception
+            EventLog.WriteEntry("AutomaticTurnIssueAutomatedJobs", "AutomaticTurnIssueAutomatedJobs:" + ex.Message.ToString, EventLogEntryType.Error)
+        End Try
+
+        Dim x As New R2CoreParkingSystemInstanceAccountingManager
+        Dim y As New R2CoreParkingSystem.TrafficCardsManagement.R2CoreParkingSystemInstanceTrafficCardsManager
+
+        x.InsertAccounting(New R2StandardEnterExitAccountingStructure(y.GetNSSTrafficCard(1001), R2CoreParkingSystem.AccountingManagement.R2CoreParkingSystemAccountings.EnterType, "1405/02/21", "00:00:00", Date.Now, Nothing, 4, 0, 21, 0, 0))
+
+        'Dim x As New R2CoreTransportationAndLoadNotificationInstanceLoadCapacitorAccountingManager
+        'x.InsertAccounting(New R2CoreTransportationAndLoadNotificationStandardLoadCapacitorAccountingStructure(991114, R2CoreTransportationAndLoadNotificationLoadCapacitorAccountingTypes.RegisteringforTommorow, 10, Nothing, Nothing, Nothing, 21))
+
+        PayanehClassLibrary.ReportsManagement.PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderLoadPermissionIssuedBySeqTs(New R2StandardDateAndTimeStructure(Nothing, "1405/01/23", "00:00:00"), New R2StandardDateAndTimeStructure(Nothing, "1405/01/23", "23:00:00"), 3)
+
+
+        Try
+        Catch ex As Exception
+
+        End Try
+        RmtoWebService.GetNSSTruckDriver("4610597861")
+
+        Return
+        Dim InstanceTurnVality = New R2CoreTransportationAndLoadNotificationMClassTurnValityManager
+        InstanceTurnVality.TurnValidityRegistering(4, 123, 21)
+        MessageBox.Show(R2CoreTransportationAndLoadNotificationMClassTurnValityManager.GetCurrentTurnValidities(False))
+        Return
+        Dim InstanceDriverSelfDeclaration = New R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager
+        InstanceDriverSelfDeclaration.DOControlforDSDImage(7004)
+
+        PayanehClassLibraryMClassReportsManagement.ReportingInformationProviderDriverTruckLoadsReport(141215, New R2StandardDateAndTimeStructure(Nothing, "1404/08/01", "00:00:00"), New R2StandardDateAndTimeStructure(Nothing, "1404/08/30", "00:00:00"))
+        'صدور خودکار نوبت ها
+        Try
+            PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+        Catch ex As Exception
+            EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+        End Try
+
+
+
         'فراخوانی سرویس رسوب بار در سالن اعلام بار
         Try
             Dim InstanceLoadSedimentation = New R2CoreTransportationAndLoadNotificationMClassLoadSedimentationManager

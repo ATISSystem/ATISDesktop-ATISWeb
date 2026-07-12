@@ -1825,7 +1825,7 @@ Namespace AccountingManagement
         AnjomanHazinehNobat = 4 'هزینه نوبت انجمن - تریلی و اطاقدار 
         AnjomanHazinehSodorMojavezUpTo72Saat = 5 'در سالن
         AnjomanHazinehSodorMojavezKiosk = 6 'در کیوسک
-        XXX1 = 7
+        AnjomanKargariHazinehNobat = 7 'هزینه نوبت انجمن کارگری
         XXX2 = 8
         HazinehKart = 9 'هزینه کارت تردد
         TransferallChargeToAnother = 10 'انتقال همه موجودی کارت
@@ -2040,9 +2040,39 @@ Namespace AccountingManagement
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 If YourEEAcounting.NSSCar Is Nothing Then
-                    CmdSql.CommandText = "insert into R2Primary.dbo.TblAccounting(CardId,EEAccountingProcessType,DateShamsiA,TimeA,DateMilladiA,PelakA,SerialA,CityA,PelakTypeA,MaabarCode,MblghA,UseridA,CurrentChargeA,ReminderChargeA) values('" & YourEEAcounting.NSSTrafficCard.CardId & "'," & YourEEAcounting.EEAccountingProcessType & ",'" & YourEEAcounting.DateShamsiA & "','" & YourEEAcounting.TimeA & "','" & YourEEAcounting.DateTimeMilladiA.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "','','','" & Now.Millisecond.ToString() + Rnd().ToString() & "',0,'" & YourEEAcounting.MaabarCode & "'," & YourEEAcounting.MblghA & "," & YourEEAcounting.UserIdA & "," & YourEEAcounting.CurrentChargeA & "," & YourEEAcounting.ReminderChargeA & ")"
+                    CmdSql.Parameters.AddWithValue("@CardId", YourEEAcounting.NSSTrafficCard.CardId)
+                    CmdSql.Parameters.AddWithValue("@EEAccountingProcessType", YourEEAcounting.EEAccountingProcessType)
+                    CmdSql.Parameters.AddWithValue("@DateShamsiA", YourEEAcounting.DateShamsiA)
+                    CmdSql.Parameters.AddWithValue("@TimeA", YourEEAcounting.TimeA)
+                    CmdSql.Parameters.AddWithValue("@DateMilladiA", YourEEAcounting.DateTimeMilladiA)
+                    CmdSql.Parameters.AddWithValue("@PelakA", "")
+                    CmdSql.Parameters.AddWithValue("@SerialA", "")
+                    CmdSql.Parameters.AddWithValue("@CityA", Now.Millisecond.ToString() + Rnd().ToString())
+                    CmdSql.Parameters.AddWithValue("@PelakTypeA", 0)
+                    CmdSql.Parameters.AddWithValue("@MaabarCode", YourEEAcounting.MaabarCode)
+                    CmdSql.Parameters.AddWithValue("@MblghA", YourEEAcounting.MblghA)
+                    CmdSql.Parameters.AddWithValue("@UserIdA", YourEEAcounting.UserIdA)
+                    CmdSql.Parameters.AddWithValue("@CurrentChargeA", YourEEAcounting.CurrentChargeA)
+                    CmdSql.Parameters.AddWithValue("@ReminderChargeA", YourEEAcounting.ReminderChargeA)
+                    CmdSql.Parameters.AddWithValue("@Deleted", DBNull.Value)
+                    CmdSql.CommandText = "insert into R2Primary.dbo.TblAccounting Values(@CardId,@EEAccountingProcessType,@DateShamsiA,@TimeA,@DateMilladiA,@PelakA,@SerialA,@CityA,@PelakTypeA,@MaabarCode,@MblghA,@UseridA,@CurrentChargeA,@ReminderChargeA,@Deleted)"
                 Else
-                    CmdSql.CommandText = "insert into R2Primary.dbo.TblAccounting(CardId,EEAccountingProcessType,DateShamsiA,TimeA,DateMilladiA,PelakA,SerialA,CityA,PelakTypeA,MaabarCode,MblghA,UseridA,CurrentChargeA,ReminderChargeA) values('" & YourEEAcounting.NSSTrafficCard.CardId & "'," & YourEEAcounting.EEAccountingProcessType & ",'" & YourEEAcounting.DateShamsiA & "','" & YourEEAcounting.TimeA & "','" & YourEEAcounting.DateTimeMilladiA.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "','" & YourEEAcounting.NSSCar.StrCarNo & "','" & YourEEAcounting.NSSCar.StrCarSerialNo & "','" & R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(YourEEAcounting.NSSCar.nIdCity) & "'," & R2PelakType.None & ",'" & R2CoreMClassConfigurationManagement.GetComputerCode() & "'," & YourEEAcounting.MblghA & "," & YourEEAcounting.UserIdA & "," & YourEEAcounting.CurrentChargeA & "," & YourEEAcounting.ReminderChargeA & ")"
+                    CmdSql.Parameters.AddWithValue("@CardId", YourEEAcounting.NSSTrafficCard.CardId)
+                    CmdSql.Parameters.AddWithValue("@EEAccountingProcessType", YourEEAcounting.EEAccountingProcessType)
+                    CmdSql.Parameters.AddWithValue("@DateShamsiA", YourEEAcounting.DateShamsiA)
+                    CmdSql.Parameters.AddWithValue("@TimeA", YourEEAcounting.TimeA)
+                    CmdSql.Parameters.AddWithValue("@DateMilladiA", YourEEAcounting.DateTimeMilladiA)
+                    CmdSql.Parameters.AddWithValue("@PelakA", YourEEAcounting.NSSCar.StrCarNo)
+                    CmdSql.Parameters.AddWithValue("@SerialA", YourEEAcounting.NSSCar.StrCarSerialNo)
+                    CmdSql.Parameters.AddWithValue("@CityA", R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(YourEEAcounting.NSSCar.nIdCity))
+                    CmdSql.Parameters.AddWithValue("@PelakTypeA", R2PelakType.None)
+                    CmdSql.Parameters.AddWithValue("@MaabarCode", R2CoreMClassConfigurationManagement.GetComputerCode())
+                    CmdSql.Parameters.AddWithValue("@MblghA", YourEEAcounting.MblghA)
+                    CmdSql.Parameters.AddWithValue("@UseridA", YourEEAcounting.UserIdA)
+                    CmdSql.Parameters.AddWithValue("@CurrentChargeA", YourEEAcounting.CurrentChargeA)
+                    CmdSql.Parameters.AddWithValue("@ReminderChargeA", YourEEAcounting.ReminderChargeA)
+                    CmdSql.Parameters.AddWithValue("@Deleted", DBNull.Value)
+                    CmdSql.CommandText = "insert into R2Primary.dbo.TblAccounting Values(@CardId,@EEAccountingProcessType,@DateShamsiA,@TimeA,@DateMilladiA,@PelakA,@SerialA,@CityA,@PelakTypeA,@MaabarCode,@MblghA,@UseridA,@CurrentChargeA,@ReminderChargeA,@Deleted)"
                 End If
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -2077,9 +2107,39 @@ Namespace AccountingManagement
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 If YourEEAcounting.NSSCar Is Nothing Then
-                    CmdSql.CommandText = "insert into R2Primary.dbo.TblAccounting(CardId,EEAccountingProcessType,DateShamsiA,TimeA,DateMilladiA,PelakA,SerialA,CityA,PelakTypeA,MaabarCode,MblghA,UseridA,CurrentChargeA,ReminderChargeA) values('" & YourEEAcounting.NSSTrafficCard.CardId & "'," & YourEEAcounting.EEAccountingProcessType & ",'" & YourEEAcounting.DateShamsiA & "','" & YourEEAcounting.TimeA & "','" & YourEEAcounting.DateTimeMilladiA.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "','','','" & Now.Millisecond.ToString() + Rnd().ToString() & "',0,'" & YourEEAcounting.MaabarCode & "'," & YourEEAcounting.MblghA & "," & YourEEAcounting.UserIdA & "," & YourEEAcounting.CurrentChargeA & "," & YourEEAcounting.ReminderChargeA & ")"
+                    CmdSql.Parameters.AddWithValue("@CardId", YourEEAcounting.NSSTrafficCard.CardId)
+                    CmdSql.Parameters.AddWithValue("@EEAccountingProcessType", YourEEAcounting.EEAccountingProcessType)
+                    CmdSql.Parameters.AddWithValue("@DateShamsiA", YourEEAcounting.DateShamsiA)
+                    CmdSql.Parameters.AddWithValue("@TimeA", YourEEAcounting.TimeA)
+                    CmdSql.Parameters.AddWithValue("@DateMilladiA", YourEEAcounting.DateTimeMilladiA)
+                    CmdSql.Parameters.AddWithValue("@PelakA", "")
+                    CmdSql.Parameters.AddWithValue("@SerialA", "")
+                    CmdSql.Parameters.AddWithValue("@CityA", Now.Millisecond.ToString() + Rnd().ToString())
+                    CmdSql.Parameters.AddWithValue("@PelakTypeA", 0)
+                    CmdSql.Parameters.AddWithValue("@MaabarCode", YourEEAcounting.MaabarCode)
+                    CmdSql.Parameters.AddWithValue("@MblghA", YourEEAcounting.MblghA)
+                    CmdSql.Parameters.AddWithValue("@UseridA", YourEEAcounting.UserIdA)
+                    CmdSql.Parameters.AddWithValue("@CurrentChargeA", YourEEAcounting.CurrentChargeA)
+                    CmdSql.Parameters.AddWithValue("@ReminderChargeA", YourEEAcounting.ReminderChargeA)
+                    CmdSql.Parameters.AddWithValue("@Deleted", DBNull.Value)
+                    CmdSql.CommandText = "insert into R2Primary.dbo.TblAccounting Values(@CardId,@EEAccountingProcessType,@DateShamsiA,@TimeA,@DateMilladiA,@PelakA,@SerialA,@CityA,@PelakTypeA,@MaabarCode,@MblghA,@UseridA,@CurrentChargeA,@ReminderChargeA,@Deleted)"
                 Else
-                    CmdSql.CommandText = "insert into R2Primary.dbo.TblAccounting(CardId,EEAccountingProcessType,DateShamsiA,TimeA,DateMilladiA,PelakA,SerialA,CityA,PelakTypeA,MaabarCode,MblghA,UseridA,CurrentChargeA,ReminderChargeA) values('" & YourEEAcounting.NSSTrafficCard.CardId & "'," & YourEEAcounting.EEAccountingProcessType & ",'" & YourEEAcounting.DateShamsiA & "','" & YourEEAcounting.TimeA & "','" & YourEEAcounting.DateTimeMilladiA.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & "','" & YourEEAcounting.NSSCar.StrCarNo & "','" & YourEEAcounting.NSSCar.StrCarSerialNo & "','" & R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(YourEEAcounting.NSSCar.nIdCity) & "'," & R2PelakType.None & ",'" & R2CoreMClassConfigurationManagement.GetComputerCode() & "'," & YourEEAcounting.MblghA & "," & YourEEAcounting.UserIdA & "," & YourEEAcounting.CurrentChargeA & "," & YourEEAcounting.ReminderChargeA & ")"
+                    CmdSql.Parameters.AddWithValue("@CardId", YourEEAcounting.NSSTrafficCard.CardId)
+                    CmdSql.Parameters.AddWithValue("@EEAccountingProcessType", YourEEAcounting.EEAccountingProcessType)
+                    CmdSql.Parameters.AddWithValue("@DateShamsiA", YourEEAcounting.DateShamsiA)
+                    CmdSql.Parameters.AddWithValue("@TimeA", YourEEAcounting.TimeA)
+                    CmdSql.Parameters.AddWithValue("@DateMilladiA", YourEEAcounting.DateTimeMilladiA)
+                    CmdSql.Parameters.AddWithValue("@PelakA", YourEEAcounting.NSSCar.StrCarNo)
+                    CmdSql.Parameters.AddWithValue("@SerialA", YourEEAcounting.NSSCar.StrCarSerialNo)
+                    CmdSql.Parameters.AddWithValue("@CityA", R2CoreParkingSystemMClassCitys.GetCityNameFromnCityCode(YourEEAcounting.NSSCar.nIdCity))
+                    CmdSql.Parameters.AddWithValue("@PelakTypeA", R2PelakType.None)
+                    CmdSql.Parameters.AddWithValue("@MaabarCode", R2CoreMClassConfigurationManagement.GetComputerCode())
+                    CmdSql.Parameters.AddWithValue("@MblghA", YourEEAcounting.MblghA)
+                    CmdSql.Parameters.AddWithValue("@UseridA", YourEEAcounting.UserIdA)
+                    CmdSql.Parameters.AddWithValue("@CurrentChargeA", YourEEAcounting.CurrentChargeA)
+                    CmdSql.Parameters.AddWithValue("@ReminderChargeA", YourEEAcounting.ReminderChargeA)
+                    CmdSql.Parameters.AddWithValue("@Deleted", DBNull.Value)
+                    CmdSql.CommandText = "insert into R2Primary.dbo.TblAccounting Values(@CardId,@EEAccountingProcessType,@DateShamsiA,@TimeA,@DateMilladiA,@PelakA,@SerialA,@CityA,@PelakTypeA,@MaabarCode,@MblghA,@UseridA,@CurrentChargeA,@ReminderChargeA,@Deleted)"
                 End If
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
@@ -2499,6 +2559,24 @@ Namespace MoneyWalletChargeManagement
             End Try
         End Function
 
+        Public Function ExistLastChargeMatchWith(ByVal YourMoneyWalletId As Int64, YourMblgh As Int64) As Boolean
+            Try
+                Dim Ds As New DataSet
+                Dim InstanceSqlDataBOX = New R2CoreInstanseSqlDataBOXManager
+                If InstanceSqlDataBOX.GetDataBOX(New R2PrimarySqlConnection,
+                          "Select Top 1 * from R2Primary.dbo.TblMoneyWalletCharges 
+                           Where CardId=" & YourMoneyWalletId & "  and DATEDIFF(minute,DateTimeMilladi,GETDATE())<=10 and Mblgh=" & YourMblgh & " and UserId=1
+                           Order by DateTimeMilladi Desc", 0, Ds, New Boolean).GetRecordsCount = 0 Then
+                    Return False
+                Else
+                    Return True
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
+
     End Class
 
     Public Class R2CoreParkingSystemMClassMoneyWalletChargeManagement
@@ -2841,6 +2919,30 @@ Namespace Cars
             End Try
         End Function
 
+        Public Function GetNSSCar(YourPelak As String, YourSerial As String) As R2StandardCarStructure
+            Try
+                Dim Da As New SqlClient.SqlDataAdapter : Dim Ds As New DataSet
+                Da.SelectCommand = New SqlCommand("Select * from dbtransport.dbo.TbCar Where strCarNo='" & YourPelak & "' and strCarSerialNo='" & YourSerial & "' and viewflag=1")
+                Da.SelectCommand.Connection = (New R2ClassSqlConnectionSepas).GetConnection()
+                Ds.Tables.Clear()
+                If Da.Fill(Ds) <> 0 Then
+                    Dim NSS As R2StandardCarStructure = New R2StandardCarStructure
+                    NSS.nIdCar = Ds.Tables(0).Rows(0).Item("nIdCar")
+                    NSS.snCarType = Ds.Tables(0).Rows(0).Item("snCarType")
+                    NSS.StrCarNo = Ds.Tables(0).Rows(0).Item("StrCarNo")
+                    NSS.StrCarSerialNo = Ds.Tables(0).Rows(0).Item("StrCarSerialNo")
+                    NSS.nIdCity = Ds.Tables(0).Rows(0).Item("nIdCity")
+                    Return NSS
+                Else
+                    Throw New GetNSSException
+                End If
+            Catch ex As GetNSSException
+                Throw ex
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Function GetnIdCarFromCardId(YourCardId As String) As Int64
             Try
                 Dim Da As New SqlDataAdapter : Dim Ds As New DataSet
@@ -2973,10 +3075,20 @@ Namespace Cars
             Dim CmdSql As SqlCommand = New SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
             Try
+                Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager
+                Dim AllCarSerials = Split(InstanceConfiguration.GetConfigString(R2CoreParkingSystemConfigurations.IndigenousCars, 1), ";")
+                Dim CarSerials() = Split(AllCarSerials(0), "-")
+                Dim NativenessType As Int16 = 0
+                If CarSerials.Contains(YourNSS.StrCarSerialNo) Then
+                    NativenessType = R2CoreParkingSystem.CarsNativeness.CarNativenessTypes.Native
+                Else
+                    NativenessType = R2CoreParkingSystem.CarsNativeness.CarNativenessTypes.UnNative
+                End If
+
                 CmdSql.Connection.Open()
                 CmdSql.Transaction = CmdSql.Connection.BeginTransaction
                 Dim mynIdCar As Int64 = YourNSS.nIdCar
-                CmdSql.CommandText = "Update dbtransport.dbo.tbCar Set snCarType=" & YourNSS.snCarType & ",StrCarNo='" & YourNSS.StrCarNo & "',StrCarSerialNo='" & YourNSS.StrCarSerialNo & "',nIdCity=" & YourNSS.nIdCity & " Where nIdCar=" & mynIdCar & ""
+                CmdSql.CommandText = "Update dbtransport.dbo.tbCar Set snCarType=" & YourNSS.snCarType & ",StrCarNo='" & YourNSS.StrCarNo & "',StrCarSerialNo='" & YourNSS.StrCarSerialNo & "',nIdCity=" & YourNSS.nIdCity & ",CarNativenessTypeId=" & NativenessType & " Where nIdCar=" & mynIdCar & ""
                 CmdSql.ExecuteNonQuery()
                 CmdSql.Transaction.Commit() : CmdSql.Connection.Close()
             Catch ex As Exception
@@ -3486,6 +3598,24 @@ Namespace BlackList
             End Try
         End Function
 
+        Public Function HasCarBlackList(YourPelak As String, YourSerial As String, ByRef YourNSSBlackList As R2StandardBlackListStructure) As Boolean
+            Try
+                Dim InstanceSqlDataBox = New R2CoreInstanseSqlDataBOXManager
+                Dim InstanceSoftwareUsers = New R2CoreInstanseSoftwareUsersManager
+                Dim Ds As DataSet
+                If InstanceSqlDataBox.GetDataBOX(New R2PrimarySubscriptionDBSqlConnection, "
+                  Select Top 1 * from dbtransport.dbo.TbBlackList Where ltrim(rtrim(nTruckNo))='" & YourPelak & "' and ltrim(rtrim(nPlakSerial))='" & YourSerial & "' and 
+                     flaga=0 Order By nId Desc", 0, Ds, New Boolean).GetRecordsCount <> 0 Then
+                    YourNSSBlackList = New R2StandardBlackListStructure(Ds.Tables(0).Rows(0).Item("nId"), Ds.Tables(0).Rows(0).Item("nTruckNo"), Ds.Tables(0).Rows(0).Item("nPlakSerial"), Ds.Tables(0).Rows(0).Item("nPlakPlac"), Ds.Tables(0).Rows(0).Item("StrDesc"), Ds.Tables(0).Rows(0).Item("FlagA"), Ds.Tables(0).Rows(0).Item("nAmount"), IIf(Object.Equals(Ds.Tables(0).Rows(0).Item("StrDate"), DBNull.Value), "", Ds.Tables(0).Rows(0).Item("StrDate")), IIf(Object.Equals(Ds.Tables(0).Rows(0).Item("nUser"), DBNull.Value), InstanceSoftwareUsers.GetNSSSystemUser.UserId, Ds.Tables(0).Rows(0).Item("nUser")))
+                    Return True
+                Else
+                    Return False
+                End If
+            Catch ex As Exception
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Function
+
         Public Sub AddBlackList(YourNSSCar As R2StandardCarStructure, YourMblgh As Int64, YourDescription As String, YourSoftwareUser As R2CoreStandardSoftwareUserStructure)
             Dim CmdSql As New SqlClient.SqlCommand
             CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
@@ -3500,6 +3630,32 @@ Namespace BlackList
                 'ارسال اس ام اس
                 Dim InstanceSoftwareUsers = New R2CoreParkingSystemInstanceSoftwareUsersManager
                 SendingSMSAddtoBlackList(InstanceSoftwareUsers.GetNSSSoftwareUser(YourNSSCar))
+            Catch ex As SoftwareUserRelatedThisCarNotFoundException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw ex
+            Catch ex As SMSResultException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw ex
+            Catch ex As BlackListDescriptionNotFoundException
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw ex
+            Catch ex As Exception
+                If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
+                Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
+            End Try
+        End Sub
+
+        Public Sub AddBlackList(YourPelak As String, YourSerial As String, YourMblgh As Int64, YourDescription As String, YourSoftwareUser As R2CoreStandardSoftwareUserStructure)
+            Dim CmdSql As New SqlClient.SqlCommand
+            CmdSql.Connection = (New DataBaseManagement.R2ClassSqlConnectionSepas).GetConnection()
+            Try
+                If YourDescription = String.Empty Then Throw New BlackListDescriptionNotFoundException
+
+                CmdSql.Connection.Open()
+                CmdSql.CommandText = "Insert Into dbtransport.dbo.TbBlackList(nTruckNo,nPlakPlac,nPlakSerial,StrDesc,FlagA,nAmount,StrDate,nUser) Values('" & YourPelak & "'," & 99960000 & ",'" & YourSerial & "','" & YourDescription & "',0," & YourMblgh & ",'" & _DateTime.GetCurrentDateShamsiFull() & "'," & YourSoftwareUser.UserId & ")"
+                CmdSql.ExecuteNonQuery()
+                CmdSql.Connection.Close()
+
             Catch ex As SoftwareUserRelatedThisCarNotFoundException
                 If CmdSql.Connection.State <> ConnectionState.Closed Then CmdSql.Connection.Close()
                 Throw ex

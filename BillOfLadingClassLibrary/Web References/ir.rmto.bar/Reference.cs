@@ -31,6 +31,8 @@ namespace BillOfLadingClassLibrary.ir.rmto.bar {
         
         private System.Threading.SendOrPostCallback GetFreighterBOLsCountOperationCompleted;
         
+        private System.Threading.SendOrPostCallback GetLastBarnamehInfoForFreighterOperationCompleted;
+        
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
@@ -73,6 +75,9 @@ namespace BillOfLadingClassLibrary.ir.rmto.bar {
         public event GetFreighterBOLsCountCompletedEventHandler GetFreighterBOLsCountCompleted;
         
         /// <remarks/>
+        public event GetLastBarnamehInfoForFreighterCompletedEventHandler GetLastBarnamehInfoForFreighterCompleted;
+        
+        /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetFreighterBOLsCount", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public string GetFreighterBOLsCount(string UserName, string Password, string FreighterCardNo, string FromDate, string FromTime) {
             object[] results = this.Invoke("GetFreighterBOLsCount", new object[] {
@@ -110,6 +115,41 @@ namespace BillOfLadingClassLibrary.ir.rmto.bar {
         }
         
         /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetLastBarnamehInfoForFreighter", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public AtisBillOfLadingInquiryCnt GetLastBarnamehInfoForFreighter(string UserName, string Password, string PLAQUE_ID, string PLAQUE_SN) {
+            object[] results = this.Invoke("GetLastBarnamehInfoForFreighter", new object[] {
+                        UserName,
+                        Password,
+                        PLAQUE_ID,
+                        PLAQUE_SN});
+            return ((AtisBillOfLadingInquiryCnt)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetLastBarnamehInfoForFreighterAsync(string UserName, string Password, string PLAQUE_ID, string PLAQUE_SN) {
+            this.GetLastBarnamehInfoForFreighterAsync(UserName, Password, PLAQUE_ID, PLAQUE_SN, null);
+        }
+        
+        /// <remarks/>
+        public void GetLastBarnamehInfoForFreighterAsync(string UserName, string Password, string PLAQUE_ID, string PLAQUE_SN, object userState) {
+            if ((this.GetLastBarnamehInfoForFreighterOperationCompleted == null)) {
+                this.GetLastBarnamehInfoForFreighterOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetLastBarnamehInfoForFreighterOperationCompleted);
+            }
+            this.InvokeAsync("GetLastBarnamehInfoForFreighter", new object[] {
+                        UserName,
+                        Password,
+                        PLAQUE_ID,
+                        PLAQUE_SN}, this.GetLastBarnamehInfoForFreighterOperationCompleted, userState);
+        }
+        
+        private void OnGetLastBarnamehInfoForFreighterOperationCompleted(object arg) {
+            if ((this.GetLastBarnamehInfoForFreighterCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetLastBarnamehInfoForFreighterCompleted(this, new GetLastBarnamehInfoForFreighterCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
         public new void CancelAsync(object userState) {
             base.CancelAsync(userState);
         }
@@ -125,6 +165,63 @@ namespace BillOfLadingClassLibrary.ir.rmto.bar {
                 return true;
             }
             return false;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9037.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class AtisBillOfLadingInquiryCnt {
+        
+        private System.DateTime createDateField;
+        
+        private string originCityField;
+        
+        private string destinationCityField;
+        
+        private string goodsDescField;
+        
+        /// <remarks/>
+        public System.DateTime CreateDate {
+            get {
+                return this.createDateField;
+            }
+            set {
+                this.createDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string OriginCity {
+            get {
+                return this.originCityField;
+            }
+            set {
+                this.originCityField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string DestinationCity {
+            get {
+                return this.destinationCityField;
+            }
+            set {
+                this.destinationCityField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string GoodsDesc {
+            get {
+                return this.goodsDescField;
+            }
+            set {
+                this.goodsDescField = value;
+            }
         }
     }
     
@@ -150,6 +247,32 @@ namespace BillOfLadingClassLibrary.ir.rmto.bar {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    public delegate void GetLastBarnamehInfoForFreighterCompletedEventHandler(object sender, GetLastBarnamehInfoForFreighterCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetLastBarnamehInfoForFreighterCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetLastBarnamehInfoForFreighterCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public AtisBillOfLadingInquiryCnt Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((AtisBillOfLadingInquiryCnt)(this.results[0]));
             }
         }
     }

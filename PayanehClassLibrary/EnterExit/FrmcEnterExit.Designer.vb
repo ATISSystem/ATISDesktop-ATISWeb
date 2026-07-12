@@ -118,7 +118,7 @@ Partial Class FrmcEnterExit
         Me.UcBlackListCompositBlackListViewer.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                                                               Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcBlackListCompositBlackListViewer.BackColor = System.Drawing.Color.Transparent
-        Me.UcBlackListCompositBlackListViewer.Location = New System.Drawing.Point(15, 126)
+        Me.UcBlackListCompositBlackListViewer.Location = New System.Drawing.Point(15, 375)
         Me.UcBlackListCompositBlackListViewer.Name = "UcBlackListCompositBlackListViewer"
         Me.UcBlackListCompositBlackListViewer.Padding = New System.Windows.Forms.Padding(5)
         Me.UcBlackListCompositBlackListViewer.Size = New System.Drawing.Size(726, 125)

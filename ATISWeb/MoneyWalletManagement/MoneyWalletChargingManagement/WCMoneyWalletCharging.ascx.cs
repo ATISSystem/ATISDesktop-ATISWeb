@@ -3,12 +3,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using ATISWeb.LoginManagement;
+using Microsoft.Reporting.Map.WebForms.BingMaps;
 using R2Core.ConfigurationManagement;
 using R2Core.ExceptionManagement;
 using R2Core.MonetaryCreditSupplySources;
@@ -106,7 +109,8 @@ namespace ATISWeb.MoneyWalletManagement.MoneyWalletChargingManagement
                 var InstanceLogin = new ATISWebMClassLoginManager();
                 var NSSSoftwareUser = InstanceLogin.GetNSSCurrentUser();
 
-                var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, InstanceMoneyWalletChargingAmounts.GetNSSAmount(WCGetSelected()).MWCARial, NSSSoftwareUser.UserId, WS.WebMethodLogin(NSSSoftwareUser.UserShenaseh, NSSSoftwareUser.UserPassword));
+                var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.AqayepardakhtPaymentGate, InstanceMoneyWalletChargingAmounts.GetNSSAmount(WCGetSelected()).MWCARial, NSSSoftwareUser.UserId, WS.WebMethodLogin(NSSSoftwareUser.UserShenaseh, NSSSoftwareUser.UserPassword));
+                //var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, InstanceMoneyWalletChargingAmounts.GetNSSAmount(WCGetSelected()).MWCARial, NSSSoftwareUser.UserId, WS.WebMethodLogin(NSSSoftwareUser.UserShenaseh, NSSSoftwareUser.UserPassword));
                 //var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ShepaPaymentGate, InstanceMoneyWalletChargingAmounts.GetNSSAmount(WCGetSelected()).MWCARial, NSSSoftwareUser.UserId, WS.WebMethodLogin(NSSSoftwareUser.UserShenaseh, NSSSoftwareUser.UserPassword));
                 var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
                 var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(PayId);
@@ -114,7 +118,8 @@ namespace ATISWeb.MoneyWalletManagement.MoneyWalletChargingManagement
                 { System.Threading.Thread.Sleep(500); NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(PayId); }
                 if (NSSPaymentRequest.Authority != string.Empty)
                 {
-                    Response.Redirect(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 2) + NSSPaymentRequest.Authority);
+                    Response.Redirect(InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 2) + NSSPaymentRequest.Authority);
+                    //Response.Redirect(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 2) + NSSPaymentRequest.Authority);
                     //Response.Redirect(InstanceConfiguration.GetConfigString(R2CoreConfigurations.ShepaPaymentGate, 2) + NSSPaymentRequest.Authority);
                 }
                 else

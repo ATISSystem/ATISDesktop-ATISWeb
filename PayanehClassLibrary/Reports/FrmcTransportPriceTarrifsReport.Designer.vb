@@ -27,36 +27,38 @@ Partial Class FrmcTransportPriceTarrifsReport
         Me.PnlViewReport = New BlueActivity.Controls.AlphaGradientPanel()
         Me.ColorWithAlpha1 = New BlueActivity.Controls.ColorWithAlpha()
         Me.ColorWithAlpha2 = New BlueActivity.Controls.ColorWithAlpha()
+        Me.UcTransportPriceTariff1 = New R2CoreTransportationAndLoadNotification.UCTransportPriceTariff()
         Me.UcTransportPriceTarrifsReport = New PayanehClassLibrary.UCTransportPriceTarrifsReport()
-        Me.PnlViewReport.SuspendLayout
-        Me.SuspendLayout
+        Me.PnlViewReport.SuspendLayout()
+        Me.SuspendLayout()
         '
         '_FrmMessageDialog
         '
-        Me._FrmMessageDialog.Location = New System.Drawing.Point(171, 178)
+        Me._FrmMessageDialog.Location = New System.Drawing.Point(-1000, -1000)
         '
         'PnlViewReport
         '
-        Me.PnlViewReport.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
-            Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.PnlViewReport.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PnlViewReport.BackColor = System.Drawing.Color.Transparent
-        Me.PnlViewReport.Border = true
+        Me.PnlViewReport.Border = True
         Me.PnlViewReport.BorderColor = System.Drawing.Color.Black
         Me.PnlViewReport.Colors.Add(Me.ColorWithAlpha1)
         Me.PnlViewReport.Colors.Add(Me.ColorWithAlpha2)
         Me.PnlViewReport.ContentPadding = New System.Windows.Forms.Padding(0)
+        Me.PnlViewReport.Controls.Add(Me.UcTransportPriceTariff1)
         Me.PnlViewReport.Controls.Add(Me.UcTransportPriceTarrifsReport)
         Me.PnlViewReport.CornerRadius = 20
-        Me.PnlViewReport.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight)  _
-            Or BlueActivity.Controls.Corner.BottomLeft)  _
-            Or BlueActivity.Controls.Corner.BottomRight),BlueActivity.Controls.Corner)
-        Me.PnlViewReport.Gradient = true
+        Me.PnlViewReport.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight) _
+            Or BlueActivity.Controls.Corner.BottomLeft) _
+            Or BlueActivity.Controls.Corner.BottomRight), BlueActivity.Controls.Corner)
+        Me.PnlViewReport.Gradient = True
         Me.PnlViewReport.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
-        Me.PnlViewReport.GradientOffset = 1!
+        Me.PnlViewReport.GradientOffset = 1.0!
         Me.PnlViewReport.GradientSize = New System.Drawing.Size(0, 0)
         Me.PnlViewReport.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
-        Me.PnlViewReport.Grayscale = false
+        Me.PnlViewReport.Grayscale = False
         Me.PnlViewReport.Image = Nothing
         Me.PnlViewReport.ImageAlpha = 75
         Me.PnlViewReport.ImagePadding = New System.Windows.Forms.Padding(5)
@@ -64,7 +66,7 @@ Partial Class FrmcTransportPriceTarrifsReport
         Me.PnlViewReport.ImageSize = New System.Drawing.Size(48, 48)
         Me.PnlViewReport.Location = New System.Drawing.Point(5, 50)
         Me.PnlViewReport.Name = "PnlViewReport"
-        Me.PnlViewReport.Rounded = true
+        Me.PnlViewReport.Rounded = True
         Me.PnlViewReport.Size = New System.Drawing.Size(995, 512)
         Me.PnlViewReport.TabIndex = 49
         '
@@ -80,16 +82,28 @@ Partial Class FrmcTransportPriceTarrifsReport
         Me.ColorWithAlpha2.Color = System.Drawing.Color.Transparent
         Me.ColorWithAlpha2.Parent = Me.PnlViewReport
         '
+        'UcTransportPriceTariff1
+        '
+        Me.UcTransportPriceTariff1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcTransportPriceTariff1.BackColor = System.Drawing.Color.Transparent
+        Me.UcTransportPriceTariff1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.UcTransportPriceTariff1.Location = New System.Drawing.Point(21, 145)
+        Me.UcTransportPriceTariff1.Name = "UcTransportPriceTariff1"
+        Me.UcTransportPriceTariff1.Size = New System.Drawing.Size(953, 353)
+        Me.UcTransportPriceTariff1.TabIndex = 1
+        '
         'UcTransportPriceTarrifsReport
         '
-        Me.UcTransportPriceTarrifsReport.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
-            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.UcTransportPriceTarrifsReport.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcTransportPriceTarrifsReport.BackColor = System.Drawing.Color.Transparent
-        Me.UcTransportPriceTarrifsReport.Location = New System.Drawing.Point(21, 46)
+        Me.UcTransportPriceTarrifsReport.Location = New System.Drawing.Point(21, 5)
         Me.UcTransportPriceTarrifsReport.Name = "UcTransportPriceTarrifsReport"
-        Me.UcTransportPriceTarrifsReport.Size = New System.Drawing.Size(953, 170)
+        Me.UcTransportPriceTarrifsReport.Size = New System.Drawing.Size(953, 144)
         Me.UcTransportPriceTarrifsReport.TabIndex = 0
-        Me.UcTransportPriceTarrifsReport.UCViewTitle = false
+        Me.UcTransportPriceTarrifsReport.UCViewTitle = False
         '
         'FrmcTransportPriceTarrifsReport
         '
@@ -110,4 +124,5 @@ End Sub
     Friend WithEvents ColorWithAlpha1 As BlueActivity.Controls.ColorWithAlpha
     Friend WithEvents ColorWithAlpha2 As BlueActivity.Controls.ColorWithAlpha
     Friend WithEvents UcTransportPriceTarrifsReport As UCTransportPriceTarrifsReport
+    Friend WithEvents UcTransportPriceTariff1 As R2CoreTransportationAndLoadNotification.UCTransportPriceTariff
 End Class

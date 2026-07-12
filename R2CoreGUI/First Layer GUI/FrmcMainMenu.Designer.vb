@@ -269,7 +269,7 @@ Partial Class FrmcMainMenu
         Me.LblApplicationDomainAbbreviationInner.ForeColor = System.Drawing.Color.White
         Me.LblApplicationDomainAbbreviationInner.Location = New System.Drawing.Point(-2, -74)
         Me.LblApplicationDomainAbbreviationInner.Name = "LblApplicationDomainAbbreviationInner"
-        Me.LblApplicationDomainAbbreviationInner.Size = New System.Drawing.Size(169, 126)
+        Me.LblApplicationDomainAbbreviationInner.Size = New System.Drawing.Size(168, 126)
         Me.LblApplicationDomainAbbreviationInner.TabIndex = 221
         Me.LblApplicationDomainAbbreviationInner.Text = "R2"
         Me.LblApplicationDomainAbbreviationInner.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -418,6 +418,7 @@ Partial Class FrmcMainMenu
         Me.UcDateTime.UCEnable = True
         Me.UcDateTime.UCFont = New System.Drawing.Font("B Homa", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(178, Byte))
         Me.UcDateTime.UCForeColor = System.Drawing.Color.White
+        Me.UcDateTime.Visible = False
         '
         'LblTopApplicationDomainPersianTitle
         '
@@ -565,7 +566,7 @@ Partial Class FrmcMainMenu
         Me.LblApplicationDomainAbbreviationOuter.ForeColor = System.Drawing.Color.DimGray
         Me.LblApplicationDomainAbbreviationOuter.Location = New System.Drawing.Point(1, 370)
         Me.LblApplicationDomainAbbreviationOuter.Name = "LblApplicationDomainAbbreviationOuter"
-        Me.LblApplicationDomainAbbreviationOuter.Size = New System.Drawing.Size(169, 126)
+        Me.LblApplicationDomainAbbreviationOuter.Size = New System.Drawing.Size(168, 126)
         Me.LblApplicationDomainAbbreviationOuter.TabIndex = 222
         Me.LblApplicationDomainAbbreviationOuter.Text = "R2"
         Me.LblApplicationDomainAbbreviationOuter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter

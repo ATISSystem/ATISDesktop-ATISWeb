@@ -28,9 +28,12 @@ Partial Class FrmcLoadPermissionsIssued
         Me.ColorWithAlpha1 = New BlueActivity.Controls.ColorWithAlpha()
         Me.ColorWithAlpha2 = New BlueActivity.Controls.ColorWithAlpha()
         Me.UcLoadPermissionIssued = New PayanehClassLibrary.UCLoadPermissionIssued()
+        Me.PnlTurnValidity = New BlueActivity.Controls.AlphaGradientPanel()
+        Me.UcTurnValidity1 = New PayanehClassLibrary.UCTurnValidity()
         Me.PnlTurnCancellation = New System.Windows.Forms.Panel()
         Me.UcTurnsCancellation = New PayanehClassLibrary.UCTurnsCancellation()
         Me.PnlLoadPermissionIssued.SuspendLayout()
+        Me.PnlTurnValidity.SuspendLayout()
         Me.PnlTurnCancellation.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -76,13 +79,13 @@ Partial Class FrmcLoadPermissionsIssued
         '
         Me.ColorWithAlpha1.Alpha = 255
         Me.ColorWithAlpha1.Color = System.Drawing.Color.Transparent
-        Me.ColorWithAlpha1.Parent = Me.PnlLoadPermissionIssued
+        Me.ColorWithAlpha1.Parent = Me.PnlTurnValidity
         '
         'ColorWithAlpha2
         '
         Me.ColorWithAlpha2.Alpha = 255
         Me.ColorWithAlpha2.Color = System.Drawing.Color.Transparent
-        Me.ColorWithAlpha2.Parent = Me.PnlLoadPermissionIssued
+        Me.ColorWithAlpha2.Parent = Me.PnlTurnValidity
         '
         'UcLoadPermissionIssued
         '
@@ -94,6 +97,49 @@ Partial Class FrmcLoadPermissionsIssued
         Me.UcLoadPermissionIssued.Size = New System.Drawing.Size(918, 479)
         Me.UcLoadPermissionIssued.TabIndex = 0
         Me.UcLoadPermissionIssued.UCViewTitle = False
+        '
+        'PnlTurnValidity
+        '
+        Me.PnlTurnValidity.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PnlTurnValidity.BackColor = System.Drawing.Color.Transparent
+        Me.PnlTurnValidity.Border = True
+        Me.PnlTurnValidity.BorderColor = System.Drawing.Color.Black
+        Me.PnlTurnValidity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PnlTurnValidity.Colors.Add(Me.ColorWithAlpha1)
+        Me.PnlTurnValidity.Colors.Add(Me.ColorWithAlpha2)
+        Me.PnlTurnValidity.ContentPadding = New System.Windows.Forms.Padding(0)
+        Me.PnlTurnValidity.Controls.Add(Me.UcTurnValidity1)
+        Me.PnlTurnValidity.CornerRadius = 20
+        Me.PnlTurnValidity.Corners = CType((((BlueActivity.Controls.Corner.TopLeft Or BlueActivity.Controls.Corner.TopRight) _
+            Or BlueActivity.Controls.Corner.BottomLeft) _
+            Or BlueActivity.Controls.Corner.BottomRight), BlueActivity.Controls.Corner)
+        Me.PnlTurnValidity.Gradient = True
+        Me.PnlTurnValidity.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
+        Me.PnlTurnValidity.GradientOffset = 1.0!
+        Me.PnlTurnValidity.GradientSize = New System.Drawing.Size(0, 0)
+        Me.PnlTurnValidity.GradientWrapMode = System.Drawing.Drawing2D.WrapMode.Tile
+        Me.PnlTurnValidity.Grayscale = False
+        Me.PnlTurnValidity.Image = Nothing
+        Me.PnlTurnValidity.ImageAlpha = 75
+        Me.PnlTurnValidity.ImagePadding = New System.Windows.Forms.Padding(5)
+        Me.PnlTurnValidity.ImagePosition = BlueActivity.Controls.ImagePosition.BottomRight
+        Me.PnlTurnValidity.ImageSize = New System.Drawing.Size(48, 48)
+        Me.PnlTurnValidity.Location = New System.Drawing.Point(5, 50)
+        Me.PnlTurnValidity.Name = "PnlTurnValidity"
+        Me.PnlTurnValidity.Rounded = True
+        Me.PnlTurnValidity.Size = New System.Drawing.Size(995, 512)
+        Me.PnlTurnValidity.TabIndex = 51
+        '
+        'UcTurnValidity1
+        '
+        Me.UcTurnValidity1.BackColor = System.Drawing.Color.Transparent
+        Me.UcTurnValidity1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.UcTurnValidity1.Location = New System.Drawing.Point(0, 0)
+        Me.UcTurnValidity1.Name = "UcTurnValidity1"
+        Me.UcTurnValidity1.Size = New System.Drawing.Size(993, 510)
+        Me.UcTurnValidity1.TabIndex = 0
         '
         'PnlTurnCancellation
         '
@@ -123,13 +169,16 @@ Partial Class FrmcLoadPermissionsIssued
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1005, 600)
         Me.Controls.Add(Me.PnlLoadPermissionIssued)
+        Me.Controls.Add(Me.PnlTurnValidity)
         Me.Controls.Add(Me.PnlTurnCancellation)
         Me.Location = New System.Drawing.Point(0, 0)
         Me.Name = "FrmcLoadPermissionsIssued"
         Me.Text = "FrmcLoadPermissionsIssuedOrderByPriorityReport"
         Me.Controls.SetChildIndex(Me.PnlTurnCancellation, 0)
+        Me.Controls.SetChildIndex(Me.PnlTurnValidity, 0)
         Me.Controls.SetChildIndex(Me.PnlLoadPermissionIssued, 0)
         Me.PnlLoadPermissionIssued.ResumeLayout(False)
+        Me.PnlTurnValidity.ResumeLayout(False)
         Me.PnlTurnCancellation.ResumeLayout(False)
         Me.ResumeLayout(false)
 
@@ -141,4 +190,6 @@ End Sub
     Friend WithEvents UcLoadPermissionIssued As UCLoadPermissionIssued
     Friend WithEvents PnlTurnCancellation As Windows.Forms.Panel
     Friend WithEvents UcTurnsCancellation As UCTurnsCancellation
+    Friend WithEvents PnlTurnValidity As BlueActivity.Controls.AlphaGradientPanel
+    Friend WithEvents UcTurnValidity1 As UCTurnValidity
 End Class

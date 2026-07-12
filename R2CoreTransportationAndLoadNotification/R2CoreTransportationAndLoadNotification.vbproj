@@ -515,6 +515,12 @@
     <Compile Include="Transport Companies\UCViewerNSSTransportComapny.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="TransportPriceTariffs\UCTransportPriceTariff.Designer.vb">
+      <DependentUpon>UCTransportPriceTariff.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TransportPriceTariffs\UCTransportPriceTariff.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="TrucksNativeness\UCTruckNativeness.Designer.vb">
       <DependentUpon>UCTruckNativeness.vb</DependentUpon>
     </Compile>
@@ -773,6 +779,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Transport Companies\UCViewerNSSTransportComapny.resx">
       <DependentUpon>UCViewerNSSTransportComapny.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransportPriceTariffs\UCTransportPriceTariff.resx">
+      <DependentUpon>UCTransportPriceTariff.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TrucksNativeness\UCTruckNativeness.resx">
       <DependentUpon>UCTruckNativeness.vb</DependentUpon>

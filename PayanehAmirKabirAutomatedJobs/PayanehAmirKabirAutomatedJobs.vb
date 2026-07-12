@@ -102,11 +102,11 @@ Public Class PayanehAmirKabirAutomatedJobs
             End Try
 
             'صدور خودکار نوبت ها
-            Try
-                PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
-            Catch ex As Exception
-                EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
-            End Try
+            'Try
+            '    PayanehClassLibraryMClassCarTruckNobatManagement.AutomaticTurnRegistering()
+            'Catch ex As Exception
+            '    EventLog.WriteEntry("PayanehAmirKabirAutomatedJobs", "AutomaticTurnRegistering:" + ex.Message.ToString, EventLogEntryType.Error)
+            'End Try
 
             'فراخوانی سرویس رسوب بار در سالن اعلام بار
             Try

@@ -91,6 +91,7 @@ Public Class UCCarTruckNobat
             UcButtonChop.UCEnable = Not YourNSSTurn.bFlagDriver
             UcButtonEbtalNobat.UCEnable = Not YourNSSTurn.bFlagDriver
             UcButtonResuscitationNobat.UCEnable = YourNSSTurn.bFlagDriver
+            LblUser.Text = YourNSSTurn.UserName
         Catch ex As Exception
             Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message)
         End Try
@@ -119,7 +120,7 @@ Public Class UCCarTruckNobat
 
     Private Sub UcButtonEbtalNobat_UCClickedEvent() Handles UcButtonEbtalNobat.UCClickedEvent
         Try
-            PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToTrue(_NSSTurn.nEnterExitId, True)
+            PayanehClassLibraryMClassCarTruckNobatManagement.SetbFlagDriverToTrue(_NSSTurn.nEnterExitId, True, R2CoreGUIMClassGUIManagement.FrmMainMenu.UcUserImage.UCCurrentNSS.UserId)
             _NSSTurn.bFlagDriver = True
             UCViewInf(_NSSTurn)
             UCFrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.SuccessProccess, "نوبت باطل شد", "", FrmcMessageDialog.MessageType.PersianMessage, Nothing, Me)

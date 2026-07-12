@@ -273,6 +273,12 @@
     <Compile Include="CarTruck And DriverTruck\UCComputerMessageProducerChangeDriverTruck.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Reports\UCTurnValidity.Designer.vb">
+      <DependentUpon>UCTurnValidity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\UCTurnValidity.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SoftwareUser Management\FrmcSoftwareUserManagement.Designer.vb">
       <DependentUpon>FrmcSoftwareUserManagement.vb</DependentUpon>
     </Compile>
@@ -826,6 +832,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\UCTrucksAverageOfSleepDaysToGetLoadPermissionReport.resx">
       <DependentUpon>UCTrucksAverageOfSleepDaysToGetLoadPermissionReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\UCTurnValidity.resx">
+      <DependentUpon>UCTurnValidity.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SoftwareUser Management\FrmcSoftwareUserManagement.resx">
       <DependentUpon>FrmcSoftwareUserManagement.vb</DependentUpon>

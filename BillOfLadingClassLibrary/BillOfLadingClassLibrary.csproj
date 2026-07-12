@@ -97,6 +97,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Web References\ir.rmto.bar\AtisBillOfLadingInquiryCnt.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
     <None Include="Web References\ir.rmto.bar\barinfoserviceatis.disco" />
     <None Include="Web References\ir.rmto.bar\barinfoserviceatis.wsdl" />
     <None Include="Web References\ir.rmto.bar\Reference.map">

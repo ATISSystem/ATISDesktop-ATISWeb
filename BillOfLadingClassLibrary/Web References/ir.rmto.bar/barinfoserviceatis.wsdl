@@ -20,7 +20,33 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="GetLastBarnamehInfoForFreighter">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PLAQUE_ID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="PLAQUE_SN" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastBarnamehInfoForFreighterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLastBarnamehInfoForFreighterResult" type="tns:AtisBillOfLadingInquiryCnt" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AtisBillOfLadingInquiryCnt">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CreateDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="OriginCity" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DestinationCity" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GoodsDesc" type="s:string" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="string" nillable="true" type="s:string" />
+      <s:element name="AtisBillOfLadingInquiryCnt" nillable="true" type="tns:AtisBillOfLadingInquiryCnt" />
     </s:schema>
   </wsdl:types>
   <wsdl:message name="GetFreighterBOLsCountSoapIn">
@@ -28,6 +54,12 @@
   </wsdl:message>
   <wsdl:message name="GetFreighterBOLsCountSoapOut">
     <wsdl:part name="parameters" element="tns:GetFreighterBOLsCountResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLastBarnamehInfoForFreighterSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLastBarnamehInfoForFreighter" />
+  </wsdl:message>
+  <wsdl:message name="GetLastBarnamehInfoForFreighterSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLastBarnamehInfoForFreighterResponse" />
   </wsdl:message>
   <wsdl:message name="GetFreighterBOLsCountHttpGetIn">
     <wsdl:part name="UserName" type="s:string" />
@@ -39,6 +71,15 @@
   <wsdl:message name="GetFreighterBOLsCountHttpGetOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
+  <wsdl:message name="GetLastBarnamehInfoForFreighterHttpGetIn">
+    <wsdl:part name="UserName" type="s:string" />
+    <wsdl:part name="Password" type="s:string" />
+    <wsdl:part name="PLAQUE_ID" type="s:string" />
+    <wsdl:part name="PLAQUE_SN" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetLastBarnamehInfoForFreighterHttpGetOut">
+    <wsdl:part name="Body" element="tns:AtisBillOfLadingInquiryCnt" />
+  </wsdl:message>
   <wsdl:message name="GetFreighterBOLsCountHttpPostIn">
     <wsdl:part name="UserName" type="s:string" />
     <wsdl:part name="Password" type="s:string" />
@@ -49,10 +90,23 @@
   <wsdl:message name="GetFreighterBOLsCountHttpPostOut">
     <wsdl:part name="Body" element="tns:string" />
   </wsdl:message>
+  <wsdl:message name="GetLastBarnamehInfoForFreighterHttpPostIn">
+    <wsdl:part name="UserName" type="s:string" />
+    <wsdl:part name="Password" type="s:string" />
+    <wsdl:part name="PLAQUE_ID" type="s:string" />
+    <wsdl:part name="PLAQUE_SN" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetLastBarnamehInfoForFreighterHttpPostOut">
+    <wsdl:part name="Body" element="tns:AtisBillOfLadingInquiryCnt" />
+  </wsdl:message>
   <wsdl:portType name="BarInfoServiceAtisSoap">
     <wsdl:operation name="GetFreighterBOLsCount">
       <wsdl:input message="tns:GetFreighterBOLsCountSoapIn" />
       <wsdl:output message="tns:GetFreighterBOLsCountSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLastBarnamehInfoForFreighter">
+      <wsdl:input message="tns:GetLastBarnamehInfoForFreighterSoapIn" />
+      <wsdl:output message="tns:GetLastBarnamehInfoForFreighterSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="BarInfoServiceAtisHttpGet">
@@ -60,17 +114,34 @@
       <wsdl:input message="tns:GetFreighterBOLsCountHttpGetIn" />
       <wsdl:output message="tns:GetFreighterBOLsCountHttpGetOut" />
     </wsdl:operation>
+    <wsdl:operation name="GetLastBarnamehInfoForFreighter">
+      <wsdl:input message="tns:GetLastBarnamehInfoForFreighterHttpGetIn" />
+      <wsdl:output message="tns:GetLastBarnamehInfoForFreighterHttpGetOut" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="BarInfoServiceAtisHttpPost">
     <wsdl:operation name="GetFreighterBOLsCount">
       <wsdl:input message="tns:GetFreighterBOLsCountHttpPostIn" />
       <wsdl:output message="tns:GetFreighterBOLsCountHttpPostOut" />
     </wsdl:operation>
+    <wsdl:operation name="GetLastBarnamehInfoForFreighter">
+      <wsdl:input message="tns:GetLastBarnamehInfoForFreighterHttpPostIn" />
+      <wsdl:output message="tns:GetLastBarnamehInfoForFreighterHttpPostOut" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BarInfoServiceAtisSoap" type="tns:BarInfoServiceAtisSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="GetFreighterBOLsCount">
       <soap:operation soapAction="http://tempuri.org/GetFreighterBOLsCount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastBarnamehInfoForFreighter">
+      <soap:operation soapAction="http://tempuri.org/GetLastBarnamehInfoForFreighter" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -90,6 +161,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetLastBarnamehInfoForFreighter">
+      <soap12:operation soapAction="http://tempuri.org/GetLastBarnamehInfoForFreighter" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="BarInfoServiceAtisHttpGet" type="tns:BarInfoServiceAtisHttpGet">
     <http:binding verb="GET" />
@@ -102,11 +182,29 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetLastBarnamehInfoForFreighter">
+      <http:operation location="/GetLastBarnamehInfoForFreighter" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="BarInfoServiceAtisHttpPost" type="tns:BarInfoServiceAtisHttpPost">
     <http:binding verb="POST" />
     <wsdl:operation name="GetFreighterBOLsCount">
       <http:operation location="/GetFreighterBOLsCount" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastBarnamehInfoForFreighter">
+      <http:operation location="/GetLastBarnamehInfoForFreighter" />
       <wsdl:input>
         <mime:content type="application/x-www-form-urlencoded" />
       </wsdl:input>

@@ -31,6 +31,24 @@
           <s:element minOccurs="0" maxOccurs="unbounded" name="long" type="s:long" />
         </s:sequence>
       </s:complexType>
+      <s:element name="SendContact">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MobileNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DeviceCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendContactResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SendContactResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="SendSms">
         <s:complexType>
           <s:sequence>
@@ -423,6 +441,12 @@
   <wsdl:message name="SmsSendSoapOut">
     <wsdl:part name="parameters" element="tns:SmsSendResponse" />
   </wsdl:message>
+  <wsdl:message name="SendContactSoapIn">
+    <wsdl:part name="parameters" element="tns:SendContact" />
+  </wsdl:message>
+  <wsdl:message name="SendContactSoapOut">
+    <wsdl:part name="parameters" element="tns:SendContactResponse" />
+  </wsdl:message>
   <wsdl:message name="SendSmsSoapIn">
     <wsdl:part name="parameters" element="tns:SendSms" />
   </wsdl:message>
@@ -536,6 +560,10 @@
       <wsdl:input message="tns:SmsSendSoapIn" />
       <wsdl:output message="tns:SmsSendSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="SendContact">
+      <wsdl:input message="tns:SendContactSoapIn" />
+      <wsdl:output message="tns:SendContactSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="SendSms">
       <wsdl:input message="tns:SendSmsSoapIn" />
       <wsdl:output message="tns:SendSmsSoapOut" />
@@ -613,6 +641,15 @@
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="SmsSend">
       <soap:operation soapAction="http://tempuri.org/SmsSend" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendContact">
+      <soap:operation soapAction="http://tempuri.org/SendContact" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -787,6 +824,15 @@
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="SmsSend">
       <soap12:operation soapAction="http://tempuri.org/SmsSend" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendContact">
+      <soap12:operation soapAction="http://tempuri.org/SendContact" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

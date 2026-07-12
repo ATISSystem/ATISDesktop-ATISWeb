@@ -648,17 +648,17 @@ Namespace MonetaryCreditSupplySources
                 Try
                     Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
                     Dim requesturl As String
-                    If (_Amount = 200000) Then
-                        requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 1) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() +
+                    'If (Amount <> 2000000) Then
+                    requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 1) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() +
                         "&callback_url=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 3) +
-                        "&description=" + "پرداخت خودگردان" +
+                        "&description=" + "پرداخت آتیس" +
                         "&metadata[0]=" + String.Empty + "& metadata[1]=" + String.Empty
-                    Else
-                        requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 1) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() +
-                        "&callback_url=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 3) +
-                        "&description=" + "درخواست پرداخت-زرین پال-آتیس" +
-                        "&metadata[0]=" + String.Empty + "& metadata[1]=" + String.Empty
-                    End If
+                    'Else
+                    '    requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 1) + "19db8e91-89b9-4a38-a527-d704bfe3d370" + "&amount=" + _Amount.ToString() +
+                    '    "&callback_url=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 3) +
+                    '    "&description=" + "پرداخت - آتیس" +
+                    '    "&metadata[0]=" + String.Empty + "& metadata[1]=" + String.Empty
+                    'End If
 
                     Dim client = New RestClient(requesturl)
                     client.Timeout = -1
@@ -692,11 +692,13 @@ Namespace MonetaryCreditSupplySources
                 Try
                     Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
                     Dim url As String = String.Empty
-                    If (_Amount = 200000) Then
-                        url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
-                    Else
-                        url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
-                    End If
+                    url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
+
+                    'If (Amount = 1000000 Or Amount = 500000) Then
+                    '    url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
+                    'Else
+                    '    url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 4) + "19db8e91-89b9-4a38-a527-d704bfe3d370" + "&amount=" + _Amount.ToString() + "&authority=" + YourAuthority
+                    'End If
                     Dim client = New RestClient(url)
                     client.Timeout = -1
                     Dim request = New RestRequest(Method.POST)
@@ -811,7 +813,7 @@ Namespace MonetaryCreditSupplySources
                 Try
                     Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
                     Dim requesturl As String
-                    requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 1) + "&pin=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 0) + "&amount=" + _Amount.ToString() +
+                    requesturl = InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 1) + "&pin=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 0) + "&amount=" + (_Amount / 10).ToString() +
                     "&callback=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 3) +
                     "&description=" + "پرداخت آتیس"
                     Dim client = New RestClient(requesturl)
@@ -846,7 +848,7 @@ Namespace MonetaryCreditSupplySources
                 Try
                     Dim InstanceConfiguration = New R2CoreInstanceConfigurationManager()
                     Dim url As String = String.Empty
-                    url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 4) + "&pin=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 0) + "&amount=" + _Amount.ToString() + "&transid=" + YourAuthority
+                    url = InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 4) + "&pin=" + InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 0) + "&amount=" + (_Amount / 10).ToString() + "&transid=" + YourAuthority
                     Dim client = New RestClient(url)
                     client.Timeout = -1
                     Dim request = New RestRequest(Method.POST)
@@ -2321,6 +2323,7 @@ Namespace PermissionManagement
         Public Shared ReadOnly UserCanInject123VerificationCodeforAppActivation As Int64 = 9
         Public Shared ReadOnly SoftwareUserCanActivateUnactivateSMSOwner As Int64 = 22
         Public Shared ReadOnly UserCanChargeSMSControllingMoneyWallet As Int64 = 30
+        Public Shared ReadOnly UserCanViewUCDateTime As Int64 = 33
     End Class
 
     Public Class R2StandardPermissionTypeStructure

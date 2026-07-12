@@ -83,6 +83,7 @@ Public Class FrmcMainMenu
             PnlToolBoxBig.Visible = True
             PnlToolBoxSmall.Visible = True
             UcUserImage.Visible = True
+            UcDateTime.UCInitialize()
         Catch ex As Exception
             _FrmMessageDialog.ViewDialogMessage(FrmcMessageDialog.DialogColorType.ErrorType, MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + vbCrLf + ex.Message, "", FrmcMessageDialog.MessageType.ErrorMessage, Nothing, Me)
         End Try

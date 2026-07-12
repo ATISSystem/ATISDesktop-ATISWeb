@@ -40,6 +40,9 @@ using System.IO;
 using R2Core.FileShareRawGroupsManagement;
 using R2Core.SecurityAlgorithmsManagement.ExpressionValidationAlgorithms;
 using BillOfLadingCore.BillOfLading;
+using System.Data.OleDb;
+using R2Core.ExceptionManagement;
+using R2CoreParkingSystem.BlackList;
 
 namespace R2PrimaryTestCSharp
 {
@@ -58,16 +61,26 @@ namespace R2PrimaryTestCSharp
         private void Button1_Click(object sender, EventArgs e)
         {
 
-            //ابطال نوبت ها بر اساس بارنامه 
-            try
-            {
-                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-                var InstanceBillOfLadingConditionedAnnouncement = new BillOfLadingCoreBillOfLadingConditionedAnnouncementManager();
-                InstanceBillOfLadingConditionedAnnouncement.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser());
+            ////ارسال ایمیل شرکت ها
+            //try
+            //{
+            //    var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+            //    var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+            //    InstanceAnnouncementforTransportCompanies.SentEmailforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+            //}
+            //catch (Exception ex)
+            //{ EventLog.WriteEntry("MSCOAutomatedJobs.SendEmail", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
 
-            }
-            catch (Exception ex)
-            { EventLog.WriteEntry("BillOfLadingAutomatedJobs:", ex.Message.ToString(), EventLogEntryType.Error); }
+            ////ابطال نوبت ها بر اساس بارنامه 
+            //try
+            //{
+            //    var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+            //    var InstanceBillOfLadingConditionedAnnouncement = new BillOfLadingCoreBillOfLadingConditionedAnnouncementManager();
+            //    InstanceBillOfLadingConditionedAnnouncement.TurnsCancellation(InstanceSoftwareUsers.GetNSSSystemUser());
+
+            //}
+            //catch (Exception ex)
+            //{ EventLog.WriteEntry("BillOfLadingAutomatedJobs:", ex.Message.ToString(), EventLogEntryType.Error); }
 
 
 
@@ -91,25 +104,25 @@ namespace R2PrimaryTestCSharp
             //{
             //    try
             //    {
-            //        //ایجاد فایل های اعلام بار شرکت ها 
-            //        try
-            //        {
-            //            var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
-            //            var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-            //            InstanceAnnouncementforTransportCompanies.CreateAnnouncementFileforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
-            //        }
-            //        catch (Exception ex)
-            //        { EventLog.WriteEntry("MSCOAutomatedJobs.CreateAnnouncementFile", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+            //ایجاد فایل های اعلام بار شرکت ها 
+            try
+            {
+                var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                InstanceAnnouncementforTransportCompanies.CreateAnnouncementFileforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+            }
+            catch (Exception ex)
+            { EventLog.WriteEntry("MSCOAutomatedJobs.CreateAnnouncementFile", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
 
-            //        //اعلام بار خودکار شرکت ها
-            //        try
-            //        {
-            //            var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
-            //            var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
-            //            InstanceAnnouncementforTransportCompanies.LoadsAnnouncementforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
-            //        }
-            //        catch (Exception ex)
-            //        { EventLog.WriteEntry("MSCOAutomatedJobs.LoadsAnnouncement", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
+            //اعلام بار خودکار شرکت ها
+            try
+            {
+                var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAnnouncementforTransportCompanies = new MSCOCoreAnnouncementforTransportCompaniesManager();
+                InstanceAnnouncementforTransportCompanies.LoadsAnnouncementforTransportCompanies(InstanceSoftwareUsers.GetNSSSystemUser());
+            }
+            catch (Exception ex)
+            { EventLog.WriteEntry("MSCOAutomatedJobs.LoadsAnnouncement", ":" + ex.Message.ToString(), EventLogEntryType.Error); }
 
             //        //ارسال ایمیل شرکت ها
             //        try
@@ -327,14 +340,117 @@ namespace R2PrimaryTestCSharp
                 var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                 var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
                 var InstanceSoftwareUser = new R2CoreInstanseSoftwareUsersManager();
-                var AMUStatus = InstanceAES.Encrypt(textBox1.Text , InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3)) ;
+                var AMUStatus = InstanceAES.Encrypt(textBox1.Text, InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 textBox2.Text = AMUStatus;
             }
             catch (Exception ex)
-            { MessageBox.Show(ex.Message ); }
+            { MessageBox.Show(ex.Message); }
 
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var CmdSql = new System.Data.SqlClient.SqlCommand();
+            CmdSql.Connection = (new R2Core.DatabaseManagement.R2PrimarySqlConnection()).GetConnection();
+
+            try
+            {
+                var InstanceBlackList = new R2CoreParkingSystemInstanceBlackListManager();
+
+                string tempFilePath = "c:\\" + "tank.mdb";
+                OleDbDataAdapter DaBillOfLading = new OleDbDataAdapter(); DataSet DsBillOfLading = new DataSet();
+                DaBillOfLading.SelectCommand = new OleDbCommand("Select pelak,serial from tank");
+                DaBillOfLading.SelectCommand.Connection = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source='" + tempFilePath + "'");
+                DsBillOfLading.Clear();
+                DaBillOfLading.Fill(DsBillOfLading);
+                CmdSql.Connection.Open();
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction();
+                for (int loopx = 0; loopx <= DsBillOfLading.Tables[0].Rows.Count - 1; loopx++)
+                {
+                    string pelak = DsBillOfLading.Tables[0].Rows[loopx]["pelak"].ToString();
+                    pelak =pelak.Substring(3, 3)  + pelak.Substring(2, 1) + pelak.Substring(0, 2);
+                    string serial = DsBillOfLading.Tables[0].Rows[loopx]["serial"].ToString();
+                    string BlackMessage = "تانکر فعال 14040818";
+                    CmdSql.CommandText = "Insert Into dbtransport.dbo.TbBlackList(nTruckNo,nPlakPlac,nPlakSerial,StrDesc,FlagA,nAmount,StrDate,nUser) Values('" + pelak + "',99960000,'" + serial + "','" + BlackMessage + "',0,1,'1404/08/18',21)";
+                    CmdSql.ExecuteNonQuery();
+                    //InstanceBlackList.AddBlackList(pelak, serial, 1, "تانکر فعال 14040818", R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
+                }
+                CmdSql.Transaction.Commit(); CmdSql.Connection.Close();
+                MessageBox.Show("Success ...");
+
+
+            }
+            catch (Exception ex)
+            {
+                if (CmdSql.Connection.State != ConnectionState.Closed)
+                {
+                    CmdSql.Transaction.Rollback(); CmdSql.Connection.Close();
+                }
+                MessageBox.Show(ex.Message);
+            }
+
+            //try
+            //{
+            //    string tempFilePath = "c:\\TANK.mdb";
+            //    OleDbDataAdapter DaBillOfLading = new OleDbDataAdapter(); DataSet DsBillOfLading = new DataSet();
+            //    DaBillOfLading.SelectCommand = new OleDbCommand("Select * from Tank");
+            //    DaBillOfLading.SelectCommand.Connection = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source='" + tempFilePath + "'");
+            //    DsBillOfLading.Clear();
+            //    DaBillOfLading.Fill(DsBillOfLading);
+
+            //    for (int Loopx = 0; Loopx <= DsBillOfLading.Tables[0].Rows.Count - 1; Loopx++)
+            //    {
+
+            //        string pelak = DsBillOfLading.Tables[0].Rows[Loopx]["pelak"].ToString();
+            //        string serial = DsBillOfLading.Tables[0].Rows[Loopx]["serial"].ToString();
+            //        if (!(x.HasCarBlackList(pelak, serial, ref y)))
+            //        { x.AddBlackList(pelak, serial, 1, "تانکر فعال نامه شماره 68489 مورخ 14040416 انجمن کامیونداران اصفهان", R2Core.SoftwareUserManagement.R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser()); }
+
+            //    }
+
+            //}
+            //catch (Exception ex)
+            //{ MessageBox.Show(ex.Message); }
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var CmdSql = new System.Data.SqlClient.SqlCommand();
+            CmdSql.Connection = (new R2Core.DatabaseManagement.R2PrimarySqlConnection()).GetConnection();
+
+            try
+            {
+                var InstanceBlackList = new R2CoreParkingSystemInstanceBlackListManager();
+
+                string tempFilePath = "c:\\" + "tank.mdb";
+                OleDbDataAdapter DaBillOfLading = new OleDbDataAdapter(); DataSet DsBillOfLading = new DataSet();
+                DaBillOfLading.SelectCommand = new OleDbCommand("Select pelak,serial from tank");
+                DaBillOfLading.SelectCommand.Connection = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source='" + tempFilePath + "'");
+                DsBillOfLading.Clear();
+                DaBillOfLading.Fill(DsBillOfLading);
+                CmdSql.Connection.Open();
+                CmdSql.Transaction = CmdSql.Connection.BeginTransaction();
+                for (int  loopx = 0; loopx <= DsBillOfLading.Tables[0].Rows.Count - 1; loopx++)
+                {
+                    string pelak = DsBillOfLading.Tables[0].Rows[loopx]["pelak"].ToString();
+                    string serial = DsBillOfLading.Tables[0].Rows[loopx]["serial"].ToString();
+                    string BlackMessage = "تانکر فعال 14040818";
+                    CmdSql.CommandText = "Insert Into dbtransport.dbo.TbBlackList(nTruckNo,nPlakPlac,nPlakSerial,StrDesc,FlagA,nAmount,StrDate,nUser) Values('"+pelak+"',99960000,'"+serial+"','"+ BlackMessage+"',0,1,'1404/08/18',21)";
+                    CmdSql.ExecuteNonQuery();
+                    //InstanceBlackList.AddBlackList(pelak, serial, 1, "تانکر فعال 14040818", R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser());
+                }
+                CmdSql.Transaction.Commit();CmdSql.Connection.Close();
+                MessageBox.Show("Success ...");
+
+
+            }
+            catch (Exception ex)
+            { if (CmdSql.Connection.State != ConnectionState.Closed)
+                {
+                    CmdSql.Transaction.Rollback (); CmdSql.Connection.Close();
+                }
+                MessageBox.Show(ex.Message ); }
+        }
     }
-
-
 }

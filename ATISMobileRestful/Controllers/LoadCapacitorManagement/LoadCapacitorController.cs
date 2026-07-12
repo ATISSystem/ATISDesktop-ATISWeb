@@ -29,12 +29,18 @@ using R2CoreTransportationAndLoadNotification.TransportTarrifsParameters;
 using R2CoreTransportationAndLoadNotification.Turns;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions;
 using R2CoreTransportationAndLoadNotification.RequesterManagement;
+using R2CoreTransportationAndLoadNotification.DriverSelfDeclaration;
+using R2CoreTransportationAndLoadNotification.DriverSelfDeclaration.Exceptions;
 
 namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
 {
     public class LoadCapacitorController : ApiController
     {
         R2DateTime _DateTime = new R2DateTime();
+        R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager InstanceDriverSelfDeclaration;
+
+        public LoadCapacitorController()
+        { InstanceDriverSelfDeclaration = new R2CoreTransportationAndLoadNotificationInstanceDriverSelfDeclarationManager(); }
 
         [HttpPost]
         public HttpResponseMessage GetLoadCapacitorLoads()
@@ -46,6 +52,8 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                 WebAPi.AuthenticateClientApikeyNonceWith4Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientLoadsReviewRequest);
 
                 var NSSSoftwareuser = WebAPi.GetNSSSoftwareUser(Request);
+                //InstanceDriverSelfDeclaration.DOControlforDSDImage(NSSSoftwareuser.UserId);
+
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var AHId = Content.Split(';')[2];
                 var AHSGId = Content.Split(';')[3];
@@ -74,6 +82,8 @@ namespace ATISMobileRestful.Controllers.LoadCapacitorManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(_Loads), Encoding.UTF8, "application/json");
                 return response;
             }
+            catch(DSDImageNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
             catch (NoLoadsorLoadsViewConditionsMismatchException ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
             catch (BaseInfFailedException ex)

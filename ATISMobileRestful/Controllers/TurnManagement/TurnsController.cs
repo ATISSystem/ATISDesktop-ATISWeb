@@ -39,6 +39,8 @@ using R2CoreTransportationAndLoadNotification.TruckDrivers.Exceptions;
 using R2CoreParkingSystem.MoneyWalletManagement;
 using PayanehClassLibrary.DriverTrucksManagement.Exceptions;
 using R2CoreTransportationAndLoadNotification.LoadCapacitor.Exceptions;
+using R2CoreTransportationAndLoadNotification.Turns.TurnValidity;
+using R2CoreTransportationAndLoadNotification.LoadAllocation.Exceptions;
 
 namespace ATISMobileRestful.Controllers.TurnManagement
 {
@@ -57,6 +59,7 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                 var InstanceTurns = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
                 var InstanceSequentialTurns = new R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager();
                 var Lst = InstanceTurns.GetTurns(NSSSoftwareuser);
+                var TurnValidities=R2CoreTransportationAndLoadNotificationMClassTurnValityManager.GetCurrentTurnValidities(false);
                 List<Models.Turns> _Turns = new List<Models.Turns>();
                 for (int Loopx = 0; Loopx <= Lst.Count - 1; Loopx++)
                 {
@@ -74,6 +77,7 @@ namespace ATISMobileRestful.Controllers.TurnManagement
                     Item.TurnStatusTitle = "وضعیت نوبت: " + Lst[Loopx].TurnStatusTitle.Trim();
                     Item.LPPString = "ناوگان: " + Lst[Loopx].LicensePlatePString.Trim();
                     Item.TruckDriver = "راننده: " + Lst[Loopx].TruckDriver.Trim();
+                    if(Loopx==0) { Item.TruckDriver = Item.TruckDriver + "\n" + TurnValidities; }
                     _Turns.Add(Item);
                 }
 
@@ -417,6 +421,93 @@ namespace ATISMobileRestful.Controllers.TurnManagement
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
 
+        [HttpPost]
+        public HttpResponseMessage TurnRequest()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNoncePasswordWith3Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientTurnRequest);
+
+                var InstanceTurnRegisterRequest = new PayanehClassLibraryMClassTurnRegisterRequestManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceSequentialTurns = new R2CoreTransportationAndLoadNotificationInstanceSequentialTurnsManager();
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceTrucks = new R2CoreTransportationAndLoadNotificationInstanceTrucksManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
+                var Pelak = Content.Split(';')[2];
+                var Serial = Content.Split(';')[3];
+                var SeqTId = Convert.ToInt64(Content.Split(';')[4]);
+                var TruckImage = Content.Split(';')[5];
+
+                var NSSDirtyTruck = new R2CoreTransportationAndLoadNotificationStandardTruckStructure(new R2StandardCarStructure(null, null, Pelak, Serial, null), null);
+                NSSDirtyTruck = InstanceTrucks.GetNSSTruckWithLicensePlate(NSSDirtyTruck);
+                Int64 TurnId = Int64.MinValue;
+                InstanceTurnRegisterRequest.RealTimeTurnRegisterRequest(InstanceSequentialTurns.GetNSSSequentialTurn(SeqTId), NSSDirtyTruck, false, true, ref TurnId, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullTurnControlerTurnRequest, TurnType.Permanent, NSSSoftwareuser, true);
+
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(new { Message = "درخواست نوبت با موفقیت ارسال شد" }), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (RequesterNotAllowTurnIssueBySeqTException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (RequesterNotAllowTurnIssueByLastLoadPermissionedException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (TruckRelatedSequentialTurnNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (CarIsNotPresentInParkingException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (GetNobatExceptionCarTruckIsTankTreiler ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (CarTruckTravelLengthNotOverYetException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (GetNobatExceptionCarTruckHasNobat ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (GetNobatException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (SequentialTurnIsNotActiveException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (TruckNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (SequentialTurnNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (TruckDriverNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (TurnRegisterRequestNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (GetNSSException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (GetDataException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (MoneyWalletCurrentChargeNotEnoughException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (TurnRegisterRequestTypeNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (TurnPrintingInfNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (DriverTruckInformationNotExistException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (RelatedTerraficCardNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (LoadCapacitorLoadNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (TerraficCardNotFoundException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserNotExistByMobileNumberException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserNotExistByApiKeyException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserLast5DigitNotMatchingException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (UserIdNotExistException ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+        }
 
 
 

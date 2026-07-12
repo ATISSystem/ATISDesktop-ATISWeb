@@ -164,6 +164,9 @@
     <Content Include="MoneyWalletManagement\WCMoneyWalletChargeRecordsCollectionInteligently.ascx" />
     <Content Include="MoneyWalletManagement\WCMoneyWalletCurrentCharge.ascx" />
     <Content Include="MoneyWalletManagement\WfMoneyWallet.aspx" />
+    <Content Include="MSCOManagement\WCMSCOThisDayAnnounce.ascx" />
+    <Content Include="MSCOManagement\WfMSCOThisDayAnnounce.aspx" />
+    <Content Include="PaymentConfirmation.aspx" />
     <Content Include="ReportsManagement\WCRegisteredAndReleasedLoadsReport.ascx" />
     <Content Include="ReportsManagement\WfRegisteredAndReleasedLoadsReport.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -214,6 +217,7 @@
     <Content Include="TransportationAndLoadNotification\LoadCapacitorManagement\WCTransportTarrifsParameters.ascx" />
     <Content Include="TransportationAndLoadNotification\LoadCapacitorMonitoringManagement\WfLoadCapacitorMonitoringMuted.aspx" />
     <Content Include="TransportationAndLoadNotification\Tarrifs\WCTarrifs.ascx" />
+    <Content Include="WebForm1.aspx" />
     <Content Include="WfSiteUnderConstructionAlert.aspx" />
     <Content Include="libman.json" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
@@ -478,6 +482,27 @@
     <Compile Include="MoneyWalletManagement\WfMoneyWallet.aspx.designer.cs">
       <DependentUpon>WfMoneyWallet.aspx</DependentUpon>
     </Compile>
+    <Compile Include="MSCOManagement\WCMSCOThisDayAnnounce.ascx.cs">
+      <DependentUpon>WCMSCOThisDayAnnounce.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MSCOManagement\WCMSCOThisDayAnnounce.ascx.designer.cs">
+      <DependentUpon>WCMSCOThisDayAnnounce.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MSCOManagement\WfMSCOThisDayAnnounce.aspx.cs">
+      <DependentUpon>WfMSCOThisDayAnnounce.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MSCOManagement\WfMSCOThisDayAnnounce.aspx.designer.cs">
+      <DependentUpon>WfMSCOThisDayAnnounce.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentConfirmation.aspx.cs">
+      <DependentUpon>PaymentConfirmation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PaymentConfirmation.aspx.designer.cs">
+      <DependentUpon>PaymentConfirmation.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportsManagement\WCRegisteredAndReleasedLoadsReport.ascx.cs">
       <DependentUpon>WCRegisteredAndReleasedLoadsReport.ascx</DependentUpon>
@@ -614,6 +639,13 @@
     <Compile Include="TransportationAndLoadNotification\TransportCompanies\WcViewerNSSTransportCompanyIntelligently.ascx.designer.cs">
       <DependentUpon>WcViewerNSSTransportCompanyIntelligently.ascx</DependentUpon>
     </Compile>
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WfSiteUnderConstructionAlert.aspx.cs">
       <DependentUpon>WfSiteUnderConstructionAlert.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -650,6 +682,10 @@
     <ProjectReference Include="..\BillOfLadingClassLibrary\BillOfLadingClassLibrary.csproj">
       <Project>{9fd0b5fa-5481-486f-ac33-43d0e1aaa996}</Project>
       <Name>BillOfLadingClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSCOClassLibrary\MSCOClassLibrary.csproj">
+      <Project>{51a3327b-82b2-4350-84d3-0f18a498f151}</Project>
+      <Name>MSCOClassLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\PayanehClassLibrary\PayanehClassLibrary.vbproj">
       <Project>{8bcfe2ef-2c83-4137-baaf-87e380d41971}</Project>

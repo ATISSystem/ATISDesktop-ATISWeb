@@ -33,6 +33,8 @@ Namespace net.sepahansms
         
         Private SmsSendOperationCompleted As System.Threading.SendOrPostCallback
         
+        Private SendContactOperationCompleted As System.Threading.SendOrPostCallback
+        
         Private SendSmsOperationCompleted As System.Threading.SendOrPostCallback
         
         Private SendSingleSmsOperationCompleted As System.Threading.SendOrPostCallback
@@ -109,6 +111,9 @@ Namespace net.sepahansms
         
         '''<remarks/>
         Public Event SmsSendCompleted As SmsSendCompletedEventHandler
+        
+        '''<remarks/>
+        Public Event SendContactCompleted As SendContactCompletedEventHandler
         
         '''<remarks/>
         Public Event SendSmsCompleted As SendSmsCompletedEventHandler
@@ -188,6 +193,33 @@ Namespace net.sepahansms
             If (Not (Me.SmsSendCompletedEvent) Is Nothing) Then
                 Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
                 RaiseEvent SmsSendCompleted(Me, New SmsSendCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+            End If
+        End Sub
+        
+        '''<remarks/>
+        <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/SendContact", RequestNamespace:="http://tempuri.org/", ResponseNamespace:="http://tempuri.org/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
+        Public Function SendContact(ByVal UserName As String, ByVal Pass As String, ByVal Domain As String, ByVal MobileNumber As String, ByVal DeviceCode As String) As Integer
+            Dim results() As Object = Me.Invoke("SendContact", New Object() {UserName, Pass, Domain, MobileNumber, DeviceCode})
+            Return CType(results(0),Integer)
+        End Function
+        
+        '''<remarks/>
+        Public Overloads Sub SendContactAsync(ByVal UserName As String, ByVal Pass As String, ByVal Domain As String, ByVal MobileNumber As String, ByVal DeviceCode As String)
+            Me.SendContactAsync(UserName, Pass, Domain, MobileNumber, DeviceCode, Nothing)
+        End Sub
+        
+        '''<remarks/>
+        Public Overloads Sub SendContactAsync(ByVal UserName As String, ByVal Pass As String, ByVal Domain As String, ByVal MobileNumber As String, ByVal DeviceCode As String, ByVal userState As Object)
+            If (Me.SendContactOperationCompleted Is Nothing) Then
+                Me.SendContactOperationCompleted = AddressOf Me.OnSendContactOperationCompleted
+            End If
+            Me.InvokeAsync("SendContact", New Object() {UserName, Pass, Domain, MobileNumber, DeviceCode}, Me.SendContactOperationCompleted, userState)
+        End Sub
+        
+        Private Sub OnSendContactOperationCompleted(ByVal arg As Object)
+            If (Not (Me.SendContactCompletedEvent) Is Nothing) Then
+                Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
+                RaiseEvent SendContactCompleted(Me, New SendContactCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
             End If
         End Sub
         
@@ -900,6 +932,33 @@ Namespace net.sepahansms
             Get
                 Me.RaiseExceptionIfNecessary
                 Return CType(Me.results(0),Long())
+            End Get
+        End Property
+    End Class
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")>  _
+    Public Delegate Sub SendContactCompletedEventHandler(ByVal sender As Object, ByVal e As SendContactCompletedEventArgs)
+    
+    '''<remarks/>
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0"),  _
+     System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.ComponentModel.DesignerCategoryAttribute("code")>  _
+    Partial Public Class SendContactCompletedEventArgs
+        Inherits System.ComponentModel.AsyncCompletedEventArgs
+        
+        Private results() As Object
+        
+        Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+            MyBase.New(exception, cancelled, userState)
+            Me.results = results
+        End Sub
+        
+        '''<remarks/>
+        Public ReadOnly Property Result() As Integer
+            Get
+                Me.RaiseExceptionIfNecessary
+                Return CType(Me.results(0),Integer)
             End Get
         End Property
     End Class

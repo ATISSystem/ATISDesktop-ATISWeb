@@ -64,7 +64,7 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
                 var nEstelamId = Convert.ToInt64(Content.Split(';')[2]);
 
-                R2CoreTransportationAndLoadNotificationStandardTurnStructure myNSSTurn = null ;
+                R2CoreTransportationAndLoadNotificationStandardTurnStructure myNSSTurn = null;
                 try
                 {
                     var InstanceTurns = new R2CoreTransportationAndLoadNotificationInstanceTurnsManager();
@@ -74,7 +74,7 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 { throw ex; }
 
                 var InstanceLoadAllocation = new R2CoreTransportationAndLoadNotificationInstanceLoadAllocationManager();
-                InstanceLoadAllocation.LoadAllocationRegistering(nEstelamId, myNSSTurn, NSSSoftwareuser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent,false ,false );
+                InstanceLoadAllocation.LoadAllocationRegistering(nEstelamId, myNSSTurn, NSSSoftwareuser, R2CoreTransportationAndLoadNotificationRequesters.ATISRestfullLoadAllocationRegisteringAgent, false, false);
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 return response;
             }
@@ -253,7 +253,7 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                     SB.Append(Lst[Loopx].LoadCapacitorLoadGoodTitle.Trim() + " " + Lst[Loopx].LoadCapacitorLoadTargetTitle.Trim() + " تعدادبار: " + Lst[Loopx].LoadCapacitorLoadnCarNumKol.Trim() + "\r\n");
                     SB.Append("تعرفه: " + Lst[Loopx].LoadCapacitorLoadStrPriceSug.Trim() + "\r\n");
                     SB.Append("توضیحات بار: " + Lst[Loopx].LoadCapacitorLoadStrDescription.Trim() + " " + Lst[Loopx].LoadCapacitorLoadStrBarName.Trim() + " " + Lst[Loopx].LoadCapacitorLoadStrAddress.Trim() + "\r\n");
-                    SB.Append("تناژ بار: " + Lst[Loopx].LoadCapacitorLoadnTonaj.Trim()+ "\r\n");
+                    SB.Append("تناژ بار: " + Lst[Loopx].LoadCapacitorLoadnTonaj.Trim() + "\r\n");
                     SB.Append("وضعیت تخصیص بار: " + Lst[Loopx].LoadAllocationStatusTitle.Trim() + "\r\n");
                     SB.Append("تاریخ تخصیص بار: " + Lst[Loopx].LoadPermissionDate + " - " + Lst[Loopx].LoadPermissionTime + "\r\n");
                     SB.Append("توضیحات تخصیص: " + Lst[Loopx].LoadAllocationNote.Trim() + "\r\n");
@@ -379,7 +379,7 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
 
                 var InstanceLogging = new R2CoreInstanceLoggingManager();
                 if (InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientHaveLoadingPermission).Active)
-                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientHaveLoadingPermission, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientHaveLoadingPermission).LogTitle, string.Empty, MobileNumber, HLPResult, "Param=" + LoadingPermissionId.ToString() + "-" + TCompanyId , string.Empty, InstanceSoftwareusers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null)); }
+                { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientHaveLoadingPermission, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientHaveLoadingPermission).LogTitle, string.Empty, MobileNumber, HLPResult, "Param=" + LoadingPermissionId.ToString() + "-" + TCompanyId, string.Empty, InstanceSoftwareusers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null)); }
 
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
                 response.Content = new StringContent(JsonConvert.SerializeObject(HLPResult), Encoding.UTF8, "application/json");
@@ -403,14 +403,14 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 var InstanceAES = new AESAlgorithmsManager();
                 var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
-                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile (MobileNumber));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
                 var LoadingPermissionId = Convert.ToInt64(Content.Split(';')[2]);
                 var TCompanyId = Content.Split(';')[3];
                 var BillofLadingId = Content.Split(';')[4];
                 var InstanceLoadPermission = new R2CoreTransportationAndLoadNotificationInstanceLoadPermissionManager();
-                var HLPResult = InstanceLoadPermission.WriteBillofLadingId(LoadingPermissionId, TCompanyId,BillofLadingId );
+                var HLPResult = InstanceLoadPermission.WriteBillofLadingId(LoadingPermissionId, TCompanyId, BillofLadingId);
 
-                var InstanceLogging = new R2CoreInstanceLoggingManager(); 
+                var InstanceLogging = new R2CoreInstanceLoggingManager();
                 if (InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientSendBillofLadingId).Active)
                 { InstanceLogging.LogRegister(new R2CoreStandardLoggingStructure(0, ATISMobileWebApiLogTypes.WebApiClientSendBillofLadingId, InstanceLogging.GetNSSLogType(ATISMobileWebApiLogTypes.WebApiClientSendBillofLadingId).LogTitle, string.Empty, MobileNumber, HLPResult, "Param=" + LoadingPermissionId.ToString() + "-" + TCompanyId + "-" + BillofLadingId, string.Empty, InstanceSoftwareusers.GetSystemUserId(), _DateTime.GetCurrentDateTimeMilladi(), null)); }
 
@@ -450,7 +450,45 @@ namespace ATISMobileRestful.Controllers.LoadAllocationManagement
                 response.Content = new StringContent(JsonConvert.SerializeObject(HLPResult), Encoding.UTF8, "application/json");
                 return response;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
+            { return WebAPi.CreateErrorContentMessage(ex); }
+        }
+
+        [HttpPost]
+        public HttpResponseMessage GetBOLsCount()
+        {
+            ATISMobileWebApi WebAPi = new ATISMobileWebApi();
+            try
+            {
+
+                TimeSpan now = DateTime.Now.TimeOfDay;
+                if (((new TimeSpan(8, 0, 0) <= now) && (new TimeSpan(11, 0, 0) >= now)) ||
+                    ((new TimeSpan(12, 0, 0) <= now) && (new TimeSpan(19, 0, 0) >= now)) ||
+                    ((new TimeSpan(21, 0, 0) <= now) && (new TimeSpan(23, 59, 59) >= now)))
+                    { throw new TimingNotReachedException(); }
+
+                //تایید اعتبار کلاینت
+                WebAPi.AuthenticateClientApikeyNoncePasswordWith3Parameter(Request, ATISMobileWebApiLogTypes.WebApiClientGetBOLsCount);
+
+                var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
+                var InstanceSoftwareusers = new R2CoreInstanseSoftwareUsersManager();
+                var InstanceAES = new AESAlgorithmsManager();
+                var Content = JsonConvert.DeserializeObject<string>(Request.Content.ReadAsStringAsync().Result);
+                var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
+                var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
+                var SmartCardNumber = Content.Split(';')[2];
+                var ShamsiDate = Content.Split(';')[3];
+                var Time = Content.Split(';')[4];
+
+                var InstanceBillOfLadingConditionedAnnouncement = new BillOfLadingCore.BillOfLading.BillOfLadingCoreBillOfLadingConditionedAnnouncementManager();
+                var BOLsInf = InstanceBillOfLadingConditionedAnnouncement.GetBOLsCount(SmartCardNumber, ShamsiDate, Time);
+
+                HttpResponseMessage response;
+                response = Request.CreateResponse(HttpStatusCode.OK);
+                response.Content = new StringContent(JsonConvert.SerializeObject(new { Message = BOLsInf }), Encoding.UTF8, "application/json");
+                return response;
+            }
+            catch (Exception ex)
             { return WebAPi.CreateErrorContentMessage(ex); }
         }
 

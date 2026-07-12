@@ -45,18 +45,21 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 var MobileNumber = InstanceAES.Decrypt(Content.Split(';')[0], InstanceConfiguration.GetConfigString(R2CoreConfigurations.PublicSecurityConfiguration, 3));
                 var NSSSoftwareuser = InstanceSoftwareusers.GetNSSUserUnChangeable(new R2CoreSoftwareUserMobile(MobileNumber));
 
-                var Amount = Convert.ToInt32(Content.Split(';')[2]);
-                if (Amount > 300000)
+                var Amount = Convert.ToInt32(Content.Split(';')[2]) * 10;
+                if (Amount > 3000000)
                 { throw new ChargingAmountInvalidException(); }
 
-                //var Amount = Convert.ToInt32(Content.Split(';')[2]) * 10;
-                //if (Amount > 3000000)
-                //{ throw new ChargingAmountInvalidException(); }
-
                 var WS = new R2Core.R2PrimaryWS.R2PrimaryWebService();
-                var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.AqayepardakhtPaymentGate, Amount, NSSSoftwareuser.UserId, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword));
-                //var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, Amount, NSSSoftwareuser.UserId, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword));
-                //var PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ShepaPaymentGate, Amount, NSSSoftwareuser.UserId, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword));
+                long PayId = 0;
+
+                PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.AqayepardakhtPaymentGate, Amount, NSSSoftwareuser.UserId, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword));
+                //PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, Amount, NSSSoftwareuser.UserId, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword)); 
+
+                //if (Amount == 600000 || Amount == 500000 || Amount == 1000000)
+                //{ PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.AqayepardakhtPaymentGate, Amount, NSSSoftwareuser.UserId, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword)); }
+                //else
+                //{ PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ZarrinPalPaymentGate, Amount, NSSSoftwareuser.UserId, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword)); }
+                //PayId = WS.WebMethodPaymentRequest(R2CoreMonetaryCreditSupplySources.ShepaPaymentGate, Amount, NSSSoftwareuser.UserId, WS.WebMethodLogin(R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserShenaseh, R2CoreMClassSoftwareUsersManagement.GetNSSSystemUser().UserPassword));
                 var InstancePaymentRequests = new R2CoreInstansePaymentRequestsManager();
                 var NSSPaymentRequest = InstancePaymentRequests.GetNSSPayment(PayId);
                 while ((NSSPaymentRequest.Authority == string.Empty) & (NSSPaymentRequest.PaymentErrors == string.Empty))
@@ -64,8 +67,16 @@ namespace ATISMobileRestful.Controllers.MoneyWalletManagement
                 if (NSSPaymentRequest.Authority != string.Empty)
                 {
                     HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
-                    response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = NSSPaymentRequest.Authority, Message2 = InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 2), Message3 = string.Empty }), Encoding.UTF8, "application/json");
-                    //response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = NSSPaymentRequest.Authority, Message2 = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 2), Message3 = string.Empty }), Encoding.UTF8, "application/json");
+
+                    response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = NSSPaymentRequest.Authority, Message2 = "Https://ATISMobile.ir/PaymentConfirmation.aspx?Authority=", Message3 = string.Empty }), Encoding.UTF8, "application/json");
+                    //response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = NSSPaymentRequest.Authority, Message2 = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 2), Message3 = string.Empty }), Encoding.UTF8, "application/json"); 
+
+                    //if (Amount == 600000 || Amount == 500000 || Amount == 1000000)
+                    //{ response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = NSSPaymentRequest.Authority, Message2 = "Https://ATISMobile.ir/PaymentConfirmation.aspx?Authority=", Message3 = string.Empty }), Encoding.UTF8, "application/json"); }
+                    //else
+                    //{ response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = NSSPaymentRequest.Authority, Message2 = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ZarrinPalPaymentGate, 2), Message3 = string.Empty }), Encoding.UTF8, "application/json"); }
+
+                    //response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = NSSPaymentRequest.Authority, Message2 = InstanceConfiguration.GetConfigString(R2CoreConfigurations.AqayepardakhtPaymentGate, 2), Message3 = string.Empty }), Encoding.UTF8, "application/json");
                     //response.Content = new StringContent(JsonConvert.SerializeObject(new MessageStruct { ErrorCode = false, Message1 = NSSPaymentRequest.Authority, Message2 = InstanceConfiguration.GetConfigString(R2CoreConfigurations.ShepaPaymentGate, 2), Message3 = string.Empty }), Encoding.UTF8, "application/json");
                     return response;
                 }

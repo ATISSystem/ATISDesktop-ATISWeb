@@ -215,7 +215,7 @@
                             </div>
                         </div>
                         <div class="input-group col-sm-3 col-lg-3">
-                            <asp:TextBox runat="server" ID="TxtLoadReciever" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
+                            <asp:TextBox runat="server" ID="TxtLoadReciever"  Enabled="true"  class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
                             <div class="input-group-append">
                                 <span class="input-group-text R2FontBHomaSmall"  style="background-color: yellow; color: blue">گیرنده</span>
                             </div>
@@ -226,13 +226,13 @@
                 <div class="container-fluid p-1">
                     <div class="d-flex flex-row-reverse">
                         <div class="input-group col-sm-6 col-lg-6">
-                            <asp:TextBox runat="server" ID="TxtAddress" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
+                            <asp:TextBox runat="server" ID="TxtAddress" Enabled="true" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
                             <div class="input-group-append">
                                 <span class="input-group-text R2FontBHomaSmall" style="background-color: yellow; color: blue">آدرس</span>
                             </div>
                         </div>
                         <div class="input-group col-sm-6 col-lg-6">
-                            <asp:TextBox runat="server" Text="" ID="TxtDescription" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
+                            <asp:TextBox runat="server" Text="" ID="TxtDescription" Enabled="true" class="form-control R2FontBHomaSmall  text-center"></asp:TextBox>
                             <div class="input-group-append">
                                 <span class="input-group-text R2FontBHomaSmall" style="background-color: yellow; color: blue">توضیحات</span>
                             </div>

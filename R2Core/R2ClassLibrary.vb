@@ -123,7 +123,8 @@ Namespace NetworkInternetManagement
 
         Public Shared Function IsInternetAvailable() As Boolean
             Try
-                If My.Computer.Network.Ping("8.8.8.8") Then
+                Return True 'با توجه به وضعیت قطعی اینترنت و پینگ گوگل فعلا بای پس شد
+                If My.Computer.Network.Ping("217.218.127.127") Then
                     Return True
                 Else
                     Return False
@@ -3503,6 +3504,7 @@ Namespace DateAndTimeManagement
         Public Function GetCurrentDateTimeMilladiFormated() As String
             Try
                 Return GetSqlServerCurrentDate().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                'Return GetSqlServerCurrentDate()
             Catch ex As Exception
                 Throw New Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + ex.Message)
             End Try
@@ -4322,6 +4324,14 @@ Namespace ExceptionManagement
         End Property
     End Class
 
+    Public Class DataBaseException
+        Inherits ApplicationException
+        Public Overrides ReadOnly Property Message As String
+            Get
+                Return "خطای بانک اطلاعات - داده تکراری و یا عدم رعایت قواعد داده"
+            End Get
+        End Property
+    End Class
 
 End Namespace
 

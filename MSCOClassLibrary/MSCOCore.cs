@@ -65,10 +65,10 @@ namespace MSCOCore
                 try
                 {
                     var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
-                    DataSet DS = null;bool DataChangeStatus=false  ;
+                    DataSet DS = null; bool DataChangeStatus = false;
                     InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
                         @"Select MSCOId from MSCO.dbo.TblMSCOTransportCompanies Where Announce=1 and Active=1 and Deleted=0
-                          Order By MSCOId", 3600, ref DS,ref DataChangeStatus);
+                          Order By MSCOId", 3600, ref DS, ref DataChangeStatus);
                     List<String> Lst = new List<string>();
                     for (int Loopx = 0; Loopx <= DS.Tables[0].Rows.Count - 1; Loopx++)
                     { Lst.Add(DS.Tables[0].Rows[Loopx]["MSCOId"].ToString()); }
@@ -88,9 +88,8 @@ namespace MSCOCore
                 try
                 {
                     if (InstanceTransportCompanies.IsActiveTransportCompanySentMail(YourTransportCompanyCode))
-                    { 
+                    {
                         InstanceEmail.SendEmailWithTXTTypeAttachment(InstanceTransportCompanies.GetNSSTransportCompany(YourTransportCompanyCode).EmailAddress, YourSB, "اعلام بار", string.Empty, YourTransportCompanyCode + InstanceConfiguration.GetConfigString(MSCOCore.Configurations.MSCOCoreConfigurations.MSCO, 4));
-                        TotalTCsforInfSMS += 1;
                     }
                     System.Threading.Thread.Sleep(10000);
                 }
@@ -122,7 +121,10 @@ namespace MSCOCore
                     var InstancePublicProcedures = new R2CoreInstancePublicProceduresManager();
 
                     if (InstanceTransportCompanies.IsActiveTransportCompanyAnnounce(YourTransportCompanyCode))
-                    { InstancePublicProcedures.SaveFile(R2CoreRawGroups.UploadedFiles, InstanceConfiguration.GetConfigString(Configurations.MSCOCoreConfigurations.MSCO, 8) + _DateTime.GetCurrentDateShamsiFullWithoutSlashes() + YourTransportCompanyCode + ".Txt", System.Text.Encoding.UTF8.GetBytes(YourSB.ToString()), YourNSSSoftwareUser); }
+                    {
+                        InstancePublicProcedures.SaveFile(R2CoreRawGroups.UploadedFiles, InstanceConfiguration.GetConfigString(Configurations.MSCOCoreConfigurations.MSCO, 8) + _DateTime.GetCurrentDateShamsiFullWithoutSlashes() + YourTransportCompanyCode + ".Txt", System.Text.Encoding.UTF8.GetBytes(YourSB.ToString()), YourNSSSoftwareUser);
+                        TotalTCsforInfSMS += 1;
+                    }
                 }
 
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
@@ -256,7 +258,7 @@ namespace MSCOCore
 
                     var InstanceMSCOTargets = new MSCOMClassMSCOTargetsManager();
                     var InstanceTransportCompanies = new MSCOCoreMClassTransportCompaniesManager();
-                    var InstanceConfiguration = new R2CoreInstanceConfigurationManager(); 
+                    var InstanceConfiguration = new R2CoreInstanceConfigurationManager();
                     var InstanceProducts = new MSCOCore.MSCOProducts.MSCOCoreMClassProductsManager();
                     var NSS = new R2CoreTransportationAndLoadNotificationStandardLoadCapacitorLoadStructure();
 
@@ -284,7 +286,7 @@ namespace MSCOCore
                     NSS.TPTParams = string.Empty;
                     NSS.LoadingPlaceId = 1001;
                     NSS.DischargingPlaceId = 1001;
-                    NSS.nBarSource = InstanceConfiguration.GetConfigInt64(MSCOCore.Configurations.MSCOCoreConfigurations.MSCO ,11) ;
+                    NSS.nBarSource = InstanceConfiguration.GetConfigInt64(MSCOCore.Configurations.MSCOCoreConfigurations.MSCO, 11);
                     return NSS;
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
@@ -504,53 +506,57 @@ namespace MSCOCore
                     var SecondLine = sr.ReadLine();
                     SB.AppendLine(FirstLine); SB.AppendLine(SecondLine);
                     var OtherLine = sr.ReadLine();
-
-                    TransportCompanyCode = OtherLine.Substring(0, 7);
-                    SB.AppendLine(OtherLine);
-                    
-                    while (!(sr.EndOfStream))
+                    try
                     {
-                        OtherLine = sr.ReadLine();
-                        if (OtherLine == String.Empty)
-                        {
-                            SB.AppendLine(OtherLine);
-                            if (sr.EndOfStream)
-                            {
-                                SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
-                                break;
-                            }
-                            continue;
-                        }
+                        TransportCompanyCode = OtherLine.Substring(0, 7);
+                        SB.AppendLine(OtherLine);
 
-                        if (OtherLine.Substring(18, 1) == "N" || OtherLine.Substring(18, 1) == "L")
+                        while (!(sr.EndOfStream))
                         {
-                            if (OtherLine.Substring(0, 7) == TransportCompanyCode)
-                            { SB.AppendLine(OtherLine); continue; }
+                            OtherLine = sr.ReadLine();
+                            if (OtherLine == String.Empty)
+                            {
+                                SB.AppendLine(OtherLine);
+                                if (sr.EndOfStream)
+                                {
+                                    SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                    break;
+                                }
+                                continue;
+                            }
+
+                            if (OtherLine.Substring(18, 1) == "N" || OtherLine.Substring(18, 1) == "L")
+                            {
+                                if (OtherLine.Substring(0, 7) == TransportCompanyCode)
+                                { SB.AppendLine(OtherLine); continue; }
+                                else
+                                {
+                                    SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                    //شرکت جدید
+                                    SB.Clear();
+                                    TransportCompanyCode = OtherLine.Substring(0, 7);
+                                    SB.AppendLine(FirstLine); SB.AppendLine(SecondLine); SB.AppendLine(OtherLine);
+                                    continue;
+                                }
+                            }
                             else
                             {
-                                SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
-                                //شرکت جدید
-                                SB.Clear();
-                                TransportCompanyCode = OtherLine.Substring(0, 7);
-                                SB.AppendLine(FirstLine); SB.AppendLine(SecondLine); SB.AppendLine(OtherLine);
+                                SB.AppendLine(OtherLine);
+                                if (sr.EndOfStream)
+                                {
+                                    SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
+                                    break;
+                                }
                                 continue;
                             }
                         }
-                        else
-                        {
-                            SB.AppendLine(OtherLine);
-                            if (sr.EndOfStream)
-                            {
-                                SentEmail(TransportCompanyCode, SB, YourNSSSoftwareUser);
-                                break;
-                            }
-                            continue;
-                        }
                     }
+                    catch (Exception ex)
+                    { }
                     //حذف فایل اعلام بار با حفظ سابقه
                     WS.WebMethodDeleteFileButKeepDeleted(R2CoreRawGroups.UploadedFiles, "msc" + _DateTime.GetCurrentDateShamsiFull().Replace("/", "") + ".txt", WS.WebMethodLogin(InstanceSoftwareUsers.GetNSSSystemUser().UserShenaseh, InstanceSoftwareUsers.GetNSSSystemUser().UserPassword));
                     /*ارسال اس ام اس اتمام موفقیت آمیز فرآیند اعلام بار فولاد*/
-                    SendSMSMSCOSuccess();
+                    //SendSMSMSCOSuccess();
                 }
                 catch (MSCOCoreSendSMSFailedException ex)
                 { throw ex; }
@@ -574,7 +580,7 @@ namespace MSCOCore
                     var InstanceSoftwareUsers = new R2CoreInstanseSoftwareUsersManager();
                     for (int LoopxUsers = 0; LoopxUsers <= TargetUsers.Length - 1; LoopxUsers++)
                     { LstUsers.Add(InstanceSoftwareUsers.GetNSSUser(Convert.ToInt64(TargetUsers[LoopxUsers]))); }
-                    var MSCOData = new SMSCreationData() { Data1 = TotalTCsforInfSMS.ToString()  };
+                    var MSCOData = new SMSCreationData() { Data1 = TotalTCsforInfSMS.ToString() };
                     var InstanceSMSHandling = new R2CoreSMSHandlingManager();
                     var SMSResult = InstanceSMSHandling.SendSMS(LstUsers, MSCOCore.SMS.SMSTypes.MSCOCoreSMSTypes.MSCOSuccess, InstanceSMSHandling.RepeatSMSCreationData(MSCOData, LstUsers.Count), true);
                     TotalTCsforInfSMS = 0;
@@ -603,7 +609,7 @@ namespace MSCOCore
             {
                 public override string Message
                 {
-                    get { return "فایل اعلام بار شرکت حمل و نقل موجود نیست"; }
+                    get { return "فایل اعلام بار شرکت حمل و نقل درحال حاضر موجود نیست"; }
                 }
             }
 
@@ -611,7 +617,7 @@ namespace MSCOCore
             {
                 public override string Message
                 {
-                    get { return "فایل متنی مرجع اعلام بار فولاد مبارکه موجود نیست"; }
+                    get { return "فایل متنی مرجع اعلام بار فولاد موجود نیست"; }
                 }
             }
 
@@ -656,7 +662,7 @@ namespace MSCOCore
                 {
                     DataSet DS = null; bool DataChangeStatus = false;
                     var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
-                    if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(), @"Select Top 1 CityId from MSCO.dbo.TblMSCOTargets Where MSCOCityId = '" + YourMSCOTargetId + "'  and RelationActive = 1 Order By OId Desc", 3600, ref DS,ref DataChangeStatus ).GetRecordsCount() != 0)
+                    if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(), @"Select Top 1 CityId from MSCO.dbo.TblMSCOTargets Where MSCOCityId = '" + YourMSCOTargetId + "'  and RelationActive = 1 Order By OId Desc", 3600, ref DS, ref DataChangeStatus).GetRecordsCount() != 0)
                     { return R2CoreTransportationAndLoadNotificationMclassLoadTargetsManagement.GetNSSLoadTarget(Convert.ToInt64(DS.Tables[0].Rows[0]["CityId"])); }
                     else
                     { throw new MSCOCoreMSCOTargetnotfoundException(); }
@@ -697,8 +703,27 @@ namespace MSCOCore
                     if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
                          @"Select Top 1 TransportCompanies.TCId from MSCO.dbo.TblMSCOTransportCompanies as MSCOTransportCompanies
                              Inner Join R2PrimaryTransportationAndLoadNotification.dbo.TblTransportCompanies as TransportCompanies On MSCOTransportCompanies.TCId = TransportCompanies.TCId
-                          Where ltrim(rtrim(MSCOTransportCompanies.MSCOId)) = '" + YourMSCOId + "' Order By MSCOTransportCompanies.DateTimeMilladi Desc", 3600, ref DS,ref DataChangeStatus ).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
-                    return InstanceTransportCompanies.GetNSSTransportCompany(System.Convert.ToInt64(DS.Tables[0].Rows[0]["TCId"]),true );
+                          Where ltrim(rtrim(MSCOTransportCompanies.MSCOId)) = '" + YourMSCOId + "' Order By MSCOTransportCompanies.DateTimeMilladi Desc", 3600, ref DS, ref DataChangeStatus).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
+                    return InstanceTransportCompanies.GetNSSTransportCompany(System.Convert.ToInt64(DS.Tables[0].Rows[0]["TCId"]), true);
+                }
+                catch (MSCOCoreTransportCompanyNotFoundException ex)
+                { throw ex; }
+                catch (Exception ex)
+                { throw new Exception(MethodBase.GetCurrentMethod().ReflectedType.FullName + "." + MethodBase.GetCurrentMethod().Name + "." + ex.Message); }
+            }
+
+            public string GetTransportCompanyMSCOId(Int64 YourTCId)
+            {
+                try
+                {
+                    var DS = new System.Data.DataSet(); bool DataChangeStatus = false;
+                    var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
+                    var InstanceTransportCompanies = new R2CoreTransportationAndLoadNotificationInstanceTransportCompaniesManager();
+                    if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
+                         @"Select Top 1 MSCOTransportCompanies.MSCOId from MSCO.dbo.TblMSCOTransportCompanies as MSCOTransportCompanies
+                           Where MSCOTransportCompanies.TCId=" + YourTCId + " Order By MSCOTransportCompanies.DateTimeMilladi Desc", 3600, ref DS, ref DataChangeStatus).GetRecordsCount() == 0)
+                    { throw new MSCOCoreTransportCompanyNotFoundException(); };
+                    return DS.Tables[0].Rows[0]["MSCOId"].ToString().Trim();
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
                 { throw ex; }
@@ -713,7 +738,7 @@ namespace MSCOCore
                     System.Data.DataSet DS = null; bool DataChangeStatus = false;
                     var InstanceSqlDataBOX = new R2CoreInstanseSqlDataBOXManager();
                     if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
-                         @"Select SendEmail from MSCO.dbo.TblMSCOTransportCompanies Where MSCOId='" + YourMSCOId + "'", 3600, ref DS,ref DataChangeStatus ).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
+                         @"Select SendEmail from MSCO.dbo.TblMSCOTransportCompanies Where MSCOId='" + YourMSCOId + "'", 3600, ref DS, ref DataChangeStatus).GetRecordsCount() == 0) { throw new MSCOCoreTransportCompanyNotFoundException(); };
                     return System.Convert.ToBoolean(DS.Tables[0].Rows[0]["SendEmail"]);
                 }
                 catch (MSCOCoreTransportCompanyNotFoundException ex)
@@ -780,7 +805,7 @@ namespace MSCOCore
                     if (InstanceSqlDataBOX.GetDataBOX(new R2PrimarySqlConnection(),
                          @"Select Top 1 MSCOProducts.ProductId from MSCO.dbo.TblMSCOProducts as MSCOProducts
                            Where ltrim(rtrim(MSCOProducts.MSCOProductTitle)) = '" + YourMSCOProductTitle + "'" +
-                           " and MSCOProducts.Active=1 and MSCOProducts.Deleted=0 Order By MSCOProducts.DateTimeMilladi Desc", 3600, ref DS,ref DataChangeStatus ).GetRecordsCount() == 0) { throw new MSCOCoreProductNotFoundException(); };
+                           " and MSCOProducts.Active=1 and MSCOProducts.Deleted=0 Order By MSCOProducts.DateTimeMilladi Desc", 3600, ref DS, ref DataChangeStatus).GetRecordsCount() == 0) { throw new MSCOCoreProductNotFoundException(); };
                     return System.Convert.ToInt64(DS.Tables[0].Rows[0]["ProductId"]);
                 }
                 catch (MSCOCoreProductNotFoundException ex)
